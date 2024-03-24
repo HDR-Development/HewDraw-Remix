@@ -715,6 +715,25 @@ unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
     }
 }
 
+// Richter's Knife land cancel
+unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N)
+    && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
+    && boma.is_situation(*SITUATION_KIND_GROUND){
+        // remove the unthrown knife from richter's hand
+        if (2.0..13.0).contains(&boma.motion_frame())
+        && ArticleModule::is_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE){
+            ArticleModule::remove_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+
+        let landing_lag = 10.0; // amount of frames until richter can act when landing
+        let rate = 27.0 / landing_lag;
+        MotionModule::change_motion(boma, Hash40::new("landing_heavy"), 0.0, rate, false, 0.0, false, false);
+        VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
+        EffectModule::kill_kind(boma, Hash40::new("sys_sp_flash"), true, true);
+    }
+}
+
 // Toon Link's Bow Drift
 unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N {
@@ -1258,7 +1277,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Richter's Knife Drift
     knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
-    
+
+    // Richter's Knife land cancel
+    knife_lc(boma);
+
     // Toon Link's Bow Drift
     heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
 

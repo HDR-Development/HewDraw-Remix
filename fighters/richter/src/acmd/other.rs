@@ -116,33 +116,6 @@ unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_catch_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.700);
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 6.0);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    game_CaptureCutCommon(fighter);
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
-    }
-    
-}
-
 unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -207,140 +180,6 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cliffattack_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 5, 3.5, 12, -29, -27, 1, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.3);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }
-}
-
-unsafe extern "C" fn slipattack_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
-    }
-    frame(lua_state, 30.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-    }
-    else {
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
-        LAST_EFFECT_SET_RATE(fighter, 2);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-}
-}
-}
-}
-
-unsafe extern "C" fn downattacku_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-        frame(lua_state, 17.0);
-        if is_excute(fighter) {
-            FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 3, 0, 0, 0, 180, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 1.5);
-        }
-        frame(lua_state, 18.0);
-        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-            if is_excute(fighter) {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1, 3, 0, 1, 180, 187, 1, true);
-                LAST_EFFECT_SET_RATE(fighter, 1.3);
-                LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-            }
-            else {
-            if is_excute(fighter) {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, 0, 1, 169, 187, 1, true);
-                LAST_EFFECT_SET_RATE(fighter, 1.3);
-                LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-            }
-        }
-    }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
-    }
-    frame(lua_state, 25.0);
-    if sv_animcmd::get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
-            LAST_EFFECT_SET_RATE(fighter, 2);
-            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-        }
-        else {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
-            LAST_EFFECT_SET_RATE(fighter, 2);
-            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-        }
-    }
-    }
-    }
-
-unsafe extern "C" fn downattackd_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 3, 0, 0, 0, 180, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
-    }
-    frame(lua_state, 18.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1, 3, 0, 1, 180, 187, 1, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.3);
-            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-        }
-        else {
-        if is_excute(fighter) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, 0, 1, 169, 187, 1, true);
-            LAST_EFFECT_SET_RATE(fighter, 1.3);
-            LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-        }
-    }
-}
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.4);
-    }
-    frame(lua_state, 25.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -30, 170, 1, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.3);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-    }
-    else {
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4.5, 2, -1, -10, 160, 1, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.3);
-        LAST_EFFECT_SET_COLOR(fighter, 0.902, 0.784, 0.333);
-    }
-}
-}
-}
-
 unsafe extern "C" fn appeallwr_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -391,7 +230,6 @@ pub fn install() {
         .acmd("sound_damageflyn", damageflyn_sound)
         .acmd("sound_damageflyroll", damageflyroll_sound)
         .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_catch", richter_catch_game)
         .acmd("game_dash", dash_game)
         .acmd("sound_dash", dash_sound)
         .acmd("game_turndash", turn_dash_game)
@@ -399,10 +237,6 @@ pub fn install() {
         .acmd("game_escapeairslide", escape_air_slide_game)
         .acmd("sound_appeallwr", appeallwr_sound)
         .acmd("sound_appeallwl", appeallwl_sound)
-        .acmd("effect_cliffattack", cliffattack_effect)
-        .acmd("effect_slipattack", slipattack_effect)
-        .acmd("effect_downattacku", downattacku_effect)
-        .acmd("effect_downattackd", downattackd_effect)
         .install();
     smashline::Agent::new("richter_whip")
         .acmd("game_guardon", richter_whip_attack_guardon_game)
