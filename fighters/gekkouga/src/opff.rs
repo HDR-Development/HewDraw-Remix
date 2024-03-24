@@ -105,8 +105,6 @@ pub unsafe fn gekkouga_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("gekkouga")
-        .on_line(Main, gekkouga_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, gekkouga_frame_wrapper)
 }
