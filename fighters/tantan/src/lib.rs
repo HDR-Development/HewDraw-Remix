@@ -7,6 +7,12 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod punch1;
+mod punch2;
+mod punch3;
+mod beam;
+mod ring;
+
 use smash::{
     lib::{
         L2CValue,
@@ -44,4 +50,10 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    punch1::install();
+    punch2::install();
+    punch3::install();
+    beam::install();
+    ring::install();
 }

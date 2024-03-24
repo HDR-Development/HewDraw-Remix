@@ -1846,5 +1846,5 @@ pub fn install(agent: &mut Agent) {
     //.acmd("game_speciallw3end", miiswordsman_special_lw3_end_game)
     agent.acmd("game_specialairlw3", game_specialairlw3);
     agent.acmd("game_specialairlw3end", game_specialairlw3end);
-    agent//.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game)
+    //.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game)
 }

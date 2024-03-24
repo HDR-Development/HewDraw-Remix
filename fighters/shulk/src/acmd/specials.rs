@@ -341,5 +341,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhi", game_specialhi);
     agent.acmd("game_speciallwattack", game_speciallwattack);
     agent.acmd("game_specialairlwattack", game_speciallwattack);
-    agent.acmd("game_speciallwf", game_speciallwf)
+    agent.acmd("game_speciallwf", game_speciallwf);
 }

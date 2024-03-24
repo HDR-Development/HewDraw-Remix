@@ -1306,5 +1306,4 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end);
     agent.status(End, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, special_hi2_bound_end);
     agent.status(Pre, *WEAPON_MIISWORDSMAN_CHAKRAM_STATUS_KIND_HOP, pre_chakram_hop);
-    agent.on_start(on_start);
 }
