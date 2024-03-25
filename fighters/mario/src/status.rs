@@ -62,12 +62,10 @@ unsafe extern "C" fn mario_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install() {
-    special_n::install();
-    smashline::Agent::new("mario")
-        .on_start(mario_init)
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
-        .status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre)
-        .status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, mario_rebirth_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_n::install(agent);
+    agent.on_start(mario_init);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(Pre, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, special_lw_shoot_pre);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, mario_rebirth_end);
 }

@@ -42,7 +42,9 @@ pub const KOOPA_MAX_COOLDOWN : i32 = 900;
 pub const LUCAS_CHARGE_TIME : i32 = 120;
 
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = &mut Agent::new("kirby");
+    acmd::install(agent);
+    status::install(agent);
     opff::install();
+    agent.install();
 }

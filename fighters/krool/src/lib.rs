@@ -39,12 +39,21 @@ pub mod opff;
 pub mod vtable_hook;
 pub use status::krool_belly_damage_hook_impl;
 
+// articles
+mod backpack;
+mod ironball;
+
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
-    use opff::*;
+    let agent = &mut Agent::new("krool");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    backpack::install();
+    ironball::install();
 
     // prevents shield break on belly
+    use opff::*;
     skyline::patching::Patch::in_text(0xc04f00).data(0x1400001Eu32);
 }

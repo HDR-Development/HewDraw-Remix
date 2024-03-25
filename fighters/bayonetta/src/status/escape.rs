@@ -21,9 +21,7 @@ unsafe extern "C" fn escape_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(End, *FIGHTER_STATUS_KIND_ESCAPE_F, escape_f_end)
-        .status(End, *FIGHTER_STATUS_KIND_ESCAPE_B, escape_b_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_ESCAPE_F, escape_f_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_ESCAPE_B, escape_b_end);
 }

@@ -43,13 +43,12 @@ extern "C" fn diddy_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    special_n::install();
-    special_s::install();
-    special_s_jump::install();
-    special_hi::install();
-    smashline::Agent::new("diddy")
-        .status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, end_jump_squat)
-        .on_start(diddy_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_n::install(agent);
+    special_s::install(agent);
+    special_s_jump::install(agent);
+    special_hi::install(agent);
+    agent.status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, end_jump_squat);
+    agent.on_start(diddy_init);
+    agent.install();
 }

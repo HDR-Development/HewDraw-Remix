@@ -21,14 +21,8 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("pzenigame")
-        .status(End, *FIGHTER_STATUS_KIND_RUN, end_run)
-        .status(
-            Main,
-            *FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP,
-            pzenigame_special_s_loop_main,
-        )
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_RUN, end_run);
+    agent.status(Main,*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP,pzenigame_special_s_loop_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

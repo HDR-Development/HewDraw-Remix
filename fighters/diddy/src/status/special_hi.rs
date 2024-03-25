@@ -17,9 +17,7 @@ pub unsafe extern "C" fn special_hi_upper_damage_main(fighter: &mut L2CFighterCo
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("diddy")
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE, special_hi_charge_damage_main)
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_UPPER_DAMAGE, special_hi_upper_damage_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE, special_hi_charge_damage_main);
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_UPPER_DAMAGE, special_hi_upper_damage_main);
 }

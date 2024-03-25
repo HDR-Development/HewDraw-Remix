@@ -13,8 +13,6 @@ unsafe extern "C" fn special_lw1_ground_main(fighter: &mut L2CFighterCommon) -> 
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("miifighter")
-        .status(Main, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND, special_lw1_ground_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND, special_lw1_ground_main);
 }

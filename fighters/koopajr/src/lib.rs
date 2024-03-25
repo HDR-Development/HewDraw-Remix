@@ -6,7 +6,7 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
-
+mod cannonball;
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +39,10 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("koopajr");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+
+    cannonball::install();
 }

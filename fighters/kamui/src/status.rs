@@ -2,6 +2,6 @@ use super::*;
 
 mod special_lw;
 
-pub fn install() {
-    special_lw::install();
+pub fn install(agent: &mut Agent) {
+    special_lw::install(agent);
 }

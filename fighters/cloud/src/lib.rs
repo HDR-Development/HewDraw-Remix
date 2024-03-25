@@ -38,6 +38,8 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("cloud");
+    acmd::install(agent);
+    opff::install(agent);
+    agent.install();
 }

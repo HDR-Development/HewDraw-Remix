@@ -78,9 +78,7 @@ unsafe extern "C" fn attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     fighter.status_end_AttackLw3()
 }
 
-pub fn install() {
-    smashline::Agent::new("ganon")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main)
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_end);
 }

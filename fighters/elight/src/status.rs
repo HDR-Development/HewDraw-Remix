@@ -101,13 +101,12 @@ extern "C" fn elight_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    special_hi_attack::install();
-    special_hi_jump::install();
-    special_hi_finish::install();
-    special_hi_finish2::install();
-    special_hi::install();
-    smashline::Agent::new("elight")
-        .on_start(elight_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_hi_attack::install(agent);
+    special_hi_jump::install(agent);
+    special_hi_finish::install(agent);
+    special_hi_finish2::install(agent);
+    special_hi::install(agent);
+    agent.on_start(elight_init);
+    agent.install();
 }

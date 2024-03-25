@@ -92,9 +92,7 @@ pub unsafe extern "C" fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CVa
     // }
     // return 0.into()
 
-pub fn install() {
-    smashline::Agent::new("gaogaen")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, gaogaen_special_n_pre)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, exec_special_n)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, gaogaen_special_n_pre);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, exec_special_n);
 }

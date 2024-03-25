@@ -110,12 +110,8 @@ unsafe extern "C" fn special_lw_change_motion(fighter: &mut L2CFighterCommon) {
 
 }
 
-pub fn install() {
-    smashline::Agent::new("krool")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old)
-        .install();
-    smashline::Agent::new("krool")
-        .status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre)
-        .status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old);
+    agent.status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre);
+    agent.status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main);
 }

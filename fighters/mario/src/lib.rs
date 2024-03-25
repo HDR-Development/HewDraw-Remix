@@ -7,6 +7,11 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+mod fireball;
+mod pump;
+mod pumpwater;
+
 use smash::{
     app::{
         self,
@@ -25,7 +30,13 @@ use smashline::*;
 use utils::{consts::*, ext::*, util::*, *};
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("mario");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    fireball::install();
+    pump::install();
+    pumpwater::install();
 }

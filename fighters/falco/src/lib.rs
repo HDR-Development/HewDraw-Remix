@@ -39,7 +39,9 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("falco");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }

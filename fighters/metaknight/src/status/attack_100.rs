@@ -86,8 +86,6 @@ unsafe extern "C" fn metaknight_attack100_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("metaknight")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main);
 }

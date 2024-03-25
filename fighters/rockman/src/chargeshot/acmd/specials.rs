@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let is_charge_max = 1.0 <= WorkModule::get_float(agent.module_accessor, *WEAPON_ROCKMAN_CHARGESHOT_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
         let damage;
@@ -23,5 +23,5 @@ unsafe extern "C" fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_regular", rockman_chargeshot_regular);
+    agent.acmd("game_regular", game_regular);
 }

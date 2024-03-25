@@ -4,7 +4,7 @@ use globals::*;
 #[skyline::from_offset(0xb96770)]
 fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
 
-unsafe extern "C" fn littlemac_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -33,7 +33,7 @@ unsafe extern "C" fn littlemac_special_n_pre(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-unsafe extern "C" fn littlemac_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_UNIQ, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     let sum_spd_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -61,10 +61,10 @@ unsafe extern "C" fn littlemac_special_n_main(fighter: &mut L2CFighterCommon) ->
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02) + -1);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02) + -1);
-    fighter.main_shift(littlemac_special_n_main_loop)
+    fighter.main_shift(special_n_main_loop)
 }
 
-unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -129,7 +129,7 @@ unsafe extern "C" fn littlemac_special_n_main_loop(fighter: &mut L2CFighterCommo
     return 0.into()
 }
 
-unsafe extern "C" fn littlemac_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
     let kirb = fighter.battle_object.cast::<Fighter>();
@@ -139,10 +139,8 @@ unsafe extern "C" fn littlemac_special_n_end(fighter: &mut L2CFighterCommon) -> 
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, littlemac_special_n_pre)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, littlemac_special_n_main)
-        .status(End, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, littlemac_special_n_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START, special_n_end);
 }

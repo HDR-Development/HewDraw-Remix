@@ -161,14 +161,8 @@ pub unsafe fn koopajr_weapon_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) 
     //}
 }
 
-pub fn install() {
-    smashline::Agent::new("koopajr")
-        .on_line(Main, koopajr_frame_wrapper)
-        .install();
-    smashline::Agent::new("koopajr_remainclown")
-        .on_line(Main, koopajr_weapon_remainclown_frame)
-        .install();
-    smashline::Agent::new("koopajr_cannonball")
-        .on_line(Main, koopajr_weapon_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, koopajr_frame_wrapper);
+    agent.on_line(Main, koopajr_weapon_remainclown_frame);
+    agent.on_line(Main, koopajr_weapon_frame_wrapper);
 }

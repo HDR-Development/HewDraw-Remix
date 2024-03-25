@@ -38,6 +38,14 @@ pub mod menu;
 pub mod opff;
 pub use menu::hero_rng_hook_impl;
 
+// articles
+mod crash;
+mod deathball;
+mod explosion;
+mod fireball;
+mod spark;
+mod tornado;
+
 extern "C" fn brave_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         // init roll history
@@ -61,7 +69,16 @@ extern "C" fn brave_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("brave");
+    acmd::install(agent);
+    opff::install(agent);
     smashline::Agent::new("brave").on_start(brave_init).install();
+    agent.install();
+
+    crash::install();
+    deathball::install();
+    explosion::install();
+    fireball::install();
+    spark::install();
+    tornado::install();
 }

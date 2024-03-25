@@ -7,8 +7,6 @@ unsafe extern "C" fn mewtwo_jump_aerial_main(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install() {
-    Agent::new("mewtwo")
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, mewtwo_jump_aerial_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, mewtwo_jump_aerial_main);
 }

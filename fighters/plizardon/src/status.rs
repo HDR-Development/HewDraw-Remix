@@ -37,10 +37,9 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("plizardon")
-        .on_start(plizardon_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .install();
-    special_s::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(plizardon_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.install();
+    special_s::install(agent);
 }

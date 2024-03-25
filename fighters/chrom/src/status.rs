@@ -84,8 +84,6 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
 
     0.into()
 }
-pub fn install() {
-    smashline::Agent::new("chrom")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
 }

@@ -102,8 +102,6 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("diddy")
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
 }

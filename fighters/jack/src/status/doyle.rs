@@ -8,8 +8,6 @@ pub unsafe extern "C" fn entry_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     smashline::original_status(Main, weapon, *WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY)(weapon)
 }
 
-pub fn install() {
-    smashline::Agent::new("jack_doyle")
-        .status(Main, *WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY, entry_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY, entry_main);
 }

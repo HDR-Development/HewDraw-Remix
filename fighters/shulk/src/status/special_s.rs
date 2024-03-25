@@ -145,9 +145,7 @@ unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("shulk")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_pre,)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_pre,);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_main);
 }

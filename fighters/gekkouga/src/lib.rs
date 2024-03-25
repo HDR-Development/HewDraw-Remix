@@ -6,7 +6,7 @@ pub mod acmd;
 
 //pub mod status;
 pub mod opff;
-
+mod shuriken;
 use smash::{
     lib::{
         L2CValue,
@@ -38,7 +38,10 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install() {
-    acmd::install();
-    opff::install();
+pub fn install(agent: &mut Agent) {
+    acmd::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    shuriken::install();
 }

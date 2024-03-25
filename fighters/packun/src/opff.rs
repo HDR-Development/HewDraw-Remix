@@ -359,7 +359,7 @@ pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
         }
         let status_kind = StatusModule::status_kind(weapon.module_accessor);
         let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
-        if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
+        if [*FIGHTER_KIND_PACKUN, *FIGHTER_KIND_KIRBY].contains(&owner_module_accessor.kind()) {
             if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) || weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_HOP) {
                 /* if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
                     println!("will bomb");

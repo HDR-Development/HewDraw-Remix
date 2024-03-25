@@ -164,19 +164,13 @@ unsafe extern "C" fn bayonetta_special_s_slow_hit(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end);
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end);
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end);
 }

@@ -33,8 +33,6 @@ unsafe extern "C" fn shulk_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("shulk")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, shulk_special_n_pre)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, shulk_special_n_pre);
 }

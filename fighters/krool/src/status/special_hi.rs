@@ -524,12 +524,10 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 
 }
 
-pub fn install() {
-    smashline::Agent::new("krool")
-        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_main)
-        .status(Exit, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_exit)
-        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_end_main)
-        .status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_main);
+    agent.status(Exit, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_exit);
+    agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_end_main);
+    agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main);
 }

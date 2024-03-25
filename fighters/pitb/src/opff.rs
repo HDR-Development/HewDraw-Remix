@@ -45,8 +45,6 @@ pub unsafe fn pitb_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("pitb")
-        .on_line(Main, pitb_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pitb_frame_wrapper);
 }

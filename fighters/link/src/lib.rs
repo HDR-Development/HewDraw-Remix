@@ -7,6 +7,10 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+
+mod boomerang;
+
 use smash::{
     lib::{
         L2CValue,
@@ -37,9 +41,14 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("link");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    boomerang::install();
 }

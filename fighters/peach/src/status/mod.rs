@@ -70,13 +70,12 @@ extern "C" fn peach_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("peach").on_start(peach_init).install();
-    attack_air::install();
-    jump_aerial::install();
-    special_hi::install();
-    special_s::install();
-    special_lw::install();
-    uniq_float_start::install();
-    uniq_float::install();
+pub fn install(agent: &mut Agent) {
+    attack_air::install(agent);
+    jump_aerial::install(agent);
+    special_hi::install(agent);
+    special_s::install(agent);
+    special_lw::install(agent);
+    uniq_float_start::install(agent);
+    uniq_float::install(agent);
 }

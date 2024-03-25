@@ -560,9 +560,7 @@ pub unsafe extern "C" fn special_s_air_control(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("falco")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+        agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec);
 }

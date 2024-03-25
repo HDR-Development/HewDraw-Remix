@@ -157,10 +157,8 @@ unsafe extern "C" fn special_hi_finish_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_pre)
-        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_main)
-        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_pre);
+    agent.status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_main);
+    agent.status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH, special_hi_finish_end);
 }

@@ -95,19 +95,9 @@ unsafe extern "C" fn special_s_jump_end(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("wiifit")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end)
-        .status(
-            Init,
-            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP,
-            special_s_jump_init,
-        )
-        .status(
-            End,
-            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP,
-            special_s_jump_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
+    agent.status(Init, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_init);
+    agent.status(End, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_end);
 }

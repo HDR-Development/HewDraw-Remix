@@ -10,8 +10,6 @@ pub unsafe extern "C" fn pre_special_hi_escape(fighter: &mut L2CFighterCommon) -
     return 1.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopajr")
-        .status(Pre, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE, pre_special_hi_escape)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE, pre_special_hi_escape);
 }

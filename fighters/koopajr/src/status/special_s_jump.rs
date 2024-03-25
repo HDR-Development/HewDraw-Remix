@@ -1,7 +1,6 @@
 use super::*;
 use globals::*;
 // status script import
- 
 
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
 
@@ -14,8 +13,6 @@ pub unsafe extern "C" fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopajr")
-        .status(Init, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_init);
 }

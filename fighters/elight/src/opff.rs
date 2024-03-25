@@ -89,8 +89,6 @@ pub unsafe extern "C" fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CF
     side_special_landing_lag(fighter);
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .on_line(Main, elight_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, elight_frame_wrapper);
 }

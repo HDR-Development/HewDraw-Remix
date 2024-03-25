@@ -3,12 +3,12 @@ use super::*;
 mod special_n;
 mod special_s;
 
-pub fn install() {
-    smashline::Agent::new("shulk")
-        .on_start(shulk_init)
-        .install();
-    special_n::install();
-    special_s::install();
+pub fn install(agent: &mut Agent) {
+    smashline::Agent::new("shulk");
+    agent.on_start(shulk_init);
+    agent.install();
+    special_n::install(agent);
+    special_s::install(agent);
 }
 
 extern "C" fn shulk_init(fighter: &mut L2CFighterCommon) {

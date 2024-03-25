@@ -102,11 +102,9 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec);
 }

@@ -154,11 +154,9 @@ unsafe extern "C" fn special_hi_jump_exec(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_pre)
-        .status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main)
-        .status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end)
-        .status(Exec, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_pre);
+    agent.status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main);
+    agent.status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end);
+    agent.status(Exec, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exec);
 }

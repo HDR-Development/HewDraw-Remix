@@ -222,10 +222,8 @@ unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_end_common(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .status(Pre, statuses::reflet::FLOAT, float_pre)
-        .status(Main, statuses::reflet::FLOAT, float_main)
-        .status(End, statuses::reflet::FLOAT, float_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::reflet::FLOAT, float_pre);
+    agent.status(Main, statuses::reflet::FLOAT, float_main);
+    agent.status(End, statuses::reflet::FLOAT, float_end);
 }

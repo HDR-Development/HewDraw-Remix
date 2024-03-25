@@ -297,11 +297,7 @@ pub extern "C" fn tornadoshot_frame(weapon: &mut L2CFighterBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("miiswordsman")
-        .on_line(Main, miiswordsman_frame_wrapper)
-        .install();
-    smashline::Agent::new("miiswordsman_tornadoshot")
-        .on_line(Main, tornadoshot_frame)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, miiswordsman_frame_wrapper);
+    agent.on_line(Main, tornadoshot_frame);
 }

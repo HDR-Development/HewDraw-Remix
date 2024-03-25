@@ -127,13 +127,8 @@ pub unsafe extern "C" fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CF
     if status == *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_JUMP_SQUAT_B { super_lift_jump_squat_b(fighter) } 
 }
 
-pub fn install() {
-    smashline::Agent::new("donkey")
-        .status(
-            Main,
-            *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING,
-            super_lift_landing_main,
-        )
-        .on_line(Main, donkey_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING, super_lift_landing_main);
+
+    agent.on_line(Main, donkey_frame_wrapper);
 }
