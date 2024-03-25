@@ -26,12 +26,10 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::samusd::FLOAT);
 }
 
-pub fn install() {
-    attack_air::install();
+pub fn install(agent: &mut Agent) {
+    attack_air::install(agent);
 
-    float::install();
+    float::install(agent);
 
-    Agent::new("samusd")
-        .on_start(on_start)
-        .install();
+    agent.on_start(on_start);
 }

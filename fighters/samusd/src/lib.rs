@@ -6,6 +6,11 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod bomb;
+mod cshot;
+mod missile;
+mod supermissile;
+
 use smash::{
     lib::{
         L2CValue,
@@ -38,7 +43,14 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("samusd");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    bomb::install();
+    cshot::install();
+    missile::install();
+    supermissile::install();
 }
