@@ -134,14 +134,9 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu_shinkuhadoken")
-        .acmd("game_move", game_move)
-        .install();
-    smashline::Agent::new("ryu")
-        .acmd("game_final", game_final)
-        .acmd("game_finalair", game_final)
-        .acmd("game_finalhit", game_finalhit)
-        .acmd("game_finalairhit", game_finalhit)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_final", game_final);
+    agent.acmd("game_finalair", game_final);
+    agent.acmd("game_finalhit", game_finalhit);
+    agent.acmd("game_finalairhit", game_finalhit);
 }

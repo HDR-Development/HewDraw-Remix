@@ -1,13 +1,13 @@
 
 use super::*;
 
-unsafe extern "C" fn game_speciallwinstall(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 11.0, 5.0);
     frame(lua_state, 11.0);
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) { }
@@ -47,106 +47,104 @@ unsafe extern "C" fn expression_speciallwinstall(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_speciallwstepf(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 6.0 / 2.0);
-    if is_excute(fighter) {
+unsafe extern "C" fn game_speciallwstepf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 6.0 / 2.0);
+    if is_excute(agent) {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
             VarModule::set_flag(
-                fighter.battle_object, 
+                agent.battle_object, 
                 vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(fighter.battle_object) >= 6
+                MeterModule::level(agent.battle_object) >= 6
             );
-            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-                MeterModule::drain_direct(fighter.battle_object, 0.5 * MeterModule::meter_per_level(fighter.battle_object));
+            if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+                MeterModule::drain_direct(agent.battle_object, 0.5 * MeterModule::meter_per_level(agent.battle_object));
             } else {
-                MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+                MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
             }
         } else {
-            VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
         }
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
     }
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter, 1.0 / (26.0 - 18.0));
+    FT_MOTION_RATE(agent, 1.0 / (26.0 - 18.0));
 }
 
-unsafe extern "C" fn effect_speciallwstepf(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
+unsafe extern "C" fn effect_speciallwstepf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
 
     }
     frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-unsafe extern "C" fn game_specialairlwstepf(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 6.0 / 2.0);
-    if is_excute(fighter) {
-        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
+unsafe extern "C" fn game_specialairlwstepf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 6.0 / 2.0);
+    if is_excute(agent) {
+        sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
     }
     frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
             VarModule::set_flag(
-                fighter.battle_object, 
+                agent.battle_object, 
                 vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(fighter.battle_object) >= 6
+                MeterModule::level(agent.battle_object) >= 6
             );
-            if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-                MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+            if !VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+                MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
             }
         } else {
-            VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
         }
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
     }
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn effect_specialairlwstepf(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
+unsafe extern "C" fn effect_specialairlwstepf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
     }
 }
 
-unsafe extern "C" fn effect_speciallwstart(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
     // stub
 }
 
-unsafe extern "C" fn effect_specialairlwstart(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwstart(agent: &mut L2CAgentBase) {
     // stub
 }
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .acmd("game_speciallwinstall", game_speciallwinstall)
-        .acmd("effect_speciallwinstall", effect_speciallwinstall)
-        .acmd("sound_speciallwinstall", sound_speciallwinstall)
-        .acmd("expression_speciallwinstall", expression_speciallwinstall)
-        .acmd("game_speciallwstepf", game_speciallwstepf)
-        .acmd("effect_speciallwstepf", effect_speciallwstepf)
-        .acmd("game_specialairlwstepf", game_specialairlwstepf)
-        .acmd("effect_specialairlwstepf", effect_specialairlwstepf)
-        .acmd("effect_speciallwstart", effect_speciallwstart)
-        .acmd("effect_specialairlwstart", effect_specialairlwstart)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_speciallwinstall", game_speciallwinstall);
+    agent.acmd("effect_speciallwinstall", effect_speciallwinstall);
+    agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
+    agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
+    agent.acmd("game_speciallwstepf", game_speciallwstepf);
+    agent.acmd("effect_speciallwstepf", effect_speciallwstepf);
+    agent.acmd("game_specialairlwstepf", game_specialairlwstepf);
+    agent.acmd("effect_specialairlwstepf", effect_specialairlwstepf);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart);
+    agent.acmd("effect_specialairlwstart", effect_specialairlwstart);
 }

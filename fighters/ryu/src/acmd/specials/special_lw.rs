@@ -1,32 +1,32 @@
 
 use super::*;
 
-unsafe extern "C" fn game_speciallwstart(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
             VarModule::set_flag(
-                fighter.battle_object, 
+                agent.battle_object, 
                 vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(fighter.battle_object) >= 4
+                MeterModule::level(agent.battle_object) >= 4
             );
-            MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+            MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
         } else {
-            VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
         }
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
     }
 }
 
-unsafe extern "C" fn game_speciallwinstall(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 11.0, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 11.0, 5.0);
     frame(lua_state, 11.0);
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
@@ -140,17 +140,15 @@ unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .acmd("game_speciallwstart", game_speciallwstart)
-        .acmd("game_specialairlwstart", game_speciallwstart)
-        .acmd("game_speciallwinstall", game_speciallwinstall)
-        .acmd("effect_speciallwinstall", effect_speciallwinstall)
-        .acmd("sound_speciallwinstall", sound_speciallwinstall)
-        .acmd("expression_speciallwinstall", expression_speciallwinstall)
-        .acmd("game_speciallw", game_speciallw)
-        .acmd("game_specialairlw", game_speciallw)
-        .acmd("game_speciallwturn", game_speciallwturn)
-        .acmd("game_specialairlwturn", game_speciallwturn)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_speciallwstart", game_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_speciallwstart);
+    agent.acmd("game_speciallwinstall", game_speciallwinstall);
+    agent.acmd("effect_speciallwinstall", effect_speciallwinstall);
+    agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
+    agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
+    agent.acmd("game_speciallwturn", game_speciallwturn);
+    agent.acmd("game_specialairlwturn", game_speciallwturn);
 }

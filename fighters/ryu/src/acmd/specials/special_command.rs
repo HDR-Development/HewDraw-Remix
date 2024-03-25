@@ -175,11 +175,9 @@ unsafe extern "C" fn expression_attackcommand4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .acmd("game_attackcommand4", game_attackcommand4)
-        .acmd("effect_attackcommand4", effect_attackcommand4)
-        .acmd("sound_attackcommand4", sound_attackcommand4)
-        .acmd("expression_attackcommand4", expression_attackcommand4)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackcommand4", game_attackcommand4);
+    agent.acmd("effect_attackcommand4", effect_attackcommand4);
+    agent.acmd("sound_attackcommand4", sound_attackcommand4);
+    agent.acmd("expression_attackcommand4", expression_attackcommand4);
 }

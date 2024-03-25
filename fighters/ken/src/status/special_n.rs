@@ -2,11 +2,9 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, pre_special_n)
-        .status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, pre_special_n_command)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, pre_special_n);
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, pre_special_n_command);
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_N //

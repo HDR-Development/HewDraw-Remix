@@ -2,12 +2,10 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .status(Pre, statuses::ryu::INSTALL, special_lw_install_pre)
-        .status(Main, statuses::ryu::INSTALL, special_lw_install_main)
-        .status(End, statuses::ryu::INSTALL, special_lw_install_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
+    agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
+    agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
 }
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

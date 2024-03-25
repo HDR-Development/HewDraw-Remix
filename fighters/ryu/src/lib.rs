@@ -7,6 +7,9 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod hadoken;
+mod shinkuhadoken;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +42,12 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("ryu");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    hadoken::install();
+    shinkuhadoken::insall();
 }

@@ -6,6 +6,8 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
+mod hadoken;
+mod shinryuken;
 
 use smash::{
     lib::{
@@ -38,8 +40,14 @@ use utils::{
 };
 use smashline::*;
 
+
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("ken");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    install::hadoken;
+    install::shinryuken;
 }

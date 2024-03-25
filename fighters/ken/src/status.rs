@@ -7,7 +7,6 @@ mod special_hi;
 mod special_lw;
 mod special_n;
 mod special_s;
-
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback,
     ryu_idkwhatthisis2
@@ -638,22 +637,20 @@ pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValu
     fgc_landing_main(fighter)
 }
 
-pub fn install() {
-    finals::install();
-    special_cmd4::install();
-    special_hi::install();
-    special_lw::install();
-    special_n::install();
-    special_s::install();
+pub fn install(agent: &mut Agent) {
+    finals::install(agent);
+    special_cmd4::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
 
-    smashline::Agent::new("ken")
-        .on_start(ken_init)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
-        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
-        .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)
-        .status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack)
-        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .install();
+    agent.on_start(ken_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main);
 }

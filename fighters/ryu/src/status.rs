@@ -29,22 +29,20 @@ extern "C" {
     fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .on_start(ryu_init)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
-        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
-        .status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback)
-        .status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack)
-        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
+pub fn install(agent: &mut Agent) {
+    agent.on_start(ryu_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, main_dashback);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, end_dashback);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre);
         // .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
-        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .install();
-    finals::install();
-    special_cmd4::install();
-    special_lw::install();
-    special_s::install();
+    agenr.status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main);
+    finals::install(agent);
+    special_cmd4::install(agent);
+    special_lw::install(agent);
+    special_s::install(agent);
 }
 
 extern "C" fn ryu_init(fighter: &mut L2CFighterCommon) {

@@ -25,10 +25,8 @@ pub unsafe extern "C" fn end_special_hi_jump(fighter: &mut L2CFighterCommon) -> 
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP, end_special_hi_jump)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, end_special_hi_jump)
-        .status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, end_special_hi_jump)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP, end_special_hi_jump);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, end_special_hi_jump);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, end_special_hi_jump);
 }
