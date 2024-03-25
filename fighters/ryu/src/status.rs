@@ -38,7 +38,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack);
     agent.status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre);
         // .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
-    agenr.status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main);
     finals::install(agent);
     special_cmd4::install(agent);
     special_lw::install(agent);

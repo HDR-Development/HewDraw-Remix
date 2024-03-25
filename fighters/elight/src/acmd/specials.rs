@@ -1219,6 +1219,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairs", sound_specials);
     agent.acmd("effect_specialsend", effect_specialsend);
     agent.acmd("effect_specialairsend", effect_specialairsend);
-    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialn", game_specialn);
     agent.acmd("game_specialairlw", game_specialairlw);
 }

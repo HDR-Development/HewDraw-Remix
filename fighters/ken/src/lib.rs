@@ -6,6 +6,7 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
+
 mod hadoken;
 mod shinryuken;
 
@@ -48,6 +49,6 @@ pub fn install() {
     status::install(agent);
     agent.install();
 
-    install::hadoken;
-    install::shinryuken;
+    hadoken::install();
+    shinryuken::install();
 }

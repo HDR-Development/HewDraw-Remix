@@ -49,5 +49,5 @@ pub fn install() {
     agent.install();
 
     hadoken::install();
-    shinkuhadoken::insall();
+    shinkuhadoken::install();
 }

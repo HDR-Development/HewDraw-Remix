@@ -6,7 +6,9 @@ pub mod acmd;
 
 pub mod status;
 pub mod opff;
+
 mod fire;
+
 use smash::{
     lib::{
         L2CValue,
@@ -44,5 +46,5 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
 
-    install::fire();
+    fire::install();
 }

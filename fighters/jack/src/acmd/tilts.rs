@@ -1,5 +1,4 @@
 use super::*;
-
 unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -343,7 +342,7 @@ unsafe extern "C" fn expression_attacklw3_ex(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_doyle_attack_lw3_effect(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -377,5 +376,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacklw3_ex", game_attacklw3_ex);
     agent.acmd("effect_attacklw3_ex", effect_attacklw3_ex);
     agent.acmd("expression_attacklw3_ex", expression_attacklw3_ex);
-    agent.acmd("effect_attacklw3", effect_attacklw3);
 }
+
