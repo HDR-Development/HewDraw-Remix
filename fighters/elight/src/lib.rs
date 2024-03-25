@@ -9,7 +9,7 @@ pub mod status;
 
 // articles
 
-mod bushin;
+mod bunshin;
 
 use skyline::nro::NroInfo;
 use smash::{

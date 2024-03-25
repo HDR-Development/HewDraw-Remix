@@ -3,8 +3,15 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-pub mod status;
+
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod gigafire;
+mod thunder;
+mod elwind;
 
 use smash::{
     lib::{
@@ -36,6 +43,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("reflet");
@@ -43,4 +51,8 @@ pub fn install() {
     status::install(agent);
     opff::install(agent);
     agent.install();
+
+    gigafire::install();
+    thunder::install();
+    elwind::install();
 }
