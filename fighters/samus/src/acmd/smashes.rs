@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_s4_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -23,7 +23,7 @@ unsafe extern "C" fn attack_s4_hi(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_s4_s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -49,7 +49,7 @@ unsafe extern "C" fn attack_s4_s(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_s4_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -71,7 +71,7 @@ unsafe extern "C" fn attack_s4_lw(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn attack_hi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -108,7 +108,7 @@ unsafe extern "C" fn attack_hi4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe extern "C" fn attack_hi4_effect(agent: &mut L2CAgentBase) {
+pub unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -129,7 +129,7 @@ pub unsafe extern "C" fn attack_hi4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe extern "C" fn attack_hi4_sound(agent: &mut L2CAgentBase) {
+pub unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 
@@ -144,7 +144,7 @@ pub unsafe extern "C" fn attack_hi4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_lw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -173,11 +173,11 @@ unsafe extern "C" fn attack_lw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4hi", attack_s4_hi);
-    agent.acmd("game_attacks4", attack_s4_s);
-    agent.acmd("game_attacks4lw", attack_s4_lw);
-    agent.acmd("game_attackhi4", attack_hi4);
-    agent.acmd("effect_attackhi4", attack_hi4_effect);
-    agent.acmd("sound_attackhi4", attack_hi4_sound);
-    agent.acmd("game_attacklw4", attack_lw4);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacks4lw", game_attacks4lw);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }

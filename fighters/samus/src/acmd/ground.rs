@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
@@ -79,7 +79,7 @@ unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -102,7 +102,7 @@ unsafe extern "C" fn attack_dash_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -125,7 +125,7 @@ unsafe extern "C" fn attack_11(fighter: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -141,7 +141,7 @@ unsafe extern "C" fn samus_attack_11_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -158,9 +158,9 @@ unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackdash", attack_dash);
-    agent.acmd("sound_attackdash", attack_dash_sound);
-    agent.acmd("game_attack11", attack_11);
-    agent.acmd("effect_attack11", samus_attack_11_effect);
-    agent.acmd("expression_attack12", samus_attack_12_expression);
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("sound_attackdash", sound_attackdash);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("effect_attack11", effect_attack11);
+    agent.acmd("expression_attack12", expression_attack12);
 }

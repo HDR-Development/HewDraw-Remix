@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn attack_s3_hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -50,7 +50,7 @@ unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_s3_s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -98,7 +98,7 @@ unsafe extern "C" fn effect_attacks3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_s3_lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -147,7 +147,7 @@ unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_hi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -189,7 +189,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn attack_lw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -205,13 +205,13 @@ unsafe extern "C" fn attack_lw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3hi", attack_s3_hi);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
     agent.acmd("effect_attacks3hi", effect_attacks3hi);
-    agent.acmd("game_attacks3", attack_s3_s);
+    agent.acmd("game_attacks3", game_attacks3);
     agent.acmd("effect_attacks3", effect_attacks3s);
-    agent.acmd("game_attacks3lw", attack_s3_lw);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
     agent.acmd("effect_attacks3lw", effect_attacks3lw);
-    agent.acmd("game_attackhi3", attack_hi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
     agent.acmd("effect_attackhi3", effect_attackhi3);
-    agent.acmd("game_attacklw3", attack_lw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

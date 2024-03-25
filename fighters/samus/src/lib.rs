@@ -7,6 +7,9 @@ pub mod acmd;
 //pub mod status;
 pub mod opff;
 
+mod cshot;
+mod supermissile;
+
 use smash::{
     lib::{
         L2CValue,
@@ -43,4 +46,7 @@ pub fn install() {
     acmd::install(agent);
     opff::install(agent);
     agent.install();
+
+    cshot::install();
+    supermissile::install();
 }
