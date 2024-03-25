@@ -217,10 +217,10 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 9, 3, 15, -18 , -85, 1.15, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 9, 3, 15, -18 , -85, 1.15, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.7, 3.0);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
     }
 }
 
@@ -284,10 +284,10 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1.5, 5, -6, -171, 47, 29, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
-        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1.5, 5, -6, -171, 47, 29, 1.1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.7, 3.0);
+        LAST_EFFECT_SET_RATE(agent, 1.2);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -331,9 +331,9 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0, 0, 0, 1.89999998, true);
     }
     frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 15.5, -2, 180, 90, -90, 1.1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 15.5, -2, 180, 90, -90, 1.1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.1, 0.7, 3.0);
     }
 }
 
@@ -406,10 +406,10 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 1.2);
     }
     frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("samusd_atk_air_lw"), Hash40::new("top"), 0, 12.5, 0, 0, -200, 90, 0.85, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 3.0);
-        LAST_EFFECT_SET_RATE(fighter, 1.1);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("samusd_atk_air_lw"), Hash40::new("top"), 0, 12.5, 0, 0, -200, 90, 0.85, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 3.0);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
     }
 
 }
