@@ -238,6 +238,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackhi4", sound_attackhi4);
     agent.acmd("expression_attackhi4", expression_attackhi4);
 
-    agent.acmd("game_attacklw4", younglink_attack_lw4_game);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }
 
