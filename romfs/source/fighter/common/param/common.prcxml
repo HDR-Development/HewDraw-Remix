@@ -57,7 +57,7 @@
   <int hash="hit_stop_delay_flick">2</int>
   <float hash="hit_stop_delay_flick_mul">5.25</float>
   <int hash="hit_stop_delay_flick_frame">3</int>
-  <int hash="hit_stop_delay_flick_max_count">50</int>
+  <int hash="hit_stop_delay_flick_max_count">11</int>
   <float hash="hit_stop_delay_auto_mul">2.5</float>
   <float hash="damage_reaction_mul_max">1</float>
   <list hash="pattern_power_mul">

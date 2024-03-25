@@ -207,6 +207,194 @@ unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_slipattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3.5, 8, -168, 180, 0, 1.05, 0, 0, 0, 0, 0, 0, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, -3.5, -166, 14, 3, 1.05, 0, 0, 0, 0, 0, 0, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+}
+
+unsafe extern "C" fn effect_cliffattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 5.5, 0, 0, 6, -12, 1.1, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+}
+
+unsafe extern "C" fn effect_catchattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 6, 17.5, -3, 15, -20, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+}
+
+unsafe extern "C" fn effect_downattackd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4, 0, 180, 180, 10, 1.5, 0, 0, 0, 0, 0, 0, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, 0, 180, 0, 10, 1.5, 0, 0, 0, 0, 0, 0, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+}
+
+unsafe extern "C" fn effect_downattacku(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 4, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6, 3, 0, 0, 0, 0.95, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -1, 6, 20, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 360, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, -4, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6, -3, 0, 180, 0, 0.95, true);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -1, 6, -20, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 360, true);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 5, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 pub fn install() {
     smashline::Agent::new("samusd")
         .acmd("game_dash", dash_game)
@@ -214,6 +402,11 @@ pub fn install() {
         .acmd("game_turndash", turn_dash_game)
         .acmd("game_escapeair", escape_air_game)
         .acmd("game_escapeairslide", escape_air_slide_game)
+        .acmd("effect_slipattack", effect_slipattack)
+        .acmd("effect_cliffattack", effect_cliffattack)
+        .acmd("effect_catchattack", effect_catchattack)
+        .acmd("effect_downattackd", effect_downattackd)
+        .acmd("effect_downattacku", effect_downattacku)
         .install();
     smashline::Agent::new("samusd_cshot")
         .acmd("game_shoot", samusd_cshot_shoot_game)
