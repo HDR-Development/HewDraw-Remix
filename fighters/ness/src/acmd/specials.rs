@@ -1,9 +1,9 @@
 use super::*;
 
-unsafe extern "C" fn special_n_fire_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn special_air_n_fire_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnfire(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
@@ -80,7 +80,7 @@ unsafe extern "C" fn sound_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ness_special_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -109,7 +109,7 @@ unsafe extern "C" fn ness_special_air_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn special_lw_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     for _ in 0..999 {
@@ -125,7 +125,7 @@ unsafe extern "C" fn special_lw_hold_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn special_air_lw_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwhold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     for _ in 0..999 {
@@ -193,15 +193,15 @@ unsafe extern "C" fn effect_specialairlwend (agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnfire", special_n_fire_game);
-    agent.acmd("game_specialairnfire", special_air_n_fire_game);
+    agent.acmd("game_specialnfire", game_specialnfire);
+    agent.acmd("game_specialairnfire", game_specialairnfire);
     agent.acmd("sound_specials", sound_specials);
     agent.acmd("game_specials", game_specials);
     agent.acmd("game_specialairs", game_specialairs);
     agent.acmd("sound_specialairs", sound_specialairs);
-    agent.acmd("game_specialairhi", ness_special_air_hi_game);
-    agent.acmd("game_speciallwhold", special_lw_hold_game);
-    agent.acmd("game_specialairlwhold", special_air_lw_hold_game);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_speciallwhold", game_speciallwhold);
+    agent.acmd("game_specialairlwhold", game_specialairlwhold);
     agent.acmd("game_speciallwend", game_speciallwend);
     agent.acmd("game_specialairlwend", game_speciallwend);
     agent.acmd("effect_speciallwstart", effect_speciallwstart);
