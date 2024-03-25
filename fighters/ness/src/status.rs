@@ -104,13 +104,9 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ness")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
-        .status(End, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end)
-        .status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack)
-        .install();
-    smashline::Agent::new("ness_pkthunder")
-        .status(Exec, *WEAPON_NESS_PK_THUNDER_STATUS_KIND_MOVE, move_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air);
+    agent.status(End, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end);
+    agent.status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack);
+    agent.status(Exec, *WEAPON_NESS_PK_THUNDER_STATUS_KIND_MOVE, move_exec);
 }

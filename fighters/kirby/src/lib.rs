@@ -37,6 +37,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub const KOOPA_MAX_COOLDOWN : i32 = 900;
 pub const LUCAS_CHARGE_TIME : i32 = 120;
@@ -44,7 +45,7 @@ pub const LUCAS_CHARGE_TIME : i32 = 120;
 pub fn install() {
     let agent = &mut Agent::new("kirby");
     acmd::install(agent);
-    status::install(agent);
     opff::install();
+    status::install(agent);
     agent.install();
 }

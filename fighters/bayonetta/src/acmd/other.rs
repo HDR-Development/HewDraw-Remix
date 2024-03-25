@@ -1,56 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn sound_damageflylw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn sound_damageflyn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -87,31 +37,6 @@ unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));
-    }
-}
-
-unsafe extern "C" fn sound_damageflytop(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
     }
 }
 
@@ -316,32 +241,6 @@ unsafe extern "C" fn sound_appeallwl(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 361, 100, 30, 0, 5.0, 0.0, 12.0, 10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_catch_only_all(boma, true, false);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 0.7, 361, 100, 30, 0, 5.0, 0.0, 12.0, 10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_catch_only_all(boma, true, false);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-}
-
 unsafe extern "C" fn effect_justshieldoff(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -382,19 +281,22 @@ unsafe extern "C" fn sound_justshieldoff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damageflyhi);
-    agent.acmd("sound_damageflylw", sound_damageflylw);
-    agent.acmd("sound_damageflyn", sound_damageflyn);
+    agent.acmd("sound_damageflyhi", sound_damagefly);
+    agent.acmd("sound_damageflylw", sound_damagefly);
+    agent.acmd("sound_damageflyn", sound_damagefly);
+    agent.acmd("sound_damageflytop", sound_damagefly);
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
-    agent.acmd("sound_damageflytop", sound_damageflytop);
+    
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);
+
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
     agent.acmd("game_escapen", game_escapen);
     agent.acmd("game_escapef", game_escapef);
     agent.acmd("game_escapeb", game_escapeb);
+
     agent.acmd("game_appeallwl", game_appeallwl);
     agent.acmd("game_appealsr", game_appealsr);
     agent.acmd("game_appealsl", game_appealsr);
@@ -404,7 +306,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_appealhil", sound_appealhil);
     agent.acmd("sound_appeallwr", sound_appeallwr);
     agent.acmd("sound_appeallwl", sound_appeallwl);
-    agent.acmd("game_catchattack", game_catchattack);
+
+    
     agent.acmd("effect_justshieldoff", effect_justshieldoff);
     agent.acmd("sound_justshieldoff", sound_justshieldoff);
 }

@@ -60,6 +60,32 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 361, 100, 30, 0, 5.0, 0.0, 12.0, 10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 0.7, 361, 100, 30, 0, 5.0, 0.0, 12.0, 10.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -84,7 +110,6 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 50.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
@@ -141,7 +166,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_catchattack", game_catchattack);
+
     agent.acmd("game_throwf", game_throwf);
+
     agent.acmd("game_throwhi", game_throwhi);
+
     agent.acmd("game_throwlw", game_throwlw);
 }

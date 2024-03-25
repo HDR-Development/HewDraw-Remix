@@ -1,4 +1,3 @@
-
 use super::*;
 
 //Need to match up explosion effect more accurately
@@ -21,7 +20,6 @@ unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
@@ -78,7 +76,6 @@ unsafe extern "C" fn game_specialnend2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specialnend3(agent: &mut L2CAgentBase) {
@@ -106,7 +103,6 @@ unsafe extern "C" fn game_specialnend3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
@@ -132,7 +128,6 @@ unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
@@ -192,7 +187,6 @@ unsafe extern "C" fn game_specialairnend2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specialairnend3(agent: &mut L2CAgentBase) {
@@ -230,7 +224,6 @@ unsafe extern "C" fn game_specialairnend3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
@@ -258,7 +251,6 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
@@ -286,7 +278,6 @@ unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials2hi(agent: &mut L2CAgentBase) {
@@ -311,7 +302,6 @@ unsafe extern "C" fn effect_specials2hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs2hi(agent: &mut L2CAgentBase) {
@@ -336,7 +326,6 @@ unsafe extern "C" fn effect_specialairs2hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials2lw(agent: &mut L2CAgentBase) {
@@ -364,7 +353,6 @@ unsafe extern "C" fn effect_specials2lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs2lw(agent: &mut L2CAgentBase) {
@@ -392,7 +380,6 @@ unsafe extern "C" fn effect_specialairs2lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials3hi(agent: &mut L2CAgentBase) {
@@ -420,7 +407,6 @@ unsafe extern "C" fn effect_specials3hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs3hi(agent: &mut L2CAgentBase) {
@@ -448,7 +434,6 @@ unsafe extern "C" fn effect_specialairs3hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
@@ -473,7 +458,6 @@ unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs3s(agent: &mut L2CAgentBase) {
@@ -498,7 +482,6 @@ unsafe extern "C" fn effect_specialairs3s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
@@ -526,7 +509,6 @@ unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs3lw(agent: &mut L2CAgentBase) {
@@ -554,7 +536,6 @@ unsafe extern "C" fn effect_specialairs3lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
@@ -582,7 +563,6 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs4hi(agent: &mut L2CAgentBase) {
@@ -610,7 +590,6 @@ unsafe extern "C" fn effect_specialairs4hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
@@ -638,7 +617,6 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs4s(agent: &mut L2CAgentBase) {
@@ -666,7 +644,6 @@ unsafe extern "C" fn effect_specialairs4s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
@@ -718,7 +695,6 @@ unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_green"), false, true);
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_specialairs4lw(agent: &mut L2CAgentBase) {
@@ -770,7 +746,6 @@ unsafe extern "C" fn effect_specialairs4lw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_green"), false, true);
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
@@ -941,6 +916,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairnend", expression_specialairnend);
     agent.acmd("game_specialairnend2", game_specialairnend2);
     agent.acmd("game_specialairnend3", game_specialairnend3);
+
     agent.acmd("effect_specials1", effect_specials1);
     agent.acmd("effect_specialairs1", effect_specialairs1);
     agent.acmd("effect_specials2hi", effect_specials2hi);
@@ -959,9 +935,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairs4s", effect_specialairs4s);
     agent.acmd("effect_specials4lw", effect_specials4lw);
     agent.acmd("effect_specialairs4lw", effect_specialairs4lw);
+
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("game_specialairhi2", game_specialairhi2);
     agent.acmd("game_specialhi3", game_specialhi3);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("game_speciallwhit", game_speciallwhit);

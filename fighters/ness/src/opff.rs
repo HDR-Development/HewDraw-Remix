@@ -219,11 +219,7 @@ pub unsafe extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFigh
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ness")
-        .on_line(Main, ness_frame_wrapper)
-        .install();
-    smashline::Agent::new("ness_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, ness_frame_wrapper);
+    agent.on_line(Main, pkthunder_callback);
 }

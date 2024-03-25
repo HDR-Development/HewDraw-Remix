@@ -1,22 +1,16 @@
 use super::*;
 use globals::*;
-// status script import
 
-utils::import_noreturn!(common::shoto_status::{
-    fgc_end_dashback,
-    ryu_idkwhatthisis2
-});
+mod wait;
+mod turn_dash;
+mod dash_back;
+mod landing;
+mod guard_off;
 
-extern "Rust" {
-    // from common::shoto_status
-    fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;
-    fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue;
-    fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue;
-    fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
-    fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
-    fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
-    fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
-}
+mod special_s;
+mod special_hi;
+mod super_special;
+mod super_special2;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -172,291 +166,17 @@ extern "C" fn dolly_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
+pub fn install(agent: &mut Agent) {
+    agent.on_start(dolly_init);
 
-pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
-    }
-    0.into()
-}
+    wait::install(agent);
+    turn_dash::install(agent);
+    dash_back::install(agent);
+    landing::install(agent);
+    guard_off::install(agent);
 
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND //
-
-pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
-    }
-    0.into()
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B //
-
-pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
-    }
-    0.into()
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND //
-
-pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
-    }
-    0.into()
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP
-
-pub unsafe extern "C" fn init_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.select_cliff_hangdata_from_name("special_hi");
-    0.into()
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL
-
-pub unsafe extern "C" fn init_special_hi_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.select_cliff_hangdata_from_name("special_hi");
-    0.into()
-}
-
-pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let rate = fighter.status_GuardOff_Common().get_f32();
-    WorkModule::enable_transition_term(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
-    );
-    if VarModule::is_flag(
-        fighter.object(),
-        vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
-    ) {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("guard_damage"),
-            2.0,
-            0.0,
-            false,
-            0.0,
-            false,
-            false,
-        );
-        // app::FighterUtil::flash_eye_info(fighter.module_accessor);
-        // if !WorkModule::is_flag(
-        //     fighter.module_accessor,
-        //     *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL,
-        // ) {
-        //     ModelModule::enable_gold_eye(fighter.module_accessor);
-        //     WorkModule::on_flag(
-        //         fighter.module_accessor,
-        //         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE,
-        //     );
-        // }
-        let shield_radius = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
-        let lr = PostureModule::lr(fighter.module_accessor);
-        EffectModule::req_follow(
-            fighter.module_accessor,
-            Hash40::new("sys_genesis_end"),
-            Hash40::new("throw"),
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            shield_radius * 0.06,
-            true,
-            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
-            0,
-            0,
-            *EFFECT_FLIP_NONE,
-            0,
-            false,
-            false,
-        );
-        EffectModule::set_rate_last(fighter.module_accessor, 1.2);
-        // EffectModule::set_alpha_last(fighter.module_accessor, 0.4);
-        EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
-        // let shield_se = app::FighterUtil::get_just_shield_se(fighter.global_table[0x2].get_i32());
-        let sfx_handle = SoundModule::play_se(
-            fighter.module_accessor,
-            smash::phx::Hash40::new("se_item_backshield_guard01"),
-            true,
-            false,
-            false,
-            false,
-            app::enSEType(0),
-        );
-        SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
-        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
-    } else {
-        let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("guard_off"),
-            guard_off_motion_start_frame,
-            rate,
-            false,
-            0.0,
-            false,
-            false,
-        );
-    }
-    fighter.main_shift(guard_main)
-}
-
-unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_GuardOff_Main()
-}
-
-// FIGHTER_STATUS_KIND_TURN_DASH //
-
-pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    app::FighterSpecializer_Dolly::update_opponent_lr_1on1(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_KIND_TURN_DASH,
-    );
-    let lr = WorkModule::get_float(
-        fighter.module_accessor,
-        *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1,
-    );
-    if lr != 0.0 {
-        if PostureModule::lr(fighter.module_accessor) == lr {
-            if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_TURN {
-                StatusModule::set_status_kind_interrupt(
-                    fighter.module_accessor,
-                    *FIGHTER_RYU_STATUS_KIND_DASH_BACK,
-                );
-                return L2CValue::I32(1);
-            }
-        }
-    }
-    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
-    return 1.into();
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_DASH_BACK //
-
-pub unsafe extern "C" fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_dashback_main(fighter)
-}
-
-pub unsafe extern "C" fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::shoto_status::fgc_end_dashback(fighter);
-    smashline::original_status(End, fighter, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK)(fighter)
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL //
-
-pub unsafe extern "C" fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let lua_state = fighter.lua_state_agent;
-    let boma = app::sv_system::battle_object_module_accessor(lua_state);
-    let mut agent_base = fighter.fighter_base.agent_base;
-    let id = VarModule::get_int(
-        fighter.battle_object,
-        vars::common::instance::COSTUME_SLOT_NUMBER,
-    ) as usize;
-
-    // Only use meter if you didn't cancel directly from a different super
-    if !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
-        MeterModule::drain(boma.object(), 4);
-    }
-    smashline::original_status(Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL)(fighter)
-}
-
-// FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2 //
-
-pub unsafe extern "C" fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let lua_state = fighter.lua_state_agent;
-    let boma = app::sv_system::battle_object_module_accessor(lua_state);
-    let mut agent_base = fighter.fighter_base.agent_base;
-    let id = VarModule::get_int(
-        fighter.battle_object,
-        vars::common::instance::COSTUME_SLOT_NUMBER,
-    ) as usize;
-
-    // Only use meter if you didn't cancel directly from a different supper
-    if !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
-        MeterModule::drain(boma.object(), 4);
-    }
-    smashline::original_status(Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2)(fighter)
-}
-
-// FIGHTER_STATUS_KIND_WAIT //
-
-pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_pre_Wait()
-}
-
-// vanilla script
-
-pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_wait_common();
-    fighter.sub_wait_motion_mtrans();
-    fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
-}
-
-pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.status_Wait_Main().get_bool() {
-        return 0.into();
-    }
-    let lr = WorkModule::get_float(
-        fighter.module_accessor,
-        *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1,
-    );
-    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
-        let stick_x_corrected = fighter.global_table[STICK_X].get_f32()
-            * (PostureModule::lr(fighter.module_accessor) * -1.0);
-        let stick_y = fighter.global_table[STICK_Y].get_f32();
-        let walk_stick_x = WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("walk_stick_x"),
-        );
-        let squat_stick_y = WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("squat_stick_y"),
-        );
-
-        if WorkModule::is_enable_transition_term(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK,
-        ) {
-            if walk_stick_x <= stick_x_corrected {
-                if squat_stick_y < stick_y {
-                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_WALK_BACK.into(), true.into());
-                    return 0.into();
-                }
-            }
-        }
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_TURN_AUTO.into(), false.into());
-        return 0.into();
-    }
-    0.into()
-}
-
-// FIGHTER_STATUS_KIND_LANDING //
-
-pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_landing_main(fighter)
-}
-
-pub fn install() {
-    smashline::Agent::new("dolly")
-        .on_start(dolly_init)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
-        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, init_special_s_command)
-        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, init_special_b)
-        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, init_special_b_command)
-        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, init_special_hi_jump)
-        .status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL, init_special_hi_fall)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard)
-        .status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash)
-        .status(Main, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, main_dashback)
-        .status(End, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, end_dashback)
-        .status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, pre_superspecial)
-        .status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, pre_superspecial2)
-        .status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main)
-        .status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main)
-        .install();
+    special_s::install(agent);
+    special_hi::install(agent);
+    super_special::install(agent);
+    super_special2::install(agent);
 }

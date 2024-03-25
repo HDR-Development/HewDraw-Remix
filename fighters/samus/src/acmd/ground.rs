@@ -29,7 +29,7 @@ unsafe extern "C" fn attack_dash(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 2, 0, Hash40::new("bust"), 16.0, 361, 110, 0, 70, 4.5, 0.0, 0.0, 0.0, Some(0.0), Some(9.0), Some(2.0), 1.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
             ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 0.2);
         }
-                 }
+                }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 13.0, 55, 80, 0, 76, 5.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
@@ -157,12 +157,10 @@ unsafe extern "C" fn samus_attack_12_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("samus")
-        .acmd("game_attackdash", attack_dash)
-        .acmd("sound_attackdash", attack_dash_sound)
-        .acmd("game_attack11", attack_11)
-        .acmd("effect_attack11", samus_attack_11_effect)
-        .acmd("expression_attack12", samus_attack_12_expression)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackdash", attack_dash);
+    agent.acmd("sound_attackdash", attack_dash_sound);
+    agent.acmd("game_attack11", attack_11);
+    agent.acmd("effect_attack11", samus_attack_11_effect);
+    agent.acmd("expression_attack12", samus_attack_12_expression);
 }

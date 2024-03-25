@@ -7,6 +7,11 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+
+mod blaster_bullet;
+mod illusion;
+
 use smash::{
     lib::{
         L2CValue,
@@ -37,6 +42,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("falco");
@@ -44,4 +50,7 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    blaster_bullet::install();
+    illusion::install();
 }

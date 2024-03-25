@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialnstarth(agent: &mut L2CAgentBase) {
@@ -481,6 +480,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnendf", game_specialnendf);
     agent.acmd("game_specialairnendh", game_specialnendh);
     agent.acmd("game_specialairnendf", game_specialnendf);
+
     agent.acmd("game_specials", game_specials);
     agent.acmd("game_specialsedge", game_specialsedge);
     agent.acmd("effect_specialsedge", effect_specialsedge);
@@ -495,12 +495,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairsd", effect_specialairsd);
     agent.acmd("expression_specialairsd", expression_specialairsd);
     agent.acmd("game_specialairsdlanding", game_specialairsdlanding);
+
     agent.acmd("game_specialairhi", game_specialairhi);
     agent.acmd("game_specialhi", game_specialairhi);
     agent.acmd("effect_specialairhi", effect_specialairhi);
     agent.acmd("effect_specialhi", effect_specialairhi);
     agent.acmd("sound_specialhi", sound_specialhi);
     agent.acmd("sound_specialairhi", sound_specialhi);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_speciallw);
 }
