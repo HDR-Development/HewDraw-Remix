@@ -7,6 +7,9 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+
+mod specialn_bullet;
 mod wickedweavearm;
 mod wickedweaveleg;
 
@@ -40,6 +43,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("bayonetta");
@@ -48,6 +52,7 @@ pub fn install() {
     status::install(agent);
     agent.install();
 
+    specialn_bullet::install();
     wickedweavearm::install();
     wickedweaveleg::install();
 }

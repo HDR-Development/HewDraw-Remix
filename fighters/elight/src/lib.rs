@@ -4,9 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
 mod bushin;
+
 use skyline::nro::NroInfo;
 use smash::{
     lib::{
@@ -38,12 +42,16 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("elight");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    bunshin::install();
 
     // Disables Foresight
     skyline::patching::Patch::in_text(0xa28e78).nop();
