@@ -122,11 +122,7 @@ pub extern "C" fn article_frame_callback(weapon: &mut smash::lua2cpp::L2CFighter
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("murabito")
-        .on_line(Main, murabito_frame_wrapper)
-        .install();
-    smashline::Agent::new("murabito_flowerpot")
-        .on_line(Main, article_frame_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, murabito_frame_wrapper);
+    agent.on_line(Main, article_frame_callback);
 }

@@ -7,6 +7,13 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod bowlingball;
+mod bullet;
+mod clayrocket;
+mod firework;
+mod flowerpot;
+mod slingshot;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +46,16 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("murabito");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    bowlingball::install();
+    bullet::install();
+    clayrocket::install();
+    firework::install();
+    flowerpot::install();
+    slingshot::install();
 }
