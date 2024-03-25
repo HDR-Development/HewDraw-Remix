@@ -43,7 +43,18 @@ unsafe extern "C" fn samusd_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 13.5, 5, 30, 0, 195, 1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 }
@@ -90,7 +101,18 @@ unsafe extern "C" fn samusd_attack_s3_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 9, 2, 5, 165, 0.95, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
@@ -138,7 +160,18 @@ unsafe extern "C" fn samusd_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 6, -15, 0, 195, 1, true);
-        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+            3 => Vector3f::new(0.84, 0.7, 0.03),//r
+            4 => Vector3f::new(0.1, 1.0, 2.0),//y
+            5 => Vector3f::new(0.9, 0.03, 0.03),//w
+            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+            _ => Vector3f::new(0.1, 0.7, 3.0)
+        }; //matches glow color
+        LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 1.0);
     }
 }
@@ -206,6 +239,17 @@ unsafe extern "C" fn samusd_attack_hi3_sound(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
+        0 => Vector3f::new(0.1, 0.7, 3.0),//nor
+        1 => Vector3f::new(0.55, 0.88, 0.0004),//g
+        2 => Vector3f::new(1.25, 0.55, 1.5),//pur
+        3 => Vector3f::new(0.84, 0.7, 0.03),//r
+        4 => Vector3f::new(0.1, 1.0, 2.0),//y
+        5 => Vector3f::new(0.9, 0.03, 0.03),//w
+        6 => Vector3f::new(1.15, 0.65, 0.03),//blac
+        7 => Vector3f::new(0.78, 0.5, 2.5),//pi
+        _ => Vector3f::new(0.1, 0.7, 3.0)
+    }; //matches glow color
     frame(lua_state, 4.0); 
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false)
@@ -213,34 +257,12 @@ unsafe extern "C" fn samusd_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 16.8, -1, 10, 35, 90, 1.28, true);
-        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
-            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
-            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
-            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
-            3 => Vector3f::new(0.84, 0.7, 0.03),//r
-            4 => Vector3f::new(0.1, 1.0, 2.0),//y
-            5 => Vector3f::new(0.9, 0.03, 0.03),//w
-            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
-            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
-            _ => Vector3f::new(0.1, 0.7, 3.0)
-        }; //matches glow color
         LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 16.8, -2, 35, 90, 110, 1.23, true);
-        let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
-            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
-            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
-            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
-            3 => Vector3f::new(0.84, 0.7, 0.03),//r
-            4 => Vector3f::new(0.1, 1.0, 2.0),//y
-            5 => Vector3f::new(0.9, 0.03, 0.03),//w
-            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
-            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
-            _ => Vector3f::new(0.1, 0.7, 3.0)
-        }; //matches glow color
         LAST_EFFECT_SET_COLOR(fighter, color_vec.x, color_vec.y, color_vec.z);
         LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
