@@ -1,18 +1,21 @@
 use super::*;
+
 mod aerials;
-mod tilts;
+mod ground;
 mod other;
 mod smashes;
 mod specials;
 mod throws;
-mod ground;
+mod tilts;
 
-pub fn install(agent: &mut Agent) {
+pub fn install() {
+    let agent = &mut Agent::new("richter_whip");
     aerials::install(agent);
-    tilts::install(agent);
+    ground::install(agent);
     other::install(agent);
     smashes::install(agent);
     specials::install(agent);
     throws::install(agent);
-    ground::install(agent);
+    tilts::install(agent);
+    agent.install();
 }

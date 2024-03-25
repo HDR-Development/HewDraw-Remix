@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
@@ -214,31 +213,17 @@ unsafe extern "C" fn appeallwl_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_whip_attack_guardon_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("richter")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("sound_appeallwr", appeallwr_sound)
-        .acmd("sound_appeallwl", appeallwl_sound)
-        .install();
-    smashline::Agent::new("richter_whip")
-        .acmd("game_guardon", richter_whip_attack_guardon_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", damageflyhi_sound);
+    agent.acmd("sound_damageflylw", damageflylw_sound);
+    agent.acmd("sound_damageflyn", damageflyn_sound);
+    agent.acmd("sound_damageflyroll", damageflyroll_sound);
+    agent.acmd("sound_damageflytop", damageflytop_sound);
+    agent.acmd("game_dash", dash_game);
+    agent.acmd("sound_dash", dash_sound);
+    agent.acmd("game_turndash", turn_dash_game);
+    agent.acmd("game_escapeair", escape_air_game);
+    agent.acmd("game_escapeairslide", escape_air_slide_game);
+    agent.acmd("sound_appeallwr", appeallwr_sound);
+    agent.acmd("sound_appeallwl", appeallwl_sound);
 }

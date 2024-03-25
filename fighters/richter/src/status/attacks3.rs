@@ -53,8 +53,6 @@ unsafe extern "C" fn attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("richter")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, attack_s3_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, attack_s3_main);
 }

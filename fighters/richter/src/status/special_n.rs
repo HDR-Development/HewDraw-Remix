@@ -30,8 +30,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("richter")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
 }

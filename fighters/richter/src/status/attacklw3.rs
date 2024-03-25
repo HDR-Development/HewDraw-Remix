@@ -53,9 +53,7 @@ unsafe extern "C" fn attack_lw32_landing_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("richter")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main)
-        .status(Main, *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, attack_lw32_landing_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main);
+    agent.status(Main, *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, attack_lw32_landing_main);
 }

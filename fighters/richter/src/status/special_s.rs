@@ -1,9 +1,6 @@
 use super::*;
 use globals::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_S
-
-
 unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s1"), 0.0, 1.0, false, 0.0, false, false);
@@ -65,8 +62,6 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("richter")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }
