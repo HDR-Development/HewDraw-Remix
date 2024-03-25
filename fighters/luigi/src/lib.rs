@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod obakyumu;
+
 use smash::{
     lib::{
         L2CValue,
@@ -68,11 +70,12 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    status::install();
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("luigi");
+    status::install(agent);
+    acmd::install(agent);
+    opff::install(agent);
+    agent.on_start(luigi_reset);
+    agent.install();
 
-    smashline::Agent::new("luigi")
-        .on_start(luigi_reset)
-        .install();
+    obakyumu::install();
 }

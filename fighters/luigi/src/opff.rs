@@ -3,14 +3,14 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+
 unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
         if StatusModule::is_changing(fighter.module_accessor) {
             fighter.select_cliff_hangdata_from_name("special_s");
         }
        // allows ledgegrab during Luigi Missile
-       fighter.sub_transition_group_check_air_cliff();
+    fighter.sub_transition_group_check_air_cliff();
     }
 }
 
@@ -32,7 +32,7 @@ unsafe fn luigi_always_misfire_training_mode(fighter: &mut L2CFighterCommon, sta
             }
         }
         if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES) {
-           VarModule::on_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
+        VarModule::on_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
         }
     }
 }
@@ -115,8 +115,6 @@ unsafe fn special_s_charge_init(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("luigi")
-        .on_line(Main, luigi_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, luigi_frame_wrapper);
 }
