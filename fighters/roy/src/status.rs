@@ -172,9 +172,7 @@ unsafe extern "C" fn special_s_mot_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("roy")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_specials)
-        .status(Main, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4, special_s4_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_specials);
+    agent.status(Main, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4, special_s4_main);
 }
