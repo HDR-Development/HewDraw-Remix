@@ -2,6 +2,19 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 
+pub mod acmd;
+
+pub mod opff;
+pub mod status;
+
+// articles
+
+mod backpack;
+mod ironball;
+
+pub mod vtable_hook;
+pub use status::krool_belly_damage_hook_impl;
+
 use smash::{
     lib::{
         L2CValue,
@@ -31,23 +44,14 @@ use utils::{
     ext::*,
     consts::*,
 };
-
 use smashline::*;
-pub mod acmd;
-pub mod status;
-pub mod opff;
-pub mod vtable_hook;
-pub use status::krool_belly_damage_hook_impl;
-
-// articles
-mod backpack;
-mod ironball;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("krool");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 
     backpack::install();

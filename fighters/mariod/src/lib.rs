@@ -8,6 +8,7 @@ pub mod status;
 pub mod opff;
 
 // articles
+
 mod drcapsule;
 
 use smash::{
@@ -40,12 +41,14 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("mariod");
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
+    agent.install();
 
     drcapsule::install();
 }
