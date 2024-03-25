@@ -1126,7 +1126,7 @@ unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialsend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -1160,7 +1160,7 @@ unsafe extern "C" fn effect_specialsend (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_specialairsend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -1180,7 +1180,7 @@ unsafe extern "C" fn effect_specialairsend (agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_photon_sword"), true, true);
 	}
 }
-unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 5.0/(12.0-1.0));
@@ -1219,6 +1219,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairs", sound_specials);
     agent.acmd("effect_specialsend", effect_specialsend);
     agent.acmd("effect_specialairsend", effect_specialairsend);
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
 }

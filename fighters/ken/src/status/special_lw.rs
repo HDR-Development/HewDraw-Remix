@@ -96,7 +96,7 @@ unsafe extern "C" fn special_lw_install_main_loop(fighter: &mut L2CFighterCommon
     }
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         // TODO: replace these with actual params
-        let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+        let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
         smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.03);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -1.6);
     }

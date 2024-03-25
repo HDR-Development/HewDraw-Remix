@@ -7,6 +7,9 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod wickedweavearm;
+mod wickedweaveleg;
+
 use smash::{
     lib::{
         L2CValue,
@@ -44,4 +47,7 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    wickedweavearm::install();
+    wickedweaveleg::install();
 }

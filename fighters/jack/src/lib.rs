@@ -7,6 +7,7 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod doyle;
 mod fire;
 
 use smash::{
@@ -46,5 +47,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
 
+    doyle::install();
     fire::install();
 }

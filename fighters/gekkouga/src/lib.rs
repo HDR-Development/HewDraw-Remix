@@ -38,7 +38,8 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(agent: &mut Agent) {
+pub fn install() {
+    let agent = &mut Agent::new("gekkouga");
     acmd::install(agent);
     opff::install(agent);
     agent.install();
