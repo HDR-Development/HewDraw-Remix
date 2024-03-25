@@ -100,7 +100,7 @@ item_light_throw_f:
     move: false
 attack_lw32_landing:
   extra:
-    cancel_frame: 16
+    cancel_frame: 18
 catch:
   extra:
     cancel_frame: 40

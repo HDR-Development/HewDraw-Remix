@@ -2,6 +2,15 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
+use skyline_smash::app::lua_bind::ControlModule::clear_command_one;
+
+// knife drift
+unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
+    && boma.is_situation(*SITUATION_KIND_AIR) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+}
 
 // knife land cancel
 unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
@@ -82,7 +91,31 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub extern "C" fn knife_bounce(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        if weapon.kind() != *WEAPON_KIND_RICHTER_AXE || !weapon.is_status(*WEAPON_SIMON_AXE_STATUS_KIND_FLY) { return; };
+        if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            let owner = &mut *sv_battle_object::module_accessor((WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+            ArticleModule::remove(owner, *FIGHTER_RICHTER_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+        else if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_ATTACK | *COLLISION_KIND_MASK_SHIELD) {
+            weapon.change_status(WEAPON_SIMON_AXE_STATUS_KIND_HOP.into(), false.into());
+        }
+        let owner = &mut *sv_battle_object::module_accessor((WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let speedx = KineticModule::get_sum_speed_x(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        let speedy = KineticModule::get_sum_speed_y(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        let mut pos = Vector3f::zero();
+        ModelModule::joint_global_position(weapon.module_accessor, Hash40::new("axe"), &mut pos, false);
+        let pos = Vector2f::new(pos.x, pos.y);
+        let next_pos = Vector2f::new(pos.x + speedx, pos.y + speedy);
+        if !GroundModule::line_segment_check(weapon.module_accessor, &pos, &next_pos, &Vector2f::zero(), &mut Vector2f::zero(), true).is_null() {
+            weapon.change_status(WEAPON_SIMON_AXE_STATUS_KIND_HOP.into(), false.into());
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    knife_drift(boma);
     knife_lc(boma);
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
@@ -103,5 +136,8 @@ pub unsafe fn richter_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn install() {
     smashline::Agent::new("richter")
         .on_line(Main, richter_frame_wrapper)
+        .install();
+    smashline::Agent::new("richter_axe")
+        .on_line(Main, knife_bounce)
         .install();
 }
