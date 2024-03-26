@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn inkling_special_n_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -23,7 +22,7 @@ unsafe extern "C" fn inkling_special_n_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_special_air_n_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -45,7 +44,7 @@ unsafe extern "C" fn inkling_special_air_n_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_special_s_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -73,11 +72,11 @@ unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_specialnend", inkling_special_n_end_game)
-        .acmd("game_specialairnend", inkling_special_air_n_end_game)
-        .acmd("effect_specialsend", inkling_special_s_end_effect)
-        .acmd("game_specialhijump", game_specialhijump)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialnend", game_specialnend);
+    agent.acmd("game_specialairnend", game_specialairnend);
+
+    agent.acmd("effect_specialsend", effect_specialsend);
+
+    agent.acmd("game_specialhijump", game_specialhijump);
 }

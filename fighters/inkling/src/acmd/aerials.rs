@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn inkling_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -29,10 +28,9 @@ unsafe extern "C" fn inkling_attack_air_n_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
-unsafe extern "C" fn inkling_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -68,10 +66,9 @@ unsafe extern "C" fn inkling_attack_air_f_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
-unsafe extern "C" fn inkling_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -99,10 +96,9 @@ unsafe extern "C" fn inkling_attack_air_b_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
-unsafe extern "C" fn inkling_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -143,10 +139,9 @@ unsafe extern "C" fn inkling_attack_air_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
-unsafe extern "C" fn inkling_attack_air_hi_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -163,7 +158,7 @@ unsafe extern "C" fn inkling_attack_air_hi_expression(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn inkling_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -197,16 +192,17 @@ unsafe extern "C" fn inkling_attack_air_lw_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_attackairn", inkling_attack_air_n_game)
-        .acmd("game_attackairf", inkling_attack_air_f_game)
-        .acmd("game_attackairb", inkling_attack_air_b_game)
-        .acmd("game_attackairhi", inkling_attack_air_hi_game)
-        .acmd("expression_attackairhi", inkling_attack_air_hi_expression)
-        .acmd("game_attackairlw", inkling_attack_air_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

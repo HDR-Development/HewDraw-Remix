@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn inkling_attack_s4_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -33,19 +32,17 @@ unsafe extern "C" fn inkling_attack_s4_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
-unsafe extern "C" fn inkling_attack_s4_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4charge(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, smash::phx::Hash40::new("attack_s4_charge"), false, 0.0);
     }
-
 }
 
-unsafe extern "C" fn inkling_attack_hi4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -84,23 +81,20 @@ unsafe extern "C" fn inkling_attack_hi4_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
-unsafe extern "C" fn inkling_attack_hi4_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4charge(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new("attack_hi4_charge"), false, 0.0);
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_attacks4", inkling_attack_s4_s_game)
-        .acmd("game_attacks4charge", inkling_attack_s4_hold_game)
-        .acmd("game_attackhi4", inkling_attack_hi4_game)
-        .acmd("game_attackhi4charge", inkling_attack_hi4_hold_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacks4charge", game_attacks4charge);
+
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("game_attackhi4charge", game_attackhi4charge);
 }

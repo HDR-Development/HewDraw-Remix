@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn inkling_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -18,10 +18,9 @@ unsafe extern "C" fn inkling_catch_game(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
-unsafe extern "C" fn inkling_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -71,7 +70,7 @@ unsafe extern "C" fn inkling_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -121,7 +120,7 @@ unsafe extern "C" fn inkling_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -146,10 +145,9 @@ unsafe extern "C" fn inkling_throw_f_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 30.0, 45.0, 7.0);
     frame(lua_state, 45.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
-unsafe extern "C" fn inkling_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -209,7 +207,7 @@ unsafe extern "C" fn inkling_throw_b_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -229,13 +227,14 @@ unsafe extern "C" fn inkling_throw_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_catch", inkling_catch_game)
-        .acmd("game_catchdash", inkling_catch_dash_game)
-        .acmd("game_catchturn", inkling_catch_turn_game)
-        .acmd("game_throwf", inkling_throw_f_game)
-        .acmd("game_throwb", inkling_throw_b_game)
-        .acmd("game_throwlw", inkling_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwb", game_throwb);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }

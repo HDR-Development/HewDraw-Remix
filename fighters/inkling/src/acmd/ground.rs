@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn inkling_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -22,7 +21,7 @@ unsafe extern "C" fn inkling_attack_11_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -47,7 +46,7 @@ unsafe extern "C" fn inkling_attack_12_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -62,7 +61,7 @@ unsafe extern "C" fn inkling_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_100_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -84,7 +83,7 @@ unsafe extern "C" fn inkling_attack_100_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn inkling_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     // base 0.84
@@ -134,12 +133,11 @@ unsafe extern "C" fn inkling_attack_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_attack11", inkling_attack_11_game)
-        .acmd("game_attack12", inkling_attack_12_game)
-        .acmd("game_attack13", inkling_attack_13_game)
-        .acmd("game_attack100end", inkling_attack_100_end_game)
-        .acmd("game_attackdash", inkling_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("game_attack100end", game_attack100end);
+
+    agent.acmd("game_attackdash", game_attackdash);
 }
