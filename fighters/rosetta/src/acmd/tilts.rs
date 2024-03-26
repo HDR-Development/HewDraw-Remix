@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn rosetta_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -14,10 +13,9 @@ unsafe extern "C" fn rosetta_attack_s3_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn rosetta_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -41,10 +39,9 @@ unsafe extern "C" fn rosetta_attack_hi3_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         ArticleModule::remove(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_RING, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
 }
 
-unsafe extern "C" fn rosetta_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -59,13 +56,10 @@ unsafe extern "C" fn rosetta_attack_lw3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_attacks3", rosetta_attack_s3_s_game)
-        .acmd("game_attackhi3", rosetta_attack_hi3_game)
-        .acmd("game_attacklw3", rosetta_attack_lw3_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

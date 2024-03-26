@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn rosetta_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -30,11 +29,8 @@ unsafe extern "C" fn rosetta_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_attackdash", rosetta_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackdash", game_attackdash);
 }

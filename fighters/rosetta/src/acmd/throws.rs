@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn rosetta_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -23,10 +22,9 @@ unsafe extern "C" fn rosetta_catch_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.05);
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
-unsafe extern "C" fn rosetta_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -54,7 +52,7 @@ unsafe extern "C" fn rosetta_catch_dash_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn rosetta_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -82,10 +80,8 @@ unsafe extern "C" fn rosetta_catch_turn_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("game_catch", rosetta_catch_game)
-        .acmd("game_catchdash", rosetta_catch_dash_game)
-        .acmd("game_catchturn", rosetta_catch_turn_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
 }

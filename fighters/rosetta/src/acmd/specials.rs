@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn rosetta_special_lw_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if !VarModule::is_flag(agent.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(agent.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
@@ -48,11 +47,8 @@ unsafe extern "C" fn rosetta_special_lw_expression(agent: &mut L2CAgentBase) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("rosetta")
-        .acmd("expression_speciallw", rosetta_special_lw_expression)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("expression_speciallw", expression_speciallw);
 }
