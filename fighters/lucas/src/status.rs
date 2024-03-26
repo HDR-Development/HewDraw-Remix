@@ -438,19 +438,15 @@ unsafe extern "C" fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("lucas")
-        .on_start(lucas_reset)
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, lucas_special_n_pre)
-        .status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, lucas_special_n_hold_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
-        .status(End, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end)
-        .status(Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, pre_specialhi_end)
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_specialhi)
-        .status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack,)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4)
-        .install();
-    smashline::Agent::new("lucas_pkthunder")
-        .status(Exec, *WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE, move_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(lucas_reset);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, lucas_special_n_pre);
+    agent.status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, lucas_special_n_hold_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air);
+    agent.status(End, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end);
+    agent.status(Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, pre_specialhi_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_specialhi);
+    agent.status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack,);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4);
+    agent.status(Exec, *WEAPON_LUCAS_PK_THUNDER_STATUS_KIND_MOVE, move_exec);
 }

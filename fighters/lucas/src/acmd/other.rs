@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,7 +26,7 @@ unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -41,7 +41,7 @@ unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -59,7 +59,7 @@ unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_turn_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -73,58 +73,7 @@ unsafe extern "C" fn lucas_turn_dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn lucas_pkfire_shoot_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 10, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-        AttackModule::enable_safe_pos(boma);
-    }
-}
-
-unsafe extern "C" fn lucas_pkfire_shoot_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    for i in 1..=50 {
-        if is_excute(agent) {
-            EFFECT_OFF_KIND(agent, Hash40::new("lucas_pkfr_bullet_ed"), true, true);
-            EFFECT_FOLLOW(agent, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(agent, 0.25);
-        }
-        wait(lua_state, 8.0);
-    }
-}
-
-unsafe extern "C" fn lucas_pkfire_pillar_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    //if is_excute(agent) {
-    //    ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 45, 10, 0, 20, 7.0, 0.0, 2.0, 2.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
-    //    ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 45, 10, 0, 20, 5.0, 0.0, 7.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
-    //}
-    //wait(lua_state, 10.0);
-    //if is_excute(agent) {
-    //    AttackModule::clear_all(boma);
-    //    AREA_WIND_2ND_RAD_arg9(agent, 0, 1, 0.05, 200, 0.6, 0, 10, 20, 60);
-    //}
-}
-
-unsafe extern "C" fn lucas_pkfire_pillar_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("lucas_pkfi_start"), Hash40::new("lucas_pkfi_start"), Hash40::new("top"), -0.5, 0, 0, 0, 0, 0, 1, true, *EF_FLIP_YZ);
-        EFFECT(agent, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, -4.5, -2.7, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-    }
-    /*
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("lucas_pkfi_bomb"), Hash40::new("top"), 0, -4.5, -2.7, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
-    }
-    */
-}
-
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -139,7 +88,7 @@ unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -152,16 +101,7 @@ unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-
-unsafe extern "C" fn lucas_pkfire_pillar_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) { 
-        PLAY_SE_REMAIN(agent, Hash40::new("se_lucas_special_n04_s"));
-    }
-}
-
-unsafe extern "C" fn lucas_appeal_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 40.0);
@@ -172,7 +112,7 @@ unsafe extern "C" fn lucas_appeal_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_appeal_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 16.0);
@@ -185,60 +125,18 @@ unsafe extern "C" fn lucas_appeal_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_pkthunder_game_move(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 2.5, 361, 50, 0, 70, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.object(), vars::lucas::status::THUNDER_LOOSE) {
-            ATTACK(agent, 0, 0, Hash40::new("top"), 2.5, 361, 50, 0, 70, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 48, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        }
-    }
-}
-
-unsafe extern "C" fn lucas_pkthunder_game_move_child(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 1, 1, Hash40::new("top"), 0.75, 80, 40, 0, 4, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.5, 2.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        AttackModule::set_attack_composition_speed(boma, 1, true);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.object(), vars::lucas::status::THUNDER_LOOSE) {
-            ATTACK(agent, 1, 1, Hash40::new("top"), 0.75, 80, 40, 0, 4, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.5, 2.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        }
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("lucas_pkthunder")
-        .acmd("game_move", lucas_pkthunder_game_move)
-        .acmd("game_movechild", lucas_pkthunder_game_move_child)
-        .install();
-    smashline::Agent::new("lucas_pkfire")
-        .acmd("game_shoot", lucas_pkfire_shoot_game)
-        .acmd("effect_shoot", lucas_pkfire_shoot_effect)
-        .acmd("game_pillar", lucas_pkfire_pillar_game)
-        .acmd("effect_pillar", lucas_pkfire_pillar_effect)
-        .acmd("sound_pillar", lucas_pkfire_pillar_sound)
-        .install();
-    smashline::Agent::new("lucas")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflyhi_sound)
-        .acmd("sound_damageflyn", damageflyhi_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflyhi_sound)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", lucas_turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("game_appealhir", lucas_appeal_hi_game)
-        .acmd("game_appealhil", lucas_appeal_hi_game)
-        .acmd("game_appeallwr", lucas_appeal_lw_game)
-        .acmd("game_appeallwl", lucas_appeal_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damageflyhi);
+    agent.acmd("sound_damageflyn", sound_damageflyhi);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflytop", sound_damageflyhi);
+    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_appealhir", game_appealhir);
+    agent.acmd("game_appealhil", game_appealhir);
+    agent.acmd("game_appeallwr", game_appeallwr);
+    agent.acmd("game_appeallwl", game_appeallwr);
 }

@@ -455,11 +455,7 @@ pub extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucas")
-        .on_line(Main, lucas_frame_wrapper)
-        .install();
-    smashline::Agent::new("lucas_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucas_frame_wrapper);
+    agent.on_line(Main, pkthunder_callback);
 }

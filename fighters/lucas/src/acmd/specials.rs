@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn lucas_special_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -16,7 +16,7 @@ unsafe extern "C" fn lucas_special_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_air_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -29,7 +29,7 @@ unsafe extern "C" fn lucas_special_air_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -38,7 +38,7 @@ unsafe extern "C" fn lucas_special_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_s_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -61,7 +61,7 @@ unsafe extern "C" fn lucas_special_s_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -105,7 +105,7 @@ unsafe extern "C" fn lucas_special_air_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_air_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -152,7 +152,7 @@ unsafe extern "C" fn lucas_special_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -161,7 +161,7 @@ unsafe extern "C" fn lucas_special_lw_start_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_air_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -174,7 +174,7 @@ unsafe extern "C" fn lucas_special_air_lw_start_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_lw_start_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -185,7 +185,7 @@ unsafe extern "C" fn lucas_special_lw_start_effect(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucas_special_lw_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -212,7 +212,7 @@ unsafe extern "C" fn lucas_special_lw_hold_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucas_special_lw_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -228,7 +228,7 @@ unsafe extern "C" fn lucas_special_lw_end_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucas_special_lw_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -250,7 +250,7 @@ unsafe extern "C" fn lucas_special_lw_end_effect(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucas_special_lw_hit_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -273,7 +273,7 @@ unsafe extern "C" fn lucas_special_lw_hit_effect(agent: &mut L2CAgentBase) {
 
 // SPECIAL N START //
 
-unsafe extern "C" fn lucas_special_n_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -287,7 +287,7 @@ unsafe extern "C" fn lucas_special_n_start_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucas_special_n_start_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 13.0);
@@ -300,14 +300,14 @@ unsafe extern "C" fn lucas_special_n_start_sound(agent: &mut L2CAgentBase) {
 
 // SPECIAL N HOLD //
 
-unsafe extern "C" fn lucas_special_n_hold_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnhold(agent: &mut L2CAgentBase) {
     // INTENTIONALLY LEFT BLANK
     /* if agent.kind() == *FIGHTER_KIND_KIRBY {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
     } */
 }
 
-unsafe extern "C" fn lucas_special_n_hold_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnhold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -344,7 +344,7 @@ unsafe extern "C" fn lucas_special_n_hold_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_n_hold_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairnhold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -355,7 +355,7 @@ unsafe extern "C" fn lucas_special_n_hold_sound(agent: &mut L2CAgentBase) {
 
 // SPECIAL N FIRE //
 
-unsafe extern "C" fn lucas_special_n_fire_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if !VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT) {
@@ -387,7 +387,7 @@ unsafe extern "C" fn lucas_special_n_fire_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_n_fire_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -415,7 +415,7 @@ unsafe extern "C" fn lucas_special_n_fire_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucas_special_n_fire_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairnfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -425,7 +425,7 @@ unsafe extern "C" fn lucas_special_n_fire_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -439,46 +439,44 @@ unsafe extern "C" fn game_fallspecial(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucas")
-        .acmd("game_specials", lucas_special_s_game)
-        .acmd("game_specialairs", lucas_special_air_s_game)
-        .acmd("effect_specialairs", lucas_special_s_effect)
-        .acmd("effect_specials", lucas_special_s_effect)
-        .acmd("sound_specials", lucas_special_s_sound)
-        .acmd("sound_specialairs", lucas_special_s_sound)
-        .acmd("game_specialairhi", lucas_special_air_hi_game)
-        .acmd("effect_specialairhi", lucas_special_air_hi_effect)
-        .acmd("game_speciallwstart", lucas_special_lw_start_game)
-        .acmd("game_specialairlwstart", lucas_special_air_lw_start_game)
-        .acmd("effect_speciallwstart", lucas_special_lw_start_effect)
-        .acmd("effect_specialairlwstart", lucas_special_lw_start_effect)
-        .acmd("game_speciallwhold", lucas_special_lw_hold_game)
-        .acmd("game_specialairlwhold", lucas_special_lw_hold_game)
-        .acmd("game_speciallwend", lucas_special_lw_end_game)
-        .acmd("game_specialairlwend", lucas_special_lw_end_game)
-        .acmd("effect_speciallwend", lucas_special_lw_end_effect)
-        .acmd("effect_specialairlwend", lucas_special_lw_end_effect)
-        .acmd("effect_speciallwhit", lucas_special_lw_hit_effect)
-        .acmd("effect_specialairlwhit", lucas_special_lw_hit_effect)
-        .acmd("game_specialnstart", lucas_special_n_start_game)
-        .acmd("game_specialairnstart", lucas_special_n_start_game)
-        .acmd("sound_specialnstart", lucas_special_n_start_sound)
-        .acmd("sound_specialairnstart", lucas_special_n_start_sound)
-        .acmd("game_specialnhold", lucas_special_n_hold_game)
-        .acmd("game_specialairnhold", lucas_special_n_hold_game)
-        .acmd("effect_specialnhold", lucas_special_n_hold_effect)
-        .acmd("effect_specialairnhold", lucas_special_n_hold_effect)
-        .acmd("sound_specialairnhold", lucas_special_n_hold_sound)
-        .acmd("sound_specialnhold", lucas_special_n_hold_sound)
-        .acmd("game_specialnfire", lucas_special_n_fire_game)
-        .acmd("game_specialairnfire", lucas_special_n_fire_game)
-        .acmd("effect_specialnfire", lucas_special_n_fire_effect)
-        .acmd("effect_specialairnfire", lucas_special_n_fire_effect)
-        .acmd("sound_specialairnfire", lucas_special_n_fire_sound)
-        .acmd("sound_specialnfire", lucas_special_n_fire_sound)
-        .acmd("game_specialairhiend", game_specialhiend)
-        .acmd("game_specialhiend", game_specialhiend)
-        .acmd("game_fallspecial", game_fallspecial)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("effect_specialairs", effect_specialairs);
+    agent.acmd("effect_specials", effect_specialairs);
+    agent.acmd("sound_specials", sound_specials);
+    agent.acmd("sound_specialairs", sound_specials);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("effect_specialairhi", effect_specialairhi);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart);
+    agent.acmd("effect_specialairlwstart", effect_speciallwstart);
+    agent.acmd("game_speciallwhold", game_speciallwhold);
+    agent.acmd("game_specialairlwhold", game_speciallwhold);
+    agent.acmd("game_speciallwend", game_speciallwend);
+    agent.acmd("game_specialairlwend", game_speciallwend);
+    agent.acmd("effect_speciallwend", effect_speciallwend);
+    agent.acmd("effect_specialairlwend", effect_speciallwend);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit);
+    agent.acmd("effect_specialairlwhit", effect_speciallwhit);
+    agent.acmd("game_specialnstart", game_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
+    agent.acmd("sound_specialnstart", sound_specialnstart);
+    agent.acmd("sound_specialairnstart", sound_specialnstart);
+    agent.acmd("game_specialnhold", game_specialnhold);
+    agent.acmd("game_specialairnhold", game_specialnhold);
+    agent.acmd("effect_specialnhold", effect_specialnhold);
+    agent.acmd("effect_specialairnhold", effect_specialnhold);
+    agent.acmd("sound_specialairnhold", sound_specialairnhold);
+    agent.acmd("sound_specialnhold", sound_specialairnhold);
+    agent.acmd("game_specialnfire", game_specialnfire);
+    agent.acmd("game_specialairnfire", game_specialnfire);
+    agent.acmd("effect_specialnfire", effect_specialnfire);
+    agent.acmd("effect_specialairnfire", effect_specialnfire);
+    agent.acmd("sound_specialairnfire", sound_specialairnfire);
+    agent.acmd("sound_specialnfire", sound_specialairnfire);
+    agent.acmd("game_specialairhiend", game_specialairhiend);
+    agent.acmd("game_specialhiend", game_specialairhiend);
+    agent.acmd("game_fallspecial", game_fallspecial);
 }
