@@ -246,7 +246,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_loop", effect_loop);
 
     agent.acmd("game_shoot", game_shoot);
-    agent.acmd("effect_shoot", effect_shoot)
+    agent.acmd("effect_shoot", effect_shoot);
 
     agent.acmd("game_fall", game_fall);
     agent.acmd("effect_fall", effect_fall);
