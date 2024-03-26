@@ -249,13 +249,13 @@ unsafe extern "C" fn effect_justshieldoff(agent: &mut L2CAgentBase) {
         let rate = WorkModule::get_float(boma, *WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_FLOAT_MOTION_RATE);
         LAST_EFFECT_SET_RATE(agent, rate);
     }
-    // if fighter.get_int(*WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_INT_COSTUME_KIND) == *FIGHTER_BAYONETTA_COSTUME_KIND_BAYONETTA_1 {
-    //     if is_excute(fighter) {
-    //         EFFECT_FOLLOW(fighter, Hash40::new("bayonetta_batwithin_bat"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
+    // if agent.get_int(*WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_INT_COSTUME_KIND) == *FIGHTER_BAYONETTA_COSTUME_KIND_BAYONETTA_1 {
+    //     if is_excute(agent) {
+    //         EFFECT_FOLLOW(agent, Hash40::new("bayonetta_batwithin_bat"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
     //     } 
     // } else {
-    //     if is_excute(fighter) {
-    //         EFFECT_FOLLOW(fighter, Hash40::new("bayonetta_batwithin_bat2"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
+    //     if is_excute(agent) {
+    //         EFFECT_FOLLOW(agent, Hash40::new("bayonetta_batwithin_bat2"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
     //     }
     // }
     if is_excute(agent) {
