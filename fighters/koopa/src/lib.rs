@@ -7,6 +7,7 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod breath;
 use smash::{
     lib::{
         L2CValue,
@@ -41,7 +42,11 @@ use smashline::*;
 pub const MAX_COOLDOWN : i32 = 900;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("koopa");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    breath::install();
 }

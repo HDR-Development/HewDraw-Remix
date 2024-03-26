@@ -51,13 +51,11 @@ pub unsafe extern "C" fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopa")
-        .on_start(koopa_init)
-        .status(Exit, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_charge_exit)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, exec_special_hi_a)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(koopa_init);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_charge_exit);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, exec_special_hi_a);
 
-    special_n::install();
-    special_s::install();
+    special_n::install(agent);
+    special_s::install(agent);
 }
