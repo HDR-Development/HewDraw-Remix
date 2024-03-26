@@ -127,29 +127,10 @@ unsafe extern "C" fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    special_n::install();
-
-    smashline::Agent::new("luigi")
-        .status(
-            Init,
-            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
-            special_s_charge_init,
-        )
-        .status(
-            Main,
-            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
-            special_s_charge_main,
-        )
-        .status(
-            End,
-            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
-            special_s_charge_end,
-        )
-        .status(
-            Exit,
-            *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
-            special_s_charge_exit,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    special_n::install(agent);
+    agent.status(Init,*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,special_s_charge_init,);
+    agent.status(Main,*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,special_s_charge_main,);
+    agent.status(End,*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,special_s_charge_end,);
+    agent.status(Exit,*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,special_s_charge_exit,);
 }

@@ -1,22 +1,22 @@
 use super::*;
 
-unsafe extern "C" fn game_regular(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_regular(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_regular(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sound_regular(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_regular(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_hit(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_hit(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_clash(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_clash(agent: &mut L2CAgentBase) {
     
 }
 

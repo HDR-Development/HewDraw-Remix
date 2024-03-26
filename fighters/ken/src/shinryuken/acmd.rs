@@ -24,17 +24,17 @@ unsafe extern "C" fn ken_shinryuken_game_final(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-unsafe extern "C" fn ken_shinryuken_effect_final(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 51.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_final_shinryuken_beam"), Hash40::new("top"), 0, 0, 8, 0, 90, 0, 1.0, false);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("ken_final_shinryuken_beam"), Hash40::new("top"), 0, 0, 8, 0, 90, 0, 1.0, false);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.6, 0.36, 0.6));
     }
     frame(lua_state, 97.0);
-    if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new("ken_final_shinryuken_beam"), -1);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
 }
 pub fn install(agent: &mut Agent) {

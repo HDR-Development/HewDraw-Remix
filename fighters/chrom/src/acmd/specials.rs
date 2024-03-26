@@ -27,7 +27,7 @@ unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        //AREA_WIND_2ND_arg10(fighter, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
+        //AREA_WIND_2ND_arg10(agent, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -37,7 +37,7 @@ unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        //QUAKE(agent, *CAMERA_QUAKE_KIND_M);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
@@ -135,7 +135,7 @@ unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        //AREA_WIND_2ND_arg10(fighter, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
+        //AREA_WIND_2ND_arg10(agent, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -145,7 +145,7 @@ unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        //QUAKE(agent, *CAMERA_QUAKE_KIND_M);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {

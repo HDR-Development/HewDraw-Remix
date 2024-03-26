@@ -1,14 +1,7 @@
 use super::*;
 
 mod special_s;
-
-unsafe extern "C" fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_GuardOn()
-}
-
-unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_Guard()
-}
+mod guard;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -28,21 +21,15 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn inkling_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_INKLING {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on fighter init
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
 }
 
-pub fn install() {
-    special_s::install();
-    smashline::Agent::new("inkling")
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD_ON, guard_on)
-        .status(Main, *FIGHTER_STATUS_KIND_GUARD, guard)
-        .on_start(inkling_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
+    special_s::install(agent);
+    guard::install(agent);
 }

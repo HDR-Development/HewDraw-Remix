@@ -152,18 +152,18 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     
 }
 // #[acmd_script( agent = "miiswordsman_tornadoshot", script = "game_fly" , category = ACMD_GAME , low_priority)]
-// unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     if is_excute(fighter) {
-//         AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 3, 3, 25, 30);
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 366, 100, 30, 0, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(9.5), Some(3.2), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 9, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
-//         ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 90, 100, 50, 0, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(3.0), Some(2.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 9, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
+// unsafe fn miiswordsman_tornadoshot_fly_game(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
+//     if is_excute(agent) {
+//         AREA_WIND_2ND_RAD_arg9(agent, 0, 2, 0.05, 200, 1, 3, 3, 25, 30);
+//         ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 366, 100, 30, 0, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(9.5), Some(3.2), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 9, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
+//         ATTACK(agent, 1, 0, Hash40::new("top"), 1.0, 90, 100, 50, 0, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(3.0), Some(2.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 9, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
 //     }
 //     frame(lua_state, 37.0);
-//     if is_excute(fighter) {
+//     if is_excute(agent) {
 //         AttackModule::clear_all(boma);
-//         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 80, 40, 0, 100, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
+//         ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 80, 40, 0, 100, 4.5, 0.0, 9.5, 3.2, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
 //     }
 // }
 unsafe extern "C" fn miiswordsman_wave_fly_game(agent: &mut L2CAgentBase) {

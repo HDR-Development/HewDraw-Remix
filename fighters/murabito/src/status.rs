@@ -117,12 +117,10 @@ pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue 
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }
 
-pub fn install() {
-    smashline::Agent::new("murabito")
-        .on_start(murabito_init)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
-        .status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump)
-        .status(Main, *FIGHTER_STATUS_KIND_JUMP, jump)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(murabito_init);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump);
+    agent.status(Main, *FIGHTER_STATUS_KIND_JUMP, jump);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air);
 }
