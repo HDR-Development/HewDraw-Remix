@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn miigunner_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -23,7 +23,7 @@ unsafe extern "C" fn miigunner_catch_game(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn miigunner_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 8.0);
@@ -43,7 +43,7 @@ unsafe extern "C" fn miigunner_catch_dash_game(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn miigunner_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 9.0);
@@ -63,7 +63,7 @@ unsafe extern "C" fn miigunner_catch_turn_game(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn miigunner_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	if is_excute(agent) {
@@ -89,7 +89,7 @@ unsafe extern "C" fn miigunner_throw_f_game(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn miigunner_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -146,15 +146,7 @@ unsafe extern "C" fn miigunner_throw_b_game(agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowb_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 160, 0, 20, 4.0, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
-    }
-}
-
-unsafe extern "C" fn miigunner_throw_b_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	// frame(lua_state, 4.0);
@@ -195,7 +187,7 @@ unsafe extern "C" fn miigunner_throw_b_effect(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn miigunner_throw_b_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 2.0);
@@ -228,7 +220,7 @@ unsafe extern "C" fn miigunner_throw_b_sound(agent: &mut L2CAgentBase) {
 	// }
 }
 
-unsafe extern "C" fn miigunner_throw_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -288,31 +280,7 @@ unsafe extern "C" fn miigunner_throw_hi_game(agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowhi_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 90, 77, 0, 89, 6.5, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        ATK_POWER(agent, 0, 3);
-    }
-}
-
-unsafe extern "C" fn miigunner_rapidshot_bullet_flythrowhi2_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 90, 0, 0, 0, 5.6, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(10.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        ATK_POWER(agent, 0, 3);
-    }
-}
-
-unsafe extern "C" fn miigunner_throw_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	// frame(lua_state, 2.0);
@@ -364,7 +332,7 @@ unsafe extern "C" fn miigunner_throw_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miigunner_throw_hi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -399,7 +367,7 @@ unsafe extern "C" fn miigunner_throw_hi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miigunner_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -421,23 +389,20 @@ unsafe extern "C" fn miigunner_throw_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("miigunner_rapidshot_bullet")
-        .acmd("game_flythrowb", miigunner_rapidshot_bullet_flythrowb_game)
-        .acmd("game_flythrowhi", miigunner_rapidshot_bullet_flythrowhi_game)
-        .acmd("game_flythrowhi2", miigunner_rapidshot_bullet_flythrowhi2_game)
-        .install();
-    smashline::Agent::new("miigunner")
-		.acmd("game_catch", miigunner_catch_game)
-		.acmd("game_catchdash", miigunner_catch_dash_game)
-		.acmd("game_catchturn", miigunner_catch_turn_game)
-        .acmd("game_throwf", miigunner_throw_f_game)
-        .acmd("game_throwb", miigunner_throw_b_game)
-        .acmd("effect_throwb", miigunner_throw_b_effect)
-        .acmd("sound_throwb", miigunner_throw_b_sound)
-        .acmd("game_throwhi", miigunner_throw_hi_game)
-        .acmd("effect_throwhi", miigunner_throw_hi_effect)
-        .acmd("sound_throwhi", miigunner_throw_hi_sound)
-        .acmd("game_throwlw", miigunner_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+	agent.acmd("game_catch", game_catch);
+	agent.acmd("game_catchdash", game_catchdash);
+	agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("effect_throwb", effect_throwb);
+    agent.acmd("sound_throwb", sound_throwb);
+
+    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("effect_throwhi", effect_throwhi);
+    agent.acmd("sound_throwhi", sound_throwhi);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }
