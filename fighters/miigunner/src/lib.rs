@@ -7,6 +7,17 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+mod attackairf_bullet;
+mod bottomshoot;
+mod fullthrottle;
+mod grenadelauncher;
+mod gunnercharge;
+mod rapidshot_bullet;
+mod stealthbomb;
+mod stealthbomb_s;
+mod supermissile;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +50,19 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("miigunner");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    attackairf_bullet::install();
+    bottomshoot::install();
+    fullthrottle::install();
+    grenadelauncher::install();
+    gunnercharge::install();
+    rapidshot_bullet::install();
+    stealthbomb::install();
+    stealthbomb_s::install();
+    supermissile::install();
 }

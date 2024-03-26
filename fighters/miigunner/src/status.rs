@@ -32,8 +32,6 @@ extern "C" fn miigunner_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("miigunner")
-        .on_start(miigunner_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(miigunner_init);
 }
