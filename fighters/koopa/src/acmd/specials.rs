@@ -90,7 +90,6 @@ unsafe extern "C" fn effect_specialnmax(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("koopa_wait_breath"), false, false);
     }
-    
 }
 
 unsafe extern "C" fn sound_specialairnmax(agent: &mut L2CAgentBase) {
@@ -438,7 +437,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG4);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 8.0);
     }
-
 }
 
 unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
@@ -527,7 +525,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG4);
         WorkModule::on_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG1);
     }
-
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -551,7 +548,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 76, 89, 0, 45, 8.3, 0.0, 5.2, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-
 }
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
@@ -566,7 +562,6 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 76, 89, 0, 45, 8.3, 0.0, 5.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -582,12 +577,15 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairnmax", sound_specialairnmax);
     agent.acmd("expression_specialnmax", expression_specialnmax);
     agent.acmd("expression_specialairnmax", expression_specialnmax);
+
     agent.acmd("effect_specialssquat", effect_specialssquat);
     agent.acmd("effect_specialairssquat", effect_specialssquat);
+
     agent.acmd("game_specialsthrowlw", game_specialsthrowlw);
     agent.acmd("effect_specialsthrowlw", effect_specialsthrowlw);
     agent.acmd("sound_specialsthrowlw", sound_specialsthrowlw);
     agent.acmd("expression_specialsthrowlw", expression_specialsthrowlw);
+
     agent.acmd("game_specialsthrowf", game_specialsthrowf);
     agent.acmd("game_specialairsthrowf", game_specialsthrowf);
     agent.acmd("effect_specialsthrowf", effect_specialsthrowf);
@@ -596,6 +594,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairsthrowf", sound_specialsthrowf);
     agent.acmd("expression_specialsthrowf", expression_specialsthrowf);
     agent.acmd("expression_specialairsthrowf", expression_specialsthrowf);
+
     agent.acmd("game_specialsthrowb", game_specialsthrowb);
     agent.acmd("game_specialairsthrowb", game_specialsthrowb);
     agent.acmd("effect_specialsthrowb", effect_specialsthrowb);
@@ -604,16 +603,21 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairsthrowb", sound_specialsthrowb);
     agent.acmd("expression_specialsthrowb", expression_specialsthrowb);
     agent.acmd("expression_specialairsthrowb", expression_specialsthrowb);
+
     agent.acmd("effect_specialsjump", effect_specialsjump);
     agent.acmd("sound_specialsjump", sound_specialsjump);
+
     agent.acmd("effect_specialsfall", effect_specialsfall);
+
     agent.acmd("game_specialslanding", game_specialslanding);
     agent.acmd("effect_specialslanding", effect_specialslanding);
     agent.acmd("sound_specialslanding", sound_specialslanding);
     agent.acmd("expression_specialslanding", expression_specialslanding);
+
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("expression_specialhi", expression_specialhi);
     agent.acmd("game_specialairhi", game_specialairhi);
+
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
 }

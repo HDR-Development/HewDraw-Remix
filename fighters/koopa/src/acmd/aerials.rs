@@ -312,13 +312,17 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("effect_attackairf", effect_attackairf);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("effect_attackairhi", effect_attackairhi);
     agent.acmd("expression_attackairhi", expression_attackairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
     agent.acmd("game_landingairlw", game_landingairlw);

@@ -3,6 +3,8 @@ use globals::*;
 
 mod special_n;
 mod special_s;
+mod special_hi;
+mod attack_s4_hold;
  
 // AGENT INIT AND CALLBACKS
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -16,46 +18,15 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn koopa_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-    }
-}
-
-unsafe extern "C" fn attack_s4_charge_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    EFFECT_OFF_KIND(fighter, Hash40::new("sys_explosion_sign"), false, false);
-    return smashline::original_status(Exit, fighter, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD)(fighter);
-}
-
-// FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A
-
-pub unsafe extern "C" fn exec_special_hi_a(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
-    }
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into()
-    }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG1) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG1SET) {
-            WorkModule::inc_int(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_WORK_INT_F);
-            return 0.into()
-        }
-        else {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG1SET);
-        }
-    }
-    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_WORK_INT_F);
-    return 0.into()
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_start(koopa_init);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_charge_exit);
-    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A, exec_special_hi_a);
+    agent.on_start(on_start);
 
     special_n::install(agent);
     special_s::install(agent);
+    special_hi::install(agent);
+    attack_s4_hold::install(agent);
 }

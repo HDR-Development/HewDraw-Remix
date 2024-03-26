@@ -4,10 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
 
 mod breath;
+
 use smash::{
     lib::{
         L2CValue,
@@ -38,14 +41,15 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub const MAX_COOLDOWN : i32 = 900;
 
 pub fn install() {
     let agent = &mut Agent::new("koopa");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 
     breath::install();

@@ -20,7 +20,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
@@ -55,7 +54,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
@@ -93,7 +91,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -145,7 +142,6 @@ unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_koopa_smash_l02"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
@@ -166,6 +162,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
     agent.acmd("sound_attackdash", sound_attackdash);

@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_max(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -56,8 +57,9 @@ unsafe extern "C" fn effect_end(agent: &mut L2CAgentBase) {
 
 
 pub fn install(agent: &mut Agent) {
-agent.acmd("game_max", game_max);
-agent.acmd("effect_max", effect_max);
-agent.acmd("game_end", game_end);
-agent.acmd("effect_end", effect_end);
+    agent.acmd("game_max", game_max);
+    agent.acmd("effect_max", effect_max);
+
+    agent.acmd("game_end", game_end);
+    agent.acmd("effect_end", effect_end);
 }
