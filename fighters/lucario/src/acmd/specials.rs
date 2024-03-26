@@ -212,18 +212,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
     }
-
-}
-
-unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    FT_DESIRED_RATE(agent, 30.0, 34.0);
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
-    }
-
 }
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
@@ -238,22 +226,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
     }
-
-}
-
-unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    FT_DESIRED_RATE(agent, 30.0, 34.0);
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
-    }
-
 }
 
 unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
