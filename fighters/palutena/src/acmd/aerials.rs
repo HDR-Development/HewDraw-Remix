@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn palutena_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -48,24 +47,20 @@ unsafe extern "C" fn palutena_attack_air_n_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
     }
     frame(lua_state, 1.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 0.714);
-    }
+    FT_MOTION_RATE(agent, 0.714);
     frame(lua_state, 4.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 8.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.000);
-    }
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 9.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("legl"), 10.0, 50, 82, 0, 37, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
@@ -89,7 +84,7 @@ unsafe extern "C" fn palutena_attack_air_f_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -113,30 +108,28 @@ unsafe extern "C" fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
     }
     frame(lua_state, 1.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 12.0/(8.0-1.0));
-    }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 12.0);
     frame(lua_state, 4.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
 
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
         ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 9.0, 361, 100, 0, 30, 3.5, -1.0, -2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 1, 0, Hash40::new("top"), 16.0, 361, 98, 0, 31, 6.7, 0.0, 10.7, -13.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);    
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE_RANGE(agent, 11.0, 49.0, 29.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 29.0/(49.0-11.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 34.0);
@@ -146,7 +139,7 @@ unsafe extern "C" fn palutena_attack_air_b_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -172,7 +165,7 @@ unsafe extern "C" fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -214,7 +207,7 @@ unsafe extern "C" fn palutena_attack_air_hi_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -236,7 +229,7 @@ unsafe extern "C" fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -288,24 +281,7 @@ unsafe extern "C" fn palutena_attack_air_lw_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_air_lw_expression(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(boma, false, 0);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
-    }
-}
-
-unsafe extern "C" fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -339,17 +315,36 @@ unsafe extern "C" fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .acmd("game_attackairn", palutena_attack_air_n_game)
-        .acmd("game_attackairf", palutena_attack_air_f_game)
-        .acmd("effect_attackairf", palutena_attack_air_f_effect)
-        .acmd("game_attackairb", palutena_attack_air_b_game)
-        .acmd("effect_attackairb", palutena_attack_air_b_effect)
-        .acmd("game_attackairhi", palutena_attack_air_hi_game)
-        .acmd("effect_attackairhi", palutena_attack_air_hi_effect)
-        .acmd("game_attackairlw", palutena_attack_air_lw_game)
-        .acmd("expression_attackairlw", palutena_attack_air_lw_expression)
-        .acmd("effect_attackairlw", palutena_attack_air_lw_effect)
-        .install();
+unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
 }

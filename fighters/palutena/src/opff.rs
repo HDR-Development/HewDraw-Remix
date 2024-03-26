@@ -354,11 +354,9 @@ pub extern "C" fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFigh
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .on_line(Main, palutena_frame_wrapper)
-        .on_line(Main, palu_power_board)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, palutena_frame_wrapper);
+    agent.on_line(Main, palu_power_board);
     smashline::Agent::new("palutena_reflectionboard")
         .on_line(Main, reflection_board_callback)
         .install();

@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn palutena_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 11.0/(16.0-0.0));
@@ -45,7 +44,7 @@ unsafe extern "C" fn palutena_attack_s3_s_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -145,7 +144,7 @@ unsafe extern "C" fn palutena_attack_s3_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -184,7 +183,7 @@ unsafe extern "C" fn palutena_attack_hi3_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_hi3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -283,7 +282,7 @@ unsafe extern "C" fn palutena_attack_hi3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -327,28 +326,7 @@ unsafe extern "C" fn palutena_attack_lw3_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_attack_lw3_expression(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ItemModule::set_have_item_visibility(boma, false, 0);
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 34.0);
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 15);
-    }
-}
-
-unsafe extern "C" fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -447,14 +425,35 @@ unsafe extern "C" fn palutena_attack_lw3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .acmd("game_attacks3", palutena_attack_s3_s_game)
-        .acmd("effect_attacks3", palutena_attack_s3_s_effect)
-        .acmd("game_attackhi3", palutena_attack_hi3_game)
-        .acmd("effect_attackhi3", palutena_attack_hi3_effect)
-        .acmd("game_attacklw3", palutena_attack_lw3_game)
-        .acmd("expression_attacklw3", palutena_attack_lw3_expression)
-        .acmd("effect_attacklw3", palutena_attack_lw3_effect)
-        .install();
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 5);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 15);
+    }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("effect_attacks3", effect_attacks3);
+
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+
+    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 }
