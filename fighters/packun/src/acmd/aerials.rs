@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn packun_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -39,10 +38,9 @@ unsafe extern "C" fn packun_attack_air_n_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-unsafe extern "C" fn packun_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -77,10 +75,9 @@ unsafe extern "C" fn packun_attack_air_f_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-unsafe extern "C" fn packun_attack_air_f_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -91,10 +88,9 @@ unsafe extern "C" fn packun_attack_air_f_expression(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
-
 }
 
-unsafe extern "C" fn packun_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -143,10 +139,9 @@ unsafe extern "C" fn packun_attack_air_b_game(agent: &mut L2CAgentBase) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
     }
-
 }
 
-unsafe extern "C" fn packun_attack_air_b_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -206,7 +201,7 @@ unsafe extern "C" fn packun_attack_air_b_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_air_b_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
@@ -230,7 +225,7 @@ unsafe extern "C" fn packun_attack_air_b_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_air_b_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairbs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -263,7 +258,7 @@ unsafe extern "C" fn packun_attack_air_b_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairbs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -283,7 +278,7 @@ unsafe extern "C" fn packun_attack_air_b_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_air_b_s_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairbs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 18.0);
@@ -292,7 +287,7 @@ unsafe extern "C" fn packun_attack_air_b_s_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_air_b_s_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairbs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 18.0);
@@ -302,7 +297,7 @@ unsafe extern "C" fn packun_attack_air_b_s_expression(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn packun_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -344,10 +339,9 @@ unsafe extern "C" fn packun_attack_air_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-unsafe extern "C" fn packun_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -394,22 +388,24 @@ unsafe extern "C" fn packun_attack_air_lw_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .acmd("game_attackairn", packun_attack_air_n_game)
-        .acmd("game_attackairf", packun_attack_air_f_game)
-        .acmd("expression_attackairf", packun_attack_air_f_expression)
-        .acmd("game_attackairb", packun_attack_air_b_game)
-        .acmd("effect_attackairb", packun_attack_air_b_effect)
-        .acmd("sound_attackairb", packun_attack_air_b_sound)
-        .acmd("game_attackairbs", packun_attack_air_b_s_game)
-        .acmd("effect_attackairbs", packun_attack_air_b_s_effect)
-        .acmd("sound_attackairbs", packun_attack_air_b_s_sound)
-        .acmd("expression_attackairbs", packun_attack_air_b_s_expression)
-        .acmd("game_attackairhi", packun_attack_air_hi_game)
-        .acmd("game_attackairlw", packun_attack_air_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+    agent.acmd("sound_attackairb", sound_attackairb);
+
+    agent.acmd("game_attackairbs", game_attackairbs);
+    agent.acmd("effect_attackairbs", effect_attackairbs);
+    agent.acmd("sound_attackairbs", sound_attackairbs);
+    agent.acmd("expression_attackairbs", expression_attackairbs);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

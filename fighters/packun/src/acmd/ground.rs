@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn packun_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -27,7 +26,7 @@ unsafe extern "C" fn packun_attack_11_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -67,7 +66,7 @@ unsafe extern "C" fn packun_attack_12_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -94,7 +93,7 @@ unsafe extern "C" fn packun_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_13_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -110,7 +109,7 @@ unsafe extern "C" fn packun_attack_13_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_100_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -130,7 +129,7 @@ unsafe extern "C" fn packun_attack_100_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_100_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -160,7 +159,7 @@ unsafe extern "C" fn packun_attack_100_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -208,17 +207,15 @@ unsafe extern "C" fn packun_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.0, 5.0);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .acmd("game_attack11", packun_attack_11_game)
-        .acmd("game_attack12", packun_attack_12_game)
-        .acmd("game_attack13", packun_attack_13_game)
-        .acmd("effect_attack13", packun_attack_13_effect)
-        .acmd("game_attack100end", packun_attack_100_end_game)
-        .acmd("effect_attack100end", packun_attack_100_end_effect)
-        .acmd("game_attackdash", packun_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("effect_attack13", effect_attack13);
+    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("effect_attack100end", effect_attack100end);
+
+    agent.acmd("game_attackdash", game_attackdash);
 }

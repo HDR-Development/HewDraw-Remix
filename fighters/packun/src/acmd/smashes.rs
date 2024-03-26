@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn packun_attack_s4_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -29,10 +28,9 @@ unsafe extern "C" fn packun_attack_s4_s_game(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("lipu3"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);
     }
-    
 }
 
-unsafe extern "C" fn packun_attack_s4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -59,7 +57,7 @@ unsafe extern "C" fn packun_attack_s4_effect(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn packun_attack_s4_s2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks42(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 22.0);
@@ -92,10 +90,9 @@ unsafe extern "C" fn packun_attack_s4_s2_game(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("neck6"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("neck8"), *HIT_STATUS_NORMAL);
     }
-    
 }
 
-unsafe extern "C" fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks42(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 16.0);
@@ -122,7 +119,24 @@ unsafe extern "C" fn packun_attack_s4_s2_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_s4_s2_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks42(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start"));
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_packun_smash_s01"));
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_down_soil_l"));
+    }
+}
+
+unsafe extern "C" fn expression_attacks42(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -156,7 +170,7 @@ unsafe extern "C" fn packun_attack_s4_s2_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_s4_2_charge_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4charge2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -169,10 +183,9 @@ unsafe extern "C" fn packun_attack_s4_2_charge_effect(agent: &mut L2CAgentBase) 
         }
         wait(lua_state, 5.0);
     }
-
 }
 
-unsafe extern "C" fn packun_attack_s4_2_charge_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4charge2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -181,7 +194,7 @@ unsafe extern "C" fn packun_attack_s4_2_charge_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_s4_s2_charge_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4charge2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -195,24 +208,7 @@ unsafe extern "C" fn packun_attack_s4_s2_charge_expression(agent: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn packun_attack_s4_s2_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_common_smash_start"));
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_packun_smash_s01"));
-    }
-    frame(lua_state, 31.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_down_soil_l"));
-    }
-}
-
-unsafe extern "C" fn packun_attack_hi4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -263,10 +259,9 @@ unsafe extern "C" fn packun_attack_hi4_game(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("lipu3"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);
     }
-    
 }
 
-unsafe extern "C" fn packun_attack_hi4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -307,7 +302,7 @@ unsafe extern "C" fn packun_attack_hi4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_hi4_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -331,7 +326,7 @@ unsafe extern "C" fn packun_attack_hi4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attack_lw4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -386,10 +381,9 @@ unsafe extern "C" fn packun_attack_lw4_game(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         VarModule::off_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
     }
-    
 }
 
-unsafe extern "C" fn packun_attack_lw4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -427,21 +421,23 @@ unsafe extern "C" fn packun_attack_lw4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .acmd("game_attacks4", packun_attack_s4_s_game)
-        .acmd("effect_attacks4", packun_attack_s4_effect)
-        .acmd("game_attacks42", packun_attack_s4_s2_game)
-        .acmd("effect_attacks42", packun_attack_s4_s2_effect)
-        .acmd("expression_attacks42", packun_attack_s4_s2_expression)
-        .acmd("effect_attacks4charge2", packun_attack_s4_2_charge_effect)
-        .acmd("sound_attacks4charge2", packun_attack_s4_2_charge_sound)
-        .acmd("expression_attacks4charge2", packun_attack_s4_s2_charge_expression)
-        .acmd("sound_attacks42", packun_attack_s4_s2_sound)
-        .acmd("game_attackhi4", packun_attack_hi4_game)
-        .acmd("effect_attackhi4", packun_attack_hi4_effect)
-        .acmd("sound_attackhi4", packun_attack_hi4_sound)
-        .acmd("game_attacklw4", packun_attack_lw4_game)
-        .acmd("effect_attacklw4", packun_attack_lw4_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("effect_attacks4", effect_attacks4);
+
+    agent.acmd("game_attacks42", game_attacks42);
+    agent.acmd("effect_attacks42", effect_attacks42);
+    agent.acmd("sound_attacks42", sound_attacks42);
+    agent.acmd("expression_attacks42", expression_attacks42);
+
+    agent.acmd("effect_attacks4charge2", effect_attacks4charge2);
+    agent.acmd("sound_attacks4charge2", sound_attacks4charge2);
+    agent.acmd("expression_attacks4charge2", expression_attacks4charge2); 
+
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("effect_attacklw4", effect_attacklw4);
 }

@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn packun_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -21,10 +21,9 @@ unsafe extern "C" fn packun_catch_game(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
-unsafe extern "C" fn packun_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -44,7 +43,7 @@ unsafe extern "C" fn packun_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -64,7 +63,27 @@ unsafe extern "C" fn packun_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        let damage = if stance != 1 { 0.0 } else { 0.3 };
+        let effect = if stance != 1 { Hash40::new("collision_attr_normal") } else { Hash40::new("collision_attr_purple") };
+        ATTACK(agent, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 3.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -95,7 +114,7 @@ unsafe extern "C" fn packun_throw_f_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -118,7 +137,7 @@ unsafe extern "C" fn packun_throw_b_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_throw_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -150,7 +169,7 @@ unsafe extern "C" fn packun_throw_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
@@ -192,14 +211,18 @@ unsafe extern "C" fn packun_throw_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .acmd("game_catch", packun_catch_game)
-        .acmd("game_catchdash", packun_catch_dash_game)
-        .acmd("game_catchturn", packun_catch_turn_game)
-        .acmd("game_throwf", packun_throw_f_game)
-        .acmd("game_throwb", packun_throw_b_game)
-        .acmd("game_throwhi", packun_throw_hi_game)
-        .acmd("game_throwlw", packun_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_catchattack", game_catchattack);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwb", game_throwb);
+
+    agent.acmd("game_throwhi", game_throwhi);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }

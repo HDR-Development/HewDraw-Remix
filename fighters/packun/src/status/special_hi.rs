@@ -128,9 +128,7 @@ unsafe extern "C" fn special_hi_landing_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main);
 }
