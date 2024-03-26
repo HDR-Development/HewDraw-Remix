@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn master_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -21,10 +21,9 @@ unsafe extern "C" fn master_catch_game(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
-unsafe extern "C" fn master_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -44,7 +43,7 @@ unsafe extern "C" fn master_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -64,7 +63,7 @@ unsafe extern "C" fn master_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -100,10 +99,9 @@ unsafe extern "C" fn master_throw_f_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
 }
 
-unsafe extern "C" fn master_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -153,10 +151,9 @@ unsafe extern "C" fn master_throw_b_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
 }
 
-unsafe extern "C" fn master_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -192,16 +189,16 @@ unsafe extern "C" fn master_throw_lw_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("master")
-        .acmd("game_catch", master_catch_game)
-        .acmd("game_catchdash", master_catch_dash_game)
-        .acmd("game_catchturn", master_catch_turn_game)
-        .acmd("game_throwf", master_throw_f_game)
-        .acmd("game_throwb", master_throw_b_game)
-        .acmd("game_throwlw", master_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwb", game_throwb);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }

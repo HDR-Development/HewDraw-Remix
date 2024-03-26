@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn master_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -51,10 +50,9 @@ unsafe extern "C" fn master_attack_air_n_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
-unsafe extern "C" fn master_landing_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -64,7 +62,7 @@ unsafe extern "C" fn master_landing_air_n_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -107,10 +105,9 @@ unsafe extern "C" fn master_attack_air_f_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
-unsafe extern "C" fn master_attack_air_f_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -127,7 +124,7 @@ unsafe extern "C" fn master_attack_air_f_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -169,7 +166,7 @@ unsafe extern "C" fn master_attack_air_b_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn master_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -219,10 +216,9 @@ unsafe extern "C" fn master_attack_air_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-
 }
 
-unsafe extern "C" fn master_attack_air_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -237,7 +233,7 @@ unsafe extern "C" fn master_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -273,18 +269,19 @@ unsafe extern "C" fn master_attack_air_lw_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("master")
-        .acmd("game_attackairn", master_attack_air_n_game)
-        .acmd("game_landingairn", master_landing_air_n_game)
-        .acmd("game_attackairf", master_attack_air_f_game)
-        .acmd("expression_attackairf", master_attack_air_f_expression)
-        .acmd("game_attackairb", master_attack_air_b_game)
-        .acmd("game_attackairhi", master_attack_air_hi_game)
-        .acmd("effect_attackairhi", master_attack_air_hi_effect)
-        .acmd("game_attackairlw", master_attack_air_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_landingairn", game_landingairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn master_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -21,10 +20,9 @@ unsafe extern "C" fn master_attack_11_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
 }
 
-unsafe extern "C" fn master_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -48,10 +46,9 @@ unsafe extern "C" fn master_attack_12_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
-    
 }
 
-unsafe extern "C" fn master_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -65,7 +62,7 @@ unsafe extern "C" fn master_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
@@ -89,10 +86,9 @@ unsafe extern "C" fn master_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 4.0);
     }
-    
 }
 
-unsafe extern "C" fn master_attack_dash_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -126,15 +122,13 @@ unsafe extern "C" fn master_attack_dash_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("master")
-        .acmd("game_attack11", master_attack_11_game)
-        .acmd("game_attack12", master_attack_12_game)
-        .acmd("game_attack13", master_attack_13_game)
-        .acmd("game_attackdash", master_attack_dash_game)
-        .acmd("effect_attackdash", master_attack_dash_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("effect_attackdash", effect_attackdash);
 }

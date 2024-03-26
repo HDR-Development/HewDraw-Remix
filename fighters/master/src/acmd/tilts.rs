@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn master_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -40,10 +39,9 @@ unsafe extern "C" fn master_attack_s3_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.0);
     }
-
 }
 
-unsafe extern "C" fn master_attack_s3_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -69,10 +67,9 @@ unsafe extern "C" fn master_attack_s3_s_effect(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("master_swordflare"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
     }
-
 }
 
-unsafe extern "C" fn master_attack_s3_s_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -88,7 +85,7 @@ unsafe extern "C" fn master_attack_s3_s_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -121,7 +118,7 @@ unsafe extern "C" fn master_attack_hi3_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn master_attack_hi3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -147,10 +144,9 @@ unsafe extern "C" fn master_attack_hi3_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
     }
-
 }
 
-unsafe extern "C" fn master_attack_hi3_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -167,7 +163,7 @@ unsafe extern "C" fn master_attack_hi3_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -187,17 +183,16 @@ unsafe extern "C" fn master_attack_lw3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("master")
-        .acmd("game_attacks3", master_attack_s3_s_game)
-        .acmd("effect_attacks3", master_attack_s3_s_effect)
-        .acmd("expression_attacks3", master_attack_s3_s_expression)
-        .acmd("game_attackhi3", master_attack_hi3_game)
-        .acmd("effect_attackhi3", master_attack_hi3_effect)
-        .acmd("expression_attackhi3", master_attack_hi3_expression)
-        .acmd("game_attacklw3", master_attack_lw3_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("effect_attacks3", effect_attacks3);
+    agent.acmd("expression_attacks3", expression_attacks3);
+
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
+
+    agent.acmd("game_attacklw3", game_attacklw3);
 }
