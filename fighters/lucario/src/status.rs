@@ -107,20 +107,18 @@ pub unsafe extern "C" fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Run()
 }
 
-pub fn install() {
-    attack_air::install();
-    attack_hi4::install();
-    special_hi::install();
-    special_lw::install();
-    special_n::install();
-    special_s::install();
-    smashline::Agent::new("lucario")
-        .on_start(lucario_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, shield_break_fly_main)
-        .status(Main, *FIGHTER_STATUS_KIND_DEAD, dead_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry_main)
-        .status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk)
-        .status(Pre, *FIGHTER_STATUS_KIND_DASH, pre_dash)
-        .status(Pre, *FIGHTER_STATUS_KIND_RUN, pre_run)
-        .install();
+pub fn install(agent: &mut Agent) {
+    attack_air::install(agent);
+    attack_hi4::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
+    agent.on_start(lucario_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, shield_break_fly_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_DEAD, dead_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_WALK, pre_walk);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_DASH, pre_dash);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_RUN, pre_run);
 }

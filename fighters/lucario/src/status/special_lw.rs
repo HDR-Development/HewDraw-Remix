@@ -135,10 +135,8 @@ unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_main)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_main);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_init);
 }

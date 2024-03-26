@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -22,7 +22,7 @@ unsafe extern "C" fn lucario_catch_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn lucario_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -42,7 +42,7 @@ unsafe extern "C" fn lucario_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -176,14 +176,12 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_catch", lucario_catch_game)
-        .acmd("game_catchdash", lucario_catch_dash_game)
-        .acmd("game_catchturn", lucario_catch_turn_game)
-        .acmd("game_throwb", game_throwb)
-        .acmd("game_throwf", game_throwf)
-        .acmd("game_throwhi", game_throwhi)
-        .acmd("game_throwlw", game_throwlw)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("game_throwf", game_throwf);
+    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwlw", game_throwlw);
 }

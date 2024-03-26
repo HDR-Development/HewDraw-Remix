@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,7 +26,7 @@ unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -41,7 +41,7 @@ unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 12.0);
@@ -51,7 +51,7 @@ unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -69,7 +69,7 @@ unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -83,7 +83,7 @@ unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -98,7 +98,7 @@ unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -232,24 +232,22 @@ unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflyhi_sound)
-        .acmd("sound_damageflyn", damageflyhi_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflyhi_sound)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("game_cliffattack", game_cliffattack)
-        .acmd("game_catchattack", game_catchattack)
-        .acmd("game_slipattack", game_slipattack)
-        .acmd("game_downattackd", game_downattackd)
-        .acmd("game_downattacku", game_downattacku)
-        .acmd("game_appealhil", game_appealhi)
-        .acmd("game_appealhir", game_appealhi)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damageflyhi);
+    agent.acmd("sound_damageflyn", sound_damageflyhi);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflytop", sound_damageflyhi);
+    agent.acmd("game_dash", game_dash);
+    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_cliffattack", game_cliffattack);
+    agent.acmd("game_catchattack", game_catchattack);
+    agent.acmd("game_slipattack", game_slipattack);
+    agent.acmd("game_downattackd", game_downattackd);
+    agent.acmd("game_downattacku", game_downattacku);
+    agent.acmd("game_appealhil", game_appealhi);
+    agent.acmd("game_appealhir", game_appealhi);
 }

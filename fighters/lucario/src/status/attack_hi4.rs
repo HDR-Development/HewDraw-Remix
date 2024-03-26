@@ -90,9 +90,7 @@ unsafe extern "C" fn attack_hi_set_kinetic(fighter: &mut L2CFighterCommon) {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
 }
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_main);
 }

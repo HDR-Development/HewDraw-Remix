@@ -86,9 +86,7 @@ unsafe extern "C" fn status_AttackAir_Main_lucario(fighter: &mut L2CFighterCommo
     return false.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

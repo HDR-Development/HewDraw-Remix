@@ -367,9 +367,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .on_line(Main, lucario_frame_wrapper)
-        .on_line(Main, lucario_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    Agent.on_line(Main, lucario_frame_wrapper);
+    agent.on_line(Main, lucario_meter);
 }

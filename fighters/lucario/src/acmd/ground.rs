@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -32,7 +32,7 @@ unsafe extern "C" fn lucario_attack_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -59,7 +59,7 @@ unsafe extern "C" fn lucario_attack_11_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -79,7 +79,7 @@ unsafe extern "C" fn lucario_attack_12_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -95,11 +95,10 @@ unsafe extern "C" fn lucario_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_attackdash", lucario_attack_dash_game)
-        .acmd("game_attack11", lucario_attack_11_game)
-        .acmd("game_attack12", lucario_attack_12_game)
-        .acmd("game_attack13", lucario_attack_13_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    
 }

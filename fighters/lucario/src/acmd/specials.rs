@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_special_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -33,7 +33,7 @@ unsafe extern "C" fn lucario_special_s_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_air_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -64,7 +64,7 @@ unsafe extern "C" fn lucario_special_air_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_special_air_s_throw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsthrow(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 22.0);
@@ -147,7 +147,7 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_special_air_s_throw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsthrow(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -160,7 +160,7 @@ unsafe extern "C" fn lucario_special_air_s_throw_effect(agent: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn lucario_special_air_s_throw_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairsthrow(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 23.0);
@@ -184,7 +184,7 @@ unsafe extern "C" fn lucario_special_air_s_throw_sound(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn lucario_special_air_s_throw_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsthrow(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -204,7 +204,7 @@ unsafe extern "C" fn lucario_special_air_s_throw_expression(agent: &mut L2CAgent
     }
 }
 
-unsafe extern "C" fn lucario_special_hi_l_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_DESIRED_RATE(agent, 30.0, 34.0);
@@ -215,7 +215,7 @@ unsafe extern "C" fn lucario_special_hi_l_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_hi_r_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_DESIRED_RATE(agent, 30.0, 34.0);
@@ -226,22 +226,7 @@ unsafe extern "C" fn lucario_special_hi_r_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_air_hi_l_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    FT_DESIRED_RATE(agent, 30.0, 34.0);
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
-    }
-
-}
-
-unsafe extern "C" fn lucario_special_air_hi_r_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_DESIRED_RATE(agent, 30.0, 34.0);
@@ -256,7 +241,22 @@ unsafe extern "C" fn lucario_special_air_hi_r_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_hi_move_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_DESIRED_RATE(agent, 30.0, 34.0);
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
+    }
+
+}
+
+unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -275,7 +275,7 @@ unsafe extern "C" fn lucario_special_hi_move_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_hi_move_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialhimove(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -288,7 +288,7 @@ unsafe extern "C" fn lucario_special_hi_move_expression(agent: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn lucario_special_hi_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     wait(lua_state, 1.0);
@@ -308,7 +308,7 @@ unsafe extern "C" fn lucario_special_hi_end_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn lucario_special_air_hi_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     wait(lua_state, 1.0);
@@ -561,38 +561,36 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_specials", lucario_special_s_game)
-        .acmd("game_specialairs", lucario_special_air_s_game)
-        .acmd("game_specialairsthrow", lucario_special_air_s_throw_game)
-        .acmd("game_specialsthrow", game_specialsthrow)
-        .acmd("effect_specialairsthrow", lucario_special_air_s_throw_effect)
-        .acmd("sound_specialairsthrow", lucario_special_air_s_throw_sound)
-        .acmd("expression_specialairsthrow", lucario_special_air_s_throw_expression)
-        .acmd("game_specialhi", lucario_special_hi_l_game)
-        .acmd("game_specialhi", lucario_special_hi_r_game)
-        .acmd("game_specialairhi", lucario_special_air_hi_l_game)
-        .acmd("game_specialairhi", lucario_special_air_hi_r_game)
-        .acmd("game_specialhimove", lucario_special_hi_move_game)
-        .acmd("expression_specialhimove", lucario_special_hi_move_expression)
-        .acmd("game_specialhiend", lucario_special_hi_end_game)
-        .acmd("game_specialairhiend", lucario_special_air_hi_end_game)
-        .acmd("game_specialnbomb", game_specialnbomb)
-        .acmd("effect_specialnbomb", effect_specialnbomb)
-        .acmd("sound_specialnbomb", sound_specialnbomb)
-        .acmd("expression_specialnbomb", expression_specialnbomb)
-        .acmd("game_specialairnbomb", game_specialairnbomb)
-        .acmd("effect_specialairnbomb", effect_specialairnbomb)
-        .acmd("sound_specialairnbomb", sound_specialairnbomb)
-        .acmd("expression_specialairnbomb", expression_specialairnbomb)
-        .acmd("game_speciallw", game_speciallw)
-        .acmd("effect_speciallw", effect_speciallw)
-        .acmd("sound_speciallw", sound_speciallw)
-        .acmd("sound_specialairlw", sound_speciallw)
-        .acmd("expression_speciallw", expression_speciallw)
-        .acmd("expression_specialairlw", expression_speciallw)
-        .acmd("game_specialairlw", game_specialairlw)
-        .acmd("effect_specialairlw", effect_specialairlw)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("game_specialairsthrow", game_specialairsthrow);
+    agent.acmd("game_specialsthrow", game_specialsthrow);
+    agent.acmd("effect_specialairsthrow", effect_specialairsthrow);
+    agent.acmd("sound_specialairsthrow", sound_specialairsthrow);
+    agent.acmd("expression_specialairsthrow", expression_specialairsthrow);
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialhimove", game_specialhimove);
+    agent.acmd("expression_specialhimove", expression_specialhimove);
+    agent.acmd("game_specialhiend", game_specialhiend);
+    agent.acmd("game_specialairhiend", game_specialairhiend);
+    agent.acmd("game_specialnbomb", game_specialnbomb);
+    agent.acmd("effect_specialnbomb", effect_specialnbomb);
+    agent.acmd("sound_specialnbomb", sound_specialnbomb);
+    agent.acmd("expression_specialnbomb", expression_specialnbomb);
+    agent.acmd("game_specialairnbomb", game_specialairnbomb);
+    agent.acmd("effect_specialairnbomb", effect_specialairnbomb);
+    agent.acmd("sound_specialairnbomb", sound_specialairnbomb);
+    agent.acmd("expression_specialairnbomb", expression_specialairnbomb);
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("effect_speciallw", effect_speciallw);
+    agent.acmd("sound_speciallw", sound_speciallw);
+    agent.acmd("sound_specialairlw", sound_speciallw);
+    agent.acmd("expression_speciallw", expression_speciallw);
+    agent.acmd("expression_specialairlw", expression_speciallw);
+    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("effect_specialairlw", effect_specialairlw);
 }

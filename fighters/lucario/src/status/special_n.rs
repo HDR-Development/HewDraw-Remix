@@ -457,18 +457,14 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
 
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario_auraball")
-        .status(Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, auraball_shoot_pre)
-        .install();
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_pre)
-        .status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_end)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_main)
-        .status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_end)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_main)
-        .status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, auraball_shoot_pre);
+    agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_pre);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_end);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_main);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_main);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_end);
 }

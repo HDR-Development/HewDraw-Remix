@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn lucario_attack_s4_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -25,7 +25,7 @@ unsafe extern "C" fn lucario_attack_s4_s_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn lucario_attack_hi4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -116,7 +116,7 @@ unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_attack_lw4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -139,13 +139,11 @@ unsafe extern "C" fn lucario_attack_lw4_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .acmd("game_attacks4", lucario_attack_s4_s_game)
-        .acmd("game_attackhi4", lucario_attack_hi4_game)
-        .acmd("effect_attackhi4", effect_attackhi4)
-        .acmd("sound_attackhi4", sound_attackhi4)
-        .acmd("expression_attackhi4", expression_attackhi4)
-        .acmd("game_attacklw4", lucario_attack_lw4_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+    agent.acmd("expression_attackhi4", expression_attackhi4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }
