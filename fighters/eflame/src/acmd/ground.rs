@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn eflame_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -18,7 +18,7 @@ unsafe extern "C" fn eflame_attack_11_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -70,7 +70,7 @@ unsafe extern "C" fn eflame_attack_12_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -108,13 +108,11 @@ unsafe extern "C" fn eflame_attack_dash_game(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_attack11", eflame_attack_11_game)
-        .acmd("game_attack12", eflame_attack_12_game)
-        .acmd("game_attackdash", eflame_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+
+    agent.acmd("game_attackdash", game_attackdash);
 }

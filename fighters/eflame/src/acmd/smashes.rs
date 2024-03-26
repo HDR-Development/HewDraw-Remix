@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn eflame_attack_s4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -15,13 +14,10 @@ unsafe extern "C" fn eflame_attack_s4_game(agent: &mut L2CAgentBase) {
         }
         WorkModule::set_int64(boma, hash40("attack_s4_hold") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
-
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 2.0);
-
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
-
     frame(lua_state, 18.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("haver"), 17.0, 361, 76, 0, 70, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
@@ -75,11 +71,8 @@ unsafe extern "C" fn eflame_attack_s4_game(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_attacks4", eflame_attack_s4_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
 }
