@@ -20,18 +20,18 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn effect_attacks3hi(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        EFFECT_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 9, 5, -40, -40, 55, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(fighter, 1.7);
+    if is_excute(agent) {
+        EFFECT_FLIP(agent, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 9, 5, -40, -40, 55, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 1.7);
     }
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), 0.0, 13.5, 15.5, 0, 0, 0, 1.0, true);
-        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), 0.0, 13.5, 15.5, 0, 0, 0, 1.0, true);
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     
 }

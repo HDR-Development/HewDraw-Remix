@@ -26,56 +26,6 @@ unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_damageflylw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 10)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 10)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn sound_damageflyn(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 10)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 10)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-    }
-}
-
 unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -91,46 +41,21 @@ unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_damageflytop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 4)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 4)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_ness_rnd_futtobi01"), Hash40::new("seq_ness_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_ness_dash_start"), true, false, false, false, app::enSEType(0));
+    if is_excute(agent) {
+        let dash_sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_ness_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 9.0);
-    if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_ness_step_right_l"));
+    if is_excute(agent) {
+        PLAY_STEP(agent, Hash40::new("se_ness_step_right_l"));
     }
     wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_ness_step_left_l"));
+    if is_excute(agent) {
+        PLAY_STEP(agent, Hash40::new("se_ness_step_left_l"));
     }
 }
 
@@ -202,10 +127,10 @@ unsafe extern "C" fn effect_jumpaerialback(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damageflyhi);
-    agent.acmd("sound_damageflylw", sound_damageflylw);
-    agent.acmd("sound_damageflyn", sound_damageflyn);
+    agent.acmd("sound_damageflylw", sound_damageflyhi);
+    agent.acmd("sound_damageflyn", sound_damageflyhi);
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
-    agent.acmd("sound_damageflytop", sound_damageflytop);
+    agent.acmd("sound_damageflytop", sound_damageflyhi);
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);
     agent.acmd("game_escapeair", game_escapeair);

@@ -155,26 +155,26 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
-		//LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		//LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
 		EffectModule::preset_limit_num(agent.module_accessor, 2);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
-        //FLASH(fighter, 1, 1, 1, 0.627);
+        //FLASH(agent, 1, 1, 1, 0.627);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 5.0, 0, 0, 0, 0, 2.8, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         LAST_EFFECT_SET_RATE(agent, 1.5);
 	}
     // frame(lua_state, 1.0);
-	// if is_excute(fighter) {
-	// 	EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
+	// if is_excute(agent) {
+	// 	EFFECT_FOLLOW(agent, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
     // }
 	// frame(lua_state, 32.0);
-	// if is_excute(fighter) {
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_loop"), false, false);
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_ref"), false, false);
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_flash"), true, false);
-	// 	EFFECT_FLW_POS(fighter, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
+	// if is_excute(agent) {
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_loop"), false, false);
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_ref"), false, false);
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_flash"), true, false);
+	// 	EFFECT_FLW_POS(agent, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
 	// }
 }
 
@@ -250,8 +250,8 @@ unsafe extern "C" fn sound_speciallwloop(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //STOP_SE(fighter, Hash40::new("se_falco_special_l02"));
-        //PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
+        //STOP_SE(agent, Hash40::new("se_falco_special_l02"));
+        //PLAY_STATUS(agent, Hash40::new("se_falco_special_l02"));
     }
 }
 
@@ -321,25 +321,25 @@ unsafe extern "C" fn falco_special_air_n_start_sound(agent: &mut L2CAgentBase) {
 }
 
 // #[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_air_hi_sound(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
+// unsafe fn falco_special_air_hi_sound(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
-//     if is_excute(fighter) {
-//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     if is_excute(agent) {
+//         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
 
 // }
 
 // #[acmd_script( agent = "falco", script = "sound_specialhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_hi_sound(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
+// unsafe fn falco_special_hi_sound(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
-//     if is_excute(fighter) {
-//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     if is_excute(agent) {
+//         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
 
 // }

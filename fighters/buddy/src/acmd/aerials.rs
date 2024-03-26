@@ -60,7 +60,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        let play_vc = app::sv_math::rand(hash40("agent"), 3);
+        let play_vc = app::sv_math::rand(hash40("fighter"), 3);
         if play_vc == 0 {PLAY_SE(agent, Hash40::new("vc_buddy_attack03"));}
     }
     frame(lua_state, 7.0);

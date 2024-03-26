@@ -1,35 +1,35 @@
 use super::*;
 
 // #[acmd_script( agent = "samusd", script = "game_specials" , category = ACMD_GAME , low_priority)]
-// unsafe fn game_specials(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
+// unsafe fn game_specials(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
 //     frame(lua_state, 21.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 3.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 3.0);
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_WEAPON);
 //     }
 //     frame(lua_state, 22.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 1.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 1.0);
 //     }
 // }
 
 // #[acmd_script( agent = "samusd", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-// unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
+// unsafe fn game_specialairs(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
 //     frame(lua_state, 21.0);
-//     if is_excute(fighter) {
+//     if is_excute(agent) {
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_WEAPON);
 //     }
 //     frame(lua_state, 30.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 2.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 2.0);
 //     }
 //     frame(lua_state, 35.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 1.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 1.0);
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_AIR_CONTROL);
 //     }
 // }

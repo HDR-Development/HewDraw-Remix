@@ -26,18 +26,18 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_damageflyroll(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            PLAY_FLY_VOICE(fighter, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
+    if is_excute(agent) {
+        if !StopModule::is_stop(agent.module_accessor) {
+            PLAY_FLY_VOICE(agent, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
         }
     }
     frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        PLAY_FLY_VOICE(fighter, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
+    if is_excute(agent) {
+        PLAY_FLY_VOICE(agent, Hash40::new("seq_popo_rnd_futtobi01"), Hash40::new("seq_popo_rnd_futtobi02"));
     }
 }
 
@@ -66,18 +66,18 @@ unsafe extern "C" fn sound_damagefly_nana(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_damageflyroll_nana(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn sound_damageflyroll_nana(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
+    if is_excute(agent) {
+        if !StopModule::is_stop(agent.module_accessor) {
+            PLAY_FLY_VOICE(agent, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
         }
     }
     frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        PLAY_FLY_VOICE(fighter, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
+    if is_excute(agent) {
+        PLAY_FLY_VOICE(agent, Hash40::new("seq_nana_rnd_futtobi01"), Hash40::new("seq_nana_rnd_futtobi02"));
     }
 }
 

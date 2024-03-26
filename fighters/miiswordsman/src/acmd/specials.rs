@@ -321,17 +321,17 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
 }
 /*
 #[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe fn miiswordsman_special_s1_hit_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 2.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 11.5, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 2.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(agent, 1, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(agent, 2, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 11.5, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 5.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
     
@@ -376,11 +376,11 @@ unsafe extern "C" fn effect_specials2attack(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         // Vanilla Effects
-        //EFFECT_FOLLOW_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        //LAST_EFFECT_SET_COLOR(fighter, 1, 0.72, 1.1);
+        //EFFECT_FOLLOW_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        //LAST_EFFECT_SET_COLOR(agent, 1, 0.72, 1.1);
         
-        //EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_blastwind_stab"), Hash40::new("top"), -0.0, 5, 12, 0, 0, 0, 1.1, true);
-        //EFFECT_DETACH_KIND(fighter, Hash40::new("miiswordsman_blastwind_stab"), -1);
+        //EFFECT_FOLLOW(agent, Hash40::new("miiswordsman_blastwind_stab"), Hash40::new("top"), -0.0, 5, 12, 0, 0, 0, 1.1, true);
+        //EFFECT_DETACH_KIND(agent, Hash40::new("miiswordsman_blastwind_stab"), -1);
         EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 11.4, 0, 0, 0, 0, 2, true);
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_smash_flash_s"), -1);
         EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 5, 7, 0, 0, 0, 1, 0, 0, 10, 0, 0, 0, true);
@@ -392,7 +392,7 @@ unsafe extern "C" fn effect_specials2attack(agent: &mut L2CAgentBase) {
         
 
         // Sword Trail
-        //AFTER_IMAGE4_ON_WORK_arg29(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD_ADD, 5, Hash40::new("haver"), 0, 0.2, 0, Hash40::new("haver"), -0.0, 10.8, 0, true, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        //AFTER_IMAGE4_ON_WORK_arg29(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD_ADD, 5, Hash40::new("haver"), 0, 0.2, 0, Hash40::new("haver"), -0.0, 10.8, 0, true, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -401,8 +401,8 @@ unsafe extern "C" fn effect_specials2attack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        //EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0.0, 10, 6, -10.6, -159.5, 55.3, 1.1, true);
-	    //LAST_EFFECT_SET_RATE(fighter, 1.4);
+        //EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0.0, 10, 6, -10.6, -159.5, 55.3, 1.1, true);
+	    //LAST_EFFECT_SET_RATE(agent, 1.4);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -414,16 +414,16 @@ unsafe extern "C" fn effect_specials2attack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 34.0);
     if is_excute(agent) {
-        //EFFECT_FOLLOW_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        //LAST_EFFECT_SET_COLOR(fighter, 2.5, 2.5, 2.5);
+        //EFFECT_FOLLOW_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        //LAST_EFFECT_SET_COLOR(agent, 2.5, 2.5, 2.5);
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
-        //EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 6, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 6, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
-        //EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, false, false);
+        //EFFECT_OFF_KIND_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, false, false);
     }
 }
 
@@ -460,8 +460,8 @@ unsafe extern "C" fn effect_specialairs2attack(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         // Vanilla Effects
-        //EFFECT_FOLLOW_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        //LAST_EFFECT_SET_COLOR(fighter, 1, 0.72, 1.1);
+        //EFFECT_FOLLOW_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        //LAST_EFFECT_SET_COLOR(agent, 1, 0.72, 1.1);
         
     
         EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 11.4, 0, 0, 0, 0, 2, true);
@@ -475,7 +475,7 @@ unsafe extern "C" fn effect_specialairs2attack(agent: &mut L2CAgentBase) {
         
 
         // Sword Trail
-        //AFTER_IMAGE4_ON_WORK_arg29(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD_ADD, 5, Hash40::new("haver"), 0, 0.2, 0, Hash40::new("haver"), -0.0, 10.8, 0, true, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        //AFTER_IMAGE4_ON_WORK_arg29(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_TEX_SWORD_ADD, 5, Hash40::new("haver"), 0, 0.2, 0, Hash40::new("haver"), -0.0, 10.8, 0, true, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
 
     }
     frame(lua_state, 2.0);
@@ -485,8 +485,8 @@ unsafe extern "C" fn effect_specialairs2attack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        //EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0.0, 10, 6, -10.6, -159.5, 55.3, 1.1, true);
-	    //LAST_EFFECT_SET_RATE(fighter, 1.4);
+        //EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0.0, 10, 6, -10.6, -159.5, 55.3, 1.1, true);
+	    //LAST_EFFECT_SET_RATE(agent, 1.4);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -498,16 +498,16 @@ unsafe extern "C" fn effect_specialairs2attack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 34.0);
     if is_excute(agent) {
-        //EFFECT_FOLLOW_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        //LAST_EFFECT_SET_COLOR(fighter, 2.5, 2.5, 2.5);
+        //EFFECT_FOLLOW_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        //LAST_EFFECT_SET_COLOR(agent, 2.5, 2.5, 2.5);
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
-        //EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 6, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 6, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
-        //EFFECT_OFF_KIND_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, false, false);
+        //EFFECT_OFF_KIND_WORK(agent, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, false, false);
     }
 }
 
@@ -819,14 +819,14 @@ unsafe extern "C" fn game_specialhi2hold(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        //VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(agent, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            //VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(agent, 2.5);
         }
@@ -852,14 +852,14 @@ unsafe extern "C" fn game_specialhi2holdair(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        //VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(agent, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            //VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(agent, 2.5);
         }
@@ -887,7 +887,7 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
         frame(lua_state, 2.0);
         if is_excute(agent) {
             // Charged
-            //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            //if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
                 ATTACK(agent, 0, 0, Hash40::new("rot"), 3.0, 367, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
                 ATTACK(agent, 1, 0, Hash40::new("rot"), 3.0, 55, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -929,7 +929,7 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
         //println!("Launch Angle: {}", launch_angle);
         
         // Charged
-        //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        //if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             ATTACK(agent, 1, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1002,7 +1002,7 @@ unsafe extern "C" fn game_specialhi2landing(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        //if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
         if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(agent, 0.8);
         }
@@ -1014,7 +1014,7 @@ unsafe extern "C" fn game_specialhi2fall(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        //if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
         if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(agent, 0.8);
         }
@@ -1225,14 +1225,14 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 
 // Kinesis Blade - Charge Storage
 // #[acmd_script( agent = "miiswordsman", script = "game_speciallw1hit" , category = ACMD_GAME , low_priority)]
-// unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     if is_excute(fighter) {
-//         let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
+// unsafe fn miiswordsman_special_lw1_hit_game(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
+//     if is_excute(agent) {
+//         let current_level = VarModule::get_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
 //         // Attack transition
-//         if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
-//             VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
+//         if VarModule::is_flag(agent.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+//             VarModule::off_flag(agent.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
 //             if current_level > 0{
 //                 if current_level == 1 {
 //                     // println!("Changing to level 1");
@@ -1247,28 +1247,28 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 //         else{
 //             // Increment the level
 //             if current_level < 2 {
-//                 VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+//                 VarModule::set_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
 //                 // println!("Kinesis increment");
 //             }
-//             // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
+//             // println!("Kinesis Level: {}", VarModule::get_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
 //         }
 //     }
 //     frame(lua_state, 23.0);
-//     if is_excute(fighter) {
+//     if is_excute(agent) {
 //         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
-//         //FT_MOTION_RATE(fighter, 0.65);
+//         //FT_MOTION_RATE(agent, 0.65);
 //     }
 // }
 
 // #[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hit" , category = ACMD_GAME , low_priority)]
-// unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     if is_excute(fighter) {
-//         let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
+// unsafe fn miiswordsman_special_air_lw1_hit_game(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
+//     if is_excute(agent) {
+//         let current_level = VarModule::get_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
 //         // Attack transition
-//         if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
-//             VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
+//         if VarModule::is_flag(agent.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+//             VarModule::off_flag(agent.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
 //             if current_level > 0{
 //                 if current_level == 1 {
 //                     // println!("Changing to level 1");
@@ -1283,16 +1283,16 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 //         else{
 //             // Increment the level
 //             if current_level < 2 {
-//                 VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+//                 VarModule::set_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
 //                 // println!("Kinesis increment");
 //             }
-//             // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
+//             // println!("Kinesis Level: {}", VarModule::get_int(agent.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
 //         }
 //     }
 //     frame(lua_state, 23.0);
-//     if is_excute(fighter) {
+//     if is_excute(agent) {
 //         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
-//         //FT_MOTION_RATE(fighter, 0.65);
+//         //FT_MOTION_RATE(agent, 0.65);
 //     }
 // }
 
@@ -1615,7 +1615,7 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(agent: &mut L2CAgentBase)
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        //ATTACK(fighter, 0, 1, Hash40::new("haver"), 1.0, 100, 10, 0, 10, 4.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        //ATTACK(agent, 0, 1, Hash40::new("haver"), 1.0, 100, 10, 0, 10, 4.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -1633,7 +1633,7 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(agent: &mut L2CAgentBase)
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        //REVERSE_LR(fighter);
+        //REVERSE_LR(agent);
         //AttackModule::clear_all(boma);
         ATTACK(agent, 0, 1, Hash40::new("top"), 0.1, 368, 30, 0, 0, 7.5, 0.0, 17.0, 0.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         let hit1 = Vector2f {x: -6.0, y: 15.0};
@@ -1641,7 +1641,7 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(agent: &mut L2CAgentBase)
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        //REVERSE_LR(fighter);
+        //REVERSE_LR(agent);
         //AttackModule::clear_all(boma);
         ATTACK(agent, 0, 1, Hash40::new("top"), 0.1, 368, 30, 0, 0, 7.5, 0.0, 15.0, -6.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         let hit1 = Vector2f {x: -12.0, y: 0.0};
@@ -1649,8 +1649,8 @@ unsafe extern "C" fn miiswordsman_special_lw3_end_game(agent: &mut L2CAgentBase)
     }
     /*
     frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("haver"), 0.1, 365, 30, 0, 0, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 1, Hash40::new("haver"), 0.1, 365, 30, 0, 0, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         //let hit1 = Vector2f {x: 12.0, y: 0.0};
         //AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hit1, 10, false);
     }
@@ -1732,7 +1732,7 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        //ATTACK(fighter, 0, 1, Hash40::new("haver"), 1.0, 100, 10, 0, 10, 4.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        //ATTACK(agent, 0, 1, Hash40::new("haver"), 1.0, 100, 10, 0, 10, 4.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -1750,7 +1750,7 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        //REVERSE_LR(fighter);
+        //REVERSE_LR(agent);
         //AttackModule::clear_all(boma);
         ATTACK(agent, 0, 1, Hash40::new("top"), 0.1, 368, 30, 0, 0, 7.5, 0.0, 17.0, 0.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         let hit1 = Vector2f {x: -6.0, y: 15.0};
@@ -1758,7 +1758,7 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        //REVERSE_LR(fighter);
+        //REVERSE_LR(agent);
         //AttackModule::clear_all(boma);
         ATTACK(agent, 0, 1, Hash40::new("top"), 0.1, 368, 30, 0, 0, 7.5, 0.0, 15.0, -6.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         let hit1 = Vector2f {x: -12.0, y: 0.0};
@@ -1766,8 +1766,8 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
     }
     /*
     frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("haver"), 0.1, 365, 30, 0, 0, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 1, Hash40::new("haver"), 0.1, 365, 30, 0, 0, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         //let hit1 = Vector2f {x: 12.0, y: 0.0};
         //AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hit1, 10, false);
     }
