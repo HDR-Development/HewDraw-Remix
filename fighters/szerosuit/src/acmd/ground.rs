@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn szerosuit_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -31,7 +30,7 @@ unsafe extern "C" fn szerosuit_attack_11_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -52,7 +51,7 @@ unsafe extern "C" fn szerosuit_attack_12_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -67,7 +66,7 @@ unsafe extern "C" fn szerosuit_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let attack_motion_rate = 11.0/(20.0-6.0);
@@ -97,10 +96,9 @@ unsafe extern "C" fn szerosuit_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_attack_dash_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -124,12 +122,11 @@ unsafe extern "C" fn szerosuit_attack_dash_expression(agent: &mut L2CAgentBase) 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("szerosuit")
-        .acmd("game_attack11", szerosuit_attack_11_game)
-        .acmd("game_attack12", szerosuit_attack_12_game)
-        .acmd("game_attack13", szerosuit_attack_13_game)
-        .acmd("game_attackdash", szerosuit_attack_dash_game)
-        .acmd("expression_attackdash", szerosuit_attack_dash_expression)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("expression_attackdash", expression_attackdash);
 }

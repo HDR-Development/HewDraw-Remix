@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn palutena_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -28,7 +28,7 @@ unsafe extern "C" fn palutena_attack_11_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn palutena_attack_100_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -42,7 +42,7 @@ unsafe extern "C" fn palutena_attack_100_end_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -106,7 +106,7 @@ unsafe extern "C" fn palutena_attack_dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -138,11 +138,9 @@ unsafe extern "C" fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .acmd("game_attack11", palutena_attack_11_game)
-        .acmd("game_attack100end", palutena_attack_100_end_game)
-        .acmd("game_attackdash", palutena_attack_dash_game)
-        .acmd("effect_attackdash", palutena_attack_dash_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("effect_attackdash", effect_attackdash);
 }

@@ -368,6 +368,6 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 }
 
 pub fn install(agent: &mut Agent) {
-    Agent.on_line(Main, lucario_frame_wrapper);
+    agent.on_line(Main, lucario_frame_wrapper);
     agent.on_line(Main, lucario_meter);
 }

@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn szerosuit_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -29,10 +29,34 @@ unsafe extern "C" fn szerosuit_catch_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_swing_06"));
+    }
+    wait(lua_state, 7.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_swing_06"));
+    }
+}
+
+unsafe extern "C" fn expression_catch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+	    ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, 0 as u32);
+    }
+}
+
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -68,7 +92,7 @@ unsafe extern "C" fn szerosuit_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -102,42 +126,9 @@ unsafe extern "C" fn szerosuit_catch_turn_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
-unsafe extern "C" fn szerosuit_catch_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_swing_06"));
-    }
-    wait(lua_state, 7.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_common_swing_06"));
-    }
-    
-}
-
-unsafe extern "C" fn szerosuit_catch_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    
-}
-
-unsafe extern "C" fn szerosuit_catch_expression(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-	    ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, 0 as u32);
-    }
-}
-
-unsafe extern "C" fn szerosuit_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -160,7 +151,7 @@ unsafe extern "C" fn szerosuit_throw_f_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn szerosuit_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -187,7 +178,7 @@ unsafe extern "C" fn szerosuit_throw_b_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn szerosuit_throw_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE_RANGE(agent, 1.0, 2.0, 6.0);
@@ -211,10 +202,9 @@ unsafe extern "C" fn szerosuit_throw_hi_game(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 7.0);
@@ -238,20 +228,23 @@ unsafe extern "C" fn szerosuit_throw_lw_game(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("szerosuit")
-        .acmd("game_catch", szerosuit_catch_game)
-        .acmd("game_catchdash", szerosuit_catch_dash_game)
-        .acmd("game_catchturn", szerosuit_catch_turn_game)
-        .acmd("sound_catch", szerosuit_catch_sound)
-        .acmd("effect_catch", szerosuit_catch_effect)
-        .acmd("expression_catch", szerosuit_catch_expression)
-        .acmd("game_throwf", szerosuit_throw_f_game)
-        .acmd("game_throwb", szerosuit_throw_b_game)
-        .acmd("game_throwhi", szerosuit_throw_hi_game)
-        .acmd("game_throwlw", szerosuit_throw_lw_game)
-        .install();
+unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("effect_catch", null);
+    agent.acmd("sound_catch", sound_catch);
+    agent.acmd("expression_catch", expression_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwb", game_throwb);
+
+    agent.acmd("game_throwhi", game_throwhi);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }

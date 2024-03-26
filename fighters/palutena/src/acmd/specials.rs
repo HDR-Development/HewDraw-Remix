@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn palutena_special_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -14,7 +13,7 @@ unsafe extern "C" fn palutena_special_n_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -35,7 +34,7 @@ unsafe extern "C" fn palutena_special_n_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -48,7 +47,7 @@ unsafe extern "C" fn palutena_special_n_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -65,7 +64,7 @@ unsafe extern "C" fn palutena_special_n_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {4.0} else {0.0};
@@ -95,7 +94,7 @@ unsafe extern "C" fn palutena_special_n_r_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -130,7 +129,7 @@ unsafe extern "C" fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -145,7 +144,7 @@ unsafe extern "C" fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -181,7 +180,7 @@ unsafe extern "C" fn palutena_special_n_r_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -232,7 +231,7 @@ unsafe extern "C" fn palutena_special_n_b_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -276,7 +275,7 @@ unsafe extern "C" fn palutena_special_n_b_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -291,7 +290,7 @@ unsafe extern "C" fn palutena_special_n_b_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -324,7 +323,7 @@ unsafe extern "C" fn palutena_special_n_b_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let hitlag = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {0.5} else {0.75};
@@ -353,7 +352,7 @@ unsafe extern "C" fn palutena_special_n_y_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -372,7 +371,7 @@ unsafe extern "C" fn palutena_special_n_y_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
@@ -395,7 +394,7 @@ unsafe extern "C" fn palutena_special_n_y_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -416,7 +415,7 @@ unsafe extern "C" fn palutena_special_n_y_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_p_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnp(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -457,7 +456,7 @@ unsafe extern "C" fn palutena_special_n_p_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnp(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 14.0);
@@ -498,7 +497,7 @@ unsafe extern "C" fn palutena_special_n_p_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnp(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 16.0);
@@ -510,7 +509,7 @@ unsafe extern "C" fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnp(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -559,7 +558,7 @@ unsafe extern "C" fn palutena_special_n_p_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -576,7 +575,7 @@ unsafe extern "C" fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialno(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -604,7 +603,7 @@ unsafe extern "C" fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialno(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -613,7 +612,7 @@ unsafe extern "C" fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_o_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialno(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 13.0);
@@ -622,7 +621,7 @@ unsafe extern "C" fn palutena_special_n_o_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialng(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -648,7 +647,7 @@ unsafe extern "C" fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialng(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -687,7 +686,7 @@ unsafe extern "C" fn palutena_special_n_g_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialng(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -709,7 +708,7 @@ unsafe extern "C" fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialng(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 18.0);
@@ -726,7 +725,7 @@ unsafe extern "C" fn palutena_special_n_g_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let current_damage = DamageModule::damage(boma, 0);
@@ -742,7 +741,7 @@ unsafe extern "C" fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 12.0 + (VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE) * 0.75), 361, 50, 0, 70, 7.0, 0.0, 10.5, 13.0, Some(0.0), Some(10.5), Some(14.5), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 12.0 + (VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE) * 0.75) , 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 12.0 + (VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE) * 0.75), 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
         AttackModule::set_force_reaction(boma, 0, true, false);
         AttackModule::set_force_reaction(boma, 1, true, false);
     }
@@ -753,34 +752,7 @@ unsafe extern "C" fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn palutena_special_air_lw_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    let current_damage = DamageModule::damage(boma, 0);
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 20.0);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        VarModule::set_float(boma.object(), vars::palutena::status::ADD_DAMAGE, (DamageModule::damage(boma, 0) - current_damage) * 0.75);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 12.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 50, 0, 70, 7.0, 0.0, 10.5, 13.0, Some(0.0), Some(10.5), Some(14.5), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 12.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-        AttackModule::set_force_reaction(boma, 0, true, false);
-        AttackModule::set_force_reaction(boma, 1, true, false);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
-
-unsafe extern "C" fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -814,7 +786,28 @@ unsafe extern "C" fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_lw_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l01"));
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l02"));
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l03"));
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l01"));
+    }
+}
+
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -840,92 +833,76 @@ unsafe extern "C" fn palutena_special_lw_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_special_lw_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l01"));
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l02"));
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l03"));
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l01"));
-    }
-}
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialn", game_specialn);
+    agent.acmd("game_specialairn", game_specialn);
+    agent.acmd("effect_specialn", effect_specialn);
+    agent.acmd("effect_specialairn", effect_specialn);
+    agent.acmd("sound_specialn", sound_specialn);
+    agent.acmd("sound_specialairn", sound_specialn);
+    agent.acmd("expression_specialn", expression_specialn);
+    agent.acmd("expression_specialairn", expression_specialn);
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .acmd("game_specialn", palutena_special_n_game)
-        .acmd("game_specialairn", palutena_special_n_game)
-        .acmd("effect_specialn", palutena_special_n_effect)
-        .acmd("effect_specialairn", palutena_special_n_effect)
-        .acmd("sound_specialn", palutena_special_n_sound)
-        .acmd("sound_specialairn", palutena_special_n_sound)
-        .acmd("expression_specialn", palutena_special_n_expression)
-        .acmd("expression_specialairn", palutena_special_n_expression)
-        .acmd("game_specialnr", palutena_special_n_r_game)
-        .acmd("game_specialairnr", palutena_special_n_r_game)
-        .acmd("effect_specialnr", palutena_special_n_r_effect)
-        .acmd("effect_specialairnr", palutena_special_n_r_effect)
-        .acmd("sound_specialnr", palutena_special_n_r_sound)
-        .acmd("sound_specialairnr", palutena_special_n_r_sound)
-        .acmd("expression_specialnr", palutena_special_n_r_expression)
-        .acmd("expression_specialairnr", palutena_special_n_r_expression)
-        .acmd("game_specialnb", palutena_special_n_b_game)
-        .acmd("game_specialairnb", palutena_special_n_b_game)
-        .acmd("effect_specialnb", palutena_special_n_b_effect)
-        .acmd("effect_specialairnb", palutena_special_n_b_effect)
-        .acmd("sound_specialnb", palutena_special_n_b_sound)
-        .acmd("sound_specialairnb", palutena_special_n_b_sound)
-        .acmd("expression_specialnb", palutena_special_n_b_expression)
-        .acmd("expression_specialairnb", palutena_special_n_b_expression)
-        .acmd("game_specialny", palutena_special_n_y_game)
-        .acmd("game_specialairny", palutena_special_n_y_game)
-        .acmd("effect_specialny", palutena_special_n_y_effect)
-        .acmd("effect_specialairny", palutena_special_n_y_effect)
-        .acmd("sound_specialny", palutena_special_n_y_sound)
-        .acmd("sound_specialairny", palutena_special_n_y_sound)
-        .acmd("expression_specialny", palutena_special_n_y_expression)
-        .acmd("expression_specialairny", palutena_special_n_y_expression)
-        .acmd("game_specialnp", palutena_special_n_p_game)
-        .acmd("game_specialairnp", palutena_special_n_p_game)
-        .acmd("effect_specialnp", palutena_special_n_p_effect)
-        .acmd("effect_specialairnp", palutena_special_n_p_effect)
-        .acmd("sound_specialnp", palutena_special_n_p_sound)
-        .acmd("sound_specialairnp", palutena_special_n_p_sound)
-        .acmd("expression_specialnp", palutena_special_n_p_expression)
-        .acmd("expression_specialairnp", palutena_special_n_p_expression)
-        .acmd("game_specialno", palutena_special_n_o_game)
-        .acmd("game_specialairno", palutena_special_n_o_game)
-        .acmd("effect_specialno", palutena_special_n_o_effect)
-        .acmd("effect_specialairno", palutena_special_n_o_effect)
-        .acmd("sound_specialno", palutena_special_n_o_sound)
-        .acmd("sound_specialairno", palutena_special_n_o_sound)
-        .acmd("expression_specialno", palutena_special_n_o_expression)
-        .acmd("expression_specialairno", palutena_special_n_o_expression)
-        .acmd("game_specialng", palutena_special_n_g_game)
-        .acmd("game_specialairng", palutena_special_n_g_game)
-        .acmd("effect_specialng", palutena_special_n_g_effect)
-        .acmd("effect_specialairng", palutena_special_n_g_effect)
-        .acmd("sound_specialng", palutena_special_n_g_sound)
-        .acmd("sound_specialairng", palutena_special_n_g_sound)
-        .acmd("expression_specialng", palutena_special_n_g_expression)
-        .acmd("expression_specialairng", palutena_special_n_g_expression)
-        .acmd("game_speciallw", palutena_special_lw_game)
-        .acmd("game_specialairlw", palutena_special_air_lw_game)
-        .acmd("effect_speciallw", palutena_special_lw_effect)
-        .acmd("effect_specialairlw", palutena_special_lw_effect)
-        .acmd("expression_speciallw", palutena_special_lw_expression)
-        .acmd("expression_specialairlw", palutena_special_lw_expression)
-        .acmd("sound_speciallw", palutena_special_lw_sound)
-        .acmd("sound_specialairlw", palutena_special_lw_sound)
-        .install();
+    agent.acmd("game_specialnr", game_specialnr);
+    agent.acmd("game_specialairnr", game_specialnr);
+    agent.acmd("effect_specialnr", effect_specialnr);
+    agent.acmd("effect_specialairnr", effect_specialnr);
+    agent.acmd("sound_specialnr", sound_specialnr);
+    agent.acmd("sound_specialairnr", sound_specialnr);
+    agent.acmd("expression_specialnr", expression_specialnr);
+    agent.acmd("expression_specialairnr", expression_specialnr);
+
+    agent.acmd("game_specialnb", game_specialnb);
+    agent.acmd("game_specialairnb", game_specialnb);
+    agent.acmd("effect_specialnb", effect_specialnb);
+    agent.acmd("effect_specialairnb", effect_specialnb);
+    agent.acmd("sound_specialnb", sound_specialnb);
+    agent.acmd("sound_specialairnb", sound_specialnb);
+    agent.acmd("expression_specialnb", expression_specialnb);
+    agent.acmd("expression_specialairnb", expression_specialnb);
+
+    agent.acmd("game_specialny", game_specialny);
+    agent.acmd("game_specialairny", game_specialny);
+    agent.acmd("effect_specialny", effect_specialny);
+    agent.acmd("effect_specialairny", effect_specialny);
+    agent.acmd("sound_specialny", sound_specialny);
+    agent.acmd("sound_specialairny", sound_specialny);
+    agent.acmd("expression_specialny", expression_specialny);
+    agent.acmd("expression_specialairny", expression_specialny);
+
+    agent.acmd("game_specialnp", game_specialnp);
+    agent.acmd("game_specialairnp", game_specialnp);
+    agent.acmd("effect_specialnp", effect_specialnp);
+    agent.acmd("effect_specialairnp", effect_specialnp);
+    agent.acmd("sound_specialnp", sound_specialnp);
+    agent.acmd("sound_specialairnp", sound_specialnp);
+    agent.acmd("expression_specialnp", expression_specialnp);
+    agent.acmd("expression_specialairnp", expression_specialnp);
+
+    agent.acmd("game_specialno", game_specialno);
+    agent.acmd("game_specialairno", game_specialno);
+    agent.acmd("effect_specialno", effect_specialno);
+    agent.acmd("effect_specialairno", effect_specialno);
+    agent.acmd("sound_specialno", sound_specialno);
+    agent.acmd("sound_specialairno", sound_specialno);
+    agent.acmd("expression_specialno", expression_specialno);
+    agent.acmd("expression_specialairno", expression_specialno);
+
+    agent.acmd("game_specialng", game_specialng);
+    agent.acmd("game_specialairng", game_specialng);
+    agent.acmd("effect_specialng", effect_specialng);
+    agent.acmd("effect_specialairng", effect_specialng);
+    agent.acmd("sound_specialng", sound_specialng);
+    agent.acmd("sound_specialairng", sound_specialng);
+    agent.acmd("expression_specialng", expression_specialng);
+    agent.acmd("expression_specialairng", expression_specialng);
+
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
+    agent.acmd("effect_speciallw", effect_speciallw);
+    agent.acmd("effect_specialairlw", effect_speciallw);
+    agent.acmd("sound_speciallw", sound_speciallw);
+    agent.acmd("sound_specialairlw", sound_speciallw);
+    agent.acmd("expression_speciallw", expression_speciallw);
+    agent.acmd("expression_specialairlw", expression_speciallw);
 }

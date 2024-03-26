@@ -1,21 +1,13 @@
-
 use super::*;
 
-unsafe extern "C" fn szerosuit_special_n_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 15.0/(21.0-1.0));
 }
 
-unsafe extern "C" fn szerosuit_special_air_n_start_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 15.0/(21.0-1.0));
-}
-
-unsafe extern "C" fn szerosuit_special_n_shoot_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,25 +18,14 @@ unsafe extern "C" fn szerosuit_special_n_shoot_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_special_air_n_shoot_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 26.0/(28.0-1.0));
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_N_FLAG_SHOOT);
-        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_PARALYZER_BULLET, false, -1);
-    }
-}
-
-unsafe extern "C" fn szerosuit_special_n_landing_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnlanding(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 9.0/(14.0-1.0));
 }
 
-unsafe extern "C" fn szerosuit_special_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -74,24 +55,7 @@ unsafe extern "C" fn szerosuit_special_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_whip_special_s_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, 1.0);
-    }
-    frame(lua_state, 48.0);
-    if is_excute(agent) {
-        VisibilityModule::set_whole(boma, false);
-    }
-}
-
-unsafe extern "C" fn szerosuit_special_air_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 20.0);
@@ -141,20 +105,7 @@ unsafe extern "C" fn szerosuit_special_air_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_whip_special_air_s_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, 1.0);
-    }
-    frame(lua_state, 48.0);
-    if is_excute(agent) {
-        VisibilityModule::set_whole(boma, false);
-    }
-}
-
-unsafe extern "C" fn szerosuit_special_s_2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 32.0);
@@ -168,68 +119,7 @@ unsafe extern "C" fn szerosuit_special_s_2_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_whip_special_s2_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, 1.0);
-    }
-    frame(lua_state, 57.0);
-    if is_excute(agent) {
-        VisibilityModule::set_whole(boma, false);
-    }
-}
-
-unsafe extern "C" fn szerosuit_whip_special_s2_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("szero_whip_flash"), Hash40::new("plasmawhip1"), 1, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_OFF_KIND(agent, Hash40::new("szero_pwhip"), true, true);
-        EFFECT_FLW_POS(agent, Hash40::new("szero_whip"), Hash40::new("attach"), 0, 0, 0, 0, 0, 0, 0.4, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip2"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip3"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip4"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip5"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip6"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip7"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip8"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 45.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("szero_gbeam_lightning"), false, true);
-    }
-    frame(lua_state, 54.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("szero_whip"), false, true);
-    }
-    frame(lua_state, 56.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("szero_whip_flash"), false, true);
-    }
-}
-
-unsafe extern "C" fn szerosuit_special_air_s_2_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 32.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 5, Hash40::new("top"), 7.0, 110, 60, 0, 90, 6.0, 0.0, 8.0, 34.0, Some(0.0), Some(8.0), Some(30.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
-        //AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
-    }
-    wait(lua_state, 4.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
-
-unsafe extern "C" fn szerosuit_special_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -290,10 +180,9 @@ unsafe extern "C" fn szerosuit_special_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_special_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -354,10 +243,9 @@ unsafe extern "C" fn szerosuit_special_air_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_special_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -393,7 +281,7 @@ unsafe extern "C" fn szerosuit_special_lw_start_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_special_air_lw_start_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -427,7 +315,7 @@ unsafe extern "C" fn szerosuit_special_air_lw_start_game(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn szerosuit_special_air_lw_kick_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwkick(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -450,10 +338,9 @@ unsafe extern "C" fn szerosuit_special_air_lw_kick_game(agent: &mut L2CAgentBase
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_INSTANCE_WORK_ID_FLAG_TO_SPECIAL_LANDING);
     }
-    
 }
 
-unsafe extern "C" fn szerosuit_special_air_lw_flip_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwflip(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -469,31 +356,23 @@ unsafe extern "C" fn szerosuit_special_air_lw_flip_game(agent: &mut L2CAgentBase
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("szerosuit")
-        .acmd("game_specialnstart", szerosuit_special_n_start_game)
-        .acmd("game_specialairnstart", szerosuit_special_air_n_start_game)
-        .acmd("game_specialnshoot", szerosuit_special_n_shoot_game)
-        .acmd("game_specialairnshoot", szerosuit_special_air_n_shoot_game)
-        .acmd("game_specialnlanding", szerosuit_special_n_landing_game)
-        .acmd("game_specials", szerosuit_special_s_game)
-        .acmd("game_specialairs", szerosuit_special_air_s_game)
-        .acmd("game_specials2", szerosuit_special_s_2_game)
-        .acmd("game_specialairs2", szerosuit_special_air_s_2_game)
-        .acmd("game_specialhi", szerosuit_special_hi_game)
-        .acmd("game_specialairhi", szerosuit_special_air_hi_game)
-        .acmd("game_speciallwstart", szerosuit_special_lw_start_game)
-        .acmd(
-            "game_specialairlwstart",
-            szerosuit_special_air_lw_start_game,
-        )
-        .acmd("game_specialairlwkick", szerosuit_special_air_lw_kick_game)
-        .acmd("game_specialairlwflip", szerosuit_special_air_lw_flip_game)
-        .install();
-    smashline::Agent::new("szerosuit_whip")
-        .acmd("game_specials", szerosuit_whip_special_s_game)
-        .acmd("game_specialairs", szerosuit_whip_special_air_s_game)
-        .acmd("game_specials2", szerosuit_whip_special_s2_game)
-        .acmd("effect_specials2", szerosuit_whip_special_s2_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialnstart", game_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
+    agent.acmd("game_specialnshoot", game_specialnshoot);
+    agent.acmd("game_specialairnshoot", game_specialnshoot);
+    agent.acmd("game_specialnlanding", game_specialnlanding);
+
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("game_specials2", game_specials2);
+    agent.acmd("game_specialairs2", game_specials2);
+
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
+
+    agent.acmd("game_speciallwstart", game_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart);
+    agent.acmd("game_specialairlwkick", game_specialairlwkick);
+    agent.acmd("game_specialairlwflip", game_specialairlwflip);
 }
