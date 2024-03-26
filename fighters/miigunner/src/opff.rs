@@ -342,10 +342,8 @@ pub extern "C" fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighte
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("miigunner")
-        .on_line(Main, miigunner_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, miigunner_frame_wrapper);
     smashline::Agent::new("miigunner_supermissile")
         .on_line(Main, miigunner_missile_frame)
         .install();

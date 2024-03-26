@@ -27,7 +27,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         VarModule::off_flag(fighter.battle_object, vars::eflame::instance::DISABLE_SPECIAL_HI);
 
         //Re-enable Mythra UpB
-        Set_Mythra_Up_Special_Cancel(fighter,false);
+        set_mythra_up_special_cancel(fighter,false);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
@@ -62,8 +62,7 @@ unsafe extern "C" fn reset_mythra_up_special_freefall(fighter: &mut L2CFighterCo
     }
 }
 
-unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon, cancel_state: bool)
-{
+unsafe extern "C" fn set_mythra_up_special_cancel(fighter: &mut L2CFighterCommon, cancel_state: bool) {
     //This first conditional tree is used if the player selects Pyra first
     if let Some(object_id) = Some(fighter.battle_object_id + 0x10000){
         let object = crate::util::get_battle_object_from_id(object_id);
@@ -99,18 +98,12 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
     }
 }
 
-extern "C" fn eflame_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_EFLAME {
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-            fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _)); 
-        }
-    }
+extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on fighter init
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _)); 
 }
 
-pub fn install() {
-    smashline::Agent::new("eflame")
-        .on_start(eflame_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
 }

@@ -7,6 +7,10 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+// articles
+mod axe;
+mod whip;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +43,12 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("simon");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    axe::install();
+    whip::install();
 }

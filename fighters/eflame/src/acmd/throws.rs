@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern fn eflame_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -24,7 +24,7 @@ unsafe extern fn eflame_catch_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 11.0);
@@ -44,7 +44,7 @@ unsafe extern "C" fn eflame_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 12.0);
@@ -64,7 +64,7 @@ unsafe extern "C" fn eflame_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -110,11 +110,10 @@ unsafe extern "C" fn eflame_throw_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("eflame")
-        .acmd("game_catch", eflame_catch_game)
-        .acmd("game_catchdash", eflame_catch_dash_game)
-        .acmd("game_catchturn", eflame_catch_turn_game)
-        .acmd("game_throwlw", eflame_throw_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }
