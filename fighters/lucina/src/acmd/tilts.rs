@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn lucina_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -15,10 +14,9 @@ unsafe extern "C" fn lucina_attack_s3_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn lucina_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -39,10 +37,9 @@ unsafe extern "C" fn lucina_attack_hi3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn lucina_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -56,13 +53,12 @@ unsafe extern "C" fn lucina_attack_lw3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("lucina")
-        .acmd("game_attacks3", lucina_attack_s3_s_game)
-        .acmd("game_attackhi3", lucina_attack_hi3_game)
-        .acmd("game_attacklw3", lucina_attack_lw3_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3", game_attacks3);
+
+    agent.acmd("game_attackhi3", game_attackhi3);
+
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

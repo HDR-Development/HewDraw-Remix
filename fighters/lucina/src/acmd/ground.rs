@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn lucina_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -19,10 +18,9 @@ unsafe extern "C" fn lucina_attack_11_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
-unsafe extern "C" fn lucina_attack_11_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -39,7 +37,7 @@ unsafe extern "C" fn lucina_attack_11_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -53,10 +51,9 @@ unsafe extern "C" fn lucina_attack_12_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-unsafe extern "C" fn lucina_attack_12_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -73,7 +70,7 @@ unsafe extern "C" fn lucina_attack_12_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 13.0);
@@ -92,15 +89,13 @@ unsafe extern "C" fn lucina_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("lucina")
-        .acmd("game_attack11", lucina_attack_11_game)
-        .acmd("expression_attack11", lucina_attack_11_expression)
-        .acmd("game_attack12", lucina_attack_12_game)
-        .acmd("expression_attack12", lucina_attack_12_expression)
-        .acmd("game_attackdash", lucina_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("expression_attack11", expression_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("expression_attack12", expression_attack12);
+    
+    agent.acmd("game_attackdash", game_attackdash);
 }

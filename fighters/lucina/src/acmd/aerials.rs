@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn lucina_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -40,10 +39,9 @@ unsafe extern "C" fn lucina_attack_air_n_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-unsafe extern "C" fn lucina_attack_air_n_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -61,7 +59,7 @@ unsafe extern "C" fn lucina_attack_air_n_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_n_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -77,10 +75,9 @@ unsafe extern "C" fn lucina_attack_air_n_sound(agent: &mut L2CAgentBase) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
         PLAY_SE(agent, Hash40::new("se_lucina_attackl_s01"));
     }
-
 }
 
-unsafe extern "C" fn lucina_attack_air_n_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -113,7 +110,7 @@ unsafe extern "C" fn lucina_attack_air_n_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -144,7 +141,7 @@ unsafe extern "C" fn lucina_attack_air_f_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_f_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -157,7 +154,7 @@ unsafe extern "C" fn lucina_attack_air_f_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_f_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -173,7 +170,7 @@ unsafe extern "C" fn lucina_attack_air_f_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -203,7 +200,7 @@ unsafe extern "C" fn lucina_attack_air_b_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -228,10 +225,9 @@ unsafe extern "C" fn lucina_attack_air_hi_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
-unsafe extern "C" fn lucina_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -259,7 +255,7 @@ unsafe extern "C" fn lucina_attack_air_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attack_air_lw_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -269,18 +265,20 @@ unsafe extern "C" fn lucina_attack_air_lw_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucina")
-        .acmd("game_attackairn", lucina_attack_air_n_game)
-        .acmd("effect_attackairn", lucina_attack_air_n_effect)
-        .acmd("sound_attackairn", lucina_attack_air_n_sound)
-        .acmd("expression_attackairn", lucina_attack_air_n_expression)
-        .acmd("game_attackairf", lucina_attack_air_f_game)
-        .acmd("effect_attackairf", lucina_attack_air_f_effect)
-        .acmd("expression_attackairf", lucina_attack_air_f_expression)
-        .acmd("game_attackairb", lucina_attack_air_b_game)
-        .acmd("game_attackairhi", lucina_attack_air_hi_game)
-        .acmd("game_attackairlw", lucina_attack_air_lw_game)
-        .acmd("sound_attackairlw", lucina_attack_air_lw_sound)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
 }
