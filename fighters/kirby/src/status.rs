@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 mod special_hi_h;
 mod gaogaen_special_n;
+mod inkling_special_n;
 mod luigi_special_n;
 mod mario_special_n;
 mod mariod_special_n;
@@ -248,6 +249,7 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     special_hi_h::install();
     gaogaen_special_n::install();
+    inkling_special_n::install();
     luigi_special_n::install();
     mario_special_n::install();
     mariod_special_n::install();

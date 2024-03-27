@@ -645,9 +645,12 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            // floats
+            pub const SPECIAL_LW_CHARGE: i32 = 0x0100;
         }
         pub mod status {
             // flags
+            pub const SPECIAL_HI_ATTACK: i32 = 0x1100;
 
         }
     }

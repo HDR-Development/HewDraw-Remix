@@ -72,12 +72,51 @@ unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("head"), 5.0, 361, 55, 0, 75, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
 }
+unsafe extern "C" fn game_specialhiattack(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 8.0, 60, 75, 0, 75, 6.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_WATER);
+        AttackModule::set_ink_value(agent.module_accessor, 0, 50.0);
+    }
+}
+
+unsafe extern "C" fn effect_specialhiattack(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        let r = WorkModule::get_float(agent.module_accessor, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_R);
+        let g = WorkModule::get_float(agent.module_accessor, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_G);
+        let b = WorkModule::get_float(agent.module_accessor, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_B);
+        macros::EFFECT(agent, Hash40::new("inkling_splashbomb_explosion"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        macros::LAST_PARTICLE_SET_COLOR(agent,r,g,b);
+    }
+}
+
+unsafe extern "C" fn sound_specialhiattack(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_inkling_special_l04"));
+    }
+}
+
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0,39.0,90.0); //originally 0.66
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_INKLING_STATUS_SPECIAL_LW_FLAG_TO_THROW_OK);
+    }
+}
 
 pub fn install() {
     smashline::Agent::new("inkling")
         .acmd("game_specialnend", inkling_special_n_end_game)
         .acmd("game_specialairnend", inkling_special_air_n_end_game)
+
         .acmd("effect_specialsend", inkling_special_s_end_effect)
+
         .acmd("game_specialhijump", game_specialhijump)
+        .acmd("game_specialhiattack",game_specialhiattack)
+        .acmd("effect_specialhiattack",effect_specialhiattack)
+        .acmd("sound_specialhiattack",sound_specialhiattack)
+        
+        .acmd("game_speciallwstart",game_speciallwstart)
+        .acmd("game_specialairlwstart",game_speciallwstart)
         .install();
 }
