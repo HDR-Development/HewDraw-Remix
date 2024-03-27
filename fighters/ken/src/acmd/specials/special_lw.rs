@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
@@ -9,8 +8,6 @@ unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     FT_MOTION_RATE(agent, 1.0);
 }
-
-unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) { }
 
 unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
@@ -128,23 +125,17 @@ unsafe extern "C" fn effect_specialairlwstepf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
-    // stub
-}
-
-unsafe extern "C" fn effect_specialairlwstart(agent: &mut L2CAgentBase) {
-    // stub
-}
+unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwinstall", game_speciallwinstall);
-    agent.acmd("effect_speciallwinstall", effect_speciallwinstall);
+    agent.acmd("effect_speciallwinstall", null);
     agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
     agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
     agent.acmd("game_speciallwstepf", game_speciallwstepf);
     agent.acmd("effect_speciallwstepf", effect_speciallwstepf);
     agent.acmd("game_specialairlwstepf", game_specialairlwstepf);
     agent.acmd("effect_specialairlwstepf", effect_specialairlwstepf);
-    agent.acmd("effect_speciallwstart", effect_speciallwstart);
-    agent.acmd("effect_specialairlwstart", effect_specialairlwstart);
+    agent.acmd("effect_speciallwstart", null);
+    agent.acmd("effect_specialairlwstart", null);
 }

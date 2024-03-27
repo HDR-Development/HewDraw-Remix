@@ -1,11 +1,8 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11w(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-    }
     frame(lua_state, 2.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
@@ -197,5 +194,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attack11s", expression_attack11s);
     agent.acmd("expression_attack11nears", expression_attack11s);
     agent.acmd("expression_attack12", expression_attack11s);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

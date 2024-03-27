@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -27,7 +26,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
@@ -39,7 +37,6 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), -0.0, 8, 0, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_RATE(agent, 0.5);
     }
-
 }
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
@@ -69,7 +66,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
@@ -92,7 +88,6 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("gekkouga_sword"), false, false);
     }
-
 }
 
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
@@ -151,7 +146,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
@@ -187,7 +181,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
@@ -230,15 +223,18 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
     agent.acmd("effect_attackairn", effect_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("effect_attackairf", effect_attackairf);
+
     agent.acmd("game_attackairb", game_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
 }

@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
 pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

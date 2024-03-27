@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
 

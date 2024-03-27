@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
@@ -50,7 +48,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
@@ -68,7 +65,6 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("lucario_appeal_hadou"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, true);
     }
-
 }
 
 unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
@@ -141,9 +137,11 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
+
     agent.acmd("game_attackhi4", game_attackhi4);
     agent.acmd("effect_attackhi4", effect_attackhi4);
     agent.acmd("sound_attackhi4", sound_attackhi4);
     agent.acmd("expression_attackhi4", expression_attackhi4);
+    
     agent.acmd("game_attacklw4", game_attacklw4);
 }

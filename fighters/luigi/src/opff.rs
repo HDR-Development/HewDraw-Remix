@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
         if StatusModule::is_changing(fighter.module_accessor) {

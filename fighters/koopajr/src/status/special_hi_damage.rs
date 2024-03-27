@@ -1,7 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
- 
 
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
 

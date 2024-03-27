@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 // status script import
 
-pub mod doyle;
 pub mod special_lw;
 pub mod summon;
 pub mod dispatch;
@@ -63,20 +62,15 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     1.into()
 }
 
-extern "C" fn jack_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() != *FIGHTER_KIND_JACK {
-            return;
-        }
-
-        set_move_customizer(fighter, jack_move_customizer);
-        jack_move_customizer(fighter);
-        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    set_move_customizer(fighter, jack_move_customizer);
+    jack_move_customizer(fighter);
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+    
     dispatch::install(agent);
-    doyle::install(agent);
     summon::install(agent);
 }

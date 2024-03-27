@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
@@ -147,7 +146,6 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-
 }
 
 unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {

@@ -1,4 +1,3 @@
-
 use super::*;
 
 /* #[acmd_script( agent = "koopajr_remainclown", script = "game_specialhiclownfall" , category = ACMD_GAME , low_priority)]
@@ -59,18 +58,6 @@ unsafe extern "C" fn effect_specialnshoot(agent: &mut L2CAgentBase) {
                 EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
                 LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
             }
-        }
-    }
-}
-
-unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(agent.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA) {
-            ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
-            VarModule::on_flag(agent.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
         }
     }
 }
@@ -169,16 +156,31 @@ unsafe extern "C" fn game_specialhijrfall(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        if !VarModule::is_flag(agent.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA) {
+            ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
+            VarModule::on_flag(agent.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
+        }
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnshoot", game_specialnshoot);
     agent.acmd("game_specialairnshoot", game_specialnshoot);
     agent.acmd("effect_specialnshoot", effect_specialnshoot);
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_speciallw);
+
     agent.acmd("game_specials", game_specials);
     agent.acmd("game_specialsspin", game_specialsspin);
     agent.acmd("game_specialairs", game_specialairs);
     agent.acmd("game_specialairsspin", game_specialairsspin);
+
     agent.acmd("game_specialhijrrise", game_specialhijrrise);
     agent.acmd("game_specialhijrfall", game_specialhijrfall);
+
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
 }

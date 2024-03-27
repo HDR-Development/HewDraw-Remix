@@ -151,7 +151,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
@@ -160,5 +159,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

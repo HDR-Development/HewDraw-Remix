@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -96,12 +95,12 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("gekkouga_water_impact"), false, false);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
 }

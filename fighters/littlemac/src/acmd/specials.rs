@@ -88,7 +88,6 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
@@ -139,7 +138,6 @@ unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("sys_starrod_bullet"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
@@ -187,7 +185,6 @@ unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_littlemac_swing_ll"));
     }
-
 }
 
 unsafe extern "C" fn expression_specialn2(agent: &mut L2CAgentBase) {
@@ -216,7 +213,6 @@ unsafe extern "C" fn expression_specialn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AreaModule::erase_wind(boma, 0);
     }
-
 }
 
 unsafe extern "C" fn game_specialsjump(agent: &mut L2CAgentBase) {
@@ -279,7 +275,6 @@ unsafe extern "C" fn game_specialairsblow(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairsblow(agent: &mut L2CAgentBase) {
@@ -394,9 +389,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairn2", sound_specialn2);
     agent.acmd("expression_specialn2", expression_specialn2);
     agent.acmd("expression_specialairn2", expression_specialn2);
+
     agent.acmd("game_specialsjump", game_specialsjump);
     agent.acmd("game_specialairsblow", game_specialairsblow);
     agent.acmd("effect_specialairsblow", effect_specialairsblow);
+    
     agent.acmd("game_specialhistart", game_specialhistart);
     agent.acmd("game_specialairhistart", game_specialairhistart);
     agent.acmd("game_specialhi", game_specialhi);

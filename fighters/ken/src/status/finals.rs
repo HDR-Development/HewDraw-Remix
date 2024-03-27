@@ -1,8 +1,6 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-// FIGHTER_STATUS_KIND_FINAL //
+// FIGHTER_STATUS_KIND_FINAL
 
 pub unsafe extern "C" fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();

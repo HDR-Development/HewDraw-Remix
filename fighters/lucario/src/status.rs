@@ -16,21 +16,6 @@ extern "C" {
     fn store_event_table(event: *const app::LinkEvent) -> L2CValue;
 }
 
-extern "C" fn lucario_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_LUCARIO {
-            return;
-        }
-        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
-        MeterModule::reset(fighter.battle_object);
-        MeterModule::set_meter_cap(fighter.object(), 2);
-        MeterModule::set_meter_per_level(fighter.object(), 100.0);
-        MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
-        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-    }
-}
-
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::DISABLE_SPECIAL_LW) {
         false.into()
@@ -108,14 +93,26 @@ pub unsafe extern "C" fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Run()
 }
 
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+    MeterModule::reset(fighter.battle_object);
+    MeterModule::set_meter_cap(fighter.object(), 2);
+    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+}
+
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
     attack_air::install(agent);
     attack_hi4::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);
     special_n::install(agent);
     special_s::install(agent);
-    agent.on_start(lucario_init);
+
     agent.status(Main, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, shield_break_fly_main);
     agent.status(Main, *FIGHTER_STATUS_KIND_DEAD, dead_main);
     agent.status(Main, *FIGHTER_STATUS_KIND_ENTRY, entry_main);

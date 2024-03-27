@@ -1,23 +1,13 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
-    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init);
-    agent.status(Pre, statuses::ken::INSTALL, special_lw_install_pre);
-    agent.status(Main, statuses::ken::INSTALL, special_lw_install_main);
-    agent.status(End, statuses::ken::INSTALL, special_lw_install_end);
-}
-
-// FIGHTER_STATUS_KIND_SPECIAL_LW //
+// FIGHTER_STATUS_KIND_SPECIAL_LW
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), true.into());
     return 1.into();
 }
 
-// FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F //
+// FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
 
 pub unsafe extern "C" fn special_lw_step_f_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -25,7 +15,6 @@ pub unsafe extern "C" fn special_lw_step_f_init(fighter: &mut L2CFighterCommon) 
     }
     smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)(fighter)
 }
-
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -137,4 +126,12 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
         );
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init);
+    agent.status(Pre, statuses::ken::INSTALL, special_lw_install_pre);
+    agent.status(Main, statuses::ken::INSTALL, special_lw_install_main);
+    agent.status(End, statuses::ken::INSTALL, special_lw_install_end);
 }

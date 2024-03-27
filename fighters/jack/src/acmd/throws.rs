@@ -21,7 +21,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
@@ -88,5 +87,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
+    
     agent.acmd("game_throwb", game_throwb);
 }

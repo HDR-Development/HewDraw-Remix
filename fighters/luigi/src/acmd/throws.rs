@@ -1,5 +1,60 @@
 use super::*;
 
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 5.0);
+    if is_excute(agent) {
+        if ArticleModule::is_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU) {
+            ArticleModule::remove_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+        if ArticleModule::is_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER) {
+            ArticleModule::remove_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+        ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, false, -1);
+        ArticleModule::change_motion(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, smash::phx::Hash40::new("catch"), false, 0.0);
+        ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, false, -1);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::set_rate(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, (13.0-1.0)/5.0);
+    }
+    frame(lua_state, 13.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        ArticleModule::set_rate(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, 1.0);
+        GrabModule::set_rebound(boma, true);
+        SEARCH(agent, 0, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, -1.5, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY_HEAD, false);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        //CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, -1.5, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 3.5, 0.0, 6.6, 1.0, Some(0.0), Some(6.6), Some(9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        //ArticleModule::shoot(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    }
+    game_CaptureCutCommon(agent);
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    wait(lua_state, 20.0);
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_PLUNGER, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_luigi_plunger_shoot"));
+    }
+}
+
 unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -53,10 +108,13 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("sound_catch", sound_catch);
+
     agent.acmd("game_throwb", game_throwb);
+
     agent.acmd("game_throwlw", game_throwlw);
 }

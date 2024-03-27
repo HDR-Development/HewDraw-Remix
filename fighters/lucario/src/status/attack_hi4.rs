@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 pub unsafe extern "C" fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

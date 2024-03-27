@@ -493,6 +493,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_final_hit3", game_final_hit3);
     agent.acmd("game_final_hit4", game_final_hit4);
     agent.acmd("game_final_hitfinal", game_final_hitfinal);
+    
     agent.acmd("game_final2", game_final2);
     agent.acmd("game_finalair2", game_final2);
 }

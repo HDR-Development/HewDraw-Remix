@@ -1,9 +1,6 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-
-// FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP //
+// FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
 
 pub unsafe extern "C" fn end_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] == FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP

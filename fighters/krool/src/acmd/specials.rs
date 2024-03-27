@@ -43,7 +43,6 @@ unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialnfire(agent: &mut L2CAgentBase) {
@@ -137,7 +136,6 @@ unsafe extern "C" fn game_specialnloop(agent: &mut L2CAgentBase) {
             SEARCH(agent, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(60.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_specialnloop(agent: &mut L2CAgentBase) {
@@ -235,7 +233,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    
 }
 
 unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
@@ -401,8 +398,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnloop", game_specialnloop);
     agent.acmd("effect_specialnloop", effect_specialnloop);
     agent.acmd("effect_specialairnloop", effect_specialnloop);
+
     agent.acmd("game_specialsthrow", game_specials);
     agent.acmd("game_specialairsthrow", game_specials);
+
     agent.acmd("effect_specialhistart", effect_specialhistart);
     agent.acmd("sound_specialhistart", sound_specialhistart);
     agent.acmd("sound_specialairhistart", sound_specialhistart);
@@ -410,6 +409,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhi", effect_specialhi);
     agent.acmd("sound_specialhi", sound_specialhi);
     agent.acmd("expression_specialhi", expression_specialhi);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);

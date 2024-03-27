@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -19,7 +18,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -43,7 +41,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
@@ -65,7 +62,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -113,7 +109,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -166,7 +161,6 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
             LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 5, 0, -2.5, 0, 0, 0, 0.35, 0, 0, 1.5, 0, 0, 0, false);
         }
     }
-
 }
 
 unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
@@ -194,6 +188,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
     agent.acmd("expression_attackdash", expression_attackdash);

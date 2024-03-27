@@ -10,6 +10,7 @@ pub mod status;
 // articles
 
 mod cannonball;
+mod remainclown;
 
 use smash::{
     lib::{
@@ -51,4 +52,5 @@ pub fn install() {
     agent.install();
 
     cannonball::install();
+    remainclown::install();
 }

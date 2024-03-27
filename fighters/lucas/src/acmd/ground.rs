@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -141,7 +140,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
-
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -164,7 +162,6 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("lucas_psi_atk"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
@@ -179,7 +176,6 @@ unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_STEP(agent, Hash40::new("se_lucas_step_left_m"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
@@ -211,6 +207,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
     agent.acmd("sound_attackdash", sound_attackdash);

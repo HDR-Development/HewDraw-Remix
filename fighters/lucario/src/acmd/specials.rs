@@ -1,5 +1,83 @@
-
 use super::*;
+
+unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+    }
+}
+
+unsafe extern "C" fn effect_specialnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn sound_specialnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_013"));
+    }
+}
+
+unsafe extern "C" fn expression_specialnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn game_specialairnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+    }
+}
+
+unsafe extern "C" fn effect_specialairnbomb(agent: &mut L2CAgentBase) {}
+
+unsafe extern "C" fn sound_specialairnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_013"));
+    }
+}
+
+unsafe extern "C" fn expression_specialairnbomb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
 
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -30,7 +108,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);
         }
     }
-
 }
 
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
@@ -244,7 +321,6 @@ unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         GroundModule::set_passable_check(boma, true);
     }
-
 }
 
 unsafe extern "C" fn expression_specialhimove(agent: &mut L2CAgentBase) {
@@ -300,88 +376,6 @@ unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-
-}
-
-unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 37.0);
-    if is_excute(agent) {
-        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
-        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
-        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
-    }
-}
-
-unsafe extern "C" fn effect_specialnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-}
-
-unsafe extern "C" fn sound_specialnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 37.0);
-    if is_excute(agent) {
-        PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_013"));
-    }
-}
-
-unsafe extern "C" fn expression_specialnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ItemModule::set_have_item_visibility(boma, false, 0);
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-}
-
-unsafe extern "C" fn game_specialairnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 37.0);
-    if is_excute(agent) {
-        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
-        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
-        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
-    }
-}
-
-unsafe extern "C" fn effect_specialairnbomb(agent: &mut L2CAgentBase) {
-
-}
-
-unsafe extern "C" fn sound_specialairnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 37.0);
-    if is_excute(agent) {
-        PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_013"));
-    }
-}
-
-unsafe extern "C" fn expression_specialairnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ItemModule::set_have_item_visibility(boma, false, 0);
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -534,21 +528,6 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specialairs);
-    agent.acmd("game_specialairsthrow", game_specialairsthrow);
-    agent.acmd("game_specialsthrow", game_specialsthrow);
-    agent.acmd("effect_specialairsthrow", effect_specialairsthrow);
-    agent.acmd("sound_specialairsthrow", sound_specialairsthrow);
-    agent.acmd("expression_specialairsthrow", expression_specialairsthrow);
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
-    agent.acmd("game_specialhimove", game_specialhimove);
-    agent.acmd("expression_specialhimove", expression_specialhimove);
-    agent.acmd("game_specialhiend", game_specialhiend);
-    agent.acmd("game_specialairhiend", game_specialairhiend);
     agent.acmd("game_specialnbomb", game_specialnbomb);
     agent.acmd("effect_specialnbomb", effect_specialnbomb);
     agent.acmd("sound_specialnbomb", sound_specialnbomb);
@@ -557,6 +536,24 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairnbomb", effect_specialairnbomb);
     agent.acmd("sound_specialairnbomb", sound_specialairnbomb);
     agent.acmd("expression_specialairnbomb", expression_specialairnbomb);
+
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("game_specialairsthrow", game_specialairsthrow);
+    agent.acmd("game_specialsthrow", game_specialsthrow);
+    agent.acmd("effect_specialairsthrow", effect_specialairsthrow);
+    agent.acmd("sound_specialairsthrow", sound_specialairsthrow);
+    agent.acmd("expression_specialairsthrow", expression_specialairsthrow);
+
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialhimove", game_specialhimove);
+    agent.acmd("expression_specialhimove", expression_specialhimove);
+    agent.acmd("game_specialhiend", game_specialhiend);
+    agent.acmd("game_specialairhiend", game_specialairhiend);
+
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
