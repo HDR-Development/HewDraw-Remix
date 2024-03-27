@@ -187,13 +187,6 @@ unsafe fn hitgrab_transition(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 }
 
-// Lengthen sword
-unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.015, y: 1.15, z: 1.045};
-	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
-	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -269,7 +262,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //aerial_power_thrust_jump_reset(fighter, boma, status_kind, situation_kind, motion_kind);
     //heros_spin_movement(fighter, boma, status_kind, situation_kind, motion_kind, stick_x, frame);
     //land_cancel(boma, id, status_kind, motion_kind);
-	sword_length(fighter, boma);
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
