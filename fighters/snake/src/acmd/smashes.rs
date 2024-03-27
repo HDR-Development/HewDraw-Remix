@@ -1,8 +1,21 @@
 use super::*;
 
-//first hit
+unsafe extern "C" fn effect_attacks4charge(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 5.0);
+    for _ in 0..34 {
+        if is_excute(agent) {
+            FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, true);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, false);
+        }
+    }
+}
 
-unsafe extern "C" fn snake_side_smash_game(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -44,37 +57,7 @@ unsafe extern "C" fn snake_side_smash_game(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_side_smash_expr(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_slashs"), 0);
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_snd(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
-        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
-    }
-    frame(lua_state, 53.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_eff(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 13.0);
@@ -100,26 +83,37 @@ unsafe extern "C" fn snake_side_smash_eff(agent : &mut L2CAgentBase) {
     }
 }
 
-//charge
-
-unsafe extern "C" fn snake_side_smash_charge_eff(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 5.0);
-    for _ in 0..34 {
-        if is_excute(agent) {
-            FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, true);
-        }
-        wait(lua_state, 5.0);
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, false);
-        }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
+    }
+    frame(lua_state, 53.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
     }
 }
 
-//second hit
+unsafe extern "C" fn expression_attacks4(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashs"), 0);
+    }
+}
 
-unsafe extern "C" fn snake_side_smash_2_game(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4s2(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -156,37 +150,7 @@ unsafe extern "C" fn snake_side_smash_2_game(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_side_smash_2_expr(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_slashs"), 0);
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_2_snd(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
-        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
-    }
-    frame(lua_state, 49.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_2_eff(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4s2(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 8.0);
@@ -208,9 +172,37 @@ unsafe extern "C" fn snake_side_smash_2_eff(agent : &mut L2CAgentBase) {
     }
 }
 
-//third hit
+unsafe extern "C" fn sound_attacks4s2(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
+    }
+    frame(lua_state, 49.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
+    }
+}
 
-unsafe extern "C" fn snake_side_smash_3_game(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4s2(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashs"), 0);
+    }
+}
+
+unsafe extern "C" fn game_attacks4s3(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 1.0);
@@ -234,37 +226,7 @@ unsafe extern "C" fn snake_side_smash_3_game(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_side_smash_3_expr(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, 0);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_3_snd(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
-        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
-    }
-    frame(lua_state, 38.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
-    }
-}
-
-unsafe extern "C" fn snake_side_smash_3_eff(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4s3(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 8.0);
@@ -286,9 +248,66 @@ unsafe extern "C" fn snake_side_smash_3_eff(agent : &mut L2CAgentBase) {
     }
 }
 
-////changed down-smash to spinning double kick
+unsafe extern "C" fn sound_attacks4s3(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_sword_swing_s"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
+    }
+    frame(lua_state, 38.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_snake_squat_gear"));
+    }
+}
 
-unsafe extern "C" fn snake_down_smash_game(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4s3(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, 0);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
+    }
+}
+
+unsafe extern "C" fn effect_attacklw4charge(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 5.0);
+    for _ in 0..34 {
+        if is_excute(agent) {
+            FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, -2, 0, 0, 0, 1, 4, 0, 10, 0, 0, 0, true);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, false);
+        }
+    }
+}
+
+unsafe extern "C" fn expression_attacklw4charge(agent : &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        physics!(agent, *MA_MSC_CMD_PHYSICS_START_CHARGE, 0.2, 0.2, -1, 0.7, 0.5, -1, Hash40::new("invalid"));
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, 0);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, 0);
+    }
+}
+
+unsafe extern "C" fn game_attacklw4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 7.0);
@@ -321,28 +340,7 @@ unsafe extern "C" fn snake_down_smash_game(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_down_smash_snd(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack_smash_l"));
-        PLAY_SE(agent, Hash40::new("se_snake_smash_l01"));
-    }
-    frame(lua_state, 31.0);
-    if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
-        // PLAY_SE(agent, Hash40::new("vc_snake_attack04"));
-        // PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack_smash_s"));
-        PLAY_SE(agent, Hash40::new("se_snake_smash_l02"));
-    }
-}
-
-unsafe extern "C" fn snake_down_smash_eff(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 7.0);
@@ -370,56 +368,48 @@ unsafe extern "C" fn snake_down_smash_eff(agent : &mut L2CAgentBase) {
     }
 }
 
-//charge
-
-unsafe extern "C" fn snake_down_smash_charge_exp(agent : &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw4(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 8.0);
     if is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        physics!(agent, *MA_MSC_CMD_PHYSICS_START_CHARGE, 0.2, 0.2, -1, 0.7, 0.5, -1, Hash40::new("invalid"));
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold1"), 0, true, 0);
+        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
     }
-    frame(lua_state, 60.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_smashhold2"), 0, true, 0);
+        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack_smash_l"));
+        PLAY_SE(agent, Hash40::new("se_snake_smash_l01"));
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack"));
+        // PLAY_SE(agent, Hash40::new("vc_snake_attack04"));
+        // PLAY_SEQUENCE(agent, Hash40::new("seq_snake_rnd_attack_smash_s"));
+        PLAY_SE(agent, Hash40::new("se_snake_smash_l02"));
     }
 }
 
-unsafe extern "C" fn snake_down_smash_charge_eff(agent : &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
-    frame(lua_state, 5.0);
-    for _ in 0..34 {
-        if is_excute(agent) {
-            FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, -2, 0, 0, 0, 1, 4, 0, 10, 0, 0, 0, true);
-        }
-        wait(lua_state, 5.0);
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, false);
-        }
-    }
-}
+pub fn install(agent: &mut Agent) {
+    agent.acmd("effect_attacks4charge", effect_attacks4charge);
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("effect_attacks4", effect_attacks4);
+    agent.acmd("sound_attacks4", sound_attacks4);
+    agent.acmd("expression_attacks4", expression_attacks4);
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .acmd("game_attacks4", snake_side_smash_game)
-        .acmd("expression_attacks4", snake_side_smash_expr)
-        .acmd("sound_attacks4", snake_side_smash_snd)
-        .acmd("effect_attacks4", snake_side_smash_eff)
-        .acmd("effect_attacks4charge", snake_side_smash_charge_eff)
-        .acmd("game_attacks4s2", snake_side_smash_2_game)
-        .acmd("expression_attacks4s2", snake_side_smash_2_expr)
-        .acmd("sound_attacks4s2", snake_side_smash_2_snd)
-        .acmd("effect_attacks4s2", snake_side_smash_2_eff)
-        .acmd("game_attacks4s3", snake_side_smash_3_game)
-        .acmd("expression_attacks4s3", snake_side_smash_3_expr)
-        .acmd("sound_attacks4s3", snake_side_smash_3_snd)
-        .acmd("effect_attacks4s3", snake_side_smash_3_eff)
-        .acmd("game_attacklw4", snake_down_smash_game)
-        .acmd("sound_attacklw4", snake_down_smash_snd)
-        .acmd("effect_attacklw4", snake_down_smash_eff)
-        .acmd("expression_attacklw4charge", snake_down_smash_charge_exp)
-        .acmd("effect_attacklw4charge", snake_down_smash_charge_eff)
-        .install();
+    agent.acmd("game_attacks4s2", game_attacks4s2);
+    agent.acmd("effect_attacks4s2", effect_attacks4s2);
+    agent.acmd("sound_attacks4s2", sound_attacks4s2);
+    agent.acmd("expression_attacks4s2", expression_attacks4s2);
+
+    agent.acmd("game_attacks4s3", game_attacks4s3);
+    agent.acmd("effect_attacks4s3", effect_attacks4s3);
+    agent.acmd("sound_attacks4s3", sound_attacks4s3);
+    agent.acmd("expression_attacks4s3", expression_attacks4s3);
+
+    agent.acmd("effect_attacklw4charge", effect_attacklw4charge);
+    agent.acmd("expression_attacklw4charge", expression_attacklw4charge);
+
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("effect_attacklw4", effect_attacklw4);
+    agent.acmd("sound_attacklw4", sound_attacklw4);
 }

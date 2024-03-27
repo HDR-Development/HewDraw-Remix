@@ -7,6 +7,13 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+mod c4;
+mod cypher;
+mod nikita;
+mod nikitamissile;
+mod trenchmortar;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +46,15 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("snake");
+    acmd::install(agent);
+    status::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    c4::install();
+    cypher::install();
+    nikita::install();
+    nikitamissile::install();
+    trenchmortar::install();
 }

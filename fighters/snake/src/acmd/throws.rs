@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn snake_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -25,7 +24,7 @@ unsafe extern "C" fn snake_catch_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -47,7 +46,7 @@ unsafe extern "C" fn snake_catch_dash_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.3);
 }
 
-unsafe extern "C" fn snake_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 1.1);
@@ -70,10 +69,8 @@ unsafe extern "C" fn snake_catch_turn_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.43);
 }
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .acmd("game_catch", snake_catch_game)
-        .acmd("game_catchdash", snake_catch_dash_game)
-        .acmd("game_catchturn", snake_catch_turn_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
 }

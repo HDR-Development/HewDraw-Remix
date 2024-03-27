@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn snake_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -26,7 +25,7 @@ unsafe extern "C" fn snake_attack_s3_s_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_s3_s2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -52,7 +51,7 @@ unsafe extern "C" fn snake_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -83,7 +82,7 @@ unsafe extern "C" fn snake_attack_hi3_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -117,11 +116,9 @@ unsafe extern "C" fn snake_attack_lw3_game(agent: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .acmd("game_attacks3", snake_attack_s3_s_game)
-        .acmd("game_attacks3s2", snake_attack_s3_s2_game)
-        .acmd("game_attackhi3", snake_attack_hi3_game)
-        .acmd("game_attacklw3", snake_attack_lw3_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

@@ -38,12 +38,10 @@ unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install() {
-    Agent::new("snake")
-        .status(End, *FIGHTER_STATUS_KIND_REBIRTH, snake_rebirth_end)
-        .install();
-    appeal::install();
-    attack_s4::install();
-    catch::install();
-    special_s::install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, snake_rebirth_end);
+    appeal::install(agent);
+    attack_s4::install(agent);
+    catch::install(agent);
+    special_s::install(agent);
 }

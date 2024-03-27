@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn snake_attack_air_n_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -70,7 +70,7 @@ unsafe extern "C" fn snake_attack_air_n_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_air_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -106,7 +106,7 @@ unsafe extern "C" fn snake_attack_air_f_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -145,7 +145,7 @@ unsafe extern "C" fn snake_attack_air_b_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_air_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -175,7 +175,7 @@ unsafe extern "C" fn snake_attack_air_hi_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn snake_attack_air_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -244,12 +244,10 @@ unsafe extern "C" fn snake_attack_air_lw_game(agent: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .acmd("game_attackairn", snake_attack_air_n_game)
-        .acmd("game_attackairf", snake_attack_air_f_game)
-        .acmd("game_attackairb", snake_attack_air_b_game)
-        .acmd("game_attackairhi", snake_attack_air_hi_game)
-        .acmd("game_attackairlw", snake_attack_air_lw_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

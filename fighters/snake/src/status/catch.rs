@@ -210,32 +210,10 @@ unsafe extern "C" fn snake_grab_wait_status_end(fighter: &mut L2CFighterCommon) 
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_CATCH_WAIT)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_PULL,
-            snake_grab_pull_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_DASH_PULL,
-            snake_grab_dash_pull_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-            snake_grab_attack_status_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_CATCH_WAIT,
-            snake_grab_wait_status_main,
-        )
-        .status(
-            End,
-            *FIGHTER_STATUS_KIND_CATCH_WAIT,
-            snake_grab_wait_status_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_PULL, snake_grab_pull_status_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_DASH_PULL, snake_grab_dash_pull_status_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_ATTACK, snake_grab_attack_status_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, snake_grab_wait_status_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_CATCH_WAIT, snake_grab_wait_status_end);
 }

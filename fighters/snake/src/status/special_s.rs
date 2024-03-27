@@ -64,12 +64,7 @@ pub unsafe fn change_motion_by_situation(fighter: &mut L2CFighterCommon, skip_ch
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
 }
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            snake_side_special_status_main,
-        )
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, snake_side_special_status_main);
 }
