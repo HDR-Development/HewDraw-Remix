@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -281,10 +281,10 @@ unsafe extern "C" fn sound_justshieldoff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damageflyhi);
+    agent.acmd("sound_damageflyn", sound_damageflyhi);
+    agent.acmd("sound_damageflytop", sound_damageflyhi);
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
     
     agent.acmd("game_dash", game_dash);

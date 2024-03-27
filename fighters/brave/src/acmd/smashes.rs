@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -410,7 +410,7 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4", game_attacks4s);
+    agent.acmd("game_attacks4", game_attacks4);
     agent.acmd("effect_attacks4", effect_attacks4);
     agent.acmd("sound_attacks4", sound_attacks4);
     agent.acmd("expression_attacks4", expression_attacks4);

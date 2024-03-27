@@ -7,6 +7,11 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod pkfire;
+mod pkflash;
+mod pkthunder;
+mod yoyo;
+
 use smash::{
     lib::{
         L2CValue,
