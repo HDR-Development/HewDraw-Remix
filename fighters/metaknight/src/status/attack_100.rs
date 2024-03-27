@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_100
 
 unsafe extern "C" fn metaknight_attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_Attack100_common();

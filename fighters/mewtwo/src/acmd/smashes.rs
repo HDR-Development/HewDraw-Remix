@@ -1,32 +1,4 @@
-
 use super::*;
-
-unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.499);
-    }
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.000);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 361, 95, 0, 30, 4.0, 0.0, 10.2, 8.6, Some(0.0), Some(10.7), Some(9.8), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 20.0, 361, 93, 0, 30, 6.3, 0.0, 15.5, 17.299999, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-    
-}
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -52,7 +24,32 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
+}
+
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        FT_MOTION_RATE(agent, 1.499);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        FT_MOTION_RATE(agent, 1.000);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 361, 95, 0, 30, 4.0, 0.0, 10.2, 8.6, Some(0.0), Some(10.7), Some(9.8), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 20.0, 361, 93, 0, 30, 6.3, 0.0, 15.5, 17.299999, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
@@ -79,7 +76,6 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
@@ -122,7 +118,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
@@ -168,14 +163,15 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4hi", game_attacks4hi);
     agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
     agent.acmd("game_attacks4lw", game_attacks4lw);
+
     agent.acmd("game_attackhi4", game_attackhi4);
 	agent.acmd("effect_attackhi4", effect_attackhi4);
+    
     agent.acmd("game_attacklw4", game_attacklw4);
 }

@@ -191,12 +191,12 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack100", game_attack100);
     agent.acmd("effect_attack100", effect_attack100);
     agent.acmd("sound_attack100start", sound_attack100start);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

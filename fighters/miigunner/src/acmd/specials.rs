@@ -8,7 +8,6 @@ unsafe extern "C" fn game_specialn1start(agent: &mut L2CAgentBase) {
 		ArticleModule::generate_article_enable(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, false, 0);
 		WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_BULLET_DISP);
 	}
-
 }
 
 unsafe extern "C" fn game_specialnifiremax(agent: &mut L2CAgentBase) {
@@ -102,7 +101,6 @@ unsafe extern "C" fn effect_specialn1firemax(agent: &mut L2CAgentBase) {
 			}
 		}
 	}
-
 }
 
 unsafe extern "C" fn sound_specialn1firemax(agent: &mut L2CAgentBase) {
@@ -122,7 +120,6 @@ unsafe extern "C" fn sound_specialn1firemax(agent: &mut L2CAgentBase) {
 			PLAY_SE(agent, Hash40::new("se_miigunner_final04"));
 		}
 	}
-
 }
 
 unsafe extern "C" fn game_specialn2loop(agent: &mut L2CAgentBase) {
@@ -143,7 +140,6 @@ unsafe extern "C" fn game_specialn2loop(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
 	}
-
 }
 
 unsafe extern "C" fn game_specialn3start(agent: &mut L2CAgentBase) {
@@ -156,7 +152,6 @@ unsafe extern "C" fn game_specialn3start(agent: &mut L2CAgentBase) {
 	frame(lua_state, 16.0);
 	FT_MOTION_RATE_RANGE(agent, 16.0, 30.0, 6.0);
 	frame(lua_state, 25.0);
-
 }
 
 unsafe extern "C" fn effect_specialn3start(agent: &mut L2CAgentBase) {

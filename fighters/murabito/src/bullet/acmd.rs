@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_shootf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -16,6 +17,7 @@ unsafe extern "C" fn game_shootf(agent: &mut L2CAgentBase) {
     }
     
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_shootf", game_shootf);
 }

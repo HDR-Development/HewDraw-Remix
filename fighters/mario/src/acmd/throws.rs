@@ -21,7 +21,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
@@ -42,7 +41,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
@@ -63,7 +61,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
@@ -150,15 +147,14 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.game_acmd("game_catch", game_catch);
-    agent.game_acmd("game_catchdash", game_catchdash);
-    agent.game_acmd("game_catchturn", game_catchturn);
-    agent.game_acmd("game_throwf", game_throwf);
-    agent.game_acmd("game_throwb", game_throwb);
-    agent.game_acmd("game_throwhi", game_throwhi);
-    agent.game_acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_throwf", game_throwf);
+    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwlw", game_throwlw);
 }

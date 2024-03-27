@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn miiswordsman_tornadoshot_fly_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -16,5 +16,5 @@ unsafe extern "C" fn miiswordsman_tornadoshot_fly_game(agent: &mut L2CAgentBase)
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fly", miiswordsman_tornadoshot_fly_game);
+    agent.acmd("game_fly", game_fly);
 }

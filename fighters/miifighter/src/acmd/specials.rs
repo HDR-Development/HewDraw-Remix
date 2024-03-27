@@ -342,7 +342,6 @@ unsafe extern "C" fn game_specialhi12(agent: &mut L2CAgentBase) {
         sv_kinetic_energy!(set_stable_speed, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * fall_x_mul, 0.0);
         sv_kinetic_energy!(set_accel_y_mul, agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fall_acl_y_mul);
     }
-
 }
 
 unsafe extern "C" fn effect_specialhi12(agent: &mut L2CAgentBase) {
@@ -466,7 +465,6 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MIIFIGHTER_STATUS_SYOTEN_KICK_FLAG_SET_ROLL_BACK_ANGLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
@@ -551,7 +549,6 @@ unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MIIFIGHTER_STATUS_SYOTEN_KICK_FLAG_SET_ROLL_BACK_ANGLE);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallw1(agent: &mut L2CAgentBase) {
@@ -794,7 +791,6 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
@@ -1131,9 +1127,11 @@ pub fn install(agent: &mut Agent) {;
     agent.acmd("game_specialairn2start", game_specialn2start);
     agent.acmd("game_specialn2finish", game_specialn2finish);
     agent.acmd("game_specialairn2finish", game_specialairn2finish);
+
     agent.acmd("game_specials1end", game_specials1end);
     agent.acmd("game_specialairs1end", game_specialairs1end);
     agent.acmd("game_specialairs2start", game_specialairs2start);
+
     agent.acmd("game_specialhi1", game_specialhi1);
     agent.acmd("effect_specialhi1", effect_specialhi1);
     agent.acmd("effect_specialairhi1", effect_specialhi1);
@@ -1147,6 +1145,7 @@ pub fn install(agent: &mut Agent) {;
     agent.acmd("expression_specialairhi12", expression_specialhi12);
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("game_specialairhi2", game_specialairhi2);
+
     agent.acmd("game_speciallw1", game_speciallw1);
     agent.acmd("effect_speciallw1", effect_speciallw1);
     agent.acmd("sound_speciallw1", sound_speciallw1);
@@ -1156,14 +1155,17 @@ pub fn install(agent: &mut Agent) {;
     agent.acmd("game_speciallw1loop", game_speciallw1loop);
     agent.acmd("effect_speciallw1loop", effect_speciallw1loop);
     agent.acmd("game_speciallw1landing", game_speciallw1landing);
+
     agent.acmd("game_specialhi3", game_specialhi3);
     agent.acmd("game_specialairhi3", game_specialhi3);
     agent.acmd("effect_specialhi3", effect_specialhi3);
     agent.acmd("effect_specialairhi3", effect_specialairhi3);
+
     agent.acmd("game_speciallw2start", game_speciallw2start);
     agent.acmd("game_specialairlw2start", game_specialairlw2start);
     agent.acmd("game_specialairlw2kick", game_specialairlw2kick);
     agent.acmd("game_specialairlw2autoattack", game_specialairlw2autoattack);
+    
     agent.acmd("game_speciallw3catch", game_speciallw3catch);
     agent.acmd("game_specialairlw3catch", game_speciallw3catch);
     agent.acmd("game_speciallw3throw", game_speciallw3throw);

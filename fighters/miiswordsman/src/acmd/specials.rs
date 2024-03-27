@@ -93,7 +93,6 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 36.0);
     FT_MOTION_RATE(agent, 1.0);
-
 }
 
 unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
@@ -1786,6 +1785,7 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn1", game_specialn1);
     agent.acmd("game_specialairn1", game_specialn1);
+
     agent.acmd("game_specialn2", game_specialn2);
     agent.acmd("game_specialairn2", game_specialn2);
     agent.acmd("effect_specialn2", effect_specialn2);
@@ -1794,6 +1794,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairn2", sound_specialn2);
     agent.acmd("expression_specialn2", expression_specialn2);
     agent.acmd("expression_specialairn2", expression_specialn2);
+
     agent.acmd("game_specialn3end", game_specialn3end);
     agent.acmd("game_specialn3endturn", game_specialn3end);
     agent.acmd("game_specialn3endmax", game_specialn3end);
@@ -1802,49 +1803,58 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn3endturn", game_specialairn3end);
     agent.acmd("game_specialairn3endmax", game_specialairn3end);
     agent.acmd("game_specialairn3endmaxturn", game_specialairn3end);
+
     agent.acmd("game_specials1start", game_specials1start);
     agent.acmd("game_specialairs1start", game_specialairs1start);
     agent.acmd("game_specials1", game_specials1);
     agent.acmd("game_specialairs1", game_specialairs1);
+
     agent.acmd("game_specials2dash", game_specials2dash);
     agent.acmd("game_specials2attack", game_specials2attack);
     agent.acmd("effect_specials2attack", effect_specials2attack);
     agent.acmd("game_specialairs2dash", game_specialairs2dash);
     agent.acmd("game_specialairs2attack", game_specialairs2attack);
     agent.acmd("effect_specialairs2attack", effect_specialairs2attack);
+
     agent.acmd("game_specials3_1", game_specials3_1);
     agent.acmd("game_specials3_1hi", game_specials3_1hi);
     agent.acmd("game_specials3_1lw", game_specials3_1lw);
     agent.acmd("game_specialairs3_1", game_specialairs3_1);
     agent.acmd("game_specialairs3_1hi", game_specialairs3_1hi);
     agent.acmd("game_specialairs3_1lw", game_specialairs3_1lw);
+
     agent.acmd("game_specialhi1start", game_specialhi1start);
     agent.acmd("game_specialairhi1", game_specialairhi1);
     agent.acmd("game_specialhi1end", game_specialhi1end);
     agent.acmd("game_specialairhi1end", game_specialairhi1end);
+
     agent.acmd("game_specialhi2hold", game_specialhi2hold);
     agent.acmd("game_specialhi2holdair", game_specialhi2holdair);
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("effect_specialhi2", effect_specialhi2);
     agent.acmd("game_specialhi2landing", game_specialhi2landing);
     agent.acmd("game_specialhi2fall", game_specialhi2fall);
+
     agent.acmd("game_specialhi3", game_specialhi3);
     agent.acmd("game_specialairhi3", game_specialairhi3);
+
     agent.acmd("game_speciallw1hit", game_speciallw1hit);
     agent.acmd("game_specialairlw1hit", game_specialairlw1hit);
-    //.acmd("game_speciallw1hitlv1", miiswordsman_special_lw1_hit_lv1_game)
-    //.acmd("game_specialairlw1hitlv1", miiswordsman_special_air_lw1_hit_lv1_game)
-    //.acmd("game_speciallw1hitlv2", miiswordsman_special_lw1_hit_lv2_game)
-    //.acmd("game_specialairlw1hitlv2", miiswordsman_special_air_lw1_hit_lv2_game)
+    //agent.acmd("game_speciallw1hitlv1", miiswordsman_special_lw1_hit_lv1_game);
+    //agent.acmd("game_specialairlw1hitlv1", miiswordsman_special_air_lw1_hit_lv1_game);
+    //agent.acmd("game_speciallw1hitlv2", miiswordsman_special_lw1_hit_lv2_game);
+    //agent.acmd("game_specialairlw1hitlv2", miiswordsman_special_air_lw1_hit_lv2_game);
+
     agent.acmd("game_speciallw2", game_speciallw2);
     agent.acmd("game_specialairlw2", game_speciallw2);
     agent.acmd("effect_speciallw2", effect_speciallw2);
     agent.acmd("effect_specialairlw2", effect_speciallw2);
     agent.acmd("sound_speciallw2", sound_speciallw2);
     agent.acmd("sound_specialairlw2", sound_speciallw2);
+    
     agent.acmd("game_speciallw3", game_speciallw3);
-    //.acmd("game_speciallw3end", miiswordsman_special_lw3_end_game)
+    //agent.acmd("game_speciallw3end", miiswordsman_special_lw3_end_game);
     agent.acmd("game_specialairlw3", game_specialairlw3);
     agent.acmd("game_specialairlw3end", game_specialairlw3end);
-    //.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game)
+    //agent.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game);
 }

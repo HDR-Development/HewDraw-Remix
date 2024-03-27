@@ -1,7 +1,5 @@
 use super::*;
-use globals::*;
 utils::import!(common::djc::attack_air_main_status);
-// status script import
 
 extern "Rust" {
     #[link_name = "attack_air_float_pre"]

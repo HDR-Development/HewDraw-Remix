@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn metaknight_attack_s3_s_game(agent: &mut L2CAgentBase) {
@@ -19,7 +18,6 @@ unsafe extern "C" fn metaknight_attack_s3_s_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-
 }
 
 unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
@@ -63,7 +61,6 @@ unsafe extern "C" fn metaknight_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-
 }
 
 unsafe extern "C" fn metaknight_attack_s3_s3_game(agent: &mut L2CAgentBase) {
@@ -78,7 +75,6 @@ unsafe extern "C" fn metaknight_attack_s3_s3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn metaknight_attack_hi3_game(agent: &mut L2CAgentBase) {
@@ -104,7 +100,6 @@ unsafe extern "C" fn metaknight_attack_hi3_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn metaknight_attack_hi3_expression(agent: &mut L2CAgentBase) {
@@ -130,7 +125,6 @@ unsafe extern "C" fn metaknight_attack_hi3_expression(agent: &mut L2CAgentBase) 
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
-
 }
 
 unsafe extern "C" fn metaknight_attack_lw3_game(agent: &mut L2CAgentBase) {
@@ -150,7 +144,6 @@ unsafe extern "C" fn metaknight_attack_lw3_game(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.75);
     frame(lua_state, 22.0);
     FT_MOTION_RATE(agent, 1.0);
-
 }
 
 unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
@@ -175,8 +168,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attacks3", effect_attacks3);
     agent.acmd("game_attacks3s2", metaknight_attack_s3_s2_game);
     agent.acmd("game_attacks3s3", metaknight_attack_s3_s3_game);
+
     agent.acmd("game_attackhi3", metaknight_attack_hi3_game);
     agent.acmd("expression_attackhi3", metaknight_attack_hi3_expression);
+    
     agent.acmd("game_attacklw3", metaknight_attack_lw3_game);
     agent.acmd("effect_attacklw3", effect_attacklw3);
 }

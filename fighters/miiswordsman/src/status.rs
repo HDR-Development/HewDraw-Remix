@@ -1,6 +1,10 @@
 use super::*;
 use globals::*;
 // status script import
+
+// yeah these need to get separated into their own individual files later loool
+// delete these comments when thats done
+// - love, mokl 
  
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD
 

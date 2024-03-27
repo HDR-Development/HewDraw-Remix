@@ -27,7 +27,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
@@ -207,7 +206,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 			WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
 		}
     }
-
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -235,7 +233,6 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
 			LAST_EFFECT_SET_COLOR(agent, 0.15, 0.55, 10.0);
 		}
     }
-
 }
 
 unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
@@ -331,7 +328,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
@@ -527,7 +523,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
 	}
-
 }
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
@@ -568,7 +563,6 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
 			LAST_EFFECT_SET_COLOR(agent, 0.15, 0.55, 10.0);
 		}
 	}
-
 }
 
 pub fn install(agent: &mut Agent) {

@@ -22,7 +22,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
@@ -126,7 +125,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -172,7 +170,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
@@ -196,7 +193,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
@@ -242,22 +238,22 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    
-}
+unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.game_acmd("game_attackairn", game_attackairn);
-    agent.game_acmd("game_attackairf", game_attackairf);
-    agent.effect_acmd("effect_attackairf", effect_attackairf);
-    agent.game_acmd("game_attackairb", game_attackairb);
-    agent.effect_acmd("effect_attackairb", effect_attackairb);
-    agent.game_acmd("game_attackairhi", game_attackairhi);
-    agent.game_acmd("game_attackairlw", game_attackairlw);
-    agent.effect_acmd("effect_attackairlw", effect_attackairlw);
-    agent.sound_acmd("sound_attackairlw", sound_attackairlw);
-    agent.expression_acmd("expression_attackairlw", expression_attackairlw);
-    agent.game_acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("game_attackairn", game_attackairn);
+
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
+
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+
+    agent.acmd("game_attackairhi", game_attackairhi);
+
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
+    agent.acmd("game_landingairlw", null);
 }

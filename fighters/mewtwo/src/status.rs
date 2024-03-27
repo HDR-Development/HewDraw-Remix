@@ -32,10 +32,11 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start); 
+
     jump_aerial::install(agent);
     attack_air::install(agent);
     float::install(agent);
     fall::install(agent);
     special_n::install(agent);
-    agent.on_start(on_start); 
 }
