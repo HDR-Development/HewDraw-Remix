@@ -49,7 +49,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gekkouga_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -66,7 +66,6 @@ unsafe extern "C" fn gekkouga_attack_dash_game(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
