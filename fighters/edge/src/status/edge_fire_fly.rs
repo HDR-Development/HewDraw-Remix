@@ -89,9 +89,7 @@ unsafe extern "C" fn sub_fly(fighter: &mut L2CWeaponCommon, status: L2CValue) ->
     return 1.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("edge_fire")
-        .status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, fly_s_main)
-        .status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M, fly_m_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S, fly_s_main);
+    agent.status(Main, *WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M, fly_m_main);
 }

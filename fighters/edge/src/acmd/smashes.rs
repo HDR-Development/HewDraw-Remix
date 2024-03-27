@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn sephiroth_attack_s4_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -50,7 +50,7 @@ unsafe extern "C" fn sephiroth_attack_s4_s_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_s4_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -106,7 +106,7 @@ unsafe extern "C" fn sephiroth_attack_s4_s_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_hi4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -167,7 +167,7 @@ unsafe extern "C" fn sephiroth_attack_hi4_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_hi4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -231,7 +231,7 @@ unsafe extern "C" fn sephiroth_attack_hi4_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_lw4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -290,7 +290,7 @@ unsafe extern "C" fn sephiroth_attack_lw4_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sephiroth_attack_lw4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -361,13 +361,11 @@ unsafe extern "C" fn sephiroth_attack_lw4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .acmd("game_attacks4", sephiroth_attack_s4_s_game)
-        .acmd("effect_attacks4", sephiroth_attack_s4_s_effect)
-        .acmd("game_attackhi4", sephiroth_attack_hi4_game)
-        .acmd("effect_attackhi4", sephiroth_attack_hi4_effect)
-        .acmd("game_attacklw4", sephiroth_attack_lw4_game)
-        .acmd("effect_attacklw4", sephiroth_attack_lw4_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("effect_attacks4", game_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("effect_attacklw4", effect_attacklw4);
 }

@@ -7,6 +7,11 @@ pub mod acmd;
 pub mod status;
 pub mod opff;
 
+mod fire;
+mod flare1;
+mod flare2;
+mod flash;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,7 +44,16 @@ use utils::{
 use smashline::*;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("edge");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+
+    agent.install();
+
+    fire::install();
+    flare1::install();
+    flare2::install();
+    flash::install();
+
 }

@@ -101,8 +101,6 @@ unsafe extern "C" fn special_hi_set_kinetics(fighter: &mut L2CFighterCommon, par
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
 }

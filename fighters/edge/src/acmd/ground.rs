@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn sephiroth_attack_11_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -25,7 +25,7 @@ unsafe extern "C" fn sephiroth_attack_11_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_11_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -49,7 +49,7 @@ unsafe extern "C" fn sephiroth_attack_11_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sephiroth_attack_12_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -74,7 +74,7 @@ unsafe extern "C" fn sephiroth_attack_12_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn sephiroth_attack_13_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -109,7 +109,7 @@ unsafe extern "C" fn sephiroth_attack_13_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sephiroth_attack_13_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -144,7 +144,7 @@ unsafe extern "C" fn sephiroth_attack_13_effect(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn sephiroth_attack_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
@@ -171,13 +171,11 @@ unsafe extern "C" fn sephiroth_attack_dash_game(agent: &mut L2CAgentBase) {
 
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .acmd("game_attack11", sephiroth_attack_11_game)
-        .acmd("expression_attack11", sephiroth_attack_11_expression)
-        .acmd("game_attack12", sephiroth_attack_12_game)
-        .acmd("game_attack13", sephiroth_attack_13_game)
-        .acmd("effect_attack13", sephiroth_attack_13_effect)
-        .acmd("game_attackdash", sephiroth_attack_dash_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("expression_attack11", expression_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("effect_attack13", effect_attack13);
+    agent.acmd("game_attackdash", game_attackdash);
 }

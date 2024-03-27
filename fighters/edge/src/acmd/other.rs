@@ -1,7 +1,7 @@
 
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -26,7 +26,7 @@ unsafe extern "C" fn damageflyhi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -41,7 +41,7 @@ unsafe extern "C" fn damageflyroll_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -55,7 +55,7 @@ unsafe extern "C" fn dash_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 4.0);
@@ -68,7 +68,7 @@ unsafe extern "C" fn dash_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -83,88 +83,6 @@ unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
     }
     
 }
-
-unsafe extern "C" fn edge_fire_special_n1_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    
-}
-
-unsafe extern "C" fn edge_fire_special_n2_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    
-}
-
-unsafe extern "C" fn edge_fire_burst_s_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_furafura"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosionm"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-        AttackModule::disable_tip(boma);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 10.5, 70, 64, 0, 77, 12.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
-    }
-}
-
-unsafe extern "C" fn edge_flare1_fly_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        AttackModule::disable_tip(boma);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 361, 30, 0, 10, 2.0, 0.0, -1.0, 0.0, Some(0.0), Some(-1.0), Some(-8.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 2.0, 361, 100, 0, 10, 2.0, 0.0, -1.0, 0.0, Some(0.0), Some(-1.0), Some(-8.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 2, 0, Hash40::new("top"), 1.5, 361, 30, 0, 10, 3.5, 0.0, -1.0, -1.5, Some(0.0), Some(-1.0), Some(-6.5), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 3, 0, Hash40::new("top"), 2.0, 361, 100, 0, 10, 3.5, 0.0, -1.0, -1.5, Some(0.0), Some(-1.0), Some(-6.5), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        AttackModule::set_add_reaction_frame(boma, 0, 6.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, 6.0, false);
-        AttackModule::set_add_reaction_frame(boma, 2, 6.0, false);
-        AttackModule::set_add_reaction_frame(boma, 3, 6.0, false);
-    }
-    
-}
-
-unsafe extern "C" fn edge_flare2_exp_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 75, 75, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !WorkModule::is_flag(boma, *WEAPON_EDGE_FLARE2_INSTANCE_WORK_ID_FLAG_REFLECT) {
-            notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
-        }
-    }
-}
-
-unsafe extern "C" fn edge_flare2_fly_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_furafura"), 15, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 50, 75, 0, 65, 1.5, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.4, 2.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 45, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
-    }
-}
-
-unsafe extern "C" fn edge_flare2_try_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 6.5, 53, 75, 0, 50, 1.5, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
-    }
-}
-
 unsafe extern "C" fn edge_flash_game_attack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -190,7 +108,7 @@ unsafe extern "C" fn edge_flash_game_attack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -205,7 +123,7 @@ unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -219,33 +137,15 @@ unsafe extern "C" fn escape_air_slide_game(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflyhi_sound)
-        .acmd("sound_damageflyn", damageflyhi_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflyhi_sound)
-        .acmd("game_dash", dash_game)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .install();
-    smashline::Agent::new("edge_fire")
-        .acmd("game_specialn1", edge_fire_special_n1_game)
-        .acmd("game_specialn2", edge_fire_special_n2_game)
-        .acmd("game_bursts", edge_fire_burst_s_game)
-        .install();
-    smashline::Agent::new("edge_flare1")
-        .acmd("game_fly", edge_flare1_fly_game)
-        .install();
-    smashline::Agent::new("edge_flare2")
-        .acmd("game_exp", edge_flare2_exp_game)
-        .acmd("game_fly", edge_flare2_fly_game)
-        .acmd("game_try", edge_flare2_try_game)
-        .install();
-    smashline::Agent::new("edge_flash")
-        .acmd("game_attack", edge_flash_game_attack)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", sound_damageflyhi);
+    agent.acmd("sound_damageflylw", sound_damageflyhi);
+    agent.acmd("sound_damageflyn", sound_damageflyhi);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflytop", sound_damageflyhi);
+    agent.acmd("game_dash", game_dash);
+    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }

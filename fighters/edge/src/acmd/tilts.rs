@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn edge_attack_s3_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -36,7 +36,7 @@ unsafe extern "C" fn edge_attack_s3_hi_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -85,7 +85,7 @@ unsafe extern "C" fn edge_attack_s3_hi_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -121,7 +121,7 @@ unsafe extern "C" fn edge_attack_s3_s_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_s3_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -170,7 +170,7 @@ unsafe extern "C" fn edge_attack_s3_s_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_s3_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -206,7 +206,7 @@ unsafe extern "C" fn edge_attack_s3_lw_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -259,7 +259,7 @@ unsafe extern "C" fn edge_attack_s3_lw_effect(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -294,7 +294,7 @@ unsafe extern "C" fn edge_attack_hi3_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_hi3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 12.5);
@@ -330,7 +330,7 @@ unsafe extern "C" fn edge_attack_hi3_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_attack_hi3_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -348,7 +348,7 @@ unsafe extern "C" fn edge_attack_hi3_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_attack_hi3_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -364,7 +364,7 @@ unsafe extern "C" fn edge_attack_hi3_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -390,7 +390,7 @@ unsafe extern "C" fn edge_attack_lw3_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_attack_lw3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -425,19 +425,17 @@ unsafe extern "C" fn edge_attack_lw3_effect(agent: &mut L2CAgentBase) {
     
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .acmd("game_attacks3hi", edge_attack_s3_hi_game)
-        .acmd("effect_attacks3hi", edge_attack_s3_hi_effect)
-        .acmd("game_attacks3", edge_attack_s3_s_game)
-        .acmd("effect_attacks3", edge_attack_s3_s_effect)
-        .acmd("game_attacks3lw", edge_attack_s3_lw_game)
-        .acmd("effect_attacks3lw", edge_attack_s3_lw_effect)
-        .acmd("game_attackhi3", edge_attack_hi3_game)
-        .acmd("effect_attackhi3", edge_attack_hi3_effect)
-        .acmd("sound_attackhi3", edge_attack_hi3_sound)
-        .acmd("expression_attackhi3", edge_attack_hi3_expression)
-        .acmd("game_attacklw3", edge_attack_lw3_game)
-        .acmd("effect_attacklw3", edge_attack_lw3_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks3hi", game_attacks3hi);
+    agent.acmd("effect_attacks3hi", effect_attacks3hi);
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("effect_attacks3", effect_attacks3);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
+    agent.acmd("effect_attacks3lw", effect_attacks3lw);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
+    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
 }

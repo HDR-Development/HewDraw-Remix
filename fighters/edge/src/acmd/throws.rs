@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn edge_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -21,7 +21,7 @@ unsafe extern "C" fn edge_catch_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -41,7 +41,7 @@ unsafe extern "C" fn edge_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 10.0);
@@ -61,7 +61,7 @@ unsafe extern "C" fn edge_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_throw_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -85,7 +85,7 @@ unsafe extern "C" fn edge_throw_b_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_throw_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -117,7 +117,7 @@ unsafe extern "C" fn edge_throw_hi_game(agent: &mut L2CAgentBase) {
 
 }
 
-unsafe extern "C" fn edge_throw_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 16.0);
@@ -159,7 +159,7 @@ unsafe extern "C" fn edge_throw_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_throw_hi_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -177,7 +177,7 @@ unsafe extern "C" fn edge_throw_hi_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_throw_hi_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -190,7 +190,7 @@ unsafe extern "C" fn edge_throw_hi_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -211,7 +211,7 @@ unsafe extern "C" fn edge_throw_lw_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn edge_throw_lw_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -251,17 +251,15 @@ unsafe extern "C" fn edge_throw_lw_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .acmd("game_catch", edge_catch_game)
-        .acmd("game_catchdash", edge_catch_dash_game)
-        .acmd("game_catchturn", edge_catch_turn_game)
-        .acmd("game_throwb", edge_throw_b_game)
-        .acmd("game_throwhi", edge_throw_hi_game)
-        .acmd("effect_throwhi", edge_throw_hi_effect)
-        .acmd("sound_throwhi", edge_throw_hi_sound)
-        .acmd("expression_throwhi", edge_throw_hi_expression)
-        .acmd("game_throwlw", edge_throw_lw_game)
-        .acmd("effect_throwlw", edge_throw_lw_effect)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("effect_throwhi", effect_throwhi);
+    agent.acmd("sound_throwhi", sound_throwhi);
+    agent.acmd("expression_throwhi", expression_throwhi);
+    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("effect_throwlw", effect_throwlw);
 }

@@ -490,11 +490,9 @@ pub unsafe extern "C" fn edge_special_hi_rush_main(fighter: &mut L2CFighterCommo
 //     0.into()
 // }
 
-pub fn install() {
-    smashline::Agent::new("edge")
+pub fn install(agent: &mut Agent) {
         //.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_pre)
         //.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_main)
-        .status(Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_main)
+    agent.status(Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_main);
         //.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_end)
-        .install();
 }

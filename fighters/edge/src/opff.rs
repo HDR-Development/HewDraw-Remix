@@ -127,11 +127,7 @@ pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFight
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("edge")
-        .on_line(Main, edge_frame_wrapper)
-        .install();
-    smashline::Agent::new("edge_flaredummy")
-        .on_line(Main, shadowflare_orb_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, edge_frame_wrapper);
+    agent.on_line(Main, shadowflare_orb_callback);
 }
