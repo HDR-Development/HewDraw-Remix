@@ -3,8 +3,11 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-pub mod status;
+
 pub mod opff;
+pub mod status;
+
+// articles
 
 mod pkfire;
 mod pkthunder;
@@ -43,8 +46,8 @@ use smashline::*;
 pub fn install() {
     let agent = &mut Agent::new("lucas");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 
     pkfire::install();

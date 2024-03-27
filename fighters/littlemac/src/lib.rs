@@ -3,8 +3,10 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-pub mod status;
+
 pub mod opff;
+pub mod status;
+
 mod vtable_hook;
 
 use smash::{
@@ -37,11 +39,12 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let agent = &mut Agent::new("littlemac");
     acmd::install(agent);
-    status::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 }
