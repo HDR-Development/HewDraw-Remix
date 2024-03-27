@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -50,7 +49,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -87,7 +85,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.7);
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -117,6 +114,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
 }

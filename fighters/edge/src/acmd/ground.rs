@@ -22,7 +22,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
@@ -71,7 +70,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
@@ -141,7 +139,6 @@ unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("edge_attack_dash2"), Hash40::new("swordl1"), -3.0, 0, -1.0, 0, 0, 0, 0.65, true);
         LAST_EFFECT_SET_RATE(agent, 0.75);
     }
-
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -168,7 +165,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -177,5 +173,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

@@ -2,18 +2,10 @@ use super::*;
 use globals::*;
 
 mod special_n;
-
 mod special_s;
 mod special_s_jump;
-
 mod special_hi;
-
-// FIGHTER_STATUS_KIND_JUMP_SQUAT
-
-unsafe extern "C" fn end_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_end_JumpSquat();
-    0.into()
-}
+mod jump_squat;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -33,22 +25,18 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn diddy_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_DIDDY {
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on fighter init            
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
     special_n::install(agent);
     special_s::install(agent);
     special_s_jump::install(agent);
     special_hi::install(agent);
-    agent.status(End, *FIGHTER_STATUS_KIND_JUMP_SQUAT, end_jump_squat);
-    agent.on_start(diddy_init);
-    agent.install();
+    jump_squat::install(agent);
 }

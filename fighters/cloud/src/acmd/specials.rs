@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
@@ -37,7 +36,6 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
@@ -73,7 +71,6 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
     }
-    
 }
 
 unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
@@ -106,7 +103,6 @@ unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
@@ -142,7 +138,6 @@ unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
-    
 }
 
 unsafe extern "C" fn game_specials1_lb(agent: &mut L2CAgentBase) {
@@ -170,7 +165,6 @@ unsafe extern "C" fn game_specials1_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs1_lb(agent: &mut L2CAgentBase) {
@@ -198,7 +192,6 @@ unsafe extern "C" fn game_specialairs1_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specials2_lb(agent: &mut L2CAgentBase) {
@@ -223,7 +216,6 @@ unsafe extern "C" fn game_specials2_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs2_lb(agent: &mut L2CAgentBase) {
@@ -248,7 +240,6 @@ unsafe extern "C" fn game_specialairs2_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specials3_lb(agent: &mut L2CAgentBase) {
@@ -310,7 +301,6 @@ unsafe extern "C" fn game_specials3_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x25813802b6));
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs3_lb(agent: &mut L2CAgentBase) {
@@ -368,7 +358,6 @@ unsafe extern "C" fn game_specialairs3_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x25813802b6));
     }
-    
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
@@ -437,7 +426,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_SHIFT);
     }
-    
 }
 
 unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
@@ -477,7 +465,6 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.5, 45, 80, 0, 60, 2.0, 0.0, 2.0, 10.4, Some(0.0), Some(2.0), Some(-1.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(agent, 1, 0, Hash40::new("top"), 4.5, 45, 80, 0, 60, 4.0, 0.0, 4.6, 9.4, Some(0.0), Some(4.2), Some(-1.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    
 }
 
 unsafe extern "C" fn game_specialhi2fall(agent: &mut L2CAgentBase) {
@@ -503,7 +490,6 @@ unsafe extern "C" fn game_specialhi2fall(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
-    
 }
 
 unsafe extern "C" fn game_specialhi_lb(agent: &mut L2CAgentBase) {
@@ -579,7 +565,6 @@ unsafe extern "C" fn game_specialhi_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhi_lb(agent: &mut L2CAgentBase) {
@@ -655,7 +640,6 @@ unsafe extern "C" fn game_specialairhi_lb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -710,7 +694,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
@@ -765,7 +748,6 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
@@ -779,11 +761,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs2_lb", game_specialairs2_lb);
     agent.acmd("game_specials3_lb", game_specials3_lb);
     agent.acmd("game_specialairs3_lb", game_specialairs3_lb);
+
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("game_specialhi2fall", game_specialhi2fall);
     agent.acmd("game_specialhi_lb", game_specialhi_lb);
     agent.acmd("game_specialairhi_lb", game_specialairhi_lb);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
 }

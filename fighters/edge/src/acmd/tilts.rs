@@ -1,5 +1,53 @@
 use super::*;
 
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_edge_sword1"), Hash40::new("tex_edge_sword2"), 6, Hash40::new("swordl2"), -4.0, 0.0, -0.6, Hash40::new("swordl2"), 29.0, 0.0, 1.4, true, Hash40::new("null"), Hash40::new("swordl2"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, -1.6, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.4);
+        EFFECT_FOLLOW(agent, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.8, 10.4, 3.6, 0.84, 35, 4.1, 1, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+        EFFECT_OFF_KIND(agent, Hash40::new("edge_sword_flare"), false, false);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash_aura"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -33,7 +81,6 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
@@ -82,7 +129,6 @@ unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash_aura"), false, false);
     }
-    
 }
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -118,56 +164,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
-}
-
-unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.5, true);
-        LAST_EFFECT_SET_RATE(agent, 0.8);
-        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.5, true);
-        LAST_EFFECT_SET_RATE(agent, 0.8);
-        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.5, true);
-        LAST_EFFECT_SET_RATE(agent, 0.8);
-        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.5, true);
-        LAST_EFFECT_SET_RATE(agent, 0.8);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_edge_sword1"), Hash40::new("tex_edge_sword2"), 6, Hash40::new("swordl2"), -4.0, 0.0, -0.6, Hash40::new("swordl2"), 29.0, 0.0, 1.4, true, Hash40::new("null"), Hash40::new("swordl2"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
-        EFFECT_FOLLOW(agent, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 1.1);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -7, 0, -1.6, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 1.4);
-        EFFECT_FOLLOW(agent, Hash40::new("edge_slash_arc"), Hash40::new("top"), 1.8, 10.4, 3.6, 0.84, 35, 4.1, 1, true);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(agent) {
-        AFTER_IMAGE_OFF(agent, 3);
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_sword_flare"), false, false);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash"), -1);
-        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash_aura"), -1);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash_aura"), false, false);
-    }
-    
 }
 
 unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
@@ -203,7 +199,6 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
@@ -256,7 +251,6 @@ unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash_aura"), false, false);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
@@ -291,7 +285,6 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
@@ -387,7 +380,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
@@ -422,20 +414,21 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 11, 0, -2, 0, 0, 0, 0.35, 0, 0, 3, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 0.7);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3hi", game_attacks3hi);
-    agent.acmd("effect_attacks3hi", effect_attacks3hi);
     agent.acmd("game_attacks3", game_attacks3);
     agent.acmd("effect_attacks3", effect_attacks3);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
+    agent.acmd("effect_attacks3hi", effect_attacks3hi);
     agent.acmd("game_attacks3lw", game_attacks3lw);
     agent.acmd("effect_attacks3lw", effect_attacks3lw);
+
     agent.acmd("game_attackhi3", game_attackhi3);
     agent.acmd("effect_attackhi3", effect_attackhi3);
     agent.acmd("sound_attackhi3", sound_attackhi3);
     agent.acmd("expression_attackhi3", expression_attackhi3);
+
     agent.acmd("game_attacklw3", game_attacklw3);
     agent.acmd("effect_attacklw3", effect_attacklw3);
 }

@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -128,7 +127,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
@@ -146,7 +144,6 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_falco_attackair_n01"));
     }
-    
 }
 
 unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
@@ -183,7 +180,6 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), -2, 10, 3, -35, -4, -144, 1.3, true);
         LAST_EFFECT_SET_RATE(agent, 2);
     }  
-    
 }
 
 unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
@@ -219,7 +215,6 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_falco_attackhard_l01"));
     }
-
 }
 
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
@@ -255,7 +250,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.0);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -271,7 +265,6 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 10.5, -10.0, 0, 0, 0, 1.35, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_RATE(agent, 1.3);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
@@ -317,7 +310,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase){
@@ -378,15 +370,19 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("game_landingairf", game_landingairf);
     agent.acmd("effect_attackairf", effect_attackairf);
     agent.acmd("expression_attackairf", expression_attackairf);
+
     agent.acmd("sound_attackairb", sound_attackairb);
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("effect_attackairb", effect_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
 }

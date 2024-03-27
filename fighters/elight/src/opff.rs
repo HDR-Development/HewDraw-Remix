@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if (fighter.is_status_one_of(&[

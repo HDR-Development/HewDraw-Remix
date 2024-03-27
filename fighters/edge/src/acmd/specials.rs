@@ -56,7 +56,6 @@ unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
     }
-
 }
 
 unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
@@ -80,7 +79,6 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 60.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
@@ -107,7 +105,6 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     else if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
         FT_MOTION_RATE(agent, 2.0);
     }
-
 }
 
 unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
@@ -493,7 +490,6 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         COL_NORMAL(agent);
     }
-
 }
 
 unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
@@ -522,7 +518,6 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.15);
     frame(lua_state, 50.0);
     FT_MOTION_RATE(agent, 1.0);
-
 }
 
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
@@ -543,17 +538,19 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn1", game_specialn1);
     agent.acmd("game_specialn2", game_specialn2);
     agent.acmd("game_specialairn2", game_specialn2);
-        //.acmd("game_specialhistart", game_specialhistart)
-        //.acmd("effect_specialhistart", effect_specialhistart)
-        //.acmd("game_specialairhistart", game_specialairhistart)
+
+    // agent.acmd("game_specialhistart", game_specialhistart);
+    // agent.acmd("effect_specialhistart", effect_specialhistart);
+    // agent.acmd("game_specialairhistart", game_specialairhistart);
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("effect_specialhi2", effect_specialhi2);
-        //.acmd("game_specialhi1", game_specialhi1)
-        //.acmd("effect_specialhi1", effect_specialhi1)
+    // agent.acmd("game_specialhi1", game_specialhi1);
+    // agent.acmd("effect_specialhi1", effect_specialhi1);
     agent.acmd("game_specialhi1end", game_specialhi1end);
     agent.acmd("game_specialairhi1end", game_specialairhi1end);
     agent.acmd("game_specialhi2end", game_specialhi2end);
     agent.acmd("game_specialairhi2end", game_specialairhi2end);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);

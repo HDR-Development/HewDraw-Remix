@@ -1,14 +1,16 @@
-
 use super::*;
 
-unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 8.0/(31.0 - 1.0));
     if is_excute(agent) {
-        KineticModule::clear_speed_all(boma);
-        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        SET_SPEED_EX(agent, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        
+        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -77,7 +79,6 @@ unsafe extern "C" fn game_specialsstick(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairsjump(agent: &mut L2CAgentBase) {
@@ -104,83 +105,33 @@ unsafe extern "C" fn game_specialairskick(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 8.0/(31.0 - 1.0));
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        KineticModule::clear_speed_all(boma);
+        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        SET_SPEED_EX(agent, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
 }
 
-unsafe extern "C" fn effect_specialncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn sound_specialncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn expression_specialncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn game_specialairncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 8.0/(35.0 - 1.0));
-    if is_excute(agent) {
-        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-}
-
-unsafe extern "C" fn effect_specialairncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn sound_specialairncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn expression_specialairncancel(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
+unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialairhistart", game_specialairhistart);
+    agent.acmd("game_specialncancel", game_specialncancel);
+    agent.acmd("effect_specialncancel", null);
+    agent.acmd("sound_specialncancel", null);
+    agent.acmd("expression_specialncancel", null);
+    agent.acmd("game_specialairncancel", game_specialncancel);
+    agent.acmd("effect_specialairncancel", null);
+    agent.acmd("sound_specialairncancel", null);
+    agent.acmd("expression_specialairncancel", null);
+
     agent.acmd("game_specialsstickattack", game_specialsstickattack);
     agent.acmd("game_specialsstickattack2", game_specialsstickattack2);
     agent.acmd("game_specialsstick", game_specialsstick);
     agent.acmd("game_specialairsjump", game_specialairsjump);
     agent.acmd("game_specialairskick", game_specialairskick);
-    agent.acmd("game_specialncancel", game_specialncancel);
-    agent.acmd("effect_specialncancel", effect_specialncancel);
-    agent.acmd("sound_specialncancel", sound_specialncancel);
-    agent.acmd("expression_specialncancel", expression_specialncancel);
-    agent.acmd("game_specialairncancel", game_specialairncancel);
-    agent.acmd("effect_specialairncancel", effect_specialairncancel);
-    agent.acmd("sound_specialairncancel", sound_specialairncancel);
-    agent.acmd("expression_specialairncancel", expression_specialairncancel);
+
+    agent.acmd("game_specialairhistart", game_specialairhistart);
 }

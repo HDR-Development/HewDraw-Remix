@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {

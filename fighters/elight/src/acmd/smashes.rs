@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -20,10 +19,8 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
         WorkModule::set_int64(boma, hash40("attack_s4_hold") as i64, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
-
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
-
     frame(lua_state, 18.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("haver"), 14.0, 38, 65, 0, 65, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -63,10 +60,8 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
-
     frame(lua_state, 42.0);
     FT_MOTION_RATE(agent, 0.8);
-
 }
 
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
@@ -136,10 +131,10 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
+    
     agent.acmd("game_attacklw4", game_attacklw4);
 }

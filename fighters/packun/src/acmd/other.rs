@@ -1,11 +1,11 @@
 
 use super::*;
 
-unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 15.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
 }

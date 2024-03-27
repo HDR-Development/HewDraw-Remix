@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
@@ -12,6 +11,15 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
         if ArticleModule::is_exist(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_BLASTER){
             ArticleModule::change_motion(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new("open"), false, 0.0);
         }
+    }
+}
+
+unsafe extern "C" fn sound_specialnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
     }
 }
 
@@ -270,24 +278,6 @@ unsafe extern "C" fn expression_speciallwloop(agent: &mut L2CAgentBase) {
     ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
 }
 
-unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn sound_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
 unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -298,26 +288,6 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_shield_off"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-}
-
-unsafe extern "C" fn falco_special_n_start_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
-    }
-
-}
-
-unsafe extern "C" fn falco_special_air_n_start_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
-    }
-
 }
 
 // #[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
@@ -344,14 +314,19 @@ unsafe extern "C" fn falco_special_air_n_start_sound(agent: &mut L2CAgentBase) {
 
 // }
 
+unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart);
     agent.acmd("game_specialnloop", game_specialnloop);
     agent.acmd("game_specialairnstart", game_specialairnstart);
     agent.acmd("game_specialairnloop", game_specialairnloop);
+
     agent.acmd("game_specialairsend", game_specialairsend);
+
     agent.acmd("game_specialhiholdair", game_specialhiholdair);
     agent.acmd("game_specialhi", game_specialhi);
+
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
     agent.acmd("effect_speciallw", effect_speciallw);
@@ -368,14 +343,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlwloop", sound_speciallwloop);
     agent.acmd("expression_speciallwloop", expression_speciallwloop);
     agent.acmd("expression_specialairlwloop", expression_speciallwloop);
-    agent.acmd("game_speciallwend", game_speciallwend);
-    agent.acmd("game_specialairlwend", game_speciallwend);
-    agent.acmd("effect_speciallwend", effect_speciallwend);
-    agent.acmd("effect_specialairlwend", effect_speciallwend);
-    agent.acmd("sound_speciallwend", sound_speciallwend);
-    agent.acmd("sound_specialairlwend", sound_speciallwend);
+    agent.acmd("game_speciallwend", null);
+    agent.acmd("game_specialairlwend", null);
+    agent.acmd("effect_speciallwend", null);
+    agent.acmd("effect_specialairlwend", null);
+    agent.acmd("sound_speciallwend", null);
+    agent.acmd("sound_specialairlwend", null);
     agent.acmd("expression_speciallwend", expression_speciallwend);
     agent.acmd("expression_specialairlwend", expression_speciallwend);
-    agent.acmd("sound_specialnstart", falco_special_n_start_sound);
-    agent.acmd("sound_specialairnstart", falco_special_air_n_start_sound);
+    agent.acmd("sound_specialnstart", sound_specialnstart);
+    agent.acmd("sound_specialairnstart", sound_specialnstart);
 }

@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -47,7 +46,6 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
@@ -103,7 +101,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("edge_attack_dash_aura"), false, false);
     }
-    
 }
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
@@ -164,7 +161,6 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
@@ -228,7 +224,6 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         FOOT_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), -4.5, 0, 2, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-    
 }
 
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
@@ -341,8 +336,7 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             FOOT_EFFECT(agent, Hash40::new("edge_smashlw_smoke"), Hash40::new("top"), 0, 0, 27, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
-    }
-    else{
+    } else {
         frame(lua_state, 21.0);
         if is_excute(agent) {
             EFFECT_FLW_POS(agent, Hash40::new("edge_sword_flash2"), Hash40::new("swordl2"), 22, 0, 0.8, 0, 0, 0, 1.2, true);
@@ -363,9 +357,11 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
+
     agent.acmd("effect_attacks4", game_attackhi4);
     agent.acmd("game_attackhi4", game_attackhi4);
     agent.acmd("effect_attackhi4", effect_attackhi4);
+
     agent.acmd("game_attacklw4", game_attacklw4);
     agent.acmd("effect_attacklw4", effect_attacklw4);
 }
