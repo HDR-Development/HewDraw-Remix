@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn richter_attack_s4_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -28,132 +28,7 @@ unsafe extern "C" fn richter_attack_s4_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_s4_hi_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), -2, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_hold"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.3, true);        
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.2, true);        
-        LAST_EFFECT_SET_RATE(agent, 3.0);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 0.7);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.1, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0.5, 0, 0, 0, 1.2, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.32, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-        EFFECT_FOLLOW(agent, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.2, true);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.4, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 0.3);
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.34, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 29.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 31.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.36, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 34.0);
-    if is_excute(agent) {
-        EffectModule::kill_kind(boma, Hash40::new("richter_whip_straight"), true, true);
-    }
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_firebar_trace"), false, true);
-    }
-}
-
-unsafe extern "C" fn richter_attack_s4_hi_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_whip_holding"));
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_smash_s01"));
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_richter_attack06"));
-    }
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_smash_s02"));
-        PLAY_SE(agent, Hash40::new("se_item_firebar_ll"));
-    }
-}
-
-unsafe extern "C" fn richter_attack_s4_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_sttacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -181,7 +56,7 @@ unsafe extern "C" fn richter_attack_s4_s_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_s4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -285,7 +160,7 @@ unsafe extern "C" fn richter_attack_s4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_s4_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -306,7 +181,7 @@ unsafe extern "C" fn richter_attack_s4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_s4_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -334,133 +209,7 @@ unsafe extern "C" fn richter_attack_s4_lw_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_s4_lw_effect(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), -2, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_hold"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.3, true);        
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.2, true);        
-        LAST_EFFECT_SET_RATE(agent, 3.0);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 0.7);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.1, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_firebar_trace"), Hash40::new("throw"), 0, 0, 0.5, 0, 0, 0, 1.2, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.32, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-        EFFECT_FOLLOW(agent, Hash40::new("richter_whip_light_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("richter_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 65, 0, 1.2, true);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.4, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 0.3);
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.34, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 28.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 29.0);
-    if is_excute(agent) {
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 31.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_staff_shot"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.36, false);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.7, 0.0);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
-        FLASH(agent, 1.0, 0.4, 0.0, 0.2);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-    frame(lua_state, 34.0);
-    if is_excute(agent) {
-        EffectModule::kill_kind(boma, Hash40::new("richter_whip_straight"), true, true);
-    }
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_firebar_trace"), false, true);
-    }
-}
-
-unsafe extern "C" fn richter_attack_s4_lw_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_whip_holding"));
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_smash_s01"));
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_richter_attack06"));
-    }
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_richter_smash_s02"));
-        PLAY_SE(agent, Hash40::new("se_item_firebar_ll"));
-    }
-}
-
-unsafe extern "C" fn richter_attack_hi4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 9.0);
@@ -485,7 +234,7 @@ unsafe extern "C" fn richter_attack_hi4_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_hi4_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -504,7 +253,7 @@ unsafe extern "C" fn richter_attack_hi4_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_hi4_sound(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -521,7 +270,7 @@ unsafe extern "C" fn richter_attack_hi4_sound(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_hi4_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -541,7 +290,7 @@ unsafe extern "C" fn richter_attack_hi4_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack_lw4_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -577,18 +326,22 @@ unsafe extern "C" fn richter_attack_lw4_game(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4hi", richter_attack_s4_hi_game);
-    agent.acmd("effect_attacks4hi", richter_attack_s4_hi_effect);
-    agent.acmd("sound_attacks4hi", richter_attack_s4_hi_sound);
-    agent.acmd("game_attacks4", richter_attack_s4_s_game);
-    agent.acmd("effect_attacks4", richter_attack_s4_effect);
-    agent.acmd("sound_attacks4", richter_attack_s4_sound);
-    agent.acmd("game_attacks4lw", richter_attack_s4_lw_game);
-    agent.acmd("effect_attacks4lw", richter_attack_s4_lw_effect);
-    agent.acmd("sound_attacks4lw", richter_attack_s4_lw_sound);
-    agent.acmd("game_attackhi4", richter_attack_hi4_game);
-    agent.acmd("effect_attackhi4", richter_attack_hi4_effect);
-    agent.acmd("sound_attackhi4", richter_attack_hi4_sound);
-    agent.acmd("expression_attackhi4", richter_attack_hi4_expression);
-    agent.acmd("game_attacklw4", richter_attack_lw4_game);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
+    agent.acmd("effect_attacks4hi", effect_attacks4);
+    agent.acmd("sound_attacks4hi", sound_attacks4);
+
+    agent.acmd("game_attacks4", game_sttacks4);
+    agent.acmd("effect_attacks4", effect_attacks4);
+    agent.acmd("sound_attacks4", sound_attacks4);
+
+    agent.acmd("game_attacks4lw", game_attacks4lw);
+    agent.acmd("effect_attacks4lw", effect_attacks4);
+    agent.acmd("sound_attacks4lw", sound_attacks4);
+
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+    agent.acmd("expression_attackhi4", expression_attackhi4);
+
+    agent.acmd("game_attacklw4", game_attacklw4);
 }

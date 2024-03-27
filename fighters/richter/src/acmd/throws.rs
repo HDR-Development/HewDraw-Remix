@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn richter_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -27,7 +27,7 @@ unsafe extern "C" fn richter_catch_game(agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn richter_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -50,7 +50,7 @@ unsafe extern "C" fn richter_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -73,7 +73,7 @@ unsafe extern "C" fn richter_catch_turn_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_throw_f_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -93,7 +93,7 @@ unsafe extern "C" fn richter_throw_f_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_throw_hi_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -117,7 +117,7 @@ unsafe extern "C" fn richter_throw_hi_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_throw_hi_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 8.0);
@@ -134,7 +134,20 @@ unsafe extern "C" fn richter_throw_hi_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_throw_hi_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_throw_02"));
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_richter_rnd_attack"));
+    }
+}
+
+unsafe extern "C" fn expression_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -147,7 +160,7 @@ unsafe extern "C" fn richter_throw_hi_expression(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_throw_lw_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -169,12 +182,16 @@ unsafe extern "C" fn richter_throw_lw_game(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", richter_catch_game);
-    agent.acmd("game_catchdash", richter_catch_dash_game);
-    agent.acmd("game_catchturn", richter_catch_turn_game);
-    agent.acmd("game_throwf", richter_throw_f_game);
-    agent.acmd("game_throwhi", richter_throw_hi_game);
-    agent.acmd("effect_throwhi", richter_throw_hi_effect);
-    agent.acmd("expression_throwhi", richter_throw_hi_expression);
-    agent.acmd("game_throwlw", richter_throw_lw_game);
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("game_catchturn", game_catchturn);
+
+    agent.acmd("game_throwf", game_throwf);
+
+    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("effect_throwhi", effect_throwhi);
+    agent.acmd("sound_throwhi", sound_throwhi);
+    agent.acmd("expression_throwhi", expression_throwhi);
+
+    agent.acmd("game_throwlw", game_throwlw);
 }
