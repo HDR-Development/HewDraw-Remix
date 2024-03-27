@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 /// cargo carry
 

@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;

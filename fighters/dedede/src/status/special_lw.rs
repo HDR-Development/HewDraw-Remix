@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP_SQUAT
 
 unsafe extern "C" fn speciallwjumpsquat_exec(fighter: &mut L2CFighterCommon) -> L2CValue{
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL){

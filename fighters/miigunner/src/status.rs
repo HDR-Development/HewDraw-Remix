@@ -1,4 +1,6 @@
 use super::*;
+use globals::*;
+// status script import
 
 // Prevents side special from being used if a missile is present
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {

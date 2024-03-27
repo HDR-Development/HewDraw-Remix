@@ -1,5 +1,7 @@
 use super::*;
 use globals::*;
+// status script import
+
 mod special_hi_h;
 mod gaogaen_special_n;
 mod luigi_special_n;

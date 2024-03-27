@@ -1,4 +1,6 @@
 use super::*;
+use globals::*;
+// status script import
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {

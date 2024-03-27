@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback,

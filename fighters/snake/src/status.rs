@@ -1,4 +1,6 @@
 use super::*;
+use globals::*;
+// status script import
 
 mod appeal;
 mod attack_s4;

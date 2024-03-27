@@ -1,5 +1,6 @@
 use super::*;
 use globals::*;
+// status script import
 
 #[skyline::hook(replace=request_change_pokemon)]
 unsafe fn request_change_pokemon() -> bool {

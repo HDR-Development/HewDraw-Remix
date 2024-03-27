@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 utils::import!(common::djc::attack_air_main_status);
+// status script import
 
 mod guard_on;
 mod guard_off;

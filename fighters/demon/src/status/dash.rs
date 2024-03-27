@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_DASH
 
 pub unsafe extern "C" fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();

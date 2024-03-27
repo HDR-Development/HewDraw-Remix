@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 // status script import
  
-
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD
 
 unsafe extern "C" fn pre_final_hold(fighter: &mut L2CFighterCommon) -> L2CValue {

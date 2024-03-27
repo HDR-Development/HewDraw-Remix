@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 // status script import
  
-
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::murabito::instance::DISABLE_SPECIAL_S) {

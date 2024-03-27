@@ -1,5 +1,6 @@
 use super::*;
 use globals::*;
+// status script import
 
 //Forces Grounded Earthquake punch on the ground
 

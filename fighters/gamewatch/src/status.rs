@@ -45,23 +45,18 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn gamewatch_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        if fighter.kind() == *FIGHTER_KIND_GAMEWATCH {
-            fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
-            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
-            fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
-            fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
-            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        }
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on fighter init
+    fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("gamewatch")
-        .on_start(gamewatch_init)
-        .install();
+    agent.on_start(on_start);
+
     special_hi::install(agent);
     special_hi_open::install(agent);
 }

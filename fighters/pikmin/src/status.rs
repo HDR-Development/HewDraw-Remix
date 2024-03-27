@@ -1,4 +1,7 @@
 use super::*;
+use globals::*;
+// status script import
+
 mod escape_air;
 mod attack_air;
 mod rebirth;

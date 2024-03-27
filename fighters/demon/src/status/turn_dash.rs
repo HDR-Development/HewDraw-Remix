@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_TURN_DASH //
+// FIGHTER_STATUS_KIND_TURN_DASH
 
 pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Demon::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);

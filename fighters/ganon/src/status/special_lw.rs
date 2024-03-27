@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

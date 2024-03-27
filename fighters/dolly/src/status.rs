@@ -1,5 +1,6 @@
 use super::*;
 use globals::*;
+// status script import
 
 mod wait;
 mod turn_dash;

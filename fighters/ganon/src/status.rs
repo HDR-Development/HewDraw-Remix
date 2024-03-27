@@ -27,12 +27,10 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     true.into()
 }
 
-extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on agent init
-        fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on agent init
+    fighter.global_table[globals::USE_SPECIAL_N_CALLBACK].assign(&L2CValue::Ptr(should_use_special_n_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
 }
 
 pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
@@ -42,6 +40,7 @@ pub unsafe fn ganon_set_air(fighter: &mut L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
+    
     attack_lw3::install(agent);
     special_n::install(agent);
     special_n_float::install(agent);

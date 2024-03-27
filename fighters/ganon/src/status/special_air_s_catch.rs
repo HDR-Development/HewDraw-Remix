@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_air_s_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::set_rate(fighter.module_accessor, 0.0);

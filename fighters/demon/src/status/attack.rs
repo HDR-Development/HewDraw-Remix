@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_ATTACK //
+// FIGHTER_STATUS_KIND_ATTACK
 // Here to force Kazuya to only use neutral attack to continue the combo.
 
 unsafe extern "C" fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {

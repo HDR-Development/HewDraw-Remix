@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_DEMON_STATUS_KIND_DASH_BACK
 
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback

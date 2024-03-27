@@ -1,5 +1,6 @@
 use super::*;
 use globals::*;
+// status script import
 
 mod finals;
 mod special_cmd4;

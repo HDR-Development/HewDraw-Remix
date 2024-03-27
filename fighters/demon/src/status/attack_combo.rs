@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;

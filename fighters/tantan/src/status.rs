@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 // status script import
  
-
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     //remove double dragon effect

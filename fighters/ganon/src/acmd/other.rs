@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
@@ -70,7 +69,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
@@ -84,7 +82,6 @@ unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    
 }
 
 unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
@@ -98,7 +95,6 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    
 }
 
 unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
@@ -112,7 +108,6 @@ unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    
 }
 
 unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
@@ -126,7 +121,6 @@ unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    
 }
 
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {

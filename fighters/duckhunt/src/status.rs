@@ -1,4 +1,6 @@
 use super::*;
+use globals::*;
+// status script import
 
 mod attacks3;
 mod special_n;

@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
@@ -8,7 +7,6 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
@@ -40,7 +38,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn sound_appealhil(agent: &mut L2CAgentBase) {
@@ -63,7 +60,6 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
-
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
@@ -77,7 +73,6 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    
     frame(lua_state, 29.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
@@ -96,7 +91,6 @@ unsafe extern "C" fn game_down(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         sv_kinetic_energy!(set_limit_speed, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
     }
-
 }
 
 unsafe extern "C" fn game_passive(agent: &mut L2CAgentBase) {
@@ -106,21 +100,25 @@ unsafe extern "C" fn game_passive(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         SET_SPEED_EX(agent, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);
+
     agent.acmd("sound_appealhil", sound_appealhil);
     agent.acmd("sound_appealhir", sound_appealhir);
+
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
+
     agent.acmd("game_downforwardd", game_down);
     agent.acmd("game_downforwardu", game_down);
+    
     agent.acmd("game_downbackd", game_down);
     agent.acmd("game_downbacku", game_down);
+
     agent.acmd("game_passivestandf", game_passive);
     agent.acmd("game_passivestandb", game_passive);
 }

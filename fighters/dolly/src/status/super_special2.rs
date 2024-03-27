@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2 //
+// FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2
 
 pub unsafe extern "C" fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Only use meter if you didn't cancel directly from a different supper

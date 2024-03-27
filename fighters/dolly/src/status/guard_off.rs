@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 pub unsafe extern "C" fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();

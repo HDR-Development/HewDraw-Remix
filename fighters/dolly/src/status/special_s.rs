@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -10,7 +9,7 @@ pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND //
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND
 
 pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -19,7 +18,7 @@ pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B //
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B
 
 pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -28,7 +27,7 @@ pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND //
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND
 
 pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
