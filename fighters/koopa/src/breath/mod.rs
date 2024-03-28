@@ -6,6 +6,6 @@ mod status;
 pub fn install() {
     let agent = &mut Agent::new("koopa_breath");
     acmd::install(agent);
-    status::instal(agent);
+    status::install(agent);
     agent.install();
 }
