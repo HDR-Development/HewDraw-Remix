@@ -63,6 +63,7 @@ pub fn install() {
         miigunner = "miigunner",
         miiswordsman = "miiswordsman",
         murabito = "murabito",
+        ness = "ness",
         packun = "packun",
         pacman = "pacman",
         palutena = "palutena",
