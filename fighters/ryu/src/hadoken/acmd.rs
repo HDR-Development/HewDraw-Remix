@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();

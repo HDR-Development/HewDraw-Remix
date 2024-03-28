@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
@@ -121,7 +120,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_special_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -180,7 +179,7 @@ unsafe extern "C" fn ryu_special_s_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_special_s_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -208,7 +207,7 @@ unsafe extern "C" fn ryu_special_s_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_special_air_s_end_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -230,7 +229,7 @@ unsafe extern "C" fn ryu_special_air_s_end_effect(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_special_air_s_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -289,8 +288,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs", game_specials);
     agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("game_specialairsend", game_specialsend);
-    agent.acmd("effect_specials", ryu_special_s_effect);
-    agent.acmd("effect_specialsend", ryu_special_s_end_effect);
-    agent.acmd("effect_specialairsend", ryu_special_air_s_end_effect);
-    agent.acmd("effect_specialairs", ryu_special_air_s_effect);
+    agent.acmd("effect_specials", effect_specials);
+    agent.acmd("effect_specialsend", effect_specialsend);
+    agent.acmd("effect_specialairsend", effect_specialairsend);
+    agent.acmd("effect_specialairs", effect_specialairs);
 }

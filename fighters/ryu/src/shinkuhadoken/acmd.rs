@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if is_excute(agent) {
@@ -16,6 +17,7 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
+
 pub fn install(agent: &mut Agent) {
-agent.acmd("game_move", game_move);
+    agent.acmd("game_move", game_move);
 }

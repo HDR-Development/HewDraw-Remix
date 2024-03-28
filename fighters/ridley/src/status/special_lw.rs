@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND

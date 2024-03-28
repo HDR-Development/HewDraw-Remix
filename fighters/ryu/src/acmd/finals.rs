@@ -137,6 +137,7 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_final", game_final);
     agent.acmd("game_finalair", game_final);
+    
     agent.acmd("game_finalhit", game_finalhit);
     agent.acmd("game_finalairhit", game_finalhit);
 }

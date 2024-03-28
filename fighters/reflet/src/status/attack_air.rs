@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     #[link_name = "attack_air_float_pre"]

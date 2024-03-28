@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialntronstart(agent: &mut L2CAgentBase) {
@@ -61,7 +60,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
@@ -94,7 +92,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
@@ -102,6 +99,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd( "game_specialairntronstart",game_specialairntronstart);
     agent.acmd("game_specialntronend", game_specialntronend);
     agent.acmd("game_specialairntronend",game_specialairntronend);
+    
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialairhi", game_specialairhi);
 }

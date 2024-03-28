@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -121,13 +120,13 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_attack100(agent: &mut L2CAgentBase) {
     for _ in 0..99 {
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 0.9, 65, 10, 0, 9, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 3.0, false);
-        ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3);
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
-        wait_loop_clear(agent);
-    }
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 0.9, 65, 10, 0, 9, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 3.0, false);
+            ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3);
+            WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
+            wait_loop_clear(agent);
+        }
     }
 }
 
@@ -176,5 +175,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("game_attack100", game_attack100);
     agent.acmd("game_attack100end", game_attack100end);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

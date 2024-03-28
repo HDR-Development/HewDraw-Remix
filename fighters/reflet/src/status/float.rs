@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     #[link_name = "float_pre_common"]
@@ -11,6 +10,8 @@ extern "Rust" {
     #[link_name = "float_end_common"]
     fn float_end_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
+
+// statuses::reflet::FLOAT
 
 unsafe extern "C" fn float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_pre_common(fighter)

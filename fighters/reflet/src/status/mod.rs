@@ -36,11 +36,11 @@ unsafe extern "C" fn reflet_on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.on_start(reflet_on_start);
+
     attack_air::install(agent);
 
     special_n::install(agent);
 
     float::install(agent);
-
-    agent.on_start(reflet_on_start);
 }
