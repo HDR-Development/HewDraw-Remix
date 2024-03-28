@@ -72,13 +72,13 @@ unsafe extern "C" fn pikmin_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 11, 0, 0, 50, 90, 0.75, true);
         LAST_EFFECT_SET_RATE(fighter, 1.0)
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_d"), false, true);
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
+        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
 }
 pub fn install() {
