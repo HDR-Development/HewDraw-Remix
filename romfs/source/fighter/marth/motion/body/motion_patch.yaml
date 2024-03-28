@@ -67,9 +67,12 @@ attack_air_f:
 attack_air_hi:
   extra:
     cancel_frame: 44
+special_hi:
+  extra:
+    xlu_start: 5
 special_air_hi:
   extra:
-    intangible_start_frame: 4
+    xlu_start: 5
 catch:
   flags:
     move: false
