@@ -77,14 +77,29 @@ unsafe extern "C" fn game_attackhi4charge(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+        // PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
+        // agent.clear_lua_stack();
+        // let object = sv_system::battle_object(lua_state) as *mut BattleObject;
+        // if !object.is_null() {
+        //     WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(object as *mut smash::app::Weapon);
+        //     WeaponSpecializer_SimonWhip::set_node_fix_flag_list(object as *mut smash::app::Weapon, 4, 5, 10, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+        // }
     }
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
     if is_excute(agent) {
         PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+        // PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
+        // agent.clear_lua_stack();
+        // let object = sv_system::battle_object(lua_state) as *mut BattleObject;
+        // if !object.is_null() {
+        //     WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(object as *mut smash::app::Weapon);
+        //     WeaponSpecializer_SimonWhip::set_node_fix_flag_list(object as *mut smash::app::Weapon, 4, 5, 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+        // }
     }
 }
 
