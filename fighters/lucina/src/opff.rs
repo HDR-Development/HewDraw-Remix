@@ -92,6 +92,7 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
     }
 }
+
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -108,6 +109,7 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind:
         }
     }
 }
+
 // lets lucina toggle her mask on/off with down taunt
 unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
@@ -211,8 +213,6 @@ pub unsafe fn lucina_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucina")
-        .on_line(Main, lucina_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucina_frame_wrapper);
 }

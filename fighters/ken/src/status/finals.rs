@@ -1,8 +1,6 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-// FIGHTER_STATUS_KIND_FINAL //
+// FIGHTER_STATUS_KIND_FINAL
 
 pub unsafe extern "C" fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
@@ -43,9 +41,7 @@ pub unsafe extern "C" fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue 
     MeterModule::drain_direct(fighter.battle_object, meter_amount);
     ret
 }
-pub fn install() {
-    smashline::Agent::new("ken")
-        .status(Pre, *FIGHTER_STATUS_KIND_FINAL, pre_final)
-        .status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, pre_final2)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_FINAL, pre_final);
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, pre_final2);
 }

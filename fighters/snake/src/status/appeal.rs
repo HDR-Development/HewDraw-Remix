@@ -205,29 +205,11 @@ unsafe extern "C" fn snake_down_taunt_end_status_end(fighter: &mut L2CFighterCom
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     return 0.into()
 }
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(Main, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_main)
-        .status(End, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_end)
-        .status(
-            Main,
-            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT,
-            snake_down_taunt_wait_status_main,
-        )
-        .status(
-            End,
-            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT,
-            snake_down_taunt_wait_status_end,
-        )
-        .status(
-            Main,
-            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END,
-            snake_down_taunt_end_status_main,
-        )
-        .status(
-            End,
-            *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END,
-            snake_down_taunt_end_status_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_APPEAL, snake_taunt_status_end);
+    agent.status(Main, *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT, snake_down_taunt_wait_status_main);
+    agent.status(End, *FIGHTER_SNAKE_STATUS_KIND_APPEAL_WAIT, snake_down_taunt_wait_status_end);
+    agent.status(Main, *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END, snake_down_taunt_end_status_main);
+    agent.status(End, *FIGHTER_SNAKE_STATUS_KIND_APPEAL_END, snake_down_taunt_end_status_end);
 }

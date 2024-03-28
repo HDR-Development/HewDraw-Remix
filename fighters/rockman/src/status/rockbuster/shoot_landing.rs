@@ -1,9 +1,9 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_rockbuster_shoot_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    let was_rockbuster_status = rockman_rockbuster_pre_helper(prev_status.into()).get_bool();
+    let was_rockbuster_status = rockbuster_pre_helper(prev_status.into()).get_bool();
     let fs_succeeds_add = if was_rockbuster_status || prev_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
         *FS_SUCCEEDS_KEEP_SLOPE
     }
@@ -44,15 +44,15 @@ unsafe extern "C" fn rockman_rockbuster_shoot_landing_pre(fighter: &mut L2CFight
     0.into()
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    rockman_rockbuster_main_helper(fighter, true.into(), false.into(), L2CValue::Void(), L2CValue::Void());
+unsafe extern "C" fn rockbuster_shoot_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    rockbuster_main_helper(fighter, true.into(), false.into(), L2CValue::Void(), L2CValue::Void());
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_landing_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(rockbuster_shoot_landing_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_landing_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let helper_ret = rockman_rockbuster_main_loop_helper(fighter, true.into(), false.into()).get_bool();
+unsafe extern "C" fn rockbuster_shoot_landing_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let helper_ret = rockbuster_main_loop_helper(fighter, true.into(), false.into()).get_bool();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -99,11 +99,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
-            rockman_rockbuster_shoot_landing_pre,
+            rockbuster_shoot_landing_pre,
         );
     agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING,
-            rockman_rockbuster_shoot_landing_main,
+            rockbuster_shoot_landing_main,
         );
 }

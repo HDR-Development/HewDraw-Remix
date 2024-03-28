@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 unsafe extern "C" fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -50,7 +49,7 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_edge //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_EDGE
 
 unsafe extern "C" fn bayonetta_special_s_edge_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -98,7 +97,7 @@ unsafe extern "C" fn bayonetta_special_s_edge_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_KICK //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_KICK
 
 unsafe extern "C" fn bayonetta_special_s_kick_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -164,19 +163,13 @@ unsafe extern "C" fn bayonetta_special_s_slow_hit(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end)
-        .install();
-    smashline::Agent::new("bayonetta")
-        .status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main)
-        .status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end);
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end);
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end);
 }

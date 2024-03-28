@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if (fighter.is_status_one_of(&[
@@ -89,8 +88,6 @@ pub unsafe extern "C" fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CF
     side_special_landing_lag(fighter);
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .on_line(Main, elight_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, elight_frame_wrapper);
 }

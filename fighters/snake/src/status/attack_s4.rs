@@ -17,17 +17,7 @@ unsafe extern "C" fn snake_side_smash_status_end(fighter: &mut L2CFighterCommon)
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_S4)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_ATTACK_S4,
-            snake_side_smash_status_main,
-        )
-        .status(
-            End,
-            *FIGHTER_STATUS_KIND_ATTACK_S4,
-            snake_side_smash_status_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4, snake_side_smash_status_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_S4, snake_side_smash_status_end);
 }

@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 /// cargo carry
 
@@ -29,12 +27,6 @@ unsafe extern "C" fn shoulder_landing_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("donkey")
-        .status(
-            Main,
-            *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING,
-            shoulder_landing_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING, shoulder_landing_main);
 }

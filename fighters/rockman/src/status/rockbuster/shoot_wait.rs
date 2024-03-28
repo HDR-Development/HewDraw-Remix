@@ -1,14 +1,14 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut status_data_arg = 0;
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     if step != 0 {
         status_data_arg = 0;
     }
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    let was_rockbuster_status = rockman_rockbuster_pre_helper(prev_status.into()).get_bool();
+    let was_rockbuster_status = rockbuster_pre_helper(prev_status.into()).get_bool();
     let fs_succeeds_add = if was_rockbuster_status || prev_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
         *FS_SUCCEEDS_KEEP_SLOPE
     }
@@ -58,18 +58,18 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterC
     0.into()
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
     let was_walk = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK;
-    rockman_rockbuster_main_helper(fighter, false.into(), false.into(), was_walk.into(), L2CValue::Void());
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_wait_main_loop as *const () as _))
+    rockbuster_main_helper(fighter, false.into(), false.into(), was_walk.into(), L2CValue::Void());
+    fighter.sub_shift_status_main(L2CValue::Ptr(rockbuster_shoot_wait_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let helper_ret = rockman_rockbuster_main_loop_helper(fighter, false.into(), false.into()).get_bool();
+unsafe extern "C" fn rockbuster_shoot_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let helper_ret = rockbuster_main_loop_helper(fighter, false.into(), false.into()).get_bool();
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
@@ -123,7 +123,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
         }
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0
         && !helper_ret
-        && rockman_rockbuster_can_turn_helper(fighter).get_bool() {
+        && rockbuster_can_turn_helper(fighter).get_bool() {
             fighter.change_status(FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN.into(), true.into());
             return 1.into();
         }
@@ -148,11 +148,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT,
-            rockman_rockbuster_shoot_wait_pre,
+            rockbuster_shoot_wait_pre,
         );
     agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT,
-            rockman_rockbuster_shoot_wait_main,
+            rockbuster_shoot_wait_main,
         );
 }

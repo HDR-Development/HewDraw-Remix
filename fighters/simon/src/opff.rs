@@ -125,8 +125,6 @@ pub unsafe fn simon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("simon")
-        .on_line(Main, simon_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, simon_frame_wrapper);
 }

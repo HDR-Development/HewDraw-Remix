@@ -9,8 +9,6 @@ unsafe extern "C" fn mewtwo_fall_end(fighter: &mut L2CFighterCommon) -> L2CValue
     return smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_FALL)(fighter);
 }
 
-pub fn install() {
-    Agent::new("mewtwo")
-        .status(End, *FIGHTER_STATUS_KIND_FALL, mewtwo_fall_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_FALL, mewtwo_fall_end);
 }

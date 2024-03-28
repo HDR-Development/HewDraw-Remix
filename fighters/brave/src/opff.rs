@@ -174,7 +174,7 @@ pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));
 }
 
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     smashline::Agent::new("brave")
         .on_line(Main, brave_frame_wrapper)
         .install();

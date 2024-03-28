@@ -4,7 +4,7 @@ use super::helper::*;
 pub const CHARGE_SHOT_DELAY_CHARGE_FRAME : i32 = 50;
 pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
 
-unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             let prev_escape = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE;
@@ -49,17 +49,17 @@ unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
     let charge_frame = VarModule::get_int(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_FRAME);
     let top = charge_frame as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let bottom = CHARGE_SHOT_MAX_FRAME as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let ratio = top / bottom;
     WorkModule::set_float(fighter.module_accessor, ratio, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_HOLD_RATE);
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_n_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -68,7 +68,7 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
         }
     }
     if StatusModule::is_changing(fighter.module_accessor) || StatusModule::is_situation_changed(fighter.module_accessor) {
-        rockman_special_motion_helper(
+        special_motion_helper(
             fighter,
             hash40("buster_charge_shot").into(),
             hash40("buster_air_charge_shot").into(),
@@ -100,12 +100,12 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
 }

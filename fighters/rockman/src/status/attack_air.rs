@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn rockman_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if [
@@ -11,7 +11,7 @@ unsafe extern "C" fn rockman_attack_air_main(fighter: &mut L2CFighterCommon) -> 
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }
 
-unsafe extern "C" fn rockman_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_AttackAir()
 }
 
@@ -19,7 +19,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Main,
             *FIGHTER_STATUS_KIND_ATTACK_AIR,
-            rockman_attack_air_main,
+            attack_air_main,
         );
-    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, rockman_attack_air_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end);
 }

@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
 pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -71,9 +69,7 @@ pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .status(Pre, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_pre)
-        .status(Main, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_pre);
+    agent.status(Main, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_main);
 }

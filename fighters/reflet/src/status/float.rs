@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     #[link_name = "float_pre_common"]
@@ -11,6 +10,8 @@ extern "Rust" {
     #[link_name = "float_end_common"]
     fn float_end_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
+
+// statuses::reflet::FLOAT
 
 unsafe extern "C" fn float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_pre_common(fighter)
@@ -222,10 +223,8 @@ unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_end_common(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .status(Pre, statuses::reflet::FLOAT, float_pre)
-        .status(Main, statuses::reflet::FLOAT, float_main)
-        .status(End, statuses::reflet::FLOAT, float_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::reflet::FLOAT, float_pre);
+    agent.status(Main, statuses::reflet::FLOAT, float_main);
+    agent.status(End, statuses::reflet::FLOAT, float_end);
 }

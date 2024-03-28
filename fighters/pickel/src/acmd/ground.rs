@@ -1,4 +1,4 @@
 
 use super::*;
 
-pub fn install() {}
+pub fn install(agent: &mut Agent) {}

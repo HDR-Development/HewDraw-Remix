@@ -71,10 +71,8 @@ unsafe extern "C" fn peach_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
     }
     0.into()
 }
-pub fn install() {
-    smashline::Agent::new("peach")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, peach_special_lw_end);
 }

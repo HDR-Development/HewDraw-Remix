@@ -4,8 +4,12 @@
 
 pub mod acmd;
 
-//pub mod status;
 pub mod opff;
+//pub mod status;
+
+// articles
+
+mod kaminari;
 
 use smash::{
     lib::{
@@ -37,8 +41,13 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("pikachu");
+    acmd::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    kaminari::install();
 }

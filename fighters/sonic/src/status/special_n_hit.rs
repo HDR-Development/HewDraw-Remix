@@ -2,6 +2,8 @@ use super::*;
 use globals::*;
 use smashline::*;
 
+// FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT
+
 // Randomized Homing Attack Poses
 
 pub unsafe extern "C" fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -35,12 +37,6 @@ pub unsafe extern "C" fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .status(
-            Main,
-            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT,
-            special_n_hit_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT, special_n_hit_main);
 }

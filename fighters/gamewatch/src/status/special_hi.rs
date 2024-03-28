@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn gamewatch_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
@@ -15,10 +15,10 @@ unsafe extern "C" fn gamewatch_special_hi_main(fighter: &mut L2CFighterCommon) -
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(gamewatch_special_hi_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_main_loop as *const () as _))
 }
 
-unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_transition_group_check_air_cliff();
     if MotionModule::is_end(fighter.module_accessor) {
         let control = ControlModule::get_attack_air_kind(fighter.module_accessor);
@@ -47,22 +47,12 @@ unsafe fn gamewatch_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into()
 }
 
-unsafe extern "C" fn gamewatch_special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            gamewatch_special_hi_main,
-        )
-        .status(
-            Exit,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            gamewatch_special_hi_exit,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status( Exit, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exit);
 }

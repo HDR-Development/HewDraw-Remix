@@ -79,9 +79,7 @@ pub unsafe extern "C" fn ryu_attack_command_4_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .status(Pre, statuses::ryu::ATTACK_COMMAND_4, ryu_attack_command_4_pre)
-        .status(Main, statuses::ryu::ATTACK_COMMAND_4, ryu_attack_command_4_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::ryu::ATTACK_COMMAND_4, ryu_attack_command_4_pre);
+    agent.status(Main, statuses::ryu::ATTACK_COMMAND_4, ryu_attack_command_4_main);
 }

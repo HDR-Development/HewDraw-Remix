@@ -231,8 +231,6 @@ unsafe extern "C" fn uniq_float_start(fighter: &mut L2CFighterCommon) -> L2CValu
     peach_float_start_main_common(fighter)
 }
 
-pub fn install() {
-    Agent::new("peach")
-        .status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start);
 }

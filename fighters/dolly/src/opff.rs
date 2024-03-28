@@ -873,9 +873,7 @@ pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("dolly")
-        .on_line(Main, dolly_frame_wrapper)
-        .on_line(Main, dolly_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, dolly_frame_wrapper);
+    agent.on_line(Main, dolly_meter);
 }

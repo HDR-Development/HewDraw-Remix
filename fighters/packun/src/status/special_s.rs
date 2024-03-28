@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !(fighter.is_situation(*SITUATION_KIND_GROUND))  {
         CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);
         let motion = if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 
@@ -14,10 +14,10 @@ unsafe extern "C" fn packun_special_s_shoot_main(fighter: &mut L2CFighterCommon)
         {Hash40::new("special_s_shoot_s")} else {Hash40::new("special_s_shoot")};
         MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     }  
-    fighter.sub_shift_status_main(L2CValue::Ptr(packun_special_s_shoot_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_shoot_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn packun_special_s_shoot_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_shoot_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -164,8 +164,6 @@ unsafe fn special_s_shoot_helper(fighter: &mut L2CFighterCommon) {
     return;
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, packun_special_s_shoot_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, special_s_shoot_main);
 }

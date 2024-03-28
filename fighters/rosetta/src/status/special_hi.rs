@@ -66,17 +66,7 @@ pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> 
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("rosetta")
-        .status(
-            Pre,
-            *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
-            special_hi_end_pre,
-        )
-        .status(
-            Main,
-            *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
-            special_hi_end_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
+    agent.status(Main, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
 }

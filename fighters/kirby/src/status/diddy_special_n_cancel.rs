@@ -180,47 +180,13 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N,
-            special_n_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE,
-            special_n_charge_main,
-        )
-        .status(
-            Pre,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_pre,
-        )
-        .status(
-            Main,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_main,
-        )
-        .status(
-            End,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL,
-            special_n_cancel_end,
-        )
-        .status(
-            Pre,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_pre,
-        )
-        .status(
-            Main,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_main,
-        )
-        .status(
-            End,
-            statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP,
-            special_n_jump_cancel_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, special_n_main,);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE, special_n_charge_main,);
+    agent.status(Pre, statuses::kirby::DIDDY_SPECIAL_N_CANCEL, special_n_cancel_pre,);
+    agent.status(Main, statuses::kirby::DIDDY_SPECIAL_N_CANCEL, special_n_cancel_main,);
+    agent.status(End, statuses::kirby::DIDDY_SPECIAL_N_CANCEL, special_n_cancel_end,);
+    agent.status(Pre, statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_pre,);
+    agent.status(Main, statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_main,);
+    agent.status(End, statuses::kirby::DIDDY_SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_end,);
 }

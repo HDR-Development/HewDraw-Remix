@@ -37,29 +37,6 @@ unsafe extern "C" fn simon_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(lua_state, 7.0);
-    FT_DESIRED_RATE(fighter, 25.0-7.0, 10.0);
-    frame(lua_state, 25.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 29.0);
-    FT_DESIRED_RATE(fighter, 43.0-29.0, 19.0);
-
-}
-
-unsafe extern "C" fn simon_whip_landing_air_n_game(fighter: &mut L2CAgentBase) {
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
-
 unsafe extern "C" fn simon_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -96,27 +73,6 @@ unsafe extern "C" fn simon_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
-}
-
-unsafe extern "C" fn simon_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.8);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(lua_state, 16.0);
-    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
-    frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
@@ -159,27 +115,6 @@ unsafe extern "C" fn simon_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.8);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(lua_state, 16.0);
-    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
-    frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    
-}
-
 unsafe extern "C" fn simon_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -219,27 +154,6 @@ unsafe extern "C" fn simon_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.8);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(lua_state, 16.0);
-    FT_DESIRED_RATE(fighter, 18.0-16.0, 3.0);
-    frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    
-}
-
 unsafe extern "C" fn simon_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -270,23 +184,6 @@ unsafe extern "C" fn simon_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
-}
-
-unsafe extern "C" fn simon_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
     }
     
 }
@@ -325,23 +222,6 @@ unsafe extern "C" fn simon_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    
-}
-
 unsafe extern "C" fn simon_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -376,23 +256,6 @@ unsafe extern "C" fn simon_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
-    }
-    
-}
-
 unsafe extern "C" fn simon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -422,23 +285,6 @@ unsafe extern "C" fn simon_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
-}
-
-unsafe extern "C" fn simon_whip_attack_air_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
-    }
-    frame(lua_state, 8.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_COLLIDE);
     }
     
 }
@@ -508,18 +354,7 @@ unsafe extern "C" fn simon_attack_air_lw2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("simon_whip")
-        .acmd("game_attackairn", simon_whip_attack_air_n_game)
-        .acmd("game_landingairn", simon_whip_landing_air_n_game)
-        .acmd("game_attackairfhi", simon_whip_attack_air_f_hi_game)
-        .acmd("game_attackairf", simon_whip_attack_air_f_game)
-        .acmd("game_attackairflw", simon_whip_attack_air_f_lw_game)
-        .acmd("game_attackairbhi", simon_whip_attack_air_b_hi_game)
-        .acmd("game_attackairb", simon_whip_attack_air_b_game)
-        .acmd("game_attackairblw", simon_whip_attack_air_b_lw_game)
-        .acmd("game_attackairhi", simon_whip_attack_air_hi_game)
-        .install();
+pub fn install(agent: &mut Agent) {
     smashline::Agent::new("simon")
         .acmd("game_attackairn", simon_attack_air_n_game)
         .acmd("game_attackairfhi", simon_attack_air_f_hi_game)

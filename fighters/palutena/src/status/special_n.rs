@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // red: burn attack
 unsafe extern "C" fn special_n_r_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -515,35 +514,28 @@ unsafe extern "C" fn special_n_g_end(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_R, special_n_r_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_R, special_n_r_main)
-        .status(End, statuses::palutena::SPECIAL_N_R, special_n_r_end)
-        .install();
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_B, special_n_b_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_B, special_n_b_main)
-        .status(End, statuses::palutena::SPECIAL_N_B, special_n_b_end)
-        .install();
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_Y, special_n_y_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_Y, special_n_y_main)
-        .status(End, statuses::palutena::SPECIAL_N_Y, special_n_y_end)
-        .install();
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_P, special_n_p_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_P, special_n_p_main)
-        .status(End, statuses::palutena::SPECIAL_N_P, special_n_p_end)
-        .install();
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_O, special_n_o_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_O, special_n_o_main)
-        .status(End, statuses::palutena::SPECIAL_N_O, special_n_o_end)
-        .install();
-    smashline::Agent::new("palutena")
-        .status(Pre, statuses::palutena::SPECIAL_N_G, special_n_g_pre)
-        .status(Main, statuses::palutena::SPECIAL_N_G, special_n_g_main)
-        .status(End, statuses::palutena::SPECIAL_N_G, special_n_g_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::palutena::SPECIAL_N_R, special_n_r_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_R, special_n_r_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_R, special_n_r_end);
+
+    agent.status(Pre, statuses::palutena::SPECIAL_N_B, special_n_b_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_B, special_n_b_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_B, special_n_b_end);
+
+    agent.status(Pre, statuses::palutena::SPECIAL_N_Y, special_n_y_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_Y, special_n_y_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_Y, special_n_y_end);
+
+    agent.status(Pre, statuses::palutena::SPECIAL_N_P, special_n_p_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_P, special_n_p_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_P, special_n_p_end);
+
+    agent.status(Pre, statuses::palutena::SPECIAL_N_O, special_n_o_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_O, special_n_o_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_O, special_n_o_end);
+
+    agent.status(Pre, statuses::palutena::SPECIAL_N_G, special_n_g_pre);
+    agent.status(Main, statuses::palutena::SPECIAL_N_G, special_n_g_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_G, special_n_g_end);
 }

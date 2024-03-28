@@ -472,17 +472,15 @@ unsafe extern "C" fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopa")
-        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_main)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exec)
-        .status(Exit, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exit)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_init)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_exec)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, specials_fall_init)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_init)
-        .status(Pre, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_pre)
-        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_main)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_main);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exec);
+    agent.status(Exit, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exit);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_init);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_exec);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, specials_fall_init);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_init);
+    agent.status(Pre, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_pre);
+    agent.status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_main);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_exec);
 }

@@ -3,50 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL
-        ]) 
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
-    }
-}
-
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    fastfall_specials(fighter);
-    material_handling(fighter, boma);
-    hitstun_handling(fighter, boma, frame);
-    table_recreate(fighter, boma, status_kind);
-    build_ecb_shift(boma, status_kind);
-    elytra_cancel(boma, status_kind);
-    guardoff_shield(fighter, boma, frame);
-    appeal_lw_loop(fighter, boma, frame);
-    training_mode_resources(fighter, boma, status_kind, stick_x, stick_y);
-    //logging_for_acmd(boma, status_kind);
-}
-
 unsafe fn material_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // wait 2 frames before letting the material table advance, preventing any jumps in entries
     if !VarModule::is_flag(boma.object(), vars::pickel::instance::SHOULD_CYCLE_MATERIAL) {
@@ -384,6 +340,50 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    fastfall_specials(fighter);
+    material_handling(fighter, boma);
+    hitstun_handling(fighter, boma, frame);
+    table_recreate(fighter, boma, status_kind);
+    build_ecb_shift(boma, status_kind);
+    elytra_cancel(boma, status_kind);
+    guardoff_shield(fighter, boma, frame);
+    appeal_lw_loop(fighter, boma, frame);
+    training_mode_resources(fighter, boma, status_kind, stick_x, stick_y);
+    //logging_for_acmd(boma, status_kind);
+}
+
 pub extern "C" fn pickel_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
@@ -397,64 +397,6 @@ pub unsafe fn pickel_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-///               ///
-/// WEAPON FRAMES ///
-///               ///
-
-// minecart
-pub unsafe extern "C" fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe {
-        let boma = weapon.boma();
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
-            let pickel = utils::util::get_battle_object_from_id(owner_id);
-            let pickel_boma = &mut *(*pickel).module_accessor;
-            // Burn double jump when jumping out of Minecart
-            if boma.is_situation(*SITUATION_KIND_AIR)
-            && pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP) {
-                if MotionModule::frame(pickel_boma) <= 1.0
-                && pickel_boma.get_num_used_jumps() < pickel_boma.get_jump_count_max() {
-                    WorkModule::inc_int(pickel_boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                }
-            }
-            // Restore double jump when landing with Minecart
-            if boma.is_situation(*SITUATION_KIND_GROUND)
-            && pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE) {
-                if pickel_boma.get_num_used_jumps() >= pickel_boma.get_jump_count_max() {
-                    WorkModule::dec_int(pickel_boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                }
-            }
-        }
-    }
-}
-
-// anvil
-pub unsafe extern "C" fn pickel_forge_frame(weapon: &mut smash::lua2cpp::L2CFighterBase){
-    unsafe {
-        let boma = weapon.boma();
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
-            let pickel = utils::util::get_battle_object_from_id(owner_id);
-            let pickel_boma = &mut *(*pickel).module_accessor;
-            if pickel_boma.is_motion_one_of(&[Hash40::new("attack_air_lw"),
-                                              Hash40::new("attack_air_lw_2"),
-                                              Hash40::new("attack_air_lw_fall"),])
-            && !boma.is_situation(*SITUATION_KIND_GROUND) 
-            //&& !pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START)
-            && WorkModule::is_flag(boma, *WEAPON_PICKEL_FORGE_INSTANCE_WORK_ID_FLAG_UPDATE_ATTACK){
-                MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_GAME, Hash40::new("game_fallattackride"), -1);
-            }
-        }
-    }
-}
-pub fn install() {
-    smashline::Agent::new("pickel")
-        .on_line(Main, pickel_frame_wrapper)
-        .install();
-    smashline::Agent::new("pickel_trolley")
-        .on_line(Main, pickel_trolley_frame)
-        .install();
-    smashline::Agent::new("pickel_forge")
-        .on_line(Main, pickel_forge_frame)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pickel_frame_wrapper);
 }

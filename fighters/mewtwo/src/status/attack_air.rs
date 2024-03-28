@@ -1,7 +1,5 @@
 use super::*;
-use globals::*;
 utils::import!(common::djc::attack_air_main_status);
-// status script import
 
 extern "Rust" {
     #[link_name = "attack_air_float_pre"]
@@ -52,10 +50,8 @@ pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }
 
-pub fn install() {
-    smashline::Agent::new("mewtwo")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
-        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_init)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

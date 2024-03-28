@@ -5,8 +5,6 @@ const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
 const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
 const BEAKBOMB_END_FRAME: i32 = 25; //Dash timer is shared between ground and air in vl.prc
-
-static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
@@ -535,14 +533,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let lua_state = fighter.lua_state_agent;    
-        let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        on_rebirth(fighter, boma);
-    }
-}
-
 pub unsafe extern "C" fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     buddy_frame(fighter);
@@ -554,9 +544,6 @@ pub unsafe fn buddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("buddy")
-        .on_start(buddy_reset)
-        .on_line(Main, buddy_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, buddy_frame_wrapper);
 }

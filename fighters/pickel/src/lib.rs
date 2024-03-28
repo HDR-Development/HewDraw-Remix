@@ -2,6 +2,22 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 
+pub mod acmd;
+
+pub mod status;
+pub mod opff;
+
+// articles
+
+mod fire;
+mod forge;
+mod melt;
+mod trolley;
+
+// material table hook
+
+pub mod material_table;
+
 use smash::{
     lib::{
         L2CValue,
@@ -31,16 +47,20 @@ use utils::{
     ext::*,
     consts::*,
 };
-
 use smashline::*;
-pub mod acmd;
-pub mod status;
-pub mod opff;
-pub mod material_table;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("pickel");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    fire::install();
+    forge::install();
+    melt::install();
+    trolley::install();
+
     material_table::install();
 }

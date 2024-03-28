@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
@@ -144,17 +143,7 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("ridley")
-        .status(
-            Main,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_CHARGE,
-            special_n_charge_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT,
-            special_n_shoot_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
+    agent.status(Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_main);
 }

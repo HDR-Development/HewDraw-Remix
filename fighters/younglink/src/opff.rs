@@ -128,8 +128,6 @@ pub unsafe fn younglink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("younglink")
-        .on_line(Main, younglink_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, younglink_frame_wrapper);
 }

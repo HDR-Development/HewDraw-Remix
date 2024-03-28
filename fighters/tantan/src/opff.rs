@@ -38,7 +38,7 @@ unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
 
 unsafe fn arms_switch_during_normals(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if [*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind)
-       || ([*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_13")){
+    || ([*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_13")){
         if !boma.is_in_hitlag() {
             if boma.is_cat_flag(Cat1::SpecialLw) {
                 WorkModule::on_flag(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_CHANGE_PUNCH_R);
@@ -143,12 +143,8 @@ unsafe extern "C" fn dragon_frame(weapon: &mut L2CFighterBase) {
         AttackModule::set_power_mul(boma, 1.15);
     }
 }
-pub fn install() {
-    smashline::Agent::new("tantan")
-        .on_line(Main, tantan_frame_wrapper)
-        .install();
-
-    smashline::Agent::new("tantan_punch1")
-        .on_line(Main, dragon_frame)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, tantan_frame_wrapper);
+    agent.on_line(Main, dragon_frame);
+    agent.install();
 }

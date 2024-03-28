@@ -4,8 +4,20 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod attackairf_bullet;
+mod bottomshoot;
+mod fullthrottle;
+mod grenadelauncher;
+mod gunnercharge;
+mod rapidshot_bullet;
+mod stealthbomb;
+mod stealthbomb_s;
+mod supermissile;
 
 use smash::{
     lib::{
@@ -37,9 +49,22 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("miigunner");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    attackairf_bullet::install();
+    bottomshoot::install();
+    fullthrottle::install();
+    grenadelauncher::install();
+    gunnercharge::install();
+    rapidshot_bullet::install();
+    stealthbomb::install();
+    stealthbomb_s::install();
+    supermissile::install();
 }

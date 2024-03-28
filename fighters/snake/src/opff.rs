@@ -141,9 +141,7 @@ unsafe extern "C" fn c4_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         }
     }
 }
-pub fn install() {
-    smashline::Agent::new("snake")
-        .on_line(Main, snake_frame_wrapper)
-        .on_line(Main, c4_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, snake_frame_wrapper);
+    agent.on_line(Main, c4_callback);
 }

@@ -1,9 +1,6 @@
 use super::*;
-use globals::*;
 
- 
-
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D
 
 unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
@@ -40,7 +37,7 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U
 
 unsafe extern "C" fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
@@ -240,17 +237,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
-            bayonetta_specialairs_d_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,
-            bayonetta_specialairs_u_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,bayonetta_specialairs_d_main,);
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,bayonetta_specialairs_u_main,);
 }

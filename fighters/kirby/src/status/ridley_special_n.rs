@@ -132,17 +132,7 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE,
-            special_n_charge_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT,
-            special_n_shoot_status_main,
-        )
-        .install();
-}
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE, special_n_charge_main,);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT, special_n_shoot_status_main,);
+    }

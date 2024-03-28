@@ -195,14 +195,12 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_init)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_main)
-        .status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_init)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_main)
-        .status(Pre, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_pre)
-        .status(Main, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_main)
-        .status(End, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_init);
+        agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_main);
+        agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_init);
+        agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_main);
+        agent.status(Pre, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_pre);
+        agent.status(Main, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_main);
+        agent.status(End, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_end);
 }

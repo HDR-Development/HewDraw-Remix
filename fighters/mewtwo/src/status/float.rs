@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     #[link_name = "float_pre_common"]
@@ -29,10 +28,8 @@ unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_end_common(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("mewtwo")
-        .status(Pre, statuses::mewtwo::FLOAT, float_pre)
-        .status(Main, statuses::mewtwo::FLOAT, float_main)
-        .status(End, statuses::mewtwo::FLOAT, float_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::mewtwo::FLOAT, float_pre);
+    agent.status(Main, statuses::mewtwo::FLOAT, float_main);
+    agent.status(End, statuses::mewtwo::FLOAT, float_end);
 }

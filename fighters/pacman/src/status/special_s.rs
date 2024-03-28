@@ -46,10 +46,8 @@ pub unsafe extern "C" fn fall_special_init(fighter: &mut L2CFighterCommon) -> L2
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_FALL_SPECIAL)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("pacman")
-        .status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main)
-        .status( Main,*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main)
-        .status(Init, *FIGHTER_STATUS_KIND_FALL_SPECIAL, fall_special_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main);
+    agent.status( Main,*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main);
+    agent.status(Init, *FIGHTER_STATUS_KIND_FALL_SPECIAL, fall_special_init);
 }

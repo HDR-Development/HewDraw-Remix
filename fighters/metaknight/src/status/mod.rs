@@ -1,9 +1,11 @@
 use super::*;
+use globals::*;
+// status script import
 
 mod special_s;
 mod attack_100;
 
-pub fn install() {
-    special_s::install();
-    attack_100::install();
+pub fn install(agent: &mut Agent) {
+    special_s::install(agent);
+    attack_100::install(agent);
 }

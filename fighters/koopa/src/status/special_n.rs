@@ -187,13 +187,9 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopa")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec)
-        .status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_execstop)
-        .install();
-    smashline::Agent::new("koopa_breath")
-        .status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, breath_move_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec);
+    agent.status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_execstop);
+    agent.status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, breath_move_main);
 }

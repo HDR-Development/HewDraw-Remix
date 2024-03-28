@@ -16,9 +16,7 @@ unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue
     attack_air_float_main(fighter, statuses::samusd::FLOAT.into())
 }
 
-pub fn install() {
-    smashline::Agent::new("samusd")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

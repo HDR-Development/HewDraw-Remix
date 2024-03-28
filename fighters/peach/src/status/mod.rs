@@ -1,5 +1,6 @@
 use super::*;
-use smashline::*;
+use globals::*;
+// status script import
 
 mod attack_air;
 mod jump_aerial;
@@ -60,23 +61,22 @@ unsafe extern "C" fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-extern "C" fn peach_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // set the callbacks on fighter init
-        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // set the callbacks on fighter init
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
 }
 
-pub fn install() {
-    smashline::Agent::new("peach").on_start(peach_init).install();
-    attack_air::install();
-    jump_aerial::install();
-    special_hi::install();
-    special_s::install();
-    special_lw::install();
-    uniq_float_start::install();
-    uniq_float::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+    
+    attack_air::install(agent);
+    jump_aerial::install(agent);
+    special_hi::install(agent);
+    special_s::install(agent);
+    special_lw::install(agent);
+    uniq_float_start::install(agent);
+    uniq_float::install(agent);
 }

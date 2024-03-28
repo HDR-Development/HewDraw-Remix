@@ -72,8 +72,6 @@ unsafe extern "C" fn catch_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("donkey")
-        .status(Main, *FIGHTER_STATUS_KIND_CATCH_PULL, catch_pull_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_PULL, catch_pull_main);
 }

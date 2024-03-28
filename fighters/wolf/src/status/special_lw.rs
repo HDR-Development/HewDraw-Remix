@@ -119,15 +119,9 @@ pub unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("wolf")
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
-        .status(
-            End,
-            *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
-            special_lw_loop_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+    agent.status(End, *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, special_lw_loop_end);
 }

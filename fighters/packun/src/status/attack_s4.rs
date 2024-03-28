@@ -45,10 +45,8 @@ unsafe extern "C" fn attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Hold_main as *const () as _))
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_START, attack_s4_start_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4, attack_s4_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_hold_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_START, attack_s4_start_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4, attack_s4_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_hold_main);
 }

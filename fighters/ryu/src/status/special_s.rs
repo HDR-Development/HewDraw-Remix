@@ -29,18 +29,8 @@ pub unsafe extern "C" fn init_special_s_loop(fighter: &mut L2CFighterCommon) -> 
     smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .status(
-            Init,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-            init_special_s_command,
-        )
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s)
-        .status(
-            Init,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-            init_special_s_loop,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status( Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,init_special_s_command,);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s);
+    agent.status( Init,*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,init_special_s_loop,);
 }
