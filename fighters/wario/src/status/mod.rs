@@ -6,7 +6,6 @@ mod attack_air;
 mod catch_attack;
 mod throw_kirby;
 
-mod special_s;
 mod special_hi;
 
 pub const THROW_HI_STATUS_KIND: i32 = 0x47;
@@ -22,6 +21,5 @@ pub fn install(agent: &mut Agent) {
     catch_attack::install(agent);
     throw_kirby::install(agent);
 
-    special_s::install(agent);
     special_hi::install(agent);
 }

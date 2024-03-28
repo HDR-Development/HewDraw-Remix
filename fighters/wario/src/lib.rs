@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+mod wariobike;
+
 use smash::{
     lib::{
         L2CValue,
@@ -45,4 +47,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    wariobike::install();
 }
