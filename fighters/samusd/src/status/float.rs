@@ -9,6 +9,8 @@ extern "Rust" {
     fn float_end_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
+// statuses::samusd::FLOAT
+
 unsafe extern "C" fn float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     float_pre_common(fighter)
 }

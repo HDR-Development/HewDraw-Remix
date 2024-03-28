@@ -1,6 +1,6 @@
 use super::*;
 
-pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     if VarModule::is_flag(
         fighter.object(),
@@ -73,13 +73,13 @@ pub unsafe extern "C" fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
             false,
         );
     }
-    fighter.main_shift(guard_main)
+    fighter.main_shift(guard_main_loop)
 }
 
-unsafe extern "C" fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn guard_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardOff_Main()
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard);
+    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard_main);
 }

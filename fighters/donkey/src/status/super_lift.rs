@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING
+
 /// heavy item carry
 
 unsafe extern "C" fn super_lift_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {

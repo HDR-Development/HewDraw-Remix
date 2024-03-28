@@ -1,11 +1,6 @@
 use super::*;
 
-pub fn set_gravity_delay_resume_frame(energy: *mut app::FighterKineticEnergyGravity, frames: i32) {
-    unsafe {
-      *(energy as *mut i32).add(0x50 / 4) = frames;
-      *(energy as *mut bool).add(0x5C) = false;
-    }
-  }
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fighter_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
@@ -80,6 +75,13 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
     0.into()
+}
+
+pub fn set_gravity_delay_resume_frame(energy: *mut app::FighterKineticEnergyGravity, frames: i32) {
+    unsafe {
+      *(energy as *mut i32).add(0x50 / 4) = frames;
+      *(energy as *mut bool).add(0x5C) = false;
+    }
 }
 
 pub fn install(agent: &mut Agent) {

@@ -1,16 +1,18 @@
 use super::*;
 
-//Grab//
+// FIGHTER_STATUS_KIND_CATCH
 
-unsafe extern "C" fn tantan_catch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_pre_Catch();
 }
 
-unsafe extern "C" fn tantan_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_Catch();
 }
 
-unsafe extern "C" fn tantan_catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_CATCH_PULL
+
+unsafe extern "C" fn catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_CATCH {
         fighter.status_CatchPull_common(hash40("catch_wait").into());
         ControlModule::reset_trigger(fighter.module_accessor);
@@ -27,7 +29,7 @@ unsafe extern "C" fn catch_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH, tantan_catch_main);
-    agent.status(Main,*FIGHTER_STATUS_KIND_CATCH_PULL,tantan_catch_pull_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_CATCH, catch_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_CATCH, catch_main);
+    agent.status(Main,*FIGHTER_STATUS_KIND_CATCH_PULL,catch_pull_main);
 }

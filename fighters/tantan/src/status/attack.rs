@@ -1,12 +1,12 @@
 use super::*;
 
-// Normal Jab //
+// FIGHTER_STATUS_KIND_ATTACK
 
-unsafe extern "C" fn tantan_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_pre_Attack();
 }
 
-unsafe extern "C" fn tantan_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
@@ -17,6 +17,6 @@ unsafe extern "C" fn tantan_attack_main(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, tantan_attack_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK, attack_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, attack_main);
 }

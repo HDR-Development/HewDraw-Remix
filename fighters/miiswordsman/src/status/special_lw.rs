@@ -2,7 +2,7 @@ use super::*;
 
 //FIGHTER_STATUS_KIND_SPECIAL_LW
 
-unsafe extern "C" fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lua_state = fighter.lua_state_agent;
     WorkModule::off_flag(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_CONTINUE_MOT);
     main_setup(fighter);
@@ -149,5 +149,5 @@ unsafe extern "C" fn counter_setup(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

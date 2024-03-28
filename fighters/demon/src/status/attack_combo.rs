@@ -4,13 +4,14 @@ extern "Rust" {
     fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
 }
 
-// FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO //
+// FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO 
+
 // Here to force Kazuya to only use neutral attack to continue the combo.
 
-unsafe extern "C" fn demon_attackcombo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_combo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     demon_attackcombo_main_mot_helper(fighter, 2.into());
     MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attackcombo_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(attack_combo_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterCommon, count: L2CValue) {
@@ -41,7 +42,7 @@ unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterC
     );
 }
 
-unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_combo_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
@@ -161,5 +162,5 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, demon_attackcombo_main);
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, attack_combo_main);
 }

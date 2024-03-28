@@ -1,8 +1,8 @@
 use super::*;
 
-// Neutral Special (Air)
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
-unsafe extern "C" fn tantan_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR
     {
         return fighter.status_pre_AttackAir();
@@ -12,7 +12,7 @@ unsafe extern "C" fn tantan_special_n_pre(fighter: &mut L2CFighterCommon) -> L2C
     }
 }
 
-unsafe extern "C" fn tantan_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR
     {
         let fighter_log_attack_kind = *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F;
@@ -28,7 +28,7 @@ unsafe extern "C" fn tantan_special_n_main(fighter: &mut L2CFighterCommon) -> L2
     }
 }
 
-unsafe extern "C" fn tantan_special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         return 0.into();
     }
@@ -38,7 +38,7 @@ unsafe extern "C" fn tantan_special_n_exec(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_main);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, tantan_special_n_exec);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec);
 }

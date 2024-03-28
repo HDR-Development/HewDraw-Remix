@@ -2,7 +2,7 @@ use super::*;
 
 //FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT
 
-unsafe extern "C" fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw1_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if StatusModule::situation_kind(fighter.module_accessor) == WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_COUNTER_WORK_INT_SITUATION_PREV) {
             return L2CValue::I32(0)
@@ -77,5 +77,5 @@ unsafe extern "C" fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCom
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, miiswordsman_speciallw1hit_main);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, special_lw1_hit_main);
 }

@@ -1,12 +1,6 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
-    agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
-    agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
-}
+// statuses::ryu::INSTALL
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -116,4 +110,10 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
         );
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
+    agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
+    agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
 }

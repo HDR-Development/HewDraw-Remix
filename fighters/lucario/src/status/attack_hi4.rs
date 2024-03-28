@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_HI4
+
 pub unsafe extern "C" fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

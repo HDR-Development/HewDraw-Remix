@@ -84,11 +84,7 @@ unsafe extern "C" fn catchwait_nana_main_loop(fighter: &mut L2CFighterCommon) ->
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
-    agent.status(
-        Exit,
-        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP,
-        special_hi_jump_exit,
-    );
+    agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
 }
 
 pub fn install_nana(agent: &mut Agent) {

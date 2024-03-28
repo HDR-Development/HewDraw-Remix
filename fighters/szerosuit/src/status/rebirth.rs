@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_REBIRTH
 
-unsafe extern "C" fn szerosuit_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
@@ -11,5 +11,5 @@ unsafe extern "C" fn szerosuit_rebirth_end(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, szerosuit_rebirth_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rebirth_end);
 }

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+
 unsafe extern "C" fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CHARGE_MELEE_NO_RANDOM) {
         let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED) {

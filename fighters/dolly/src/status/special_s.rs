@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_S
 
-pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -11,7 +11,7 @@ pub unsafe extern "C" fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CVa
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND
 
-pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -20,7 +20,7 @@ pub unsafe extern "C" fn init_special_s_command(fighter: &mut L2CFighterCommon) 
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B
 
-pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_b_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -29,7 +29,7 @@ pub unsafe extern "C" fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CVa
 
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND
 
-pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_b_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
@@ -37,8 +37,8 @@ pub unsafe extern "C" fn init_special_b_command(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, init_special_s);
-    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, init_special_s_command);
-    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, init_special_b);
-    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, init_special_b_command);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
+    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, special_s_command_init);
+    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, special_b_init);
+    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, special_b_command_init);
 }

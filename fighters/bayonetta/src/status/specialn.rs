@@ -223,8 +223,10 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install(agent: &mut Agent) {
         agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init);
         agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+        
         agent.status(Init, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_init);
         agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
+
         agent.status(Pre, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_pre);
         agent.status(Main, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_main);
         agent.status(End, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_end);

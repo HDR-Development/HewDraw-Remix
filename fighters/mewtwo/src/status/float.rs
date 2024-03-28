@@ -1,5 +1,7 @@
 use super::*;
 
+// statuses::mewtwo::FLOAT
+
 extern "Rust" {
     #[link_name = "float_pre_common"]
     fn float_pre_common(fighter: &mut L2CFighterCommon) -> L2CValue;

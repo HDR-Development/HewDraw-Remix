@@ -2,14 +2,14 @@ use super::*;
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH
 
-unsafe extern "C" fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi2_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
     smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH)(fighter)
 }
 
 // not running for some reason
 
-unsafe extern "C" fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi2_rush_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
         //println!("SSD Hit");
@@ -20,7 +20,7 @@ unsafe extern "C" fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END
 // not running for some reason
 
-unsafe extern "C" fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi2_rush_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
@@ -46,9 +46,9 @@ pub unsafe extern "C" fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, pre_special_hi2_rush);
-    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, exec_special_hi2_rush);
-    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, exec_special_hi2_rush_end);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, special_hi2_rush_pre);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, special_hi2_rush_exec);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, special_hi2_rush_end_exec);
 
     agent.status(End, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, special_hi2_bound_end);
 }

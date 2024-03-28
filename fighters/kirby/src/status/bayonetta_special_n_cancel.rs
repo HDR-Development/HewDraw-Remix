@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N
 
 unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_CHARGE
+
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
@@ -82,6 +84,8 @@ unsafe extern "C" fn special_n_charge_substatus(fighter: &mut L2CFighterCommon, 
 
     return 0.into()
 }
+
+// FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT
 
 unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE) {

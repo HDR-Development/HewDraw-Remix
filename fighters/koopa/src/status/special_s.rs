@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S
 
 pub const SPECIAL_S_KIND_F: i32 = 1;
 pub const SPECIAL_S_KIND_B: i32 = 2;

@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD
 
-pub unsafe extern "C" fn exec_special_hi3_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_hi3_hold_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let mut motion_value = 0.28;
 
@@ -16,7 +16,7 @@ pub unsafe extern "C" fn exec_special_hi3_hold(fighter: &mut L2CFighterCommon) -
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END
 
-pub unsafe extern "C" fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_hi3_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mask_flag = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64;
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -45,13 +45,13 @@ pub unsafe extern "C" fn pre_special_hi3_end(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-unsafe extern "C" fn special_hi3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi3_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi3_end_Main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi3_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn special_hi3_end_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi3_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let frame = MotionModule::frame(fighter.module_accessor);
     let mut motion_value = 0.7;
@@ -165,8 +165,8 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, exec_special_hi3_hold);
+    agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, special_hi3_hold_exec);
     
-    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, pre_special_hi3_end);
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end_pre);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END, special_hi3_end_main);
 }

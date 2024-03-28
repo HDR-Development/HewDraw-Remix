@@ -1,6 +1,8 @@
 use super::*;
 use super::helper::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
 }
@@ -46,9 +48,5 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            special_lw_main,
-        );
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_REBIRTH
+
 pub unsafe extern "C" fn rebirth_end(agent: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(agent.module_accessor, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN, false, -1);
     smashline::original_status(End, agent, *FIGHTER_STATUS_KIND_REBIRTH)(agent)

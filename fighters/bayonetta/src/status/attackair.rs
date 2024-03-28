@@ -67,5 +67,5 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
     
-    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,attack_air_f_main,);
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,attack_air_f_main);
 }

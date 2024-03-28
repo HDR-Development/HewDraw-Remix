@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END
 
 unsafe extern "C" fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -18,5 +19,5 @@ unsafe extern "C" fn special_hi_substatus(fighter: &mut L2CFighterCommon, param_
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main,*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_air_end_main);
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_air_end_main);
 }

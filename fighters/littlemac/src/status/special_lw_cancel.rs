@@ -1,5 +1,7 @@
 use super::*;
 
+// statuses::littlemac::SPECIAL_LW_CANCEL
+
 unsafe extern "C" fn special_lw_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

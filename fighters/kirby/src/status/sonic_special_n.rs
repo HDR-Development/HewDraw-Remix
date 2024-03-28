@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
-use smashline::*;
+
+// FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N
 
 pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -93,6 +93,8 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
     }
     0.into()
 }
+
+// FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_HOMING_START
 
 pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let blast_attack = VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK);

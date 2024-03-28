@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
 
-unsafe extern "C" fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw3_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) != *SITUATION_KIND_GROUND {
         if WorkModule::get_int(fighter.module_accessor,*FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION) == *SITUATION_KIND_GROUND {
             if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_AIR {
@@ -145,5 +145,5 @@ unsafe extern "C" fn some6(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, special_lw3_end_main);
 }

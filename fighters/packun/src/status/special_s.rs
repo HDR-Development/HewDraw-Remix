@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT
 
 unsafe extern "C" fn special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !(fighter.is_situation(*SITUATION_KIND_GROUND))  {

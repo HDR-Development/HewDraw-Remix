@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // WEAPON_WARIO_WARIOBIKE_STATUS_KIND_SPECIAL_S_ESCAPE_START
 
@@ -15,5 +14,5 @@ pub unsafe extern "C" fn special_s_escape_start_exit(weapon: &mut L2CWeaponCommo
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Exit,*WEAPON_WARIO_WARIOBIKE_STATUS_KIND_SPECIAL_S_ESCAPE_START,special_s_escape_start_exit,);
+    agent.status(Exit, *WEAPON_WARIO_WARIOBIKE_STATUS_KIND_SPECIAL_S_ESCAPE_START, special_s_escape_start_exit);
 }

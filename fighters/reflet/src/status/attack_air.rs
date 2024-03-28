@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_AIR
+
 extern "Rust" {
     #[link_name = "attack_air_float_pre"]
     fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
@@ -7,11 +9,11 @@ extern "Rust" {
     fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
 
-unsafe extern "C" fn reflet_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     attack_air_float_pre(fighter, statuses::reflet::FLOAT.into())
 }
 
-pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != statuses::reflet::FLOAT {
         VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
@@ -20,12 +22,12 @@ pub unsafe extern "C" fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-unsafe extern "C" fn reflet_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     attack_air_float_main(fighter, statuses::reflet::FLOAT.into())
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_pre);
-    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, init_attack_air);
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, reflet_attack_air_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

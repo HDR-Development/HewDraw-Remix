@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 use vars::wolf::status::*;
 use consts::statuses::wolf::*;

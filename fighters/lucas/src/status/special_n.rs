@@ -1,8 +1,8 @@
 use super::*;
 
-// SPECIAL N
+// SFIGHTER_STATUS_KIND_SPECIAL_N
 
-unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
         return 0.into();
@@ -12,9 +12,9 @@ unsafe extern "C" fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CV
     }
 }
 
-// SPECIAL N HOLD
+// FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD
 
-unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //
     // OLD SPECIAL N STATUS MAIN CODE //
     //
@@ -25,20 +25,20 @@ unsafe extern "C" fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -
     // fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE);
 
     // if !StopModule::is_stop(fighter.module_accessor) {
-    //     lucas_special_n_hold_main_sub_status(fighter, false.into());
+    //     special_n_hold_main_sub_status(fighter, false.into());
     // }
-    // fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
-    // fighter.main_shift(lucas_special_n_hold_main_loop)
+    // fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( special_n_hold_main_sub_status as *const () as _));
+    // fighter.main_shift(special_n_hold_main_loop)
     if !StopModule::is_stop(fighter.module_accessor) {
-        lucas_special_n_hold_main_sub_status(fighter, false.into());
+        special_n_hold_main_sub_status(fighter, false.into());
     }
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_hold"), 0.0, 1.0, false, 0.0, false, false);
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
-    fighter.main_shift(lucas_special_n_hold_main_loop)
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( special_n_hold_main_sub_status as *const () as _));
+    fighter.main_shift(special_n_hold_main_loop)
 
 }
 
-unsafe fn lucas_special_n_check_explosion(fighter: &mut L2CFighterCommon) {
+unsafe fn special_n_check_explosion(fighter: &mut L2CFighterCommon) {
     //
     // OLD PK FREEZE EXPLOSION CODE //
     //
@@ -70,12 +70,12 @@ unsafe fn lucas_special_n_check_explosion(fighter: &mut L2CFighterCommon) {
     // }
 }
 
-unsafe extern "C" fn lucas_special_n_hold_main_sub_status(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
+unsafe extern "C" fn special_n_hold_main_sub_status(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     //
     // OLD SPECIAL N SUBSTATUS CODE //
     //
     // if arg.get_bool() {
-    //     lucas_special_n_check_explosion(fighter);
+    //     special_n_check_explosion(fighter);
     // }
     // if !fighter.is_situation(*SITUATION_KIND_GROUND) {
     //     if !arg.get_bool() {
@@ -102,7 +102,7 @@ unsafe extern "C" fn lucas_special_n_hold_main_sub_status(fighter: &mut L2CFight
     0.into()
 }
 
-unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     //
     // OLD SPECIAL N MAIN LOOP STATUS SCRIPT CODE //
     //
@@ -116,7 +116,7 @@ unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterComm
     // let wait_mtrans_kind = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND);
     // if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
     //     // else block
-    //     lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
+    //     special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
     //         *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"),
     //         Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     // }
@@ -145,14 +145,14 @@ unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterComm
     let wait_mtrans_kind = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND);
     if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
         // else block
-        lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
+        special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
             *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"),
             Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     }
     1.into()
 }
 
-unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
+unsafe extern "C" fn special_n_hold_transition_g2a_kind(
     fighter: &mut L2CFighterCommon,
     mtrans_kind_work_id: i32,
     flag_work_id: i32,
@@ -185,6 +185,6 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, lucas_special_n_pre);
-    agent.status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, lucas_special_n_hold_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
 }

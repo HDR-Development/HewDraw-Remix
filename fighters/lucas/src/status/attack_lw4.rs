@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_LW4
 
-pub unsafe extern "C" fn attack_lw4(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw4_common();
     fighter.main_shift(status_attacklw4_main_param)
 }
@@ -31,5 +31,5 @@ unsafe extern "C" fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon)
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_main);
 }

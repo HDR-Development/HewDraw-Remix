@@ -1,6 +1,8 @@
 use super::*;
 
-//Force opponent rotation
+// FIGHTER_STATUS_KIND_CATCH_ATTACK
+
+// Force opponent rotation
 
 unsafe extern "C" fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
@@ -17,7 +19,7 @@ unsafe extern "C" fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CVal
     return false.into();
 }
 
-//Reset opponent rotation
+// Reset opponent rotation
 
 unsafe extern "C" fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();

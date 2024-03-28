@@ -2,13 +2,13 @@ use super::*;
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
 
-pub unsafe extern "C" fn lucario_special_n_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_n_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
     smashline::original_status(Pre, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT)(fighter)
 }
 
-unsafe extern "C" fn lucario_special_n_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    lucario_special_n_save_charge_status(fighter);
+unsafe extern "C" fn special_n_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    special_n_save_charge_status(fighter);
     0.into()
 }
 
@@ -113,7 +113,7 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT);
     }
-    lucario_special_n_joint_translate(fighter);
+    special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
 }
@@ -157,11 +157,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    lucario_special_n_save_charge_status(fighter);
+    special_n_save_charge_status(fighter);
     0.into()
 }
 
-pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn special_n_joint_translate(fighter: &mut L2CFighterCommon) {
     let havel = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let haver = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
     ModelModule::joint_global_position(
@@ -189,7 +189,7 @@ pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFigh
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD
 
-unsafe extern "C" fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
@@ -213,10 +213,10 @@ unsafe extern "C" fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon)
     MotionModule::set_rate(fighter.module_accessor, rate);
 
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_hold_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_n_hold_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         special_n_set_kinetic(fighter);
@@ -245,23 +245,23 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-unsafe extern "C" fn lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    lucario_special_n_save_charge_status(fighter);
+unsafe extern "C" fn special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    special_n_save_charge_status(fighter);
     0.into()
 }
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX
 
-unsafe extern "C" fn lucario_special_n_max_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_max_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_max") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_max") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     special_n_set_kinetic(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_max_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_n_max_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucario_special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         special_n_set_kinetic(fighter);
@@ -285,8 +285,8 @@ unsafe extern "C" fn lucario_special_n_max_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-unsafe extern "C" fn lucario_special_n_max_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    lucario_special_n_save_charge_status(fighter);
+unsafe extern "C" fn special_n_max_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    special_n_save_charge_status(fighter);
     0.into()
 }
 
@@ -411,7 +411,7 @@ unsafe extern "C" fn special_n_set_kinetic(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
     let curr_status = StatusModule::status_kind(fighter.module_accessor);
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
     let is_kirby = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY;
@@ -457,12 +457,12 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, auraball_shoot_pre);
-    agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_pre);
-    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_end);
+    agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_pre);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_end);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
-    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_main);
-    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_end);
-    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_main);
-    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, lucario_special_n_max_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_main);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_end);
 }

@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK
 
-unsafe extern "C" fn pre_special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let force_air = Vector2f {x: 0.0, y: 10.0};
 
     PostureModule::add_pos_2d(fighter.module_accessor, &force_air);
@@ -37,7 +37,7 @@ unsafe fn miiswordsman_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 */
 
-unsafe extern "C" fn miiswordsman_specials1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) == true {
         fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK.into(), false.into());
         return L2CValue::I32(1);
@@ -53,7 +53,7 @@ unsafe extern "C" fn miiswordsman_specials1_main(fighter: &mut L2CFighterCommon)
     L2CValue::I32(0)
 }
 
-unsafe extern "C" fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT); // Removes on side special attack
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
@@ -110,10 +110,10 @@ unsafe extern "C" fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CVal
     app::sv_kinetic_energy::set_accel(fighter.lua_state_agent);
 
     // But HERE's what we (probably) want
-    fighter.sub_shift_status_main(L2CValue::Ptr(miiswordsman_specials1attack_mainloop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s1_attack_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // custom [
     // drift at apex of flip
     if MotionModule::frame(fighter.module_accessor) > 7.0 && MotionModule::frame(fighter.module_accessor) < 32.0 {
@@ -180,7 +180,7 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END
 
-pub unsafe extern "C" fn pre_special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s1_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -208,17 +208,17 @@ pub unsafe extern "C" fn pre_special_s1_end(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-unsafe extern "C" fn special_s1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s1_end"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s1_end"), 0.0, 1.0, false, 0.0, false, false);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_s1_end_Main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s1_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn special_s1_end_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s1_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
             if !MotionModule::is_end(fighter.module_accessor) {
@@ -290,9 +290,9 @@ unsafe extern "C" fn special_s1_end_Main(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, pre_special_s1_attack);
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack_pre);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, special_s1_attack_main);
     
-    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, pre_special_s1_end);
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end_pre);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END, special_s1_end_main);
 }

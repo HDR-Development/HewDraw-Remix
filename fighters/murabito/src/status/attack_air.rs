@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR
 
-pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if [hash40("attack_air_hi")].contains(&motion) {
@@ -36,5 +36,5 @@ pub unsafe extern "C" fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_REBIRTH
+
 unsafe extern "C" fn rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [

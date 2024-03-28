@@ -1,5 +1,7 @@
 use super::*;
 
+// GANON_SPECIAL_N_FLOAT
+
 unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

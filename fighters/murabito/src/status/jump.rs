@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_JUMP 
 
-pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE {
         if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE_LOOP {
             if !fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool() {
@@ -29,7 +29,7 @@ pub unsafe extern "C" fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     return L2CValue::I32(0);
 }
 
-pub unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_MURABITO_STATUS_KIND_SPECIAL_S_RIDE_LOOP {
         fighter.sub_jump_item_rocketbelt();
         fighter.status_Jump_sub(L2CValue::Hash40s("invalid"), L2CValue::F32(0.0));
@@ -45,6 +45,6 @@ pub unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP, pre_jump);
-    agent.status(Main, *FIGHTER_STATUS_KIND_JUMP, jump);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP, jump_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_JUMP, jump_main);
 }

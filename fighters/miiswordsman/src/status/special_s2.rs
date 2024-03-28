@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH
 
-unsafe extern "C" fn special_s2_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     let s2_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("s2_dash_frame"));
     WorkModule::set_int(fighter.module_accessor, s2_dash_frame, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);
@@ -11,7 +11,7 @@ unsafe extern "C" fn special_s2_dash(fighter: &mut L2CFighterCommon) -> L2CValue
     //     WorkModule::dec_int(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);
     // }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_s2_dash_dec_int as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_dash_main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_dash_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn special_s2_dash_mot_change(fighter: &mut L2CFighterCommon) {
@@ -60,7 +60,7 @@ unsafe extern "C" fn special_s2_dash_unk(fighter: &mut L2CFighterCommon) -> L2CV
     return val.into()
 }
 
-unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut sub_check = fighter.sub_transition_group_check_air_cliff().get_bool();
     if sub_check {
         return 0.into();
@@ -121,12 +121,12 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK
 
-unsafe extern "C" fn special_s2_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     let s2_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("s2_dash_frame"));
     WorkModule::set_int(fighter.module_accessor, s2_dash_frame, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);
     special_s2_attack_mot_change(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_attack_main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_attack_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn special_s2_attack_mot_change(fighter: &mut L2CFighterCommon) {
@@ -152,7 +152,7 @@ unsafe extern "C" fn special_s2_attack_mot_change(fighter: &mut L2CFighterCommon
     }
 }
 
-unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
@@ -214,18 +214,18 @@ unsafe extern "C" fn special_s2_attack_main_helper(fighter: &mut L2CFighterCommo
 
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END
 
-unsafe extern "C" fn pre_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL);
     smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END)(fighter)
 }
 
-unsafe extern "C" fn special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_CONTINUE_MOT);
     special_s2_end_helper(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_end_Main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn special_s2_end_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s2_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into()
     }
@@ -354,10 +354,10 @@ unsafe extern "C" fn sub_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, special_s2_dash);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH, special_s2_dash_main);
 
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, special_s2_attack);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, special_s2_attack_main);
     
-    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, pre_special_s2_end);
-    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end);
+    agent.status(Pre, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end_pre);
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, special_s2_end_main);
 }

@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-unsafe extern "C" fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -31,5 +31,5 @@ unsafe extern "C" fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, pre_special_hi);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
 }

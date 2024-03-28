@@ -2,13 +2,13 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_THROW_KIRBY
 
-unsafe extern "C" fn wario_throwk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
     return fighter.status_pre_ThrowKirby();
 }
 
-unsafe extern "C" fn wario_throwk_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_uniq_process_ThrowKirby_initStatus();
     
     let hitStop = 8;
@@ -17,21 +17,21 @@ unsafe extern "C" fn wario_throwk_init(fighter: &mut L2CFighterCommon) -> L2CVal
     return false.into();
 }
 
-unsafe extern "C" fn wario_throwk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_ThrowKirby();
 }
 
-unsafe extern "C" fn wario_throwk_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.sub_status_uniq_process_ThrowKirby_exitStatus();
 }
 
-unsafe extern "C" fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.status_end_ThrowKirby();
 }
 
-unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let FRAME_FALL = 48.0;
     let FRAME_FALLLOOP = FRAME_FALL+2.0;
     let FRAME_LAND = 55.0;
@@ -85,10 +85,10 @@ unsafe extern "C" fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_pre);
-    agent.status(Init, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_init);
-    agent.status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_main);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exit);
-    agent.status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_end);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, wario_throwk_exec);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_exit);
+    agent.status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_end);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_exec);
 }

@@ -1,6 +1,6 @@
 use super::*;
 
-// FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD //
+// FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD
 
 unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if LinkModule::is_link(fighter.module_accessor, *FIGHTER_NESS_LINK_NO_PK_THUNDER) {
@@ -16,15 +16,15 @@ unsafe extern "C" fn special_hi_hold_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into() 
 }
 
-// FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK //
+// FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK
 
-pub unsafe extern "C" fn special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
     if !StopModule::is_stop(fighter.module_accessor) {
         sub_special_hi_attack(fighter);
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_special_hi_attack as *const () as _));
-    fighter.main_shift(special_hi_attack_main)
+    fighter.main_shift(special_hi_attack_main_loop)
 }
 
 unsafe extern "C" fn sub_special_hi_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -46,7 +46,7 @@ unsafe extern "C" fn sub_special_hi_attack(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -79,5 +79,5 @@ unsafe extern "C" fn special_hi_attack_main(fighter: &mut L2CFighterCommon) -> L
 
 pub fn install(agent: &mut Agent) {
     agent.status(End, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end);
-    agent.status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack);
+    agent.status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack_main);
 }

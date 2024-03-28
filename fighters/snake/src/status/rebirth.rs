@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_REBIRTH
 
-unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
         hash40("appeal_hi_l"),
@@ -36,5 +36,5 @@ unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, snake_rebirth_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rebirth_end);
 }

@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
 
-pub unsafe extern "C" fn end_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] == FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
     || fighter.global_table[STATUS_KIND] == FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL
     || fighter.global_table[STATUS_KIND] == FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING {
@@ -23,7 +23,7 @@ pub unsafe extern "C" fn end_special_hi_jump(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP, end_special_hi_jump);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, end_special_hi_jump);
-    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, end_special_hi_jump);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_jump_end);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, special_hi_jump_end);
 }

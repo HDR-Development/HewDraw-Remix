@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING
+
 /// cargo carry
 
 unsafe extern "C" fn shoulder_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {

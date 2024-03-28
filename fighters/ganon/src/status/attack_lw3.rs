@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_LW3
+
 unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.main_shift(attack_lw3_main_loop)

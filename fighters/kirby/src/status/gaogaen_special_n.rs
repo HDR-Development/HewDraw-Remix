@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
 

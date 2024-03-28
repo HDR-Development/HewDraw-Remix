@@ -2,12 +2,12 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_100
 
-unsafe extern "C" fn metaknight_attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack100_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_Attack100_common();
-    fighter.sub_shift_status_main(L2CValue::Ptr(metaknight_attack100_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(attack100_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn metaknight_attack100_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack100_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 0.into();
@@ -88,5 +88,5 @@ unsafe extern "C" fn metaknight_attack100_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, metaknight_attack100_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_100, attack100_main);
 }

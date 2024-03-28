@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH
+
 unsafe extern "C" fn special_air_s_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::set_rate(fighter.module_accessor, 0.0);
     fighter.main_shift(special_air_s_catch_main_loop)
@@ -51,5 +53,5 @@ unsafe extern "C" fn special_air_s_catch_main_loop(fighter: &mut L2CFighterCommo
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status( Main,*FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH,special_air_s_catch_main);
+    agent.status(Main, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, special_air_s_catch_main);
 }

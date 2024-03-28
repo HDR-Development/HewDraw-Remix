@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_AIR
+
 pub unsafe extern "C" fn attack_air_main(agent: &mut L2CFighterCommon) -> L2CValue {
     agent.sub_attack_air();
     agent.main_shift(attack_air_main_loop)

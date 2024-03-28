@@ -1,6 +1,6 @@
 use super::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_HI //
+// FIGHTER_STATUS_KIND_SPECIAL_HI
 
 pub unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {

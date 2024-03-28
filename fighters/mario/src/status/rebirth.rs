@@ -2,7 +2,7 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_REBIRTH
 
-unsafe extern "C" fn mario_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_CAPPY) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_CAPPY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
@@ -12,5 +12,5 @@ unsafe extern "C" fn mario_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, mario_rebirth_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rebirth_end);
 }

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,6 +32,8 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
+// FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END
+
 unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 
@@ -53,5 +57,6 @@ unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CV
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
-    agent.status(Main,*FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,special_lw_end_main);
+    
+    agent.status(Main, *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END, special_lw_end_main);
 }

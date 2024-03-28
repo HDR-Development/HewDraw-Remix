@@ -131,6 +131,7 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
     agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init);
+    
     agent.status(Pre, statuses::ken::INSTALL, special_lw_install_pre);
     agent.status(Main, statuses::ken::INSTALL, special_lw_install_main);
     agent.status(End, statuses::ken::INSTALL, special_lw_install_end);
