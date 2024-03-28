@@ -3213,7 +3213,7 @@
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">8</float>
-      <float hash="landing_attack_air_frame_lw">16</float>
+      <float hash="landing_attack_air_frame_lw">18</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">12.3</float>
       <bool hash="wall_jump_type">true</bool>

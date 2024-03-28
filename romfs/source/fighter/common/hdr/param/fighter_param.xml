@@ -412,8 +412,8 @@
     <struct index="68">
       <hash40 hash="fighter_kind">RICHTER</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">1.4</float>
-      <float hash="dacds_mul">1.4</float>
+      <float hash="dacus_mul">1.0</float>
+      <float hash="dacds_mul">1.0</float>
     </struct>
     <struct index="69">
       <hash40 hash="fighter_kind">KROOL</hash40>
