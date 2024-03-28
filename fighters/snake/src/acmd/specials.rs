@@ -47,7 +47,6 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 0.333);
     }
-    
 }
 
 unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
@@ -218,7 +217,6 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallwblast(agent: &mut L2CAgentBase) {
@@ -239,7 +237,6 @@ unsafe extern "C" fn game_speciallwblast(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn game_speciallwsquatblast(agent: &mut L2CAgentBase) {
@@ -267,7 +264,6 @@ unsafe extern "C" fn game_speciallwsquatblast(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn game_specialairhihang(agent: &mut L2CAgentBase) {

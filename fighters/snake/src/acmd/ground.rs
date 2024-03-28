@@ -86,12 +86,12 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

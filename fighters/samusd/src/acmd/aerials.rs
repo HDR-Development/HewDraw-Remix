@@ -35,7 +35,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
@@ -133,7 +132,6 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("samusd_win3_aura"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("sys_damage_elec"), false, true);
     }
-
 }
 
 unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
@@ -161,7 +159,6 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_common_spirits_floor_elec_spark1"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
@@ -231,7 +228,6 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_samusd_swing_m"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
@@ -241,7 +237,6 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-
     frame(lua_state, 11.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
@@ -277,7 +272,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -319,7 +313,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
@@ -394,7 +387,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
@@ -411,7 +403,6 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 3.0);
         LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-
 }
 
 unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
@@ -446,7 +437,6 @@ unsafe extern "C" fn game_aircatchlanding(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 16.0/27.0);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -454,18 +444,23 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("effect_attackairf", effect_attackairf);
     agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", expression_attackairf);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("effect_attackairb", effect_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("effect_attackairhi", effect_attackairhi);
     agent.acmd("sound_attackairhi", sound_attackairhi);
     agent.acmd("expression_attackairhi", expression_attackairhi);
+
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
+    
     agent.acmd("game_aircatch", game_aircatch);
     agent.acmd("game_aircatchlanding", game_aircatchlanding);
 }

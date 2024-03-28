@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
@@ -52,7 +51,6 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
 		FT_MOTION_RATE(agent, 1.0);
 		WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
@@ -89,7 +87,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 		FT_MOTION_RATE(agent, 1.0);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {

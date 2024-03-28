@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
 unsafe extern "C" fn shulk_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let beat = VarModule::is_flag(fighter.battle_object, vars::shulk::status::MONADO_BEAT);

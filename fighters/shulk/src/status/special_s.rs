@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 unsafe extern "C" fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
- 
+
+// FIGHTER_STATUS_KIND_ATTACK_S4
 
 ////changed rpg7 side-smash to multi-hit knife
 

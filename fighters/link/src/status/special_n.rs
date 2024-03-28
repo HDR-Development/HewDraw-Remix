@@ -600,21 +600,6 @@ unsafe extern "C" fn sub_special_n_Main_uniq(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return 1.into()
-    }
-    else {
-        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            return 1.into()
-        }
-        if fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            return 1.into()
-        }
-    }
-    return 0.into()
-}
-
 unsafe extern "C" fn special_n_helper(fighter: &mut L2CFighterCommon) {
     ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_BOW, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_BOWARROW, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

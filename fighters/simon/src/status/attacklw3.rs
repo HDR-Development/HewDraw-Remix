@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
 

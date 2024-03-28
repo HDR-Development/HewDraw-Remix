@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -117,12 +116,12 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 4.0, 2.9, 7.2, 7.2);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

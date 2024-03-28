@@ -211,6 +211,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyn", sound_damagefly);
     agent.acmd("sound_damageflytop", sound_damagefly);
     agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);

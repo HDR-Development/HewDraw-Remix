@@ -32,10 +32,6 @@ unsafe extern "C" fn effect_fly(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_fly(agent : &mut L2CAgentBase) {
-
-}
-
 unsafe extern "C" fn effect_stopfall(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -69,10 +65,6 @@ unsafe extern "C" fn sound_explosion(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_hiexplosion(agent : &mut L2CAgentBase) {
-
-}
-
 unsafe extern "C" fn effect_fallexplosion(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -81,26 +73,28 @@ unsafe extern "C" fn effect_fallexplosion(agent : &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn stub(agent : &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_flyattackcommon", game_fly);
 
     agent.acmd("game_fly", game_fly);
     agent.acmd("effect_fly", effect_fly);
-    agent.acmd("sound_fly", sound_fly);
+    agent.acmd("sound_fly", stub);
 
     agent.acmd("game_stopfall", game_fly);
     agent.acmd("effect_stopfall", effect_stopfall);
-    agent.acmd("sound_stopfall", sound_fly);
+    agent.acmd("sound_stopfall", stub);
 
     agent.acmd("game_explosion", game_explosion);
     agent.acmd("effect_explosion", effect_explosion);
     agent.acmd("sound_explosion", sound_explosion);
 
-    agent.acmd("game_hiexplosion", game_hiexplosion);
+    agent.acmd("game_hiexplosion", stub);
     agent.acmd("effect_hiexplosion", effect_explosion);
     agent.acmd("sound_hiexplosion", sound_explosion);
 
-    agent.acmd("game_fallexplosion", game_hiexplosion);
+    agent.acmd("game_fallexplosion", stub);
     agent.acmd("effect_fallexplosion", effect_fallexplosion);
     agent.acmd("sound_fallexplosion", sound_explosion);
 }

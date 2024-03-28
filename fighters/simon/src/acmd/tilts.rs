@@ -105,7 +105,6 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
@@ -149,7 +148,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attacklw32(agent: &mut L2CAgentBase) {
@@ -177,7 +175,6 @@ unsafe extern "C" fn game_attacklw32(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

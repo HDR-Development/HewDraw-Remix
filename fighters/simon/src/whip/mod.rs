@@ -1,13 +1,9 @@
 use super::*;
 
-mod aerials;
-mod smashes;
-mod tilts;
+mod acmd;
 
 pub fn install() {
     let agent = &mut Agent::new("simon_whip");
-    aerials::install(agent);
-    smashes::install(agent);
-    tilts::install(agent);
+    acmd::install(agent);
     agent.install();
 }

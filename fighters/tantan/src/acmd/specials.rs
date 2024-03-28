@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
@@ -264,37 +263,6 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-//Right arm charging punch//
-
-unsafe extern "C" fn sound_attacks4charger(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
-
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_smash_start"));
-    }
-    if armType==1 {
-        frame(lua_state, 6.0);
-        if is_excute(agent) {
-            PLAY_STATUS(agent, Hash40::new("se_tantan_attack02_charge"));
-        }
-    }
-    else if armType==2 {
-        frame(lua_state, 2.0);
-        if is_excute(agent) {
-            PLAY_STATUS(agent, Hash40::new("se_tantan_attack03_charge"));
-        }
-    }
-    else{
-        frame(lua_state, 8.0);
-        if is_excute(agent) {
-            PLAY_SE(agent, Hash40::new("se_tantan_attack01_beam_ready"));
-        }
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn", game_specialairn);
     agent.acmd("effect_specialairn", effect_specialairn);
@@ -303,11 +271,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnend", game_specialairnend);
     agent.acmd("effect_specialairnend", effect_specialairnend);
     agent.acmd("sound_specialairnend", sound_specialairnend);
-    agent.acmd("expression_specialairnend",expression_specialairnend,);
+    agent.acmd("expression_specialairnend",expression_specialairnend);
+
     agent.acmd("effect_specialairhi", effect_specialairhi);
     agent.acmd("effect_specialairhi2", effect_specialairhi);
     agent.acmd("game_specialairhistart", game_specialairhistart);
     agent.acmd("game_specialairhistart2", game_specialairhistart);
-    agent.acmd("sound_attacks4charger", sound_attacks4charger);
-    agent.acmd("sound_attacks4chargerb", sound_attacks4charger);
 }

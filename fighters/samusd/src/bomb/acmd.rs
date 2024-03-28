@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_fall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -7,6 +8,7 @@ unsafe extern "C" fn game_fall(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 45, 0, 22, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
     }
 }
+
 unsafe extern "C" fn game_burstattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -31,6 +33,7 @@ unsafe extern "C" fn game_burstattack(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
+
 unsafe extern "C" fn effect_burstattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -43,6 +46,7 @@ unsafe extern "C" fn effect_burstattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_fall", game_fall);
+    
     agent.acmd("game_burstattack", game_burstattack);
     agent.acmd("effect_burstattack", effect_burstattack);
 }

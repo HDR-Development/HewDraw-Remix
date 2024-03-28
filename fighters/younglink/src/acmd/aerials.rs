@@ -214,6 +214,60 @@ unsafe extern "C" fn game_attackairlw2bound(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 0.5);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+    }
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+        ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("throw"), 4.0, 75, 30, 0, 60, 2.7, 0.0, 0.0, -0.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
+        ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::change_motion(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, Hash40::new("shoot"), false, -1.0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_LANDING);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        ArticleModule::change_status_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_REWIND);
+        ArticleModule::change_motion(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, Hash40::new("back"), false, -1.0);
+        WorkModule::on_flag(boma, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_OFF_MAP_COLL_OFFSET);
+    }
+    frame(lua_state, 46.0);
+    if is_excute(agent) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_LANDING);
+    }
+    frame(lua_state, 53.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 72.0);
+    if is_excute(agent) {
+        ArticleModule::remove_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
 
@@ -227,4 +281,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("game_attackairlw2attack", game_attackairlw2attack);
     agent.acmd("game_attackairlw2bound", game_attackairlw2bound);
+
+    agent.acmd("game_aircatch", game_aircatch);
+    agent.acmd("game_aircatchlanding", stub);
 }

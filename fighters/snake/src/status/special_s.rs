@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
- 
 
-////side-special tranq gun
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+// side-special tranq gun
 
 unsafe extern "C" fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);

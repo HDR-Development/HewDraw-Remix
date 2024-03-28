@@ -28,7 +28,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -40,7 +39,6 @@ unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_common_swing_06"));
     }
-    
 }
 
 unsafe extern "C" fn expression_catch(agent: &mut L2CAgentBase) {
@@ -82,5 +80,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("sound_catch", sound_catch);
     agent.acmd("expression_catch", expression_catch);
+    
     agent.acmd("game_throwhi", game_throwhi);
 }

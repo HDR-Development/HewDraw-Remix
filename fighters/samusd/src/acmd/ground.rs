@@ -20,7 +20,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -40,7 +39,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
@@ -92,7 +90,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -111,6 +108,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("expression_attack12", expression_attack12);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
 }
