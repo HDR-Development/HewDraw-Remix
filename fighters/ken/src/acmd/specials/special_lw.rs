@@ -125,17 +125,17 @@ unsafe extern "C" fn effect_specialairlwstepf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwinstall", game_speciallwinstall);
-    agent.acmd("effect_speciallwinstall", null);
+    agent.acmd("effect_speciallwinstall", stub);
     agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
     agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
     agent.acmd("game_speciallwstepf", game_speciallwstepf);
     agent.acmd("effect_speciallwstepf", effect_speciallwstepf);
     agent.acmd("game_specialairlwstepf", game_specialairlwstepf);
     agent.acmd("effect_specialairlwstepf", effect_specialairlwstepf);
-    agent.acmd("effect_speciallwstart", null);
-    agent.acmd("effect_specialairlwstart", null);
+    agent.acmd("effect_speciallwstart", stub);
+    agent.acmd("effect_specialairlwstart", stub);
 }

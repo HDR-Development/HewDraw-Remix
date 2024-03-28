@@ -157,11 +157,11 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_aircatch", game_aircatch);
-    agent.acmd("game_aircatchlanding", null);
+    agent.acmd("game_aircatchlanding", stub);
 
     agent.acmd("game_throwf", game_throwf);
 

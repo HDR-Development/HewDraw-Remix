@@ -413,7 +413,7 @@ unsafe extern "C" fn special_hi_keep_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-unsafe extern "C" fn null_status(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn stub_status(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
@@ -423,8 +423,8 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, special_hi_keep_main);
     agent.status(End, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, special_hi_keep_end);
 
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, null_status);
-    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, null_status);
-    agent.status(Init, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, null_status);
-    agent.status(Exec, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, null_status);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, stub_status);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, stub_status);
+    agent.status(Init, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, stub_status);
+    agent.status(Exec, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, stub_status);
 }

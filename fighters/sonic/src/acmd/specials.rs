@@ -298,15 +298,15 @@ unsafe extern "C" fn game_specialairlwdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {} 
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {} 
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnhomingstart", game_specialnhomingstart);
     agent.acmd("game_specialnhoming", game_specialnhoming);
     agent.acmd("sound_specialnhoming", sound_specialnhoming);
     agent.acmd("game_specialnhit", game_specialnhit);
-    agent.acmd("effect_specialnhit", null);
-    agent.acmd("game_specialnlanding", null);
+    agent.acmd("effect_specialnhit", stub);
+    agent.acmd("game_specialnlanding", stub);
     agent.game_acmd(0x195dc47911, hash_0x195dc47911);
 
     agent.acmd("game_specialsbooststart", game_specialsbooststart);

@@ -19,11 +19,11 @@ unsafe extern "C" fn game_bursts(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn1", null);
-    agent.acmd("game_specialn2", null);
+    agent.acmd("game_specialn1", stub);
+    agent.acmd("game_specialn2", stub);
     
     agent.acmd("game_bursts", game_bursts);
 }

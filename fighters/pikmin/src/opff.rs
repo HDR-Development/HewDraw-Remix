@@ -169,6 +169,7 @@ pub unsafe fn pikmin_frame(agent: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(agent, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, pikmin_frame_wrapper);
 }

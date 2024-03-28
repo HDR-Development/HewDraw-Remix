@@ -314,7 +314,7 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
 
 // }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart);
@@ -343,12 +343,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlwloop", sound_speciallwloop);
     agent.acmd("expression_speciallwloop", expression_speciallwloop);
     agent.acmd("expression_specialairlwloop", expression_speciallwloop);
-    agent.acmd("game_speciallwend", null);
-    agent.acmd("game_specialairlwend", null);
-    agent.acmd("effect_speciallwend", null);
-    agent.acmd("effect_specialairlwend", null);
-    agent.acmd("sound_speciallwend", null);
-    agent.acmd("sound_specialairlwend", null);
+    agent.acmd("game_speciallwend", stub);
+    agent.acmd("game_specialairlwend", stub);
+    agent.acmd("effect_speciallwend", stub);
+    agent.acmd("effect_specialairlwend", stub);
+    agent.acmd("sound_speciallwend", stub);
+    agent.acmd("sound_specialairlwend", stub);
     agent.acmd("expression_speciallwend", expression_speciallwend);
     agent.acmd("expression_specialairlwend", expression_speciallwend);
     agent.acmd("sound_specialnstart", sound_specialnstart);

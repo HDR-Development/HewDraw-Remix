@@ -260,7 +260,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
@@ -273,14 +273,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairb", effect_attackairb);
     agent.acmd("sound_attackairb", sound_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
-    agent.acmd("game_landingairb", null);
+    agent.acmd("game_landingairb", stub);
 
     agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("expression_attackairhi", expression_attackairhi);
 
     agent.acmd("game_attackairlw", game_attackairlw);
-    agent.acmd("game_landingairlw", null);
-    agent.acmd("effect_landingairlw", null);
-    agent.acmd("sound_landingairlw", null);
-    agent.acmd("expression_landingairlw", null);
+    agent.acmd("game_landingairlw", stub);
+    agent.acmd("effect_landingairlw", stub);
+    agent.acmd("sound_landingairlw", stub);
+    agent.acmd("expression_landingairlw", stub);
 }

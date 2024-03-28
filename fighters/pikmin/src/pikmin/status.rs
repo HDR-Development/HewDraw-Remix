@@ -88,14 +88,6 @@ pub unsafe extern "C" fn special_s_cling_remove_end(agent: &mut L2CFighterCommon
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.status(
-            Main,
-            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING,
-            special_s_cling_main,
-        );
-        agent.status(
-            End,
-            *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE,
-            special_s_cling_remove_end,
-        );
+    agent.status(Main, *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING, special_s_cling_main);
+    agent.status(End, *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING_REMOVE, special_s_cling_remove_end);
 }

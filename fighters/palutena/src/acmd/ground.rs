@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -25,7 +24,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
@@ -103,7 +101,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, 20.0/(40.0-18.0));
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -141,6 +138,7 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack100end", game_attack100end);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
 }

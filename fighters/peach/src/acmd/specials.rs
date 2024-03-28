@@ -78,7 +78,6 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
@@ -140,7 +139,6 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -199,8 +197,10 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialshitend", game_specialshitend);
+
     agent.acmd("game_specialhistart", game_specialhistart);
     agent.acmd("game_specialairhistart", game_specialairhistart);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);

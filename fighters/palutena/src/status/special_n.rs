@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // red: burn attack
 unsafe extern "C" fn special_n_r_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

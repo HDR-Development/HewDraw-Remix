@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 pub unsafe extern "C" fn rebirth_end(agent: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(agent.module_accessor, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN, false, -1);

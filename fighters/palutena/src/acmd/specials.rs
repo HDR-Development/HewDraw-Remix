@@ -572,7 +572,6 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
     }
-
 }
 
 unsafe extern "C" fn effect_specialno(agent: &mut L2CAgentBase) {
@@ -749,7 +748,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {

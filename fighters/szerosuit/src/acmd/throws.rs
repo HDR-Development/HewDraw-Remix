@@ -230,11 +230,11 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
-    agent.acmd("effect_catch", null);
+    agent.acmd("effect_catch", stub);
     agent.acmd("sound_catch", sound_catch);
     agent.acmd("expression_catch", expression_catch);
     agent.acmd("game_catchdash", game_catchdash);

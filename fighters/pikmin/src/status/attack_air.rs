@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 pub unsafe extern "C" fn attack_air_main(agent: &mut L2CFighterCommon) -> L2CValue {
     agent.sub_attack_air();

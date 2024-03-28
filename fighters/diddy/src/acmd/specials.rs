@@ -115,17 +115,17 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialncancel", game_specialncancel);
-    agent.acmd("effect_specialncancel", null);
-    agent.acmd("sound_specialncancel", null);
-    agent.acmd("expression_specialncancel", null);
+    agent.acmd("effect_specialncancel", stub);
+    agent.acmd("sound_specialncancel", stub);
+    agent.acmd("expression_specialncancel", stub);
     agent.acmd("game_specialairncancel", game_specialncancel);
-    agent.acmd("effect_specialairncancel", null);
-    agent.acmd("sound_specialairncancel", null);
-    agent.acmd("expression_specialairncancel", null);
+    agent.acmd("effect_specialairncancel", stub);
+    agent.acmd("sound_specialairncancel", stub);
+    agent.acmd("expression_specialairncancel", stub);
 
     agent.acmd("game_specialsstickattack", game_specialsstickattack);
     agent.acmd("game_specialsstickattack2", game_specialsstickattack2);

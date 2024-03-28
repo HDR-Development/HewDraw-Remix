@@ -19,7 +19,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
@@ -88,12 +87,13 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.0);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3);
+
     agent.acmd("game_attackhi3", game_attackhi3);
     agent.acmd("effect_attackhi3", effect_attackhi3);
+    
     agent.acmd("game_attacklw3", game_attacklw3);
 }

@@ -178,21 +178,25 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn_b", effect_attackairn);
     agent.acmd("effect_attackairn_w", effect_attackairn);
     agent.acmd("effect_attackairn_v", effect_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("game_attackairf_y", game_attackairf);
     agent.acmd("game_attackairf_b", game_attackairf);
     agent.acmd("game_attackairf_w", game_attackairf);
     agent.acmd("game_attackairf_v", game_attackairf);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("game_attackairb_y", game_attackairb);
     agent.acmd("game_attackairb_b", game_attackairb);
     agent.acmd("game_attackairb_w", game_attackairb);
     agent.acmd("game_attackairb_v", game_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("game_attackairhi_y", game_attackairhi);
     agent.acmd("game_attackairhi_b", game_attackairhi);
     agent.acmd("game_attackairhi_w", game_attackairhi);
     agent.acmd("game_attackairhi_v", game_attackairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("game_attackairlw_y", game_attackairlw);
     agent.acmd("game_attackairlw_b", game_attackairlw);

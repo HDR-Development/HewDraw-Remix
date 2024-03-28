@@ -94,7 +94,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {

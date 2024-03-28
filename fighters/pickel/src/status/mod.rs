@@ -34,9 +34,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    skyline::install_hooks!(
-        stuff_hook
-    );
     agent.on_start(on_start);
     
     attack_air_lw::install(agent);
@@ -46,4 +43,6 @@ pub fn install(agent: &mut Agent) {
     rebirth::install(agent);
     recreate_table::install(agent);
     special_s::install(agent);
+
+    skyline::install_hooks!(stuff_hook);
 }

@@ -347,7 +347,7 @@ unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
@@ -366,6 +366,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
-    agent.acmd("game_landingairlw", null);
+    agent.acmd("game_landingairlw", stub);
     agent.acmd("effect_landingairlw", effect_landingairlw);
 }

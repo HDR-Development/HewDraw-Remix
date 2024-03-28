@@ -12,7 +12,6 @@ unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
