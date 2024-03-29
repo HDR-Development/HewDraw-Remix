@@ -1,6 +1,5 @@
 use super::*;
 
-// #[acmd_script( agent = "samusd", script = "game_specials" , category = ACMD_GAME , low_priority)]
 // unsafe fn game_specials(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
@@ -15,7 +14,6 @@ use super::*;
 //     }
 // }
 
-// #[acmd_script( agent = "samusd", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 // unsafe fn game_specialairs(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();

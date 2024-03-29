@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn metaknight_attack_s3_s_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -42,7 +42,7 @@ unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_s3_s2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -63,7 +63,7 @@ unsafe extern "C" fn metaknight_attack_s3_s2_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_s3_s3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);
@@ -77,7 +77,7 @@ unsafe extern "C" fn metaknight_attack_s3_s3_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_hi3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 7.0);
@@ -102,7 +102,7 @@ unsafe extern "C" fn metaknight_attack_hi3_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack_hi3_expression(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -127,7 +127,7 @@ unsafe extern "C" fn metaknight_attack_hi3_expression(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn metaknight_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -164,14 +164,14 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3", metaknight_attack_s3_s_game);
+    agent.acmd("game_attacks3", game_attacks3);
     agent.acmd("effect_attacks3", effect_attacks3);
-    agent.acmd("game_attacks3s2", metaknight_attack_s3_s2_game);
-    agent.acmd("game_attacks3s3", metaknight_attack_s3_s3_game);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
+    agent.acmd("game_attacks3s3", game_attacks3s3);
 
-    agent.acmd("game_attackhi3", metaknight_attack_hi3_game);
-    agent.acmd("expression_attackhi3", metaknight_attack_hi3_expression);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
     
-    agent.acmd("game_attacklw3", metaknight_attack_lw3_game);
+    agent.acmd("game_attacklw3", game_attacklw3);
     agent.acmd("effect_attacklw3", effect_attacklw3);
 }

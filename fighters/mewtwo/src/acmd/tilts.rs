@@ -250,7 +250,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_attack_hi3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -301,7 +301,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_attack_lw3_effect(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
@@ -355,7 +355,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attacks3lw", expression_attacks3lw);
 
     agent.acmd("game_attackhi3", game_attackhi3);
+    //agent.acmd("effect_attackhi3", effect_attackhi3);
 
     agent.acmd("game_attacklw3", game_attacklw3);
+    //agent.acmd("effect_attacklw3", effect_attacklw3);
     agent.acmd("expression_attacklw3", expression_attacklw3);
 }

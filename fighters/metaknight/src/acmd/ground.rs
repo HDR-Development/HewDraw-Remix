@@ -116,7 +116,6 @@ unsafe extern "C" fn effect_attack100(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "metaknight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 // unsafe fn game_attack100end(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
@@ -133,7 +132,6 @@ unsafe extern "C" fn effect_attack100(agent: &mut L2CAgentBase) {
 //     FT_MOTION_RATE(agent, 0.87);
 // }
 
-// #[acmd_script( agent = "metaknight", script = "effect_attack100end", category = ACMD_EFFECT, low_priority )]
 // unsafe fn effect_attack100end(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();

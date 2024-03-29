@@ -53,8 +53,7 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 }
 
 // Kinesis Blade - Charge Storage
-// #[acmd_script( agent = "miiswordsman", script = "game_speciallw1hit" , category = ACMD_GAME , low_priority)]
-// unsafe fn miiswordsman_special_lw1_hit_game(agent: &mut L2CAgentBase) {
+// unsafe fn game_speciallw1hit(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
 //     if is_excute(agent) {
@@ -89,8 +88,7 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-// #[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hit" , category = ACMD_GAME , low_priority)]
-// unsafe fn miiswordsman_special_air_lw1_hit_game(agent: &mut L2CAgentBase) {
+// unsafe fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
 //     if is_excute(agent) {

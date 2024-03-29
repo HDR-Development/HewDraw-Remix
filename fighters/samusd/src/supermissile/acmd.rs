@@ -17,8 +17,7 @@ unsafe extern "C" fn game_straight(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "samusd_supermissile", script = "game_sburst", category = ACMD_GAME, low_priority)]
-// unsafe fn samusd_super_missile_burst_game(agent: &mut L2CAgentBase) {
+// unsafe fn game_sburst(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
 //     if is_excute(agent) {

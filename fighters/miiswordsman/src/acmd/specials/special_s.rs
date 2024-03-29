@@ -46,8 +46,7 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     
 }
 /*
-#[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
-unsafe fn miiswordsman_special_s1_hit_game(agent: &mut L2CAgentBase) {
+unsafe fn game_specials1hit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 2.0);

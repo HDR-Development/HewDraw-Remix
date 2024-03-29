@@ -290,8 +290,7 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_air_hi_sound(agent: &mut L2CAgentBase) {
+// unsafe fn sound_specialairhi(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
@@ -299,11 +298,9 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
 //         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
 //         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
-
 // }
 
-// #[acmd_script( agent = "falco", script = "sound_specialhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_hi_sound(agent: &mut L2CAgentBase) {
+// unsafe fn sound_specialhi(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
@@ -311,7 +308,6 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
 //         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
 //         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
-
 // }
 
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}

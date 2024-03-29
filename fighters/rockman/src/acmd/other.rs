@@ -44,8 +44,8 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 }
 
 /*
-#[acmd_script( agent = "rockman_crashbomb", script = "game_regular" , category = ACMD_GAME , low_priority)]
-unsafe fn rockman_crashbomb_stick_game(agent: &mut L2CAgentBase) {
+// rockman_crashbomb
+unsafe fn game_regular(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -59,7 +59,6 @@ unsafe fn rockman_crashbomb_stick_game(agent: &mut L2CAgentBase) {
             ArticleModule::change_status(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, *, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
     }
-    
 }
 */
 

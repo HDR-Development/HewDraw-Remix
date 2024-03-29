@@ -160,8 +160,7 @@ unsafe extern "C" fn expression_specialhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
-// unsafe fn wario_special_lw_sr_game(agent: &mut L2CAgentBase) {
+// unsafe fn game_speciallwsr(agent: &mut L2CAgentBase) {
 //     let lua_state = agent.lua_state_agent;
 //     let boma = agent.boma();
 //     frame(lua_state, 16.0);

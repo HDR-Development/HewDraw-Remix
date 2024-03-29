@@ -63,7 +63,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn turn_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -134,7 +134,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", turn_dash_game);
+    agent.acmd("game_turndash", game_turndash);
 
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
