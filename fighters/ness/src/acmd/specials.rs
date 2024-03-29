@@ -25,7 +25,7 @@ unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -40,7 +40,7 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 }
 
-unsafe extern "C" fn game_specialairs (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -141,7 +141,7 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 }
 
-unsafe extern "C" fn effect_speciallwstart (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -149,7 +149,7 @@ unsafe extern "C" fn effect_speciallwstart (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_speciallwend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -168,7 +168,7 @@ unsafe extern "C" fn effect_speciallwend (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_specialairlwend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {

@@ -291,7 +291,6 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn);
     agent.acmd("game_specialairn", game_specialairn);

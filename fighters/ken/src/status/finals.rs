@@ -41,6 +41,7 @@ pub unsafe extern "C" fn final2_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     MeterModule::drain_direct(fighter.battle_object, meter_amount);
     ret
 }
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_FINAL, final_pre);
     agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, final2_pre);

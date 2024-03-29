@@ -9,6 +9,7 @@ unsafe extern "C" fn game_pillar(agent: &mut L2CAgentBase) {
         AREA_WIND_2ND_RAD_arg9(agent, 0, 1, 0.05, 200, 0.6, 0, 10, 20, 60);
     }    
 }
+
 unsafe extern "C" fn game_pillarair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();

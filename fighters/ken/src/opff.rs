@@ -359,6 +359,7 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 }
+
 unsafe fn ken_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // enter EX if A+B on frame<5
     if fighter.is_status_one_of(&[

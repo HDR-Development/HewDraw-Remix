@@ -57,6 +57,7 @@ unsafe extern "C" fn jump_aerial_main_loop(fighter: &mut L2CFighterCommon) -> L2
     }
     fighter.status_JumpAerial_Main()
 }
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_aerial_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_aerial_main);

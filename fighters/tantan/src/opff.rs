@@ -47,8 +47,7 @@ unsafe fn arms_switch_during_normals(boma: &mut BattleObjectModuleAccessor, cat1
     }
 }
 
-unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor)
-{
+unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor) {
     let dragonEffect = VarModule::get_int(boma.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE) as u32;
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
     if WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L) {
@@ -75,8 +74,8 @@ unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor)
         }
     }
 }
-unsafe fn fsmash_effect_translation(boma: &mut BattleObjectModuleAccessor, status_kind: i32)
-{
+
+unsafe fn fsmash_effect_translation(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind != *FIGHTER_STATUS_KIND_ATTACK_S4 {
         return;
     }

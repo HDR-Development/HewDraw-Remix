@@ -336,7 +336,6 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
     agent.acmd("effect_attackairn", effect_attackairn);

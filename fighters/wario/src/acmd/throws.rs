@@ -172,7 +172,6 @@ unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-
 pub const THROWHI_FRAME_FALL: f32 = 48.0;
 pub const THROWHI_FRAME_LAND: f32 = 55.0;
 

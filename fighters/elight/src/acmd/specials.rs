@@ -35,7 +35,7 @@ unsafe fn manage_sword_motion(agent: &mut L2CAgentBase, motion: Hash40) {
     }
 }
 
-unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if ArticleModule::is_exist(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD){
@@ -189,7 +189,7 @@ unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 }
 
-unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if ArticleModule::is_exist(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD){
@@ -395,7 +395,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 // for SOME reason, full charge aerial neutral b would crash if i did the above script as a multiscript install
 // so we need to reimplement the aerial version too /shrug
 
-unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn2(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if ArticleModule::is_exist(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD){
@@ -590,7 +590,7 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn game_specialairsstart (agent: &mut L2CAgentBase) { 
+unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) { 
     let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -599,7 +599,7 @@ unsafe extern "C" fn game_specialairsstart (agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialsstart (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -620,7 +620,7 @@ unsafe extern "C" fn effect_specialsstart (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_specialairsstart (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -640,7 +640,7 @@ unsafe extern "C" fn effect_specialairsstart (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -892,6 +892,7 @@ unsafe extern "C" fn effect_specialairsend(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_photon_sword"), true, true);
 	}
 }
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 1.0);

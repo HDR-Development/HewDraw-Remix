@@ -128,6 +128,7 @@ unsafe extern "C" fn special_s_shoot_main_loop(fighter: &mut L2CFighterCommon) -
     
     return 0.into();
 }
+
 unsafe fn special_s_shoot_helper(fighter: &mut L2CFighterCommon) {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {

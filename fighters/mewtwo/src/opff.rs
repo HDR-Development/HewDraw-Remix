@@ -58,7 +58,6 @@ unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 pub unsafe fn mewtwo_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
     // Wall Ride momentum fixes
     let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);

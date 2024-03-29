@@ -97,7 +97,7 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_attackairn (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 7.0);
@@ -139,7 +139,7 @@ unsafe extern "C" fn game_landingairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_landingairn (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_landingairn(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {

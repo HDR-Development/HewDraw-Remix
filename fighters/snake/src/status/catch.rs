@@ -72,6 +72,7 @@ unsafe extern "C" fn catch_attack_main(fighter: &mut L2CFighterCommon) -> L2CVal
     fighter.sub_shift_status_main(L2CValue::Ptr(catch_attack_main_loop as *const () as _))
     // 0.into()
 }
+
 pub unsafe fn catch_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_CUT.into(), false.into());
@@ -151,6 +152,7 @@ unsafe extern "C" fn catch_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_shift_status_main(L2CValue::Ptr(catch_wait_main_loop as *const () as _))
     // 0.into()
 }
+
 pub unsafe fn catch_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {

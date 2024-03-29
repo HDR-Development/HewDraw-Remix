@@ -22,6 +22,7 @@ pub unsafe extern "C" fn dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_DASH)(fighter)
 }
+
 pub fn install(agent: &mut Agent) {
 	agent.status(Pre, *FIGHTER_STATUS_KIND_DASH, dash_pre);
 }

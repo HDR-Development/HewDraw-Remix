@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -24,6 +25,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
 unsafe extern "C" fn effect_final(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -37,6 +39,7 @@ unsafe extern "C" fn effect_final(agent: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(agent, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_final", game_final);
     agent.acmd("effect_final", effect_final);

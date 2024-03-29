@@ -28,6 +28,7 @@ unsafe extern "C" fn appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(appeal_main_loop as *const () as _))
     // 0.into()
 }
+
 pub unsafe fn appeal_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
@@ -82,6 +83,7 @@ unsafe extern "C" fn appeal_wait_main(fighter: &mut L2CFighterCommon) -> L2CValu
     fighter.sub_shift_status_main(L2CValue::Ptr(appeal_wait_main_loop as *const () as _))
     // 0.into()
 }
+
 pub unsafe fn appeal_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::get_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT) > 0 {
@@ -179,6 +181,7 @@ unsafe extern "C" fn appeal_end_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_shift_status_main(L2CValue::Ptr(appeal_end_main_loop as *const () as _))
     // 0.into()
 }
+
 pub unsafe fn appeal_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

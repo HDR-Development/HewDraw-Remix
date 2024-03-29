@@ -159,7 +159,6 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();

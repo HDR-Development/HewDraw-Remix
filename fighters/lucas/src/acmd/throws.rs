@@ -75,7 +75,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_catchturn (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {

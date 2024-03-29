@@ -482,6 +482,7 @@ unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(agent, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_final", game_final);
     agent.acmd("game_finalair", game_final);

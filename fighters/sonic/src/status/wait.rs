@@ -16,6 +16,7 @@ pub unsafe extern "C" fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Wait_Main as *const () as _))
 }
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_WAIT, wait_main);
 }
