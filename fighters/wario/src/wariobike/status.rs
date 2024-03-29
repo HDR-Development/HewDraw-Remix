@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 // WEAPON_WARIO_WARIOBIKE_STATUS_KIND_SPECIAL_S_ESCAPE_START
 
