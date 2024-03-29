@@ -186,6 +186,6 @@ unsafe extern "C" fn special_n_hold_transition_g2a_kind(
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N, special_n_pre,);
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD, special_n_hold_main,);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N_HOLD, special_n_hold_main);
 }

@@ -54,7 +54,7 @@ unsafe extern "C" fn game_flyflicksub(agent: &mut L2CAgentBase) {
   }
 }
 
-unsafe extern "C" fn miiswordsman_chakram_hop_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_hop(agent: &mut L2CAgentBase) {
   let lua_state = agent.lua_state_agent;
   let boma = agent.boma();
   let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -84,7 +84,7 @@ pub fn install(agent: &mut Agent) {
   agent.acmd("game_fly", game_fly);
   agent.acmd("game_flynormalsub", game_flynormalsub);
   agent.acmd("game_flyflicksub", game_flyflicksub);
-  //.acmd("game_hop", miiswordsman_chakram_hop_game);
+  //agent.acmd("game_hop", game_hop);
   agent.acmd("game_stick", game_stick);
   agent.acmd("effect_stick", effect_stick);
 }

@@ -106,7 +106,6 @@ unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
-
 }
 
 unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
@@ -175,7 +174,5 @@ pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("brave")
-        .on_line(Main, brave_frame_wrapper)
-        .install();
+    agent.on_line(Main, brave_frame_wrapper);
 }

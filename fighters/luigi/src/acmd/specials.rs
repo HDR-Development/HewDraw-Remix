@@ -451,7 +451,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairnthunder", effect_specialnthunder);
     agent.acmd("sound_specialnthunder", sound_specialnthunder);
     agent.acmd("sound_specialairnthunder", sound_specialnthunder);
-    agent.acmd("expression_specialnthunder",expression_specialnthunder,);
+    agent.acmd("expression_specialnthunder",expression_specialnthunder);
     agent.acmd("expression_specialairnthunder",expression_specialnthunder);
 
     agent.acmd("game_specialairsstart", game_specialairsstart);

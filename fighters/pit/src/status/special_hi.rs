@@ -74,6 +74,6 @@ unsafe extern "C" fn special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommo
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre,*FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END,special_hi_rush_end_pre,);
-    agent.status(Main,*FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END,special_hi_rush_end_main,);
+    agent.status(Pre, *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_pre);
+    agent.status(Main, *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_main);
 }

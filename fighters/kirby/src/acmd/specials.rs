@@ -162,7 +162,6 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, -1);
     }
-
 }
 
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
@@ -195,7 +194,6 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
 unsafe extern "C" fn game_specialairss(agent: &mut L2CAgentBase) {
@@ -228,7 +226,6 @@ unsafe extern "C" fn game_specialairss(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
 unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
@@ -357,7 +354,6 @@ unsafe extern "C" fn effect_specialhih(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 6, 0, 0, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-
 }
 
 unsafe extern "C" fn sound_specialhih(agent: &mut L2CAgentBase) {
@@ -455,7 +451,6 @@ unsafe extern "C" fn effect_specialairhih(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 0);
     }
-
 }
 
 unsafe extern "C" fn sound_specialairhih(agent: &mut L2CAgentBase) {

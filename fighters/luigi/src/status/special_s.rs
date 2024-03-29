@@ -129,8 +129,8 @@ unsafe extern "C" fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Init, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_init,);
-    agent.status(Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_main,);
-    agent.status(End, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_end,);
-    agent.status(Exit, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_exit,);
+    agent.status(Init, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_init);
+    agent.status(Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_main);
+    agent.status(End, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_end);
+    agent.status(Exit, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_exit);
 }

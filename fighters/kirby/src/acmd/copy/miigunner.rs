@@ -49,7 +49,6 @@ unsafe extern "C" fn effect_miigunnerspecialn1firemax(agent: &mut L2CAgentBase) 
 			}
 		}
 	}
-
 }
 
 unsafe extern "C" fn sound_miigunnerspecialn1firemax(agent: &mut L2CAgentBase) {
@@ -69,7 +68,6 @@ unsafe extern "C" fn sound_miigunnerspecialn1firemax(agent: &mut L2CAgentBase) {
 			PLAY_SE(agent, Hash40::new("se_miigunner_final04"));
 		}
 	}
-
 }
 
 pub fn install(agent: &mut Agent) {

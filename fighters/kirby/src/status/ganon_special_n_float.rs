@@ -136,7 +136,7 @@ unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_pre,);
-    agent.status(Main, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_main,);
-    agent.status(End, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_end,);
+    agent.status(Pre, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_pre);
+    agent.status(Main, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_main);
+    agent.status(End, statuses::kirby::GANON_SPECIAL_N_FLOAT, special_n_float_end);
 }

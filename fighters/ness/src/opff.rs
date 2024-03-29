@@ -119,7 +119,6 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
             KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         }
     }
-
 }
 
 // Allow grabbing the ledge from behind while in upSpecialEnd

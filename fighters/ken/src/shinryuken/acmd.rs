@@ -1,5 +1,5 @@
 use super::*;
-unsafe extern "C" fn ken_shinryuken_game_final(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe extern "C" fn ken_shinryuken_game_final(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_final(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 51.0);
@@ -38,6 +38,6 @@ unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
     }
 }
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_final", ken_shinryuken_game_final);
-    agent.acmd("effect_final", ken_shinryuken_effect_final);
+    agent.acmd("game_final", game_final);
+    agent.acmd("effect_final", effect_final);
 }

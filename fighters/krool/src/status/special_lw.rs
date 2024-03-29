@@ -109,7 +109,6 @@ unsafe extern "C" fn special_lw_change_motion(fighter: &mut L2CFighterCommon) {
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0);
         }
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

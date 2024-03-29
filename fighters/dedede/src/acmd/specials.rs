@@ -182,7 +182,6 @@ unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
     if is_excute(agent){
         EFFECT_OFF_KIND(agent, Hash40::new("dedede_hammer_arc_wind"), true, true);
     }
-
 }
 
 unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
@@ -545,7 +544,6 @@ unsafe extern "C" fn game_specialhilanding(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_STAR, false, 0);
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specialairhiturn(agent: &mut L2CAgentBase) {

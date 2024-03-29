@@ -606,7 +606,6 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("mariod_smash_impact"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("mariod_smash_aura"), false, true);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

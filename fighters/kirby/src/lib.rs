@@ -45,7 +45,7 @@ pub const LUCAS_CHARGE_TIME : i32 = 120;
 pub fn install() {
     let agent = &mut Agent::new("kirby");
     acmd::install(agent);
-    opff::install();
+    opff::install(agent);
     status::install(agent);
     agent.install();
 }

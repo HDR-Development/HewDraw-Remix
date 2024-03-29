@@ -157,7 +157,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         JostleModule::set_status(boma, true);
         AttackModule::clear_all(boma);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

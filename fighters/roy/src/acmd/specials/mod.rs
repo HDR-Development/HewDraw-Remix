@@ -469,7 +469,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnend", game_specialairnend);
     agent.acmd("effect_specialairnend", effect_specialairnend);
     agent.acmd("sound_specialairnend", sound_specialairnend);
-    agent.acmd("expression_specialairnend",expression_specialairnend,);
+    agent.acmd("expression_specialairnend",expression_specialairnend);
     agent.acmd("game_specialairnend2", game_specialairnend2);
     agent.acmd("game_specialairnend3", game_specialairnend3);
 

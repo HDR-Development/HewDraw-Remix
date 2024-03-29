@@ -105,6 +105,6 @@ pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterComm
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N, special_n_main,);
-    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_HOMING_START, special_n_homing_start_pre,);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N, special_n_main);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_SONIC_SPECIAL_N_HOMING_START, special_n_homing_start_pre);
 }

@@ -212,7 +212,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
             0.0
         );
     }
-
 }
 
 unsafe extern "C" fn game_specialhiloop(agent: &mut L2CAgentBase) {

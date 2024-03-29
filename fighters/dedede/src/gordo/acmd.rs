@@ -41,7 +41,6 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
-
 }
 
 unsafe extern "C" fn effect_specialsthrow(agent: &mut L2CAgentBase) {

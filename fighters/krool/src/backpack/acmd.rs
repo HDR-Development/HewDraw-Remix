@@ -22,7 +22,6 @@ unsafe extern "C" fn effect_start(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
     }
-
 }
 
 unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {

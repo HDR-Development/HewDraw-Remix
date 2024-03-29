@@ -366,7 +366,6 @@ pub unsafe extern "C" fn special_n_save_charge_status(fighter: &mut L2CFighterCo
     } else {
         EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

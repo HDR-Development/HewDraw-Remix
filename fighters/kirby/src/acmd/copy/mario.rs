@@ -51,7 +51,6 @@ unsafe extern "C" fn effect_mariospecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("mario_fb_shoot"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_mariospecialn(agent: &mut L2CAgentBase) {

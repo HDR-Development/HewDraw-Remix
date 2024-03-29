@@ -56,7 +56,6 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -115,7 +114,6 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
@@ -162,7 +160,6 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-
 }
 
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
@@ -378,7 +375,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-
 }
 
 unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
@@ -435,7 +431,6 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_kirby_landing01"));
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

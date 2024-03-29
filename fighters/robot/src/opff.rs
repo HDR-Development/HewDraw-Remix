@@ -186,7 +186,6 @@ unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
             MeterModule::drain_direct(boma.object(), 2.0);
         }
     }
-
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {

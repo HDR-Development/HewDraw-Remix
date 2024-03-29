@@ -133,7 +133,6 @@ unsafe extern "C" fn game_specialairlwhold(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 14.0);
     }
-
 }
 
 //Implemented to remove release windbox

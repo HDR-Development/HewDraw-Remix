@@ -125,7 +125,7 @@ unsafe extern "C" fn game_specialairlw1hit(agent: &mut L2CAgentBase) {
 
 // Kinesis Blade - 1 Charge
 
-unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw1hitlv1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -160,7 +160,7 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv1_game(agent: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv1_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw1hitlv1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -197,7 +197,7 @@ unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv1_game(agent: &mut L2CAg
 
 // Kinesis Blade - 2 Charges
 
-unsafe extern "C" fn miiswordsman_special_lw1_hit_lv2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw1hitlv2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -232,7 +232,7 @@ unsafe extern "C" fn miiswordsman_special_lw1_hit_lv2_game(agent: &mut L2CAgentB
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw1_hit_lv2_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw1hitlv2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -396,7 +396,6 @@ unsafe extern "C" fn sound_speciallw2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_common_electric_hit_s"));
     }
-
 }
 
 // ================================================================================================================
@@ -433,7 +432,7 @@ unsafe extern "C" fn game_speciallw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_lw3_end_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw3end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -550,7 +549,7 @@ unsafe extern "C" fn game_specialairlw3end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw3endair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -613,10 +612,10 @@ unsafe extern "C" fn miiswordsman_special_air_lw3_end_air_game(agent: &mut L2CAg
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw1hit", game_speciallw1hit);
     agent.acmd("game_specialairlw1hit", game_specialairlw1hit);
-    //agent.acmd("game_speciallw1hitlv1", miiswordsman_special_lw1_hit_lv1_game);
-    //agent.acmd("game_specialairlw1hitlv1", miiswordsman_special_air_lw1_hit_lv1_game);
-    //agent.acmd("game_speciallw1hitlv2", miiswordsman_special_lw1_hit_lv2_game);
-    //agent.acmd("game_specialairlw1hitlv2", miiswordsman_special_air_lw1_hit_lv2_game);
+    //agent.acmd("game_speciallw1hitlv1", game_speciallw1hitlv1);
+    //agent.acmd("game_specialairlw1hitlv1", game_specialairlw1hitlv1);
+    //agent.acmd("game_speciallw1hitlv2", game_speciallw1hitlv2);
+    //agent.acmd("game_specialairlw1hitlv2", game_specialairlw1hitlv2);
 
     agent.acmd("game_speciallw2", game_speciallw2);
     agent.acmd("game_specialairlw2", game_speciallw2);
@@ -626,8 +625,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlw2", sound_speciallw2);
     
     agent.acmd("game_speciallw3", game_speciallw3);
-    //agent.acmd("game_speciallw3end", miiswordsman_special_lw3_end_game);
+    //agent.acmd("game_speciallw3end", game_speciallw3end);
     agent.acmd("game_specialairlw3", game_specialairlw3);
     agent.acmd("game_specialairlw3end", game_specialairlw3end);
-    //agent.acmd("game_specialairlw3endair", miiswordsman_special_air_lw3_end_air_game);
+    //agent.acmd("game_specialairlw3endair", game_specialairlw3endair);
 }

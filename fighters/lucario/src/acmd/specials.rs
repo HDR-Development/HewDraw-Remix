@@ -353,7 +353,6 @@ unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-
 }
 
 unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {

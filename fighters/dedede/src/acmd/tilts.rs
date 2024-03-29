@@ -102,7 +102,6 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("dedede_air_n"), Hash40::new("top"), 0, 4.0, 18.0, 0, 0, 0, 0.6, true);
         LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-
 }
 
 unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {

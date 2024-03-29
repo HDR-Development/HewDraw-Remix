@@ -84,7 +84,7 @@ unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_main,);
-    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_exec,);
-    agent.status(ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_execstop,);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_main);
+    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_exec);
+    agent.status(ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_execstop);
 }

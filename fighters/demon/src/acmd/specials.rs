@@ -170,7 +170,6 @@ unsafe extern "C" fn game_attackstep2f(agent: &mut L2CAgentBase) {
         AttackModule::clear(boma, 6, false);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-
 }
 
 // Electric Wind God Fist (When Hitting Shield)

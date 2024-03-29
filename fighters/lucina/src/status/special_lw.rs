@@ -36,7 +36,6 @@ unsafe extern "C" fn special_lw_main_motion_helper(fighter: &mut L2CFighterCommo
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0);
         }
     }
-
 }
 
 unsafe extern "C" fn special_lw_check_follow_up(fighter: &mut L2CFighterCommon) {

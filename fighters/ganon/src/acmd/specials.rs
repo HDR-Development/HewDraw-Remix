@@ -263,7 +263,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
     }
-
 }
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {

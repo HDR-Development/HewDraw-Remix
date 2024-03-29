@@ -7,7 +7,6 @@ unsafe extern "C" fn game_luigispecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
     }
-
 }
 
 unsafe extern "C" fn effect_luigispecialn(agent: &mut L2CAgentBase) {
@@ -31,7 +30,6 @@ unsafe extern "C" fn effect_luigispecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("luigi_fb_shoot"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_luigispecialn(agent: &mut L2CAgentBase) {
@@ -41,7 +39,6 @@ unsafe extern "C" fn sound_luigispecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_luigi_special_n01"));
     }
-
 }
 
 unsafe extern "C" fn game_luigispecialnthunder(agent: &mut L2CAgentBase) {
