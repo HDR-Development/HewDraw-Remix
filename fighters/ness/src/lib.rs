@@ -12,7 +12,7 @@ pub mod status;
 mod pkfire;
 mod pkflash;
 mod pkthunder;
-mod yoyo;
+mod yoyohead;
 
 use smash::{
     lib::{
@@ -56,5 +56,5 @@ pub fn install() {
     pkfire::install();
     pkflash::install();
     pkthunder::install();
-    yoyo::install();
+    yoyohead::install();
 }

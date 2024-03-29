@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_attackhi4 (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -21,7 +21,7 @@ unsafe extern "C" fn game_attackhi4 (agent: &mut L2CAgentBase) {
 	frame(lua_state, 37.0);
 }
 
-unsafe extern "C" fn game_attacklw4 (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 11.0);
