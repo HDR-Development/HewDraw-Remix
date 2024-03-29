@@ -92,7 +92,7 @@ unsafe extern "C" fn effect_justshieldoff(agent: &mut L2CAgentBase) {
         FLASH(agent, 0, 0.1, 0.6, 0.8);
         agent.clear_lua_stack();
         lua_args!(agent, -1, 0, 0);
-        sv_animcmd::FLASH_SET_DIRECTION(agent.lua_state_agent);
+        sv_animcmd::FLASH_SET_DIRECTION(lua_state);
         EFFECT(agent, Hash40::new("elight_foresight2"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         EFFECT(agent, Hash40::new("elight_foresight_lensflare"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW(agent, Hash40::new("elight_foresight_body"), Hash40::new("hip"), 2, 0, 0, 0, 0, 90, 1, true);

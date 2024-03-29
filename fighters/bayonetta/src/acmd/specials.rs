@@ -211,14 +211,15 @@ unsafe extern "C" fn game_specialairsu(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialairsu(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 13.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_AFTERBURNER_LINE, Hash40::new("top"), 0, 13.0, 12.1, -21.1, 0, 0, 1.0, true);
         LAST_EFFECT_SET_RATE(agent, 1.15);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("bayonetta_afterburner_line2"), Hash40::new("top"), 0, 13.8, 13.5, -21, 0, 0, 1.0, true);
         LAST_EFFECT_SET_RATE(agent, 1.15);
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(lua_state, 26.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_AFTERBURNER_LINE, -1);
         EFFECT_DETACH_KIND(agent, Hash40::new("bayonetta_afterburner_line2"), -1);
@@ -284,7 +285,8 @@ unsafe extern "C" fn game_specialairsd(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialairsd(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 8.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_AFTERBURNER_LINE, Hash40::new("top"), 0, 0, 7, 45, -6, 0, 1.1, true);
         LAST_EFFECT_SET_RATE(agent, 0.85);
@@ -377,14 +379,15 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         if agent.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_HI_FLAG_GROUND_START) {
             FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
             LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         }
     }
-    frame(agent.lua_state_agent, 11.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, Hash40::new("top"), 0, 25.3, 0, 0, 0, 0, 0.86, true);
         LAST_EFFECT_SET_RATE(agent, 1.1);
@@ -395,12 +398,12 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(agent, 1.7);
         }
     }
-    frame(agent.lua_state_agent, 22.0);
+    frame(lua_state, 22.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, -1);
         EffectModule::kill_kind(agent.module_accessor, Hash40::new("bayonetta_afterburner_line2"), false, true);
     }
-    frame(agent.lua_state_agent, 24.0);
+    frame(lua_state, 24.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_WIND, false, true);
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_WITCHTWIST_SPIRAL, false, true);

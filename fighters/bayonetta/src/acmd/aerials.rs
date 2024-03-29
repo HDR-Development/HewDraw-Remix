@@ -314,12 +314,13 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, Hash40::new("top"), 0, 14.6, -0.1, 0, -55, -90, 1.14, true);
         LAST_EFFECT_SET_RATE(agent, 0.84);
     }
-    frame(agent.lua_state_agent, 29.0);
+    frame(lua_state, 29.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, false, true);
     }

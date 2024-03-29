@@ -138,7 +138,8 @@ unsafe extern "C" fn game_escapeb(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 175.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 175.0);
     if is_excute(agent) {
         StatusModule::change_status_request(agent.module_accessor, *FIGHTER_STATUS_KIND_SQUAT_WAIT, false);
     }
@@ -163,7 +164,7 @@ unsafe extern "C" fn sound_appealhil  (agent: &mut L2CAgentBase) {
 		if is_excute(agent) {
 			agent.clear_lua_stack();
             lua_args!(agent, Hash40::new("vc_bayonetta_appeal01"));
-            sv_animcmd::PLAY_DAMAGESTOP(agent.lua_state_agent);
+            sv_animcmd::PLAY_DAMAGESTOP(lua_state);
 		}
 		frame(lua_state, 4.0);
 		if is_excute(agent) {
@@ -181,7 +182,7 @@ unsafe extern "C" fn sound_appealhil  (agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             agent.clear_lua_stack();
             lua_args!(agent, Hash40::new("vc_bayonetta_appeal01_02"));
-            sv_animcmd::PLAY_DAMAGESTOP(agent.lua_state_agent);
+            sv_animcmd::PLAY_DAMAGESTOP(lua_state);
         }
 		frame(lua_state, 41.0);
 		if is_excute(agent) {
@@ -195,47 +196,49 @@ unsafe extern "C" fn sound_appealhil  (agent: &mut L2CAgentBase) {
 
     
 unsafe extern "C" fn sound_appeallwr(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 21.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 21.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01"));
     }
-    frame(agent.lua_state_agent, 40.0);
+    frame(lua_state, 40.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01_02"));
     }
-    frame(agent.lua_state_agent, 50.0);
+    frame(lua_state, 50.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01_03"));
     }
-    frame(agent.lua_state_agent, 67.0);
+    frame(lua_state, 67.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_bayonetta_win08"));
     }
-    frame(agent.lua_state_agent, 90.0);
+    frame(lua_state, 90.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_step_right_m"));
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01_04"));
     }
-    frame(agent.lua_state_agent, 106.0);
+    frame(lua_state, 106.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01_05"));
     }
-    frame(agent.lua_state_agent, 127.0);
+    frame(lua_state, 127.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win01_06"));
     }
 }
 
 unsafe extern "C" fn sound_appeallwl(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 20.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win02_02"));
     }
-    frame(agent.lua_state_agent, 55.0);
+    frame(lua_state, 55.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_bayonetta_win02_03"));
     }
-    frame(agent.lua_state_agent, 85.0);
+    frame(lua_state, 85.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_bayonetta_win09"));
     }

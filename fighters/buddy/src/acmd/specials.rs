@@ -133,7 +133,7 @@ unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("buddy_special_s_start"), Hash40::new("rot"), -2, -2, -14, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_COLOR(agent,1,0.5,0);
     }
-    frame(agent.lua_state_agent, 2.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_COLOR(agent,1,0.5,0);

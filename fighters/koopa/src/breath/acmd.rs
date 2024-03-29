@@ -33,7 +33,8 @@ unsafe extern "C" fn effect_max(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_end(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 1.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }

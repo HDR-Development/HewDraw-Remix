@@ -136,7 +136,7 @@ unsafe extern "C" fn game_speciallw1loop(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        app::sv_kinetic_energy::clear_speed(agent.lua_state_agent);
+        app::sv_kinetic_energy::clear_speed(lua_state);
         KineticModule::clear_speed_all(boma);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
         SET_SPEED_EX(agent, 3.0, -2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

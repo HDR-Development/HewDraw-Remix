@@ -67,21 +67,22 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 3.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("haver"), 1.2, 0, 1.8, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.2);
     }
-    frame(agent.lua_state_agent, 5.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_attack_g"), Hash40::new("mewtwo_pk_attack_g"), Hash40::new("top"), 0, 7.7, 1.8, 15, 0, 30, 1.13, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.4);
     }
-    frame(agent.lua_state_agent, 7.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("mewtwo_pk_hand"), false, false);
     }
-    frame(agent.lua_state_agent, 10.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         EffectModule::kill_kind(agent.module_accessor, Hash40::new("mewtwo_pk_attack_g"), true, true);
     }

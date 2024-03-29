@@ -34,21 +34,21 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
         agent.clear_lua_stack();
 		EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 4.7, 4, 40, 0, -13, 0.7, true);
 		lua_args!(agent, Hash40::new("ness_psi_atk"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
 		lua_args!(agent, Hash40::new("ness_psi_atk"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
 	}
 	frame(lua_state, 11.0);
 	if is_excute(agent) {
         agent.clear_lua_stack();
 		lua_args!(agent, Hash40::new("ness_psi_atk"), Hash40::new("handr"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
-		smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+		smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("ness_psi_atk"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
     }
 }
@@ -195,28 +195,28 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 10.2, -5.5, 0.0, 0.0, 0.0, 0.82, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
     }
     frame(lua_state, 8.5);
     if is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 13.2, -1.0, 0.0, 0.0, 0.0, 0.9, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
     }
     frame(lua_state, 9.75);
     if is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 10, 4.8, 0.0, 0.0, 0.0, 0.82, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 5.0, 5.4, 0.0, 0.0, 0.0, 0.78, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
         agent.pop_lua_stack(1);
     }
 }

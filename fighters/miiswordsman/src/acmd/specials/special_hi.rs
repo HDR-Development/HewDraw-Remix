@@ -363,7 +363,7 @@ unsafe extern "C" fn game_specialairhi3(agent: &mut L2CAgentBase) {
     let start_x_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_special_hi3.start_x_mul");
     agent.clear_lua_stack();
     lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
-    app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+    app::sv_kinetic_energy::set_speed(lua_state);
     frame(lua_state, 8.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

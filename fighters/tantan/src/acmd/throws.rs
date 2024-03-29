@@ -14,12 +14,12 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
-    wait(agent.lua_state_agent, 1.0);
+    wait(lua_state, 1.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
-    wait(agent.lua_state_agent, 2.0);
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.250);
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);

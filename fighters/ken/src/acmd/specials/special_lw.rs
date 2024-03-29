@@ -10,35 +10,37 @@ unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 1.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_ken_appeal_l01"));
     }
-    frame(agent.lua_state_agent, 5.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_ken_appeal_l01"));
     }
-    frame(agent.lua_state_agent, 8.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         let sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_common_final_cutin"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(agent.module_accessor, sfx_handle as i32, 0.5, 0);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_ken_appeal_l02"));
     }
 }
 
 unsafe extern "C" fn expression_speciallwinstall(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(agent.lua_state_agent, 31.0);
+    frame(lua_state, 31.0);
     if is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

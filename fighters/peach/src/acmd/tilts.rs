@@ -47,11 +47,12 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 7.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 7.0);
     if is_excute(agent) {
         LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
     }
-    frame(agent.lua_state_agent, 9.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("peach_attack_heart"), Hash40::new("top"), 0, 23.5, 0, 0, 90, 0, 0.8, true);
         EFFECT_FOLLOW(agent, Hash40::new("peach_attack_hi3"), Hash40::new("top"), 0, 23.5, 0, 0, 0, 0, 1, true);

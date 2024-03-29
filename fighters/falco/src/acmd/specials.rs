@@ -266,7 +266,7 @@ unsafe extern "C" fn sound_speciallwloop(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_speciallwloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    sv_animcmd::wait_loop_sync_mot(agent.lua_state_agent);
+    sv_animcmd::wait_loop_sync_mot(lua_state);
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }

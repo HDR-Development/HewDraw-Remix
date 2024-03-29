@@ -367,27 +367,28 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 14.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 14.0);
     if is_excute(agent) {
         EFFECT_FLW_POS(agent, Hash40::new("buddy_air_lw"), Hash40::new("top"), 0, -7, 0, 0, 0, 0, 1, true);
     }
-    frame(agent.lua_state_agent, 17.0);
+    frame(lua_state, 17.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, true);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
     }
-    frame(agent.lua_state_agent, 46.0);
+    frame(lua_state, 46.0);
     if is_excute(agent) {
         if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             EFFECT_OFF_KIND(agent, Hash40::new("buddy_air_lw"),false,false);
             EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1.1, true);
-            sv_animcmd::EFFECT_WORK(agent.lua_state_agent);
+            sv_animcmd::EFFECT_WORK(lua_state);
         }
     }
-    frame(agent.lua_state_agent, 50.0);
+    frame(lua_state, 50.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
     }

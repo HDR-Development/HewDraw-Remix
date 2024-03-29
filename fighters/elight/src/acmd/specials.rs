@@ -1,10 +1,11 @@
 use super::*;
 
 unsafe fn manage_sword_motion(agent: &mut L2CAgentBase, motion: Hash40) {
+	let lua_state = agent.lua_state_agent;
     let exists = {
         agent.clear_lua_stack();
         lua_args!(agent, FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD);
-        app::sv_animcmd::IS_EXIST_ARTICLE(agent.lua_state_agent)
+        app::sv_animcmd::IS_EXIST_ARTICLE(lua_state)
     };
 
     if !exists {

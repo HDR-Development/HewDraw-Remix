@@ -200,7 +200,7 @@ unsafe extern "C" fn effect_specialsshoot(agent: &mut L2CAgentBase) {
             if is_excute(agent) {
                 agent.clear_lua_stack();
                 lua_args!(agent, Hash40::new("packun_poison_breath2"), Hash40::new("mouth"), 5, -0.6, 0, 0, 90, -100, 1.2, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
                 agent.pop_lua_stack(1);
             }
         }
@@ -208,7 +208,7 @@ unsafe extern "C" fn effect_specialsshoot(agent: &mut L2CAgentBase) {
             if is_excute(agent) {
                 agent.clear_lua_stack();
                 lua_args!(agent, Hash40::new("packun_poison_breath"), Hash40::new("mouth"), 5, -0.6, 0, 0, 90, -100, 1.1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
                 agent.pop_lua_stack(1);
                 LAST_EFFECT_SET_RATE(agent, 1.6);
             }
@@ -287,7 +287,7 @@ unsafe extern "C" fn effect_specialairsshoot(agent: &mut L2CAgentBase) {
             if is_excute(agent) {
                 agent.clear_lua_stack();
                 lua_args!(agent, Hash40::new("packun_poison_breath2"), Hash40::new("mouth"), 5, -0.6, 0, 0, 90, -100, 1.2, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
                 agent.pop_lua_stack(1);
             }
         }
@@ -295,7 +295,7 @@ unsafe extern "C" fn effect_specialairsshoot(agent: &mut L2CAgentBase) {
             if is_excute(agent) {
                 agent.clear_lua_stack();
                 lua_args!(agent, Hash40::new("packun_poison_breath"), Hash40::new("mouth"), 5, -0.6, 0, 0, 90, -100, 1.1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(agent.lua_state_agent);
+                smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(lua_state);
                 agent.pop_lua_stack(1);
                 LAST_EFFECT_SET_RATE(agent, 1.6);
             }

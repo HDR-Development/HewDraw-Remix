@@ -29,22 +29,24 @@ unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 18.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 1.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_ryu_appeal_l01"));
     }
-    frame(agent.lua_state_agent, 5.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_ryu_appeal03"));
     }
-    frame(agent.lua_state_agent, 8.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         let sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_common_final_cutin"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(agent.module_accessor, sfx_handle as i32, 0.5, 0);
@@ -52,23 +54,25 @@ unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn expression_speciallwinstall(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         AREA_WIND_2ND_arg10(agent, 0, 1, 70, 8, 0.8, 0, 6, 32, 12, 80);
     }
-    frame(agent.lua_state_agent, 32.0);
+    frame(lua_state, 32.0);
     if is_excute(agent) {
         AreaModule::erase_wind(agent.module_accessor, 0);
     }
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 11.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 11.0);
     let lv = agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SAVING_LV);
     MeterModule::watch_damage(agent.battle_object, true);
     if is_excute(agent) {
@@ -90,23 +94,24 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         AttackModule::set_attack_level(agent.module_accessor, 0, lv as u8);
         AttackModule::set_attack_level(agent.module_accessor, 1, lv as u8);
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_REVERSE_MATERIAL_ANIM);
     }
 }
 
 unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 1.0);
     if is_excute(agent) {
         REVERSE_LR(agent);
     }
-    frame(agent.lua_state_agent, 11.0);
+    frame(lua_state, 11.0);
     let lv = agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SAVING_LV);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
@@ -128,12 +133,12 @@ unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
         AttackModule::set_attack_level(agent.module_accessor, 0, lv as u8);
         AttackModule::set_attack_level(agent.module_accessor, 1, lv as u8);
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_REVERSE_MATERIAL_ANIM);
     }
