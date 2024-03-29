@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 mod attacklw3;
 mod attacks3;

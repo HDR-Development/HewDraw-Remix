@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();

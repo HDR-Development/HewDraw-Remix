@@ -25,7 +25,7 @@ unsafe extern "C" fn sound_damagefly(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_damageflyroll(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -72,7 +72,6 @@ unsafe extern "C" fn game_turndash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
@@ -93,7 +92,6 @@ unsafe extern "C" fn game_escapeair(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
@@ -104,24 +102,7 @@ unsafe extern "C" fn game_escapeairslide(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_appeallwr(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("vc_richter_appeal_l01"));
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l01"));
-    }
-    frame(lua_state, 42.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_richter_appeal_l02"));
-    }
-}
-
-unsafe extern "C" fn sound_appeallwl(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appeallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -143,12 +124,15 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflylw", sound_damagefly);
     agent.acmd("sound_damageflyn", sound_damagefly);
     agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", damageflyroll_sound);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+
     agent.acmd("game_dash", game_dash);
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);
+
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
-    agent.acmd("sound_appeallwr", sound_appeallwr);
-    agent.acmd("sound_appeallwl", sound_appeallwl);
+
+    agent.acmd("sound_appeallwr", sound_appeallw);
+    agent.acmd("sound_appeallwl", sound_appeallw);
 }

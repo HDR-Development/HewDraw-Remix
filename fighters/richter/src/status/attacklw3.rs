@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_LW3
 
 unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3();
@@ -16,6 +17,8 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     fighter.status_AttackLw3_Main();
     return 0.into()
 }
+
+// FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
 
 unsafe extern "C" fn attack_lw32_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_lw32_landing_frame"));
