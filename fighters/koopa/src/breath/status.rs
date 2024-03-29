@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 // FIREBREATH
 unsafe extern "C" fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
