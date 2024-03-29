@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+
 mod wariobike;
 
 use smash::{
