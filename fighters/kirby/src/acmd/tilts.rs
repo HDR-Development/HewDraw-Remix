@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
@@ -15,7 +14,6 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -32,7 +30,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
@@ -50,7 +47,6 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
@@ -73,7 +69,6 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HIT_RESET_ALL(agent);
     }
-    
 }
 
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
@@ -92,7 +87,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         HIT_RESET_ALL(agent);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

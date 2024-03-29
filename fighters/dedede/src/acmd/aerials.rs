@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -108,7 +107,6 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("dedede_hammer_arc_wind"), true, true);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {

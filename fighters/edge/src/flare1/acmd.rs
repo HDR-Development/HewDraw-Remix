@@ -14,7 +14,6 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 2, 6.0, false);
         AttackModule::set_add_reaction_frame(boma, 3, 6.0, false);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

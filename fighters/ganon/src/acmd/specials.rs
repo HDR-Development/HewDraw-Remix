@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_floatstart(agent: &mut L2CAgentBase) {

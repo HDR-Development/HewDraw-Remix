@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -39,7 +38,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
 }
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -203,7 +201,6 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
         }
         
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {

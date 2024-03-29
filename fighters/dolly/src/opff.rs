@@ -469,7 +469,6 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
     }
-    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -741,7 +740,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(new_status, false);
         }
     }
-    
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {

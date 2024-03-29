@@ -123,7 +123,6 @@ unsafe extern "C" fn dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
@@ -148,7 +147,6 @@ unsafe extern "C" fn turn_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {

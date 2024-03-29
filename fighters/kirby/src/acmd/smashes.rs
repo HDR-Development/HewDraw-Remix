@@ -268,7 +268,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
             HIT_RESET_ALL(agent);
         }
     }
-    
 }
 
 unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {

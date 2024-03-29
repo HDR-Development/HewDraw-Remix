@@ -10,7 +10,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     else {
         smashline::original_status(Pre, fighter, *FIGHTER_KIRBY_STATUS_KIND_LUCAS_SPECIAL_N)(fighter)
     }
-    
 }
 
 // SPECIAL N HOLD //

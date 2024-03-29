@@ -24,7 +24,6 @@ unsafe extern "C" fn richter_catch_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn richter_catch_dash_game(agent: &mut L2CAgentBase) {

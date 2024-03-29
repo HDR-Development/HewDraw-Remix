@@ -17,7 +17,6 @@ unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
 			KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
 		}
 	}
-    
 }
 
 unsafe extern "C" fn sound_shoot(agent: &mut L2CAgentBase) {

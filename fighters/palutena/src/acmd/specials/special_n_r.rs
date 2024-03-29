@@ -62,7 +62,6 @@ unsafe extern "C" fn effect_specialnr(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
-    
 }
 
 unsafe extern "C" fn sound_specialnr(agent: &mut L2CAgentBase) {

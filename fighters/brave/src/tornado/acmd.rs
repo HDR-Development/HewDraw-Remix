@@ -64,7 +64,6 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {

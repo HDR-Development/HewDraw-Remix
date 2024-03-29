@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {

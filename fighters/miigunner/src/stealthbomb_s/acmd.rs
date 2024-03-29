@@ -21,7 +21,6 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		//AreaModule::erase_wind(boma, 0);
 	}
-    
 }
 
 unsafe extern "C" fn effect_move(agent: &mut L2CAgentBase) {
@@ -31,7 +30,6 @@ unsafe extern "C" fn effect_move(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		EFFECT(agent, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
 	}
-    
 }
 
 pub fn install(agent: &mut Agent) {

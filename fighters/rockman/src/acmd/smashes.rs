@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -394,7 +393,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(agent, 0.800);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

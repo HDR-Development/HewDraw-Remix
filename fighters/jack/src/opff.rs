@@ -61,7 +61,6 @@ unsafe fn arsene_summon_desmummon(boma: &mut BattleObjectModuleAccessor) {
             //smash::app::FighterSpecializer_Jack::add_rebel_gauge(boma, app::FighterEntryID(entry_id), 100.0);
         }
     }
-    
 }
 
 // Joker Arsene Grappling Hook

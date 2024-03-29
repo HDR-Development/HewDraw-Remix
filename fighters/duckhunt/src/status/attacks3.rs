@@ -1,4 +1,3 @@
-
 use super::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_S3

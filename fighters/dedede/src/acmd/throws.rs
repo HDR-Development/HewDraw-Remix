@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
@@ -43,7 +41,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
@@ -119,7 +116,6 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(agent, 0.9);
     }
-    
 }
 
 unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
@@ -145,7 +141,6 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

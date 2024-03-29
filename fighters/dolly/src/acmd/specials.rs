@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
@@ -23,7 +22,6 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         MeterModule::add(agent.battle_object, 3.0);
     }
-    
 }
 
 unsafe extern "C" fn game_specialsfstart(agent: &mut L2CAgentBase) {
@@ -56,7 +54,6 @@ unsafe extern "C" fn game_specialsfstart(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 1.0);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_specialsfstart(agent: &mut L2CAgentBase) {
@@ -97,7 +94,6 @@ unsafe extern "C" fn effect_specialsfstart(agent: &mut L2CAgentBase) {
             FLASH(agent, 1.0, 0.71, 0.115, 1.75);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialairsfstart(agent: &mut L2CAgentBase) {
@@ -130,7 +126,6 @@ unsafe extern "C" fn game_specialairsfstart(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 1.0);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairsfstart(agent: &mut L2CAgentBase) {
@@ -171,7 +166,6 @@ unsafe extern "C" fn effect_specialairsfstart(agent: &mut L2CAgentBase) {
             FLASH(agent, 1.0, 0.71, 0.115, 1.75);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
@@ -393,7 +387,6 @@ unsafe extern "C" fn effect_specialsfattack(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
 unsafe extern "C" fn game_specialsfend(agent: &mut L2CAgentBase) {
@@ -959,7 +952,6 @@ unsafe extern "C" fn game_specialsbattack(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(agent.battle_object, false);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialsbattack(agent: &mut L2CAgentBase) {
@@ -1205,7 +1197,6 @@ unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 0.667);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialhicommand(agent: &mut L2CAgentBase) {
@@ -1417,7 +1408,6 @@ unsafe extern "C" fn game_specialhicommand(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 0.667);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_specialhicommand(agent: &mut L2CAgentBase) {
@@ -1633,7 +1623,6 @@ unsafe extern "C" fn effect_specialhicommand(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("dolly_roll_l_color1"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("dolly_roll_l_color2"), false, true);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhi1(agent: &mut L2CAgentBase) {
@@ -1753,7 +1742,6 @@ unsafe extern "C" fn game_specialairhi1(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 0.667);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhicommand(agent: &mut L2CAgentBase) {
@@ -1965,7 +1953,6 @@ unsafe extern "C" fn game_specialairhicommand(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 0.667);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairhicommand(agent: &mut L2CAgentBase) {
@@ -2181,7 +2168,6 @@ unsafe extern "C" fn effect_specialairhicommand(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("dolly_roll_l_color1"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("dolly_roll_l_color2"), false, true);
     }
-    
 }
 
 unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
@@ -2191,7 +2177,6 @@ unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         FT_MOTION_RATE(agent, 0.667);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
@@ -2200,7 +2185,6 @@ unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
@@ -2226,7 +2210,6 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
             }
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
@@ -2246,7 +2229,6 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
             }
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialairlwrisew(agent: &mut L2CAgentBase) {
@@ -2316,7 +2298,6 @@ unsafe extern "C" fn game_specialairlwrisew(agent: &mut L2CAgentBase) {
         KineticModule::add_speed(boma, &Vector3f::new(5.0, -1.5, 0.0));
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairlwrisew(agent: &mut L2CAgentBase) {
@@ -2408,7 +2389,6 @@ unsafe extern "C" fn game_specialairlwrise(agent: &mut L2CAgentBase) {
         KineticModule::add_speed(boma, &Vector3f::new(0.3, -1.5, 0.0));
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairlwrise(agent: &mut L2CAgentBase) {
@@ -2703,7 +2683,6 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_LANDING_HEAVY);
     }
-    
 }
 
 unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
@@ -2839,7 +2818,6 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 1.000);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {

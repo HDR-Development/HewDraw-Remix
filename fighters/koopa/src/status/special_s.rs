@@ -195,7 +195,6 @@ unsafe extern "C" fn special_s_kinetic_exec(fighter: &mut L2CFighterCommon) {
             );
         }
     }
-    
 }
 
 unsafe extern "C" fn specials_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {

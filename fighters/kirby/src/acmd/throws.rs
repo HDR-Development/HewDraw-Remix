@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
@@ -43,7 +41,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
@@ -64,7 +61,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {

@@ -305,7 +305,6 @@ unsafe extern "C" fn game_speciallw2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_REVERSE_SLASH_FLAG_SPECIAL_FALL);
     }
-    
 }
 
 unsafe extern "C" fn effect_speciallw2(agent: &mut L2CAgentBase) {
@@ -377,7 +376,6 @@ unsafe extern "C" fn effect_speciallw2(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("sys_thunder"), false, true);
         EFFECT_DETACH_KIND(agent, Hash40::new("miiswordsman_reflect1"), -1);
     }
-    
 }
 
 unsafe extern "C" fn sound_speciallw2(agent: &mut L2CAgentBase) {

@@ -12,7 +12,6 @@ unsafe extern "C" fn game_specials1start(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 0.4);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs1start(agent: &mut L2CAgentBase) {
@@ -23,7 +22,6 @@ unsafe extern "C" fn game_specialairs1start(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 0.4);
     }
-    
 }
 
 unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
@@ -33,7 +31,6 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
 
     }
-    
 }
 
 unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
@@ -43,7 +40,6 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
 
     }
-    
 }
 /*
 unsafe fn game_specials1hit(agent: &mut L2CAgentBase) {
@@ -59,7 +55,6 @@ unsafe fn game_specials1hit(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 */
 

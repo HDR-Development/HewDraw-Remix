@@ -211,7 +211,6 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_HI_FLAG_REVERT_ANGLE);
     }
-    
 }
 
 unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
@@ -236,7 +235,6 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_HI_FLAG_REVERT_ANGLE);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {

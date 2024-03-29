@@ -215,7 +215,6 @@ unsafe extern "C" fn special_hi_change_motion(fighter: &mut L2CFighterCommon, mo
     else {
         MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     }
-    
 }
 
 // FUN_710001ea30

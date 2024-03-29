@@ -146,7 +146,6 @@ unsafe extern "C" fn game_appealsr(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_appealsl(agent: &mut L2CAgentBase) {
@@ -206,7 +205,6 @@ unsafe extern "C" fn game_appealsl(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
