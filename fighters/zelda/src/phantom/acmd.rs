@@ -561,7 +561,8 @@ unsafe extern "C" fn effect_attackmax(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_cancel(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
-	let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+	let boma = agent.boma();
+	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
 	frame(lua_state, 1.0);
 	if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {

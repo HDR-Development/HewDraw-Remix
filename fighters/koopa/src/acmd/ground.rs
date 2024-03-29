@@ -106,18 +106,18 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("koopa_scratch"), Hash40::new("koopa_scratch"), Hash40::new("top"), -2, 20, 5.5, 19, -8, -52, 1.6, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.5);
-        EffectModule::set_visible_kind(agent.module_accessor, Hash40::new("koopa_scratch"), false);
+        EffectModule::set_visible_kind(boma, Hash40::new("koopa_scratch"), false);
 
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -4, 13, -30, 0, 0, 0, 2.5, true);
         LAST_EFFECT_SET_RATE(agent, 1.75);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        EffectModule::set_visible_kind(agent.module_accessor, Hash40::new("koopa_scratch"), true);
+        EffectModule::set_visible_kind(boma, Hash40::new("koopa_scratch"), true);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        if PostureModule::lr(agent.module_accessor) > 0.0 {
+        if PostureModule::lr(boma) > 0.0 {
             EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), 18.0, 2.0, 0.0, 0,0,140,0.9, 0, 0, 0, 0, 0, 0, false);
         }
         else{

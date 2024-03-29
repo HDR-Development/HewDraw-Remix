@@ -5,8 +5,8 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
     frame(lua_state, 12.0);
@@ -51,8 +51,8 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
     frame(lua_state, 12.0);
@@ -97,8 +97,8 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
     frame(lua_state, 12.0);
@@ -167,8 +167,8 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     FT_MOTION_RATE_RANGE(agent, 2.0, 4.0, 2.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
     frame(lua_state, 4.0);
@@ -240,8 +240,8 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
     frame(lua_state, 13.0);

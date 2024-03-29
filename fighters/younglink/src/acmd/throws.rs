@@ -11,12 +11,12 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		ATTACK(agent, 0, 0, Hash40::new("kneer"), 3.0, 361, 0, 120, 0, 3.1, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
 		ATTACK(agent, 1, 0, Hash40::new("kneer"), 3.0, 361, 0, 120, 0, 3.1, 3.5, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-		AttackModule::set_catch_only_all(agent.module_accessor, true, false);
+		AttackModule::set_catch_only_all(boma, true, false);
 		CHECK_FINISH_CAMERA(agent, 21, 11);
 	}
 	frame(lua_state, 13.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));	
     }
 }

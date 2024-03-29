@@ -5,11 +5,11 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
     }
     frame(lua_state, 30.0);
     if is_excute(agent){
-        ArticleModule::shoot(agent.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE,  app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE,  app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
 }
 

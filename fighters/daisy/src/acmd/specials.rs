@@ -181,7 +181,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_daisy_special_l01"));
         if agent.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND) != *ITEM_KIND_NONE 
-        && ItemModule::is_have_item(agent.module_accessor, 0) {
+        && ItemModule::is_have_item(boma, 0) {
             PLAY_SE(agent, Hash40::new("vc_daisy_appeal_s01"));
         } 
     }

@@ -2,6 +2,7 @@ use super::*;
 
 unsafe fn manage_sword_motion(agent: &mut L2CAgentBase, motion: Hash40) {
 	let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
     let exists = {
         agent.clear_lua_stack();
         lua_args!(agent, FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD);
@@ -14,7 +15,7 @@ unsafe fn manage_sword_motion(agent: &mut L2CAgentBase, motion: Hash40) {
 
     if is_excute(agent) {
         ArticleModule::add_motion_partial(
-            agent.module_accessor,
+            boma,
             *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD,
             *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE,
             motion,
@@ -29,7 +30,7 @@ unsafe fn manage_sword_motion(agent: &mut L2CAgentBase, motion: Hash40) {
         );
     }
 
-    if MotionModule::is_changing(agent.module_accessor) && is_excute(agent) {
+    if MotionModule::is_changing(boma) && is_excute(agent) {
         agent.on_flag(*FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
     }
 }
@@ -63,7 +64,7 @@ unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -96,9 +97,9 @@ unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
 	}
 	if is_excute(agent) {
 		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -128,9 +129,9 @@ unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
 	}
 	if is_excute(agent) {
 		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -170,7 +171,7 @@ unsafe extern "C" fn game_specialn (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 38.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_HIT_CHECK2);
 	}
 	frame(lua_state, 42.0);
@@ -215,7 +216,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -258,10 +259,10 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -276,7 +277,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 18.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 	frame(lua_state, 26.0);
 	if is_excute(agent) {
@@ -298,10 +299,10 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -311,7 +312,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 28.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 	frame(lua_state, 35.0);
 	if is_excute(agent) {
@@ -333,10 +334,10 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -346,7 +347,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 37.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 	frame(lua_state, 45.0);
 	if is_excute(agent) {
@@ -377,7 +378,7 @@ unsafe extern "C" fn game_specialn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 47.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_HIT_CHECK2);
 	}
 	frame(lua_state, 52.0);
@@ -421,7 +422,7 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 5.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -429,7 +430,7 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 6.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 	frame(lua_state, 9.0);
 	if is_excute(agent) {
@@ -460,10 +461,10 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -496,10 +497,10 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -508,7 +509,7 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 28.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 	frame(lua_state, 35.0);
 	if is_excute(agent) {
@@ -528,10 +529,10 @@ unsafe extern "C" fn game_specialairn2 (agent: &mut L2CAgentBase) {
 		}
 	}
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLAG_ATTACK_SET);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 0, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 1, /*Frames*/ 2.0, /*Unk*/ false);
+		AttackModule::set_add_reaction_frame(boma, /*ID*/ 2, /*Frames*/ 2.0, /*Unk*/ false);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
 		ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
@@ -645,7 +646,7 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
 	frame(lua_state, 1.0);
 	if is_excute(agent) {
         MotionModule::set_rate(boma, 1.7);
-        JostleModule::set_status(agent.module_accessor, false);
+        JostleModule::set_status(boma, false);
         VarModule::off_flag(agent.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY);
 	}
 	if is_excute(agent) {
@@ -664,12 +665,12 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 2.0);
 	if is_excute(agent) {
-		WorkModule::set_int(agent.module_accessor, 5, *FIGHTER_ELIGHT_STATUS_SPECIAL_S_WORK_INT_BUNSHIN_NUM);
-        if ArticleModule::get_num(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN) == 0 {
-			ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, false, -1);
-            ArticleModule::set_rate(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, 1.0);
+		WorkModule::set_int(boma, 5, *FIGHTER_ELIGHT_STATUS_SPECIAL_S_WORK_INT_BUNSHIN_NUM);
+        if ArticleModule::get_num(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN) == 0 {
+			ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, false, -1);
+            ArticleModule::set_rate(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, 1.0);
 		}
-        VisibilityModule::set_whole(agent.module_accessor, false);
+        VisibilityModule::set_whole(boma, false);
 	}
 	frame(lua_state, 3.0);
 	if is_excute(agent) {
@@ -715,7 +716,7 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
         MotionModule::set_rate(boma, 3.0);
     }
 	if is_excute(agent) {
-		WorkModule::off_flag(agent.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_S_FLAG_IS_CHECK_CLIFF);
+		WorkModule::off_flag(boma, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_S_FLAG_IS_CHECK_CLIFF);
     }
 }
 
@@ -732,7 +733,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(agent.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0{
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(agent.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0{
             EFFECT_FLW_UNSYNC_VIS(agent, Hash40::new("elight_attack100_finish"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.0, true);
         }
     }
@@ -754,7 +755,7 @@ unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(agent.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0{
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(agent.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0{
             EFFECT_FLW_UNSYNC_VIS(agent, Hash40::new("elight_attack100_finish"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.0, true);
         }
     }
@@ -924,6 +925,7 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
     manage_sword_motion(agent, Hash40::new("to_open"));
 
     frame(lua_state, 13.0);
@@ -934,7 +936,7 @@ unsafe extern "C" fn game_specialairhi1(agent: &mut L2CAgentBase) {
 
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_EXPROSIVESHOT, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_EXPROSIVESHOT, false, -1);
     }
 
     frame(lua_state, 25.0);
@@ -943,6 +945,7 @@ unsafe extern "C" fn game_specialairhi1(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
     frame(lua_state, 1.0);
 
     if is_excute(agent) {
@@ -953,28 +956,28 @@ unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
 
     frame(lua_state, 23.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
     }
 
     frame(lua_state, 24.0);
 
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
     }
 
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
     }
 
     frame(lua_state, 26.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
     }
 
     frame(lua_state, 27.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
     }
 
     frame(lua_state, 29.0);
@@ -1060,34 +1063,36 @@ unsafe extern "C" fn sound_specialairhi2(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn expression_specialairhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
     if is_excute(agent) {
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_beams"), 0, false, 0x50000000);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, 0x50000000);
     }
 }
 
 unsafe extern "C" fn expression_specialairhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
     if is_excute(agent) {
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_79_beams"), 0, false, 0x50000000);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_79_beams"), 0, false, 0x50000000);
     }
 }
 
 unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-
+	let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_NONE);
-        let mut angle = app::lua_bind::FighterKineticEnergyMotion::get_angle(KineticModule::get_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as _);
-        if PostureModule::lr(agent.module_accessor) > 0.0 {
+        let mut angle = app::lua_bind::FighterKineticEnergyMotion::get_angle(KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as _);
+        if PostureModule::lr(boma) > 0.0 {
             angle *= -1.0;
         }
         angle = 80.0 - angle.to_degrees() / 2.0;
@@ -1118,14 +1123,14 @@ unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("sword2"), 7.0, 72, 10, 0, 55, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(agent, 1, 0, Hash40::new("sword2"), 7.0, 68, 10, 0, 55, 4.0, 9.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::clear(agent.module_accessor, 2, false);
-        AttackModule::clear(agent.module_accessor, 3, false);
+        AttackModule::clear(boma, 2, false);
+        AttackModule::clear(boma, 3, false);
         //AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
         //AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 5.0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
     frame(lua_state, 10.0);

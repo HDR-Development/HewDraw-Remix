@@ -92,7 +92,7 @@ unsafe extern "C" fn expression_specialng(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_27_spinslash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_27_spinslash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {

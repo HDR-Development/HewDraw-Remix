@@ -197,8 +197,8 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         
-        let h_speed = KineticModule::get_sum_speed_x(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) as f32;
-        let v_speed = KineticModule::get_sum_speed_y(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) as f32;
+        let h_speed = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) as f32;
+        let v_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) as f32;
         //let angle_calc = v_speed / h_speed as f32;
         //println!("Angle: {}", angle_calc);
         
@@ -321,7 +321,7 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         let start_x_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_special_hi3.start_x_mul");
-        KineticModule::mul_speed(agent.module_accessor, &Vector3f{x: start_x_mul, y: 1.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        KineticModule::mul_speed(boma, &Vector3f{x: start_x_mul, y: 1.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {

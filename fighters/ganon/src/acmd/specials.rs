@@ -68,7 +68,7 @@ unsafe extern "C" fn game_floatairstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0 / 10.0);
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
-    KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     frame(lua_state, 14.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
@@ -76,7 +76,7 @@ unsafe extern "C" fn game_floatairstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-    KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
@@ -119,7 +119,7 @@ unsafe extern "C" fn game_float(agent: &mut L2CAgentBase) {
     frame(lua_state, 60.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 
@@ -322,7 +322,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -342,7 +342,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 34.0);
     if is_excute(agent) {
@@ -351,12 +351,12 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         sv_kinetic_energy!(
             reset_energy,
             agent,
@@ -368,10 +368,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
             0.0,
             0.0
         );
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        let air_accel_x_mul = WorkModule::get_param_float(agent.module_accessor, hash40("air_accel_x_mul"), 0);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let air_accel_x_mul = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0);
         let special_hi_speed_x_mul = WorkModule::get_param_float(
-            agent.module_accessor,
+            boma,
             hash40("param_special_hi"),
             hash40("special_hi_speed_x_mul")
         );
@@ -380,9 +380,9 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
             agent,
             air_accel_x_mul * special_hi_speed_x_mul
         );
-        let air_speed_x_stable = WorkModule::get_param_float(agent.module_accessor, hash40("air_speed_x_stable"), 0);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
         let special_hi_speed_max_x_mul = WorkModule::get_param_float(
-            agent.module_accessor,
+            boma,
             hash40("param_special_hi"),
             hash40("special_hi_speed_max_x_mul")
         );
@@ -396,7 +396,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     if is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_GANON_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_GANON_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
     }
 }
 
@@ -411,7 +411,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("ganon_raijin_hold"), Hash40::new("head"), 2, 0, 0, 0, 0, 0, 1.3, true);
-        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EffectModule::enable_sync_init_pos_last(boma);
     }
     frame(lua_state, 31.0);
     /* vanilla electric effects

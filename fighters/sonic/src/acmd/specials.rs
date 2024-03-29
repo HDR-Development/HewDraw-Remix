@@ -102,9 +102,10 @@ unsafe extern "C" fn sound_specialsbooststart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn expression_specialsbooststart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_dash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -126,6 +127,7 @@ unsafe extern "C" fn game_specialsboost(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialsboost(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
         let eff = if VarModule::is_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
@@ -134,7 +136,7 @@ unsafe extern "C" fn effect_specialsboost(agent: &mut L2CAgentBase) {
             Hash40::new("sonic_spintrace")
         };
         EFFECT_FOLLOW_NO_STOP(agent, eff, Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1.25, true);
-        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EffectModule::enable_sync_init_pos_last(boma);
     }
 }
 
@@ -157,10 +159,11 @@ unsafe extern "C" fn expression_specialsboost(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialsboostend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.6);
@@ -192,17 +195,19 @@ unsafe extern "C" fn sound_specialsboostend(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn expression_specialsboostend(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 unsafe extern "C" fn game_specialairsboostend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
     }

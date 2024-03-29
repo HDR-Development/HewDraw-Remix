@@ -6,7 +6,7 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 6.0/(15.0-1.0));
     if is_excute(agent) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.5, 3.5);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.5, 3.5);
     }
     frame(lua_state, 15.0);
     FT_MOTION_RATE(agent, 1.0);

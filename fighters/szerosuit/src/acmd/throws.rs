@@ -60,12 +60,12 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_dash"), false, 0.0);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
@@ -84,7 +84,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 76.0);
     if is_excute(agent) {
@@ -96,12 +96,12 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_turn"), false, 0.0);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -120,7 +120,7 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 57.0);
     if is_excute(agent) {

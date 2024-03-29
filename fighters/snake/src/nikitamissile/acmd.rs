@@ -60,7 +60,7 @@ unsafe extern "C" fn sound_explosion(agent : &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        let sfx = SoundModule::play_se(agent.module_accessor, Hash40::new("se_snake_special_l02"), true, false, false, false, app::enSEType(0));
+        let sfx = SoundModule::play_se(boma, Hash40::new("se_snake_special_l02"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, sfx as i32, 2.0, 0);
     }
 }

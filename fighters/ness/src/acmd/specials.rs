@@ -34,7 +34,7 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 	frame(lua_state, 21.0);
 	if is_excute(agent) {
-		ArticleModule::generate_article(agent.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		ArticleModule::generate_article(boma, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
 		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
 	}
 	FT_MOTION_RATE(agent, 1);
@@ -49,7 +49,7 @@ unsafe extern "C" fn game_specialairs (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 	frame(lua_state, 21.0);
 	if is_excute(agent) {
-		ArticleModule::generate_article(agent.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		ArticleModule::generate_article(boma, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
 		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
 	}
 	FT_MOTION_RATE(agent, 1);

@@ -118,7 +118,7 @@ unsafe extern "C" fn game_ganonfloat(agent: &mut L2CAgentBase) {
     frame(lua_state, 60.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 

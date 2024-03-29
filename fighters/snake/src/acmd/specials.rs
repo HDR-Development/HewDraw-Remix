@@ -164,8 +164,8 @@ unsafe extern "C" fn sound_specialsstart(agent : &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE) {
-            let sfx_handle = SoundModule::play_se(agent.module_accessor, smash::phx::Hash40::new("vc_snake_heavyget"), true, false, false, false, app::enSEType(0));
-            SoundModule::set_se_vol(agent.module_accessor, sfx_handle as i32, 3.0, 0);
+            let sfx_handle = SoundModule::play_se(boma, smash::phx::Hash40::new("vc_snake_heavyget"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, sfx_handle as i32, 3.0, 0);
         }
     }
     frame(lua_state, 41.0);

@@ -57,10 +57,10 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
-        smash::app::lua_bind::KineticEnergy::reset_energy(agent.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), agent.module_accessor);
+        smash::app::lua_bind::KineticEnergy::reset_energy(agent.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), boma);
         smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_mul(agent.get_controller_energy(), 0.0);
         smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_add(agent.get_controller_energy(), 0.0);
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 5.0);
     if is_excute(agent){

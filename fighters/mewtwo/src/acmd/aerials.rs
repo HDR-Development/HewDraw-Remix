@@ -68,6 +68,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("haver"), 1.2, 0, 1.8, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
@@ -84,7 +85,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        EffectModule::kill_kind(agent.module_accessor, Hash40::new("mewtwo_pk_attack_g"), true, true);
+        EffectModule::kill_kind(boma, Hash40::new("mewtwo_pk_attack_g"), true, true);
     }
 }
 
@@ -125,7 +126,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        let color = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
             0 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 0, 13, -6.2, 180, 35, 90, 0.98, true, *EF_FLIP_YZ),
             1 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), 0, 13, -6.2, 180, 35, 90, 0.98, true, *EF_FLIP_YZ),
@@ -197,7 +198,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        let color = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
             0 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
             1 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),

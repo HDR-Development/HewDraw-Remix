@@ -30,8 +30,8 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
         EffectModule::set_alpha(boma, wave_2, 0.4);
         //Ray check here is used for checking if you're on the ground. Unfortunately is_touch and is_wall_touch_line didnt work for this. Sorry!
         if GroundModule::ray_check(
-            agent.module_accessor, 
-            &Vector2f{ x: PostureModule::pos_x(agent.module_accessor), y: PostureModule::pos_y(agent.module_accessor)}, 
+            boma, 
+            &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
             FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -48,8 +48,8 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
         EffectModule::set_rate(boma, wave_3, 0.7);
         EffectModule::set_alpha(boma, wave_3, 0.4);
         if GroundModule::ray_check(
-            agent.module_accessor, 
-            &Vector2f{ x: PostureModule::pos_x(agent.module_accessor), y: PostureModule::pos_y(agent.module_accessor)}, 
+            boma, 
+            &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
             FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -61,8 +61,8 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EffectModule::set_rate(boma, wave_3, 0.000001);
         if GroundModule::ray_check(
-            agent.module_accessor, 
-            &Vector2f{ x: PostureModule::pos_x(agent.module_accessor), y: PostureModule::pos_y(agent.module_accessor)}, 
+            boma, 
+            &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
             FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
@@ -74,8 +74,8 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
         wait(lua_state, 4.0);
         if is_excute(agent) {
                 if GroundModule::ray_check(
-                    agent.module_accessor, 
-                    &Vector2f{ x: PostureModule::pos_x(agent.module_accessor), y: PostureModule::pos_y(agent.module_accessor)}, 
+                    boma, 
+                    &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
                     &Vector2f{ x: 0.0, y: -7.0}, true
                 ) == 1 {
                     FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);

@@ -22,14 +22,14 @@ unsafe extern "C" fn effect_attacks4charge(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = agent.module_accessor;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
@@ -44,9 +44,9 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     FT_MOTION_RATE_RANGE(agent, 26.0, 40.0, 8.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-        SlowModule::clear_whole(agent.module_accessor);
-        CameraModule::reset_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
+        SlowModule::clear_whole(boma);
+        CameraModule::reset_all(boma);
         CAM_ZOOM_OUT(agent);
     }
     frame(lua_state, 40.0);
@@ -57,7 +57,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = agent.module_accessor;
+    let boma = agent.boma();
     frame(lua_state, 2.0);
     if is_excute(agent) {
         EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 12, 15, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
@@ -86,8 +86,8 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
-        SlowModule::clear_whole(agent.module_accessor);
-        CameraModule::reset_all(agent.module_accessor);
+        SlowModule::clear_whole(boma);
+        CameraModule::reset_all(boma);
         EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_line"), true, true);
     }
 }	

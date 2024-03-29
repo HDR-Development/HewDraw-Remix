@@ -6,13 +6,13 @@ unsafe extern "C" fn game_max(agent: &mut L2CAgentBase) {
     //let mut halflife=30.0;
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 55, 60, 0, 80, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        AttackModule::enable_safe_pos(agent.module_accessor);
+        AttackModule::enable_safe_pos(boma);
         //halflife = WorkModule::get_int(weapon.module_accessor,*WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE) as f32 /2.0;
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 55, 60, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        AttackModule::enable_safe_pos(agent.module_accessor);
+        AttackModule::enable_safe_pos(boma);
     }
 }
 
@@ -41,10 +41,11 @@ unsafe extern "C" fn game_end(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_end(agent: &mut L2CAgentBase) {
-    let lr = PostureModule::lr(agent.module_accessor);
-    let pos = *PostureModule::pos(agent.module_accessor);
+    let boma = agent.boma();
+    let lr = PostureModule::lr(boma);
+    let pos = *PostureModule::pos(boma);
     EffectModule::req(
-        agent.module_accessor,
+        boma,
         Hash40::new("sys_damage_fire"),
         &Vector3f{x: pos.x + 4.0*lr, y: pos.y, z:pos.z},
         &Vector3f::zero(),

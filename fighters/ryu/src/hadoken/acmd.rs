@@ -25,8 +25,8 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
             }
         }
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            let speed = KineticModule::get_sum_speed3f(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(agent.module_accessor, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::mul_speed(boma, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             agent.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
 
             ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 0, 10, 0, 45, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
@@ -110,8 +110,8 @@ unsafe extern "C" fn game_movespwms(agent: &mut L2CAgentBase) {
         }
         
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            let speed = KineticModule::get_sum_speed3f(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(agent.module_accessor, &Vector3f{x: 2.1 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::mul_speed(boma, &Vector3f{x: 2.1 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             agent.set_int(38, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
 
             ATTACK(agent, 0, 0, Hash40::new("top"), 1.1, 80, 10, 0, 42, 3.5, 0.0, -5.2, 0.0, Some(0.0), Some(-5.2), Some(0.0), 0.15, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);

@@ -37,11 +37,11 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION);
         }
         else {
-            let x_vel = KineticModule::get_sum_speed_x(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let x_vel = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             agent.clear_lua_stack();
             lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, x_vel * 0.6, 0.0, 0.0, 0.0, 0.0);
             app::sv_kinetic_energy::reset_energy(lua_state);
-            let air_speed_x_stable = WorkModule::get_param_float(agent.module_accessor, hash40("air_speed_x_stable"), 0);
+            let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
             agent.clear_lua_stack();
             lua_args!(agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * 0.5, 100.0);
             app::sv_kinetic_energy::set_stable_speed(lua_state);

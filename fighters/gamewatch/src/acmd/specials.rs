@@ -291,7 +291,7 @@ unsafe extern "C" fn game_specialhiopen(agent: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     FT_MOTION_RATE_RANGE(agent, 30.0, 45.0, 10.0);
     if is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 45.0);

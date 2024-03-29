@@ -92,7 +92,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
@@ -101,7 +101,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
@@ -110,7 +110,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -119,7 +119,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
@@ -128,7 +128,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
 }
 

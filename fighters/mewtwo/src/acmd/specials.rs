@@ -68,8 +68,9 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
-        GroundModule::set_correct(agent.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        GroundModule::set_correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
     }
 }
 

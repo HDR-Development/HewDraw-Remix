@@ -31,8 +31,8 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
 	}
 	wait(lua_state, 2.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+		AttackModule::clear_all(boma);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
 	}
 }
 
@@ -47,7 +47,7 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 	}
 	wait(lua_state, 2.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 }
 

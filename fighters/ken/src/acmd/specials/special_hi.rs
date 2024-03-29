@@ -78,7 +78,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        if MotionModule::motion_kind(agent.module_accessor) == hash40("special_hi_command") {
+        if MotionModule::motion_kind(boma) == hash40("special_hi_command") {
             WHOLE_HIT(agent, *HIT_STATUS_XLU);
         }
     }
@@ -116,7 +116,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(agent) 
     && !VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
-    && MotionModule::motion_kind(agent.module_accessor) != hash40("special_hi_command") {
+    && MotionModule::motion_kind(boma) != hash40("special_hi_command") {
         WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 9.0);
@@ -179,10 +179,10 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
         || agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_arc"), Hash40::new("trans"), 6.5, 5, 0, 5, 0, 25, 1, false);
         } else {
-            let id = EffectModule::req_follow(agent.module_accessor, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 1.0, false, 0, 0, 0, 0, 0, false, false);
+            let id = EffectModule::req_follow(boma, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 1.0, false, 0, 0, 0, 0, 0, false, false);
             VarModule::set_int(agent.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFF_ID, id as i32);
             EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-            EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+            EffectModule::enable_sync_init_pos_last(boma);
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
                 EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
                 EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
@@ -252,7 +252,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(agent) {
         let id = VarModule::get_int(agent.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFF_ID) as u32;
-        EffectModule::kill(agent.module_accessor, id, true, true);
+        EffectModule::kill(boma, id, true, true);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {

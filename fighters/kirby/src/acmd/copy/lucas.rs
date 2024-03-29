@@ -26,7 +26,7 @@ unsafe extern "C" fn sound_lucasspecialnstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_lucasspecialnhold(agent: &mut L2CAgentBase) {
     // INTENTIONALLY LEFT BLANK
     /* if agent.kind() == *FIGHTER_KIND_KIRBY {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
+        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
     } */
 }
 

@@ -38,6 +38,7 @@ unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_ryu_appeal_l01"));
@@ -48,30 +49,32 @@ unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        let sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_common_final_cutin"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(agent.module_accessor, sfx_handle as i32, 0.5, 0);
+        let sfx_handle = SoundModule::play_se(boma, Hash40::new("se_common_final_cutin"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sfx_handle as i32, 0.5, 0);
     }
 }
 
 unsafe extern "C" fn expression_speciallwinstall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         AREA_WIND_2ND_arg10(agent, 0, 1, 70, 8, 0.8, 0, 6, 32, 12, 80);
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
-        AreaModule::erase_wind(agent.module_accessor, 0);
+        AreaModule::erase_wind(boma, 0);
     }
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 11.0);
     let lv = agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SAVING_LV);
     MeterModule::watch_damage(agent.battle_object, true);
@@ -83,21 +86,21 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         } else if lv == *FIGHTER_RYU_SAVING_LV_2 {
             ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 60, 100, 0, 0, 4.3, 0.0, 10.5, 11.5, Some(0.0), Some(10.5), Some(2.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 22, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 60, 100, 0, 0, 4.3, 0.0, 10.5, 11.5, Some(0.0), Some(10.5), Some(2.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 22, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 0, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 1, true, false);
+            AttackModule::set_no_finish_camera(boma, 0, true, false);
+            AttackModule::set_no_finish_camera(boma, 1, true, false);
         } else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 5.4, 0.0, 10.5, 11.5, Some(0.0), Some(10.5), Some(2.0), 2.3, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 5.4, 0.0, 10.5, 11.5, Some(0.0), Some(10.5), Some(2.0), 2.3, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 0, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 1, true, false);
+            AttackModule::set_no_finish_camera(boma, 0, true, false);
+            AttackModule::set_no_finish_camera(boma, 1, true, false);
         }
-        AttackModule::set_attack_level(agent.module_accessor, 0, lv as u8);
-        AttackModule::set_attack_level(agent.module_accessor, 1, lv as u8);
+        AttackModule::set_attack_level(boma, 0, lv as u8);
+        AttackModule::set_attack_level(boma, 1, lv as u8);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -107,6 +110,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
         REVERSE_LR(agent);
@@ -122,21 +126,21 @@ unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
         } else if lv == *FIGHTER_RYU_SAVING_LV_2 {
             ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 60, 100, 0, 0, 4.3, 0.0, 10.5, -13.5, Some(0.0), Some(10.5), Some(-2.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 22, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 60, 100, 0, 0, 4.3, 0.0, 10.5, -13.5, Some(0.0), Some(10.5), Some(-2.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 22, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 0, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 1, true, false);
+            AttackModule::set_no_finish_camera(boma, 0, true, false);
+            AttackModule::set_no_finish_camera(boma, 1, true, false);
         } else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 5.4, 0.0, 10.5, -13.5, Some(0.0), Some(10.5), Some(-2.0), 2.3, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 5.4, 0.0, 10.5, -13.5, Some(0.0), Some(10.5), Some(-2.0), 2.3, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 0, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 1, true, false);
+            AttackModule::set_no_finish_camera(boma, 0, true, false);
+            AttackModule::set_no_finish_camera(boma, 1, true, false);
         }
-        AttackModule::set_attack_level(agent.module_accessor, 0, lv as u8);
-        AttackModule::set_attack_level(agent.module_accessor, 1, lv as u8);
+        AttackModule::set_attack_level(boma, 0, lv as u8);
+        AttackModule::set_attack_level(boma, 1, lv as u8);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {

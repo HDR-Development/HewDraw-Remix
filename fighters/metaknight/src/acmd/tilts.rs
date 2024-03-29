@@ -46,7 +46,7 @@ unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        KineticModule::clear_speed_energy_id(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {

@@ -303,7 +303,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             let handle = EffectModule::req_follow(boma, Hash40::new("sys_crown"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, true, true) as u32;
-            EffectModule::set_rgb(agent.module_accessor, handle, 0.0 / 255.0, 204.0 / 255.0, 255.0 / 255.0);
+            EffectModule::set_rgb(boma, handle, 0.0 / 255.0, 204.0 / 255.0, 255.0 / 255.0);
         }
         else {
             LANDING_EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);

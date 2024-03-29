@@ -117,7 +117,7 @@ unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	if is_excute(agent) {
-        let landing_frame = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_f"), 0);
+        let landing_frame = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_f"), 0);
         if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             FT_MOTION_RATE(agent, (landing_frame + 5.0)/landing_frame);
         }
@@ -239,7 +239,7 @@ unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	if is_excute(agent) {
-        let landing_frame = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_b"), 0);
+        let landing_frame = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_b"), 0);
         if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             FT_MOTION_RATE(agent, (landing_frame + 3.0)/landing_frame);
         }
@@ -423,7 +423,7 @@ unsafe extern "C" fn game_landingairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	if is_excute(agent) {
-        let landing_frame = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_hi"), 0);
+        let landing_frame = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_hi"), 0);
         if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
             FT_MOTION_RATE(agent, (landing_frame + 5.0)/landing_frame);
         }

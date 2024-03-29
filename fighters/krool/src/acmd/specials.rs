@@ -272,8 +272,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0
-        && ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        if WorkModule::get_float(boma, 0x4d) >= 1.0
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
             WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }

@@ -129,7 +129,7 @@ unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
             0.0,
             0.0
         );
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 

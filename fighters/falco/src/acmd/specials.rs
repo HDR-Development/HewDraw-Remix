@@ -165,7 +165,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		//LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
-		EffectModule::preset_limit_num(agent.module_accessor, 2);
+		EffectModule::preset_limit_num(boma, 2);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
         //FLASH(agent, 1, 1, 1, 0.627);

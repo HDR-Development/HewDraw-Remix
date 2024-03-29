@@ -40,8 +40,8 @@ unsafe extern "C" fn game_specialhi12(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 8.5, 11.0, 3.0);
     if is_excute(agent) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && agent.is_stick_backward() {
-            PostureModule::reverse_lr(agent.module_accessor);
-            PostureModule::update_rot_y_lr(agent.module_accessor);
+            PostureModule::reverse_lr(boma);
+            PostureModule::update_rot_y_lr(boma);
         }
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
         ATTACK(agent, 0, 0, Hash40::new("legl"), 8.0, 45, 80, 0, 40, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -62,7 +62,7 @@ unsafe extern "C" fn game_specialhi12(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-        let air_speed_x_stable = WorkModule::get_param_float(agent.module_accessor, hash40("air_speed_x_stable"), 0);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
         let fall_x_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_flash_kick.fall_x_mul");
         let fall_acl_y_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_flash_kick.fall_acl_y_mul");
         sv_kinetic_energy!(set_stable_speed, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * fall_x_mul, 0.0);

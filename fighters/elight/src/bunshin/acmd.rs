@@ -4,7 +4,7 @@ unsafe extern "C" fn game_specialairs5(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        VisibilityModule::set_whole(agent.module_accessor, false);
+        VisibilityModule::set_whole(boma, false);
     }
 }
 unsafe extern "C" fn effect_specialairs5(agent: &mut L2CAgentBase) {

@@ -2,6 +2,7 @@ use super::*;
 
 unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 6.0);
     let strength = agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     let add_startup = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
@@ -33,7 +34,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     };
     if is_excute(agent) {
         sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed);
-        JostleModule::set_team(agent.module_accessor, 1);
+        JostleModule::set_team(boma, 1);
         // nothing hitboxes here for interpolation
         ATTACK(agent, 0, 0, Hash40::new("kneel"), 0.0, 361, 0, 0, 0, 0.0, -1.5, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         ATTACK(agent, 1, 0, Hash40::new("kneel"), 0.0, 361, 0, 0, 0, 0.0, -6.2, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -41,7 +42,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::watch_damage(agent.battle_object, true);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             MeterModule::watch_damage(agent.battle_object, false);
@@ -70,13 +71,13 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 20.0, 46.0, recovery);
     if is_excute(agent) {
         sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.0);
-        JostleModule::set_team(agent.module_accessor, 0);
+        JostleModule::set_team(boma, 0);
         MeterModule::watch_damage(agent.battle_object, false);
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 33.0);
     if is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 46.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -154,18 +155,19 @@ unsafe extern "C" fn sound_attackcommand4(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn expression_attackcommand4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         AREA_WIND_2ND_arg10(agent, 0, 0.8, 180, 8, 0.8, -10, 7, 20, 14, 80);
     }
     frame(lua_state, 15.0);
@@ -174,7 +176,7 @@ unsafe extern "C" fn expression_attackcommand4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        AreaModule::erase_wind(agent.module_accessor, 0);
+        AreaModule::erase_wind(boma, 0);
     }
 }
 

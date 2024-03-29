@@ -417,7 +417,7 @@ unsafe extern "C" fn game_specialairhih(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 52.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             VarModule::on_flag(agent.battle_object, vars::kirby::instance::DISABLE_SPECIAL_HI);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
@@ -429,7 +429,7 @@ unsafe extern "C" fn game_specialairhih(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 60.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 

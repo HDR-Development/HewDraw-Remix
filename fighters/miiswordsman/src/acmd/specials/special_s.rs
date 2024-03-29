@@ -69,10 +69,10 @@ unsafe fn game_specials1hit(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specials2dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-
+    let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 0.5);
+        MotionModule::set_rate(boma, 0.5);
     }
 }
 
@@ -154,9 +154,10 @@ unsafe extern "C" fn effect_specials2attack(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairs2dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 0.5);
+        MotionModule::set_rate(boma, 0.5);
     }
 }
 
