@@ -235,8 +235,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             let charge_state_remaining = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) as f32;
             // 5 seconds to use full strength Discharge before it starts decreasing in power
             let discharge_decrease_power_frame = charge_state_time - 300.0;
-            // 50% damage at minimum
-            let discharge_min_power_mul = 0.5;
+            // 75% damage at minimum
+            let discharge_min_power_mul = 0.75;
             let discharge_power_mul = 1.0 - ((1.0 - (charge_state_remaining.min(discharge_decrease_power_frame)/discharge_decrease_power_frame)) * (1.0 - discharge_min_power_mul));
             VarModule::set_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL, discharge_power_mul);
             // 75% size at minimum
