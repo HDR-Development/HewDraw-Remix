@@ -52,6 +52,11 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::inkling::instance::DISABLE_SPECIAL_S);
     }
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+    || !app::sv_information::is_ready_go() {
+        EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
+        VarModule::set_float(fighter.battle_object,vars::inkling::instance::SPECIAL_LW_CHARGE,0.0);
+    }
     true.into()
 }
 

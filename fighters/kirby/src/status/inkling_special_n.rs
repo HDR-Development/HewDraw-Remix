@@ -24,7 +24,47 @@ pub unsafe fn spend_ink(fighter: &mut L2CFighterCommon, ink_cost: f32) -> bool {
     return true;
 }
 
-pub unsafe extern "C" fn special_n_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_kirby = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY;
+    let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+
+    let original_status = if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N} else {*FIGHTER_STATUS_KIND_SPECIAL_N};
+    let to_return = smashline::original_status(Main, fighter, original_status)(fighter);
+
+    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+        let lr = PostureModule::lr(fighter.module_accessor);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ENERGY_STOP_RESET_TYPE_AIR,
+            speed_x,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            speed_y,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+
+    to_return
+}
+pub unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_kirby = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY;
     let original_status = if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N_SHOOT} else {*FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT};
     let toreturn = smashline::original_status(Main, fighter, original_status)(fighter);
@@ -50,6 +90,7 @@ pub unsafe extern "C" fn special_n_shoot_exec(fighter: &mut L2CFighterCommon) ->
 
 pub fn install() {
     Agent::new("kirby")
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N_SHOOT, special_n_shoot_exec)
+        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N, special_n_main)
+        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N_SHOOT, special_n_shoot_main)
     .install();
 }
