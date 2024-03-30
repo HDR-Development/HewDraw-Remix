@@ -7,9 +7,13 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if stance != 2 {
         FT_MOTION_RATE(agent, 0.7);
+        if stance != 1 {
+            VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+        }
     }
     else {
         FT_MOTION_RATE(agent, 9.0/(9.0 - 1.0));
+        VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
     }
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -19,6 +23,15 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     FT_MOTION_RATE(agent, 0.7);
+}
+
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 10.0, 5.0);
+    frame(lua_state, 10.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialsshoot(agent: &mut L2CAgentBase) {
@@ -649,7 +662,8 @@ unsafe extern "C" fn effect_specialairlwbite(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart);
     agent.acmd("game_specialairnstart", game_specialnstart);
-
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specials);
     agent.acmd("game_specialsshoot", game_specialsshoot);
     agent.acmd("game_specialairsshoot", game_specialsshoot);
     agent.acmd("game_specialsshoots", game_specialsshoots);
