@@ -7,25 +7,27 @@ pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CVa
     let is_kirby = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY;
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let kinetic = KineticModule::get_kinetic_type(fighter.module_accessor);
 
     let original_status = if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_INKLING_SPECIAL_N} else {*FIGHTER_STATUS_KIND_SPECIAL_N};
     let to_return = smashline::original_status(Main, fighter, original_status)(fighter);
 
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         let lr = PostureModule::lr(fighter.module_accessor);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
+        KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         sv_kinetic_energy!(
             reset_energy,
             fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            ENERGY_STOP_RESET_TYPE_AIR,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST_NO_CAP,
             speed_x,
             0.0,
             0.0,
             0.0,
             0.0
         );
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -38,7 +40,8 @@ pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CVa
             0.0
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     }
 
     to_return
