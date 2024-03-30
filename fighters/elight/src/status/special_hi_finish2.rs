@@ -1,5 +1,7 @@
 use super::*;
 
+// statuses::elight::SPECIAL_HI_FINISH2
+
 unsafe extern "C" fn special_hi_finish2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -77,10 +79,8 @@ unsafe extern "C" fn special_hi_finish2_end(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_pre)
-        .status(Main, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_main)
-        .status(End, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_pre);
+    agent.status(Main, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_main);
+    agent.status(End, statuses::elight::SPECIAL_HI_FINISH2, special_hi_finish2_end);
 }

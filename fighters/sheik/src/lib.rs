@@ -5,6 +5,12 @@
 pub mod acmd;
 
 pub mod opff;
+//pub mod status;
+
+// articles
+
+mod fusin;
+mod needle;
 
 use smash::{
     lib::{
@@ -36,8 +42,14 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
+    let agent = &mut Agent::new("sheik");
+    acmd::install(agent);
+    opff::install(agent);
+    agent.install();
+
+    fusin::install();
+    needle::install();
 }

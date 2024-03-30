@@ -47,7 +47,7 @@ unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
+
 }
 
 unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {

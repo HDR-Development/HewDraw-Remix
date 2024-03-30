@@ -4,8 +4,15 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod dragonhand;
+mod ryusensya;
+mod spearhand;
+mod waterdragon;
 
 use smash::{
     lib::{
@@ -37,9 +44,17 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("kamui");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    dragonhand::install();
+    ryusensya::install();
+    spearhand::install();
+    waterdragon::install();
 }

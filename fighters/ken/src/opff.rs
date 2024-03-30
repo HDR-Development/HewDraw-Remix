@@ -63,11 +63,9 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .on_line(Main, ken_frame_wrapper)
-        .on_line(Main, ken_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, ken_frame_wrapper);
+    agent.on_line(Main, ken_meter);
 }
 
 unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -361,6 +359,7 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 }
+
 unsafe fn ken_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // enter EX if A+B on frame<5
     if fighter.is_status_one_of(&[

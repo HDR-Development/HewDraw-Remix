@@ -33,12 +33,12 @@ unsafe fn peach_float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(peach_float_main_loop_common as *const () as _))
 }
 
-unsafe extern "C" fn uniq_float(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT
+
+unsafe extern "C" fn uniq_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     peach_float_main_common(fighter)
 }
 
-pub fn install() {
-    Agent::new("peach")
-        .status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT, uniq_float)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT, uniq_float_main);
 }
