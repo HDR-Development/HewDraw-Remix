@@ -203,6 +203,8 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly);
     agent.acmd("sound_damageflylw", sound_damagefly);
@@ -214,6 +216,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_dash", sound_dash);
     agent.acmd("game_turndash", game_turndash);
 
+    agent.acmd("expression_appealsr", stub);
+    agent.acmd("expression_appealsl", stub);
+    agent.acmd("expression_appealhir", stub);
+    agent.acmd("expression_appealhil", stub);
+    
     agent.acmd("sound_appealsr", sound_appealsr);
     agent.acmd("sound_appealhir", sound_appealhir);
 

@@ -52,6 +52,15 @@ unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
     }
 }
 
+// freeze snake in place when using down taunt on the respawn platform
+unsafe fn rebirth_box_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && boma.is_motion_one_of(&[Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r")])
+    && MotionModule::frame(boma) as i32 == 37 {
+        MotionModule::set_rate(boma, 0.0);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -95,6 +104,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
     fastfall_specials(fighter);
+    rebirth_box_handling(fighter, boma);
 }
 
 /*#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
