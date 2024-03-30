@@ -9,7 +9,7 @@ unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
-        if fighter.status_frame() == 9 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        if fighter.status_frame() == 8 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             fighter.change_status(FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32.into(), true.into());
             return 1.into()
         }
