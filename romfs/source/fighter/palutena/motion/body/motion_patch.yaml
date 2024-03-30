@@ -37,7 +37,7 @@ attack_lw3:
   flags:
     move: false
   extra:
-    cancel_frame: 35
+    cancel_frame: 39
 attack_hi3:
   extra:
     cancel_frame: 58
@@ -49,7 +49,7 @@ attack_air_b:
     cancel_frame: 41
 attack_air_hi:
   extra:
-    cancel_frame: 55
+    cancel_frame: 58
 attack_air_f:
   extra:
     cancel_frame: 34

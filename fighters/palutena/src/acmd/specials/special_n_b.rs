@@ -16,14 +16,6 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
     frame(lua_state, 4.0);
-    if is_excute(agent) {
-        HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
-    }
     FT_DESIRED_RATE(agent, 14.0, 8.0);
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);

@@ -16,6 +16,7 @@ unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
         }
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 16.0);
     frame(lua_state, 20.0);
     if is_excute(agent) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
