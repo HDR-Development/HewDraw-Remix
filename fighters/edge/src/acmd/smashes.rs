@@ -23,21 +23,17 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 3.0);
     }
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0/(25.5-25.0));
-    }
+    FT_MOTION_RATE_RANGE(agent, 25.0, 25.5, 1.0);
     frame(lua_state, 25.5);
+    FT_MOTION_RATE_RANGE(agent, 25.5, 26.0, 1.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0/(26.0-25.5));
         ATTACK(agent, 0, 0, Hash40::new("swordl1"), 20.0, 361, 78, 0, 57, 3.5, 8.0, -1.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(agent, 1, 0, Hash40::new("swordl1"), 20.0, 361, 78, 0, 57, 3.5, 15.0, -1.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(agent, 2, 0, Hash40::new("swordl1"), 10.5, 361, 85, 0, 57, 3.0, 1.0, -1.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(agent, 3, 0, Hash40::new("swordl1"), 15.0, 361, 88, 0, 57, 3.0, 22.0, -1.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 26.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
-    }
+    FT_MOTION_RATE(agent, 1.0);
     wait(lua_state, 3.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
@@ -48,7 +44,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -103,7 +99,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -114,8 +110,6 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {  }
     frame(lua_state, 15.0);
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 25.0);
@@ -357,8 +351,8 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("effect_attacks4", effect_attacks4);
 
-    agent.acmd("effect_attacks4", game_attackhi4);
     agent.acmd("game_attackhi4", game_attackhi4);
     agent.acmd("effect_attackhi4", effect_attackhi4);
 

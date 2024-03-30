@@ -66,27 +66,25 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_movewms(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !boma.is_flag(*WEAPON_RYU_HADOKEN_INSTANCE_WORK_ID_FLAG_COMMAND) {
-            EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, false);
-        } else {
-            EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_bullet2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, false);
+        if agent.is_flag(*WEAPON_RYU_HADOKEN_INSTANCE_WORK_ID_FLAG_COMMAND) {
+            EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_bullet2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
         }
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("ken_hadoken_bullethand_l"), Hash40::new("ken_hadoken_bullethand_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+        else{
+            EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, false);
+        }
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+            // LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.0, 1.0);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, -0.5, 0, 0, 0, 1.25, false);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 1.5, false);
+        }
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            EFFECT_FOLLOW_FLIP(agent, Hash40::new("ken_hadoken_bullethand_l"), Hash40::new("ken_hadoken_bullethand_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
-            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_aura"), Hash40::new("top"), 0, -5.0, -1.0, 0, 0, 0, 3.0, false);
-            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_impact"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 0.5, false);
-            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_hit2"), Hash40::new("top"), 0, 0, -1.0, 180, 0, 0, 1.0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 3.0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 0.5, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_hit2"), Hash40::new("top"), 0, 0, -1.0, 180, 0, 0, 1.0, false);
         }
-    }
-}
-
-unsafe extern "C" fn sound_movewms(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_ken_special_n04"));
     }
 }
 
@@ -189,37 +187,28 @@ unsafe extern "C" fn effect_movespwms_last(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_movespwms(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_ken_special_n04"));
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_movew", game_movewms);
     agent.acmd("game_movem", game_movewms);
     agent.acmd("game_moves", game_movewms);
+
     agent.acmd("effect_movew", effect_movewms);
     agent.acmd("effect_movem", effect_movewms);
     agent.acmd("effect_moves", effect_movewms);
-    agent.acmd("sound_movew", sound_movewms);
-    agent.acmd("sound_movem", sound_movewms);
-    agent.acmd("sound_moves", sound_movewms);
+
     agent.acmd("game_movespw", game_movespwms);
     agent.acmd("game_movespm", game_movespwms);
     agent.acmd("game_movesps", game_movespwms);
-    agent.acmd("game_movespw_last", game_movespwms_last);
-    agent.acmd("game_movespm_last", game_movespwms_last);
-    agent.acmd("game_movesps_last", game_movespwms_last);
+
     agent.acmd("effect_movespw", effect_movespwms);
     agent.acmd("effect_movespm", effect_movespwms);
     agent.acmd("effect_movesps", effect_movespwms);
+
+    agent.acmd("game_movespw_last", game_movespwms_last);
+    agent.acmd("game_movespm_last", game_movespwms_last);
+    agent.acmd("game_movesps_last", game_movespwms_last);
+
     agent.acmd("effect_movespw_last", effect_movespwms_last);
     agent.acmd("effect_movespm_last", effect_movespwms_last);
     agent.acmd("effect_movesps_last", effect_movespwms_last);
-    agent.acmd("sound_movespw", sound_movespwms);
-    agent.acmd("sound_movespm", sound_movespwms);
-    agent.acmd("sound_movesps", sound_movespwms);
 }
