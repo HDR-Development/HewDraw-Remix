@@ -86,7 +86,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn attack_air_b_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	FT_MOTION_RATE(agent, 0.9);
