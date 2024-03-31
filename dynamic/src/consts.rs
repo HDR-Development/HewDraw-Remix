@@ -981,6 +981,10 @@ pub mod vars {
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
             pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0101;
         }
+        pub mod status {
+            // flags
+            pub const D_TILT_JUMP_BUFFER: i32 = 0x1150;
+        }
     }
 
     pub mod rockman {
