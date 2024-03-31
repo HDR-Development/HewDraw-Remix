@@ -116,6 +116,7 @@ unsafe extern "C" fn expression_specialnr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialnr", game_specialnr);
     agent.acmd("game_specialairnr", game_specialnr);
     agent.acmd("effect_specialnr", effect_specialnr);
     agent.acmd("effect_specialairnr", effect_specialnr);
