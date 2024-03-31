@@ -39,7 +39,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
     nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame, motion_kind);
     meter_module(fighter, boma, status_kind, situation_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_max_meter(fighter, boma, status_kind);
@@ -133,26 +132,6 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
         MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
-        pause_meter_regen(fighter, 120);
-    }
-}
-
-unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32, motion_kind: u64) {
-    if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        return;
-    }
-    // landing transition
-    if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
-    }
-    // attack canceling
-    if !CancelModule::is_enable_cancel(boma) 
-    && frame + 4.0 < FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), false)
-    && fighter.is_button_on(Buttons::Attack)
-    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
         pause_meter_regen(fighter, 120);
     }
 }

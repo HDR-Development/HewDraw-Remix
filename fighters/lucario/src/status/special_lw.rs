@@ -49,6 +49,11 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
+            // landing transition
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+                return 0.into();
+            }
             special_lw_set_kinetic(fighter);
             return 0.into();
         }
@@ -63,6 +68,15 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         && fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
         }
+    }
+    // attack canceling
+    else if frame + 4.0 < FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), false)
+    && fighter.is_button_on(Buttons::Attack)
+    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
+        pause_meter_regen(fighter, 120);
     }
     // end
     if MotionModule::is_end(fighter.module_accessor) {
