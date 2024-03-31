@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub unsafe extern "C" fn main_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_N
+
+pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         hash40("special_n_start")
     }
@@ -95,20 +95,17 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub unsafe extern "C" fn pre_special_n_homing_start(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START
+
+pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let blast_attack = VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK);
     let ret = smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
     VarModule::set_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK, blast_attack);
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, main_special_n)
-        .status(
-            Pre,
-            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START,
-            pre_special_n_homing_start,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    
+    agent.status(Pre, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START, special_n_homing_start_pre);
 }

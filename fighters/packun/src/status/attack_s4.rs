@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_S4_START
 
 unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS4Start();
@@ -12,6 +13,8 @@ unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Start_Main as *const () as _))
 }
 
+// FIGHTER_STATUS_KIND_ATTACK_S4
+
 unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_s4(fighter, true);
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4_Main as *const () as _))
@@ -22,6 +25,8 @@ unsafe extern "C" fn sub_attack_s4(fighter: &mut L2CFighterCommon, param_1: bool
     WorkModule::set_int64(fighter.module_accessor, hash as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
 }
+
+// FIGHTER_STATUS_KIND_ATTACK_S4_HOLD
 
 unsafe extern "C" fn attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -45,10 +50,8 @@ unsafe extern "C" fn attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Hold_main as *const () as _))
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_START, attack_s4_start_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4, attack_s4_main)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_hold_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_START, attack_s4_start_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4, attack_s4_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, attack_s4_hold_main);
 }

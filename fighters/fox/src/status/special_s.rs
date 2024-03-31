@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_CONTINUE);
@@ -560,9 +561,7 @@ pub unsafe extern "C" fn special_s_air_control(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("fox")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec);
 }

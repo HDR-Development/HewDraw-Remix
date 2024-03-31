@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter);
@@ -13,8 +14,6 @@ unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue
     ret
 }
 
-pub fn install() {
-    Agent::new("daisy")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

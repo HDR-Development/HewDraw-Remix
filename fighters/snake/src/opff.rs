@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 /*unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat2: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_CATCH_WAIT {
         let motion_value = 0.65;
@@ -53,6 +52,15 @@ unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
     }
 }
 
+// freeze snake in place when using down taunt on the respawn platform
+unsafe fn rebirth_box_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && boma.is_motion_one_of(&[Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r")])
+    && MotionModule::frame(boma) as i32 == 37 {
+        MotionModule::set_rate(boma, 0.0);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -96,6 +104,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
     fastfall_specials(fighter);
+    rebirth_box_handling(fighter, boma);
 }
 
 /*#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
@@ -126,24 +135,6 @@ pub unsafe fn snake_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn c4_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    if weapon.kind() != WEAPON_KIND_SNAKE_C4 {
-        return
-    }
-    if weapon.is_status(*WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET) {
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let snake = utils::util::get_battle_object_from_id(owner_id);
-        let snake_boma = &mut *(*snake).module_accessor;
-        let snake_status_kind = StatusModule::status_kind(snake_boma);
-        // Despawn sticky when snake dies
-        if snake_status_kind == *FIGHTER_STATUS_KIND_DEAD {
-            ArticleModule::remove_exist(snake_boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        }
-    }
-}
-pub fn install() {
-    smashline::Agent::new("snake")
-        .on_line(Main, snake_frame_wrapper)
-        .on_line(Main, c4_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, snake_frame_wrapper);
 }

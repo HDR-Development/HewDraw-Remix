@@ -7,5 +7,11 @@
             <float hash="p2_x">-9.5</float>
             <float hash="p2_y">9.5</float>
         </struct>
+        <struct hash="special_s1">
+            <float hash="p1_x">16.5</float>
+            <float hash="p1_y">22.5</float>
+            <float hash="p2_x">-9.5</float>
+            <float hash="p2_y">9.5</float>
+        </struct>
     </struct>
 </struct>

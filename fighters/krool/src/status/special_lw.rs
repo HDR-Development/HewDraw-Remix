@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
 unsafe extern "C" fn special_lw_main_old(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.change_status(statuses::krool::SPECIAL_LW_GUT.into(), true.into());
    
@@ -107,15 +109,10 @@ unsafe extern "C" fn special_lw_change_motion(fighter: &mut L2CFighterCommon) {
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0);
         }
     }
-
 }
 
-pub fn install() {
-    smashline::Agent::new("krool")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old)
-        .install();
-    smashline::Agent::new("krool")
-        .status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre)
-        .status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old);
+    agent.status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre);
+    agent.status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main);
 }

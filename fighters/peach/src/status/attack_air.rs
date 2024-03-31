@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 ::utils::import!(
     common::djc::{
@@ -18,7 +19,7 @@ use globals::*;
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplemented to be similar to other djc characters because peach doesn't make the same function calls as in vanilla
 
-unsafe extern "C" fn peach_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT
     && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START {
         let _ = common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_init(fighter);
@@ -28,19 +29,19 @@ unsafe extern "C" fn peach_attack_air_init(fighter: &mut L2CFighterCommon) -> L2
 
 // TAGS: DJC, Double Jump Cancel, Peach
 
-unsafe extern "C" fn peach_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec(fighter)
 }
 
 // TAGS: DJC, Double Jump Cancel, Peach
 // Reimplements the setup main script for peach's aerials to transition into double jump cancel code (if applicable)
 
-unsafe extern "C" fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT
     && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START {
         fighter.sub_attack_air_common(false.into());
         MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, true);
-        return fighter.main_shift(peach_attack_air_no_float_main_loop);
+        return fighter.main_shift(attack_air_no_float_main_loop);
     }
 
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
@@ -67,10 +68,10 @@ unsafe extern "C" fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2
 
     let _ = fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
-    fighter.main_shift(peach_attack_air_main_loop)
+    fighter.main_shift(attack_air_main_loop)
 }
 
-unsafe extern "C" fn peach_attack_air_no_float_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_no_float_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Moved above is_enable_cancel for readability concerns
     let can_shoot_item = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_AIR);
     let can_attack_air = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
@@ -100,17 +101,16 @@ unsafe extern "C" fn peach_attack_air_no_float_main_loop(fighter: &mut L2CFighte
 
 // Default reimplementation of the main loop for an aerial
 // No special functionality
-unsafe extern "C" fn peach_attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
 
     let _ = fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     0.into()
 }
-pub fn install() {
-    smashline::Agent::new("peach")
-        .status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_init)
-        .status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_exec)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, peach_attack_air_main)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_exec);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

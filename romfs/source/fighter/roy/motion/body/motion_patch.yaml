@@ -12,9 +12,6 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-catch:
-  flags:
-    move: false
 escape:
   flags:
     move: false
@@ -48,7 +45,7 @@ attack_hi3:
   flags:
     move: false
   extra:
-    cancel_frame: 34
+    cancel_frame: 36
 attack_dash:
   extra:
     cancel_frame: 40
@@ -121,6 +118,14 @@ attack_s3_lw:
 attack_air_f:
   extra:
     cancel_frame: 37
+catch:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 38
+catch_dash:
+  extra:
+    cancel_frame: 42
 catch_attack:
   extra:
     cancel_frame: 0
@@ -171,7 +176,7 @@ attack_air_n:
     cancel_frame: 49
 attack_lw4:
   extra:
-    cancel_frame: 59
+    cancel_frame: 61
 special_s4_back:
     game_script: game_specials4back
     flags:

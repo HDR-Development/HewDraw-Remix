@@ -1,16 +1,13 @@
 use super::*;
-use globals::*;
 
- 
-
-// FIGHTER_STATUS_KIND_ATTACK_AIR //
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F //
+// FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
 
 unsafe extern "C" fn attack_air_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
@@ -67,13 +64,8 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre)
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,
-            attack_air_f_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
+    
+    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,attack_air_f_main);
 }

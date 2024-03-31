@@ -379,8 +379,6 @@ pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("trail")
-        .on_line(Main, trail_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, trail_frame_wrapper);
 }

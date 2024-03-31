@@ -1,7 +1,7 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_rockbuster_shoot_walk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_walk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     let keep_flag;
     let keep_int;
@@ -51,7 +51,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_pre(fighter: &mut L2CFighterC
     0.into()
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if prev_status != *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT {
         fighter.sub_GetLightItemImm(L2CValue::Void());
@@ -62,7 +62,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighter
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-    rockman_rockbuster_main_helper(fighter, false.into(), true.into(), L2CValue::Void(), L2CValue::Void());
+    rockbuster_main_helper(fighter, false.into(), true.into(), L2CValue::Void(), L2CValue::Void());
     if prev_status != *FIGHTER_STATUS_KIND_WALK {
         let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
         fighter.init_walk_speed(
@@ -82,10 +82,10 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighter
             1.0f32.into()
         );
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_walk_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(rockbuster_shoot_walk_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_walk_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_walk_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let walk_speed = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WALK_WORK_FLOAT_SPEED);
     let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
     let walk_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_mul"), 0);
@@ -108,10 +108,10 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main_loop(fighter: &mut L2CFi
         hash40("buster_walk_slow").into(),
         FIGHTER_STATUS_WALK_WORK_FLOAT_SPEED.into(),
         1.0f32.into(),
-        L2CValue::Ptr(rockman_rockbuster_walk_mot_helper as *const () as _)
+        L2CValue::Ptr(rockbuster_walk_mot_helper as *const () as _)
     );
 
-    let helper_ret = rockman_rockbuster_main_loop_helper(fighter, false.into(), true.into()).get_bool();
+    let helper_ret = rockbuster_main_loop_helper(fighter, false.into(), true.into()).get_bool();
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
@@ -184,11 +184,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK,
-            rockman_rockbuster_shoot_walk_pre,
+            rockbuster_shoot_walk_pre,
         );
     agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK,
-            rockman_rockbuster_shoot_walk_main,
+            rockbuster_shoot_walk_main,
         );
 }

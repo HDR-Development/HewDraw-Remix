@@ -1,5 +1,7 @@
 use super::*;
 
+// statuses::ganon::SPECIAL_N_FLOAT
+
 unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -127,14 +129,12 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    Agent::new("ganon")
-        .status(Pre, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_pre)
-        .status(Main, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_main)
-        .status(End, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_pre);
+    agent.status(Main, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_main);
+    agent.status(End, statuses::ganon::SPECIAL_N_FLOAT, special_n_float_end);
 }

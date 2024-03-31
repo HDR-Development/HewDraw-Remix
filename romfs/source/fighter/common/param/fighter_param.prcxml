@@ -3213,7 +3213,7 @@
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">8</float>
-      <float hash="landing_attack_air_frame_lw">16</float>
+      <float hash="landing_attack_air_frame_lw">18</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">12.3</float>
       <bool hash="wall_jump_type">true</bool>
@@ -3223,6 +3223,9 @@
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
       <int hash="attack_combo_max">3</int>
+      <float hash="common_effect_0_r">0.902</float>
+      <float hash="common_effect_0_g">0.784</float>
+      <float hash="common_effect_0_b">0.333</float>
     </struct>
     <!-- GIGA BOWSER -->
     <struct index="90">

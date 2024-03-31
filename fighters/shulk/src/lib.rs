@@ -4,8 +4,9 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
 pub mod vtable_hook;
 
 use smash::{
@@ -38,10 +39,13 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    vtable_hook::install();
-    opff::install();
+    let agent = &mut Agent::new("shulk");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    vtable_hook::install(agent);
+    agent.install();
 }
