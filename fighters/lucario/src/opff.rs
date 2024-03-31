@@ -81,7 +81,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
+pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
     let frames = frames.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
     VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
