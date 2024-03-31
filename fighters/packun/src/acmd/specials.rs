@@ -8,12 +8,12 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     if stance != 2 {
         FT_MOTION_RATE(agent, 0.7);
         if stance != 1 {
-            VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+            VarModule::off_flag(boma.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
         }
     }
     else {
         FT_MOTION_RATE(agent, 9.0/(9.0 - 1.0));
-        VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
+        VarModule::off_flag(boma.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
     }
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
