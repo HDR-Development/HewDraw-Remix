@@ -29,9 +29,9 @@ pub const DIVE_SPEED_Y_MAX_MUL : f32 = 1.25;
 pub const DIVE_SPEED_Y_START : f32 = -1.5;
 pub const DIVE_LANDING_FRAME : f32 = 36.0;
 
-pub const DIVE_TRANSITION_MANUAL : bool = false; //Whether to allow Chrom to manually end the dive attack
+pub const DIVE_TRANSITION_MANUAL : bool = true; //Whether to allow Chrom to manually end the dive attack
 pub const DIVE_TRANSITION_FRAME_MIN : f32 = 5.0;
-pub const DIVE_TRANSITION_FRAME_FORCE : f32 = 16.0; 
+pub const DIVE_TRANSITION_FRAME_FORCE : f32 = 30.0; 
 pub const DIVE_HI4_MAX_FRAME : f32 = 7.0; //If HI4 is above this frame, transition into Special Landing instead of continuing the motion
 
 pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, status_kind: i32) {
