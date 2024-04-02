@@ -209,6 +209,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- FOX -->
     <struct index="6">
@@ -242,6 +245,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- PIKACHU -->
     <struct index="7">
@@ -598,6 +604,9 @@
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
       <bool hash="attach_wall_type">false</bool>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- ZELDA -->
     <struct index="17">
@@ -632,6 +641,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_12_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- DR. MARIO -->
     <struct index="18">
@@ -744,6 +756,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- MARTH -->
     <struct index="21">
@@ -881,6 +896,10 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_13_end">24</float>
+      <int hash="attack_100_enable_cnt">4</int>
+      
     </struct>
     <!-- ROY -->
     <struct index="25">
@@ -947,6 +966,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_12_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- META KNIGHT -->
     <struct index="27">
@@ -1239,6 +1261,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- CHARIZARD -->
     <struct index="35">
@@ -1417,6 +1442,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- OLIMAR -->
     <struct index="40">
@@ -1859,6 +1887,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_12_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- PAC-MAN -->
     <struct index="52">
@@ -2001,6 +2032,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- DUCK HUNT -->
     <struct index="56">
@@ -2290,6 +2324,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- KING K. ROOL-->
     <struct index="64">
@@ -2885,6 +2922,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">30</float>
+      <int hash="attack_100_enable_cnt">4</int>
     </struct>
     <!-- MII SWORDFIGHTER -->
     <struct index="81">

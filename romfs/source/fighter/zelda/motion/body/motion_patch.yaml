@@ -26,6 +26,36 @@ special_n:
     intangible_start_frame: 5
     intangible_end_frame: 13
     cancel_frame: 64
+attack_12:
+  game_script: game_attack100end
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c00attackend.nuanmb
+      unk: 0
+  scripts:
+    - expression_attack100end
+    - sound_attack100end
+    - effect_attack100end
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 42
+    no_stop_intp: false
 attack_lw3:
 attack_hi4:
   extra:

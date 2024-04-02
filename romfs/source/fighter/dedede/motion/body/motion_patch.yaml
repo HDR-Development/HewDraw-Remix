@@ -13,6 +13,36 @@ attack_12:
     move: false
   extra:
     cancel_frame: 26
+attack_13:
+  game_script: game_attack100end
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c00attackend.nuanmb
+      unk: 0
+  scripts:
+    - expression_attack100end
+    - sound_attack100end
+    - effect_attack100end
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 47
+    no_stop_intp: false
 guard_off:
   blend_frames: 4
   extra:

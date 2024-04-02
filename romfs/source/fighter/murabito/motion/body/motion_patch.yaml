@@ -4,6 +4,36 @@ attack_11:
 attack_12:
   extra:
     cancel_frame: 18
+attack_13:
+  game_script: game_attack12end
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c00attack12end.nuanmb
+      unk: 0
+  scripts:
+    - expression_attack12end
+    - sound_attack12end
+    - effect_attack12end
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 30
+    no_stop_intp: false
 attack_12_end:
   extra:
     cancel_frame: 30
