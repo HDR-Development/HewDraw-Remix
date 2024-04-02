@@ -384,6 +384,7 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
         CancelModule::enable_cancel(fighter.module_accessor);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
