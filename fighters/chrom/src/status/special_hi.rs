@@ -35,6 +35,7 @@ pub const DIVE_TRANSITION_FRAME_FORCE : f32 = 30.0;
 pub const DIVE_HI4_MAX_FRAME : f32 = 7.0; //If HI4 is above this frame, transition into Special Landing instead of continuing the motion
 
 pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, status_kind: i32) {
+    WorkModule::on_flag(fighter.module_accessor,*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI_CONTINUOUS);
     GroundModule::select_cliff_hangdata(fighter.module_accessor,*FIGHTER_CLIFF_HANG_DATA_DEFAULT as u32); //hmmm
 
     let mut param_accel_x_mul = 0.0;//hash40("air_accel_x_mul")
@@ -247,7 +248,7 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         }        
         if MotionModule::is_end(fighter.module_accessor) {
-            let new_status = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL} else {FIGHTER_STATUS_KIND_FALL_SPECIAL};
+            let new_status = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL} else {FIGHTER_STATUS_KIND_FALL};
             fighter.change_status(new_status.into(), false.into());
             return 1.into();
         }
@@ -379,14 +380,19 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    if MotionModule::frame(fighter.module_accessor) > 4.0 {
+        CancelModule::enable_cancel(fighter.module_accessor);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        //if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        if fighter.sub_air_check_fall_common().get_bool() {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
     }
     if MotionModule::is_end(fighter.module_accessor) || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-        let new_status = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL} else {FIGHTER_STATUS_KIND_FALL_SPECIAL};
+        let new_status = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL} else {FIGHTER_STATUS_KIND_FALL};
         fighter.change_status(new_status.into(), false.into());
         return 1.into();
     }
