@@ -1,9 +1,6 @@
 use super::*;
-use globals::*;
 
- 
-
-// FIGHTER_STATUS_KIND_SPECIAL_N //
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
 unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -30,7 +27,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE
 
 unsafe extern "C" fn special_n_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
@@ -79,7 +76,7 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into();
 }
 
-// statuses::bayonetta::SPECIAL_N_CANCEL //
+// statuses::bayonetta::SPECIAL_N_CANCEL
 
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -223,15 +220,14 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        //.on_start(bayonetta_init)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .status(Init, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_init)
-        .status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main)
-        .status(Pre, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_pre)
-        .status(Main, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_main)
-        .status(End, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init);
+        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+        
+        agent.status(Init, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_init);
+        agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
+
+        agent.status(Pre, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_pre);
+        agent.status(Main, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_main);
+        agent.status(End, statuses::bayonetta::SPECIAL_N_CANCEL, special_n_cancel_end);
 }

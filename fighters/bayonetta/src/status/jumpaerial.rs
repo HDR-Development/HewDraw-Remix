@@ -1,11 +1,8 @@
 use super::*;
-use globals::*;
 
- 
+// FIGHTER_STATUS_KIND_JUMP_AERIAL
 
-// FIGHTER_STATUS_KIND_JUMP_AERIAL //
-
-unsafe extern "C" fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn jump_aerial_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_JumpAerial();
     let frame = fighter.global_table[CURRENT_FRAME].get_i32() as f32;
     if frame <= fighter.get_param_float("param_special_hi", "jump_count_reset_frame") {
@@ -21,8 +18,6 @@ unsafe extern "C" fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(End, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_JUMP_AERIAL, jump_aerial_end);
 }

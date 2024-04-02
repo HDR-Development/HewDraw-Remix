@@ -469,7 +469,6 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
     }
-    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -741,7 +740,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(new_status, false);
         }
     }
-    
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -836,7 +834,6 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         aerial_cancels(boma);
         return;
     }
-
 }
 
 pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -873,9 +870,7 @@ pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("dolly")
-        .on_line(Main, dolly_frame_wrapper)
-        .on_line(Main, dolly_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, dolly_frame_wrapper);
+    agent.on_line(Main, dolly_meter);
 }

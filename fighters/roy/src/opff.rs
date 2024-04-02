@@ -15,7 +15,6 @@ pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleA
     }
 }
 
-
 pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3]) {
         return;
@@ -136,8 +135,7 @@ pub unsafe fn roy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("roy")
-        .on_line(Main, roy_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, roy_frame_wrapper);
 }

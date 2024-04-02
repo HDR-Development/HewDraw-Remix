@@ -1,6 +1,6 @@
 use super::*;
 
-pub unsafe fn rockman_rockbuster_pre_helper(
+pub unsafe fn rockbuster_pre_helper(
     prev_status: L2CValue
 ) -> L2CValue {
     [
@@ -15,7 +15,7 @@ pub unsafe fn rockman_rockbuster_pre_helper(
     ].contains(&prev_status.get_i32()).into()
 }
 
-pub unsafe fn rockman_rockbuster_main_helper(
+pub unsafe fn rockbuster_main_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     is_jump_squat: L2CValue,
@@ -62,12 +62,12 @@ pub unsafe fn rockman_rockbuster_main_helper(
     }
     if !is_turn.get_bool() {
         let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
-        rockman_rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), step.into(), (!step_is_zero).into(), is_jump_squat.get_bool().into(), was_shoot_walk.get_bool().into());
+        rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), step.into(), (!step_is_zero).into(), is_jump_squat.get_bool().into(), was_shoot_walk.get_bool().into());
     }
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT_MINI_JUMP_ATTACK);
 }
 
-pub unsafe fn rockman_rockbuster_main_loop_helper(
+pub unsafe fn rockbuster_main_loop_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     is_walk: L2CValue
@@ -94,17 +94,17 @@ pub unsafe fn rockman_rockbuster_main_loop_helper(
         let mut allow_end = true;
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0
-        && rockman_rockbuster_can_turn_helper(fighter).get_bool() {
+        && rockbuster_can_turn_helper(fighter).get_bool() {
             allow_end = false;
         }
         if allow_end && is_end {
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_SHOOT_END) {
-                rockman_rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 2.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
+                rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 2.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
                 notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_SHOOT_NUM);
                 step = 2;
             }
             else {
-                step = rockman_rockbuster_shoot_end_helper(fighter, step.into(), is_air.get_bool().into(), is_walk.get_bool().into()).get_i32();
+                step = rockbuster_shoot_end_helper(fighter, step.into(), is_air.get_bool().into(), is_walk.get_bool().into()).get_i32();
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_SHOOT_END);
             }
         }
@@ -112,7 +112,7 @@ pub unsafe fn rockman_rockbuster_main_loop_helper(
     else if step == 2 {
         if is_end {
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
-            step = rockman_rockbuster_shoot_end_helper(fighter, step.into(), is_air.get_bool().into(), is_walk.get_bool().into()).get_i32();
+            step = rockbuster_shoot_end_helper(fighter, step.into(), is_air.get_bool().into(), is_walk.get_bool().into()).get_i32();
         }
     }
     else if step == 3 && is_end {
@@ -127,7 +127,7 @@ pub unsafe fn rockman_rockbuster_main_loop_helper(
     ret.into()
 }
 
-pub unsafe fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
     if step == 1
@@ -146,7 +146,7 @@ pub unsafe fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon)
     false.into()
 }
 
-pub unsafe fn rockman_rockbuster_shoot_end_helper(
+pub unsafe fn rockbuster_shoot_end_helper(
     fighter: &mut L2CFighterCommon,
     _step: L2CValue,
     is_air: L2CValue,
@@ -156,7 +156,7 @@ pub unsafe fn rockman_rockbuster_shoot_end_helper(
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
     if count < 3 {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_LOOP) {
-            rockman_rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 2.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
+            rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 2.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_SHOOT_NUM);
             ControlModule::reset_trigger(fighter.module_accessor);
             ControlModule::clear_command(fighter.module_accessor, false);
@@ -165,11 +165,11 @@ pub unsafe fn rockman_rockbuster_shoot_end_helper(
             return 2.into();
         }
     }
-    rockman_rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 3.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
+    rockbuster_change_motion_helper(fighter, is_air.get_bool().into(), 3.into(), false.into(), is_walk.get_bool().into(), L2CValue::Void());
     3.into()
 }
 
-pub unsafe fn rockman_rockbuster_change_motion_helper(
+pub unsafe fn rockbuster_change_motion_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     step: L2CValue,
@@ -307,7 +307,7 @@ pub unsafe fn rockman_rockbuster_change_motion_helper(
     }
 }
 
-pub unsafe extern "C" fn rockman_rockbuster_walk_mot_helper(_fighter: &mut L2CFighterCommon, walk_mot: L2CValue, curr_mot: L2CValue) -> L2CValue {
+pub unsafe extern "C" fn rockbuster_walk_mot_helper(_fighter: &mut L2CFighterCommon, walk_mot: L2CValue, curr_mot: L2CValue) -> L2CValue {
     let curr = curr_mot.get_u64();
     let walk = walk_mot.get_u64();
     if curr == hash40("walk_fast")

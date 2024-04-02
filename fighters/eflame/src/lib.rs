@@ -4,8 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod esword;
+mod firepillar;
 
 use smash::{
     lib::{
@@ -37,11 +42,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("eflame");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    esword::install();
+    firepillar::install();
+
     unsafe {
         // Disables the sword catch animation unless you are completely idle.
         skyline::patching::Patch::in_text(0xa0caf4).data(0x7100001F);

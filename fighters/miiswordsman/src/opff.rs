@@ -291,17 +291,6 @@ pub unsafe fn miiswordsman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon)
     }
 }
 
-pub extern "C" fn tornadoshot_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        ModelModule::set_joint_scale(weapon.module_accessor, Hash40::new("top"), &Vector3f::new(0.6, 0.6, 0.6));
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("miiswordsman")
-        .on_line(Main, miiswordsman_frame_wrapper)
-        .install();
-    smashline::Agent::new("miiswordsman_tornadoshot")
-        .on_line(Main, tornadoshot_frame)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, miiswordsman_frame_wrapper);
 }

@@ -4,28 +4,57 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod inkbullet;
+mod roller;
+mod splash;
+mod splashbomb;
 
 use smash::{
+    lib::{
+        L2CValue, 
+        LuaConst
+    },
     app::{
-        self,
-        lua_bind::*,
-        sv_animcmd::{frame, wait},
         *,
+        self,
+        sv_animcmd::{
+            frame, 
+            wait
+        },
+        lua_bind::*
     },
     hash40,
     lib::lua_const::*,
-    lib::{L2CValue, LuaConst},
     lua2cpp::*,
-    phx::*,
+    phx::*
 };
-use smash_script::{macros::*, *};
+use smash_script::{
+    *,
+    macros::*
+};
+use utils::{
+    *,
+    util::*,
+    ext::*,
+    consts::*,
+};
 use smashline::*;
-use utils::{consts::*, ext::*, util::*, *};
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("inkling");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    inkbullet::install();
+    roller::install();
+    splash::install();
+    splashbomb::install();
 }
