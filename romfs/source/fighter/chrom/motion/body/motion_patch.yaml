@@ -68,6 +68,18 @@ special_air_n_end2:
 special_air_n_end_max:
   extra:
     cancel_frame: 38
+special_hi_1:
+  flags:
+    move: true
+special_air_hi_2:
+  game_script: game_specialhiadd
+  scripts:
+  - expression_specialhiadd
+  - sound_specialhiadd
+  - effect_specialhiadd
+special_air_hi_1:
+  flags:
+    move: true
 catch:
   flags:
     move: false
