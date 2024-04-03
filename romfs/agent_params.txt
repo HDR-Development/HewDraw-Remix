@@ -36,3 +36,4 @@ falco: fighter/falco/param/hdr.xml
 ness: fighter/ness/param/hdr.xml
 ryu: fighter/ryu/param/hdr.xml
 ken: fighter/ken/param/hdr.xml
+littlemac: fighter/littlemac/param/hdr.xml

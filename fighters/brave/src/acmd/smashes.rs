@@ -75,7 +75,12 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("brave_smash_ground"), Hash40::new("top"), 15, 0, 0, 0, 0, 0, size, 0, 0, 0, 0, 0, 0, false);
         if psyche_up {
             LAST_EFFECT_SET_RATE(agent, 0.5);
-            QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+        }
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        if psyche_up {
+            QUAKE(agent, *CAMERA_QUAKE_KIND_L);
         }
         else {
             QUAKE(agent, *CAMERA_QUAKE_KIND_S);
@@ -206,6 +211,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(agent.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE) {
             EFFECT(agent, Hash40::new("brave_lightning3_hit"), Hash40::new("sword1"), 3, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
             EFFECT(agent, Hash40::new("brave_lightning3_hit2"), Hash40::new("sword1"), 0, 0, 0, 0, 0, -90, 1, 0, 0, 0, 0, 0, 0, true);
+            QUAKE(agent, *CAMERA_QUAKE_KIND_M);
         }
         else {
             EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 11, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -333,6 +339,11 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     let psyche_up = VarModule::is_flag(agent.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
+    if is_excute(agent) {
+        if psyche_up {
+            QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+        }
+    }
     frame(lua_state, 14.0);
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 1);
@@ -358,6 +369,12 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 0, 0, 180, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        if psyche_up {
+            QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+        }
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {

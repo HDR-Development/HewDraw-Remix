@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="power_meter">
+        <float hash="parry_meter_gain">20.0</float>
+    </struct>
+</struct>

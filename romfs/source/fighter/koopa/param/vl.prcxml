@@ -40,19 +40,13 @@
       <float hash="special_s_vx0">0.0</float>
       <float hash="special_s_vx0_add_max">0.0</float>
       <float hash="special_s_vx_max">0.0</float>
-
       <float hash="special_s_mv_xf_min">0.0</float>
       <float hash="special_s_mv_xf_max">0.0</float>
       <float hash="special_s_mv_xf_sub">0.0</float>
       <float hash="special_s_tgt_xf_min">0.0</float>
       <float hash="special_s_tgt_xf_max">0.0</float>
       <float hash="special_s_tgt_xf_sub">0.0</float>
-
       <float hash="special_s_axf_max">0.0</float>
-      
-      <float hash="special_s_hop_vx0">0.0</float>
-      <float hash="special_s_hop_vy0">0.0</float>
-	  
       <float hash="special_s_mv_xf_max_mul">0.0</float>
       <float hash="special_s_vx_max_mul">0.0</float>
     </struct>
