@@ -106,7 +106,7 @@ unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor) {
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
             if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
                 VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
-                MeterModule::drain_direct(boma.object(), (MeterModule::meter(boma.object())/4.0)*3.0);
+                MeterModule::drain_direct(boma.object(), (MeterModule::meter(boma.object())/3.0)*2.0);
             }
         }
 }
