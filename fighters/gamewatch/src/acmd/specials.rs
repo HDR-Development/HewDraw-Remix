@@ -51,7 +51,6 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
@@ -69,7 +68,6 @@ unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specials3(agent: &mut L2CAgentBase) {
@@ -86,7 +84,6 @@ unsafe extern "C" fn game_specials3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specials4(agent: &mut L2CAgentBase) {
@@ -103,7 +100,6 @@ unsafe extern "C" fn game_specials4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specials5(agent: &mut L2CAgentBase) {
@@ -126,7 +122,6 @@ unsafe extern "C" fn game_specials5(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specials6(agent: &mut L2CAgentBase) {
@@ -160,7 +155,6 @@ unsafe extern "C" fn game_specials7(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specials8(agent: &mut L2CAgentBase) {
@@ -193,7 +187,6 @@ unsafe extern "C" fn game_specials9(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
@@ -246,7 +239,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 43.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
@@ -299,7 +291,7 @@ unsafe extern "C" fn game_specialhiopen(agent: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     FT_MOTION_RATE_RANGE(agent, 30.0, 45.0, 10.0);
     if is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 45.0);
@@ -347,6 +339,7 @@ unsafe extern "C" fn expression_specialhiopen(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn);
     agent.acmd("game_specialairn", game_specialn);
+
     agent.acmd("game_specials1", game_specials1);
     agent.acmd("game_specialairs1", game_specials1);
     agent.acmd("game_specials2", game_specials2);
@@ -365,6 +358,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs8", game_specials8);
     agent.acmd("game_specials9", game_specials9);
     agent.acmd("game_specialairs9", game_specials9);
+    
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialairhi", game_specialhi);
     agent.acmd("expression_specialhi", expression_specialhi);

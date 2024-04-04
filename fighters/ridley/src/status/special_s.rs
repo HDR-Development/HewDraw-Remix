@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE
 
 unsafe extern "C" fn special_s_failure_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel_frame = (FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("special_s_start"), false) - MotionModule::frame(fighter.module_accessor)) + WorkModule::get_param_int(fighter.module_accessor, hash40("landing_heavy_frame"), 0) as f32 + 5.0;

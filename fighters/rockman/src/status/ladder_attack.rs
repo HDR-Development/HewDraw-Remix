@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_LADDER_ATTACK
+
 unsafe extern "C" fn ladder_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_LadderAttack_common();
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
@@ -16,14 +18,6 @@ unsafe extern "C" fn ladder_attack_end(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(
-            Main,
-            *FIGHTER_STATUS_KIND_LADDER_ATTACK,
-            ladder_attack_main,
-        );
-    agent.status(
-            End,
-            *FIGHTER_STATUS_KIND_LADDER_ATTACK,
-            ladder_attack_end,
-        );
+    agent.status(Main, *FIGHTER_STATUS_KIND_LADDER_ATTACK, ladder_attack_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_LADDER_ATTACK, ladder_attack_end);
 }

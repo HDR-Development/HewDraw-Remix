@@ -39,7 +39,6 @@ unsafe extern "C" fn game_littlemacspecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.object(), vars::kirby::status::KO_PUNCH_GRAVITY);
     }
-    
 }
 
 unsafe extern "C" fn effect_littlemacspecialn(agent: &mut L2CAgentBase) {
@@ -84,7 +83,6 @@ unsafe extern "C" fn effect_littlemacspecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("sys_starrod_bullet"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_littlemacspecialn(agent: &mut L2CAgentBase) {
@@ -99,7 +97,6 @@ unsafe extern "C" fn sound_littlemacspecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_littlemac_swing_ll"));
     }
-
 }
 
 unsafe extern "C" fn expression_littlemacspecialn(agent: &mut L2CAgentBase) {
@@ -126,7 +123,6 @@ unsafe extern "C" fn expression_littlemacspecialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AreaModule::erase_wind(boma, 0);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {

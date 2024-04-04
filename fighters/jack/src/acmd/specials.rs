@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialairndown(agent: &mut L2CAgentBase) {
@@ -57,7 +56,6 @@ unsafe extern "C" fn game_specialairndown(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 6.0);
     }
-
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
@@ -224,6 +222,7 @@ unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairndown", game_specialairndown);
+    
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialairhi", game_specialairhi);
     agent.acmd("effect_specialairhi", effect_specialairhi);

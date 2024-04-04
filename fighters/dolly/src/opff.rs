@@ -469,7 +469,6 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
     }
-    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -741,7 +740,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(new_status, false);
         }
     }
-    
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -836,7 +834,6 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         aerial_cancels(boma);
         return;
     }
-
 }
 
 pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

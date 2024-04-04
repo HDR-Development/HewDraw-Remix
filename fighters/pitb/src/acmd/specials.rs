@@ -105,7 +105,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
         JostleModule::set_status(boma, true);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallwstartl(agent: &mut L2CAgentBase) {
@@ -149,14 +148,15 @@ unsafe extern "C" fn game_speciallwhold(agent: &mut L2CAgentBase) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("game_specialairsstart", game_specialairsstart);
+
     agent.acmd("game_specialhi", game_specialhi);
+    
     agent.acmd("game_speciallwstartl", game_speciallwstartl);
     agent.acmd("game_speciallwstartr", game_speciallwstartl);
     agent.acmd("game_specialairlwstartl", game_speciallwstartl);

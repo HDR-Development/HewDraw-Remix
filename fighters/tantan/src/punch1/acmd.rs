@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn dragon_game_attackshort(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackshort(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -22,7 +22,7 @@ unsafe extern "C" fn dragon_game_attackshort(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_game_attacklong(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklong(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -71,7 +71,7 @@ unsafe extern "C" fn dragon_game_attacklong(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_game_attackdragonshootlong(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdragonshootlong(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     
@@ -128,7 +128,7 @@ unsafe extern "C" fn dragon_game_attackdragonshootlong(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn dragon_effect_attackdragonshootlong(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdragonshootlong(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -149,7 +149,7 @@ unsafe extern "C" fn dragon_effect_attackdragonshootlong(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn dragon_special_hi_attack_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhiattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let angle = (75.0+WorkModule::get_float(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L)) as u64;
@@ -166,7 +166,7 @@ unsafe extern "C" fn dragon_special_hi_attack_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackbeamloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -181,11 +181,14 @@ unsafe extern "C" fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackshort", dragon_game_attackshort);
-    agent.acmd("game_attacklong", dragon_game_attacklong);
-    agent.acmd("game_attackdragonshootlong",dragon_game_attackdragonshootlong,);
-    agent.acmd("effect_attackdragonshootlong",dragon_effect_attackdragonshootlong,);
-    agent.acmd("game_specialairhiattack", dragon_special_hi_attack_game);
-    agent.acmd("game_specialairhiattackdragon",dragon_special_hi_attack_game,);
-    agent.acmd("sound_attackbeamloop", dragon_sound_attackbeamloop);
+    agent.acmd("game_attackshort", game_attackshort);
+    agent.acmd("game_attacklong", game_attacklong);
+
+    agent.acmd("game_attackdragonshootlong", game_attackdragonshootlong);
+    agent.acmd("effect_attackdragonshootlong", effect_attackdragonshootlong);
+
+    agent.acmd("game_specialairhiattack", game_specialairhiattack);
+    agent.acmd("game_specialairhiattackdragon", game_specialairhiattack);
+
+    agent.acmd("sound_attackbeamloop", sound_attackbeamloop);
 }

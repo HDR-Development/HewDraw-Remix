@@ -93,36 +93,41 @@ unsafe extern "C" fn game_specialsbooststart(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_specialsbooststart(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_sonic_rnd_attack"));
     }
 }
 
 unsafe extern "C" fn expression_specialsbooststart(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 5.0);
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_dash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 unsafe extern "C" fn game_specialsboost(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     FT_MOTION_RATE(agent, 1.0 / 3.0);
-    frame(agent.lua_state_agent, 3.0);
+    frame(lua_state, 3.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 100, 0, 45, 4.0, 0.0, 5.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-    frame(agent.lua_state_agent, 11.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 25, 120, 0, 50, 3.0, 0.0, 4.0, -0.5, Some(0.0), Some(9.0), Some(-0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
     }
-    frame(agent.lua_state_agent, 14.0);
+    frame(lua_state, 14.0);
     FT_MOTION_RATE(agent, 0.25);
 }
 
 unsafe extern "C" fn effect_specialsboost(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
         let eff = if VarModule::is_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
@@ -131,7 +136,7 @@ unsafe extern "C" fn effect_specialsboost(agent: &mut L2CAgentBase) {
             Hash40::new("sonic_spintrace")
         };
         EFFECT_FOLLOW_NO_STOP(agent, eff, Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1.25, true);
-        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EffectModule::enable_sync_init_pos_last(boma);
     }
 }
 
@@ -142,26 +147,30 @@ unsafe extern "C" fn sound_specialsboost(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn expression_specialsboost(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
-    frame(agent.lua_state_agent, 7.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
 }
 
 unsafe extern "C" fn game_specialsboostend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
-    frame(agent.lua_state_agent, 8.0);
+    frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.6);
 }
 
 unsafe extern "C" fn effect_specialsboostend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     if is_excute(agent) {
         let eff = if VarModule::is_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
@@ -175,7 +184,7 @@ unsafe extern "C" fn effect_specialsboostend(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             LANDING_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
         }
-        wait(agent.lua_state_agent, 4.0);
+        wait(lua_state, 4.0);
     }
 }
 
@@ -186,16 +195,19 @@ unsafe extern "C" fn sound_specialsboostend(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn expression_specialsboostend(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 unsafe extern "C" fn game_specialairsboostend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
-    frame(agent.lua_state_agent, 2.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
     }
@@ -298,15 +310,15 @@ unsafe extern "C" fn game_specialairlwdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {} 
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {} 
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnhomingstart", game_specialnhomingstart);
     agent.acmd("game_specialnhoming", game_specialnhoming);
     agent.acmd("sound_specialnhoming", sound_specialnhoming);
     agent.acmd("game_specialnhit", game_specialnhit);
-    agent.acmd("effect_specialnhit", null);
-    agent.acmd("game_specialnlanding", null);
+    agent.acmd("effect_specialnhit", stub);
+    agent.acmd("game_specialnlanding", stub);
     agent.game_acmd(0x195dc47911, hash_0x195dc47911);
 
     agent.acmd("game_specialsbooststart", game_specialsbooststart);

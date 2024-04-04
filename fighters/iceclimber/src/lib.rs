@@ -4,8 +4,10 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
 
 mod blizzard;
 
@@ -39,6 +41,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
     let popo = &mut Agent::new("popo");

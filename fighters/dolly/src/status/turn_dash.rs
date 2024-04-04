@@ -1,9 +1,8 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_TURN_DASH //
+// FIGHTER_STATUS_KIND_TURN_DASH
 
-pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn turn_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     app::FighterSpecializer_Dolly::update_opponent_lr_1on1(
         fighter.module_accessor,
         *FIGHTER_STATUS_KIND_TURN_DASH,
@@ -29,5 +28,5 @@ pub unsafe extern "C" fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, pre_turndash);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_TURN_DASH, turn_dash_pre);
 }

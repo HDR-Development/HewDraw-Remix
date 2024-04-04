@@ -26,7 +26,6 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
@@ -81,10 +80,10 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
+    
     agent.acmd("game_attackhi4", game_attackhi4);
 }

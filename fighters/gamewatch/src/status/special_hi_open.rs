@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::gamewatch::SPECIAL_HI_OPEN
 
 unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

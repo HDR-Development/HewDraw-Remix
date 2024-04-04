@@ -4,6 +4,8 @@ use super::helper::*;
 pub const CHARGE_SHOT_DELAY_CHARGE_FRAME : i32 = 50;
 pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
 
+// FIGHTER_STATUS_KIND_SPECIAL_N
+
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

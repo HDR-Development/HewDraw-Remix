@@ -316,7 +316,6 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {1.0} else {26.0/(52.0 - 15.0)});
         REVERSE_LR(agent);
     }
-
 }
 
 unsafe extern "C" fn effect_throwb(agent: &mut L2CAgentBase) {
@@ -570,13 +569,17 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_catchturn", effect_catchturn);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("effect_catchdash", effect_catchdash);
+
     agent.acmd("game_throwf", game_throwf);
     agent.acmd("effect_throwf", effect_throwf);
+
     agent.acmd("game_throwb", game_throwb);
     agent.acmd("effect_throwb", effect_throwb);
+
     agent.acmd("game_throwhi", game_throwhi);
     agent.acmd("effect_throwhi", effect_throwhi);
     agent.acmd("sound_throwhi", sound_throwhi);
+    
     agent.acmd("game_throwlw", game_throwlw);
     agent.acmd("effect_throwlw", effect_throwlw);
 }

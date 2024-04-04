@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
  
 // FIGHTER_STATUS_KIND_SPECIAL_S
 
@@ -148,17 +147,17 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-unsafe extern "C" fn null_status(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn stub_status(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 
-    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, null_status);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, null_status);
-    agent.status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_S, null_status);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, null_status);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, null_status);
-    agent.status(Main, *FIGHTER_KINETIC_TYPE_ROBOT_SPECIAL_S_ATTACK, null_status);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, stub_status);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, stub_status);
+    agent.status(ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_S, stub_status);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, stub_status);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, stub_status);
+    agent.status(Main, *FIGHTER_KINETIC_TYPE_ROBOT_SPECIAL_S_ATTACK, stub_status);
 }

@@ -1090,6 +1090,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn);
     agent.acmd("game_specialairn", game_specialn);
+
     agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("effect_specialsstart", effect_specialsstart);
     agent.acmd("game_specialairsstart", game_specialairsstart);
@@ -1099,14 +1100,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialslariat", game_specialslariat);
     agent.acmd("game_specialairslariat", game_specialairslariat);
     agent.acmd("game_specialsshoulder", game_specialsshoulder);
-    agent.acmd("game_specialairsshoulder",game_specialairsshoulder,);
+    agent.acmd("game_specialairsshoulder", game_specialairsshoulder);
+
     agent.acmd("game_specialhistart", game_specialhistart);
     agent.acmd("game_specialairhistart", game_specialairhistart);
-    agent.acmd("effect_specialairhistart",effect_specialairhistart,);
+    agent.acmd("effect_specialairhistart",effect_specialairhistart);
     agent.acmd("game_specialairhiturn", game_specialairhiturn);
-    agent.acmd("effect_specialairhiturn",effect_specialairhiturn,);
+    agent.acmd("effect_specialairhiturn", effect_specialairhiturn);
     agent.acmd("game_specialairhifall", game_specialairhifall);
     agent.acmd("game_specialhibound", game_specialhibound);
+    
     agent.acmd("game_speciallwstart", game_speciallwstart);
     agent.acmd("game_specialairlwstart", game_speciallwstart);
 }

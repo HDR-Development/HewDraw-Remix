@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -14,7 +13,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
@@ -31,7 +29,6 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
@@ -80,7 +77,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn popo_attack_lw3_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -123,7 +120,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackhi3_nana", game_attackhi3);
     agent.acmd("effect_attackhi3_nana", effect_attackhi3);
 
-    agent.acmd("game_attacklw3", popo_attack_lw3_game);
+    agent.acmd("game_attacklw3", game_attacklw3);
 
-    agent.acmd("game_attacklw3_nana", popo_attack_lw3_game);
+    agent.acmd("game_attacklw3_nana", game_attacklw3);
 }

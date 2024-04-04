@@ -343,12 +343,12 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
 	frame(lua_state, 2.0);
 	if is_excute(agent) {
 		EFFECT_FOLLOW(agent, Hash40::new("captain_fk_hold"), Hash40::new("bust"), 0, 0, 0, 0, 0, 0, 0.7, true);
-		EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+		EffectModule::enable_sync_init_pos_last(boma);
 	}
 	frame(lua_state, 12.0);
 	if is_excute(agent) {
 		EFFECT_FOLLOW(agent, Hash40::new("captain_fk_air"), Hash40::new("toel"), 1, 1, 0, 0, 0, 140, 0.45, true);
-		EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+		EffectModule::enable_sync_init_pos_last(boma);
 	}
 }
 

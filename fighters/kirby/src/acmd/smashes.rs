@@ -1,64 +1,5 @@
 use super::*;
 
-unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-        frame(lua_state, 5.0);
-        if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-            VarModule::on_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-        }
-        frame(lua_state, 13.0);
-        if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("footl"), 19.0, 361, 103, 0, 36, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.35, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
-        }
-        frame(lua_state, 16.0);
-        if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("footl"), 14.0, 60, 98, 0, 42, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
-        }
-        frame(lua_state, 20.0);
-        if is_excute(agent) {
-            if VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
-                VarModule::off_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-                VarModule::set_float(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-                VarModule::off_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
-            }
-            AttackModule::clear_all(boma);
-        }
-    } else {
-        frame(lua_state, 5.0);
-        if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        }
-        frame(lua_state, 13.0);
-        if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0, 361, 103, 0, 32, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        }
-        frame(lua_state, 16.0);
-        if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0, 60, 98, 0, 40, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        }
-        frame(lua_state, 20.0);
-        if is_excute(agent) {
-            AttackModule::clear_all(boma);
-        }
-    }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0, 361, 103, 0, 32, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0, 60, 98, 0, 40, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-
-}
-
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -115,7 +56,64 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+}
 
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        frame(lua_state, 5.0);
+        if is_excute(agent) {
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+            VarModule::on_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+        }
+        frame(lua_state, 13.0);
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("footl"), 19.0, 361, 103, 0, 36, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.35, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
+        }
+        frame(lua_state, 16.0);
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("footl"), 14.0, 60, 98, 0, 42, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
+        }
+        frame(lua_state, 20.0);
+        if is_excute(agent) {
+            if VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+                VarModule::set_float(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            }
+            AttackModule::clear_all(boma);
+        }
+    } else {
+        frame(lua_state, 5.0);
+        if is_excute(agent) {
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        }
+        frame(lua_state, 13.0);
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0, 361, 103, 0, 32, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        }
+        frame(lua_state, 16.0);
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0, 60, 98, 0, 40, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        }
+        frame(lua_state, 20.0);
+        if is_excute(agent) {
+            AttackModule::clear_all(boma);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0, 361, 103, 0, 32, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0, 60, 98, 0, 40, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
@@ -162,7 +160,6 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-
 }
 
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
@@ -271,7 +268,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
             HIT_RESET_ALL(agent);
         }
     }
-    
 }
 
 unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
@@ -378,7 +374,31 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
+}
 
+unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start_04"));
+        if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+            PLAY_SE_REMAIN(agent, Hash40::new("se_lucas_special_n04_ll"));
+            PLAY_SE_REMAIN(agent, Hash40::new("se_common_electric_hit_m"));
+        }
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_kirby_attack07"));
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_kirby_smash_l01"));
+    }
+    wait(lua_state, 40.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_kirby_landing01"));
+    }
 }
 
 unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
@@ -412,42 +432,18 @@ unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_common_smash_start_04"));
-        if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCAS && VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            PLAY_SE_REMAIN(agent, Hash40::new("se_lucas_special_n04_ll"));
-            PLAY_SE_REMAIN(agent, Hash40::new("se_common_electric_hit_m"));
-        }
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_kirby_attack07"));
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_kirby_smash_l01"));
-    }
-    wait(lua_state, 40.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_kirby_landing01"));
-    }
-
-}
-
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_attacks4hi", game_attacks4hi);
-        agent.acmd("game_attacks4", game_attacks4);
-        agent.acmd("game_attacks4lw", game_attacks4lw);
-        agent.acmd("sound_attacks4hi", sound_attacks4);
-        agent.acmd("sound_attacks4", sound_attacks4);
-        agent.acmd("sound_attacks4lw", sound_attacks4);
-        agent.acmd("game_attackhi4", game_attackhi4);
-        agent.acmd("sound_attackhi4", sound_attackhi4);
-        agent.acmd("game_attacklw4", game_attacklw4);
-        agent.acmd("expression_attacklw4", expression_attacklw4);
-        agent.acmd("sound_attacklw4", sound_attacklw4);
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
+    agent.acmd("game_attacks4lw", game_attacks4lw);
+    agent.acmd("sound_attacks4", sound_attacks4);
+    agent.acmd("sound_attacks4hi", sound_attacks4);
+    agent.acmd("sound_attacks4lw", sound_attacks4);
+
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("sound_attacklw4", sound_attacklw4);
+    agent.acmd("expression_attacklw4", expression_attacklw4);
 }

@@ -1,6 +1,8 @@
 use super::*;
 use std::convert::TryInto;
 
+// FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START
+
 unsafe extern "C" fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, false, -1);
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_START, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -213,7 +215,6 @@ unsafe extern "C" fn special_hi_change_motion(fighter: &mut L2CFighterCommon, mo
     else {
         MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     }
-    
 }
 
 // FUN_710001ea30
@@ -330,7 +331,6 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     }
-
 }
 
 //FUN_71000210d0
@@ -472,7 +472,6 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
         let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x + fall_lean_stick_mul_x, 0.0);
     }
-
 }
 
 //FUN_710001e090

@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_LW
 
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -30,8 +31,6 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     0.into()
 }
-
-// FIGHTER_STATUS_KIND_SPECIAL_LW
 
 unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -455,6 +454,7 @@ pub fn install(agent: &mut Agent) {
         agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
         agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec);
         agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+
         agent.status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre);
         agent.status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init);
         agent.status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main);

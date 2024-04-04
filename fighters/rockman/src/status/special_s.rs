@@ -1,6 +1,8 @@
 use super::*;
 use super::helper::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
 unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

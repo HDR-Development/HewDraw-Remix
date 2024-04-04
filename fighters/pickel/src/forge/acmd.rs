@@ -16,7 +16,7 @@ unsafe extern "C" fn game_fall(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_fallattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let pickel = utils::util::get_battle_object_from_id(owner_id);
     let fall_distance = VarModule::get_float(pickel, vars::pickel::instance::FORGE_START_Y_POS) - PostureModule::pos_y(boma);
     if is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe extern "C" fn game_fallattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_fallattackride(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let pickel = utils::util::get_battle_object_from_id(owner_id);
     let pickel_boma = &mut *(*pickel).module_accessor;
     let fall_distance = VarModule::get_float(pickel, vars::pickel::instance::FORGE_START_Y_POS) - PostureModule::pos_y(boma);

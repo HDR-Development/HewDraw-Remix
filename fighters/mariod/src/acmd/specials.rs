@@ -155,7 +155,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
@@ -235,7 +234,6 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
@@ -608,7 +606,6 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("mariod_smash_impact"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("mariod_smash_aura"), false, true);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -618,6 +615,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairn", effect_specialn);
     agent.acmd("sound_specialn", sound_specialn);
     agent.acmd("sound_specialairn", sound_specialn);
+
     agent.acmd("game_specialnchill", game_specialnchill);
     agent.acmd("game_specialairnchill", game_specialnchill);
     agent.acmd("effect_specialnchill", effect_specialnchill);
@@ -626,15 +624,19 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairnchill", sound_specialnchill);
     agent.acmd("expression_specialnchill", expression_specialnchill);
     agent.acmd("expression_specialairnchill", expression_specialnchill);
+
     agent.acmd("game_specials", game_specials);
     agent.acmd("effect_specials", effect_specials);
     agent.acmd("game_specialairs", game_specialairs);
     agent.acmd("effect_specialairs", effect_specialairs);
+
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("effect_specialhi", effect_specialhi);
     agent.acmd("game_specialairhi", game_specialairhi);
     agent.acmd("effect_specialairhi", effect_specialairhi);
+
     agent.acmd("game_landingfallspecial", game_landingfallspecial);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);

@@ -11,7 +11,7 @@ pub mod status;
 
 mod chakram;
 mod lightshuriken;
-mod tornado;
+mod tornadoshot;
 
 use smash::{
     lib::{
@@ -54,5 +54,5 @@ pub fn install() {
 
     chakram::install();
     lightshuriken::install();
-    tornado::install();
+    tornadoshot::install();
 }

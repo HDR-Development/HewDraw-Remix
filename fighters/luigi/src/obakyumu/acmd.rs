@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn effect_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -8,6 +9,7 @@ unsafe extern "C" fn effect_catch(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 0.75);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("effect_catch", effect_catch);
 }

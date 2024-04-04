@@ -5,7 +5,7 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
@@ -30,7 +30,7 @@ unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
+        if !StopModule::is_stop(boma) {
             PLAY_FLY_VOICE(agent, Hash40::new("seq_elight_rnd_futtobi01"), Hash40::new("seq_elight_rnd_futtobi02"));
         }
     }
@@ -45,7 +45,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        let dash_sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_elight_dash_start"), true, false, false, false, app::enSEType(0));
+        let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_elight_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 20.0);
@@ -92,7 +92,7 @@ unsafe extern "C" fn effect_justshieldoff(agent: &mut L2CAgentBase) {
         FLASH(agent, 0, 0.1, 0.6, 0.8);
         agent.clear_lua_stack();
         lua_args!(agent, -1, 0, 0);
-        sv_animcmd::FLASH_SET_DIRECTION(agent.lua_state_agent);
+        sv_animcmd::FLASH_SET_DIRECTION(lua_state);
         EFFECT(agent, Hash40::new("elight_foresight2"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         EFFECT(agent, Hash40::new("elight_foresight_lensflare"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW(agent, Hash40::new("elight_foresight_body"), Hash40::new("hip"), 2, 0, 0, 0, 0, 90, 1, true);

@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -45,7 +44,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
@@ -76,7 +74,6 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 0);
     }
-
 }
 
 unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
@@ -98,12 +95,11 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_landingairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let landing_frame_joker = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_n"), 0);
+    let landing_frame_joker = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_n"), 0);
     let landing_frame_arsene = landing_frame_joker + 3.0;
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(agent, landing_frame_arsene/landing_frame_joker);
     }
-
 }
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
@@ -180,12 +176,11 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let landing_frame_joker = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_f"), 0);
+    let landing_frame_joker = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_f"), 0);
     let landing_frame_arsene = landing_frame_joker + 5.0;
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(agent, landing_frame_arsene/landing_frame_joker);
     }
-
 }
 
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
@@ -243,7 +238,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
@@ -266,13 +260,12 @@ unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        let landing_frame_joker = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_b"), 0);
+        let landing_frame_joker = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_b"), 0);
         let landing_frame_arsene = landing_frame_joker + 5.0;
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
             FT_MOTION_RATE(agent, landing_frame_arsene/landing_frame_joker);
         }
     }
-
 }
 
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
@@ -319,18 +312,16 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_landingairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let landing_frame_joker = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_hi"), 0);
+    let landing_frame_joker = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_hi"), 0);
     let landing_frame_arsene = landing_frame_joker + 3.0;
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(agent, landing_frame_arsene/landing_frame_joker);
     }
-
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
@@ -408,7 +399,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
     }
-
 }
 
 unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
@@ -436,12 +426,11 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let landing_frame_joker = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
+    let landing_frame_joker = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_lw"), 0);
     let landing_frame_arsene = landing_frame_joker + 5.0;
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(agent, landing_frame_arsene/landing_frame_joker);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -449,13 +438,17 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
     agent.acmd("game_landingairn", game_landingairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("game_landingairf", game_landingairf);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
     agent.acmd("game_landingairb", game_landingairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("game_landingairhi", game_landingairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("expression_attackairlw", expression_attackairlw);
     agent.acmd("game_landingairlw", game_landingairlw);

@@ -88,7 +88,6 @@ unsafe extern "C" fn game_attackstep2(agent: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 // Electric Wind God Fist
@@ -170,7 +169,6 @@ unsafe extern "C" fn game_attackstep2f(agent: &mut L2CAgentBase) {
         AttackModule::clear(boma, 6, false);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-
 }
 
 // Electric Wind God Fist (When Hitting Shield)
@@ -247,7 +245,6 @@ unsafe extern "C" fn game_attackstep2s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 // Dragon Uppercut
@@ -334,7 +331,6 @@ unsafe extern "C" fn game_attackstep2l(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
@@ -675,7 +671,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
             //FT_MOTION_RATE(agent, 1.0);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialhiair(agent: &mut L2CAgentBase) {

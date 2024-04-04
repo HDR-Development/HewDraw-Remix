@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::mewtwo::FLOAT
 
 extern "Rust" {
     #[link_name = "float_pre_common"]

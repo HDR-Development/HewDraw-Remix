@@ -1,6 +1,8 @@
 use super::*;
 
-pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_JACK_STATUS_KIND_DISPATCH
+
+pub unsafe extern "C" fn dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -28,7 +30,7 @@ pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("dispatch"),
@@ -48,10 +50,10 @@ pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     VisibilityModule::set_material_anim_priority(fighter.module_accessor, Hash40::new("mask"), true);
-    fighter.sub_shift_status_main(L2CValue::Ptr(jack_dispatch_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dispatch_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dispatch_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -84,6 +86,6 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_pre);
-    agent.status(Main, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_main);
+    agent.status(Pre, *FIGHTER_JACK_STATUS_KIND_DISPATCH, dispatch_pre);
+    agent.status(Main, *FIGHTER_JACK_STATUS_KIND_DISPATCH, dispatch_main);
 }

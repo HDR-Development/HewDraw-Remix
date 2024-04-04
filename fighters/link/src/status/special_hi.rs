@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
  
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
@@ -179,21 +178,6 @@ unsafe extern "C" fn sub_specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CVa
         }
     }
     0.into()
-}
-
-unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return 1.into()
-    }
-    else {
-        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            return 1.into()
-        }
-        if fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            return 1.into()
-        }
-    }
-    return 0.into()
 }
 
 // FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD

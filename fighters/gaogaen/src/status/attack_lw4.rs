@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_ATTACK_LW4 //
+// FIGHTER_STATUS_KIND_ATTACK_LW4
 
 pub unsafe extern "C" fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
@@ -65,7 +64,8 @@ pub unsafe extern "C" fn attack_lw4_map_correction(fighter: &mut L2CFighterCommo
     }
     0.into()
 }
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_main);
-    agent.status(MapCorrection,*FIGHTER_STATUS_KIND_ATTACK_LW4,attack_lw4_map_correction,);
+    agent.status(MapCorrection, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_map_correction);
 }

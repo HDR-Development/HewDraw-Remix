@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
@@ -113,12 +112,12 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
+    
     agent.acmd("game_throwlw", game_throwlw);
 }

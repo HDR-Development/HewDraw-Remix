@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
@@ -12,6 +11,15 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
         if ArticleModule::is_exist(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_BLASTER){
             ArticleModule::change_motion(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new("open"), false, 0.0);
         }
+    }
+}
+
+unsafe extern "C" fn sound_specialnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
     }
 }
 
@@ -155,26 +163,26 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
-		//LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		//LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2.0, 0, 0, 0, 0.8, true);
-		EffectModule::preset_limit_num(agent.module_accessor, 2);
+		EffectModule::preset_limit_num(boma, 2);
 		EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
-        //FLASH(fighter, 1, 1, 1, 0.627);
+        //FLASH(agent, 1, 1, 1, 0.627);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 5.0, 0, 0, 0, 0, 2.8, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         LAST_EFFECT_SET_RATE(agent, 1.5);
 	}
     // frame(lua_state, 1.0);
-	// if is_excute(fighter) {
-	// 	EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
+	// if is_excute(agent) {
+	// 	EFFECT_FOLLOW(agent, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, -2.0, 0, 0, 0, 0.5, true);
     // }
 	// frame(lua_state, 32.0);
-	// if is_excute(fighter) {
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_loop"), false, false);
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_ref"), false, false);
-	// 	EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_flash"), true, false);
-	// 	EFFECT_FLW_POS(fighter, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
+	// if is_excute(agent) {
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_loop"), false, false);
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_ref"), false, false);
+	// 	EFFECT_OFF_KIND(agent, Hash40::new("falco_ref_flash"), true, false);
+	// 	EFFECT_FLW_POS(agent, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
 	// }
 }
 
@@ -250,15 +258,15 @@ unsafe extern "C" fn sound_speciallwloop(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        //STOP_SE(fighter, Hash40::new("se_falco_special_l02"));
-        //PLAY_STATUS(fighter, Hash40::new("se_falco_special_l02"));
+        //STOP_SE(agent, Hash40::new("se_falco_special_l02"));
+        //PLAY_STATUS(agent, Hash40::new("se_falco_special_l02"));
     }
 }
 
 unsafe extern "C" fn expression_speciallwloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    sv_animcmd::wait_loop_sync_mot(agent.lua_state_agent);
+    sv_animcmd::wait_loop_sync_mot(lua_state);
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -268,24 +276,6 @@ unsafe extern "C" fn expression_speciallwloop(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
-}
-
-unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn sound_speciallwend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
 }
 
 unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
@@ -300,58 +290,39 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn falco_special_n_start_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
-    }
-
-}
-
-unsafe extern "C" fn falco_special_air_n_start_sound(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_falco_special_n02"));
-    }
-
-}
-
-// #[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_air_hi_sound(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
+// unsafe fn sound_specialairhi(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
-//     if is_excute(fighter) {
-//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     if is_excute(agent) {
+//         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
-
 // }
 
-// #[acmd_script( agent = "falco", script = "sound_specialhi" , category = ACMD_SOUND , low_priority)]
-// unsafe fn falco_special_hi_sound(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
+// unsafe fn sound_specialhi(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
 //     frame(lua_state, 1.0);
-//     if is_excute(fighter) {
-//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     if is_excute(agent) {
+//         PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(agent, Hash40::new("se_falco_special_h02"));
 //     }
-
 // }
+
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart);
     agent.acmd("game_specialnloop", game_specialnloop);
     agent.acmd("game_specialairnstart", game_specialairnstart);
     agent.acmd("game_specialairnloop", game_specialairnloop);
+
     agent.acmd("game_specialairsend", game_specialairsend);
+
     agent.acmd("game_specialhiholdair", game_specialhiholdair);
     agent.acmd("game_specialhi", game_specialhi);
+
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
     agent.acmd("effect_speciallw", effect_speciallw);
@@ -368,14 +339,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlwloop", sound_speciallwloop);
     agent.acmd("expression_speciallwloop", expression_speciallwloop);
     agent.acmd("expression_specialairlwloop", expression_speciallwloop);
-    agent.acmd("game_speciallwend", game_speciallwend);
-    agent.acmd("game_specialairlwend", game_speciallwend);
-    agent.acmd("effect_speciallwend", effect_speciallwend);
-    agent.acmd("effect_specialairlwend", effect_speciallwend);
-    agent.acmd("sound_speciallwend", sound_speciallwend);
-    agent.acmd("sound_specialairlwend", sound_speciallwend);
+    agent.acmd("game_speciallwend", stub);
+    agent.acmd("game_specialairlwend", stub);
+    agent.acmd("effect_speciallwend", stub);
+    agent.acmd("effect_specialairlwend", stub);
+    agent.acmd("sound_speciallwend", stub);
+    agent.acmd("sound_specialairlwend", stub);
     agent.acmd("expression_speciallwend", expression_speciallwend);
     agent.acmd("expression_specialairlwend", expression_speciallwend);
-    agent.acmd("sound_specialnstart", falco_special_n_start_sound);
-    agent.acmd("sound_specialairnstart", falco_special_air_n_start_sound);
+    agent.acmd("sound_specialnstart", sound_specialnstart);
+    agent.acmd("sound_specialairnstart", sound_specialnstart);
 }

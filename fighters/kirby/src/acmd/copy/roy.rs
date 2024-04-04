@@ -38,7 +38,6 @@ unsafe extern "C" fn effect_royspecialnend(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("roy_sword"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_erupution_hold"), false, false);
     }
-
 }
 
 unsafe extern "C" fn sound_royspecialnend(agent: &mut L2CAgentBase) {

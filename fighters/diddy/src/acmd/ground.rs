@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -50,7 +49,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -59,10 +57,10 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
-        smash::app::lua_bind::KineticEnergy::reset_energy(agent.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), agent.module_accessor);
+        smash::app::lua_bind::KineticEnergy::reset_energy(agent.get_controller_energy() as *mut _ as _, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, &Vector2f::zero(), &Vector3f::zero(), boma);
         smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_mul(agent.get_controller_energy(), 0.0);
         smash::app::lua_bind::FighterKineticEnergyController::mul_x_accel_add(agent.get_controller_energy(), 0.0);
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 5.0);
     if is_excute(agent){
@@ -87,7 +85,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.7);
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -117,6 +114,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("effect_attackdash", effect_attackdash);
 }

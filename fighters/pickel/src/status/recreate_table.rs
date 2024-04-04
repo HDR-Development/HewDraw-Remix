@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
  
 // FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE
 

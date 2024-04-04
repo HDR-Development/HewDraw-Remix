@@ -159,8 +159,8 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        //WorkModule::set_int64(agent.module_accessor, hash40("rbkind_attackll") as i64, FIGHTER_ZELDA_INSTANCE_WORK_ID_INT_RUMBLE_HIT_KIND_1);
-        //WorkModule::set_int64(agent.module_accessor, hash40("rbkind_attackm") as i64, FIGHTER_ZELDA_INSTANCE_WORK_ID_INT_RUMBLE_HIT_KIND_2);
+        //WorkModule::set_int64(boma, hash40("rbkind_attackll") as i64, FIGHTER_ZELDA_INSTANCE_WORK_ID_INT_RUMBLE_HIT_KIND_1);
+        //WorkModule::set_int64(boma, hash40("rbkind_attackm") as i64, FIGHTER_ZELDA_INSTANCE_WORK_ID_INT_RUMBLE_HIT_KIND_2);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {

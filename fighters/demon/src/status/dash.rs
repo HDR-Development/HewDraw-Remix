@@ -1,12 +1,13 @@
 use super::*;
-use globals::*;
 
-pub unsafe extern "C" fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_DASH
+
+pub unsafe extern "C" fn dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_dash_main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dash_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.status_Dash_Main_common(L2CValue::I32(0)).get_bool() {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP {
@@ -27,5 +28,5 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, status_dash);
+    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash_main);
 }

@@ -19,7 +19,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
@@ -58,7 +57,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
@@ -91,7 +89,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
@@ -160,16 +157,16 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.0);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.game_acmd("game_attack11", game_attack11);
-    agent.effect_acmd("effect_attack11", effect_attack11);
-    agent.game_acmd("game_attack12", game_attack12);
-    agent.effect_acmd("effect_attack12", effect_attack12);
-    agent.game_acmd("game_attack13", game_attack13);
-    agent.effect_acmd("effect_attack13", effect_attack13);
-    agent.expression_acmd("expression_attack13", expression_attack13);
-    agent.game_acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("effect_attack11", effect_attack11);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("effect_attack12", effect_attack12);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("effect_attack13", effect_attack13);
+    agent.acmd("expression_attack13", expression_attack13);
+
+    agent.acmd("game_attackdash", game_attackdash);
 }

@@ -5,7 +5,6 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 15.0, 6.0);
-    
 }
 
 unsafe extern "C" fn game_specialnhold(agent: &mut L2CAgentBase) {
@@ -108,7 +107,7 @@ unsafe extern "C" fn expression_specialnexplode(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
     }
 }
 
@@ -189,7 +188,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_apecialairhichargef(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhichargef(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
@@ -468,7 +467,6 @@ unsafe extern "C" fn game_speciallwpogolanding(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 17.0, 12.0);
     frame(lua_state, 17.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn effect_speciallwpogolanding(agent: &mut L2CAgentBase) {
@@ -524,12 +522,15 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairnexplode", effect_specialairnexplode);
     agent.acmd("sound_specialairnexplode", sound_specialnexplode);
     agent.acmd("expression_specialairnexplode", expression_specialnexplode);
+
     agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("game_specialairsstart", game_specialsstart);
-    agent.acmd("game_specialairhichargef", game_apecialairhichargef);
+
+    agent.acmd("game_specialairhichargef", game_specialairhichargef);
     agent.acmd("game_specialairhichargeb", game_specialairhichargeb);
     agent.acmd("game_specialairhichargehi", game_specialairhichargehi);
     agent.acmd("game_specialairhichargelw", game_specialairhichargelw);
+    
     agent.acmd("game_speciallwstab", game_speciallwstab);
     agent.acmd("game_specialairlwstab", game_speciallwstab);
     agent.acmd("effect_speciallwstab", effect_speciallwstab);

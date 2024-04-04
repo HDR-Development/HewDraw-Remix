@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackcommand1(agent: &mut L2CAgentBase) {

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_JUMP_AERIAL
+
 // preserve momentum if double jumping out of sonic blade
 unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let x_speed = VarModule::get_float(fighter.battle_object, vars::trail::instance::JUMP_CANCEL_MOMENTUM_HANDLER);

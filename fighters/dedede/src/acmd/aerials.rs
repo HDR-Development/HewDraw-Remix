@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -32,7 +31,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn expression_landingairn(agent: &mut L2CAgentBase) {
@@ -76,7 +74,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
@@ -110,7 +107,6 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("dedede_hammer_arc_wind"), true, true);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
@@ -171,7 +167,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -182,7 +177,6 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("dedede_air_n"), Hash40::new("top"), 0, 11.0, -16.0, 0, 0, 0, 0.65, true);
         LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-
 }
 
 unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
@@ -262,7 +256,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn expression_landingairhi(agent: &mut L2CAgentBase) {
@@ -316,7 +309,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {

@@ -1,9 +1,8 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_N
 
-pub unsafe extern "C" fn gaogaen_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     let mask_flag = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64
@@ -39,7 +38,7 @@ pub unsafe extern "C" fn gaogaen_special_n_pre(fighter: &mut L2CFighterCommon) -
     
 }
 
-pub unsafe extern "C" fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && StatusModule::prev_situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -93,6 +92,6 @@ pub unsafe extern "C" fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CVa
     // return 0.into()
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, gaogaen_special_n_pre);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, exec_special_n);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exec);
 }

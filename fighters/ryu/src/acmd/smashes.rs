@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
@@ -71,21 +70,6 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attacks4charge(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
-    }
-    for _ in 0..34 {
-        wait(lua_state, 5.0);
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, true);
-        }
-    }
-}
-
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -123,6 +107,21 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(agent) {
         AreaModule::erase_wind(boma, 0);
+    }
+}
+
+unsafe extern "C" fn effect_attacks4charge(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
+    }
+    for _ in 0..34 {
+        wait(lua_state, 5.0);
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 0, 0, 0, true);
+        }
     }
 }
 
@@ -208,9 +207,11 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4);
     agent.acmd("effect_attacks4", effect_attacks4);
-    agent.acmd("effect_attacks4charge", effect_attacks4charge);
     agent.acmd("sound_attacks4", sound_attacks4);
     agent.acmd("expression_attacks4", expression_attacks4);
+    agent.acmd("effect_attacks4charge", effect_attacks4charge);
+
     agent.acmd("game_attackhi4", game_attackhi4);
+
     agent.acmd("game_attacklw4", game_attacklw4);
 }

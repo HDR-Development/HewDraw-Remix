@@ -3,7 +3,8 @@ use smash::app::sv_animcmd::EFFECT_WORK;
 use super::*;
 
 unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
-    let is_csticking = ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+    let boma = agent.boma();
+    let is_csticking = ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
     if (is_csticking) {
         return true;
     }
@@ -12,7 +13,7 @@ unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
 
 unsafe extern "C" fn game_specialnupperfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = agent.boma();
     for _ in 0..4 {
         if is_excute(agent) && will_bayonet(agent){
             VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
@@ -102,12 +103,12 @@ unsafe extern "C" fn game_specialsdash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;    
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = agent.boma();
     if is_excute(agent) {
         //Clear speed
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP); 
-        KineticModule::clear_speed_all(agent.module_accessor);
-        GroundModule::set_attach_ground(agent.module_accessor, false);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP); 
+        KineticModule::clear_speed_all(boma);
+        GroundModule::set_attach_ground(boma, false);
         sv_kinetic_energy!(clear_speed, agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         sv_kinetic_energy!(set_accel, agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
         SET_SPEED_EX(agent, -0.5, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -128,16 +129,16 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent; 
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = agent.boma();
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("buddy_special_s_start"), Hash40::new("rot"), -2, -2, -14, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_COLOR(agent,1,0.5,0);
     }
-    frame(agent.lua_state_agent, 2.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_COLOR(agent,1,0.5,0);
-        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EffectModule::enable_sync_init_pos_last(boma);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -160,7 +161,7 @@ unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent; 
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) && !WorkModule::is_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL){
         PLAY_SE(agent, Hash40::new("se_buddy_special_s01"));
@@ -180,7 +181,7 @@ unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairsdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;    
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = agent.boma();
     if is_excute(agent) {
         //Set control
         VarModule::on_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
@@ -216,7 +217,7 @@ unsafe extern "C" fn game_specialairsdash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_specialairsdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent; 
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = agent.boma(); 
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("buddy_special_s_flash1"), Hash40::new("top"), 0, 15, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 1, 0.3, 0);
@@ -291,7 +292,7 @@ unsafe extern "C" fn sound_specialairsdash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn expression_specialairsdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent; 
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = agent.boma(); 
     if is_excute(agent) {
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             ItemModule::set_have_item_visibility(boma, false,0);
@@ -300,31 +301,31 @@ unsafe extern "C" fn expression_specialairsdash(agent: &mut L2CAgentBase) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
         }
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
     }
     wait(lua_state, 6.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
     }
     wait(lua_state, 6.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
     }
     wait(lua_state, 6.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_73_bodyattack1"), 0, false, 0);
     }
     wait(lua_state, 6.0);
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, 0);
     }
     wait(lua_state, 2.0);
 }
 
 unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;  
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);  
+    let boma = agent.boma();  
     frame(lua_state, 36.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
@@ -333,13 +334,13 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;    
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let boma = agent.boma(); 
     frame(lua_state, 15.0);
     if is_excute(agent) {
         let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
         if (!has_hit_shield
         && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0) {
-            CancelModule::enable_cancel(agent.module_accessor);
+            CancelModule::enable_cancel(boma);
         }
     }
     frame(lua_state, 17.0);

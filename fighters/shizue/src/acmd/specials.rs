@@ -316,13 +316,14 @@ unsafe extern "C" fn game_specialairsthrowlw(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairhidetach(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-        StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
         if VarModule::is_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE) {
             VarModule::off_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
-            WorkModule::set_float(agent.module_accessor, VarModule::get_float(agent.object(), vars::shizue::instance::STORED_BALLOON_POWER), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
+            WorkModule::set_float(boma, VarModule::get_float(agent.object(), vars::shizue::instance::STORED_BALLOON_POWER), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
         }
     }
 }

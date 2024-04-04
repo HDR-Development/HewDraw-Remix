@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_GUARD_DAMAGE //
+// FIGHTER_STATUS_KIND_GUARD_DAMAGE
 
 pub unsafe extern "C" fn guard_damage_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_initStatus_Inner();

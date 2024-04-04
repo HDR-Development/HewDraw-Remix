@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP
+
 unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N
+
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
     if !can_fireball {
@@ -82,7 +84,7 @@ unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_main,);
-    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_exec,);
-    agent.status(ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_execstop,);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_main);
+    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_exec);
+    agent.status(ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, special_n_execstop);
 }

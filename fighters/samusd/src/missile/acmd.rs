@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_homing(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -12,6 +13,7 @@ unsafe extern "C" fn game_homing(agent: &mut L2CAgentBase) {
         AttackModule::enable_safe_pos(boma);
     }
 }
+
 unsafe extern "C" fn effect_homing(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();

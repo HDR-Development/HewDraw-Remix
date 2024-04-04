@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// statuses::ken::ATTACK_COMMAND_4
+
+pub unsafe extern "C" fn attack_command_4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ pub unsafe extern "C" fn ken_attack_command_4_pre(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub unsafe extern "C" fn ken_attack_command_4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_command_4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_command4"), 0.0, 1.0, false, 0.0, false, false);
     fighter.set_int(*FIGHTER_LOG_ATTACK_KIND_ATTACK_COMMAND2, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
     // fighter.clear_lua_stack();
@@ -38,10 +38,10 @@ pub unsafe extern "C" fn ken_attack_command_4_main(fighter: &mut L2CFighterCommo
     // let mut lr = PostureModule::lr(fighter.module_accessor);
     // fighter.push_lua_stack(&mut L2CValue::F32(lr));
     // app::sv_kinetic_energy::set_chara_dir(fighter.lua_state_agent);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ken_attack_command_4_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(attack_command_4_main_loop as *const () as _))
 }
 
-pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn attack_command_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 1.into();
@@ -72,6 +72,6 @@ pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighter
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_pre);
-    agent.status(Main, statuses::ken::ATTACK_COMMAND_4, ken_attack_command_4_main);
+    agent.status(Pre, statuses::ken::ATTACK_COMMAND_4, attack_command_4_pre);
+    agent.status(Main, statuses::ken::ATTACK_COMMAND_4, attack_command_4_main);
 }

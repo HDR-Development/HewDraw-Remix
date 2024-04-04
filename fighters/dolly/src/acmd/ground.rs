@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -39,7 +38,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
-    
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -85,7 +83,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    
 }
 
 unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
@@ -149,7 +146,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         //WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -244,7 +240,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
             FT_MOTION_RATE(agent, 1.5);
         }
     }
-    
 }
 
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
@@ -388,7 +383,6 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 2.0);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {

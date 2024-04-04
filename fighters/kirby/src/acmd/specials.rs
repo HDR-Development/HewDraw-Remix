@@ -162,7 +162,6 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, -1);
     }
-
 }
 
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
@@ -195,7 +194,6 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
 unsafe extern "C" fn game_specialairss(agent: &mut L2CAgentBase) {
@@ -228,7 +226,6 @@ unsafe extern "C" fn game_specialairss(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-
 }
 
 unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
@@ -357,7 +354,6 @@ unsafe extern "C" fn effect_specialhih(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 6, 0, 0, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-
 }
 
 unsafe extern "C" fn sound_specialhih(agent: &mut L2CAgentBase) {
@@ -366,7 +362,7 @@ unsafe extern "C" fn sound_specialhih(agent: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_kirby_special_h02"));
-        match smash::app::sv_math::rand(smash::hash40("agent"), 2) {
+        match smash::app::sv_math::rand(smash::hash40("fighter"), 2) {
             0 => PLAY_SE(agent, Hash40::new("vc_kirby_002")),
             1 => PLAY_SE(agent, Hash40::new("vc_kirby_attack07")),
             _ => PLAY_SE(agent, Hash40::new("vc_kirby_attack07")),
@@ -421,7 +417,7 @@ unsafe extern "C" fn game_specialairhih(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 52.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             VarModule::on_flag(agent.battle_object, vars::kirby::instance::DISABLE_SPECIAL_HI);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
@@ -433,7 +429,7 @@ unsafe extern "C" fn game_specialairhih(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 60.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 
@@ -455,7 +451,6 @@ unsafe extern "C" fn effect_specialairhih(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 0);
     }
-
 }
 
 unsafe extern "C" fn sound_specialairhih(agent: &mut L2CAgentBase) {
@@ -464,7 +459,7 @@ unsafe extern "C" fn sound_specialairhih(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_kirby_special_h02"));
-        match smash::app::sv_math::rand(smash::hash40("agent"), 2) {
+        match smash::app::sv_math::rand(smash::hash40("fighter"), 2) {
             0 => PLAY_SE(agent, Hash40::new("vc_kirby_002")),
             1 => PLAY_SE(agent, Hash40::new("vc_kirby_attack07")),
             _ => PLAY_SE(agent, Hash40::new("vc_kirby_attack07")),
@@ -585,34 +580,37 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_specialnstart", game_specialnstart);
-        agent.acmd("game_specialairnstart", game_specialnstart);
-        agent.acmd("game_specialnloop", game_specialnloop);
-        agent.acmd("game_specialairnloop", game_specialnloop);
-        agent.acmd("game_specialneat", game_specialneat);
-        agent.acmd("game_specialairneat", game_specialneat);
-        agent.acmd("game_specialndrink", game_specialndrink);
-        agent.acmd("game_specialairndrink", game_specialndrink);
-        agent.acmd("game_specialnlarge", game_specialnlarge);
-        agent.acmd("game_specialairnlarge", game_specialnlarge);
-        agent.acmd("game_specialsstart", game_specialsstart);
-        agent.acmd("game_specials", game_specials);
-        agent.acmd("game_specialss", game_specialss);
-        agent.acmd("game_specialsmax", game_specialsmax);
-        agent.acmd("game_specialairsstart", game_specialairsstart);
-        agent.acmd("game_specialairs", game_specialairs);
-        agent.acmd("game_specialairss", game_specialairss);
-        agent.acmd("game_specialairhi2", game_specialairhi2);
-        agent.acmd("effect_specialairhi2", effect_specialairhi2);
-        agent.acmd("game_specialhih", game_specialhih);
-        agent.acmd("effect_specialhih", effect_specialhih);
-        agent.acmd("sound_specialhih", sound_specialhih);
-        agent.acmd("expression_specialhih", expression_specialhih);
-        agent.acmd("game_specialairhih", game_specialairhih);
-        agent.acmd("effect_specialairhih", effect_specialairhih);
-        agent.acmd("sound_specialairhih", sound_specialairhih);
-        agent.acmd("expression_specialairhih", expression_specialairhih);
-        agent.acmd("game_speciallw", game_speciallw);
-        agent.acmd("game_specialairlw", game_specialairlw);
-        agent.acmd("effect_specialairlw", effect_specialairlw);
+    agent.acmd("game_specialnstart", game_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
+    agent.acmd("game_specialnloop", game_specialnloop);
+    agent.acmd("game_specialairnloop", game_specialnloop);
+    agent.acmd("game_specialneat", game_specialneat);
+    agent.acmd("game_specialairneat", game_specialneat);
+    agent.acmd("game_specialndrink", game_specialndrink);
+    agent.acmd("game_specialairndrink", game_specialndrink);
+    agent.acmd("game_specialnlarge", game_specialnlarge);
+    agent.acmd("game_specialairnlarge", game_specialnlarge);
+
+    agent.acmd("game_specialsstart", game_specialsstart);
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialss", game_specialss);
+    agent.acmd("game_specialsmax", game_specialsmax);
+    agent.acmd("game_specialairsstart", game_specialairsstart);
+    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("game_specialairss", game_specialairss);
+
+    agent.acmd("game_specialairhi2", game_specialairhi2);
+    agent.acmd("effect_specialairhi2", effect_specialairhi2);
+    agent.acmd("game_specialhih", game_specialhih);
+    agent.acmd("effect_specialhih", effect_specialhih);
+    agent.acmd("sound_specialhih", sound_specialhih);
+    agent.acmd("expression_specialhih", expression_specialhih);
+    agent.acmd("game_specialairhih", game_specialairhih);
+    agent.acmd("effect_specialairhih", effect_specialairhih);
+    agent.acmd("sound_specialairhih", sound_specialairhih);
+    agent.acmd("expression_specialairhih", expression_specialairhih);
+
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("effect_specialairlw", effect_specialairlw);
 }

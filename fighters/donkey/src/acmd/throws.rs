@@ -217,24 +217,24 @@ unsafe extern "C" fn game_itemheavythrowlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        let main_speed_x = KineticModule::get_sum_speed_x(agent.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let stick_add_x = agent.stick_x() * 0.5;
         
         // change to kinetic type fall and change to air situation
-        KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        GroundModule::set_correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        StatusModule::set_situation_kind(agent.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        GroundModule::set_correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
         let kinetic = *FIGHTER_KINETIC_TYPE_FALL;
-        KineticModule::change_kinetic(agent.module_accessor, kinetic);
+        KineticModule::change_kinetic(boma, kinetic);
 
         // pop up into the air
-        SET_SPEED_EX(agent, (main_speed_x + stick_add_x) * PostureModule::lr(agent.module_accessor), 2.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(agent, (main_speed_x + stick_add_x) * PostureModule::lr(boma), 2.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
 
     // when we reach the cancel frame, transition into fall instead
-    let motion_kind = Hash40::new_raw(MotionModule::motion_kind(agent.module_accessor));
+    let motion_kind = Hash40::new_raw(MotionModule::motion_kind(boma));
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, motion_kind, true);
     frame(lua_state, cancel_frame);
     if is_excute(agent) {

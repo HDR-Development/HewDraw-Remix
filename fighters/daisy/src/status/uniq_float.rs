@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START
 

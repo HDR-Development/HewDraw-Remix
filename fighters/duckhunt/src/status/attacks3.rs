@@ -1,6 +1,4 @@
-
 use super::*;
-use globals::*;
 
 // FIGHTER_STATUS_KIND_ATTACK_S3
 

@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
@@ -6,9 +5,9 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
+        if !StopModule::is_stop(boma) {
             let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("agent"), 3)
+                app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
@@ -18,7 +17,7 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.1);
     if is_excute(agent) {
         let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("agent"), 3)
+            app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
         };
@@ -31,7 +30,7 @@ unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(agent.module_accessor) {
+        if !StopModule::is_stop(boma) {
             PLAY_FLY_VOICE(agent, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));
         }
     }
@@ -46,7 +45,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        let dash_sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_kirby_dash_start"), true, false, false, false, app::enSEType(0));
+        let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_kirby_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 13.0);
@@ -70,7 +69,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
@@ -120,18 +118,18 @@ unsafe extern "C" fn effect_landingheavy(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("sound_damageflyhi", sound_damagefly);
-        agent.acmd("sound_damageflylw", sound_damagefly);
-        agent.acmd("sound_damageflyn", sound_damagefly);
-        agent.acmd("sound_damageflytop", sound_damagefly);
-        agent.acmd("sound_damageflyroll", sound_damageflyroll);
-        
-        agent.acmd("sound_dash", sound_dash);
-        agent.acmd("game_turndash", game_turndash);
+    agent.acmd("sound_damageflyhi", sound_damagefly);
+    agent.acmd("sound_damageflylw", sound_damagefly);
+    agent.acmd("sound_damageflyn", sound_damagefly);
+    agent.acmd("sound_damageflytop", sound_damagefly);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    
+    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_turndash", game_turndash);
 
-        agent.acmd("game_escapeair", game_escapeair);
-        agent.acmd("game_escapeairslide", game_escapeairslide);
-        
-        agent.acmd("game_landingheavy", game_landingheavy);
-        agent.acmd("effect_landingheavy", effect_landingheavy);
+    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
+    
+    agent.acmd("game_landingheavy", game_landingheavy);
+    agent.acmd("effect_landingheavy", effect_landingheavy);
 }

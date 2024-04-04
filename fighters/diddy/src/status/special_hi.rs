@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE
 

@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -15,7 +15,7 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -102,7 +102,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
     }
-
 }
 
 unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
@@ -127,10 +126,12 @@ unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3hi", game_attacks3hi);
     agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
     agent.acmd("game_attacks3lw", game_attacks3lw);
+
     agent.acmd("game_attackhi3", game_attackhi3);
+
     agent.acmd("game_attacklw3", game_attacklw3);
     agent.acmd("expression_attacklw3", expression_attacklw3);
 }

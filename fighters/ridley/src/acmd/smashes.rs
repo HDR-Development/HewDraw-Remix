@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
@@ -24,7 +23,6 @@ unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.0, 5.0);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
@@ -48,7 +46,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("toer"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn expression_attacklw4(agent : &mut L2CAgentBase) {
@@ -87,6 +84,8 @@ unsafe extern "C" fn expression_attacklw4(agent : &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4s);
+
     agent.acmd("game_attackhi4", game_attackhi4);
+    
     agent.acmd("expression_attacklw4", expression_attacklw4);
 }

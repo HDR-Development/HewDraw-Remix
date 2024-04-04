@@ -148,10 +148,12 @@ unsafe extern "C" fn effect_speciallwendl(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnfires", game_specialairnfires);
     agent.acmd("game_specialairnfirehi", game_specialairnfirehi);
+
     agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("game_specialairsstart", game_specialairsstart);
     agent.acmd("game_specialairsend", game_specialairsend);
+    
     agent.acmd("effect_speciallwstartl", effect_speciallwstartl);
     agent.acmd("effect_speciallwstartr", effect_speciallwstartl);
     agent.acmd("effect_specialairlwstartl", effect_speciallwstartl);

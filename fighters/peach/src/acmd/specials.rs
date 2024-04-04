@@ -9,7 +9,7 @@ unsafe extern "C" fn game_specialshitend(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         }
     }
@@ -78,7 +78,6 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
@@ -140,7 +139,6 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -191,7 +189,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_peach_special_l01"));
         if agent.get_int(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND) != *ITEM_KIND_NONE 
-        && ItemModule::is_have_item(agent.module_accessor, 0) {
+        && ItemModule::is_have_item(boma, 0) {
             PLAY_SE(agent, Hash40::new("vc_peach_appeal01"));
         } 
     }
@@ -199,8 +197,10 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialshitend", game_specialshitend);
+
     agent.acmd("game_specialhistart", game_specialhistart);
     agent.acmd("game_specialairhistart", game_specialairhistart);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);

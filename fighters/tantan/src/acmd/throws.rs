@@ -6,7 +6,7 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 6.0/(15.0-1.0));
     if is_excute(agent) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.5, 3.5);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.5, 3.5);
     }
     frame(lua_state, 15.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -14,12 +14,12 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
-    wait(agent.lua_state_agent, 1.0);
+    wait(lua_state, 1.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
-    wait(agent.lua_state_agent, 2.0);
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.250);
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
@@ -27,7 +27,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         GrabModule::set_rebound(boma, false);
     }
 }
-
 
 unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -40,7 +39,6 @@ unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_common_swing_06"));
     }
-    
 }
 
 unsafe extern "C" fn expression_catch(agent: &mut L2CAgentBase) {
@@ -82,5 +80,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("sound_catch", sound_catch);
     agent.acmd("expression_catch", expression_catch);
+    
     agent.acmd("game_throwhi", game_throwhi);
 }

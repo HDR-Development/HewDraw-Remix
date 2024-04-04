@@ -20,7 +20,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -53,7 +52,6 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::littlemac::instance::IS_LATE_DLE_INPUT);
     }
-    
 }
 
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
@@ -87,7 +85,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
@@ -183,7 +180,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
@@ -215,6 +211,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
     agent.acmd("sound_attack13", sound_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
     agent.acmd("expression_attackdash", expression_attackdash);
 }

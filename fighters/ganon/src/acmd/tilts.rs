@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -28,7 +27,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-
 }
 
 unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
@@ -50,7 +48,6 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-
 }
 
 unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
@@ -80,7 +77,6 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-
 }
 
 unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
@@ -115,8 +111,8 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
+        ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::generate_article(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
     }
     frame(lua_state, 11.0);
     FT_MOTION_RATE(agent, 0.5);
@@ -139,11 +135,11 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -209,7 +205,6 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
-
 }
 
 unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
@@ -230,12 +225,12 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_TOP);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -265,12 +260,12 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     // frame(lua_state, 30.0);
     // if is_excute(agent) {
-    //     WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    //     WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     // }
 }
 
@@ -306,7 +301,7 @@ unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -328,7 +323,7 @@ unsafe extern "C" fn game_attacklw32(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -364,7 +359,7 @@ unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -378,26 +373,24 @@ unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    smashline::Agent::new("ganon")
-        .acmd("game_attacks3", game_attacks3)
-        .acmd("game_attacks3hi", game_attacks3hi)
-        .acmd("game_attacks3lw", game_attacks3lw)
-        .acmd("effect_attacks3hi", effect_attacks3hi)
-        .acmd("effect_attacks3lw", effect_attacks3lw)
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
+    agent.acmd("effect_attacks3hi", effect_attacks3hi);
+    agent.acmd("effect_attacks3lw", effect_attacks3lw);
 
-        .acmd("game_attackhi3", game_attackhi3)
-        .acmd("effect_attackhi3", effect_attackhi3)
-        .acmd("sound_attackhi3", sound_attackhi3)
-        .acmd("expression_attackhi3", expression_attackhi3)
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
 
-        .acmd("game_attacklw3", game_attacklw3)
-        .acmd("effect_attacklw3", effect_attacklw3)
-        .acmd("sound_attacklw3", sound_attacklw3)
-        .acmd("expression_attacklw3", expression_attacklw3)
+    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
+    agent.acmd("sound_attacklw3", sound_attacklw3);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 
-        .acmd("game_attacklw32", game_attacklw32)
-        .acmd("effect_attacklw32", effect_attacklw32)
-        .acmd("sound_attacklw32", sound_attacklw32)
-        .acmd("expression_attacklw32", expression_attacklw32)
-        .install();
+    agent.acmd("game_attacklw32", game_attacklw32);
+    agent.acmd("effect_attacklw32", effect_attacklw32);
+    agent.acmd("sound_attacklw32", sound_attacklw32);
+    agent.acmd("expression_attacklw32", expression_attacklw32);
 }

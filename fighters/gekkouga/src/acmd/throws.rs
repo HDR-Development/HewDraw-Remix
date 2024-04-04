@@ -22,7 +22,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
@@ -84,7 +83,6 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.8);
     frame(lua_state, 43.0);
     FT_MOTION_RATE(agent, 1.0);
-    
 }
 
 unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
@@ -129,7 +127,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
+
     agent.acmd("game_throwf", game_throwf);
     agent.acmd("expression_throwf", expression_throwf);
+    
     agent.acmd("game_throwlw", game_throwlw);
 }

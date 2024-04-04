@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 

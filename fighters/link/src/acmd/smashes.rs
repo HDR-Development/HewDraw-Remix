@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
 	frame(lua_state, 10.0);
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+		WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
 	}
 	FT_MOTION_RATE(agent, 6.0/(14.0-10.0));
 	frame(lua_state, 14.0);

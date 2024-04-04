@@ -38,29 +38,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn escape_air_game(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
-    
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), false);
-    }
-    frame(lua_state, 29.0);
-    if is_excute(agent) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-    }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacklw4", game_attacklw4);
 }

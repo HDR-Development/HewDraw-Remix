@@ -1,10 +1,8 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_STATUS_KIND_ATTACK
 
-// FIGHTER_STATUS_KIND_ATTACK //
-
-unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
@@ -15,5 +13,5 @@ unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, main_attack);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, attack_main);
 }

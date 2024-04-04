@@ -53,7 +53,7 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     }
 	wait(lua_state, 2.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
 }
 

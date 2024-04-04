@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn game_hop(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
     let boma = weapon.boma();

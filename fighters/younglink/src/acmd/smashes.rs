@@ -85,7 +85,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
 	frame(lua_state, 6.0);
 	if is_excute(agent) {
-		WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+		WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
 	}
     frame(lua_state, 10.0);
 	if is_excute(agent) {
@@ -93,11 +93,11 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 		ATTACK(agent, 1, 0, Hash40::new("sword"), 4.0, 95, 100, 23, 0, 3.2, 0.0, -1.0, 1.0, None, None, None, 0.8, 0.4, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
 		ATTACK(agent, 2, 0, Hash40::new("sword"), 4.0, 149, 100, 23, 0, 3.2, 5.5, -1.0, 1.0, None, None, None, 0.8, 0.4, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
 		ATTACK(agent, 3, 0, Hash40::new("sword"), 4.0, 105, 100, 48, 0, 3.2, 5.5, -1.0, 1.0, None, None, None, 0.8, 0.4, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-		AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 6.0, false);
+		AttackModule::set_add_reaction_frame(boma, 0, 6.0, false);
 	}
 	frame(lua_state, 14.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
     }
 	frame(lua_state, 26.0);
 	if is_excute(agent) {
@@ -108,7 +108,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 31.0);
 	if is_excute(agent) {
-		AttackModule::clear_all(agent.module_accessor);
+		AttackModule::clear_all(boma);
 	}
     frame(lua_state, 50.0);
     FT_MOTION_RATE_RANGE(agent, 50.0, 60.0, 7.0);

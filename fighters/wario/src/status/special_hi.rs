@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP
 
@@ -48,6 +47,6 @@ pub unsafe extern "C" fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status( Main,*FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP,special_hi_jump_main,);
+    agent.status( Main, *FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main);
     agent.status(Pre, *FIGHTER_STATUS_KIND_FALL, fall_pre);
 }

@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 #[no_mangle]
 unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -227,10 +226,12 @@ pub unsafe fn peach_float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-unsafe extern "C" fn uniq_float_start(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START
+
+unsafe extern "C" fn uniq_float_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     peach_float_start_main_common(fighter)
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start);
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start_main);
 }

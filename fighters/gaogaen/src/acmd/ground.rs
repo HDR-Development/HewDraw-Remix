@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
@@ -123,5 +122,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack12", game_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("expression_attack13", expression_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

@@ -138,7 +138,6 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
     {
          fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
     }
-
 }
 
 unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
@@ -157,8 +156,8 @@ unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     let motion_offset = -0.125;
     let motion_vec = Vector3f{x: 0.0, y: motion_offset+(VarModule::get_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE)*motion_factor), z: 0.0};
     KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-
 }
+
 unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     let sideSpecial = [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -192,7 +191,6 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     {
         VarModule::off_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
     }
-
 }
 
 //Check to see if Banjo hit a shield during beakbomb.
@@ -256,7 +254,6 @@ unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon, boma: &mut Bat
     {
         fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
     }
-
 }
 
 unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
@@ -442,7 +439,6 @@ unsafe fn training_reset(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectM
             }
         }
     }
-
 }
 
 // upB freefalls after one use per airtime

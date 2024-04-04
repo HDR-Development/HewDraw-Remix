@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn samus_catch_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -32,7 +31,7 @@ unsafe extern "C" fn samus_catch_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_catch_dash_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -63,7 +62,7 @@ unsafe extern "C" fn samus_catch_dash_game(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_catch_turn_game(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
@@ -111,12 +110,12 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
         REVERSE_LR(agent);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-        //.acmd("game_catch", samus_catch_game)
-        //.acmd("game_catchdash", samus_catch_dash_game)
-        //.acmd("game_catchturn", samus_catch_turn_game)
+    //agent.acmd("game_catch", game_catch);
+    //agent.acmd("game_catchdash", game_catchdash);
+    //agent.acmd("game_catchturn", game_catchturn);
+
     agent.acmd("game_throwb", game_throwb);
 }

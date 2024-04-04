@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END
 
 unsafe extern "C" fn special_lw_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_INT_FALCON_KICK_START_SITUATION);

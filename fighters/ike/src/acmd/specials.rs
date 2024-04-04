@@ -21,7 +21,6 @@ unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
@@ -45,7 +44,6 @@ unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
@@ -420,7 +418,6 @@ unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.82);
-    
 }
 
 unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
@@ -555,6 +552,7 @@ unsafe extern "C" fn game_specialhi4(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {;
     agent.acmd("game_specialnend", game_specialnend);
     agent.acmd("game_specialairnend", game_specialairnend);
+
     agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("game_specialairsstart", game_specialairsstart);
     agent.acmd("effect_specialshold", effect_specialshold);
@@ -570,6 +568,7 @@ pub fn install(agent: &mut Agent) {;
     agent.acmd("expression_specialairsattack", expression_specialsattack);
     agent.acmd("effect_specialsend", effect_specialsend);
     agent.acmd("game_specialairsend", game_specialairsend);
+    
     agent.acmd("game_specialhi1", game_specialhi1);
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("game_specialairhi2", game_specialairhi2);

@@ -4,8 +4,8 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
 
 use smash::{
     lib::{
@@ -45,7 +45,7 @@ pub const LUCAS_CHARGE_TIME : i32 = 120;
 pub fn install() {
     let agent = &mut Agent::new("kirby");
     acmd::install(agent);
-    opff::install();
+    opff::install(agent);
     status::install(agent);
     agent.install();
 }

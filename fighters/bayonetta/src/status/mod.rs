@@ -1,4 +1,5 @@
 use super::*;
+use globals::*;
 
 mod attack;
 mod batwithin;

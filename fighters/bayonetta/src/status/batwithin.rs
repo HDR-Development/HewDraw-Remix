@@ -1,9 +1,6 @@
 use super::*;
-use globals::*;
 
- 
-
-// FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN //
+// FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN
 
 unsafe extern "C" fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let batwithin_status_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_BATWITHIN_INT_STATUS_KIND);

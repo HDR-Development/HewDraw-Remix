@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32) {
     if situation_kind != *SITUATION_KIND_AIR {
         return;
@@ -458,6 +457,7 @@ pub unsafe fn ike_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
 pub fn install(agent: &mut Agent) {
-        agent.on_line(Main, ike_frame_wrapper);
+    agent.on_line(Main, ike_frame_wrapper);
 }

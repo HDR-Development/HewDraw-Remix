@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_speciallw1(agent: &mut L2CAgentBase) {
@@ -33,7 +32,6 @@ unsafe extern "C" fn game_speciallw3hit(agent: &mut L2CAgentBase) {
             ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_WOOD), 0, 0, false, false);
         }
     }
-    
 }
 
 unsafe extern "C" fn game_specialairlw3hit(agent: &mut L2CAgentBase) {
@@ -45,11 +43,11 @@ unsafe extern "C" fn game_specialairlw3hit(agent: &mut L2CAgentBase) {
             ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_WOOD), 0, 0, false, false);
         }
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw1", game_speciallw1);
+    
     agent.acmd("game_speciallw3hit", game_speciallw3hit);
     agent.acmd("game_specialairlw3hit", game_specialairlw3hit);
 }

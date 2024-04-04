@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_S3
+
 unsafe extern "C" fn attack_s3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_AttackS3()
 }

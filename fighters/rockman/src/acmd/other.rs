@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
@@ -8,7 +7,6 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
@@ -16,7 +14,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        let dash_sfx_handle = SoundModule::play_se(agent.module_accessor, Hash40::new("se_rockman_dash_start"), true, false, false, false, app::enSEType(0));
+        let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_rockman_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 6.0);
@@ -40,12 +38,11 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 /*
-#[acmd_script( agent = "rockman_crashbomb", script = "game_regular" , category = ACMD_GAME , low_priority)]
-unsafe fn rockman_crashbomb_stick_game(agent: &mut L2CAgentBase) {
+// rockman_crashbomb
+unsafe fn game_regular(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
@@ -59,7 +56,6 @@ unsafe fn rockman_crashbomb_stick_game(agent: &mut L2CAgentBase) {
             ArticleModule::change_status(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, *, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
     }
-    
 }
 */
 

@@ -127,11 +127,11 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         }
         FT_MOTION_RATE(agent, 0.75);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

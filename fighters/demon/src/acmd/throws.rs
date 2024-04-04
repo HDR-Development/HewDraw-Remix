@@ -64,7 +64,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }

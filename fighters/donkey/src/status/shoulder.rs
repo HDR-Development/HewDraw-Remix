@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
-// status script import
+
+// FIGHTER_DONKEY_STATUS_KIND_SHOULDER_LANDING
 
 /// cargo carry
 

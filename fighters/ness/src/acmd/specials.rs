@@ -1,11 +1,5 @@
 use super::*;
 
-unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
-}
-
-unsafe extern "C" fn game_specialairnfire(agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -31,7 +25,7 @@ unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -40,13 +34,13 @@ unsafe extern "C" fn game_specials (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 	frame(lua_state, 21.0);
 	if is_excute(agent) {
-		ArticleModule::generate_article(agent.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		ArticleModule::generate_article(boma, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
 		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
 	}
 	FT_MOTION_RATE(agent, 1);
 }
 
-unsafe extern "C" fn game_specialairs (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	frame(lua_state, 1.0);
@@ -55,7 +49,7 @@ unsafe extern "C" fn game_specialairs (agent: &mut L2CAgentBase) {
 	FT_MOTION_RATE(agent, 1);
 	frame(lua_state, 21.0);
 	if is_excute(agent) {
-		ArticleModule::generate_article(agent.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
+		ArticleModule::generate_article(boma, *FIGHTER_NESS_GENERATE_ARTICLE_PK_FIRE, false, 0);
 		//WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_NESS_STATUS_SPECIAL_S_FLAG_SHOOT);
 	}
 	FT_MOTION_RATE(agent, 1);
@@ -139,7 +133,6 @@ unsafe extern "C" fn game_specialairlwhold(agent: &mut L2CAgentBase) {
         }
         wait(lua_state, 14.0);
     }
-
 }
 
 //Implemented to remove release windbox
@@ -148,7 +141,7 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 }
 
-unsafe extern "C" fn effect_speciallwstart (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -156,7 +149,7 @@ unsafe extern "C" fn effect_speciallwstart (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_speciallwend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -175,7 +168,7 @@ unsafe extern "C" fn effect_speciallwend (agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn effect_specialairlwend (agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwend(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
 	if is_excute(agent) {
@@ -192,14 +185,19 @@ unsafe extern "C" fn effect_specialairlwend (agent: &mut L2CAgentBase) {
 	}
 }
 
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnfire", game_specialnfire);
-    agent.acmd("game_specialairnfire", game_specialairnfire);
+    agent.acmd("game_specialnfire", stub);
+    agent.acmd("game_specialairnfire", stub);
+
     agent.acmd("sound_specials", sound_specials);
     agent.acmd("game_specials", game_specials);
     agent.acmd("game_specialairs", game_specialairs);
     agent.acmd("sound_specialairs", sound_specialairs);
+
     agent.acmd("game_specialairhi", game_specialairhi);
+    
     agent.acmd("game_speciallwhold", game_speciallwhold);
     agent.acmd("game_specialairlwhold", game_specialairlwhold);
     agent.acmd("game_speciallwend", game_speciallwend);

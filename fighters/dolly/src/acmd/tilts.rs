@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -45,7 +44,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    
 }
 
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
@@ -122,7 +120,6 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         VarModule::on_flag(boma.object(), vars::dolly::status::UNABLE_CANCEL_S3_DASH);
     }
-    
 }
 
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
@@ -177,7 +174,6 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {

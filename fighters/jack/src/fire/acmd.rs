@@ -1,4 +1,5 @@
 use super::*;
+
 unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -51,7 +52,6 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }  
-
 }
 
 pub fn install(agent: &mut Agent) {

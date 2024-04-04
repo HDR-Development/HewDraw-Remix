@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 extern "Rust" {
     #[link_name = "attack_air_float_pre"]
@@ -7,6 +6,8 @@ extern "Rust" {
     #[link_name = "attack_air_float_main"]
     fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     attack_air_float_pre(fighter, statuses::samusd::FLOAT.into())

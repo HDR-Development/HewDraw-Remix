@@ -370,7 +370,7 @@ unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        let landing_frame_normal = WorkModule::get_param_float(agent.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
+        let landing_frame_normal = WorkModule::get_param_float(boma, hash40("landing_attack_air_frame_lw"), 0);
         let landing_frame_boost = landing_frame_normal + 3.0;
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(agent, landing_frame_boost/landing_frame_normal);

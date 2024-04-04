@@ -1,5 +1,22 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_LW3
+
+unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackLw3();
+    fighter.main_shift(attack_lw3_main_loop)
+}
+
+unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if fighter.status_frame() == 8 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            fighter.change_status(FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32.into(), true.into());
+            return 1.into()
+        }
+    }
+    fighter.status_AttackLw3_Main();
+    return 0.into()
+}
 
 // FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
 
@@ -37,12 +54,7 @@ unsafe extern "C" fn attack_lw32_landing_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("richter")
-        .status(
-            Main,
-            *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING,
-            attack_lw32_landing_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main);
+    agent.status(Main, *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, attack_lw32_landing_main);
 }

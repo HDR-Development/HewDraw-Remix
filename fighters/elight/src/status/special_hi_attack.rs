@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1
+
 unsafe extern "C" fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -29,6 +31,8 @@ unsafe extern "C" fn special_hi_attack1_pre(fighter: &mut L2CFighterCommon) -> L
 
     0.into()
 }
+
+// FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2
 
 unsafe extern "C" fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

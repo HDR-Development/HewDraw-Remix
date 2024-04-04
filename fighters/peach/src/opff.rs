@@ -12,6 +12,7 @@ unsafe fn float_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
         }
     }
 }
+
 unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP {
         let lr = PostureModule::lr(boma);
@@ -91,6 +92,7 @@ pub unsafe fn peach_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, peach_frame_wrapper);
 }

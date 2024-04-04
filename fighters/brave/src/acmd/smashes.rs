@@ -1,7 +1,6 @@
-
 use super::*;
 
-unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -37,7 +36,6 @@ unsafe extern "C" fn game_attacks4s(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 4.0);
     }
-    
 }
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
@@ -93,7 +91,6 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
     }
-
 }
 
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
@@ -122,7 +119,6 @@ unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_brave_smash_s02"));
     }
-
 }
 
 unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
@@ -183,35 +179,6 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
-}
-
-unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_brave_smash_h01"));
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_brave_attack09"));
-    }
-    frame(lua_state, 13.0);
-    if WorkModule::is_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
-        frame(lua_state, 17.0);
-        WorkModule::is_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
-        PLAY_SE(agent, Hash40::new("se_brave_special_s05"));
-    }
-    frame(lua_state, 43.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_brave_smash_h02"));
-    }
-
 }
 
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
@@ -257,7 +224,33 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("brave_lightning3_sword"), false, true);
     }
+}
 
+unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_brave_smash_h01"));
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_brave_attack09"));
+    }
+    frame(lua_state, 13.0);
+    if WorkModule::is_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
+        frame(lua_state, 17.0);
+        WorkModule::is_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
+        PLAY_SE(agent, Hash40::new("se_brave_special_s05"));
+    }
+    frame(lua_state, 43.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_brave_smash_h02"));
+    }
 }
 
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
@@ -312,7 +305,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-
 }
 
 unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
@@ -376,7 +368,6 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
     }
-
 }
 
 unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
@@ -406,17 +397,18 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
             PLAY_SE(agent, Hash40::new("se_brave_special_l19"));
         }
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks4", game_attacks4s);
+    agent.acmd("game_attacks4", game_attacks4);
     agent.acmd("effect_attacks4", effect_attacks4);
     agent.acmd("sound_attacks4", sound_attacks4);
     agent.acmd("expression_attacks4", expression_attacks4);
+
     agent.acmd("game_attackhi4", game_attackhi4);
-    agent.acmd("sound_attackhi4", sound_attackhi4);
     agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
+
     agent.acmd("game_attacklw4", game_attacklw4);
     agent.acmd("effect_attacklw4", effect_attacklw4);
     agent.acmd("sound_attacklw4", sound_attacklw4);

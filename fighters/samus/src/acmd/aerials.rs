@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -43,7 +42,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.0);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
@@ -58,7 +56,6 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.4, true, 1.0);
     }
-
 }
 
 unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
@@ -69,7 +66,6 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
         PLAY_SE(agent, Hash40::new("se_samus_swing_l"));
         PLAY_SE(agent, Hash40::new("se_samus_swing_m"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
@@ -130,7 +126,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
@@ -181,7 +176,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
@@ -242,7 +236,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
@@ -278,7 +271,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
@@ -286,13 +278,13 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-    EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("armr"), 4.289, -0.272, -0.135, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 360, true);
-    LAST_EFFECT_SET_RATE(agent, 1.2);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("armr"), 4.289, -0.272, -0.135, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 360, true);
+        LAST_EFFECT_SET_RATE(agent, 1.2);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-    EFFECT_FOLLOW(agent, Hash40::new("samus_atk_air_lw"), Hash40::new("top"), 0, 12.5, 0, 0, -200, 90, 0.85, true);
-    LAST_EFFECT_SET_RATE(agent, 1.1);
+        EFFECT_FOLLOW(agent, Hash40::new("samus_atk_air_lw"), Hash40::new("top"), 0, 12.5, 0, 0, -200, 90, 0.85, true);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
     }
 }
 
@@ -302,7 +294,6 @@ unsafe extern "C" fn game_aircatchlanding(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 18.0/20.0);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
@@ -310,12 +301,17 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
+
     agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("effect_attackairf", effect_attackairf);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("effect_attackairb", effect_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
+
     agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
+    
     agent.acmd("game_aircatchlanding", game_aircatchlanding);
 }

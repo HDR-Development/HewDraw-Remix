@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
@@ -25,7 +24,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
@@ -66,7 +64,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 //Not an ideal solution as hitbox will appear a frame before effects begin. Will have to revisit this in the future for a better solution
@@ -84,7 +81,6 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("murabito_erase_smoke"), Hash40::new("top"), 0.0, 4.5, -10.0, 0, -90, 0, 0.75, true);
         LAST_EFFECT_SET_RATE(agent, 1.25);
     }
-
 }
 
 unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
@@ -98,7 +94,6 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_murabito_smash_h02"));
     }
-
 }
 
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
@@ -173,7 +168,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
@@ -223,15 +217,17 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn);
+
     agent.acmd("game_attackairb", game_attackairb);
     agent.acmd("effect_attackairb", effect_attackairb);
     agent.acmd("sound_attackairb", sound_attackairb);
     agent.acmd("expression_attackairb", expression_attackairb);
+
     agent.acmd("game_attackairhi", game_attackairhi);
+    
     agent.acmd("game_attackairlw", game_attackairlw);
 }

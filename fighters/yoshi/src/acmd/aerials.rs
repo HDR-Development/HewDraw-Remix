@@ -122,7 +122,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 4, -1.5, 184, -16, -105, 1, true, 0.3);
         LAST_EFFECT_SET_RATE(agent, 2.5);
     }
-    frame(agent.lua_state_agent, 17.5);
+    frame(lua_state, 17.5);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -1.5, 4, -4.5, -175.777, 8.688, 80.371, 0.95, true);
         LAST_EFFECT_SET_RATE(agent, 2.5);

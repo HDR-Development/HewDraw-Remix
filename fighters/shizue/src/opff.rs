@@ -54,8 +54,6 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-
-
 //Cancel aerials on hit into Balloon Trip
 unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();

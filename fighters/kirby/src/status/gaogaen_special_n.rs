@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
 
@@ -49,6 +48,6 @@ pub unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_pre,);
-    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_exec,);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_pre);
+    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N, special_n_exec);
 }

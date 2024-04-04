@@ -1,8 +1,6 @@
 use super::*;
-use globals::*;
-// status script import
 
-pub unsafe extern "C" fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_off_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = fighter.status_GuardOff_Common().get_f32();
     WorkModule::enable_transition_term(
         fighter.module_accessor,
@@ -79,13 +77,13 @@ pub unsafe extern "C" fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
             false,
         );
     }
-    fighter.main_shift(guard_off_main)
+    fighter.main_shift(guard_off_main_loop)
 }
 
-unsafe extern "C" fn guard_off_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn guard_off_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardOff_Main()
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard_off);
+    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD_OFF, guard_off_main);
 }

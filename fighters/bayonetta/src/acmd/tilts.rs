@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -68,7 +67,7 @@ unsafe extern "C" fn game_attacks32(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 16.75, 9.0);
     if is_excute(agent) {
-        KineticModule::clear_speed_energy_id(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.5, 6.0);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, true, false, false, 10, 3, 10, 5, true);
     }
@@ -121,7 +120,7 @@ unsafe extern "C" fn game_attacks33(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 9.0);
     if is_excute(agent) {
-        KineticModule::clear_speed_energy_id(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.5, 6.0);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10, 3, 10, 5, true);
     }

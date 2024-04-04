@@ -47,7 +47,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
-    
 }
 
 unsafe extern "C" fn game_attackstand1(agent: &mut L2CAgentBase) {
@@ -110,7 +109,6 @@ unsafe extern "C" fn game_attackstand1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_DEMON_REFLECTOR_KIND_ATTACK_STAND1, *FIGHTER_DEMON_REFLECTOR_GROUP_ATTACK_STAND1);
     }
-    
 }
 
 // Triple Spin Kicks

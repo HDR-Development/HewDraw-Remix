@@ -182,8 +182,8 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 76.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_LOCK_ATTACK);
         }
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 50, 95, 40, 0, 11.0, 0.0, 8.0, 8.0, Some(0.0), Some(10.0), Some(8.0), 3.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL01, *ATTACK_REGION_KICK);
         AttackModule::set_no_dead_all(boma, true, false);
@@ -482,6 +482,7 @@ unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
         EFFECT_DETACH_KIND(agent, Hash40::new("ken_final_shinryuken_beam"), -1);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_final", game_final);
     agent.acmd("game_finalair", game_final);
@@ -493,6 +494,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_final_hit3", game_final_hit3);
     agent.acmd("game_final_hit4", game_final_hit4);
     agent.acmd("game_final_hitfinal", game_final_hitfinal);
+    
     agent.acmd("game_final2", game_final2);
     agent.acmd("game_finalair2", game_final2);
 }

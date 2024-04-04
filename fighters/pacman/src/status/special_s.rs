@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH
 

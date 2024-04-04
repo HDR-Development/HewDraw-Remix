@@ -1,12 +1,14 @@
 use super::*;
+
 unsafe extern "C" fn game_specialairs5(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        VisibilityModule::set_whole(agent.module_accessor, false);
+        VisibilityModule::set_whole(boma, false);
     }
 }
+
 unsafe extern "C" fn effect_specialairs5(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -53,6 +55,7 @@ unsafe extern "C" fn effect_specialairs5(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_photon_sword"), true, true);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs5", game_specialairs5);
     agent.acmd("game_specials5", game_specialairs5);

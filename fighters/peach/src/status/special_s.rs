@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP
 
@@ -9,5 +8,5 @@ unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main,*FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP,special_s_jump_main,);
+    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
 }

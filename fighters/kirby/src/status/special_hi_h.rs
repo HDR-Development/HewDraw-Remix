@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::kirby::SPECIAL_HI_H
 
 unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

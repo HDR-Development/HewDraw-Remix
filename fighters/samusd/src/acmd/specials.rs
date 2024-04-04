@@ -1,35 +1,33 @@
 use super::*;
 
-// #[acmd_script( agent = "samusd", script = "game_specials" , category = ACMD_GAME , low_priority)]
-// unsafe fn game_specials(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
+// unsafe fn game_specials(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
 //     frame(lua_state, 21.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 3.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 3.0);
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_WEAPON);
 //     }
 //     frame(lua_state, 22.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 1.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 1.0);
 //     }
 // }
 
-// #[acmd_script( agent = "samusd", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
-// unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
+// unsafe fn game_specialairs(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
 //     frame(lua_state, 21.0);
-//     if is_excute(fighter) {
+//     if is_excute(agent) {
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_WEAPON);
 //     }
 //     frame(lua_state, 30.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 2.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 2.0);
 //     }
 //     frame(lua_state, 35.0);
-//     if is_excute(fighter) {
-//         FT_MOTION_RATE(fighter, 1.0);
+//     if is_excute(agent) {
+//         FT_MOTION_RATE(agent, 1.0);
 //         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_S_WORK_FLAG_AIR_CONTROL);
 //     }
 // }
@@ -86,7 +84,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
@@ -130,7 +127,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
-    
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -182,12 +178,12 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialairhi", game_specialairhi);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
 }

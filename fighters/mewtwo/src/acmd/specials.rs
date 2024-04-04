@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
@@ -39,7 +38,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 40.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MEWTWO_STATUS_SPECIAL_S_FLAG_HIT);
-    
     }
 }
 
@@ -70,8 +68,9 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
-        GroundModule::set_correct(agent.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        GroundModule::set_correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
     }
 }
 
@@ -126,9 +125,11 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials);
 	agent.acmd("effect_specials", effect_specials);
+
 	agent.acmd("game_specialhistart", game_specialhistart);
     agent.acmd("game_specialairhistart", game_specialairhistart);
     agent.acmd("game_specialairhi", game_specialairhi);
+    
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_specialairlw);
 }

@@ -7,7 +7,6 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
-
 use smash::{
     lib::{
         L2CValue,

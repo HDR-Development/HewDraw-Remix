@@ -1,4 +1,3 @@
-
 use super::*;
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
@@ -92,7 +91,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        if MotionModule::motion_kind(agent.module_accessor) == hash40("special_hi_command") {
+        if MotionModule::motion_kind(boma) == hash40("special_hi_command") {
             WHOLE_HIT(agent, *HIT_STATUS_XLU);
         }
     }
@@ -123,7 +122,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             MeterModule::watch_damage(agent.battle_object, false);
         } else {   
-            if MotionModule::motion_kind(agent.module_accessor) != hash40("special_hi_command") {
+            if MotionModule::motion_kind(boma) != hash40("special_hi_command") {
                 WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
             }
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
@@ -305,7 +304,6 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
         }
     }
 }
-
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhi", game_specialairhi);

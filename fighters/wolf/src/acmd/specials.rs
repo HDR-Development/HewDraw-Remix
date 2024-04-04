@@ -1,37 +1,39 @@
 use super::*;
 
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 2.0);
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, -1);
     }
-    if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER) && is_excute(agent) {
-        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, Hash40::new("open"), false, -1.0);
+    if ArticleModule::is_exist(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER) && is_excute(agent) {
+        ArticleModule::change_motion(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, Hash40::new("open"), false, -1.0);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         // ATTACK(agent, 0, 0, Hash40::new("haver"), 7.0, 60, 37, 0, 80, 2.5, 0.0, 0.0, -3.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
         // ATTACK(agent, 1, 0, Hash40::new("haver"), 7.0, 60, 37, 0, 80, 2.5, 0.0, 0.0, 1.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
         // ATTACK(agent, 2, 0, Hash40::new("haver"), 7.0, 60, 37, 0, 80, 2.5, 0.0, 0.0, 5.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }
-    frame(agent.lua_state_agent, 16.0);
+    frame(lua_state, 16.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER_BULLET, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER_BULLET, false, -1);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_all(boma);
     }
-    frame(agent.lua_state_agent, 38.0);
-    if MotionModule::motion_kind(agent.module_accessor) == smash::hash40("special_air_n") {
+    frame(lua_state, 38.0);
+    if MotionModule::motion_kind(boma) == smash::hash40("special_air_n") {
         FT_MOTION_RATE(agent, 1.8);
     }
-    if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER) && is_excute(agent) {
-        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, Hash40::new("close"), false, -1.0);
+    if ArticleModule::is_exist(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER) && is_excute(agent) {
+        ArticleModule::change_motion(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, Hash40::new("close"), false, -1.0);
     }
-    frame(agent.lua_state_agent, 45.0);
+    frame(lua_state, 45.0);
     if is_excute(agent) {
-        ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -91,27 +93,31 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     FT_MOTION_RATE(agent, 1.5);
     if is_excute(agent) {
-        JostleModule::set_status(agent.module_accessor, false);
+        JostleModule::set_status(boma, false);
     }
-    frame(agent.lua_state_agent, 0.66);
+    frame(lua_state, 0.66);
     if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_ILLUSION, false, -1);
+        ArticleModule::generate_article(boma, *FIGHTER_WOLF_GENERATE_ARTICLE_ILLUSION, false, -1);
         ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 60, 60, 0, 68, 3.0, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
     }
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
+    let boma = agent.boma();
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("wolf_slash"), Hash40::new("top"), -3, 5.5, 0, 65, 0, 0, 0.75, false);
-        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EffectModule::enable_sync_init_pos_last(boma);
         // EFFECT_FOLLOW(agent, Hash40::new("wolf_slash_rush"), Hash40::new("top"), -3, 20.7, 35, 65, 0, 0, 0.75, false);
     }
 }
 
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.33);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 1.33);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_wolf_special_s01"));
         PLAY_SE(agent, Hash40::new("se_wolf_special_s02"));
@@ -123,7 +129,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear(agent.module_accessor, 1, false);
+        AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -144,11 +150,12 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("wolf_slash_scratch"), Hash40::new("top"), 5, 13, 0, -40, 0, 0, 0.45, true);
         LAST_EFFECT_SET_RATE(agent, 2);
     }
-    frame(agent.lua_state_agent, 2.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5.5, 5.5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.8);

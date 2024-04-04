@@ -27,7 +27,7 @@ unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        //AREA_WIND_2ND_arg10(fighter, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
+        //AREA_WIND_2ND_arg10(agent, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -37,7 +37,7 @@ unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        //QUAKE(agent, *CAMERA_QUAKE_KIND_M);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
@@ -135,7 +135,7 @@ unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        //AREA_WIND_2ND_arg10(fighter, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
+        //AREA_WIND_2ND_arg10(agent, 0, 2, 110, 300, 0.6, 0, 12, 30, 30, 40);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -145,7 +145,7 @@ unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        //QUAKE(agent, *CAMERA_QUAKE_KIND_M);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
@@ -253,33 +253,6 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_1"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_red"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials2hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -304,58 +277,7 @@ unsafe extern "C" fn effect_specials2hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs2hi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 0, 0.24, 1, 0.7);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_2hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_blue"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials2lw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_2lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_red"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
-unsafe extern "C" fn effect_specialairs2lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -409,33 +331,6 @@ unsafe extern "C" fn effect_specials3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs3hi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 0, 0.24, 1, 0.7);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_blue"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -460,58 +355,7 @@ unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs3s(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_3s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_red"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 0, 0.93, 0.03, 0.7);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_green"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
-unsafe extern "C" fn effect_specialairs3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
@@ -565,33 +409,6 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs4hi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 0, 0.24, 1, 0.7);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_4hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_blue"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -619,85 +436,7 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs4s(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_4s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_red"), false, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-    }
-}
-
 unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        FLASH(agent, 0, 0.93, 0.03, 0.7);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(agent, 0.400000006, 1, 0.300000012);
-        LAST_EFFECT_SET_RATE(agent, 2);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(agent, 0.400000006, 1, 0.300000012);
-        LAST_EFFECT_SET_RATE(agent, 2);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.20000005, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(agent, 0.400000006, 1, 0.300000012);
-        LAST_EFFECT_SET_RATE(agent, 2);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.699999988, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(agent, 0.400000006, 1, 0.300000012);
-        LAST_EFFECT_SET_RATE(agent, 2);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, -3.5, 0, -90, 0, 0, 0.800000012, 0, 0, 0, 0, 0, 0, true);
-        LAST_PARTICLE_SET_COLOR(agent, 0.400000006, 1, 0.300000012);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_green"), false, true);
-        COL_NORMAL(agent);
-    }
-}
-
-unsafe extern "C" fn effect_specialairs4lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -918,23 +657,23 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnend3", game_specialairnend3);
 
     agent.acmd("effect_specials1", effect_specials1);
-    agent.acmd("effect_specialairs1", effect_specialairs1);
+    agent.acmd("effect_specialairs1", effect_specials1);
     agent.acmd("effect_specials2hi", effect_specials2hi);
-    agent.acmd("effect_specialairs2hi", effect_specialairs2hi);
+    agent.acmd("effect_specialairs2hi", effect_specials2hi);
     agent.acmd("effect_specials2lw", effect_specials2lw);
-    agent.acmd("effect_specialairs2lw", effect_specialairs2lw);
+    agent.acmd("effect_specialairs2lw", effect_specials2lw);
     agent.acmd("effect_specials3hi", effect_specials3hi);
-    agent.acmd("effect_specialairs3hi", effect_specialairs3hi);
+    agent.acmd("effect_specialairs3hi", effect_specials3hi);
     agent.acmd("effect_specials3s", effect_specials3s);
-    agent.acmd("effect_specialairs3s", effect_specialairs3s);
+    agent.acmd("effect_specialairs3s", effect_specials3s);
     agent.acmd("effect_specials3lw", effect_specials3lw);
-    agent.acmd("effect_specialairs3lw", effect_specialairs3lw);
+    agent.acmd("effect_specialairs3lw", effect_specials3lw);
     agent.acmd("effect_specials4hi", effect_specials4hi);
-    agent.acmd("effect_specialairs4hi", effect_specialairs4hi);
+    agent.acmd("effect_specialairs4hi", effect_specials4hi);
     agent.acmd("effect_specials4s", effect_specials4s);
-    agent.acmd("effect_specialairs4s", effect_specialairs4s);
+    agent.acmd("effect_specialairs4s", effect_specials4s);
     agent.acmd("effect_specials4lw", effect_specials4lw);
-    agent.acmd("effect_specialairs4lw", effect_specialairs4lw);
+    agent.acmd("effect_specialairs4lw", effect_specials4lw);
 
     agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("game_specialairhi2", game_specialairhi2);

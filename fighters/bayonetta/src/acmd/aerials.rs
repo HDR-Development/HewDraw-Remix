@@ -314,12 +314,13 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, Hash40::new("top"), 0, 14.6, -0.1, 0, -55, -90, 1.14, true);
         LAST_EFFECT_SET_RATE(agent, 0.84);
     }
-    frame(agent.lua_state_agent, 29.0);
+    frame(lua_state, 29.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_EFFECT_KIND_BAYONETTA_ATTACK_ARC1, false, true);
     }
@@ -435,21 +436,21 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_attackairn", game_attackairn);
-        agent.acmd("game_attackairnhold", game_attackairnhold);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairnhold", game_attackairnhold);
 
-        agent.acmd("game_attackairf", game_attackairf);
-        agent.acmd("game_attackairf2", game_attackairf2);
-        agent.acmd("game_attackairf3", game_attackairf3);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairf2", game_attackairf2);
+    agent.acmd("game_attackairf3", game_attackairf3);
 
-        agent.acmd("game_attackairb", game_attackairb);
-        agent.acmd("expression_attackairb", expression_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("expression_attackairb", expression_attackairb);
 
-        agent.acmd("game_attackairhi", game_attackairhi);
-        agent.acmd("effect_attackairhi", effect_attackairhi);
-        agent.acmd("expression_attackairhi", expression_attackairhi);
-        agent.acmd("game_attackairhihold", game_attackairhihold);
-        
-        agent.acmd("game_attackairlw", game_attackairlw);
-        agent.acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairhihold", game_attackairhihold);
+    
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
 }

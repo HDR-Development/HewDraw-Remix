@@ -18,15 +18,16 @@ unsafe extern "C" fn game_landing(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
     ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 100, 55, 0, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    AttackModule::clear(boma, 1, false);
+        AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-    notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_shoot0", game_shoot0);
+
     agent.acmd("game_landing", game_landing);
 }

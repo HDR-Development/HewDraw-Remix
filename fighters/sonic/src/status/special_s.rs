@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_S
 

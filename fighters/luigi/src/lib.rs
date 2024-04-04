@@ -4,8 +4,10 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
 
 mod obakyumu;
 
@@ -41,19 +43,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
-
-extern "C" fn luigi_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() != *FIGHTER_KIND_LUIGI {
-            return;
-        }
-    
-        VarModule::off_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
-        VarModule::set_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
-        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1);
-        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
-    }
-}
+#[macro_use] extern crate smash_script;
 
 pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -71,10 +61,9 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     let agent = &mut Agent::new("luigi");
-    status::install(agent);
     acmd::install(agent);
     opff::install(agent);
-    agent.on_start(luigi_reset);
+    status::install(agent);
     agent.install();
 
     obakyumu::install();

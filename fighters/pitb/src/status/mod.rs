@@ -1,5 +1,6 @@
 use super::*;
-use smashline::*;
+use globals::*;
+// status script import
 
 mod special_hi;
 

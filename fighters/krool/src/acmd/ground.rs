@@ -117,7 +117,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
         ATTACK(agent, 0, 0, Hash40::new("hip"), 15.0, 45, 70, 0, 60, 7.0, 4.0, 3.5, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        if WorkModule::get_float(agent.module_accessor, 0x4d) >= 1.0 {
+        if WorkModule::get_float(boma, 0x4d) >= 1.0 {
             WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
     }
@@ -151,7 +151,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    
 }
 
 pub fn install(agent: &mut Agent) {
@@ -160,5 +159,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
+    
     agent.acmd("game_attackdash", game_attackdash);
 }

@@ -1,7 +1,8 @@
 use super::*;
-use globals::*;
 
-unsafe extern "C" fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -29,7 +30,7 @@ unsafe extern "C" fn shulk_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
-unsafe extern "C" fn shulk_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     }
@@ -38,10 +39,10 @@ unsafe extern "C" fn shulk_special_s_main(fighter: &mut L2CFighterCommon) -> L2C
     }
     VarModule::on_flag(fighter.object(), vars::shulk::instance::DISABLE_SPECIAL_S);
     VarModule::set_int(fighter.object(), vars::shulk::instance::SPECIAL_S_STEP, 0);
-    fighter.sub_shift_status_main(L2CValue::Ptr(shulk_special_s_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -146,6 +147,6 @@ unsafe extern "C" fn shulk_special_s_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_pre,);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, shulk_special_s_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }

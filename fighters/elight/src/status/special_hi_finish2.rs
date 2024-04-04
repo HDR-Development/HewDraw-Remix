@@ -1,5 +1,7 @@
 use super::*;
 
+// statuses::elight::SPECIAL_HI_FINISH2
+
 unsafe extern "C" fn special_hi_finish2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

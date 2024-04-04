@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
 pub fn set_gravity_delay_resume_frame(energy: *mut app::FighterKineticEnergyGravity, frames: i32) {
     unsafe {
       *(energy as *mut i32).add(0x50 / 4) = frames;

@@ -173,7 +173,7 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 4.5, 361, 60, 0, 30, 6.0, 0.0, 6.0, 1.0, Some(0.0), Some(6.0), Some(-1.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_SWORD);
             ATTACK(agent, 1, 0, Hash40::new("top"), 4.5, 361, 60, 0, 30, 3.0, 0.0, 6.0, 12.0, Some(0.0), Some(6.0), Some(-12.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_SWORD);
-            KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         }
         wait(lua_state, 6.0);
         if is_excute(agent) {
@@ -335,7 +335,7 @@ unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     }
 
     // Ensure only specials2 comes out
-    WorkModule::set_int(agent.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
+    WorkModule::set_int(boma, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
 }
 
 unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
@@ -378,7 +378,7 @@ unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
     }
 
     // Ensure only specials2 comes out
-    WorkModule::set_int(agent.module_accessor, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
+    WorkModule::set_int(boma, 4, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
 }
 
 unsafe extern "C" fn sound_specials2(agent: &mut L2CAgentBase) {

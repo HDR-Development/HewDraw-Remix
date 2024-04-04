@@ -119,7 +119,7 @@ unsafe extern "C" fn game_attackkick(agent: &mut L2CAgentBase) {
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
-		app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
 	}
 	frame(lua_state, 9.0);
@@ -184,7 +184,7 @@ unsafe extern "C" fn game_attackpunch(agent: &mut L2CAgentBase) {
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
-		app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
 	}
 	frame(lua_state, 7.0);
@@ -243,7 +243,7 @@ unsafe extern "C" fn game_attacks(agent: &mut L2CAgentBase) {
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
-		app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
 	}
 	frame(lua_state, 7.0);
@@ -339,7 +339,7 @@ unsafe extern "C" fn game_attackl(agent: &mut L2CAgentBase) {
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
-		app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
 	}
 	frame(lua_state, 6.0);
@@ -484,7 +484,7 @@ unsafe extern "C" fn game_attackmax(agent: &mut L2CAgentBase) {
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
-		app::sv_kinetic_energy::set_speed(agent.lua_state_agent);
+		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
 	}
 	frame(lua_state, 11.0);
@@ -560,13 +560,15 @@ unsafe extern "C" fn effect_attackmax(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_cancel(agent: &mut L2CAgentBase) {
-	let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+	let lua_state = agent.lua_state_agent;
+	let boma = agent.boma();
+	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
-	frame(agent.lua_state_agent, 1.0);
+	frame(lua_state, 1.0);
 	if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
 		FT_MOTION_RATE_RANGE(agent, 1.0, 34.0, 99.0);
 	}
-	frame(agent.lua_state_agent, 30.0);//100
+	frame(lua_state, 30.0);//100
 	if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
 		FT_MOTION_RATE_RANGE(agent, 30.0, 90.0, 320.0); //8 seconds
 		VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);

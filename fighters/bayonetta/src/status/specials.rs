@@ -1,27 +1,26 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
-unsafe extern "C" fn bayonetta_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT_BEFORE_GUARD);
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
 }
 
-unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) && (fighter.sub_wait_ground_check_common(false.into()).get_bool() || fighter.sub_air_check_fall_common().get_bool()) {
         return 1.into();
     }
     let frame = fighter.global_table[CURRENT_FRAME].get_i32() + 1; //0 index or whatev
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND { //gr checks
-        bayonetta_special_s_slow_hit(fighter);
+        special_s_slow_hit(fighter);
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) && !fighter.is_in_hitlag() {
             if fighter.is_cat_flag(Cat1::SpecialAny | Cat1::AttackN) && frame >= 20 && frame <= 35 {
                 GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
@@ -50,9 +49,9 @@ unsafe extern "C" fn bayonetta_special_s_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_edge //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_EDGE
 
-unsafe extern "C" fn bayonetta_special_s_edge_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_edge_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -80,17 +79,17 @@ unsafe extern "C" fn bayonetta_special_s_edge_pre(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-unsafe extern "C" fn bayonetta_special_s_edge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_edge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[PREV_STATUS_FRAME].get_f32() - 18.0;
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_edge"), frame.clamp(0.0, 16.0), 1.0, false, 0.0, false, false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_edge_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_edge_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_s_edge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_edge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-unsafe extern "C" fn bayonetta_special_s_edge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_edge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) && (fighter.sub_wait_ground_check_common(false.into()).get_bool() || fighter.sub_air_check_fall_common().get_bool()) {
         return 1.into();
     }
@@ -98,9 +97,9 @@ unsafe extern "C" fn bayonetta_special_s_edge_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_KICK //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_KICK
 
-unsafe extern "C" fn bayonetta_special_s_kick_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_kick_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_GROUND),
@@ -128,30 +127,30 @@ unsafe extern "C" fn bayonetta_special_s_kick_pre(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-unsafe extern "C" fn bayonetta_special_s_kick_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_kick_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_hold_end"), 0.0, 1.0, false, 0.0, false, false);
     let frame = fighter.global_table[PREV_STATUS_FRAME].get_i32() - 20;
     let speed = 1.12 - (0.016 * frame as f32); //instant kick = 1.12, last second kick ~ 0.88
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed);
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_s_kick_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_kick_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_s_kick_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_kick_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_FORBID);
     fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     0.into()
 }
 
-unsafe extern "C" fn bayonetta_special_s_kick_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_kick_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) && (fighter.sub_wait_ground_check_common(false.into()).get_bool() || fighter.sub_air_check_fall_common().get_bool()) {
         return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
-    bayonetta_special_s_slow_hit(fighter);
+    special_s_slow_hit(fighter);
     0.into()
 }
 
-unsafe extern "C" fn bayonetta_special_s_slow_hit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_slow_hit(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mul_x = fighter.get_param_float("param_special_s", "hs_shooting_speed_mul_x");
     let shield_x = fighter.get_param_float("param_special_s", "guard_speed_mul_x");
     if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
@@ -165,12 +164,14 @@ unsafe extern "C" fn bayonetta_special_s_slow_hit(fighter: &mut L2CFighterCommon
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, bayonetta_special_s_end);
-    agent.status(Pre, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_pre);
-    agent.status(Main, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_main);
-    agent.status(End, statuses::bayonetta::SPECIAL_S_KICK, bayonetta_special_s_kick_end);
-    agent.status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_pre);
-    agent.status(Main, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_main);
-    agent.status(End, statuses::bayonetta::SPECIAL_S_EDGE, bayonetta_special_s_edge_end);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
+
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_KICK, special_s_kick_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_KICK, special_s_kick_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_KICK, special_s_kick_end);
+
+    agent.status(Pre, statuses::bayonetta::SPECIAL_S_EDGE, special_s_edge_pre);
+    agent.status(Main, statuses::bayonetta::SPECIAL_S_EDGE, special_s_edge_main);
+    agent.status(End, statuses::bayonetta::SPECIAL_S_EDGE, special_s_edge_end);
 }

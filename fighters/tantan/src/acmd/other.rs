@@ -51,7 +51,6 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
 		FT_MOTION_RATE(agent, 1.0);
 		WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
@@ -77,7 +76,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 		FT_MOTION_RATE(agent, 1.0);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
@@ -109,8 +107,6 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_attacklegsjumpaerialb(agent: &mut L2CAgentBase) {
-}
 //Ram Ram attacks//
 
 unsafe extern "C" fn game_attackshortendr1(agent: &mut L2CAgentBase) {
@@ -125,6 +121,9 @@ unsafe extern "C" fn game_attackshortendr1(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.battle_object, vars::tantan::status::ARMS_ATTACK_CANCEL);
     }
 }
+
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly);
     agent.acmd("sound_damageflylw", sound_damagefly);
@@ -139,8 +138,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
 
-    agent.acmd("effect_attacklegsjumpaerialf", effect_attacklegsjumpaerialb);
-    agent.acmd("effect_attacklegsjumpaerialb", effect_attacklegsjumpaerialb);
+    agent.acmd("effect_attacklegsjumpaerialf", stub);
+    agent.acmd("effect_attacklegsjumpaerialb", stub);
 
     agent.acmd("game_attackshortendr1", game_attackshortendr1);
     agent.acmd("game_attackshortendrb1", game_attackshortendr1);

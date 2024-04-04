@@ -171,7 +171,6 @@ pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
             MeterModule::reset(fighter.battle_object);
         }
     }
-
 }
 
 pub extern "C" fn turbo_mode(fighter: &mut L2CFighterCommon) {

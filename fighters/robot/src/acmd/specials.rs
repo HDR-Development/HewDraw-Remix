@@ -14,7 +14,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(agent.module_accessor));
+        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -144,7 +144,7 @@ unsafe extern "C" fn game_specialshi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(agent.module_accessor));
+        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
@@ -229,7 +229,7 @@ unsafe extern "C" fn game_specialslw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(agent.module_accessor));
+        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -338,7 +338,7 @@ unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
 
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, vars::robot::status::HELD_BUTTON);
+        WorkModule::on_flag(boma, vars::robot::status::HELD_BUTTON);
         let mut workingDamage = robotFrames/3.5;
         if robotFrames <= 10.0 {
             MeterModule::drain_direct(agent.object(), 20.0);
@@ -458,7 +458,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn null(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials);
@@ -500,8 +500,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("game_specialairlw", game_speciallw);
     
-    agent.acmd("sound_specialsstart", null);
-    agent.acmd("sound_specialairsstart", null);
-    agent.acmd("sound_specialsend", null);
-    agent.acmd("sound_specialairsend", null);
+    agent.acmd("sound_specialsstart", stub);
+    agent.acmd("sound_specialairsstart", stub);
+    agent.acmd("sound_specialsend", stub);
+    agent.acmd("sound_specialairsend", stub);
 }

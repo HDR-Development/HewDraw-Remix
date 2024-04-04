@@ -1,11 +1,8 @@
 use super::*;
-use globals::*;
 
- 
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D //
-
-unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     if fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 6.0, 1.0, false, 0.0, false, false);
@@ -15,10 +12,10 @@ unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon
             fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
         }
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_air_s_d_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_air_s_d_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_d_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_air_check_fall_common().get_bool())
     || fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
@@ -40,17 +37,17 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U //
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U
 
-unsafe extern "C" fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_u"), 0.0, 1.0, false, 0.0, false, false);
     fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
     fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_air_s_u_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_air_s_u_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_u_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[CURRENT_FRAME].get_i32();
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP) {
         if fighter.get_param_int("param_special_s", "ab_u_disable_landing_frame") <= frame {
@@ -241,6 +238,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,bayonetta_specialairs_d_main,);
-    agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,bayonetta_specialairs_u_main,);
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, special_air_s_d_main);
+
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, special_air_s_u_main);
 }

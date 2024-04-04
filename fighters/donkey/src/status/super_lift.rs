@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
-// status script import
+
+// FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_LANDING
 
 /// heavy item carry
 

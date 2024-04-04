@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH)
     && boma.status_frame() == 1 {
@@ -25,7 +24,6 @@ unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, statu
                 boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
             }
         }
-        
     }
 }
 
@@ -63,7 +61,6 @@ unsafe fn arsene_summon_desmummon(boma: &mut BattleObjectModuleAccessor) {
             //smash::app::FighterSpecializer_Jack::add_rebel_gauge(boma, app::FighterEntryID(entry_id), 100.0);
         }
     }
-    
 }
 
 // Joker Arsene Grappling Hook
@@ -185,6 +182,7 @@ pub unsafe fn jack_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, jack_frame_wrapper);
 }
