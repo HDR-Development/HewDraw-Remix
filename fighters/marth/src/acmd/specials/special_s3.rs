@@ -86,7 +86,7 @@ unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3s"), Hash40::new("top"), 0, 0, 7.5, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
