@@ -48,6 +48,20 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6.5, 0.5, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 2.0);
+    if macros::is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6.5, 15.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, true);
+        LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
+}
+
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -141,6 +155,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11);
     agent.acmd("game_attack12", game_attack12);
+    agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("game_attack13", game_attack13);
     agent.acmd("expression_attack13", expression_attack13);
     
