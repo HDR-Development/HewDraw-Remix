@@ -101,6 +101,8 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_jumpback(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    WorkModule::is_flag(agent.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_GIMMICK_SPRING_JUMP_FROM_RING);
+    //0xda370(false, true);
     frame(lua_state, 3.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_mariod_passive"));
@@ -111,6 +113,8 @@ unsafe extern "C" fn sound_jumpfront(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
+    WorkModule::is_flag(agent.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_GIMMICK_SPRING_JUMP_FROM_RING);
+    //0xda370(false, true);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_mariod_passive"));
     }

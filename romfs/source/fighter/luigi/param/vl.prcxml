@@ -8,11 +8,11 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="charge_frame">70</float>
-      <float hash="discharge_prob">12.5</float>
+      <float hash="discharge_prob">10.0</float>
       <float hash="attack_power">5</float>
       <float hash="ram_speed_x">1.4</float>
-      <float hash="ram_speed_x_charge">2.9</float>
-      <float hash="discharge_speed_x">4</float>
+      <float hash="ram_speed_x_charge">2.75</float>
+      <float hash="discharge_speed_x">3</float>
       <float hash="ram_speed_y">0.4</float>
       <float hash="ram_speed_y_charge">0.72</float>
       <float hash="discharge_speed_y">0.6</float>

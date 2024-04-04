@@ -82,8 +82,46 @@ unsafe fn luigi_missile_edge_cancel(fighter: &mut L2CFighterCommon) {
         if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+            //prevents an edge case where luigi does not gain the ability to use missile after edge cancelling with it
+            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::DISABLE_SPECIAL_S);
         }
     }
+}
+
+unsafe fn cyclone_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
+    let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    if fighter.is_motion_one_of(&[
+        Hash40::new("special_lw"),
+        Hash40::new("special_air_lw")]) {
+            let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
+            if !VarModule::is_flag(fighter.battle_object, vars::luigi::instance::DISABLE_SPECIAL_LW_RISE) && is_hold {
+                if frame >= 10.0 && frame <= 48.0 {
+                    if motion_kind == hash40("special_lw") && fighter.is_situation(*SITUATION_KIND_GROUND){
+                        GroundModule::set_attach_ground(boma, false);
+                        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+                    }
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.1);
+                }
+                if frame > 48.0 && fighter.is_situation(*SITUATION_KIND_AIR) {
+                    VarModule::on_flag(fighter.battle_object, vars::luigi::instance::DISABLE_SPECIAL_LW_RISE);
+                }
+            }
+        }
+        if fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR]) 
+            && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                VarModule::on_flag(fighter.battle_object, vars::luigi::instance::DISABLE_SPECIAL_LW_RISE);
+            }
+            if fighter.is_situation(*SITUATION_KIND_GROUND) 
+            || fighter.is_situation(*SITUATION_KIND_CLIFF) 
+            || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+            || fighter.is_situation(*SITUATION_KIND_LADDER){
+                VarModule::off_flag(fighter.battle_object, vars::luigi::instance::DISABLE_SPECIAL_LW_RISE);
+            }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -93,6 +131,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     special_hi_proper_landing(fighter);
     fastfall_specials(fighter);
     luigi_missile_edge_cancel(fighter);
+    cyclone_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
 }
 
 pub extern "C" fn luigi_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

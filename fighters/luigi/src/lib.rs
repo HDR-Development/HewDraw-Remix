@@ -9,6 +9,7 @@ pub mod status;
 
 // articles
 
+mod fireball;
 mod obakyumu;
 
 use smash::{
@@ -66,5 +67,6 @@ pub fn install() {
     status::install(agent);
     agent.install();
 
+    fireball::install();
     obakyumu::install();
 }

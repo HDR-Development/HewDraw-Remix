@@ -2,7 +2,7 @@
 <struct>
     <struct hash="misfire">
         <int hash="remaining_missile_min">0</int>
-        <int hash="remaining_missile_max">7</int>
+        <int hash="remaining_missile_max">9</int>
         <float hash="storage_diminish_mul">0.95</float>
         <float hash="storage_diminish_min">0.8</float>
     </struct>

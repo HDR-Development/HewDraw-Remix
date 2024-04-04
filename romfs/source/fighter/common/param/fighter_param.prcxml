@@ -281,22 +281,22 @@
     <!-- LUIGI -->
     <struct index="8">
       <float hash="walk_speed_max">1.1</float>
-      <float hash="ground_brake">0.025</float>
-      <float hash="dash_speed">1.3</float>
-      <float hash="run_accel_mul">0.06</float>
+      <float hash="ground_brake">0.0345</float>
+      <float hash="dash_speed">1.7</float>
+      <float hash="run_accel_mul">0.04</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.5</float>
+      <float hash="run_speed_max">1.65</float>
       <int hash="jump_squat_frame">4</int>
-      <float hash="jump_speed_x">0.75</float>
-      <float hash="jump_speed_x_mul">0.5</float>
-      <float hash="jump_speed_x_max">1.28</float>
+      <float hash="jump_speed_x">0.8</float>
+      <float hash="jump_speed_x_mul">0.75</float>
+      <float hash="jump_speed_x_max">1.45</float>
       <float hash="jump_initial_y">12.1</float>
       <float hash="jump_y">44</float>
       <float hash="mini_jump_y">14</float>
       <float hash="jump_aerial_y">34</float>
-      <float hash="air_accel_x_mul">0.035</float>
-      <float hash="air_accel_x_add">0.015</float>
-      <float hash="air_speed_x_stable">0.68</float>
+      <float hash="air_accel_x_mul">0.03</float>
+      <float hash="air_accel_x_add">0.01</float>
+      <float hash="air_speed_x_stable">0.9</float>
       <float hash="air_brake_x">0.01</float>
       <float hash="air_accel_y">0.079</float>
       <float hash="air_speed_y_stable">1.71</float>
@@ -319,6 +319,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">1.25</float>
+      <float hash="common_effect_0_g">3.0</float>
+      <float hash="common_effect_0_b">0.75</float>
     </struct>
     <!-- NESS -->
     <struct index="9">
@@ -669,9 +672,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
-      <float hash="common_effect_0_r">0.5</float>
-      <float hash="common_effect_0_g">1.0</float>
-      <float hash="common_effect_0_b">2.0</float>
+      <float hash="common_effect_0_r">0.75</float>
+      <float hash="common_effect_0_g">1.5</float>
+      <float hash="common_effect_0_b">3.0</float>
     </struct>
     <!-- PICHU -->
     <struct index="19">

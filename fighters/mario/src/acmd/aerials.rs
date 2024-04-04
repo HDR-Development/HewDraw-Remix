@@ -137,7 +137,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), -11.0, 5.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, false);
+        EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), -10.0, 5.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, false);
         LAST_EFFECT_SET_RATE(agent, 1.2);
     }
 }
