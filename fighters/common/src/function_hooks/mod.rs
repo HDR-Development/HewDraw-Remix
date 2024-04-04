@@ -3,17 +3,11 @@ use crate::globals::*;
 use std::arch::asm;
 pub mod energy;
 pub mod effect;
-pub mod edge_slipoffs;
-pub mod ledges;
 pub mod get_param;
-pub mod change_motion;
 pub mod transition;
 pub mod djcancel;
-pub mod init_settings;
 pub mod momentum_transfer;
 pub mod hitstun;
-pub mod change_status;
-pub mod is_flag;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
@@ -24,6 +18,7 @@ pub mod collision;
 pub mod camera;
 pub mod shotos;
 pub mod sound;
+mod lua_bind_hook;
 mod fighterspecializer;
 mod fighter_util;
 mod vtables;
@@ -729,29 +724,22 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = 0x406824, inline)]
 unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
-  let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
-  if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
-    *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
-  }
+    let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
+    if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
+        *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
+    }
 }
 
 pub fn install() {
     energy::install();
     effect::install();
-    edge_slipoffs::install();
-    ledges::install();
     get_param::install();
-    change_motion::install();
     transition::install();
     djcancel::install();
-    init_settings::install();
     hitstun::install();
-    change_status::install();
-    is_flag::install();
     controls::install();
     momentum_transfer::install();
     misc::install();
-    //dash_dancing::install();
     jumps::install();
     stage_hazards::install();
     set_fighter_status_data::install();
@@ -760,6 +748,7 @@ pub fn install() {
     camera::install();
     shotos::install();
     sound::install();
+    lua_bind_hook::install();
     fighterspecializer::install();
     fighter_util::install();
     vtables::install();

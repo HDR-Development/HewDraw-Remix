@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
@@ -163,8 +164,7 @@ unsafe extern "C" fn link_event_store_l2c_table(fighter: &mut L2CFighterCommon, 
     deleter(link_event);
     ret
 }
-pub fn install() {
-    smashline::Agent::new("pikmin")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

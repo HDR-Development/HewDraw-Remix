@@ -174,7 +174,6 @@ impl KineticEnergy {
             (self.vtable.mul_accel)(self, mul)
         }
     }
-
 }
 
 pub fn install() {

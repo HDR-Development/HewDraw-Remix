@@ -4,8 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+//articles
+
+pub mod gordo;
+pub mod star;
 
 use smash::{
     lib::{
@@ -37,20 +42,15 @@ use utils::{
     consts::*,
 };
 use smashline::*;
-
-extern "C" fn dedede_init(fighter: &mut L2CFighterCommon){
-    if fighter.global_table[globals::FIGHTER_KIND] != FIGHTER_KIND_DEDEDE{
-        return;
-    }
-
-    VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
-}
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    smashline::Agent::new("dedede")
-        .on_start(dedede_init)
-        .install();
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("dedede");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    gordo::install();
+    star::install();
 }

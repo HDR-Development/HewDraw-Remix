@@ -1,7 +1,8 @@
 use super::*;
-use globals::*;
 
-unsafe extern "C" fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
     || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB) {
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB);
@@ -154,12 +155,6 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 //     return true.into()
 // }
 
-pub fn install() {
-    smashline::Agent::new("ridley")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            special_lw_status_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

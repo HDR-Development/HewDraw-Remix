@@ -263,8 +263,6 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("gaogaen")
-        .on_line(Main, gaogaen_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, gaogaen_frame_wrapper);
 }

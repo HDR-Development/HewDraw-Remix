@@ -65,8 +65,6 @@ pub unsafe extern "C" fn cloud_frame_wrapper(fighter: &mut L2CFighterCommon) {
     fastfall_specials(fighter);
 }
 
-pub fn install() {
-    smashline::Agent::new("cloud")
-        .on_line(Main, cloud_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, cloud_frame_wrapper);
 }
