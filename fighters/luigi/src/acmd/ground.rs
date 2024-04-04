@@ -56,7 +56,7 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
         EFFECT_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6.5, 0.5, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 2.0);
-    if macros::is_excute(agent) {
+    if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6.5, 15.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.7);
     }
