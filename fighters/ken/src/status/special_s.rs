@@ -15,7 +15,7 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
     }
-    smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND)(fighter)
+    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
 }
 
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
