@@ -914,6 +914,35 @@ simon_special_n:
 simon_special_air_n:
   extra:
     cancel_frame: 60
+sonic_special_n_hit:
+  game_script: game_specialnhit
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialnhit.nuanmb
+  scripts:
+  - expression_specialnhit
+  - sound_specialnhit
+  - effect_specialnhit
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 22
+    freeze_during_hitstop: false
 szerosuit_special_n_landing:
   extra:
     cancel_frame: 15
