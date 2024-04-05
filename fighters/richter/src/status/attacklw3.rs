@@ -14,7 +14,8 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-            if VarModule::is_flag(fighter.battle_object, vars::richter::status::D_TILT_JUMP_BUFFER) {
+            if VarModule::is_flag(fighter.battle_object, vars::richter::status::D_TILT_JUMP_BUFFER)
+            || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 fighter.change_status(FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32.into(), true.into());
                 return 1.into();
             }

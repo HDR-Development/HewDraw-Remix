@@ -34,6 +34,7 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
             if meter == 100.0 {
                 WorkModule::set_int(boma, 0, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_INT_KO_GAGE_MAX_KEEP_FRAME);
                 WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_REQUEST_KO_GAUGE_MAX_EFFECT);
+                EffectModule::remove_common(boma, Hash40::new("charge_max"));
             }
             //println!("new damage: {}", VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE));
             //println!("new meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));

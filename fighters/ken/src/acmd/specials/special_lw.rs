@@ -9,6 +9,27 @@ unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.2, true);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 12, 3, 0, 0, 0, 0.8, true, *EF_FLIP_AXIS_YZ);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+}
+
 unsafe extern "C" fn sound_speciallwinstall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -133,7 +154,7 @@ unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwinstall", game_speciallwinstall);
-    agent.acmd("effect_speciallwinstall", stub);
+    agent.acmd("effect_speciallwinstall", effect_speciallwinstall);
     agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
     agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
     agent.acmd("game_speciallwstepf", game_speciallwstepf);

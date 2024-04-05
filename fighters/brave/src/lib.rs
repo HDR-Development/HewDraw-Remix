@@ -5,7 +5,7 @@
 pub mod acmd;
 
 pub mod opff;
-//pub mod status;
+pub mod status;
 
 // articles
 
@@ -75,6 +75,7 @@ pub fn install() {
     let agent = &mut Agent::new("brave");
     acmd::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.on_start(on_start);
     agent.install();
 

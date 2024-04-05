@@ -241,6 +241,17 @@ unsafe extern "C" fn sound_appeallw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_passivestand(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 24.0, 20.0);
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 41.0, 20.0);
+    frame(lua_state, 41.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
@@ -270,4 +281,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_appeallwr", game_appeallw);
     agent.acmd("sound_appeallwl", sound_appeallw);
     agent.acmd("sound_appeallwr", sound_appeallw);
+
+    agent.acmd("game_passivestandf", game_passivestand);
+    agent.acmd("game_passivestandb", game_passivestand);
 }

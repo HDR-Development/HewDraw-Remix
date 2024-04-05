@@ -25,9 +25,15 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
+    //println!("status: {}", StatusModule::status_kind(fighter.module_accessor));
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_SELECT) {
         let index = fighter.get_int(*FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
         VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, index);
+        // let facing = PostureModule::lr(fighter.module_accessor);
+        // let cstick = ControlModule::get_sub_stick_x(fighter.module_accessor);
+        // if cstick.abs() > 0.2 && facing.signum() != cstick.signum() {
+        //     PostureModule::reverse_lr(fighter.module_accessor);
+        // }
     }
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
     || fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START)
