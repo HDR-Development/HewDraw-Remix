@@ -2,7 +2,11 @@ use super::*;
 use globals::*;
 
 unsafe extern "C" fn special_lw_empty_main(agent: &mut L2CFighterCommon) -> L2CValue {
-    let use_cancel_anim = WorkModule::is_flag(agent.module_accessor,*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_LW_BOMB);
+    let fighter_ptr = agent.global_table[0x4].get_ptr() as *mut Fighter;
+    let ink_cost = FighterSpecializer_Inkling::get_sub_ink_special_lw(fighter_ptr);
+    let ink_current = WorkModule::get_float(agent.module_accessor,*FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK);
+    let use_cancel_anim = ink_current >= ink_cost;
+    
     let motion_g = if use_cancel_anim {hash40("special_lw_cancel")} else {hash40("special_lw_empty")};
     let motion_a = if use_cancel_anim {hash40("special_air_lw_cancel")} else {hash40("special_air_lw_empty")};
     agent.sub_change_motion_by_situation(motion_g.into(), motion_a.into(), false.into());
@@ -37,24 +41,26 @@ unsafe extern "C" fn special_lw_empty_main_loop(agent: &mut L2CFighterCommon) ->
 
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let toreturn = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter);
-
+    //Set new flag to false here 
     let stored_charge = VarModule::get_float(fighter.battle_object,vars::inkling::instance::SPECIAL_LW_CHARGE);
     if stored_charge > 0.0 {
-        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, stored_charge, true, true, false);
-        WorkModule::set_float(fighter.module_accessor,stored_charge,*FIGHTER_INKLING_STATUS_SPECIAL_LW_WORK_FLOAT_CHARGE_FRAME);
-
         let fighter_ptr = fighter.global_table[0x4].get_ptr() as *mut Fighter;
         let ink_cost = FighterSpecializer_Inkling::get_sub_ink_special_lw(fighter_ptr);
         let can_max_shot = super::spend_ink(fighter,-ink_cost);
+
+        let toreturn = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter);
+        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, stored_charge, true, true, false);
+        WorkModule::set_float(fighter.module_accessor,stored_charge,*FIGHTER_INKLING_STATUS_SPECIAL_LW_WORK_FLOAT_CHARGE_FRAME);
 
         if stored_charge >= MotionModule::end_frame(fighter.module_accessor) {
             EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
             fighter.change_status(FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_THROW.into(),false.into());
         }
+        return toreturn;
     }
-
-    toreturn
+    else {
+        smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+    }
 }
 
 pub unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
