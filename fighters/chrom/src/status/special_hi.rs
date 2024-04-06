@@ -318,6 +318,8 @@ pub unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 pub unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let had_hit = AttackModule::is_infliction_status(fighter.module_accessor,*COLLISION_KIND_MASK_HIT);
+    VarModule::set_flag(fighter.battle_object,vars::chrom::instance::SOARING_SLASH_HIT,had_hit);
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_CMD_EFFECT_AFTER_IMAGE_OFF,0);
     sv_module_access::effect(fighter.lua_state_agent);
@@ -380,11 +382,12 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    if MotionModule::frame(fighter.module_accessor) > 4.0 {
+    if MotionModule::frame(fighter.module_accessor) > 4.0 
+    && VarModule::is_flag(fighter.battle_object,vars::chrom::instance::SOARING_SLASH_HIT) {
         CancelModule::enable_cancel(fighter.module_accessor);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
-        WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
