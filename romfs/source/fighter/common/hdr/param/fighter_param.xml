@@ -160,8 +160,8 @@
     <struct index="26">
       <hash40 hash="fighter_kind">ROY</hash40>
       <float hash="attack_dash_fall_speed_mul">-1.0</float>
-      <float hash="dacus_mul">0.9</float>
-      <float hash="dacds_mul">0.9</float>
+      <float hash="dacus_mul">0.85</float>
+      <float hash="dacds_mul">0.75</float>
     </struct>
     <struct index="27">
       <hash40 hash="fighter_kind">CHROM</hash40>
