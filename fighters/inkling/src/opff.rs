@@ -29,6 +29,7 @@ pub fn get_ink_colors(ctx: &mut InlineCtx) {
 }
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
+    if (10..14).contains(&boma.status_frame()){ 
     if motion_kind == hash40("attack_air_lw")
         && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
     {
@@ -66,6 +67,7 @@ unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
             INKLING_COLORS[costumenum].z,
         );
         EffectModule::set_rate_last(boma, 0.5);
+    }
     }
 }
 
