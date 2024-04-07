@@ -45,7 +45,7 @@ attack_hi3:
   flags:
     move: false
   extra:
-    cancel_frame: 34
+    cancel_frame: 36
 attack_dash:
   extra:
     cancel_frame: 40
