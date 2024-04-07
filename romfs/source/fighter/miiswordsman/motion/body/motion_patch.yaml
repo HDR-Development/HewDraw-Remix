@@ -62,7 +62,7 @@ attack_hi3:
     cancel_frame: 31
 attack_s4_s:
   extra:
-    cancel_frame: 55
+    cancel_frame: 54
 attack_air_f:
   extra:
     cancel_frame: 41
