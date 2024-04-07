@@ -207,11 +207,11 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_common_smash_start_02"));
+        PLAY_SE(agent, Hash40::new("se_roy_attackair_n01"));
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_roy_rnd_attack_smash_l"));
-        PLAY_SE(agent, Hash40::new("se_roy_attackair_n01"));
     }
     wait(lua_state, 6.0);
     if is_excute(agent) {
