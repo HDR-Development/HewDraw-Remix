@@ -645,6 +645,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const SPECIAL_LW_CANCELLED: i32 = 0x0101;
             // floats
             pub const SPECIAL_LW_CHARGE: i32 = 0x0100;
         }

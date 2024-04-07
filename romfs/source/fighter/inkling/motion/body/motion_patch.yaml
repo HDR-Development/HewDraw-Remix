@@ -107,7 +107,7 @@ special_lw_cancel:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 31
+    cancel_frame: 10
     freeze_during_hitstop: false
 special_air_lw_cancel:
   game_script: game_specialairlwcancel
@@ -136,7 +136,7 @@ special_air_lw_cancel:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 35
+    cancel_frame: 10
     freeze_during_hitstop: false
 catch_attack:
   extra:
