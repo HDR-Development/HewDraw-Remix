@@ -2,11 +2,7 @@ use super::*;
 use globals::*;
 
 unsafe extern "C" fn special_lw_empty_main(agent: &mut L2CFighterCommon) -> L2CValue {
-    let use_cancel_anim = WorkModule::is_flag(agent.module_accessor,*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_LW_BOMB);
-    let fighter_ptr = agent.global_table[0x4].get_ptr() as *mut Fighter;
-    let ink_cost = FighterSpecializer_Inkling::get_sub_ink_special_lw(fighter_ptr);
-    let ink_current = WorkModule::get_float(agent.module_accessor,*FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK);
-    WorkModule::set_flag(agent.module_accessor,ink_current >= ink_cost, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_LW_BOMB);
+    let use_cancel_anim = VarModule::is_flag(agent.battle_object, vars::inkling::instance::SPECIAL_LW_CANCELLED);    
     let motion_g = if use_cancel_anim {hash40("special_lw_cancel")} else {hash40("special_lw_empty")};
     let motion_a = if use_cancel_anim {hash40("special_air_lw_cancel")} else {hash40("special_air_lw_empty")};
     agent.sub_change_motion_by_situation(motion_g.into(), motion_a.into(), false.into());
@@ -30,7 +26,7 @@ unsafe extern "C" fn special_lw_empty_main_loop(agent: &mut L2CFighterCommon) ->
     && StatusModule::is_situation_changed(agent.module_accessor) {
         agent.sub_set_ground_correct_by_situation(false.into());
         agent.sub_change_kinetic_type_by_situation(FIGHTER_KINETIC_TYPE_GROUND_STOP.into(),FIGHTER_KINETIC_TYPE_AIR_STOP.into());
-        let use_cancel_anim =WorkModule::is_flag(agent.module_accessor,*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_LW_BOMB);
+        let use_cancel_anim = VarModule::is_flag(agent.battle_object, vars::inkling::instance::SPECIAL_LW_CANCELLED);
         let motion_g = if use_cancel_anim {hash40("special_lw_cancel")} else {hash40("special_lw_empty")};
         let motion_a = if use_cancel_anim {hash40("special_air_lw_cancel")} else {hash40("special_air_lw_empty")};
         agent.sub_change_motion_by_situation(motion_g.into(), motion_a.into(), true.into());
@@ -38,6 +34,7 @@ unsafe extern "C" fn special_lw_empty_main_loop(agent: &mut L2CFighterCommon) ->
 
     0.into()
 } 
+
 
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
