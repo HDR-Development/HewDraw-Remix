@@ -24,14 +24,14 @@ unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon)
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
     && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
         let control_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) as *mut smash::app::KineticEnergy;
-        sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.048);
+        sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.05);
         if fighter.is_motion(Hash40::new("attack_air_f")) {
             let y_speed = fighter.get_param_float("param_private", "attack_air_f_hit_speed_y");
-            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.65, 1.0, 1.0)); 
+            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.55, 1.0, 1.0)); 
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_speed);
         } else if fighter.is_motion(Hash40::new("attack_air_f2")) {
             let y_speed = fighter.get_param_float("param_private", "attack_air_f2_hit_speed_y");
-            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.65, 1.0, 1.0)); 
+            smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.60, 1.0, 1.0)); 
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_speed);
         }
     }

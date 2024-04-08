@@ -74,7 +74,7 @@ appeal_lw_l:
   - effect_win2
 attack_air_f:
   extra:
-    cancel_frame: 31
+    cancel_frame: 30
 attack_s3_s3:
   blend_frames: 1
   extra:
@@ -90,7 +90,7 @@ attack_air_n:
 attack_air_f2:
   blend_frames: 2
   extra:
-    cancel_frame: 35
+    cancel_frame: 30
 attack_air_f3:
   blend_frames: 2
   extra:
