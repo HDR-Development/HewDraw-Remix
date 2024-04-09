@@ -1,6 +1,5 @@
 use super::*;
 use globals::*;
-use smash::app::lua_bind::CancelModule::is_enable_cancel;
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
