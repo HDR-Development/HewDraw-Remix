@@ -72,7 +72,7 @@ unsafe extern "C" fn special_s2_dash_main_loop(fighter: &mut L2CFighterCommon) -
     // custom [
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         if fighter.check_jump_cancel(true, false) {
             return 1.into()
         }

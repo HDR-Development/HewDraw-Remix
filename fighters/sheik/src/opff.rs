@@ -3,11 +3,21 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN && boma.status_frame() > 14 {
-        if situation_kind == *SITUATION_KIND_AIR {
-            boma.check_jump_cancel(false, false);
-            boma.check_airdodge_cancel();
+unsafe fn bouncing_fish_transitions(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK) {
+        if MotionModule::is_end(fighter.module_accessor)
+        && fighter.is_situation(*SITUATION_KIND_AIR) {
+            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT) {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+            }
+        }
+    }
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN)
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT);
+        if fighter.status_frame() > 14 {
+            fighter.check_jump_cancel(false, false);
+            fighter.check_airdodge_cancel();
         }
     }
 }
@@ -89,9 +99,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
+    bouncing_fish_transitions(fighter);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
-    //hitfall_aerials(fighter, frame);
     vanish_landing_lag(fighter);
     fastfall_specials(fighter);
 }

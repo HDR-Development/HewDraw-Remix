@@ -92,9 +92,9 @@ unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(agent, 1.75);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(agent, 1.75);
     }
 }
 

@@ -108,6 +108,10 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::set_int(agent.object(), vars::shulk::instance::SPECIAL_S_STEP, 5);
     }
+    frame(lua_state, 55.0);
+    if is_excute(agent) {
+        VarModule::set_int(agent.object(), vars::shulk::instance::SPECIAL_S_STEP, 6);
+    }
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {

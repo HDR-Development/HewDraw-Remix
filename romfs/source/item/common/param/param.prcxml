@@ -6,7 +6,7 @@
     <struct index="1">
       <float hash="gravity_accel">0.15</float>
       <float hash="gravity_accel_max">2.0</float>
-      <float hash="hp">999</float><!--vanilla is 14-->
+      <float hash="hp">40</float><!--vanilla is 14-->
       <!-- force barrel to incur hitlag-->
       <hash40 hash="attack_hitstop_kind">item_attack_hitstop_kind_normal</hash40>
       <float hash="pickup_range_sizew">7.0</float>

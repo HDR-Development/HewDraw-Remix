@@ -9,24 +9,6 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        /*
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
-            if VarModule::get_int(agent.battle_object, vars::snake::instance::SNAKE_GRENADE_COUNTER) < 2 {
-                if(get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
-                    VarModule::inc_int(agent.battle_object, vars::snake::instance::SNAKE_GRENADE_COUNTER);
-                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
-                }
-            }
-        }
-        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
-            if VarModule::get_int(agent.battle_object, vars::snake::instance::SNAKE_GRENADE_COUNTER) < 2 {
-                if(get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
-                    VarModule::inc_int(agent.battle_object, vars::snake::instance::SNAKE_GRENADE_COUNTER);
-                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
-                }
-            }
-        }
-        */
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {

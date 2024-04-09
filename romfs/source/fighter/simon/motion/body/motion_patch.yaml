@@ -26,7 +26,7 @@ attack_dash:
     cancel_frame: 38
 attack_lw3:
   extra:
-    cancel_frame: 37
+    cancel_frame: 34
 attack_hi4:
 attack_hi3:
   extra:
