@@ -103,17 +103,18 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("samusd_atk_air_lw"), Hash40::new("top"), -1, 20.5, 0, 0, -50, 76, 1.0, true);
         let color_vec = match WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) {
-            0 => Vector3f::new(0.1, 0.7, 3.0),//nor
-            1 => Vector3f::new(0.55, 0.88, 0.0004),//g
-            2 => Vector3f::new(1.25, 0.55, 1.5),//pur
-            3 => Vector3f::new(0.84, 0.7, 0.03),//r
-            4 => Vector3f::new(0.1, 1.0, 2.0),//y
-            5 => Vector3f::new(0.9, 0.03, 0.03),//w
-            6 => Vector3f::new(1.15, 0.65, 0.03),//blac
-            7 => Vector3f::new(0.78, 0.5, 2.5),//pi
-            _ => Vector3f::new(0.1, 0.7, 3.0)
+            0 => Vector3f::new(0.5, 0.5, 3.0),//nor
+            1 => Vector3f::new(0.8, 0.5, 0.0),//g
+            2 => Vector3f::new(2.0, 0.3, 2.5),//pur
+            3 => Vector3f::new(2.5, 0.85, 0.0),//r
+            4 => Vector3f::new(0.5, 0.5, 2.5),//y
+            5 => Vector3f::new(3.0, 0.07, 0.15),//w
+            6 => Vector3f::new(2.0, 0.42, 0.0), //blac
+            7 => Vector3f::new(0.8, 0.2, 2.5),//pi
+            _ => Vector3f::new(0.5, 0.5, 3.0)
         }; //matches glow color
         LAST_EFFECT_SET_COLOR(agent, color_vec.x, color_vec.y, color_vec.z);
+        LAST_EFFECT_SET_RATE(agent, 1.33);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -140,6 +141,26 @@ unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_samus_landing02"));
+    }
+}
+
+unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
     }
 }
 
@@ -272,6 +293,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackhi4", game_attackhi4);
     agent.acmd("effect_attackhi4", effect_attackhi4);
     agent.acmd("sound_attackhi4", sound_attackhi4);
+    agent.acmd("expression_attackhi4", expression_attackhi4);
     
     agent.acmd("game_attacklw4", game_attacklw4);
     agent.acmd("effect_attacklw4", effect_attacklw4);
