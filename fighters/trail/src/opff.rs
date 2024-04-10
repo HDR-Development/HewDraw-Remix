@@ -133,6 +133,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
         // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         let landing_lag = 12.0;
         if frame < (special_n_fire_cancel_frame_ground - landing_lag) {
+            VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
         }
     }
@@ -249,6 +250,15 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
         }
     }
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END {
+        // allow jump cancel if sora hit during the attack portion
+        if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
+        && !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
+        && fighter.check_jump_cancel(false, false) {
+            let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            VarModule::set_float(boma.object(), vars::trail::instance::JUMP_CANCEL_MOMENTUM_HANDLER, x_speed);
+            return;
+        }
+
         if !VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT)
         && fighter.global_table[CURRENT_FRAME].get_i32() == 15 {
@@ -274,6 +284,17 @@ unsafe fn side_special_walljump(boma: &mut BattleObjectModuleAccessor, cat1: i32
     && (boma.is_cat_flag(Cat1::WallJumpLeft | Cat1::WallJumpRight) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)) {
         VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+    }
+}
+
+// remove arrow effect from sonic blade once sora begins the attack
+unsafe fn side_special_effect_handler(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END]) {
+        let effect = WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE) as u32;
+        if effect != 0 {
+            EffectModule::kill(boma, effect, true, true);
+            WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE);
+        }
     }
 }
 
@@ -356,6 +377,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
     side_special_walljump(boma, cat[0]);
+    side_special_effect_handler(boma);
     //aerial_sweep_hit_actionability(boma, frame);
     fastfall_specials(fighter);
     initialize_magic(fighter);
