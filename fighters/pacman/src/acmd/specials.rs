@@ -102,8 +102,8 @@ unsafe extern "C" fn game_speciallwfailure(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnshoot", game_specialnshoot);
-    agent.acmd("game_specialairnshoot", game_specialnshoot);
+    // agent.acmd("game_specialnshoot", game_specialnshoot);
+    // agent.acmd("game_specialairnshoot", game_specialnshoot);
 
     agent.acmd("expression_specialairsreturn", expression_specialairsreturn);
 
