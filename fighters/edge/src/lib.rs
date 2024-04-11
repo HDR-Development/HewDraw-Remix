@@ -47,11 +47,16 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    VarModule::set_int(fighter.battle_object, vars::edge::instance::FIRE_ID, -1);
+}
+
 pub fn install() {
     let agent = &mut Agent::new("edge");
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
+    agent.on_start(on_start);
     agent.install();
 
     fire::install();
@@ -59,5 +64,4 @@ pub fn install() {
     flare2::install();
     flaredummy::install();
     flash::install();
-
 }

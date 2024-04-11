@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH) {
         let sword_scale = Vector3f{x: 0.7, y: 1.0, z: 1.0};
@@ -14,7 +14,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
         let long_sword_scale = Vector3f{x: 0.95, y: 1.0, z: 1.0};
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordl1"), &long_sword_scale);
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordr1"), &long_sword_scale);
-        //println!("Sephiroth Success! Sephiroth's Fighter Kind Number: {}", *FIGHTER_KIND_EDGE);
     }
 }
 
@@ -39,13 +38,6 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }
         }
-    }
-}
-
-// Change jab combo to be a single hit like Ganon, using jab 3
-unsafe fn jab3_as_jab1(boma: &mut BattleObjectModuleAccessor, motion_kind: u64) {
-    if motion_kind == hash40("attack_11") {
-        MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
     }
 }
 
@@ -87,7 +79,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    //jab3_as_jab1(boma, motion_kind);
     fastfall_specials(fighter);
 }
 

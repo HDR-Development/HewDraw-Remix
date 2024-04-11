@@ -534,12 +534,30 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x0100;
+            pub const FLASH_REFLECT: i32 = 0x0100;
+            pub const FLASH_REFRACT: i32 = 0x0100;
+
+            // ints
+            pub const FIRE_ID: i32 = 0x0100;
+
+            // floats
+            pub const FIRE_POS_X: i32 = 0x0100;
+            pub const FIRE_POS_Y: i32 = 0x0101;
+            pub const FLARE1_POS_X: i32 = 0x102;
+            pub const FLARE2_POS_Y: i32 = 0x0103;
         }
         pub mod status {
             // flags
             pub const FLASH_HOLD: i32 = 0x1101;
             pub const SPECIAL_N_FIRE: i32 = 0x1102;
+        }
+    }
+
+    pub mod edge_flash {
+        pub mod status {
+            // ints
+            pub const LIFE: i32 = 0x1100;
+            pub const EFFECT_HANDLE: i32 = 0x1101;
         }
     }
 
@@ -1599,5 +1617,10 @@ pub mod statuses {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
         pub const SPECIAL_S_EDGE: i32 = 0x1F3;
         pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
+    }
+
+    pub mod edge_flash {
+        pub const BURST: i32 = 0x2;
+        pub const VANISH: i32 = 0x3;
     }
 }

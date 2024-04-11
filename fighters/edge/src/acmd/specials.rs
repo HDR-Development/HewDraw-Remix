@@ -27,7 +27,8 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 120.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
+        let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
+        VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
     }
     frame(lua_state, 140.0);
     if is_excute(agent) {
@@ -44,9 +45,9 @@ unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.object(), vars::edge::status::SPECIAL_N_FIRE) {
-            VarModule::off_flag(agent.object(), vars::edge::status::SPECIAL_N_FIRE);
-            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
+            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
         }
     }
     frame(lua_state, 15.0);
@@ -67,9 +68,9 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.object(), vars::edge::status::SPECIAL_N_FIRE) {
-            VarModule::off_flag(agent.object(), vars::edge::status::SPECIAL_N_FIRE);
-            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
+            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
         }
     }
     frame(lua_state, 35.0);
@@ -81,68 +82,29 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi1end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if !boma.is_button_on(Buttons::Special) && boma.is_situation(*SITUATION_KIND_GROUND) {
-            VarModule::on_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
-        }
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
-    }
-    frame(lua_state, 21.0);
-    if WorkModule::is_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH) {
-        FT_MOTION_RATE(agent, 1.5);
-    }
-    else if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-        FT_MOTION_RATE(agent, 2.0);
+        MotionModule::set_rate(boma, 1.08);
+        // if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
+        //     MotionModule::set_rate(boma, 2.0);
+        // }
+        // else{
+        //     MotionModule::set_rate(boma, 0.9);
+        // }
     }
 }
 
-unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi1end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("edge_octaslash_charge"), Hash40::new("swordl1"), 0, 0, 0, 0, 180, -90, 0.9, true);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            EFFECT_FOLLOW(agent, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 3);
-            EFFECT_FOLLOW(agent, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-            LAST_EFFECT_SET_RATE(agent, 1.2);
-
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 10.0, 0, 0.8, 0, 0, 0, 1.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.5);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 17.0, 0, 0.8, 0, 0, 0, 1.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.5);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 10.0, 0, 0.8, 0, 0, 0, 1.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.5);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 17.0, 0, 0.8, 0, 0, 0, 1.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.5);
-        }
-    }
-}
-
-unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX);
+        boma.select_cliff_hangdata_from_name("special_hi");
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_ENABLE_CONTROL);
     }
 }
 
@@ -283,129 +245,6 @@ unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 2.0);
-    FT_MOTION_RATE(agent, 1.0);
-    if is_excute(agent) {
-        JostleModule::set_status(boma, false);
-        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) {
-                ATTACK(agent, 0, 0, Hash40::new("rot"), 9.0, 89, 60, 0, 60, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            }
-            else{
-                ATTACK(agent, 0, 0, Hash40::new("rot"), 7.0, 89, 60, 0, 60, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            }
-        }
-        ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.5);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-    }
-}
-
-unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_octaslash_charge"), false, false);
-        if !VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("handr"), 2, 0, 0, 0, 0, 0, 1.25, true);
-            LAST_EFFECT_SET_RATE(agent, 1.5);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash2"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 0.8, true);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            EffectModule::enable_sync_init_pos_last(boma);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 0.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            EffectModule::enable_sync_init_pos_last(boma);
-            EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("kneer"), 1, 0, 0, 0, 0, 0, 0.7, true);
-            LAST_EFFECT_SET_RATE(agent, 1.1);
-            EffectModule::enable_sync_init_pos_last(boma);
-        }
-        let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
-        let eff_hash = match color {
-            0 => Hash40::new("edge_octaslash_illution_01"),
-            1 => Hash40::new("edge_octaslash_illution_02"),
-            2 => Hash40::new("edge_octaslash_illution_03"),
-            3 => Hash40::new("edge_octaslash_illution_04"),
-            4 => Hash40::new("edge_octaslash_illution_05"),
-            5 => Hash40::new("edge_octaslash_illution_06"),
-            6 => Hash40::new("edge_octaslash_illution_07"),
-            7 => Hash40::new("edge_octaslash_illution_08"),
-            _ => Hash40::new("edge_octaslash_illution_01")
-        };
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) {
-            EFFECT(agent, Hash40::new("edge_octaslash_illution_wing"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        }
-        EFFECT(agent, eff_hash, Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(agent, Hash40::new("edge_octaslash_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.8, 0, 0, 4, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(agent, 1.2);
-        }
-    }
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("edge_octaslash_line"), Hash40::new("rot"), 0, 0, 7, 0, 0, 0, 0.85, true);
-        EffectModule::enable_sync_init_pos_last(boma);
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_octaslash_sword_flare"), false, true);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
-        }
-    }
-}
-
-unsafe extern "C" fn game_specialhi1end(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        MotionModule::set_rate(boma, 1.08);
-        // if VarModule::is_flag(boma.object(), vars::edge::instance::SPECIAL_HI_BLADE_DASH_NO_HITBOX) {
-        //     MotionModule::set_rate(boma, 2.0);
-        // }
-        // else{
-        //     MotionModule::set_rate(boma, 0.9);
-        // }
-    }
-}
-
-unsafe extern "C" fn game_specialairhi1end(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        boma.select_cliff_hangdata_from_name("special_hi");
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_ENABLE_CONTROL);
-    }
-}
-
 unsafe extern "C" fn game_specialhi2end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -523,12 +362,12 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("edge_senkou_shield"), true, true);
-        let offset = if VarModule::is_flag(agent.object(), vars::edge::status::FLASH_HOLD) { 35 } else { 0 };
-        EFFECT(agent, Hash40::new("edge_senkou_shield_break"), Hash40::new("top"), 0, 13, 12 + offset, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-    }
+    // frame(lua_state, 7.0);
+    // if is_excute(agent) {
+    //     EFFECT_OFF_KIND(agent, Hash40::new("edge_senkou_shield"), true, true);
+    //     let offset = if VarModule::is_flag(agent.object(), vars::edge::status::FLASH_HOLD) { 35 } else { 0 };
+    //     EFFECT(agent, Hash40::new("edge_senkou_shield_break"), Hash40::new("top"), 0, 13, 12 + offset, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+    // }
 }
 
 pub fn install(agent: &mut Agent) {
@@ -539,15 +378,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn2", game_specialn2);
     agent.acmd("game_specialairn2", game_specialn2);
 
-    // agent.acmd("game_specialhistart", game_specialhistart);
-    // agent.acmd("effect_specialhistart", effect_specialhistart);
-    // agent.acmd("game_specialairhistart", game_specialairhistart);
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("effect_specialhi2", effect_specialhi2);
-    // agent.acmd("game_specialhi1", game_specialhi1);
-    // agent.acmd("effect_specialhi1", effect_specialhi1);
     agent.acmd("game_specialhi1end", game_specialhi1end);
     agent.acmd("game_specialairhi1end", game_specialairhi1end);
+    agent.acmd("game_specialhi2", game_specialhi2);
+    agent.acmd("effect_specialhi2", effect_specialhi2);
     agent.acmd("game_specialhi2end", game_specialhi2end);
     agent.acmd("game_specialairhi2end", game_specialairhi2end);
     
