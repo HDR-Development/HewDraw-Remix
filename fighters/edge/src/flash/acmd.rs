@@ -48,6 +48,9 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_wait(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_edge_special_l01_01"));
+    }
 
 }
 
@@ -79,7 +82,7 @@ unsafe extern "C" fn game_vanish(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_vanish(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-
+    
 }
 
 unsafe extern "C" fn sound_vanish(agent: &mut L2CAgentBase) {

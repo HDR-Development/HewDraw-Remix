@@ -82,6 +82,16 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        let flare = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FLARE1, false, -1);
+        VarModule::set_int(agent.battle_object, vars::edge::instance::FLARE1_ID, flare as i32);
+    }
+}
+
 unsafe extern "C" fn game_specialhi1end(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -362,12 +372,7 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    // frame(lua_state, 7.0);
-    // if is_excute(agent) {
-    //     EFFECT_OFF_KIND(agent, Hash40::new("edge_senkou_shield"), true, true);
-    //     let offset = if VarModule::is_flag(agent.object(), vars::edge::status::FLASH_HOLD) { 35 } else { 0 };
-    //     EFFECT(agent, Hash40::new("edge_senkou_shield_break"), Hash40::new("top"), 0, 13, 12 + offset, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-    // }
+    
 }
 
 pub fn install(agent: &mut Agent) {
@@ -377,6 +382,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn1", game_specialn1);
     agent.acmd("game_specialn2", game_specialn2);
     agent.acmd("game_specialairn2", game_specialn2);
+
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("game_specialairs", game_specials);
 
     agent.acmd("game_specialhi1end", game_specialhi1end);
     agent.acmd("game_specialairhi1end", game_specialairhi1end);

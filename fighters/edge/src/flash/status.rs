@@ -44,9 +44,9 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
         // refract shadow flare
         if VarModule::get_int(owner_object, vars::edge::instance::FLARE1_ID) != -1 {
             let pos_x = VarModule::get_float(owner_object, vars::edge::instance::FLARE1_POS_X) - PostureModule::pos_x(weapon.module_accessor);
-            let pos_y = VarModule::get_float(owner_object, vars::edge::instance::FLARE1_POS_X) - PostureModule::pos_y(weapon.module_accessor);
+            let pos_y = VarModule::get_float(owner_object, vars::edge::instance::FLARE2_POS_Y) - PostureModule::pos_y(weapon.module_accessor);
             let dist_mod_x = 5.0 * PostureModule::scale(weapon.module_accessor);    //make param
-            let dist_mod_y = 18.0 * PostureModule::scale(weapon.module_accessor);   //make param
+            let dist_mod_y = 15.0 * PostureModule::scale(weapon.module_accessor);   //make param
             if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
                 VarModule::on_flag(owner_object, vars::edge::instance::FLASH_REFRACT);
             }
@@ -84,6 +84,7 @@ unsafe extern "C" fn burst_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 unsafe extern "C" fn vanish_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     EffectModule::kill_kind(weapon.module_accessor, Hash40::new("edge_senkou_shield"), false, false);
+    EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
     StatusModule::init_settings(
         weapon.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),

@@ -39,7 +39,8 @@ unsafe extern "C" fn sub_fly(weapon: &mut L2CWeaponCommon, flare_type: i32, stat
         VarModule::set_float(edge, vars::edge::instance::FIRE_POS_X, PostureModule::pos_x(weapon.module_accessor));
         VarModule::set_float(edge, vars::edge::instance::FIRE_POS_Y, PostureModule::pos_y(weapon.module_accessor));
         if VarModule::is_flag(edge, vars::edge::instance::FLASH_REFLECT) {
-            EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_reflection"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_reflection"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.7, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_just_shield_hit"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_badge_reflection"), true, false, false, false, app::enSEType(0));
             let speed_x = KineticModule::get_sum_speed_x(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             let speed_y = KineticModule::get_sum_speed_y(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);

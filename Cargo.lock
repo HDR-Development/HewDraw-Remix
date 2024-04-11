@@ -398,6 +398,7 @@ name = "edge"
 version = "0.1.0"
 dependencies = [
  "dynamic",
+ "interpolation",
  "skyline 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "skyline_smash",
  "smash_script",

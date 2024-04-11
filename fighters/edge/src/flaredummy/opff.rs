@@ -24,5 +24,5 @@ pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFight
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_line(Main, shadowflare_orb_callback);
+    //agent.on_line(Main, shadowflare_orb_callback);
 }
