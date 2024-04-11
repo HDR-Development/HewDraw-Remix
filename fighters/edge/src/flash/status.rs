@@ -23,6 +23,7 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
             let dist_mod_x = 10.0 * PostureModule::scale(weapon.module_accessor);   //make param
             let dist_mod_y = 18.0 * PostureModule::scale(weapon.module_accessor);   //make param
             if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
+                SoundModule::play_se(weapon.module_accessor, Hash40::new("se_edge_special_l04"), true, false, false, false, app::enSEType(0));
                 StatusModule::change_status_force(weapon.module_accessor, statuses::edge_flash::BURST, false);
                 return 1.into()
             }
@@ -34,7 +35,10 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
             let dist_mod_x = 5.0 * PostureModule::scale(weapon.module_accessor);    //make param
             let dist_mod_y = 18.0 * PostureModule::scale(weapon.module_accessor);   //make param
             if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
-                VarModule::on_flag(owner_object, vars::edge::instance::FLASH_REFLECT);
+                if VarModule::get_int(weapon.battle_object, vars::edge_flash::status::REFLECT_COOOLDOWN) <= 0 {
+                    VarModule::set_int(weapon.battle_object, vars::edge_flash::status::REFLECT_COOOLDOWN, 30);   //make param?
+                    VarModule::on_flag(owner_object, vars::edge::instance::FLASH_REFLECT);
+                }
             }
         }
         // refract shadow flare
@@ -44,7 +48,7 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
             let dist_mod_x = 5.0 * PostureModule::scale(weapon.module_accessor);    //make param
             let dist_mod_y = 18.0 * PostureModule::scale(weapon.module_accessor);   //make param
             if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
-                VarModule::on_flag(owner_object, vars::edge_flare1::status::FLASH_REFRACT);
+                VarModule::on_flag(owner_object, vars::edge::instance::FLASH_REFRACT);
             }
         }
     }
@@ -54,6 +58,9 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 unsafe extern "C" fn wait_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     VarModule::dec_int(weapon.battle_object, vars::edge_flash::status::LIFE);
+    if VarModule::get_int(weapon.battle_object, vars::edge_flash::status::REFLECT_COOOLDOWN) > 0 {
+        VarModule::dec_int(weapon.battle_object, vars::edge_flash::status::REFLECT_COOOLDOWN);
+    }
     return 0.into()
 }
 
