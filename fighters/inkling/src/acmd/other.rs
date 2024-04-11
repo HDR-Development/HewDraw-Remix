@@ -137,7 +137,7 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }

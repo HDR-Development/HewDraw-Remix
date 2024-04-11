@@ -179,7 +179,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     roller_jump_cancel(boma);
     ink_charge_cancel(boma);
     fastfall_specials(fighter);
-    squidshift(fighter);
+   // squidshift(fighter);
 }
 
 pub extern "C" fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
