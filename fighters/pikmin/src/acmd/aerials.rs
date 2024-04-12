@@ -77,11 +77,11 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
@@ -131,11 +131,11 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
@@ -186,19 +186,19 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     //With Pikmin
-    frame(lua_state, 8.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
     }
     //Without Pikmin
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         if (pikmin_count == 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
