@@ -150,6 +150,7 @@ unsafe fn blizzaga_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     // allow the move to be turned around
     if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
     && fighter.status_frame() >= 5
+    && fighter.is_button_on(Buttons::Special)
     && stick_x * facing < 0.0 {
         PostureModule::reverse_lr(boma);
         PostureModule::update_rot_y_lr(boma);

@@ -37,7 +37,6 @@
     <struct index="0">
       <float hash="gass_max_time">60</float>
       <float hash="gass_large_time">30</float>
-      <list hash="param_special_n">
       <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
