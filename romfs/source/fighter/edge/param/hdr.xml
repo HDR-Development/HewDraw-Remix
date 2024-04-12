@@ -23,6 +23,10 @@
         <float hash="accel_y_m">1.0</float>
         <float hash="max_speed_y_m">0.5</float>
         <float hash="speed_x_m_stick_y_sub">0.3</float>
+        <float hash="speed_y_l">0.01</float>
+        <float hash="accel_y_l">1.0</float>
+        <float hash="max_speed_y_l">0.5</float>
+        <float hash="speed_x_l_stick_y_sub">0.3</float>
     </struct>
     <struct hash="blade_dash">
         <float hash="fakeout_dash_movement_mul">0.65</float>

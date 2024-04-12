@@ -534,7 +534,7 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const FLASH_REFLECT: i32 = 0x0100;
+            pub const FLASH_REFINE: i32 = 0x0100;
             pub const FLASH_REFRACT: i32 = 0x0101;
 
             // ints
@@ -550,11 +550,14 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FLASH_HOLD: i32 = 0x1100;
-            pub const SPECIAL_N_FIRE: i32 = 0x1101;
         }
     }
 
     pub mod edge_fire {
+        pub mod instance {
+            //flags
+            pub const REFLECT: i32 = 0x0100;
+        }
         pub mod status {
             // floats
             pub const STICK_Y: i32 = 0x1100;
@@ -571,7 +574,7 @@ pub mod vars {
     pub mod edge_flash {
         pub mod status {
             // flags
-            pub const REFLECT_COOOLDOWN: i32 = 0x0102;
+            pub const REFINE_COOOLDOWN: i32 = 0x0100;
 
             // ints
             pub const LIFE: i32 = 0x1100;

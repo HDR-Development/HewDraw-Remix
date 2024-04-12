@@ -309,11 +309,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 27.0, 13.0);
-    if is_excute(agent) {
-        if app::sv_math::rand(hash40("fighter"), 2) == 1 {
-            WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_VOICE);
-        }
-    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 11.0, 3.0);
@@ -321,6 +316,13 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
+    }
+    frame(lua_state, 27.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        if app::sv_math::rand(hash40("fighter"), 2) == 1 {
+            WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_VOICE);
+        }
     }
 }
 
@@ -341,6 +343,21 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_edge_special_l01_01"));
+    }
+    frame(lua_state, 27.0);
+    if is_excute(agent) {
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_VOICE) {
+            PLAY_SE(agent, Hash40::new("vc_edge_special_l01"));
+        }
+    }
+}
+
 unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -352,21 +369,26 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 7.0);
+    FT_MOTION_RATE_RANGE(agent, 7.0, 20.0, 7.0);
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FLASH, false, -1);
+        ATTACK(agent, 0, 0, Hash40::new("armr"), 4.0, 30, 20, 0, 75, 3.0, -2.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_ELBOW);
+        ATTACK(agent, 1, 0, Hash40::new("armr"), 4.0, 30, 20, 0, 75, 3.0, 3.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_ELBOW);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_ENABLE_CONTROL_X);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 20.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_ENABLE_CONTROL_X);
+    }
+    frame(lua_state, 25.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_LW_FLAG_ENABLE_FALL_SPEED);
     }
-    frame(lua_state, 30.0);
-    FT_MOTION_RATE(agent, 1.15);
-    frame(lua_state, 50.0);
-    FT_MOTION_RATE(agent, 1.0);
+
 }
 
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
@@ -397,6 +419,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("effect_specialairlw", effect_speciallw);
+    agent.acmd("sound_speciallw", sound_speciallw);
+    agent.acmd("sound_specialairlw", sound_speciallw);
+    
     agent.acmd("game_speciallwhit", game_speciallwhit);
     agent.acmd("game_specialairlwhit", game_speciallwhit);
     agent.acmd("effect_speciallwhit", effect_speciallwhit);

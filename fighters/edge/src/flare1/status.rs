@@ -51,7 +51,11 @@ unsafe extern "C" fn fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn fly_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    WorkModule::dec_int(weapon.module_accessor, *WEAPON_EDGE_FLARE1_INSTANCE_WORK_ID_INT_LIFE);
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let edge = utils::util::get_battle_object_from_id(owner_id);
+    if !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFRACT) {
+        WorkModule::dec_int(weapon.module_accessor, *WEAPON_EDGE_FLARE1_INSTANCE_WORK_ID_INT_LIFE);
+    }
     return 0.into()
 }
 

@@ -59,6 +59,13 @@ pub fn install() {
     agent.on_start(on_start);
     agent.install();
 
+    // unsafe {
+    //     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text).cast::<u8>();
+    //     let p_sephiroth_downb_reflector_module_constructor = text.add(0x51ab8e8);
+    //     let palutena_downb_reflector_constructor = text.add(0x33b9a80) as u64;
+    //     *p_sephiroth_downb_reflector_module_constructor.cast::<u64>() = palutena_downb_reflector_constructor;
+    // }
+
     fire::install();
     flare1::install();
     flare2::install();

@@ -159,6 +159,10 @@
       <float hash="speed_x_m">0.01</float>
       <float hash="accel_x_m">0.07</float>
       <float hash="max_speed_x_m">0.75</float>
+      <int hash="life_l">60</int>
+      <float hash="speed_x_l">0.01</float>
+      <float hash="accel_x_l">0.022</float>
+      <float hash="max_speed_x_l">1.0</float>
     </struct>
   <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

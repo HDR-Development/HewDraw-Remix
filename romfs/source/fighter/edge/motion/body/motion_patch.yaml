@@ -72,6 +72,12 @@ special_n2:
 special_air_n2:
   extra:
     cancel_frame: 60
+special_lw_hit:
+  extra:
+    cancel_frame: 37
+special_air_lw_hit:
+  extra:
+    cancel_frame: 37
 item_light_throw_f:
   flags:
     move: false
