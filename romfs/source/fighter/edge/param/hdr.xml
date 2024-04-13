@@ -28,13 +28,15 @@
         <float hash="max_speed_y_l">0.5</float>
         <float hash="speed_x_l_stick_y_sub">0.3</float>
     </struct>
-    <struct hash="blade_dash">
-        <float hash="fakeout_dash_movement_mul">0.65</float>
-        <int hash="attack_extra_startup_frames_ground">23</int>
-        <int hash="attack_extra_startup_frames_air">0</int>
-        <int hash="fakeout_extra_startup_frames_ground">6</int>
-        <int hash="fakeout_extra_startup_frames_air">0</int>
-        <int hash="attack_decision_frame_ground">10</int>
-        <int hash="attack_decision_frame_air">18</int>
+    <struct hash="param_flash">
+        <int hash="life">600</int>
+        <float hash="hold_offset_x">23</float>
+        <float hash="burst_dist_mod_x">10.0</float>
+        <float hash="burst_dist_mod_y">18.0</float>
+        <float hash="refine_dist_mod_x">5.0</float>
+        <float hash="refine_dist_mod_y">18.0</float>
+        <int hash="refine_cooldown">40</int>
+        <float hash="refract_dist_mod_x">5.0</float>
+        <float hash="refract_dist_mod_y">18.0</float>
     </struct>
 </struct>

@@ -394,7 +394,16 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.5, true);
+        EFFECT_FLW_POS(agent, Hash40::new("edge_attack_dash_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.5, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("edge_attack_dash_aura"), -1);
+    }
 }
 
 pub fn install(agent: &mut Agent) {

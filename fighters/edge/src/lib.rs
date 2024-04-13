@@ -12,7 +12,6 @@ pub mod status;
 mod fire;
 mod flare1;
 mod flare2;
-mod flaredummy;
 mod flash;
 
 use smash::{
@@ -69,6 +68,5 @@ pub fn install() {
     fire::install();
     flare1::install();
     flare2::install();
-    flaredummy::install();
     flash::install();
 }

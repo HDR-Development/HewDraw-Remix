@@ -2,77 +2,69 @@ use super::*;
 use globals::*;
 
 unsafe extern "C" fn fly_s_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
-    let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_s"));
-    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    MotionModule::change_motion(weapon.module_accessor, Hash40::new("special_n1"), 0.0, 1.0, false, 0.0, false, false);
-    if (&mut *(*edge).module_accessor).kind() == *FIGHTER_KIND_EDGE {
-        VarModule::set_int(edge, vars::edge::instance::FIRE_ID, 0);
-        fly_set_physics(weapon, 0, !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFINE));
-        VarModule::off_flag(edge, vars::edge::instance::FLASH_REFINE);
-        VarModule::off_flag(weapon.battle_object, vars::edge_fire::instance::REFLECT);
-    }
-    else {
-        fly_set_physics(weapon, 0, true);
-    }
+    sub_fly_main(weapon, 0);
     weapon.fastshift(L2CValue::Ptr(fly_s_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn fly_s_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S.into());
+    sub_fly_main_loop(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S.into());
     return 0.into()
 }
 
 unsafe extern "C" fn fly_m_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
-    let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_m"));
-    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    MotionModule::change_motion(weapon.module_accessor, Hash40::new("special_n2"), 0.0, 1.0, false, 0.0, false, false);
-    if (&mut *(*edge).module_accessor).kind() == *FIGHTER_KIND_EDGE {
-        VarModule::set_int(edge, vars::edge::instance::FIRE_ID, 0);
-        fly_set_physics(weapon, 1, !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFINE), );
-        VarModule::off_flag(edge, vars::edge::instance::FLASH_REFINE);
-        VarModule::off_flag(weapon.battle_object, vars::edge_fire::instance::REFLECT);
-    }
-    else {
-        fly_set_physics(weapon, 1, true);
-    }
+    sub_fly_main(weapon, 1);
     weapon.fastshift(L2CValue::Ptr(fly_m_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn fly_m_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly(weapon, 1, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_M.into());
+    sub_fly_main_loop(weapon, 1, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_M.into());
     return 0.into()
 }
 
 unsafe extern "C" fn fly_l_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
-    let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_l"));
-    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    MotionModule::change_motion(weapon.module_accessor, Hash40::new("special_n3"), 0.0, 1.0, false, 0.0, false, false);
-    if (&mut *(*edge).module_accessor).kind() == *FIGHTER_KIND_EDGE {
-        VarModule::set_int(edge, vars::edge::instance::FIRE_ID, 0);
-        fly_set_physics(weapon, 2, !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFINE));
-        VarModule::off_flag(edge, vars::edge::instance::FLASH_REFINE);
-        VarModule::off_flag(weapon.battle_object, vars::edge_fire::instance::REFLECT);
-    }
-    else {
-        fly_set_physics(weapon, 2, true);
-    }
+    sub_fly_main(weapon, 2);
     weapon.fastshift(L2CValue::Ptr(fly_l_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn fly_l_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_L.into());
+    sub_fly_main_loop(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_L.into());
     return 0.into()
 }
 
-unsafe extern "C" fn sub_fly(weapon: &mut L2CWeaponCommon, flare_type: i32, status: L2CValue) -> L2CValue {
-    let life = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    if life <= 0 || (WorkModule::is_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL) && weapon.status_frame() <= 2) {
+unsafe extern "C" fn sub_fly_main(weapon: &mut L2CWeaponCommon, flare_type: i32) {
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let edge = utils::util::get_battle_object_from_id(owner_id);
+    let life = match flare_type {
+        0 => WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_s")),
+        1 => WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_m")),
+        2 => WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_l")),
+        _ => WorkModule::get_param_int(weapon.module_accessor, hash40("param_fire"), hash40("life_s"))
+    };
+    let motion = match flare_type {
+        0 => Hash40::new("special_n1"),
+        1 => Hash40::new("special_n2"),
+        2 => Hash40::new("special_n3"),
+        _ => Hash40::new("special_n1")
+    };
+    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
+    MotionModule::change_motion(weapon.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
+    if (&mut *(*edge).module_accessor).kind() == *FIGHTER_KIND_EDGE {
+        VarModule::set_int(edge, vars::edge::instance::FIRE_ID, 0);
+        fly_set_physics(weapon, flare_type);
+        VarModule::off_flag(edge, vars::edge::instance::FLASH_REFINE);
+        VarModule::off_flag(weapon.battle_object, vars::edge_fire::instance::REFLECT);
+    }
+    else {
+        fly_set_physics(weapon, flare_type);
+    }
+}
+
+unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, flare_type: i32, status: L2CValue) -> L2CValue {
+    if (WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) <= 0)
+    || (WorkModule::is_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL)
+    && weapon.status_frame() <= 2) {
+        println!("1");
         weapon.change_status(status, false.into());
         return 1.into()
     }
@@ -92,10 +84,12 @@ unsafe extern "C" fn sub_fly(weapon: &mut L2CWeaponCommon, flare_type: i32, stat
             EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_just_shield_hit"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_badge_reflection"), true, false, false, false, app::enSEType(0));
             if weapon.is_status(*WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S) {
+                SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_crossbomb_blink"), true, false, false, false, app::enSEType(0));
                 weapon.change_status(WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M.into(), false.into());
                 return 1.into()
             }
             else if weapon.is_status(*WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M) || weapon.is_status(*WEAPON_EDGE_FIRE_STATUS_KIND_FLY_L) {
+                SoundModule::play_se(weapon.module_accessor, Hash40::new("se_gohoubi_bounus_add"), true, false, false, false, app::enSEType(0));
                 weapon.change_status(WEAPON_EDGE_FIRE_STATUS_KIND_FLY_L.into(), false.into());
                 return 1.into()
             }
@@ -114,6 +108,7 @@ unsafe extern "C" fn sub_fly(weapon: &mut L2CWeaponCommon, flare_type: i32, stat
             }
             WorkModule::on_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL);
             if weapon.status_frame() > 1 {
+                println!("2");
                 weapon.change_status(status, false.into());
                 return 1.into()
             }
@@ -128,11 +123,12 @@ unsafe extern "C" fn sub_fly(weapon: &mut L2CWeaponCommon, flare_type: i32, stat
     return 1.into()
 }
 
-unsafe extern "C" fn fly_set_physics(weapon: &mut L2CWeaponCommon, flare_type: i32, is_init: bool) {
+unsafe extern "C" fn fly_set_physics(weapon: &mut L2CWeaponCommon, flare_type: i32) {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
     let kirb = (&mut *(*edge).module_accessor).kind() != *FIGHTER_KIND_EDGE;
     let facing = PostureModule::lr(weapon.module_accessor);
+    let is_init = if kirb { true } else { !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFINE) };
     let stick_y = if is_init { (&mut *(*edge).module_accessor).stick_y() } else { VarModule::get_float(weapon.battle_object, vars::edge_fire::status::STICK_Y) };
     if is_init { VarModule::set_float(weapon.battle_object, vars::edge_fire::status::STICK_Y, stick_y); }
     let is_reflect = if !kirb { VarModule::is_flag(weapon.battle_object, vars::edge_fire::instance::REFLECT) } else { false };
