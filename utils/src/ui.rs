@@ -408,8 +408,5 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        get_set_info_alpha,
-        // hud_update,
-    );
+    skyline::install_hooks!(get_set_info_alpha, hud_update,);
 }
