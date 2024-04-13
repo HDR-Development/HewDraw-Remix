@@ -41,7 +41,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
     // Actionability when double jump isn't burned
     if fighter.is_motion(Hash40::new("special_air_hi"))
     && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL)
-    && frame > 7.0 {
+    && frame > 5.0 {
         VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         CancelModule::enable_cancel(boma);
     }

@@ -8,7 +8,7 @@ unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
     let original = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_JUMP_AERIAL);
 
-    if fighter.is_prev_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END]) {
         KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: x_speed.abs() / 3.0, y: 0.0, z: 0.0});
     }
 
