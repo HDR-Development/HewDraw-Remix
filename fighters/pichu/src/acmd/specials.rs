@@ -44,6 +44,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
             MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 120.0);
         }
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_NONE);
+        sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.3);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -65,6 +66,10 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
