@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe extern "C" fn tico_frame(weapon: &mut L2CFighterBase) {
+unsafe extern "C" fn tico_frame(weapon: &mut L2CWeaponCommon) {
     unsafe {
 		let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		let rosetta = utils::util::get_battle_object_from_id(owner_id);

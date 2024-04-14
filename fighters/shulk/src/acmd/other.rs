@@ -118,6 +118,16 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if agent.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        FT_MOTION_RATE_RANGE(agent, 0.0, 30.0, 25.0);
+    }
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 unsafe extern "C" fn effect_win2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -176,6 +186,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
+
+    agent.acmd("game_landingfallspecial", game_landingfallspecial);
     
     agent.acmd("effect_win2", effect_win2);
     agent.acmd("sound_win2a_us_en", sound_win2a_us_en);

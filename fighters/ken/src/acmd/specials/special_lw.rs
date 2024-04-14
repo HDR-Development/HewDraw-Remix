@@ -25,7 +25,7 @@ unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.2, true);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 12, 3, 0, 0, 0, 0.8, true, *EF_FLIP_AXIS_YZ);
         if agent.is_situation(*SITUATION_KIND_GROUND) {
-            EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_windwave"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
     }
 }

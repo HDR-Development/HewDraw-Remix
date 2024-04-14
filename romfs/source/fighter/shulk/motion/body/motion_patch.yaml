@@ -72,19 +72,24 @@ special_n_end:
     cancel_frame: 4
 special_n_jump:
   extra:
-    xlu_end: 5
+    xlu_start: 0
+    xlu_end: 0
 special_n_speed:
   extra:
-    xlu_end: 5
+    xlu_start: 0
+    xlu_end: 0
 special_n_shield:
   extra:
-    xlu_end: 5
+    xlu_start: 0
+    xlu_end: 0
 special_n_buster:
   extra:
-    xlu_end: 5
+    xlu_start: 0
+    xlu_end: 0
 special_n_smash:
   extra:
-    xlu_end: 5
+    xlu_start: 0
+    xlu_end: 0
 special_air_n_end:
   extra:
     cancel_frame: 4
