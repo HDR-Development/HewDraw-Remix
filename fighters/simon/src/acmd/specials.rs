@@ -13,6 +13,35 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 1.2);
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, false, -1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_S_FLAG_FALL);
+    }
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        if agent.is_situation(*SITUATION_KIND_AIR) {
+           VarModule::on_flag(agent.battle_object, vars::simon::status::CROSS_LAND);
+        }
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        WorkModule::off_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_S_FLAG_FALL);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -63,6 +92,9 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn);
     agent.acmd("game_specialairn", game_specialn);
+
+    agent.acmd("game_specials1", game_specials1);
+    agent.acmd("game_specialairs1", game_specials1);
 
     agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("game_specialairhi", game_specialhi);

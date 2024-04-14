@@ -1401,7 +1401,10 @@ pub mod vars {
     }
 
     pub mod simon {
-
+        pub mod status {
+            //flags
+            pub const CROSS_LAND: i32 = 0x1100;
+        }
     }
 
     pub mod snake {
