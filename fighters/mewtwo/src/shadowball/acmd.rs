@@ -8,6 +8,26 @@ unsafe extern "C" fn game_charge(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_charge(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("mewtwo_shadowball_hold"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+}
+
+unsafe extern "C" fn effect_chargemax(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("mewtwo_shadowball_max_sign"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("mewtwo_shadowball_hold"), false, false);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_charge", game_charge);
+    agent.acmd("effect_charge", effect_charge);
+    agent.acmd("game_chargemax", game_charge);
+    agent.acmd("effect_chargemax", effect_chargemax);
 }
