@@ -104,7 +104,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
     frame(lua_state, 24.0);
-    FT_MOTION_RATE(agent, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
         if ArticleModule::is_generatable(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);
@@ -138,7 +138,7 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
     frame(lua_state, 24.0);
-    FT_MOTION_RATE(agent, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
         if ArticleModule::is_generatable(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);
