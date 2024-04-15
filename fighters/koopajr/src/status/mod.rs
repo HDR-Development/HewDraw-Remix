@@ -28,7 +28,12 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // set the callbacks on fighter init
     fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+    
+    // clear mechakoopa cooldown on reset
+    VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+    VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+    VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::DISABLE_MECHAKOOPA);
 }
 
 pub fn install(agent: &mut Agent) {
