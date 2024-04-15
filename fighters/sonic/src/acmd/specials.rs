@@ -58,18 +58,6 @@ unsafe extern "C" fn game_specialnhit(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialnlanding(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma(); 
-    frame(lua_state, 1.0);
-    if VarModule::is_flag(agent.object(), vars::sonic::status::SPECIAL_N_BLAST_ATTACK) {
-        FT_MOTION_RATE(agent, 0.1);
-    }
-    else{
-        FT_MOTION_RATE(agent, 2.75);
-    }
-}
-
 unsafe extern "C" fn hash_0x195dc47911(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -330,7 +318,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialnhoming", sound_specialnhoming);
     agent.acmd("game_specialnhit", game_specialnhit);
     agent.acmd("effect_specialnhit", stub);
-    agent.acmd("game_specialnlanding", game_specialnlanding);
+    agent.acmd("game_specialnlanding", stub);
     agent.game_acmd(0x195dc47911, hash_0x195dc47911);
 
     agent.acmd("game_specialsbooststart", game_specialsbooststart);
