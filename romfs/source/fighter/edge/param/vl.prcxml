@@ -8,6 +8,7 @@
   <struct hash="param_one_winged">
     <float hash="activate_point_init">80</float>
     <float hash="activate_point_init_hp">80</float>
+    <float hash="activate_point_upper_limit">80</float>
     <float hash="attack_power_mul">1.05</float>
     <float hash="dash_speed_mul">1.1</float>
     <float hash="run_speed_max_mul">1.065</float>
@@ -17,59 +18,77 @@
   </struct>
   <list hash="param_one_winged_activate_point">
     <struct index="0">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="1">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="2">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="3">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="4">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="5">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="6">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="7">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
     <struct index="8">
+      <float hash="handicap">0</float>
       <float hash="point">0</float>
     </struct>
   </list>
   <list hash="param_one_winged_deactivate_point">
     <struct index="0">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="1">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="2">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="3">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="4">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="5">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="6">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="7">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
     <struct index="8">
+      <float hash="handicap">0</float>
       <float hash="point">200</float>
     </struct>
   </list>
@@ -164,7 +183,7 @@
       <float hash="accel_x_l">0.022</float>
       <float hash="max_speed_x_l">1.0</float>
     </struct>
-  <hash40 index="1">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>

@@ -64,7 +64,6 @@ unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, flare_type:
     if (WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) <= 0)
     || (WorkModule::is_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL)
     && weapon.status_frame() <= 2) {
-        println!("1");
         weapon.change_status(status, false.into());
         return 1.into()
     }
@@ -108,19 +107,18 @@ unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, flare_type:
             }
             WorkModule::on_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL);
             if weapon.status_frame() > 1 {
-                println!("2");
                 weapon.change_status(status, false.into());
                 return 1.into()
             }
             StopModule::set_other_stop(weapon.module_accessor, 2, StopOtherKind(0));
         }
     }
-    if !WorkModule::is_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_ATTACK) {
-        return 0.into()
+    if !weapon.is_status(*WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        weapon.change_status(status, false.into());
+        return 1.into()
     }
-
-    weapon.change_status(status, false.into());
-    return 1.into()
+    
+    return 0.into()
 }
 
 unsafe extern "C" fn fly_set_physics(weapon: &mut L2CWeaponCommon, flare_type: i32) {

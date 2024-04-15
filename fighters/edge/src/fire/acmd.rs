@@ -1,5 +1,15 @@
 use super::*;
 
+unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        AttackModule::disable_tip(boma);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 0, 0, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -2, 0.0, 0, true, true, true, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
 unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -145,7 +155,7 @@ unsafe extern "C" fn effect_burstl(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn1", stub);
+    agent.acmd("game_specialn1", game_specialn1);
     agent.acmd("game_specialn2", game_specialn2);
     agent.acmd("game_specialn3", game_specialn3);
     

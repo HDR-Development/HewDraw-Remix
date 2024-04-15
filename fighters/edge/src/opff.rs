@@ -41,6 +41,13 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+unsafe fn refresh_flare(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::get_int(boma.object(), vars::edge::instance::FIRE_ID) != -1
+    && ArticleModule::get_active_num(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE) < 1 {
+        VarModule::set_int(boma.object(), vars::edge::instance::FIRE_ID, -1);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -79,6 +86,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
+    refresh_flare(boma);
     fastfall_specials(fighter);
 }
 

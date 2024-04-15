@@ -573,12 +573,11 @@ pub mod vars {
 
     pub mod edge_flash {
         pub mod status {
-            // flags
-            pub const REFINE_COOOLDOWN: i32 = 0x0100;
-
             // ints
-            pub const LIFE: i32 = 0x1100;
-            pub const EFFECT_HANDLE: i32 = 0x1101;
+            pub const REFINE_COOLDOWN: i32 = 0x1100;
+            pub const REFRACT_COOLDOWN: i32 = 0x1101;
+            pub const LIFE: i32 = 0x1102;
+            pub const EFFECT_HANDLE: i32 = 0x1103;
         }
     }
 

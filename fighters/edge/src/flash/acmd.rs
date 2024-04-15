@@ -12,7 +12,7 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
         let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
         VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);
@@ -22,7 +22,7 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
         let flash_handle = VarModule::get_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE);
         EffectModule::set_rate(boma, flash_handle as u32, (30.0 - 10.0)/90.0);
     }
-    for _ in 0..100 {
+    for _ in 0..4 {
         wait(lua_state, 90.0);
         if is_excute(agent) {
             let flash_handle = VarModule::get_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE);
@@ -34,6 +34,37 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
             EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
             EffectModule::set_frame(boma, flash_handle as u32, 10.0);
             EffectModule::set_rate(boma, flash_handle as u32, (30.0 - 10.0)/90.0);
+            VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);
+        }
+    }
+    for _ in 0..2 {
+        wait(lua_state, 45.0);
+        if is_excute(agent) {
+            let flash_handle = VarModule::get_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE);
+            EffectModule::set_rate(boma, flash_handle as u32, 1.0);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(agent) {
+            let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
+            EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
+            EffectModule::set_frame(boma, flash_handle as u32, 10.0);
+            EffectModule::set_rate(boma, flash_handle as u32, (30.0 - 10.0)/90.0);
+            VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);
+        }
+    }
+    for _ in 0..4 {
+        wait(lua_state, 20.0);
+        if is_excute(agent) {
+            let flash_handle = VarModule::get_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE);
+            EffectModule::set_rate(boma, flash_handle as u32, 1.0);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(agent) {
+            let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
+            EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
+            EffectModule::set_frame(boma, flash_handle as u32, 10.0);
+            EffectModule::set_rate(boma, flash_handle as u32, (30.0 - 10.0)/90.0);
+            EffectModule::set_rgb(boma, flash_handle as u32, 0.65, 0.65, 0.65);
             VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);
         }
     }
