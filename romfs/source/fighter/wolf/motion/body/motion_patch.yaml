@@ -60,7 +60,37 @@ attack_s3_hi:
     move: false
 attack_air_lw:
   extra:
-    cancel_frame: 41
+    cancel_frame: 38
+landing_air_lw:
+  game_script: game_landingairlw
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c05landingairlw.nuanmb
+    unk: 0
+  scripts:
+  - expression_landingairlw
+  - sound_landingairlw
+  - effect_landingairlw
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 12
+    no_stop_intp: false
 fall_aerial_f:
   blend_frames: 5
 fall_aerial_b:
