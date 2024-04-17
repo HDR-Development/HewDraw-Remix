@@ -98,7 +98,7 @@ unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2C
         else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_explode"), 0.0, 1.0, false, 0.0, false, false);
         }
-        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
 
         fighter.sub_shift_status_main(L2CValue::Ptr(special_n_shoot_main_loop as *const () as _))
     }
