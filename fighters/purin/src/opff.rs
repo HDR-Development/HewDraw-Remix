@@ -53,8 +53,6 @@ pub unsafe fn purin_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("purin")
-        .on_line(Main, purin_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, purin_frame_wrapper);
 }

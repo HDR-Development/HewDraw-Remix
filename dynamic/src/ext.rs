@@ -318,6 +318,7 @@ bitflags! {
         const Parry = 0x100000;
         const CStickOverride = 0x200000;
         const RivalsWallJump = 0x400000;
+        const ParryManual = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -513,6 +514,7 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+    unsafe fn check_airdash(&mut self);
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
@@ -1180,6 +1182,56 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn check_airdash(&mut self) {
+        if !self.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+            return;
+        }
+        if self.status_frame() < 1 {
+            let speed_x = KineticModule::get_sum_speed_x(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let speed_y = KineticModule::get_sum_speed_y(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            // lets make sure not to divide by zero
+            let speed_x_adjust = match speed_x {
+                0.0 => 0.01,
+                _ => 0.0
+            };
+            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
+
+            let pos = Vector3f { x: 0., y: 3., z: 0.};
+            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
+
+            if speed_x > 0. {
+                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }else{
+                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
+                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
+                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+            }
+        }
+
+        // if you have an escape_air_dash motion, change into it
+        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) 
+        && !self.is_motion(Hash40::new("escape_air_dash"))
+        && self.motion_frame() >= 1.0 {
+            MotionModule::change_motion(
+                self,
+                Hash40::new("escape_air_dash"),
+                self.motion_frame(),
+                1.0,
+                false,
+                0.0,
+                false,
+                false,
+            );
+        }
+
+        CancelModule::enable_cancel(self);
+        if self.is_situation(*SITUATION_KIND_AIR) {
+            let fighter = crate::util::get_fighter_common_from_accessor(self);
+            fighter.sub_air_check_fall_common();
+        }
+    }
+
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> {
         use smash2::app::ItemManager;
 
@@ -1246,8 +1298,28 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
-        return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
+        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 } as i128;
+        // actual parry button -- if this is in buffer, it's a parry
+        let parry_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Parry) as i128;
+        if parry_trigger_count < buffer {
+            return true;
+        }
+
+        let guard_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Guard) as i128;
+        let guard_release_count = InputModule::get_release_count(self.object(), Buttons::Guard) as i128;
+        let guard_start = guard_trigger_count;
+        let guard_end = if guard_trigger_count < guard_release_count { -1 } else { guard_release_count };
+
+        // special checks for manual parry
+        // - manual parry button must be in the buffer window
+        // - manual parry button must have been pressed while shield was pressed/held
+        let parry_manual_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::ParryManual) as i128;
+        if parry_manual_trigger_count < buffer 
+        && parry_manual_trigger_count <= guard_start
+        && dbg!(parry_manual_trigger_count) > dbg!(guard_end) {
+            return true;
+        }
+        return false;
     }
 }
 

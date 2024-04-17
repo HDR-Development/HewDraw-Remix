@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP
 
@@ -47,13 +46,7 @@ pub unsafe extern "C" fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Fall()
 }
 
-pub fn install() {
-    smashline::Agent::new("wario")
-        .status(
-            Main,
-            *FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP,
-            special_hi_jump_main,
-        )
-        .status(Pre, *FIGHTER_STATUS_KIND_FALL, fall_pre)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status( Main, *FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_FALL, fall_pre);
 }

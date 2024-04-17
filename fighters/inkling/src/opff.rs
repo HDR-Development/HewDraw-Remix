@@ -158,11 +158,8 @@ pub unsafe fn inkling_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .on_line(Main, inkling_frame_wrapper)
-        .install();
-    skyline::install_hooks!(
-        get_ink_colors
-    );
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, inkling_frame_wrapper);
+
+    skyline::install_hooks!(get_ink_colors);
 }

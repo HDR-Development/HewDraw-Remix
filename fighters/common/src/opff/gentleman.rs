@@ -14,7 +14,7 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
     let mut jab_finisher_start = 1.0; // Start of window for rapid jab finisher transition, determined by character
     let mut jab_finisher_end = 1.0;   // End of window for rapid jab finisher transition, determined by character
 
-    if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_MURABITO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_RICHTER, *FIGHTER_KIND_MIIFIGHTER].contains(&fighter_kind) {
+    if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_MURABITO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_MIIFIGHTER].contains(&fighter_kind) {
         jab_finisher_start = 6.0;
         jab_finisher_end = 14.0;
     } else if fighter_kind == *FIGHTER_KIND_ZELDA {
@@ -48,7 +48,7 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
                     }
                 }
             }
-        } else if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_RICHTER, *FIGHTER_KIND_MIIFIGHTER, *FIGHTER_KIND_DEDEDE, *FIGHTER_KIND_PFUSHIGISOU, *FIGHTER_KIND_MURABITO].contains(&fighter_kind) {
+        } else if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_MIIFIGHTER, *FIGHTER_KIND_DEDEDE, *FIGHTER_KIND_PFUSHIGISOU, *FIGHTER_KIND_MURABITO].contains(&fighter_kind) {
             if MotionModule::motion_kind(boma) == hash40("attack_12") {
                 if MotionModule::frame(boma) > jab_finisher_start && MotionModule::frame(boma) < jab_finisher_end {
                     if boma.is_pad_flag(PadFlag::SpecialTrigger) {

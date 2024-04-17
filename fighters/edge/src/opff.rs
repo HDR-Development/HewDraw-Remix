@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH) {
         let sword_scale = Vector3f{x: 0.7, y: 1.0, z: 1.0};
@@ -14,7 +14,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
         let long_sword_scale = Vector3f{x: 0.95, y: 1.0, z: 1.0};
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordl1"), &long_sword_scale);
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordr1"), &long_sword_scale);
-        //println!("Sephiroth Success! Sephiroth's Fighter Kind Number: {}", *FIGHTER_KIND_EDGE);
     }
 }
 
@@ -42,10 +41,10 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Change jab combo to be a single hit like Ganon, using jab 3
-unsafe fn jab3_as_jab1(boma: &mut BattleObjectModuleAccessor, motion_kind: u64) {
-    if motion_kind == hash40("attack_11") {
-        MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
+unsafe fn refresh_flare(boma: &mut BattleObjectModuleAccessor) {
+    if VarModule::get_int(boma.object(), vars::edge::instance::FIRE_ID) != -1
+    && ArticleModule::get_active_num(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE) < 1 {
+        VarModule::set_int(boma.object(), vars::edge::instance::FIRE_ID, -1);
     }
 }
 
@@ -87,7 +86,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    //jab3_as_jab1(boma, motion_kind);
+    refresh_flare(boma);
     fastfall_specials(fighter);
 }
 
@@ -104,34 +103,6 @@ pub unsafe fn edge_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn shadowflare_orb_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_EDGE_FLAREDUMMY {
-            return
-        }
-        if weapon.is_status(*WEAPON_EDGE_FLAREDUMMY_STATUS_KIND_FLY) {
-            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let sephiroth = utils::util::get_battle_object_from_id(owner_id);
-            let sephiroth_boma = &mut *(*sephiroth).module_accessor;
-            let sephiroth_status_kind = StatusModule::status_kind(sephiroth_boma);
-            if sephiroth_status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH && AttackModule::is_infliction_status(sephiroth_boma, *COLLISION_KIND_MASK_HIT) {
-                // Explode if Sephiroth hits the target marked with this set of orbs with Blade Dash
-                let x_distance = PostureModule::pos_x(weapon.module_accessor) - PostureModule::pos_x(sephiroth_boma);
-                let y_distance = PostureModule::pos_y(weapon.module_accessor) - PostureModule::pos_y(sephiroth_boma);
-                let tolerance = 20.0;
-                if x_distance.abs() <= tolerance && y_distance.abs() <= tolerance{
-                    StatusModule::change_status_force(weapon.module_accessor, *WEAPON_EDGE_FLAREDUMMY_STATUS_KIND_TRY, false);
-                }
-            }
-        }
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("edge")
-        .on_line(Main, edge_frame_wrapper)
-        .install();
-    smashline::Agent::new("edge_flaredummy")
-        .on_line(Main, shadowflare_orb_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, edge_frame_wrapper);
 }

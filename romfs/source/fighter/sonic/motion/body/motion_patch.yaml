@@ -440,6 +440,15 @@ special_air_s_boost_end:
     intangible_end_frame: 0
     cancel_frame: 24
     freeze_during_hitstop: false
+catch:
+  extra:
+    cancel_frame: 32
+catch_dash:
+  extra:
+    cancel_frame: 38
+catch_turn:
+  extra:
+    cancel_frame: 35
 catch_attack:
   extra:
     cancel_frame: 0

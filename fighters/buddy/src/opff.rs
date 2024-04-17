@@ -5,8 +5,6 @@ const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
 const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
 const BEAKBOMB_END_FRAME: i32 = 25; //Dash timer is shared between ground and air in vl.prc
-
-static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
@@ -140,7 +138,6 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
     {
          fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
     }
-
 }
 
 unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
@@ -159,8 +156,8 @@ unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     let motion_offset = -0.125;
     let motion_vec = Vector3f{x: 0.0, y: motion_offset+(VarModule::get_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE)*motion_factor), z: 0.0};
     KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-
 }
+
 unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     let sideSpecial = [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -194,7 +191,6 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     {
         VarModule::off_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
     }
-
 }
 
 //Check to see if Banjo hit a shield during beakbomb.
@@ -258,7 +254,6 @@ unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon, boma: &mut Bat
     {
         fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
     }
-
 }
 
 unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
@@ -444,7 +439,6 @@ unsafe fn training_reset(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectM
             }
         }
     }
-
 }
 
 // upB freefalls after one use per airtime
@@ -535,14 +529,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-extern "C" fn buddy_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let lua_state = fighter.lua_state_agent;    
-        let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        on_rebirth(fighter, boma);
-    }
-}
-
 pub unsafe extern "C" fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     buddy_frame(fighter);
@@ -554,9 +540,6 @@ pub unsafe fn buddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("buddy")
-        .on_start(buddy_reset)
-        .on_line(Main, buddy_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, buddy_frame_wrapper);
 }

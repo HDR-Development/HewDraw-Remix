@@ -255,6 +255,15 @@ special_air_s_throwf:
     intangible_end_frame: 0
     cancel_frame: 36
     freeze_during_hitstop: false
+catch:
+  extra:
+    cancel_frame: 40
+catch_dash:
+  extra:
+    cancel_frame: 46
+catch_turn:
+  extra:
+    cancel_frame: 42
 catch_attack:
   extra:
     cancel_frame: 0

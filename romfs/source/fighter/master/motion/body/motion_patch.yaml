@@ -90,6 +90,15 @@ special_air_n_cancel:
 special_air_s_front_dash:
   extra:
     cancel_frame: 46
+catch:
+  extra:
+    cancel_frame: 38
+catch_dash:
+  extra:
+    cancel_frame: 46
+catch_turn:
+  extra:
+    cancel_frame: 42
 catch_attack:
   extra:
     cancel_frame: 0

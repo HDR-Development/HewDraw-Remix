@@ -181,6 +181,15 @@ special_air_lw_light:
       - effect_specialairlwlight
     extra:
       cancel_frame: 61
+catch:
+  extra:
+    cancel_frame: 34
+catch_dash:
+  extra:
+    cancel_frame: 41
+catch_turn:
+  extra:
+    cancel_frame: 38
 catch_attack:
   extra:
     cancel_frame: 0

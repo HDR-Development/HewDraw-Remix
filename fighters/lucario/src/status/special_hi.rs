@@ -1,6 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
 
@@ -340,10 +338,8 @@ unsafe extern "C" fn lucario_special_hi_get_vec(_fighter: &mut L2CFighterCommon,
     vec
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, special_hi_bound_end)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, special_hi_bound_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main);
 }

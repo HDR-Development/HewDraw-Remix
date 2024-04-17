@@ -1,10 +1,8 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-// FIGHTER_STATUS_KIND_FINAL //
+// FIGHTER_STATUS_KIND_FINAL
 
-pub unsafe extern "C" fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn final_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,20 +28,21 @@ pub unsafe extern "C" fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
         0
     );
-    MeterModule::drain(fighter.object(), 6);
+    let meter_amount = MeterModule::meter(fighter.battle_object);
+    MeterModule::drain_direct(fighter.battle_object, meter_amount);
     return 0.into();
 }
 
-// FIGHTER_RYU_STATUS_KIND_FINAL2 //
+// FIGHTER_RYU_STATUS_KIND_FINAL2
 
-pub unsafe extern "C" fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn final2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Pre, fighter, *FIGHTER_RYU_STATUS_KIND_FINAL2)(fighter);
-    MeterModule::drain(fighter.object(), 6);
+    let meter_amount = MeterModule::meter(fighter.battle_object);
+    MeterModule::drain_direct(fighter.battle_object, meter_amount);
     ret
 }
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .status(Pre, *FIGHTER_STATUS_KIND_FINAL, pre_final)
-        .status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, pre_final2)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_FINAL, final_pre);
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_FINAL2, final2_pre);
 }

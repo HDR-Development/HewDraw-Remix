@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_LW4
+
 // lets down smash travel past ledges during a DACUS
 pub unsafe extern "C" fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
@@ -75,9 +77,7 @@ pub unsafe extern "C" fn attack_lw4_map_correction(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("trail")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_main)
-        .status(MapCorrection, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_map_correction,)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_main);
+    agent.status(MapCorrection, *FIGHTER_STATUS_KIND_ATTACK_LW4, attack_lw4_map_correction);
 }

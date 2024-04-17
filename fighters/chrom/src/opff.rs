@@ -246,8 +246,6 @@ pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFi
     sword_length(&mut *(fighter.module_accessor));
 }
 
-pub fn install() {
-    smashline::Agent::new("chrom")
-        .on_line(Main, chrom_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, chrom_frame_wrapper); 
 }

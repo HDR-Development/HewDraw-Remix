@@ -71,10 +71,10 @@ special_air_n_c:
     cancel_frame: 9
 catch:
   extra:
-    cancel_frame: 71
+    cancel_frame: 67
 catch_dash:
   extra:
-    cancel_frame: 79
+    cancel_frame: 75
 catch_turn:
   extra:
     cancel_frame: 74

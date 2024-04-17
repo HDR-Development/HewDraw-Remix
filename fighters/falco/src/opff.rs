@@ -89,8 +89,6 @@ pub unsafe fn falco_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("falco")
-        .on_line(Main, falco_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, falco_frame_wrapper);
 }

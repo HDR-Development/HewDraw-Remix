@@ -127,34 +127,6 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
-            return
-        }
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let gnw = utils::util::get_battle_object_from_id(owner_id);
-        let gnw_boma = &mut *(*gnw).module_accessor;
-        if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
-            let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
-            if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame < 10.0 {
-                    ModelModule::set_scale(weapon.module_accessor, 0.75);
-                }
-                else {
-                    ModelModule::set_scale(weapon.module_accessor, 1.1);
-                }
-            }
-        }
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .on_line(Main, gamewatch_frame_wrapper)
-        .install();
-
-    smashline::Agent::new("gamewatch_box")
-        .on_line(Main, box_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, gamewatch_frame_wrapper);
 }

@@ -1982,15 +1982,15 @@
       <float hash="landing_speed_mul_escape_air_slide">1</float>
     </struct>
     <struct index="60">
-      <float hash="escape_n_hit_xlu_frame">7</float>
-      <float hash="escape_n_hit_normal_frame">11</float>
+      <float hash="escape_n_hit_xlu_frame">3</float>
+      <float hash="escape_n_hit_normal_frame">15</float>
       <float hash="escape_attack_frame">26</float>
       <float hash="escape_n_cancel_frame">26</float>
-      <float hash="escape_f_hit_xlu_frame">8</float>
-      <float hash="escape_f_hit_normal_frame">9</float>
+      <float hash="escape_f_hit_xlu_frame">4</float>
+      <float hash="escape_f_hit_normal_frame">13</float>
       <float hash="escape_f_cancel_frame">33</float>
-      <float hash="escape_b_hit_xlu_frame">8</float>
-      <float hash="escape_b_hit_normal_frame">9</float>
+      <float hash="escape_b_hit_xlu_frame">4</float>
+      <float hash="escape_b_hit_normal_frame">13</float>
       <float hash="escape_b_cancel_frame">33</float>
       <float hash="escape_air_hit_xlu_frame">8</float>
       <float hash="escape_air_hit_normal_frame">22</float>

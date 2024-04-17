@@ -174,8 +174,6 @@ pub unsafe fn miifighter_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("miifighter")
-        .on_line(Main, miifighter_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, miifighter_frame_wrapper);
 }

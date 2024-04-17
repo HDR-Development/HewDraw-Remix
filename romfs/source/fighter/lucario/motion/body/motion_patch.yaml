@@ -193,6 +193,15 @@ special_n_bomb:
 special_n_cancel:
   extra:
     cancel_frame: 7
+catch:
+  extra:
+    cancel_frame: 37
+catch_dash:
+  extra:
+    cancel_frame: 44
+catch_turn:
+  extra:
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0

@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
@@ -30,8 +31,21 @@ unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_situation_changed(fighter.module_accessor) {
-        special_n_situation_helper(fighter);
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                fighter.set_situation(SITUATION_KIND_GROUND.into());
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_hold"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                fighter.set_situation(SITUATION_KIND_AIR.into());
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_hold"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
     }
     let mut min_weak_size = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("min_weak_size"));
     let mut max_weak_size = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("max_weak_size"));
@@ -71,9 +85,9 @@ unsafe extern "C" fn special_n_charge_substatus(fighter: &mut L2CFighterCommon, 
     return 0.into()
 }
 
-/// Hold neutral special to explode
+// FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT
 
-unsafe extern "C" fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE) {
         VarModule::off_flag(fighter.object(), vars::kirby::instance::SPECIAL_N_EXPLODE);
         WorkModule::set_int64(fighter.module_accessor, hash40("ridley_special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
@@ -84,10 +98,11 @@ unsafe extern "C" fn special_n_shoot_status_main(fighter: &mut L2CFighterCommon)
         else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("ridley_special_air_n_explode"), 0.0, 1.0, false, 0.0, false, false);
         }
-        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
 
         fighter.sub_shift_status_main(L2CValue::Ptr(special_n_shoot_main_loop as *const () as _))
-    } else {
+    }
+    else {
         smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT)(fighter)
     }
 }
@@ -132,17 +147,7 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE,
-            special_n_charge_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT,
-            special_n_shoot_status_main,
-        )
-        .install();
-}
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_CHARGE, special_n_charge_main);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RIDLEY_SPECIAL_N_SHOOT, special_n_shoot_main);
+    }

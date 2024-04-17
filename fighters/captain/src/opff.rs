@@ -78,8 +78,6 @@ pub unsafe extern "C" fn captain_frame_wrapper(fighter: &mut L2CFighterCommon) {
     fastfall_specials(fighter);
 }
 
-pub fn install() {
-    smashline::Agent::new("captain")
-        .on_line(Main, captain_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, captain_frame_wrapper);
 }

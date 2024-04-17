@@ -106,6 +106,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         );
     }
 }
+
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
 }

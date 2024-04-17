@@ -12,9 +12,6 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-catch:
-  flags:
-    move: false
 escape:
   flags:
     move: false
@@ -71,6 +68,14 @@ special_air_n_end2:
 special_air_n_end_max:
   extra:
     cancel_frame: 38
+catch:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 38
+catch_dash:
+  extra:
+    cancel_frame: 42
 catch_attack:
   extra:
     cancel_frame: 0

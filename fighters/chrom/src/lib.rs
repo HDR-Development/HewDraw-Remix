@@ -4,8 +4,8 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
 
 use smash::{
     lib::{
@@ -36,9 +36,12 @@ use utils::{
     ext::*
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("chrom");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }

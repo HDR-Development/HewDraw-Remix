@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
@@ -92,7 +93,7 @@ unsafe extern "C" fn pikmin_attack_air_handle_pikmin(fighter: &mut L2CFighterCom
             let mut link_event = FighterPikminLinkEventWeaponPikminConstraint__new_l2c_table();
             link_event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("fighter_pikmin_link_event_weapon_pikmin_constraint")));
             link_event[0xf2a5bf2beu64].assign(&L2CValue::Hash40(Hash40::new("top")));
-            link_event[0x92820810du64].assign(&L2CValue::Hash40(Hash40::new("top")));
+            link_event["joint_id_"].assign(&L2CValue::Hash40(Hash40::new("top")));
             let object_id = fighter.global_table[OBJECT_ID].get_u32();
             link_event[0xaa79e68a2u64].assign(&L2CValue::U32(object_id));
             link_event_store_l2c_table(fighter, FIGHTER_PIKMIN_LINK_NO_PIKMIN.into(), link_event);
@@ -163,8 +164,7 @@ unsafe extern "C" fn link_event_store_l2c_table(fighter: &mut L2CFighterCommon, 
     deleter(link_event);
     ret
 }
-pub fn install() {
-    smashline::Agent::new("pikmin")
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
 }

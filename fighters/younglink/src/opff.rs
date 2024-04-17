@@ -32,9 +32,9 @@ extern "Rust" {
 // Bombchu Timer Count
 unsafe fn bombchu_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 721 {
+    if gimmick_timerr > 0 && gimmick_timerr < 301 {
         // Bombchu Timer Reset
-        if gimmick_timerr > 719 {
+        if gimmick_timerr > 299 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
@@ -65,16 +65,6 @@ unsafe fn bombchu_training(fighter: &mut L2CFighterCommon, id: usize, status_kin
 unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
 	let long_sword_scale = Vector3f{x: 1.0, y: 1.1, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &long_sword_scale);
-}
-
-unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    // young link dair hold
-    if motion_kind == hash40("attack_air_lw")
-        && frame > 21.0 && frame < 58.0 
-        && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
-    {
-        MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
-    }
 }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
@@ -116,7 +106,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bombchu_reset(fighter, id, status_kind);
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
-    holdable_dair(boma, motion_kind,frame);
     da_jump(fighter, boma, status_kind, situation_kind);
     fastfall_specials(fighter);
 }
@@ -140,8 +129,6 @@ pub unsafe fn younglink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("younglink")
-        .on_line(Main, younglink_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, younglink_frame_wrapper);
 }

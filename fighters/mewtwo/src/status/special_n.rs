@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL
+
 unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
@@ -51,8 +53,6 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
     return 0.into();
 }
 
-pub fn install() {
-    Agent::new("mewtwo")
-        .status(Main, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL, special_n_cancel_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL, special_n_cancel_main);
 }

@@ -20,3 +20,21 @@ attack_squat_s3:
       - sound_attacks3
       - effect_attacks3
     extra: ~
+special_s1:
+  game_script: game_specials1whip
+  animations:
+  - name: d01specials1.nuanmb
+  scripts: ~
+  extra: ~
+special_air_s1:
+  game_script: game_specialairs1whip
+  animations:
+  - name: d01specialairs1.nuanmb
+  scripts: ~
+  extra: ~
+attack_13:
+  game_script: game_attack13whip
+  animations:
+  - name: c00attack13.nuanmb
+  scripts: ~
+  extra: ~

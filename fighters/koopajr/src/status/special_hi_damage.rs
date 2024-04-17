@@ -1,7 +1,4 @@
 use super::*;
-use globals::*;
-// status script import
- 
 
 // FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END
 
@@ -21,8 +18,6 @@ pub unsafe extern "C" fn special_hi_damage_end_main(fighter: &mut L2CFighterComm
     1.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopajr")
-        .status(Main, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, special_hi_damage_end_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, special_hi_damage_end_main);
 }

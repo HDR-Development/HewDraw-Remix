@@ -73,6 +73,12 @@ attack_air_lw2:
     intangible_end_frame: 0
     cancel_frame: 45
     freeze_during_hitstop: false
+catch:
+  extra:
+    cancel_frame: 36
+catch_dash:
+  extra:
+    cancel_frame: 41
 catch_attack:
   extra:
     cancel_frame: 8

@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
-// status script import
 
-unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_FinalCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +31,7 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
     return 0.into();
 }
 
-unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
@@ -39,14 +39,14 @@ unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> 
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         VarModule::on_flag(fighter.object(), vars::lucario::instance::DISABLE_SPECIAL_LW);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_lw_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             special_lw_set_kinetic(fighter);
@@ -135,10 +135,8 @@ unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_main)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
 }

@@ -4,8 +4,16 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod punch1;
+mod punch2;
+mod punch3;
+mod beam;
+mod ring;
 
 use smash::{
     lib::{
@@ -37,9 +45,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("tantan");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    punch1::install();
+    punch2::install();
+    punch3::install();
+    beam::install();
+    ring::install();
 }

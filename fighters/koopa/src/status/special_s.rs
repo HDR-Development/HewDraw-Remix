@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S
 
 pub const SPECIAL_S_KIND_F: i32 = 1;
 pub const SPECIAL_S_KIND_B: i32 = 2;
@@ -195,7 +195,6 @@ unsafe extern "C" fn special_s_kinetic_exec(fighter: &mut L2CFighterCommon) {
             );
         }
     }
-    
 }
 
 unsafe extern "C" fn specials_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -250,7 +249,7 @@ unsafe extern "C" fn specials_ejected(fighter: &mut L2CFighterCommon) {
     }
     else {
         WorkModule::on_flag(fighter.module_accessor,*FIGHTER_KOOPA_INSTANCE_WORK_ID_FLAG_THROW_NO_CHANGE);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x31dbed6513), Hash40::new_raw(0xbefb89abe),Hash40::new_raw(0x7fb997a80));
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x31dbed6513), Hash40::new("koopa_dived"), Hash40::new("invalid"));
     }
     WorkModule::off_flag(fighter.module_accessor,*FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_CAPTURE);
 }
@@ -335,7 +334,7 @@ unsafe extern "C" fn specials_landing_init(fighter: &mut L2CFighterCommon) -> L2
     //Unable energies
     if LinkModule::is_linked(fighter.module_accessor, *LINK_NO_CAPTURE){
         if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_S_THROW_TYPE) == -2 {
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x329eb012b6), Hash40::new_raw(0xbefb89abe),Hash40::new_raw(0xbefb89abe));
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x329eb012b6), Hash40::new("koopa_dived"), Hash40::new("koopa_dived"));
         }
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_HIT);
@@ -457,7 +456,7 @@ unsafe extern "C" fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_HIT) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_SPECIAL_S_FLAG_CAPTURE) {
             let capture_id = LinkModule::get_node_object_id(fighter.module_accessor, *LINK_NO_CAPTURE);
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x31dbed6513), Hash40::new("throw"),Hash40::new_raw(0x7fb997a80));
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x31dbed6513), Hash40::new("throw"), Hash40::new("invalid"));
             if capture_id != 0x50000000 {
                 AttackModule::hit_absolute_joint(fighter.module_accessor, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW,capture_id as u32,Hash40::new("throw"), 0, 0);
             }
@@ -472,17 +471,15 @@ unsafe extern "C" fn specials_landing_exec(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("koopa")
-        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_main)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exec)
-        .status(Exit, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exit)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_init)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_exec)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, specials_fall_init)
-        .status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_init)
-        .status(Pre, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_pre)
-        .status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_main)
-        .status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_main);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exec);
+    agent.status(Exit, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_SQUAT, specials_squat_exit);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_init);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_JUMP, specials_jump_exec);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_FALL, specials_fall_init);
+    agent.status(Init, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_init);
+    agent.status(Pre, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_pre);
+    agent.status(Main, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_main);
+    agent.status(Exec, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_S_LANDING, specials_landing_exec);
 }

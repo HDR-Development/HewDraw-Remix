@@ -23,4 +23,5 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
 [features]
+default = ["no-offset-search"]
 no-offset-search = []

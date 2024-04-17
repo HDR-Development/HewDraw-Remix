@@ -1,8 +1,6 @@
 use super::*;
-use globals::*;
-// status script import
 
-// FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //
+// FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW
 
 unsafe extern "C" fn special_s_throw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -186,9 +184,7 @@ unsafe extern "C" fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_throw_main_loop as *const () as _))
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_pre)
-        .status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_pre);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, special_s_throw_main);
 }

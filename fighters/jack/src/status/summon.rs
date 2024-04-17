@@ -1,6 +1,8 @@
 use super::*;
 
-pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_JACK_STATUS_KIND_SUMMON
+
+pub unsafe extern "C" fn summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -28,7 +30,7 @@ pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub unsafe extern "C" fn jack_summon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn summon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if FighterSpecializer_Jack::is_cut_in_effect(fighter.module_accessor) {
     //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SUMMON_FLAG_CUT_IN_EFFECT);
     // }
@@ -56,10 +58,10 @@ pub unsafe extern "C" fn jack_summon_main(fighter: &mut L2CFighterCommon) -> L2C
     // }
     VisibilityModule::set_int64(fighter.module_accessor, hash40("mask") as i64, hash40("on") as i64);
     VisibilityModule::set_material_anim_priority(fighter.module_accessor, Hash40::new("mask"), true);
-    fighter.sub_shift_status_main(L2CValue::Ptr(jack_summon_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(summon_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn summon_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -91,9 +93,7 @@ unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("jack")
-        .status(Pre, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_pre)
-        .status(Main, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_JACK_STATUS_KIND_SUMMON, summon_pre);
+    agent.status(Main, *FIGHTER_JACK_STATUS_KIND_SUMMON, summon_main);
 }

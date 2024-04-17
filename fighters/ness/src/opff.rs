@@ -119,7 +119,6 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
             KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         }
     }
-
 }
 
 // Allow grabbing the ledge from behind while in upSpecialEnd
@@ -213,17 +212,6 @@ pub unsafe fn ness_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe {
-        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("ness")
-        .on_line(Main, ness_frame_wrapper)
-        .install();
-    smashline::Agent::new("ness_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, ness_frame_wrapper);
 }

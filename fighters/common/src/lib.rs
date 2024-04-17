@@ -2,6 +2,7 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 #![feature(repr_simd)]
+#![feature(simd_ffi)]
 use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};

@@ -59,6 +59,9 @@ landing_air_lw:
 special_air_s_miss_end:
   extra:
     cancel_frame: 36
+catch:
+  extra:
+    cancel_frame: 33
 catch_attack:
   extra:
     cancel_frame: 0
