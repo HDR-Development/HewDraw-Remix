@@ -43,7 +43,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     }
 
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
-    if rng = 1 {
+    if rng == 1 {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 84, 96, 0, 43, 4.0, 0.0, 7.2, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
