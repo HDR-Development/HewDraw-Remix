@@ -20,6 +20,9 @@ attack_12:
     move: false
   extra:
     cancel_frame: 38
+attack_air_b:
+  flags:
+    turn: true
 attack_air_hi:
   extra:
     cancel_frame: 28
