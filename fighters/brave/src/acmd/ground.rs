@@ -130,8 +130,7 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 10.0);
-    if is_excute(agent)
-    {
+    if is_excute(agent){
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, 2, 0, 180, 0, 1.1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.6, 0.6, 0.6);
     }
