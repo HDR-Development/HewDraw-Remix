@@ -1631,6 +1631,11 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 0x200;
     }
 
+    pub mod edge_flash {
+        pub const BURST: i32 = 0x2;
+        pub const VANISH: i32 = 0x3;
+    }
+
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0x1F1;
     }
@@ -1701,10 +1706,5 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0x1EA;
         pub const SPECIAL_S_END: i32 = 0x1EB;
-    }
-
-    pub mod edge_flash {
-        pub const BURST: i32 = 0x2;
-        pub const VANISH: i32 = 0x3;
     }
 }

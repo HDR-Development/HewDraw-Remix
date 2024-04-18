@@ -7,7 +7,7 @@ unsafe extern "C" fn fly_s_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn fly_s_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly_main_loop(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S.into());
+    sub_fly_main_loop(weapon, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_S.into());
     return 0.into()
 }
 
@@ -17,7 +17,7 @@ unsafe extern "C" fn fly_m_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn fly_m_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly_main_loop(weapon, 1, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_M.into());
+    sub_fly_main_loop(weapon, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_M.into());
     return 0.into()
 }
 
@@ -27,7 +27,7 @@ unsafe extern "C" fn fly_l_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn fly_l_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    sub_fly_main_loop(weapon, 0, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_L.into());
+    sub_fly_main_loop(weapon, WEAPON_EDGE_FIRE_STATUS_KIND_BURST_L.into());
     return 0.into()
 }
 
@@ -60,7 +60,7 @@ unsafe extern "C" fn sub_fly_main(weapon: &mut L2CWeaponCommon, flare_type: i32)
     }
 }
 
-unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, flare_type: i32, status: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, status: L2CValue) -> L2CValue {
     if (WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) <= 0)
     || (WorkModule::is_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_HIT_WALL)
     && weapon.status_frame() <= 2) {
@@ -82,6 +82,7 @@ unsafe extern "C" fn sub_fly_main_loop(weapon: &mut L2CWeaponCommon, flare_type:
             EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_counteract_mark"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.7, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_just_shield_hit"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_badge_reflection"), true, false, false, false, app::enSEType(0));
+            WorkModule::off_flag(weapon.module_accessor, *WEAPON_EDGE_FIRE_INSTANCE_WORK_ID_FLAG_ATTACK);
             if weapon.is_status(*WEAPON_EDGE_FIRE_STATUS_KIND_FLY_S) {
                 SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_crossbomb_blink"), true, false, false, false, app::enSEType(0));
                 weapon.change_status(WEAPON_EDGE_FIRE_STATUS_KIND_FLY_M.into(), false.into());

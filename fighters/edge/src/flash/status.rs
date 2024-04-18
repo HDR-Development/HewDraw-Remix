@@ -89,8 +89,6 @@ unsafe extern "C" fn burst_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn burst_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
     EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("edge_senkou_shield_break"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
     smashline::original_status(Main, weapon, *WEAPON_EDGE_FLASH_STATUS_KIND_ATTACK)(weapon)
 }
