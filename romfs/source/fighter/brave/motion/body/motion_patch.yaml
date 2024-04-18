@@ -38,6 +38,9 @@ attack_lw3:
 attack_hi3:
   extra:
     cancel_frame: 37
+attack_dash:
+  extra:
+    cancel_frame: 41
 attack_s3_s:
   extra:
     cancel_frame: 28

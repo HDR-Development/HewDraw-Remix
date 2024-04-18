@@ -63,7 +63,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_13"),
             Hash40::new("attack_s3_s2"),
             Hash40::new("attack_hi3"),
-            Hash40::new("attack_dash"),
+            //Hash40::new("attack_dash"),
             Hash40::new("attack_s4_s"),
             Hash40::new("attack_hi4"),
             Hash40::new("attack_lw4"),
