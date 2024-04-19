@@ -176,7 +176,7 @@ attack_air_n:
     cancel_frame: 49
 attack_lw4:
   extra:
-    cancel_frame: 61
+    cancel_frame: 64
 special_s4_back:
     game_script: game_specials4back
     flags:

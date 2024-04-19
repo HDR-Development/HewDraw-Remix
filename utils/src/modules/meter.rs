@@ -547,11 +547,25 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
     let initial_pos_x = *knockback_info.add(8);
     let initial_pos_y = *knockback_info.add(9);
     let reaction = *knockback_info.add(0x48 / 4);
-    let mut y_speed = initial_speed_y;
-    let mut y_pos = PostureModule::pos_y(defender_boma);
     let angle = *knockback_info.add(0x10);
     let top_lw = defender_boma.get_param_float("battle_object", "fly_top_angle_lw");
     let top_hi = defender_boma.get_param_float("battle_object", "fly_top_angle_hi");
+
+    let ecb_bottom = *GroundModule::get_rhombus(defender_boma, true).add(1);
+    let base_sdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_mul"));
+    let sdi_frame = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_frame"));
+    let sdi_max_count = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_max_count"));
+    let base_asdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_auto_mul"));
+    let sdi_mul = *knockback_info.add(24);
+    // println!("base_sdi: {}", base_sdi);
+    // println!("sdi_frame: {}", sdi_frame);
+    // println!("sdi_max_count: {}", sdi_max_count);
+    // println!("base_asdi: {}", base_asdi);
+    // println!("sdi_mul: {}", sdi_mul);
+
+    // for off in 0..128 {
+    //     println!("{}: {}", off, *knockback_info.add(off));
+    // }
 
     let mut context = KnockbackCalcContext {
         knockback,
@@ -565,10 +579,10 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         damageflytop_gravity: defender_boma.get_param_float("damage_fly_top_air_accel_y", ""),
         fall_speed: defender_boma.get_param_float("air_speed_y_stable", ""),
         damageflytop_fall_speed: defender_boma.get_param_float("damage_fly_top_speed_y_stable", ""),
-        x_pos: PostureModule::pos_x(defender_boma),
-        y_pos: PostureModule::pos_y(defender_boma),
-        x_pos_prev: PostureModule::pos_x(defender_boma),
-        y_pos_prev: PostureModule::pos_y(defender_boma),
+        x_pos: ecb_bottom.x,
+        y_pos: ecb_bottom.y,
+        x_pos_prev: ecb_bottom.x,
+        y_pos_prev: ecb_bottom.y,
         decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
         decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
     };
@@ -591,6 +605,37 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         context.y_launch_speed = ang.sin() * mag;
         let mut x = 0;
         let mut does_angle_kill = false;
+
+
+        // first hitstun iteration, special amsah tech checks
+        context.step();
+        if context.y_pos - context.y_pos_prev < base_asdi * sdi_mul
+        && GroundModule::ray_check(
+            defender_boma, 
+            &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+            &Vector2f{ x: 0.0, y: base_asdi * sdi_mul}, // TODO: extend this by the possible SDI distance
+            true
+        ) == 1 {
+            println!("idx: {} would be amsah techable", idx);
+            return false;
+        }
+        if GroundModule::ray_check(
+            defender_boma, 
+            &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
+            &Vector2f{ x: context.x_pos - context.x_pos_prev, y: context.y_pos - context.y_pos_prev}, 
+            context.y_pos <= context.y_pos_prev // only check for platforms if going downwards
+        ) == 1 {
+            // if it's ever possible to touch stage, this is not a valid finishing hit
+            // println!("idx: {} would touch stage", idx);
+            return false;
+        }
+        if !blastzones.contains(context.x_pos, context.y_pos){
+            // println!("{} will kill! adding to counter.", ang.to_degrees());
+            does_angle_kill = true;
+        }
+        x += 1;
+
+
         while context.hitstun > x as f32  {
             context.step();
             if GroundModule::ray_check(
@@ -604,7 +649,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
                 return false;
             }
             if !blastzones.contains(context.x_pos, context.y_pos){
-                //println!("{} will kill! adding to counter.", ang.to_degrees());
+                // println!("{} will kill! adding to counter.", ang.to_degrees());
                 does_angle_kill = true;
                 break;
             }

@@ -141,11 +141,12 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
+        if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_MOTION_FALL {KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL); }
     }
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        if MotionModule::is_end(fighter.module_accessor) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
-    } //snaps out of aerial cancel anim at frame 10
-    else if fighter.global_table[CURRENT_FRAME].get_i32() > 9 {fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()); }
+        else {fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
+    }
     return 0.into();
 }
 
@@ -157,29 +158,29 @@ unsafe extern "C" fn motion_handling(fighter: &mut L2CFighterCommon) -> L2CValue
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        //var reset (why is this here)
-        fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT);
-        fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_REUSE_FRAME);
-        fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
-        fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT);
-        fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI);
-        fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AFTER_ACTION);
-        fighter.set_float(0.0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);
+        var_reset(fighter);
         //motion
         if fighter.is_motion(Hash40::new("special_air_n_charge_h")) {MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_charge_h"), -1.0, 1.0, 0.0, true, true); }
         else if fighter.is_motion(Hash40::new("special_air_n_start_h")) {MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_start_h"), -1.0, 1.0, 0.0, true, true); }
         else if fighter.is_motion(Hash40::new("special_air_n_loop_h")) {MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_loop_h"), -1.0, 1.0, 0.0, true, true); }
         else if fighter.is_motion(Hash40::new("special_air_n_end_h")) {MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_end_h"), -1.0, 1.0, 0.0, true, true); }
     } else {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        let start_y = fighter.get_param_float("param_special_n", "air_start_speed_mul_y");
         let air_accel_y = fighter.get_param_float("param_special_n", "air_start_accel_y");
         let air_stable_y = fighter.get_param_float("param_special_n", "air_start_max_speed_y");
+        if fighter.global_table[STATUS_KIND].get_i32() == statuses::bayonetta::SPECIAL_N_CANCEL && StatusModule::is_changing(fighter.module_accessor) {
+            sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, start_y);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        }
+        if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_AIR_STOP {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
+            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.009);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
+        }
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_stable_y);
-        sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
-        sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.009);
-        sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
     }
     return 0.into();
 }
@@ -217,6 +218,17 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     //} else {WorkModule::dec_int(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME); }
+    return 0.into();
+}
+
+unsafe extern "C" fn var_reset(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT);
+    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_REUSE_FRAME);
+    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT);
+    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI);
+    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AFTER_ACTION);
+    fighter.set_float(0.0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);
     return 0.into();
 }
 

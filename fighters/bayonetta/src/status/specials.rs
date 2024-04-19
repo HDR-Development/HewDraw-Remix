@@ -80,7 +80,7 @@ unsafe extern "C" fn special_s_edge_pre(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 unsafe extern "C" fn special_s_edge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let frame = fighter.global_table[PREV_STATUS_FRAME].get_f32() - 18.0;
+    let frame = fighter.global_table[PREV_STATUS_FRAME].get_f32() - 17.0;
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_edge"), frame.clamp(0.0, 16.0), 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_edge_main_loop as *const () as _))
 }

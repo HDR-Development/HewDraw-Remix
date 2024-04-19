@@ -868,18 +868,19 @@ unsafe fn map_controls_hook(
         (*out).buttons |= Buttons::RivalsWallJump;
     }
 
-    let (parry, hold) = if is_parry_taunt {
+    let (parry_manual, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {
         (Buttons::Special, Buttons::AppealAll)
     };
 
-    if (*out).buttons.intersects(Buttons::Guard) {
-        if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry
-        } else if (*out).buttons.intersects(hold) {
-            (*out).buttons |= Buttons::GuardHold;
-        }
+    if (*out).buttons.intersects(parry_manual) {
+        (*out).buttons |= Buttons::ParryManual;
+    }
+
+    if (*out).buttons.intersects(Buttons::Guard) 
+    && (*out).buttons.intersects(hold) {
+        (*out).buttons |= Buttons::GuardHold;
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
