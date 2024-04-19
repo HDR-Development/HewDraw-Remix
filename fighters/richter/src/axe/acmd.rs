@@ -5,7 +5,7 @@ unsafe extern "C" fn richter_axe_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let lr = PostureModule::lr(fighter.module_accessor);
     let axe_owner = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let offset = &Vector2f::new(0.0 * lr, if axe_owner.kind() == *FIGHTER_KIND_KIRBY { -12.2 } else { -4.2 });
+    let offset = &Vector2f::new(0.0 * lr, if axe_owner.kind() == *FIGHTER_KIND_KIRBY { -13.2 } else { -5.2 });
     PostureModule::set_rot(boma, &Vector3f::new(0.0, 0.0, if axe_owner.is_situation(*SITUATION_KIND_AIR) { -128.0 } else { -90.0 } * lr), 0);
     PostureModule::set_scale(boma, 1.12, false);
     PostureModule::add_pos_2d(boma, offset);
