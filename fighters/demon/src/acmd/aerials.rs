@@ -71,27 +71,28 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        // VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            MotionModule::set_rate(boma, (7.5-6.0)/2.0);
-        }
-    }
-    frame(lua_state, 7.5);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            MotionModule::set_rate(boma, (8.0-7.5)/1.0);
-         }
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
+    // // will turn Kazuya around if holding the button
+    // frame(lua_state, 6.0);
+    // if is_excute(agent) {
+    //     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+    //         VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    //         MotionModule::set_rate(boma, (7.5-6.0)/2.0);
+    //     }
+    // }
+    // frame(lua_state, 7.5);
+    // if is_excute(agent) {
+    //     if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+    //         MotionModule::set_rate(boma, (8.0-7.5)/1.0);
+    //      }
+    // }
+    // frame(lua_state, 8.0);
+    // if is_excute(agent) {
+    //     if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+    //         MotionModule::set_rate(boma, 1.0);
+    //     }
+    // }
     frame(lua_state, 11.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0,Hash40::new("legr"), 14.0, 40, 74, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
