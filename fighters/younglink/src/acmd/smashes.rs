@@ -52,11 +52,11 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 12.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 14.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
     }

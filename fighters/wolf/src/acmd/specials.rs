@@ -162,6 +162,23 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specialsend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -305,8 +322,10 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("effect_specialsend", effect_specialsend);
+    agent.acmd("expression_specialsend", expression_specialsend);
     agent.acmd("game_specialairsend", game_specialsend);
     agent.acmd("effect_specialairsend", effect_specialsend);
+    agent.acmd("expression_specialairsend", expression_specialsend);
     
     agent.acmd("game_specialhi", game_specialhi);
 

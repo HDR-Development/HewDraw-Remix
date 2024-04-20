@@ -353,6 +353,7 @@ pub mod vars {
             pub const BAYONET_ACTIVE: i32 = 0x0101;
             pub const FLUTTER_ENABLED: i32 = 0x0102;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0103;
+            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0104;
 
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;
