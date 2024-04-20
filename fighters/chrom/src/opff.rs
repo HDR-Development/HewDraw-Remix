@@ -2,59 +2,6 @@ use super::*;
 
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
-unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
-    let stick_x = fighter.stick_x();
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2])
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && stick_x != 0.0
-    {
-        KineticModule::add_speed_outside(
-            fighter.module_accessor,
-            *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION,
-            &Vector3f::new(0.2 * stick_x.signum(), 0.0, 0.0)
-        );
-    }
-}
-
-// Chrome Soaring Slash Cancel
-unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT)
-    }
-    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 28.0 < fighter.motion_frame() && fighter.motion_frame() < 31.0
-    && !fighter.is_button_on(Buttons::Special)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
-        if VarModule::is_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) {
-            VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        }
-    }
-    if VarModule::is_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT) {
-        if ((fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-        && !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2]))
-        || fighter.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-            *FIGHTER_STATUS_KIND_DAMAGE_FALL]) {
-                VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
-        }
-    }
-}
-
 // Side Special Cancels
 unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4])
@@ -160,26 +107,6 @@ pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Soaring Slash Hit
-unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2,
-        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3
-    ])
-    {
-        VarModule::off_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
-    }
-
-    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3) {
-        return;
-    }
-
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::chrom::instance::SOARING_SLASH_HIT);
-    }
-}
-
 pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon){
     let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
@@ -237,10 +164,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
-    //soaring_slash_drift(fighter);
-    //soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
-    //soaring_slash(fighter);
     double_edge_dance_vertical_momentum(fighter);
     fastfall_specials(fighter);
     sword_length(&mut *(fighter.module_accessor));
