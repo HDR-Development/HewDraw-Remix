@@ -7,12 +7,11 @@ use vars::rosetta::status::*;
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let is_teleport = (
+    let should_teleport = (
         !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
         && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0
     );
-    if is_teleport {
-        // teleport
+    if should_teleport {
         frame(lua_state, 17.0);
         if !VarModule::is_flag(boma.object(), IS_INVALID_TELEPORT) {
             if is_excute(agent) {
@@ -83,7 +82,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
                     VisibilityModule::set_whole(tico_boma, true);
                     HitModule::set_whole(tico_boma, HitStatus(*HIT_STATUS_NORMAL), 0);
                 }
-                VarModule::set_int(boma.object(), GIMMICK_TIMER, 300); // 300 Frame (5 second) cooldown
+                VarModule::set_int(boma.object(), GIMMICK_TIMER, 240); // 240 Frame (4 second) cooldown
             }
             frame(lua_state, 38.0);
             if is_excute(agent) {
@@ -91,23 +90,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
                     CancelModule::enable_cancel(boma);
                 }
             }
-        }
-    } else {
-        // gravitational pull
-        frame(lua_state, 3.0);
-        if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_ROSETTA_STATUS_SPECIAL_LW_FLAG_ENABLE_SEARCH);
-        }
-        for _ in (0..25) {
-            if is_excute(agent) {
-                ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_LIGHT as u8}, *FIGHTER_HAVE_ITEM_WORK_TEMPORARY, *ITEM_TRAIT_FLAG_QUICK, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
-                ItemModule::use_item(boma, *FIGHTER_HAVE_ITEM_WORK_TEMPORARY, false);
-            }
-            wait(lua_state, 1.0);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(agent) {
-            WorkModule::off_flag(boma, *FIGHTER_ROSETTA_STATUS_SPECIAL_LW_FLAG_ENABLE_SEARCH);
         }
     }
 }
@@ -150,8 +132,11 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
-    && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0 {
+    let should_teleport = (
+        !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
+        && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0
+    );
+    if should_teleport {
         if is_excute(agent) {
             slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
             ItemModule::set_have_item_visibility(boma, false, 0);
@@ -167,32 +152,6 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
         frame(lua_state, 35.0);
         if is_excute(agent) {
             ItemModule::set_have_item_visibility(boma, true, 0);
-        }
-    } else {
-        if is_excute(agent) {
-            slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-            ItemModule::set_have_item_visibility(boma, false, 0);
-        }
-        frame(lua_state, 2.0);
-        if is_excute(agent) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        frame(lua_state, 14.0);
-        if is_excute(agent) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        frame(lua_state, 26.0);
-        if is_excute(agent) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        
-        frame(lua_state, 35.0);
-        if is_excute(agent) {
-            ItemModule::set_have_item_visibility(boma, true, 0);
-        }
-        frame(lua_state, 38.0);
-        if is_excute(agent) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
 }

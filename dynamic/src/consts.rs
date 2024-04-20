@@ -1319,6 +1319,7 @@ pub mod vars {
     pub mod rosetta {
         pub mod instance {
             // ints
+            pub const WARP_EFFECT_HANDLER: i32 = 0x0100;
             pub const ROSA_X: i32 = 0x0101;
             pub const ROSA_Y: i32 = 0x0102;
             pub const TICO_X: i32 = 0x0103;

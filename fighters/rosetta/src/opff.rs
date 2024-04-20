@@ -30,11 +30,26 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	if cooldown_frame == 1 {
 		gimmick_flash(boma);
 	}
-	
-	if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) { return; }
 
 	// set the conditions for a successful teleport
 	let can_teleport = !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) && cooldown_frame == 0;
+	let warp_effect = VarModule::get_int(boma.object(), WARP_EFFECT_HANDLER);
+
+	// makes rosalina's wand glow if teleport is available
+	if can_teleport
+	&& !EffectModule::is_exist_effect(boma, warp_effect as u32) {
+		let eff_offset = &Vector3f::new(0.0, 8.0, 0.0);
+		let handle = EffectModule::req_follow(boma, Hash40::new("sys_status_all_up"), Hash40::new("havel"), eff_offset, &Vector3f::zero(), 0.28, false, 0, 0, 0, 0, 0, false, false) as u32;
+		EffectModule::set_rate(boma, handle, 0.5);
+		VarModule::set_int(boma.object(), WARP_EFFECT_HANDLER, handle as i32);
+	} else {
+		if EffectModule::is_exist_effect(boma, warp_effect as u32) 
+		& !can_teleport {
+			EffectModule::kill(boma, warp_effect as u32, false, false);
+		}
+	}
+	
+	if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) { return; }
 
 	if !can_teleport {
 		// prevent the successful teleport logic if Luma is put into hitstun or killed during startup
