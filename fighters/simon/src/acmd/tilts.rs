@@ -170,6 +170,7 @@ unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_simon_attackhard_l01"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_simon_rnd_attack"));
     }
 }
 
