@@ -1319,7 +1319,6 @@ pub mod vars {
     pub mod rosetta {
         pub mod instance {
             // ints
-            pub const COOLDOWN: i32 = 0x0100;
             pub const ROSA_X: i32 = 0x0101;
             pub const ROSA_Y: i32 = 0x0102;
             pub const TICO_X: i32 = 0x0103;
@@ -1332,13 +1331,9 @@ pub mod vars {
             pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
-            // ints
-            /// Used for determining what luma does
-            pub const LUMA_STATE: i32 = 0x1100;
-
             // flags
-            pub const IS_INVALID_TELEPORT: i32 = 0x1101;
-            pub const GROUNDED_TELEPORT: i32 = 0x1102;
+            pub const IS_INVALID_TELEPORT: i32 = 0x1100;
+            pub const GROUNDED_TELEPORT: i32 = 0x1101;
         }
     }
 

@@ -137,7 +137,6 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
-        println!("count: {}", pikmin_count);
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
@@ -183,7 +182,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
@@ -193,6 +191,7 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     }
     //With Pikmin
     frame(lua_state, 7.0);
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
