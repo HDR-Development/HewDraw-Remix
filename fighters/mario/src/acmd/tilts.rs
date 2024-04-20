@@ -121,6 +121,27 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+}
+
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -147,6 +168,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackhi3", game_attackhi3);
     agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
 
     agent.acmd("game_attacklw3", game_attacklw3);
 }
