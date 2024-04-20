@@ -31,7 +31,9 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
                     JostleModule::set_status(tico_boma, false);
                 }
             }
-            frame(lua_state, 25.0);
+        }
+        frame(lua_state, 25.0);
+        if !VarModule::is_flag(boma.object(), IS_INVALID_TELEPORT) {
             if is_excute(agent) {
                 if ArticleModule::is_exist(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO) {
                     let tico = ArticleModule::get_article(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO);
@@ -39,13 +41,15 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
                     let tico_boma = sv_battle_object::module_accessor(tico_id);
                     // store luma's position for rosalina to use
                     VarModule::set_int(boma.object(), TICO_X, PostureModule::pos_x(tico_boma) as i32);
-			        VarModule::set_int(boma.object(), TICO_Y, PostureModule::pos_y(tico_boma) as i32);
+                    VarModule::set_int(boma.object(), TICO_Y, PostureModule::pos_y(tico_boma) as i32);
                 }
                 // store rosalina's position for luma to use
                 VarModule::set_int(boma.object(), ROSA_X, PostureModule::pos_x(boma) as i32);
-			    VarModule::set_int(boma.object(), ROSA_Y, PostureModule::pos_y(boma) as i32);
+                VarModule::set_int(boma.object(), ROSA_Y, PostureModule::pos_y(boma) as i32);
             }
-            frame(lua_state, 26.0);
+        }
+        frame(lua_state, 26.0);
+        if !VarModule::is_flag(boma.object(), IS_INVALID_TELEPORT) {
             if is_excute(agent) {
                 // perform the actual swap
                 let pos = Vector3f { 
