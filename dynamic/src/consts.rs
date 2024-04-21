@@ -652,7 +652,6 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_HI_ATTACK: i32 = 0x1100;
-    
         }
     }
     pub mod jack {
