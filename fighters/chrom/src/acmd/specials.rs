@@ -41,7 +41,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 6);
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         }
     }
