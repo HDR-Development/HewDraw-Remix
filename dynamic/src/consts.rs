@@ -383,11 +383,11 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
-            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
+            pub const AETHER_DIVE_READY: i32 = 0x1101;
+            pub const AETHER_DIVE_START: i32 = 0x1102;
         }
     }
     pub mod dedede{
@@ -1642,5 +1642,10 @@ pub mod statuses {
     pub mod edge_flash {
         pub const BURST: i32 = 0x2;
         pub const VANISH: i32 = 0x3;
+    }
+
+    pub mod chrom {
+        pub const SPECIAL_HI_FLIP: i32 = 0x1ea;
+        pub const SPECIAL_HI_DIVE: i32 = 0x1eb;
     }
 }

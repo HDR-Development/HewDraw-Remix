@@ -68,6 +68,45 @@ special_air_n_end2:
 special_air_n_end_max:
   extra:
     cancel_frame: 38
+special_hi_1:
+  flags:
+    move: true
+special_air_hi_1:
+  flags:
+    move: true
+special_air_hi_2:
+  game_script: game_specialhiadd
+  scripts:
+  - expression_specialhiadd
+  - sound_specialhiadd
+  - effect_specialhiadd
+special_hi_3_start:
+  game_script: game_specialhi3start
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d02specialhi3start.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialhi3start
+    - sound_specialhi3start
+    - effect_specialhi3start
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
 catch:
   flags:
     move: false
