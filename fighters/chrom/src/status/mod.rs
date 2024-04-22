@@ -2,8 +2,9 @@ use super::*;
 use globals::*;
 // status script import
 
-mod special_s;
 mod special_hi;
+mod special_n;
+mod special_s;
 
 /// Prevents side b from being used again in air
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -43,6 +44,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     //agent.on_start(on_start);
 
-    special_s::install(agent);
     special_hi::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
 }

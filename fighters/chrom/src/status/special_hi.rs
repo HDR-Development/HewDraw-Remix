@@ -145,13 +145,9 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    /*
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        //if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        if fighter.sub_air_check_fall_common().get_bool() {
-            return 1.into();
-        }
-    } */
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        fighter.set_situation(SITUATION_KIND_NONE.into());
+    }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
         let stick_x = fighter.stick_x() * PostureModule::lr(fighter.module_accessor);
@@ -163,7 +159,6 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
             PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         }
     }
-
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE_CHROM) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_hi_1"), L2CValue::Hash40s("special_air_hi_1"), true.into());
