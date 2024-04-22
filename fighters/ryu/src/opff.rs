@@ -50,7 +50,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     extra_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
     metered_cancels(fighter, boma, frame);
     target_combos(boma);
-    rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
     ryu_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
     ryu_ex_hado(fighter, boma, frame);
@@ -107,50 +106,6 @@ unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut Battle
         return;
     }
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
-}
-
-// boma: its a boma
-// start_frame: frame to start interpolating the body rotation
-// bend_frame: frame to interpolate to the intended angle amount until
-// return_frame: frame to start interpolating back to regular angle
-// straight_frame: frame the body should be at the regular angle again
-unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_rotation = 180.0;
-    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-        
-    if frame >= start_frame && frame < return_frame {
-        // this has to be called every frame, or you snap back to the normal joint angle
-        // interpolate to the respective body rotation angle
-        let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
-        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
-        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    } else if frame >= return_frame && frame < straight_frame {
-        // linear interpolate back to normal
-        /*
-        let calc_body_rotate = max_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
-        */
-        let calc_body_rotate = 180.0 *((frame - return_frame) / (straight_frame - return_frame)) + 180.0;
-        let body_rotation = calc_body_rotate.clamp(180.0, 360.0);
-        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    }
-}
-
-unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("attack_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 6.0, 8.5, 11.0, 31.0);
-        }
-    }
-    else if boma.is_motion(Hash40::new("landing_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
-        }
-    }
 }
 
 unsafe fn end_magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
