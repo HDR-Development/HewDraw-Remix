@@ -20,6 +20,12 @@ attack_12:
     move: false
   extra:
     cancel_frame: 38
+attack_air_b:
+  flags:
+    turn: true
+attack_air_f:
+  extra:
+    cancel_frame: 26
 attack_air_hi:
   extra:
     cancel_frame: 28
@@ -97,6 +103,9 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+landing_air_f:
+  animations:
+    - name: c05landingairlw.nuanmb
 special_air_hi_command:
   extra:
     xlu_start: 0
