@@ -29,7 +29,7 @@ pub fn get_ink_colors(ctx: &mut InlineCtx) {
 }
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
-    if (10..14).contains(&boma.status_frame()){ 
+    if (10..13).contains(&boma.status_frame()){ 
     if motion_kind == hash40("attack_air_lw")
         && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
     {
@@ -174,10 +174,18 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn game_specialhiattack(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if boma.is_status(*FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT)
+    && boma.status_frame() > 15{
+        AttackModule::clear_all(boma);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, nstick_x: f32, stick_y: f32, facing: f32, frame: f32,) {
     dair_splatter(boma, motion_kind, id);
     roller_jump_cancel(boma);
     ink_charge_cancel(boma);
+    game_specialhiattack(boma, status_kind);
     fastfall_specials(fighter);
    // squidshift(fighter);
 }

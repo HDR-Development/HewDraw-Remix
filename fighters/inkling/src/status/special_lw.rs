@@ -68,7 +68,7 @@ pub unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CV
         VarModule::set_float(fighter.battle_object,vars::inkling::instance::SPECIAL_LW_CHARGE,frame);
         fighter.change_status(FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_EMPTY.into(),false.into());
     }
-    if frame >= end_frame-1.0 {
+    if frame >= end_frame-10.0 {
         VarModule::set_float(fighter.battle_object,vars::inkling::instance::SPECIAL_LW_CHARGE,end_frame);
         EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0);
         EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::new(6.0, 10.0, 0.0), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);

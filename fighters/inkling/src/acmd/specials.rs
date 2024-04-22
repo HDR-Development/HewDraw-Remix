@@ -86,7 +86,7 @@ unsafe extern "C" fn game_specialhiattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("rot"), 8.0, 75, 30, 0, 110, 8.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_WATER);
+        ATTACK(agent, 0, 0, Hash40::new("rot"), 8.0, 75, 30, 0, 120, 8.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_WATER);
         AttackModule::set_ink_value(agent.module_accessor, 0, 50.0);
     }
 }
@@ -109,10 +109,11 @@ unsafe extern "C" fn sound_specialhiattack(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0,39.0,90.0); //originally 0.66
+    FT_MOTION_RATE(agent, 0.66);
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INKLING_STATUS_SPECIAL_LW_FLAG_TO_THROW_OK);
+        FT_MOTION_RATE_RANGE(agent, 10.0,36.0,90.0)
     }
 }
 
