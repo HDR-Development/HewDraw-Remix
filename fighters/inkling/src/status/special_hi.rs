@@ -21,6 +21,7 @@ pub unsafe extern "C" fn special_hi_rot_exec(fighter: &mut L2CFighterCommon) -> 
                 MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_specialhiattack"), -1); 
             }
         } 
+        VarModule::off_flag(fighter.battle_object, vars::inkling::instance::SPECIAL_HI_CAN_ATTACK);
     }
 
     smashline::original_status(Exec, fighter, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT)(fighter)
