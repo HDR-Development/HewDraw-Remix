@@ -123,7 +123,7 @@ unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_swing_05"));
+        PLAY_SE(agent, Hash40::new("se_common_swing_09"));
     }
 }
 
