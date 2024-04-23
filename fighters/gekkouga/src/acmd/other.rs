@@ -49,7 +49,7 @@ unsafe extern "C" fn game_jumpaerialback(agent: &mut L2CAgentBase) {
             KineticModule::mul_speed(boma, &bounce_speed_mul, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_BOUND);
     }
