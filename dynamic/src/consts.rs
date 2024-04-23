@@ -1580,6 +1580,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+            pub const AWOO: i32 = 0x1101;
         }
     }
 
