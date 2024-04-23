@@ -181,8 +181,18 @@ unsafe fn game_specialhiattack(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 }
 
+unsafe fn special_hi_rot_exec(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && boma.status_frame() < 12{
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+            VarModule::on_flag(boma.object(), vars::inkling::instance::SPECIAL_HI_CAN_ATTACK);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, nstick_x: f32, stick_y: f32, facing: f32, frame: f32,) {
     dair_splatter(boma, motion_kind, id);
+    special_hi_rot_exec(boma, status_kind);
     roller_jump_cancel(boma);
     ink_charge_cancel(boma);
     game_specialhiattack(boma, status_kind);
