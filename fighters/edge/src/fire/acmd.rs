@@ -152,8 +152,6 @@ unsafe extern "C" fn effect_burstl(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn1", game_specialn1, Priority::Low);
     agent.acmd("game_specialn2", game_specialn2, Priority::Low);

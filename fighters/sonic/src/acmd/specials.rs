@@ -317,7 +317,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnhoming", game_specialnhoming, Priority::Low);
     agent.acmd("sound_specialnhoming", sound_specialnhoming, Priority::Low);
     agent.acmd("game_specialnhit", game_specialnhit, Priority::Low);
-    agent.acmd("effect_specialnhit", stub, Priority::Low);
+    agent.acmd("effect_specialnhit", acmd_stub, Priority::Low);
     agent.game_acmd(0x195dc47911, hash_0x195dc47911, Priority::Low);
 
     agent.acmd("game_specialsbooststart", game_specialsbooststart, Priority::Low);

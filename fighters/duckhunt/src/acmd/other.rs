@@ -127,8 +127,6 @@ unsafe extern "C" fn expression_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -143,8 +141,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("effect_appealsl", stub, Priority::Low);
-    agent.acmd("effect_appealsr", stub, Priority::Low);
+    agent.acmd("effect_appealsl", acmd_stub, Priority::Low);
+    agent.acmd("effect_appealsr", acmd_stub, Priority::Low);
     agent.acmd("sound_appealsl", sound_appeals, Priority::Low);
     agent.acmd("sound_appealsr", sound_appeals, Priority::Low);
     agent.acmd("expression_appealsl", expression_appeals, Priority::Low);

@@ -212,8 +212,6 @@ unsafe extern "C" fn disable_physics(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     // ground
     agent.acmd("game_attack11", disable_physics, Priority::Low);
@@ -264,16 +262,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairblw", effect_attackairb, Priority::Low);
     agent.acmd("game_landingairb", disable_physics, Priority::Low);
 
-    agent.acmd("game_attackairhi", stub, Priority::Low);
-    agent.acmd("effect_attackairhi", stub, Priority::Low);
+    agent.acmd("game_attackairhi", acmd_stub, Priority::Low);
+    agent.acmd("effect_attackairhi", acmd_stub, Priority::Low);
 
     // specials
-    agent.acmd("game_specials1", stub, Priority::Low);
-    agent.acmd("game_specialairs1", stub, Priority::Low);
+    agent.acmd("game_specials1", acmd_stub, Priority::Low);
+    agent.acmd("game_specialairs1", acmd_stub, Priority::Low);
 
     // throws
-    agent.acmd("game_throwhi", stub, Priority::Low);
-    agent.acmd("effect_throwhi", stub, Priority::Low);
+    agent.acmd("game_throwhi", acmd_stub, Priority::Low);
+    agent.acmd("effect_throwhi", acmd_stub, Priority::Low);
 
     // other
     agent.acmd("game_guardon", disable_physics, Priority::Low);

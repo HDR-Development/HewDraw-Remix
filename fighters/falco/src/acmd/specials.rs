@@ -310,8 +310,6 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
     agent.acmd("game_specialnloop", game_specialnloop, Priority::Low);
@@ -339,12 +337,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlwloop", sound_speciallwloop, Priority::Low);
     agent.acmd("expression_speciallwloop", expression_speciallwloop, Priority::Low);
     agent.acmd("expression_specialairlwloop", expression_speciallwloop, Priority::Low);
-    agent.acmd("game_speciallwend", stub, Priority::Low);
-    agent.acmd("game_specialairlwend", stub, Priority::Low);
-    agent.acmd("effect_speciallwend", stub, Priority::Low);
-    agent.acmd("effect_specialairlwend", stub, Priority::Low);
-    agent.acmd("sound_speciallwend", stub, Priority::Low);
-    agent.acmd("sound_specialairlwend", stub, Priority::Low);
+    agent.acmd("game_speciallwend", acmd_stub, Priority::Low);
+    agent.acmd("game_specialairlwend", acmd_stub, Priority::Low);
+    agent.acmd("effect_speciallwend", acmd_stub, Priority::Low);
+    agent.acmd("effect_specialairlwend", acmd_stub, Priority::Low);
+    agent.acmd("sound_speciallwend", acmd_stub, Priority::Low);
+    agent.acmd("sound_specialairlwend", acmd_stub, Priority::Low);
     agent.acmd("expression_speciallwend", expression_speciallwend, Priority::Low);
     agent.acmd("expression_specialairlwend", expression_speciallwend, Priority::Low);
     agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);

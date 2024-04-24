@@ -420,10 +420,8 @@ unsafe extern "C" fn effect_specialairhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {;
-    agent.acmd("game_specialhi1", stub, Priority::Low);
+    agent.acmd("game_specialhi1", acmd_stub, Priority::Low);
     agent.acmd("effect_specialhi1", effect_specialhi1, Priority::Low);
     agent.acmd("effect_specialairhi1", effect_specialhi1, Priority::Low);
     agent.acmd("game_specialhi12", game_specialhi12, Priority::Low);

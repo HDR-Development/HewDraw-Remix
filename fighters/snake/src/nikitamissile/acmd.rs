@@ -79,21 +79,21 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_fly", game_fly, Priority::Low);
     agent.acmd("effect_fly", effect_fly, Priority::Low);
-    agent.acmd("sound_fly", stub, Priority::Low);
+    agent.acmd("sound_fly", acmd_stub, Priority::Low);
 
     agent.acmd("game_stopfall", game_fly, Priority::Low);
     agent.acmd("effect_stopfall", effect_stopfall, Priority::Low);
-    agent.acmd("sound_stopfall", stub, Priority::Low);
+    agent.acmd("sound_stopfall", acmd_stub, Priority::Low);
 
     agent.acmd("game_explosion", game_explosion, Priority::Low);
     agent.acmd("effect_explosion", effect_explosion, Priority::Low);
     agent.acmd("sound_explosion", sound_explosion, Priority::Low);
 
-    agent.acmd("game_hiexplosion", stub, Priority::Low);
+    agent.acmd("game_hiexplosion", acmd_stub, Priority::Low);
     agent.acmd("effect_hiexplosion", effect_explosion, Priority::Low);
     agent.acmd("sound_hiexplosion", sound_explosion, Priority::Low);
 
-    agent.acmd("game_fallexplosion", stub, Priority::Low);
+    agent.acmd("game_fallexplosion", acmd_stub, Priority::Low);
     agent.acmd("effect_fallexplosion", effect_fallexplosion, Priority::Low);
     agent.acmd("sound_fallexplosion", sound_explosion, Priority::Low);
 }

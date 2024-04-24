@@ -266,8 +266,6 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
@@ -283,5 +281,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairlw2bound", game_attackairlw2bound, Priority::Low);
 
     agent.acmd("game_aircatch", game_aircatch, Priority::Low);
-    agent.acmd("game_aircatchlanding", stub, Priority::Low);
+    agent.acmd("game_aircatchlanding", acmd_stub, Priority::Low);
 }

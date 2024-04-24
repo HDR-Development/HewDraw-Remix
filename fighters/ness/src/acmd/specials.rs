@@ -185,11 +185,9 @@ unsafe extern "C" fn effect_specialairlwend(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnfire", stub, Priority::Low);
-    agent.acmd("game_specialairnfire", stub, Priority::Low);
+    agent.acmd("game_specialnfire", acmd_stub, Priority::Low);
+    agent.acmd("game_specialairnfire", acmd_stub, Priority::Low);
 
     agent.acmd("sound_specials", sound_specials, Priority::Low);
     agent.acmd("game_specials", game_specials, Priority::Low);

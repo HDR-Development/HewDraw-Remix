@@ -458,8 +458,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
     agent.acmd("game_specialairs", game_specials, Priority::Low);
@@ -500,8 +498,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     
-    agent.acmd("sound_specialsstart", stub, Priority::Low);
-    agent.acmd("sound_specialairsstart", stub, Priority::Low);
-    agent.acmd("sound_specialsend", stub, Priority::Low);
-    agent.acmd("sound_specialairsend", stub, Priority::Low);
+    agent.acmd("sound_specialsstart", acmd_stub, Priority::Low);
+    agent.acmd("sound_specialairsstart", acmd_stub, Priority::Low);
+    agent.acmd("sound_specialsend", acmd_stub, Priority::Low);
+    agent.acmd("sound_specialairsend", acmd_stub, Priority::Low);
 }

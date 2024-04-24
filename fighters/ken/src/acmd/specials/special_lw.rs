@@ -150,8 +150,6 @@ unsafe extern "C" fn effect_specialairlwstepf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwinstall", game_speciallwinstall, Priority::Low);
     agent.acmd("effect_speciallwinstall", effect_speciallwinstall, Priority::Low);
@@ -161,6 +159,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_speciallwstepf", effect_speciallwstepf, Priority::Low);
     agent.acmd("game_specialairlwstepf", game_specialairlwstepf, Priority::Low);
     agent.acmd("effect_specialairlwstepf", effect_specialairlwstepf, Priority::Low);
-    agent.acmd("effect_speciallwstart", stub, Priority::Low);
-    agent.acmd("effect_specialairlwstart", stub, Priority::Low);
+    agent.acmd("effect_speciallwstart", acmd_stub, Priority::Low);
+    agent.acmd("effect_specialairlwstart", acmd_stub, Priority::Low);
 }
