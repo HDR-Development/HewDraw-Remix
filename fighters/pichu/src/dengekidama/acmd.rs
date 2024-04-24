@@ -31,6 +31,6 @@ unsafe extern "C" fn effect_regular(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_regular", game_regular);
-    agent.acmd("effect_regular", effect_regular);
+    agent.acmd("game_regular", game_regular, Priority::Low);
+    agent.acmd("effect_regular", effect_regular, Priority::Low);
 }

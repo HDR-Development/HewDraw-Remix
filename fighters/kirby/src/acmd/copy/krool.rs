@@ -97,18 +97,20 @@ unsafe extern "C" fn effect_kroolspecialnloop(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_kroolspecialnfire", effect_kroolspecialnfire);
-    agent.acmd("effect_kroolspecialairnfire", effect_kroolspecialnfire);
-    agent.acmd("sound_kroolspecialnfire", sound_kroolspecialnfire);
-    agent.acmd("sound_kroolspecialairnfire", sound_kroolspecialnfire);
+    agent.acmd("effect_kroolspecialnfire", effect_kroolspecialnfire, Priority::Low);
+    agent.acmd("effect_kroolspecialairnfire", effect_kroolspecialnfire, Priority::Low);
+    agent.acmd("sound_kroolspecialnfire", sound_kroolspecialnfire, Priority::Low);
+    agent.acmd("sound_kroolspecialairnfire", sound_kroolspecialnfire, Priority::Low);
     agent.acmd(
         "expression_kroolspecialnfire",
         expression_kroolspecialnfire,
+        Priority::Low
     );
     agent.acmd(
         "expression_kroolspecialairnfire",
         expression_kroolspecialnfire,
+        Priority::Low
     );
-    agent.acmd("effect_kroolspecialnloop", effect_kroolspecialnloop);
-    agent.acmd("effect_kroolspecialairnloop", effect_kroolspecialnloop);
+    agent.acmd("effect_kroolspecialnloop", effect_kroolspecialnloop, Priority::Low);
+    agent.acmd("effect_kroolspecialairnloop", effect_kroolspecialnloop, Priority::Low);
 }

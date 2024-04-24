@@ -33,6 +33,6 @@ unsafe extern "C" fn effect_homing(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_homing", game_homing);
-    agent.acmd("effect_homing", effect_homing);
+    agent.acmd("game_homing", game_homing, Priority::Low);
+    agent.acmd("effect_homing", effect_homing, Priority::Low);
 }

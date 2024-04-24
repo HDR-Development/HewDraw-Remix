@@ -22,7 +22,7 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialhi1", game_specialhi1);
-    agent.acmd("game_specialairhi1", game_specialhi1);
-    agent.acmd("game_speciallwhit", game_speciallwhit);
+    agent.acmd("game_specialhi1", game_specialhi1, Priority::Low);
+    agent.acmd("game_specialairhi1", game_specialhi1, Priority::Low);
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
 }

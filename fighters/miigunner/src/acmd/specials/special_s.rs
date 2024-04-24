@@ -30,9 +30,9 @@ unsafe extern "C" fn game_specials32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials1", game_specials1);
-    agent.acmd("game_specialairs1", game_specials1);
+    agent.acmd("game_specials1", game_specials1, Priority::Low);
+    agent.acmd("game_specialairs1", game_specials1, Priority::Low);
 
-    agent.acmd("game_specials32", game_specials32);
-    agent.acmd("game_specialairs32", game_specials32);
+    agent.acmd("game_specials32", game_specials32, Priority::Low);
+    agent.acmd("game_specialairs32", game_specials32, Priority::Low);
 }

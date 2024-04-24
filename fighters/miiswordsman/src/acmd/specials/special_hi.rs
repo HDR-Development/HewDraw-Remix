@@ -415,18 +415,18 @@ unsafe extern "C" fn game_specialairhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialhi1start", game_specialhi1start);
-    agent.acmd("game_specialairhi1", game_specialairhi1);
-    agent.acmd("game_specialhi1end", game_specialhi1end);
-    agent.acmd("game_specialairhi1end", game_specialhi1end);
+    agent.acmd("game_specialhi1start", game_specialhi1start, Priority::Low);
+    agent.acmd("game_specialairhi1", game_specialairhi1, Priority::Low);
+    agent.acmd("game_specialhi1end", game_specialhi1end, Priority::Low);
+    agent.acmd("game_specialairhi1end", game_specialhi1end, Priority::Low);
 
-    agent.acmd("game_specialhi2hold", game_specialhi2hold);
-    agent.acmd("game_specialhi2holdair", game_specialhi2hold);
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("effect_specialhi2", effect_specialhi2);
-    agent.acmd("game_specialhi2landing", game_specialhi2landing);
-    agent.acmd("game_specialhi2fall", game_specialhi2fall);
+    agent.acmd("game_specialhi2hold", game_specialhi2hold, Priority::Low);
+    agent.acmd("game_specialhi2holdair", game_specialhi2hold, Priority::Low);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
+    agent.acmd("game_specialhi2landing", game_specialhi2landing, Priority::Low);
+    agent.acmd("game_specialhi2fall", game_specialhi2fall, Priority::Low);
 
-    agent.acmd("game_specialhi3", game_specialhi3);
-    agent.acmd("game_specialairhi3", game_specialairhi3);
+    agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
+    agent.acmd("game_specialairhi3", game_specialairhi3, Priority::Low);
 }

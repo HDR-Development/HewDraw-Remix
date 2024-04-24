@@ -58,9 +58,9 @@ unsafe extern "C" fn effect_end(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_max", game_max);
-    agent.acmd("effect_max", effect_max);
+    agent.acmd("game_max", game_max, Priority::Low);
+    agent.acmd("effect_max", effect_max, Priority::Low);
 
-    agent.acmd("game_end", game_end);
-    agent.acmd("effect_end", effect_end);
+    agent.acmd("game_end", game_end, Priority::Low);
+    agent.acmd("effect_end", effect_end, Priority::Low);
 }

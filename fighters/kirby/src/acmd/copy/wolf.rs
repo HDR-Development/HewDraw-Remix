@@ -84,8 +84,8 @@ unsafe extern "C" fn sound_wolfspecialn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_wolfspecialn", effect_wolfspecialn);
-    agent.acmd("effect_wolfspecialairn", effect_wolfspecialairn);
-    agent.acmd("sound_wolfspecialn", sound_wolfspecialn);
-    agent.acmd("sound_wolfspecialairn", sound_wolfspecialn);
+    agent.acmd("effect_wolfspecialn", effect_wolfspecialn, Priority::Low);
+    agent.acmd("effect_wolfspecialairn", effect_wolfspecialairn, Priority::Low);
+    agent.acmd("sound_wolfspecialn", sound_wolfspecialn, Priority::Low);
+    agent.acmd("sound_wolfspecialairn", sound_wolfspecialn, Priority::Low);
 }

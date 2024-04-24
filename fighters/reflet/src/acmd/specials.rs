@@ -95,11 +95,11 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialntronstart", game_specialntronstart);
-    agent.acmd( "game_specialairntronstart",game_specialairntronstart);
-    agent.acmd("game_specialntronend", game_specialntronend);
-    agent.acmd("game_specialairntronend",game_specialairntronend);
+    agent.acmd("game_specialntronstart", game_specialntronstart, Priority::Low);
+    agent.acmd( "game_specialairntronstart",game_specialairntronstart, Priority::Low);
+    agent.acmd("game_specialntronend", game_specialntronend, Priority::Low);
+    agent.acmd("game_specialairntronend", game_specialairntronend, Priority::Low);
     
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 }

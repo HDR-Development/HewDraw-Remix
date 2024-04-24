@@ -282,14 +282,14 @@ unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialsstart", game_specialsstart);
-    agent.acmd("game_specialairsstart", game_specialsstart);
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("game_specialsend", game_specialsend);
-    agent.acmd("game_specialairsend", game_specialsend);
-    agent.acmd("effect_specials", effect_specials);
-    agent.acmd("effect_specialsend", effect_specialsend);
-    agent.acmd("effect_specialairsend", effect_specialairsend);
-    agent.acmd("effect_specialairs", effect_specialairs);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
+    agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
+    agent.acmd("effect_specials", effect_specials, Priority::Low);
+    agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
+    agent.acmd("effect_specialairsend", effect_specialairsend, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specialairs, Priority::Low);
 }

@@ -596,24 +596,24 @@ unsafe extern "C" fn effect_cancel(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_build", game_build);
-    agent.acmd("effect_build", effect_build);
+    agent.acmd("game_build", game_build, Priority::Low);
+    agent.acmd("effect_build", effect_build, Priority::Low);
 
-    agent.acmd("game_attackkick", game_attackkick);
-    agent.acmd("effect_attackkick", effect_attackkick);
+    agent.acmd("game_attackkick", game_attackkick, Priority::Low);
+    agent.acmd("effect_attackkick", effect_attackkick, Priority::Low);
 
-    agent.acmd("game_attackpunch", game_attackpunch);
-    agent.acmd("effect_attackpunch", effect_attackpunch);
+    agent.acmd("game_attackpunch", game_attackpunch, Priority::Low);
+    agent.acmd("effect_attackpunch", effect_attackpunch, Priority::Low);
 
-    agent.acmd("game_attacks", game_attacks);
-    agent.acmd("effect_attacks", effect_attacks);
+    agent.acmd("game_attacks", game_attacks, Priority::Low);
+    agent.acmd("effect_attacks", effect_attacks, Priority::Low);
 
-    agent.acmd("game_attackl", game_attackl);
-    agent.acmd("effect_attackl", effect_attackl);
+    agent.acmd("game_attackl", game_attackl, Priority::Low);
+    agent.acmd("effect_attackl", effect_attackl, Priority::Low);
 
-    agent.acmd("game_attackmax", game_attackmax);
-    agent.acmd("effect_attackmax", effect_attackmax);
+    agent.acmd("game_attackmax", game_attackmax, Priority::Low);
+    agent.acmd("effect_attackmax", effect_attackmax, Priority::Low);
 
-    agent.acmd("game_cancel", game_cancel);
-    agent.acmd("effect_cancel", effect_cancel);
+    agent.acmd("game_cancel", game_cancel, Priority::Low);
+    agent.acmd("effect_cancel", effect_cancel, Priority::Low);
 }

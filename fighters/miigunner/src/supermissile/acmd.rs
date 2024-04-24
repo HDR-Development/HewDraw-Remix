@@ -84,8 +84,8 @@ unsafe extern "C" fn sound_sburst(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_straight", game_straight);
-    agent.acmd("game_sburst", game_sburst);
-    agent.acmd("effect_sburst", effect_sburst);
-    agent.acmd("sound_sburst", sound_sburst);
+    agent.acmd("game_straight", game_straight, Priority::Low);
+    agent.acmd("game_sburst", game_sburst, Priority::Low);
+    agent.acmd("effect_sburst", effect_sburst, Priority::Low);
+    agent.acmd("sound_sburst", sound_sburst, Priority::Low);
 }

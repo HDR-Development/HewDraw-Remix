@@ -21,5 +21,5 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
 }

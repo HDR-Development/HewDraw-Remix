@@ -166,13 +166,13 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3melee", game_attacks3melee);
-    agent.acmd("effect_attacks3melee", effect_attacks3melee);
-    agent.acmd("sound_attacks3melee", sound_attacks3melee);;
-    agent.acmd("expression_attacks3melee", expression_attacks3melee);
+    agent.acmd("game_attacks3melee", game_attacks3melee, Priority::Low);
+    agent.acmd("effect_attacks3melee", effect_attacks3melee, Priority::Low);
+    agent.acmd("sound_attacks3melee", sound_attacks3melee, Priority::Low);;
+    agent.acmd("expression_attacks3melee", expression_attacks3melee, Priority::Low);
 
-    agent.acmd("game_attackhi3", game_attackhi3);
-    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
+    agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
 
-    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
 }

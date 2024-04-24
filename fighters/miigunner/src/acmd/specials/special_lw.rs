@@ -101,21 +101,21 @@ unsafe extern "C" fn sound_speciallw3end(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_speciallw1start", game_speciallw1start);
-    agent.acmd("game_specialairlw1start", game_speciallw1start);
+    agent.acmd("game_speciallw1start", game_speciallw1start, Priority::Low);
+    agent.acmd("game_specialairlw1start", game_speciallw1start, Priority::Low);
 
-    agent.acmd("game_speciallw3start", game_speciallw3start);
-    agent.acmd("game_specialairlw3start", game_speciallw3start);
+    agent.acmd("game_speciallw3start", game_speciallw3start, Priority::Low);
+    agent.acmd("game_specialairlw3start", game_speciallw3start, Priority::Low);
 
-    agent.acmd("game_speciallw3hold", game_speciallw3hold);
-    agent.acmd("game_specialairlw3hold", game_speciallw3hold);
-    agent.acmd("effect_speciallw3hold", effect_speciallw3hold);
-    agent.acmd("effect_specialairlw3hold", effect_speciallw3hold);
+    agent.acmd("game_speciallw3hold", game_speciallw3hold, Priority::Low);
+    agent.acmd("game_specialairlw3hold", game_speciallw3hold, Priority::Low);
+    agent.acmd("effect_speciallw3hold", effect_speciallw3hold, Priority::Low);
+    agent.acmd("effect_specialairlw3hold", effect_speciallw3hold, Priority::Low);
 	
-    agent.acmd("game_speciallw3end", game_speciallw3end);
-    agent.acmd("game_specialairlw3end", game_speciallw3end);
-    agent.acmd("effect_speciallw3end", effect_speciallw3end);
-    agent.acmd("effect_specialairlw3end", effect_speciallw3end);
-    agent.acmd("sound_speciallw3end", sound_speciallw3end);
-    agent.acmd("sound_specialairlw3end", sound_speciallw3end);
+    agent.acmd("game_speciallw3end", game_speciallw3end, Priority::Low);
+    agent.acmd("game_specialairlw3end", game_speciallw3end, Priority::Low);
+    agent.acmd("effect_speciallw3end", effect_speciallw3end, Priority::Low);
+    agent.acmd("effect_specialairlw3end", effect_speciallw3end, Priority::Low);
+    agent.acmd("sound_speciallw3end", sound_speciallw3end, Priority::Low);
+    agent.acmd("sound_specialairlw3end", sound_speciallw3end, Priority::Low);
 }

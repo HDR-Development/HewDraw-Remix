@@ -660,34 +660,34 @@ unsafe extern "C" fn effect_specialairlwbite(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnstart", game_specialnstart);
-    agent.acmd("game_specialairnstart", game_specialnstart);
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("game_specialsshoot", game_specialsshoot);
-    agent.acmd("game_specialairsshoot", game_specialsshoot);
-    agent.acmd("game_specialsshoots", game_specialsshoots);
-    agent.acmd("game_specialairsshoots", game_specialsshoots);
-    agent.acmd("effect_specialsend", effect_specialsend);
-    agent.acmd("effect_specialsshoot", effect_specialsshoot);
-    agent.acmd("effect_specialsshoots", effect_specialsshoots);
-    agent.acmd("effect_specialairsend", effect_specialairsend);
-    agent.acmd("effect_specialairsshoot", effect_specialairsshoot);
-    agent.acmd("expression_specialsshoot", expression_specialsshoot);
-    agent.acmd("expression_specialairsshoot", expression_specialsshoot);
-    agent.acmd("effect_specialairsshoots", effect_specialairsshoots);
-    agent.acmd("sound_specialsshoot", sound_specialsshoot);
-    agent.acmd("sound_specialairsshoot", sound_specialsshoot);
-    agent.acmd("sound_specialsshoots", sound_specialsshoots);
-    agent.acmd("sound_specialairsshoots", sound_specialsshoots);
-    agent.acmd("expression_specialsshoots", expression_specialsshoots);
-    agent.acmd("expression_specialairsshoots", expression_specialsshoots);
+    agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specialairnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("game_specialsshoot", game_specialsshoot, Priority::Low);
+    agent.acmd("game_specialairsshoot", game_specialsshoot, Priority::Low);
+    agent.acmd("game_specialsshoots", game_specialsshoots, Priority::Low);
+    agent.acmd("game_specialairsshoots", game_specialsshoots, Priority::Low);
+    agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
+    agent.acmd("effect_specialsshoot", effect_specialsshoot, Priority::Low);
+    agent.acmd("effect_specialsshoots", effect_specialsshoots, Priority::Low);
+    agent.acmd("effect_specialairsend", effect_specialairsend, Priority::Low);
+    agent.acmd("effect_specialairsshoot", effect_specialairsshoot, Priority::Low);
+    agent.acmd("expression_specialsshoot", expression_specialsshoot, Priority::Low);
+    agent.acmd("expression_specialairsshoot", expression_specialsshoot, Priority::Low);
+    agent.acmd("effect_specialairsshoots", effect_specialairsshoots, Priority::Low);
+    agent.acmd("sound_specialsshoot", sound_specialsshoot, Priority::Low);
+    agent.acmd("sound_specialairsshoot", sound_specialsshoot, Priority::Low);
+    agent.acmd("sound_specialsshoots", sound_specialsshoots, Priority::Low);
+    agent.acmd("sound_specialairsshoots", sound_specialsshoots, Priority::Low);
+    agent.acmd("expression_specialsshoots", expression_specialsshoots, Priority::Low);
+    agent.acmd("expression_specialairsshoots", expression_specialsshoots, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 
-    agent.acmd("game_speciallwbiteattack", game_speciallwbiteattack);
-    agent.acmd("game_speciallwbite_attack", game_speciallwbite_attack);
-    agent.acmd("effect_speciallwbite", effect_speciallwbite);
-    agent.acmd("effect_specialairlwbite", effect_specialairlwbite);
+    agent.acmd("game_speciallwbiteattack", game_speciallwbiteattack, Priority::Low);
+    agent.acmd("game_speciallwbite_attack", game_speciallwbite_attack, Priority::Low);
+    agent.acmd("effect_speciallwbite", effect_speciallwbite, Priority::Low);
+    agent.acmd("effect_specialairlwbite", effect_specialairlwbite, Priority::Low);
 }

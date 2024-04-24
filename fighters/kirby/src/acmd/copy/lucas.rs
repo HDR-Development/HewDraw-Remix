@@ -147,20 +147,20 @@ unsafe extern "C" fn sound_lucasspecialnfire(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_lucasspecialnstart", game_lucasspecialnstart);
-    agent.acmd("game_lucasspecialairnstart", game_lucasspecialnstart);
-    agent.acmd("sound_lucasspecialnstart", sound_lucasspecialnstart);
-    agent.acmd("sound_lucasspecialairnstart", sound_lucasspecialnstart);
-    agent.acmd("game_lucasspecialnhold", game_lucasspecialnhold);
-    agent.acmd("game_lucasspecialairnhold", game_lucasspecialnhold);
-    agent.acmd("effect_lucasspecialnhold", effect_lucasspecialnhold);
-    agent.acmd("effect_lucasspecialairnhold", effect_lucasspecialnhold);
-    agent.acmd("sound_lucasspecialairnhold", effect_lucasspecialnhold);
-    agent.acmd("sound_lucasspecialnhold", effect_lucasspecialnhold);
-    agent.acmd("game_lucasspecialnfire", game_lucasspecialnfire);
-    agent.acmd("game_lucasspecialairnfire", game_lucasspecialnfire);
-    agent.acmd("effect_lucasspecialnfire", effect_lucasspecialnfire);
-    agent.acmd("effect_lucasspecialairnfire", effect_lucasspecialnfire);
-    agent.acmd("sound_lucasspecialairnfire", sound_lucasspecialnfire);
-    agent.acmd("sound_lucasspecialnfire", sound_lucasspecialnfire);
+    agent.acmd("game_lucasspecialnstart", game_lucasspecialnstart, Priority::Low);
+    agent.acmd("game_lucasspecialairnstart", game_lucasspecialnstart, Priority::Low);
+    agent.acmd("sound_lucasspecialnstart", sound_lucasspecialnstart, Priority::Low);
+    agent.acmd("sound_lucasspecialairnstart", sound_lucasspecialnstart, Priority::Low);
+    agent.acmd("game_lucasspecialnhold", game_lucasspecialnhold, Priority::Low);
+    agent.acmd("game_lucasspecialairnhold", game_lucasspecialnhold, Priority::Low);
+    agent.acmd("effect_lucasspecialnhold", effect_lucasspecialnhold, Priority::Low);
+    agent.acmd("effect_lucasspecialairnhold", effect_lucasspecialnhold, Priority::Low);
+    agent.acmd("sound_lucasspecialairnhold", effect_lucasspecialnhold, Priority::Low);
+    agent.acmd("sound_lucasspecialnhold", effect_lucasspecialnhold, Priority::Low);
+    agent.acmd("game_lucasspecialnfire", game_lucasspecialnfire, Priority::Low);
+    agent.acmd("game_lucasspecialairnfire", game_lucasspecialnfire, Priority::Low);
+    agent.acmd("effect_lucasspecialnfire", effect_lucasspecialnfire, Priority::Low);
+    agent.acmd("effect_lucasspecialairnfire", effect_lucasspecialnfire, Priority::Low);
+    agent.acmd("sound_lucasspecialairnfire", sound_lucasspecialnfire, Priority::Low);
+    agent.acmd("sound_lucasspecialnfire", sound_lucasspecialnfire, Priority::Low);
 }

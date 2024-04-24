@@ -308,35 +308,35 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("effect_specialn", effect_specialn);
-    agent.acmd("game_specialairn", game_specialn);
-    agent.acmd("effect_specialairn", effect_specialairn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialn", effect_specialn, Priority::Low);
+    agent.acmd("game_specialairn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialairn", effect_specialairn, Priority::Low);
     
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("effect_specials", effect_specials);
-    agent.acmd("sound_specials", sound_specials);
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("effect_specialairs", effect_specials);
-    agent.acmd("sound_specialairs", sound_specials);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("effect_specials", effect_specials, Priority::Low);
+    agent.acmd("sound_specials", sound_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specials, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specials, Priority::Low);
 
-    agent.acmd("game_specialsend", game_specialsend);
-    agent.acmd("effect_specialsend", effect_specialsend);
-    agent.acmd("expression_specialsend", expression_specialsend);
-    agent.acmd("game_specialairsend", game_specialsend);
-    agent.acmd("effect_specialairsend", effect_specialsend);
-    agent.acmd("expression_specialairsend", expression_specialsend);
+    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
+    agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
+    agent.acmd("expression_specialsend", expression_specialsend, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
+    agent.acmd("effect_specialairsend", effect_specialsend, Priority::Low);
+    agent.acmd("expression_specialairsend", expression_specialsend, Priority::Low);
     
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialhifall", game_specialhifall);
+    agent.acmd("game_specialhifall", game_specialhifall, Priority::Low);
 
-    agent.acmd("game_speciallwstart", game_speciallwstart);
-    agent.acmd("effect_speciallwstart", effect_speciallwstart);
-    agent.acmd("sound_speciallwstart", sound_speciallwstart);
-    agent.acmd("expression_speciallwstart", expression_speciallwstart);
-    agent.acmd("game_specialairlwstart", game_specialairlwstart);
-    agent.acmd("effect_specialairlwstart", effect_speciallwstart);
-    agent.acmd("sound_specialairlwstart", sound_speciallwstart);
-    agent.acmd("expression_specialairlwstart", expression_speciallwstart); 
+    agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("sound_speciallwstart", sound_speciallwstart, Priority::Low);
+    agent.acmd("expression_speciallwstart", expression_speciallwstart, Priority::Low);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart, Priority::Low);
+    agent.acmd("effect_specialairlwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("sound_specialairlwstart", sound_speciallwstart, Priority::Low);
+    agent.acmd("expression_specialairlwstart", expression_speciallwstart, Priority::Low); 
 }
