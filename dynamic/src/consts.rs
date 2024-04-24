@@ -383,11 +383,11 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
-            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
+            pub const AETHER_DIVE_READY: i32 = 0x1101;
+            pub const AETHER_DIVE_START: i32 = 0x1102;
         }
     }
     pub mod dedede{
@@ -534,12 +534,50 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x0100;
+            pub const FLASH_REFINE: i32 = 0x0100;
+            pub const FLASH_REFRACT: i32 = 0x0101;
+
+            // ints
+            pub const FIRE_ID: i32 = 0x0100;
+            pub const FLARE1_ID: i32 = 0x0101;
+
+            // floats
+            pub const FIRE_POS_X: i32 = 0x0100;
+            pub const FIRE_POS_Y: i32 = 0x0101;
+            pub const FLARE1_POS_X: i32 = 0x102;
+            pub const FLARE2_POS_Y: i32 = 0x0103;
         }
         pub mod status {
             // flags
-            pub const FLASH_HOLD: i32 = 0x1101;
-            pub const SPECIAL_N_FIRE: i32 = 0x1102;
+            pub const FLASH_HOLD: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_fire {
+        pub mod instance {
+            //flags
+            pub const REFLECT: i32 = 0x0100;
+        }
+        pub mod status {
+            // floats
+            pub const STICK_Y: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_flare1 {
+        pub mod status {
+            // flags
+            pub const REFRACTED: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_flash {
+        pub mod status {
+            // ints
+            pub const REFINE_COOLDOWN: i32 = 0x1100;
+            pub const REFRACT_COOLDOWN: i32 = 0x1101;
+            pub const LIFE: i32 = 0x1102;
+            pub const EFFECT_HANDLE: i32 = 0x1103;
         }
     }
 
@@ -1603,5 +1641,15 @@ pub mod statuses {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
         pub const SPECIAL_S_EDGE: i32 = 0x1F3;
         pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
+    }
+
+    pub mod edge_flash {
+        pub const BURST: i32 = 0x2;
+        pub const VANISH: i32 = 0x3;
+    }
+
+    pub mod chrom {
+        pub const SPECIAL_HI_FLIP: i32 = 0x1ea;
+        pub const SPECIAL_HI_DIVE: i32 = 0x1eb;
     }
 }

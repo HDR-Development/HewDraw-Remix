@@ -12,6 +12,7 @@
   <int hash="damage_fly_speed_up_end_rate">32</int>
   <int hash="damage_fly_speed_up_max_mag">3</int>
   <float hash="damage_fly_speed_up_angle_rate">85</float>
+  <float hash="hitstop_frame_max">24</float>
   <float hash="hitstop_frame_add">4</float>
   <float hash="hitstop_frame_mul">0.45</float>
   <float hash="hitstop_elec_mul">1.25</float>
