@@ -83,6 +83,19 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -141,7 +154,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch);
     agent.acmd("game_catchdash", game_catchdash);
     agent.acmd("game_catchturn", game_catchturn);
+
     agent.acmd("game_throwf", game_throwf);
+    agent.acmd("effect_throwf", effect_throwf);
     agent.acmd("game_throwb", game_throwb);
     agent.acmd("game_throwhi", game_throwhi);
     agent.acmd("game_throwlw", game_throwlw);
