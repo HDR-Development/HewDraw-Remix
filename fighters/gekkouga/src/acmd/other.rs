@@ -45,7 +45,7 @@ unsafe extern "C" fn game_jumpaerialback(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         if WorkModule::is_flag(boma, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_BOUND){
-            let bounce_speed_mul = Vector3f { x: 1.0, y: 0.65, z: 1.0 };
+            let bounce_speed_mul = Vector3f { x: 1.0, y: 0.57, z: 1.0 };
             KineticModule::mul_speed(boma, &bounce_speed_mul, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
     }
