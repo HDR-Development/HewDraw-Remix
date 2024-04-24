@@ -269,19 +269,19 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
-    agent.acmd("expression_attackairf", expression_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
-    agent.acmd("game_attackairlw2attack", game_attackairlw2attack);
-    agent.acmd("game_attackairlw2bound", game_attackairlw2bound);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("game_attackairlw2attack", game_attackairlw2attack, Priority::Low);
+    agent.acmd("game_attackairlw2bound", game_attackairlw2bound, Priority::Low);
 
-    agent.acmd("game_aircatch", game_aircatch);
-    agent.acmd("game_aircatchlanding", stub);
+    agent.acmd("game_aircatch", game_aircatch, Priority::Low);
+    agent.acmd("game_aircatchlanding", stub, Priority::Low);
 }

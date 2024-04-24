@@ -155,16 +155,16 @@ unsafe extern "C" fn effect_burstl(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn1", game_specialn1);
-    agent.acmd("game_specialn2", game_specialn2);
-    agent.acmd("game_specialn3", game_specialn3);
+    agent.acmd("game_specialn1", game_specialn1, Priority::Low);
+    agent.acmd("game_specialn2", game_specialn2, Priority::Low);
+    agent.acmd("game_specialn3", game_specialn3, Priority::Low);
     
-    agent.acmd("game_bursts", game_bursts);
-    agent.acmd("effect_bursts", effect_bursts);
+    agent.acmd("game_bursts", game_bursts, Priority::Low);
+    agent.acmd("effect_bursts", effect_bursts, Priority::Low);
 
-    agent.acmd("game_burstm", game_burstm);
-    agent.acmd("effect_burstm", effect_burstm);
+    agent.acmd("game_burstm", game_burstm, Priority::Low);
+    agent.acmd("effect_burstm", effect_burstm, Priority::Low);
 
-    agent.acmd("game_burstl", game_burstl);
-    agent.acmd("effect_burstl", effect_burstl);
+    agent.acmd("game_burstl", game_burstl, Priority::Low);
+    agent.acmd("effect_burstl", effect_burstl, Priority::Low);
 }

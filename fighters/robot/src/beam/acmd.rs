@@ -9,5 +9,5 @@ unsafe extern "C" fn effect_flymax(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_flymax", effect_flymax);
+    agent.acmd("effect_flymax", effect_flymax, Priority::Low);
 }

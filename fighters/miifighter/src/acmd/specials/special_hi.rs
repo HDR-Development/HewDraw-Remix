@@ -423,23 +423,23 @@ unsafe extern "C" fn effect_specialairhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {;
-    agent.acmd("game_specialhi1", stub);
-    agent.acmd("effect_specialhi1", effect_specialhi1);
-    agent.acmd("effect_specialairhi1", effect_specialhi1);
-    agent.acmd("game_specialhi12", game_specialhi12);
-    agent.acmd("game_specialairhi12", game_specialhi12);
-    agent.acmd("effect_specialhi12", effect_specialhi12);
-    agent.acmd("effect_specialairhi12", effect_specialhi12);
-    agent.acmd("sound_specialhi12", sound_specialhi12);
-    agent.acmd("sound_specialairhi12", sound_specialhi12);
-    agent.acmd("expression_specialhi12", expression_specialhi12);
-    agent.acmd("expression_specialairhi12", expression_specialhi12);
+    agent.acmd("game_specialhi1", stub, Priority::Low);
+    agent.acmd("effect_specialhi1", effect_specialhi1, Priority::Low);
+    agent.acmd("effect_specialairhi1", effect_specialhi1, Priority::Low);
+    agent.acmd("game_specialhi12", game_specialhi12, Priority::Low);
+    agent.acmd("game_specialairhi12", game_specialhi12, Priority::Low);
+    agent.acmd("effect_specialhi12", effect_specialhi12, Priority::Low);
+    agent.acmd("effect_specialairhi12", effect_specialhi12, Priority::Low);
+    agent.acmd("sound_specialhi12", sound_specialhi12, Priority::Low);
+    agent.acmd("sound_specialairhi12", sound_specialhi12, Priority::Low);
+    agent.acmd("expression_specialhi12", expression_specialhi12, Priority::Low);
+    agent.acmd("expression_specialairhi12", expression_specialhi12, Priority::Low);
 
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("game_specialairhi2", game_specialairhi2);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("game_specialairhi2", game_specialairhi2, Priority::Low);
 
-    agent.acmd("game_specialhi3", game_specialhi3);
-    agent.acmd("game_specialairhi3", game_specialhi3);
-    agent.acmd("effect_specialhi3", effect_specialhi3);
-    agent.acmd("effect_specialairhi3", effect_specialairhi3);
+    agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
+    agent.acmd("game_specialairhi3", game_specialhi3, Priority::Low);
+    agent.acmd("effect_specialhi3", effect_specialhi3, Priority::Low);
+    agent.acmd("effect_specialairhi3", effect_specialairhi3, Priority::Low);
 }

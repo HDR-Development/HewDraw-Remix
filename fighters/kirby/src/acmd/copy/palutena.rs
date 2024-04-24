@@ -52,13 +52,14 @@ unsafe extern "C" fn expression_palutenaspecialn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_palutenaspecialn", effect_palutenaspecialn);
-    agent.acmd("effect_palutenaspecialairn", effect_palutenaspecialn);
-    agent.acmd("sound_palutenaspecialn", sound_palutenaspecialn);
-    agent.acmd("sound_palutenaspecialairn", sound_palutenaspecialn);
-    agent.acmd("expression_palutenaspecialn", expression_palutenaspecialn);
+    agent.acmd("effect_palutenaspecialn", effect_palutenaspecialn, Priority::Low);
+    agent.acmd("effect_palutenaspecialairn", effect_palutenaspecialn, Priority::Low);
+    agent.acmd("sound_palutenaspecialn", sound_palutenaspecialn, Priority::Low);
+    agent.acmd("sound_palutenaspecialairn", sound_palutenaspecialn, Priority::Low);
+    agent.acmd("expression_palutenaspecialn", expression_palutenaspecialn, Priority::Low);
     agent.acmd(
         "expression_palutenaspecialairn",
         expression_palutenaspecialn,
+        Priority::Low
     );
 }

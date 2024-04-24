@@ -327,27 +327,27 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11w", game_attack11w);
-    agent.acmd("effect_attack11w", effect_attack11w);
-    agent.acmd("sound_attack11w", sound_attack11w);
+    agent.acmd("game_attack11w", game_attack11w, Priority::Low);
+    agent.acmd("effect_attack11w", effect_attack11w, Priority::Low);
+    agent.acmd("sound_attack11w", sound_attack11w, Priority::Low);
     
-    agent.acmd("game_attack12", game_attack12);
-    agent.acmd("effect_attack12", effect_attack12);
-    agent.acmd("sound_attack12", sound_attack12);
+    agent.acmd("game_attack12", game_attack12, Priority::Low);
+    agent.acmd("effect_attack12", effect_attack12, Priority::Low);
+    agent.acmd("sound_attack12", sound_attack12, Priority::Low);
 
-    agent.acmd("game_attack13", game_attack13);
-    agent.acmd("effect_attack13", effect_attack13);
-    agent.acmd("sound_attack13", sound_attack13);
+    agent.acmd("game_attack13", game_attack13, Priority::Low);
+    agent.acmd("effect_attack13", effect_attack13, Priority::Low);
+    agent.acmd("sound_attack13", sound_attack13, Priority::Low);
 
-    agent.acmd("game_attack11s", game_attack11s);
-    agent.acmd("game_attack11nears", game_attack11s);
-    agent.acmd("effect_attack11s", effect_attack11nears);
-    agent.acmd("effect_attack11nears", effect_attack11nears);
+    agent.acmd("game_attack11s", game_attack11s, Priority::Low);
+    agent.acmd("game_attack11nears", game_attack11s, Priority::Low);
+    agent.acmd("effect_attack11s", effect_attack11nears, Priority::Low);
+    agent.acmd("effect_attack11nears", effect_attack11nears, Priority::Low);
 
-    agent.acmd("game_attack12s", game_attack12s);
-    agent.acmd("effect_attack12s", effect_attack12s);
-    agent.acmd("sound_attack12s", sound_attack12s);
-    agent.acmd("expression_attack12s", expression_attack12s);
+    agent.acmd("game_attack12s", game_attack12s, Priority::Low);
+    agent.acmd("effect_attack12s", effect_attack12s, Priority::Low);
+    agent.acmd("sound_attack12s", sound_attack12s, Priority::Low);
+    agent.acmd("expression_attack12s", expression_attack12s, Priority::Low);
 
-    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

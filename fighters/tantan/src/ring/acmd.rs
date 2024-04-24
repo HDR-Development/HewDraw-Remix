@@ -50,6 +50,6 @@ unsafe extern "C" fn game_attacks4fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackfly", game_attackfly);
-    agent.acmd("game_attacks4fly", game_attacks4fly);
+    agent.acmd("game_attackfly", game_attackfly, Priority::Low);
+    agent.acmd("game_attacks4fly", game_attacks4fly, Priority::Low);
 }

@@ -429,36 +429,36 @@ unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
-    agent.acmd("effect_attackairn", effect_attackairn);
-    agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", expression_attackairn);
-    agent.acmd("effect_landingairn", effect_landingairn);
-    agent.acmd("sound_landingairn", sound_landingairn);
-    agent.acmd("expression_landingairn", expression_landingairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
+    agent.acmd("effect_attackairn", effect_attackairn, Priority::Low);
+    agent.acmd("sound_attackairn", sound_attackairn, Priority::Low);
+    agent.acmd("expression_attackairn", expression_attackairn, Priority::Low);
+    agent.acmd("effect_landingairn", effect_landingairn, Priority::Low);
+    agent.acmd("sound_landingairn", sound_landingairn, Priority::Low);
+    agent.acmd("expression_landingairn", expression_landingairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
-    agent.acmd("effect_attackairf", effect_attackairf);
-    agent.acmd("sound_attackairf", sound_attackairf);
-    agent.acmd("expression_attackairf", expression_attackairf);
-    agent.acmd("effect_landingairf", effect_landingairf);
-    agent.acmd("sound_landingairf", sound_landingairf);
-    agent.acmd("expression_landingairf", expression_landingairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
+    agent.acmd("sound_attackairf", sound_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
+    agent.acmd("effect_landingairf", effect_landingairf, Priority::Low);
+    agent.acmd("sound_landingairf", sound_landingairf, Priority::Low);
+    agent.acmd("expression_landingairf", expression_landingairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
-    agent.acmd("effect_attackairb", effect_attackairb);
-    agent.acmd("sound_attackairb", sound_attackairb);
-    agent.acmd("expression_attackairb", expression_attackairb);
-    agent.acmd("effect_landingairb", effect_landingairb);
-    agent.acmd("sound_landingairb", sound_landingairb);
-    agent.acmd("expression_landingairb", expression_landingairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
+    agent.acmd("sound_attackairb", sound_attackairb, Priority::Low);
+    agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
+    agent.acmd("effect_landingairb", effect_landingairb, Priority::Low);
+    agent.acmd("sound_landingairb", sound_landingairb, Priority::Low);
+    agent.acmd("expression_landingairb", expression_landingairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
-    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
+    agent.acmd("expression_attackairhi", expression_attackairhi, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
-    agent.acmd("effect_attackairlw", effect_attackairlw);
-    agent.acmd("sound_attackairlw", sound_attackairlw);
-    agent.acmd("game_landingairlw", stub);
-    agent.acmd("expression_landingairlw", expression_landingairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
+    agent.acmd("sound_attackairlw", sound_attackairlw, Priority::Low);
+    agent.acmd("game_landingairlw", stub, Priority::Low);
+    agent.acmd("expression_landingairlw", expression_landingairlw, Priority::Low);
 }

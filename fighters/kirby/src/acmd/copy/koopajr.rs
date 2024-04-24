@@ -25,5 +25,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd(
         "effect_koopajrspecialnshoot",
         effect_koopajrspecialnshoot,
+        Priority::Low
     );
 }

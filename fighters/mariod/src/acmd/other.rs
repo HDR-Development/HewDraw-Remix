@@ -223,25 +223,25 @@ unsafe extern "C" fn sound_shootlegsjumpsquat(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
 
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
     
-    agent.acmd("sound_jumpback", sound_jumpback);
-    agent.acmd("sound_jumpfront", sound_jumpfront);
-    agent.acmd("sound_jumpbackmini", sound_jumpbackmini);
-    agent.acmd("sound_jumpfrontmini", sound_jumpfrontmini);
-    agent.acmd("sound_jumpaerialback", sound_jumpaerialback);
-    agent.acmd("sound_jumpaerialfront", sound_jumpaerialfront);
-    agent.acmd("sound_cliffjump2", sound_cliffjump2);
-    agent.acmd("sound_passivewalljump", sound_passivewalljump);
-    agent.acmd("sound_shootlegsjumpsquat", sound_shootlegsjumpsquat);
+    agent.acmd("sound_jumpback", sound_jumpback, Priority::Low);
+    agent.acmd("sound_jumpfront", sound_jumpfront, Priority::Low);
+    agent.acmd("sound_jumpbackmini", sound_jumpbackmini, Priority::Low);
+    agent.acmd("sound_jumpfrontmini", sound_jumpfrontmini, Priority::Low);
+    agent.acmd("sound_jumpaerialback", sound_jumpaerialback, Priority::Low);
+    agent.acmd("sound_jumpaerialfront", sound_jumpaerialfront, Priority::Low);
+    agent.acmd("sound_cliffjump2", sound_cliffjump2, Priority::Low);
+    agent.acmd("sound_passivewalljump", sound_passivewalljump, Priority::Low);
+    agent.acmd("sound_shootlegsjumpsquat", sound_shootlegsjumpsquat, Priority::Low);
 }

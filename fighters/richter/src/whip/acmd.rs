@@ -216,65 +216,65 @@ unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
 
 pub fn install(agent: &mut Agent) {
     // ground
-    agent.acmd("game_attack11", disable_physics);
-    agent.acmd("game_attack12", disable_physics);
-    agent.acmd("game_attack13", disable_physics);
+    agent.acmd("game_attack11", disable_physics, Priority::Low);
+    agent.acmd("game_attack12", disable_physics, Priority::Low);
+    agent.acmd("game_attack13", disable_physics, Priority::Low);
 
-    agent.acmd("game_attackdash", disable_physics);
+    agent.acmd("game_attackdash", disable_physics, Priority::Low);
 
     // tilts
-    agent.acmd("game_attacks3", disable_physics);
-    agent.acmd("effect_attacks3", effect_attacks3);
+    agent.acmd("game_attacks3", disable_physics, Priority::Low);
+    agent.acmd("effect_attacks3", effect_attacks3, Priority::Low);
     
-    agent.acmd("game_attackhi3", disable_physics);
-    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("game_attackhi3", disable_physics, Priority::Low);
+    agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
 
     // smashes
-    agent.acmd("game_attacks4charge", disable_physics);
-    agent.acmd("effect_attacks4", effect_attacks4);
-    agent.acmd("game_attacks4hi", disable_physics);
-    agent.acmd("effect_attacks4hi", effect_attacks4);
-    agent.acmd("game_attacks4lw", disable_physics);
-    agent.acmd("effect_attacks4lw", effect_attacks4);
+    agent.acmd("game_attacks4charge", disable_physics, Priority::Low);
+    agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
+    agent.acmd("game_attacks4hi", disable_physics, Priority::Low);
+    agent.acmd("effect_attacks4hi", effect_attacks4, Priority::Low);
+    agent.acmd("game_attacks4lw", disable_physics, Priority::Low);
+    agent.acmd("effect_attacks4lw", effect_attacks4, Priority::Low);
 
-    agent.acmd("game_attackhi4charge", disable_physics);
-    agent.acmd("game_attackhi4", disable_physics);
-    agent.acmd("effect_attackhi4", effect_attackhi4);
+    agent.acmd("game_attackhi4charge", disable_physics, Priority::Low);
+    agent.acmd("game_attackhi4", disable_physics, Priority::Low);
+    agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
     
-    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
 
     // aerials
-    agent.acmd("effect_attackairn", effect_attackairn);
-    agent.acmd("game_landingairn", disable_physics);
-    agent.acmd("effect_landingairn", effect_landingairn);
+    agent.acmd("effect_attackairn", effect_attackairn, Priority::Low);
+    agent.acmd("game_landingairn", disable_physics, Priority::Low);
+    agent.acmd("effect_landingairn", effect_landingairn, Priority::Low);
 
-    agent.acmd("game_attackairfhi", disable_physics);
-    agent.acmd("effect_attackairfhi", effect_attackairf);
-    agent.acmd("game_attackairf", disable_physics);
-    agent.acmd("effect_attackairf", effect_attackairf);
-    agent.acmd("game_attackairflw", disable_physics);
-    agent.acmd("effect_attackairflw", effect_attackairf);
-    agent.acmd("game_landingairf", disable_physics);
+    agent.acmd("game_attackairfhi", disable_physics, Priority::Low);
+    agent.acmd("effect_attackairfhi", effect_attackairf, Priority::Low);
+    agent.acmd("game_attackairf", disable_physics, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
+    agent.acmd("game_attackairflw", disable_physics, Priority::Low);
+    agent.acmd("effect_attackairflw", effect_attackairf, Priority::Low);
+    agent.acmd("game_landingairf", disable_physics, Priority::Low);
 
-    agent.acmd("game_attackairbhi", game_attackairb);
-    agent.acmd("effect_attackairbhi", effect_attackairb);
-    agent.acmd("game_attackairb", game_attackairb);
-    agent.acmd("effect_attackairb", effect_attackairb);
-    agent.acmd("game_attackairblw", game_attackairb);
-    agent.acmd("effect_attackairblw", effect_attackairb);
-    agent.acmd("game_landingairb", disable_physics);
+    agent.acmd("game_attackairbhi", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairbhi", effect_attackairb, Priority::Low);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
+    agent.acmd("game_attackairblw", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairblw", effect_attackairb, Priority::Low);
+    agent.acmd("game_landingairb", disable_physics, Priority::Low);
 
-    agent.acmd("game_attackairhi", stub);
-    agent.acmd("effect_attackairhi", stub);
+    agent.acmd("game_attackairhi", stub, Priority::Low);
+    agent.acmd("effect_attackairhi", stub, Priority::Low);
 
     // specials
-    agent.acmd("game_specials1", stub);
-    agent.acmd("game_specialairs1", stub);
+    agent.acmd("game_specials1", stub, Priority::Low);
+    agent.acmd("game_specialairs1", stub, Priority::Low);
 
     // throws
-    agent.acmd("game_throwhi", stub);
-    agent.acmd("effect_throwhi", stub);
+    agent.acmd("game_throwhi", stub, Priority::Low);
+    agent.acmd("effect_throwhi", stub, Priority::Low);
 
     // other
-    agent.acmd("game_guardon", disable_physics);
+    agent.acmd("game_guardon", disable_physics, Priority::Low);
 }

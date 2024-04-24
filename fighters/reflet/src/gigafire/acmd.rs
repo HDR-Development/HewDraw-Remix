@@ -39,8 +39,8 @@ unsafe extern "C" fn effect_rise(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_burn", game_burn);
+    agent.acmd("game_burn", game_burn, Priority::Low);
     
-    agent.acmd("game_rise", game_rise);
-    agent.acmd("effect_rise", effect_rise);
+    agent.acmd("game_rise", game_rise, Priority::Low);
+    agent.acmd("effect_rise", effect_rise, Priority::Low);
 }

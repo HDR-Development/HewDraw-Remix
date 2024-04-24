@@ -198,28 +198,28 @@ unsafe extern "C" fn sound_movespwms(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_movew", game_movewms);
-    agent.acmd("game_movem", game_movewms);
-    agent.acmd("game_moves", game_movewms);
-    agent.acmd("effect_movew", effect_movewms);
-    agent.acmd("effect_movem", effect_movewms);
-    agent.acmd("effect_moves", effect_movewms);
-    agent.acmd("sound_movew", sound_movewms);
-    agent.acmd("sound_movem", sound_movewms);
-    agent.acmd("sound_moves", sound_movewms);
-    agent.acmd("game_movespw", game_movespwms);
-    agent.acmd("game_movespm", game_movespwms);
-    agent.acmd("game_movesps", game_movespwms);
-    agent.acmd("game_movespw_last", game_movespwms_last);
-    agent.acmd("game_movespm_last", game_movespwms_last);
-    agent.acmd("game_movesps_last", game_movespwms_last);
-    agent.acmd("effect_movespw", effect_movespwms);
-    agent.acmd("effect_movespm", effect_movespwms);
-    agent.acmd("effect_movesps", effect_movespwms);
-    agent.acmd("effect_movespw_last", effect_movespwms_last);
-    agent.acmd("effect_movespm_last", effect_movespwms_last);
-    agent.acmd("effect_movesps_last", effect_movespwms_last);
-    agent.acmd("sound_movespw", sound_movespwms);
-    agent.acmd("sound_movespm", sound_movespwms);
-    agent.acmd("sound_movesps", sound_movespwms);
+    agent.acmd("game_movew", game_movewms, Priority::Low);
+    agent.acmd("game_movem", game_movewms, Priority::Low);
+    agent.acmd("game_moves", game_movewms, Priority::Low);
+    agent.acmd("effect_movew", effect_movewms, Priority::Low);
+    agent.acmd("effect_movem", effect_movewms, Priority::Low);
+    agent.acmd("effect_moves", effect_movewms, Priority::Low);
+    agent.acmd("sound_movew", sound_movewms, Priority::Low);
+    agent.acmd("sound_movem", sound_movewms, Priority::Low);
+    agent.acmd("sound_moves", sound_movewms, Priority::Low);
+    agent.acmd("game_movespw", game_movespwms, Priority::Low);
+    agent.acmd("game_movespm", game_movespwms, Priority::Low);
+    agent.acmd("game_movesps", game_movespwms, Priority::Low);
+    agent.acmd("game_movespw_last", game_movespwms_last, Priority::Low);
+    agent.acmd("game_movespm_last", game_movespwms_last, Priority::Low);
+    agent.acmd("game_movesps_last", game_movespwms_last, Priority::Low);
+    agent.acmd("effect_movespw", effect_movespwms, Priority::Low);
+    agent.acmd("effect_movespm", effect_movespwms, Priority::Low);
+    agent.acmd("effect_movesps", effect_movespwms, Priority::Low);
+    agent.acmd("effect_movespw_last", effect_movespwms_last, Priority::Low);
+    agent.acmd("effect_movespm_last", effect_movespwms_last, Priority::Low);
+    agent.acmd("effect_movesps_last", effect_movespwms_last, Priority::Low);
+    agent.acmd("sound_movespw", sound_movespwms, Priority::Low);
+    agent.acmd("sound_movespm", sound_movespwms, Priority::Low);
+    agent.acmd("sound_movesps", sound_movespwms, Priority::Low);
 }

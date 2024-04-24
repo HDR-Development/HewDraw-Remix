@@ -30,6 +30,6 @@ unsafe extern "C" fn effect_break(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("effect_break", effect_break);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("effect_break", effect_break, Priority::Low);
 }

@@ -301,14 +301,14 @@ unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialairhi", game_specialairhi);
-    agent.acmd("game_specialairhicommand", game_specialairhi);
-    agent.acmd("game_specialairhiend", game_specialairhiend);
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialhicommand", game_specialhi);
-    agent.acmd("game_specialhifall", game_specialhifall);
-    agent.acmd("effect_specialhi", effect_specialhi);
-    agent.acmd("effect_specialhicommand", effect_specialhi);
-    agent.acmd("effect_specialairhi", effect_specialhi);
-    agent.acmd("effect_specialairhicommand", effect_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("game_specialairhicommand", game_specialairhi, Priority::Low);
+    agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialhicommand", game_specialhi, Priority::Low);
+    agent.acmd("game_specialhifall", game_specialhifall, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialhicommand", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhicommand", effect_specialhi, Priority::Low);
 }

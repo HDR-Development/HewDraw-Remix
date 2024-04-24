@@ -107,6 +107,6 @@ unsafe extern "C" fn effect_shot(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shot", game_shot);
-    agent.acmd("effect_shot", effect_shot);
+    agent.acmd("game_shot", game_shot, Priority::Low);
+    agent.acmd("effect_shot", effect_shot, Priority::Low);
 }

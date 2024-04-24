@@ -440,37 +440,37 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("game_specialairn", game_specialn);
-    agent.acmd("effect_specialn", effect_specialn);
-    agent.acmd("effect_specialairn", effect_specialn);
-    agent.acmd("sound_specialn", sound_specialn);
-    agent.acmd("sound_specialairn", sound_specialn);
-    agent.acmd("expression_specialn", expression_specialn);
-    agent.acmd("expression_specialairn", expression_specialn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
+    agent.acmd("game_specialairn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialn", effect_specialn, Priority::Low);
+    agent.acmd("effect_specialairn", effect_specialn, Priority::Low);
+    agent.acmd("sound_specialn", sound_specialn, Priority::Low);
+    agent.acmd("sound_specialairn", sound_specialn, Priority::Low);
+    agent.acmd("expression_specialn", expression_specialn, Priority::Low);
+    agent.acmd("expression_specialairn", expression_specialn, Priority::Low);
 
-    agent.acmd("game_specialnthunder", game_specialnthunder);
-    agent.acmd("game_specialairnthunder", game_specialnthunder);
-    agent.acmd("effect_specialnthunder", effect_specialnthunder);
-    agent.acmd("effect_specialairnthunder", effect_specialnthunder);
-    agent.acmd("sound_specialnthunder", sound_specialnthunder);
-    agent.acmd("sound_specialairnthunder", sound_specialnthunder);
-    agent.acmd("expression_specialnthunder",expression_specialnthunder);
-    agent.acmd("expression_specialairnthunder",expression_specialnthunder);
+    agent.acmd("game_specialnthunder", game_specialnthunder, Priority::Low);
+    agent.acmd("game_specialairnthunder", game_specialnthunder, Priority::Low);
+    agent.acmd("effect_specialnthunder", effect_specialnthunder, Priority::Low);
+    agent.acmd("effect_specialairnthunder", effect_specialnthunder, Priority::Low);
+    agent.acmd("sound_specialnthunder", sound_specialnthunder, Priority::Low);
+    agent.acmd("sound_specialairnthunder", sound_specialnthunder, Priority::Low);
+    agent.acmd("expression_specialnthunder", expression_specialnthunder, Priority::Low);
+    agent.acmd("expression_specialairnthunder", expression_specialnthunder, Priority::Low);
 
-    agent.acmd("game_specialairsstart", game_specialairsstart);
-    agent.acmd("effect_specialsstart", effect_specialsstart);
-    agent.acmd("effect_specialairsstart", effect_specialsstart);
-    agent.acmd("effect_specialshold", effect_specialshold);
-    agent.acmd("effect_specialairshold", effect_specialairshold);
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialsdischarge", game_specialsdischarge);
-    agent.acmd("effect_specialsdischarge", effect_specialsdischarge);
-    agent.acmd("game_specialairsend", game_specialairsend);
+    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
+    agent.acmd("effect_specialsstart", effect_specialsstart, Priority::Low);
+    agent.acmd("effect_specialairsstart", effect_specialsstart, Priority::Low);
+    agent.acmd("effect_specialshold", effect_specialshold, Priority::Low);
+    agent.acmd("effect_specialairshold", effect_specialairshold, Priority::Low);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialsdischarge", game_specialsdischarge, Priority::Low);
+    agent.acmd("effect_specialsdischarge", effect_specialsdischarge, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
 }

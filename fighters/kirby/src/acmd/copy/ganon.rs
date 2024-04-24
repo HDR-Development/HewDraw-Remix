@@ -148,18 +148,19 @@ unsafe extern "C" fn expression_ganonfloat(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_ganonfloatstart", game_ganonfloatstart);
-    agent.acmd("effect_ganonfloatstart", effect_ganonfloatstart);
-    agent.acmd("expression_ganonfloatstart", expression_ganonfloatstart);
-    agent.acmd("sound_ganonfloatstart", sound_ganonfloatstart);
-    agent.acmd("game_ganonfloatairstart", game_ganonfloatairstart);
-    agent.acmd("effect_ganonfloatairstart", effect_ganonfloatairstart);
+    agent.acmd("game_ganonfloatstart", game_ganonfloatstart, Priority::Low);
+    agent.acmd("effect_ganonfloatstart", effect_ganonfloatstart, Priority::Low);
+    agent.acmd("expression_ganonfloatstart", expression_ganonfloatstart, Priority::Low);
+    agent.acmd("sound_ganonfloatstart", sound_ganonfloatstart, Priority::Low);
+    agent.acmd("game_ganonfloatairstart", game_ganonfloatairstart, Priority::Low);
+    agent.acmd("effect_ganonfloatairstart", effect_ganonfloatairstart, Priority::Low);
     agent.acmd(
         "expression_ganonfloatairstart",
         expression_ganonfloatairstart,
+        Priority::Low
     );
-    agent.acmd("sound_ganonfloatairstart", sound_ganonfloatairstart);
-    agent.acmd("game_ganonfloat", game_ganonfloat);
-    agent.acmd("effect_ganonfloat", effect_ganonfloat);
-    agent.acmd("expression_ganonfloat", expression_ganonfloat);
+    agent.acmd("sound_ganonfloatairstart", sound_ganonfloatairstart, Priority::Low);
+    agent.acmd("game_ganonfloat", game_ganonfloat, Priority::Low);
+    agent.acmd("effect_ganonfloat", effect_ganonfloat, Priority::Low);
+    agent.acmd("expression_ganonfloat", expression_ganonfloat, Priority::Low);
 }

@@ -176,22 +176,22 @@ unsafe extern "C" fn sound_specialnmax(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials", game_specials);
-	agent.acmd("effect_specials", effect_specials);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+	agent.acmd("effect_specials", effect_specials, Priority::Low);
 
-	agent.acmd("game_specialhistart", game_specialhistart);
-    agent.acmd("game_specialairhistart", game_specialairhistart);
-    agent.acmd("game_specialairhi", game_specialairhi);
+	agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhistart", game_specialairhistart, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
 
-    agent.acmd("effect_specialnhold", effect_specialnhold);
-    agent.acmd("sound_specialnhold", sound_specialnhold);
-    agent.acmd("effect_specialnmax", effect_specialnmax);
-    agent.acmd("sound_specialnmax", sound_specialnmax);
-    agent.acmd("effect_specialairnhold", effect_specialnhold);
-    agent.acmd("sound_specialairnhold", sound_specialnhold);
-    agent.acmd("effect_specialairnmax", effect_specialnmax);
-    agent.acmd("sound_specialairnmax", sound_specialnmax);
+    agent.acmd("effect_specialnhold", effect_specialnhold, Priority::Low);
+    agent.acmd("sound_specialnhold", sound_specialnhold, Priority::Low);
+    agent.acmd("effect_specialnmax", effect_specialnmax, Priority::Low);
+    agent.acmd("sound_specialnmax", sound_specialnmax, Priority::Low);
+    agent.acmd("effect_specialairnhold", effect_specialnhold, Priority::Low);
+    agent.acmd("sound_specialairnhold", sound_specialnhold, Priority::Low);
+    agent.acmd("effect_specialairnmax", effect_specialnmax, Priority::Low);
+    agent.acmd("sound_specialairnmax", sound_specialnmax, Priority::Low);
 }

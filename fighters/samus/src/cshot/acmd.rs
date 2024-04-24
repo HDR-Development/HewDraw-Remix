@@ -31,6 +31,6 @@ unsafe extern "C" fn sound_shoot(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("sound_shoot", sound_shoot);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("sound_shoot", sound_shoot, Priority::Low);
 }

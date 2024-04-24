@@ -73,11 +73,11 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
 
-    agent.acmd("game_attack11_nana", game_attack11_nana);
+    agent.acmd("game_attack11_nana", game_attack11_nana, Priority::Low);
 
-    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 
-    agent.acmd("game_attackdash_nana", game_attackdash);
+    agent.acmd("game_attackdash_nana", game_attackdash, Priority::Low);
 }

@@ -120,33 +120,38 @@ unsafe extern "C" fn expression_luigispecialnthunder(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_luigispecialn", game_luigispecialn);
-    agent.acmd("game_luigispecialairn", game_luigispecialn);
-    agent.acmd("effect_luigispecialn", effect_luigispecialn);
-    agent.acmd("effect_luigispecialairn", effect_luigispecialn);
-    agent.acmd("sound_luigispecialn", sound_luigispecialn);
-    agent.acmd("sound_luigispecialairn", sound_luigispecialn);
-    agent.acmd("game_luigispecialnthunder", game_luigispecialnthunder);
-    agent.acmd("game_luigispecialairnthunder", game_luigispecialnthunder);
+    agent.acmd("game_luigispecialn", game_luigispecialn, Priority::Low);
+    agent.acmd("game_luigispecialairn", game_luigispecialn, Priority::Low);
+    agent.acmd("effect_luigispecialn", effect_luigispecialn, Priority::Low);
+    agent.acmd("effect_luigispecialairn", effect_luigispecialn, Priority::Low);
+    agent.acmd("sound_luigispecialn", sound_luigispecialn, Priority::Low);
+    agent.acmd("sound_luigispecialairn", sound_luigispecialn, Priority::Low);
+    agent.acmd("game_luigispecialnthunder", game_luigispecialnthunder, Priority::Low);
+    agent.acmd("game_luigispecialairnthunder", game_luigispecialnthunder, Priority::Low);
     agent.acmd(
         "effect_luigispecialnthunder",
         effect_luigispecialnthunder,
+        Priority::Low
     );
     agent.acmd(
         "effect_luigispecialairnthunder",
         effect_luigispecialnthunder,
+        Priority::Low
     );
-    agent.acmd("sound_luigispecialnthunder", sound_luigispecialnthunder);
+    agent.acmd("sound_luigispecialnthunder", sound_luigispecialnthunder, Priority::Low);
     agent.acmd(
         "sound_luigispecialairnthunder",
         sound_luigispecialnthunder,
+        Priority::Low
     );
     agent.acmd(
         "expression_luigispecialnthunder",
         expression_luigispecialnthunder,
+        Priority::Low
     );
     agent.acmd(
         "expression_luigispecialairnthunder",
         expression_luigispecialnthunder,
+        Priority::Low
     );
 }

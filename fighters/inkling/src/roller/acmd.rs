@@ -100,15 +100,15 @@ unsafe extern "C" fn game_specialsrunnoink(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialswalk", game_specialswalk);
-    agent.acmd("game_specialairswalk", game_specialswalk);
-    agent.acmd("game_specialswalknoink", game_specialswalknoink);
+    agent.acmd("game_specialswalk", game_specialswalk, Priority::Low);
+    agent.acmd("game_specialairswalk", game_specialswalk, Priority::Low);
+    agent.acmd("game_specialswalknoink", game_specialswalknoink, Priority::Low);
 
-    agent.acmd("game_specialsdash", game_specialsdash);
-    agent.acmd("game_specialairsdash", game_specialairsdash);
-    agent.acmd("game_specialsdashnoink", game_specialsdashnoink);
+    agent.acmd("game_specialsdash", game_specialsdash, Priority::Low);
+    agent.acmd("game_specialairsdash", game_specialairsdash, Priority::Low);
+    agent.acmd("game_specialsdashnoink", game_specialsdashnoink, Priority::Low);
 
-    agent.acmd("game_specialsrun", game_specialsrun);
-    agent.acmd("game_specialairsrun", game_specialairsrun);
-    agent.acmd("game_specialsrunnoink", game_specialsrunnoink);
+    agent.acmd("game_specialsrun", game_specialsrun, Priority::Low);
+    agent.acmd("game_specialairsrun", game_specialairsrun, Priority::Low);
+    agent.acmd("game_specialsrunnoink", game_specialsrunnoink, Priority::Low);
 }

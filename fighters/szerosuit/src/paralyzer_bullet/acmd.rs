@@ -47,6 +47,6 @@ unsafe extern "C" fn game_shoottame(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("game_shoottame", game_shoottame);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("game_shoottame", game_shoottame, Priority::Low);
 }

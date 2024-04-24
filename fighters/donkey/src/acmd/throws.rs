@@ -254,24 +254,24 @@ unsafe extern "C" fn effect_heavyitemthrowlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_throwff", game_throwff);
+    agent.acmd("game_throwff", game_throwff, Priority::Low);
 
-    agent.acmd("game_throwfb", game_throwfb);
+    agent.acmd("game_throwfb", game_throwfb, Priority::Low);
 
-    agent.acmd("game_throwfhi", game_throwfhi);
+    agent.acmd("game_throwfhi", game_throwfhi, Priority::Low);
 
-    agent.acmd("game_throwflw", game_throwflw);
+    agent.acmd("game_throwflw", game_throwflw, Priority::Low);
 
-    agent.acmd("game_itemheavythrowf", game_itemheavythrowf);
+    agent.acmd("game_itemheavythrowf", game_itemheavythrowf, Priority::Low);
 
-    agent.acmd("game_itemheavythrowb", game_itemheavythrowb);
+    agent.acmd("game_itemheavythrowb", game_itemheavythrowb, Priority::Low);
 
-    agent.acmd("game_itemheavythrowlw", game_itemheavythrowlw);
-    agent.acmd("game_itemheavythrowlw4", game_itemheavythrowlw);
-    agent.acmd("effect_itemheavythrowlw", effect_heavyitemthrowlw);
-    agent.acmd("effect_itemheavythrowlw4", effect_heavyitemthrowlw);
+    agent.acmd("game_itemheavythrowlw", game_itemheavythrowlw, Priority::Low);
+    agent.acmd("game_itemheavythrowlw4", game_itemheavythrowlw, Priority::Low);
+    agent.acmd("effect_itemheavythrowlw", effect_heavyitemthrowlw, Priority::Low);
+    agent.acmd("effect_itemheavythrowlw4", effect_heavyitemthrowlw, Priority::Low);
 }

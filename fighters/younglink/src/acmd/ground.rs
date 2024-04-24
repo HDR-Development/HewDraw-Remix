@@ -152,12 +152,12 @@ unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack11);
-    agent.acmd("game_attack12", game_attack12);
-    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
+    agent.acmd("game_attack12", game_attack12, Priority::Low);
+    agent.acmd("game_attack13", game_attack13, Priority::Low);
 
-    agent.acmd("game_attackdash", game_attackdash);
-    agent.acmd("effect_attackdash", effect_attackdash);
-    agent.acmd("sound_attackdash", sound_attackdash);
-    agent.acmd("expression_attackdash", expression_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
+    agent.acmd("sound_attackdash", sound_attackdash, Priority::Low);
+    agent.acmd("expression_attackdash", expression_attackdash, Priority::Low);
 }

@@ -112,9 +112,9 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialairhijump", game_specialairhijump);
-    agent.acmd("game_specialairhifall", game_specialairhifall);
+    agent.acmd("game_specialairhijump", game_specialairhijump, Priority::Low);
+    agent.acmd("game_specialairhifall", game_specialairhifall, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
 }

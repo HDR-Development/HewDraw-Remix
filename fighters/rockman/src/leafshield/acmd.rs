@@ -58,15 +58,15 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_start", game_start);
+    agent.acmd("game_start", game_start, Priority::Low);
 
-    agent.acmd("game_startreverse", game_start);
+    agent.acmd("game_startreverse", game_start, Priority::Low);
 
-    agent.acmd("game_shield", game_shield);
+    agent.acmd("game_shield", game_shield, Priority::Low);
 
-    agent.acmd("game_shieldreverse", game_shield);
+    agent.acmd("game_shieldreverse", game_shield, Priority::Low);
 
-    agent.acmd("game_fly", game_fly);
+    agent.acmd("game_fly", game_fly, Priority::Low);
 
-    agent.acmd("game_flyreverse", game_fly);
+    agent.acmd("game_flyreverse", game_fly, Priority::Low);
 }

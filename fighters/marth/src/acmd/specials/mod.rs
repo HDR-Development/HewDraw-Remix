@@ -160,18 +160,18 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials1", game_specials1);
-    agent.acmd("game_specialairs1", game_specialairs1);
-    agent.acmd("effect_specials1", effect_specials1);
-    agent.acmd("effect_specialairs1", effect_specials1);
-    agent.acmd("expression_specials1", expression_specials1);
+    agent.acmd("game_specials1", game_specials1, Priority::Low);
+    agent.acmd("game_specialairs1", game_specialairs1, Priority::Low);
+    agent.acmd("effect_specials1", effect_specials1, Priority::Low);
+    agent.acmd("effect_specialairs1", effect_specials1, Priority::Low);
+    agent.acmd("expression_specials1", expression_specials1, Priority::Low);
     special_s2::install(agent);
     special_s3::install(agent);
     special_s4::install(agent);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_speciallwhit", game_speciallwhit);
-    agent.acmd("game_specialairlwhit", game_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
 }

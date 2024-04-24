@@ -110,27 +110,30 @@ unsafe extern "C" fn expression_mariodspecialnchill(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_mariodspecialn", game_mariodspecialn);
-    agent.acmd("game_mariodspecialairn", game_mariodspecialn);
-    agent.acmd("effect_mariodspecialn", effect_mariodspecialn);
-    agent.acmd("effect_mariodspecialairn", effect_mariodspecialn);
-    agent.acmd("sound_mariodspecialn", sound_mariodspecialn);
-    agent.acmd("sound_mariodspecialairn", sound_mariodspecialn);
-    agent.acmd("game_mariodspecialnchill", game_mariodspecialnchill);
-    agent.acmd("game_mariodspecialairnchill", game_mariodspecialnchill);
-    agent.acmd("effect_mariodspecialnchill", effect_mariodspecialnchill);
+    agent.acmd("game_mariodspecialn", game_mariodspecialn, Priority::Low);
+    agent.acmd("game_mariodspecialairn", game_mariodspecialn, Priority::Low);
+    agent.acmd("effect_mariodspecialn", effect_mariodspecialn, Priority::Low);
+    agent.acmd("effect_mariodspecialairn", effect_mariodspecialn, Priority::Low);
+    agent.acmd("sound_mariodspecialn", sound_mariodspecialn, Priority::Low);
+    agent.acmd("sound_mariodspecialairn", sound_mariodspecialn, Priority::Low);
+    agent.acmd("game_mariodspecialnchill", game_mariodspecialnchill, Priority::Low);
+    agent.acmd("game_mariodspecialairnchill", game_mariodspecialnchill, Priority::Low);
+    agent.acmd("effect_mariodspecialnchill", effect_mariodspecialnchill, Priority::Low);
     agent.acmd(
         "effect_mariodspecialairnchill",
         effect_mariodspecialnchill,
+        Priority::Low
     );
-    agent.acmd("sound_mariodspecialnchill", sound_mariodspecialnchill);
-    agent.acmd("sound_mariodspecialairnchill", sound_mariodspecialnchill);
+    agent.acmd("sound_mariodspecialnchill", sound_mariodspecialnchill, Priority::Low);
+    agent.acmd("sound_mariodspecialairnchill", sound_mariodspecialnchill, Priority::Low);
     agent.acmd(
         "expression_mariodspecialnchill",
         expression_mariodspecialnchill,
+        Priority::Low
     );
     agent.acmd(
         "expression_mariodspecialairnchill",
         expression_mariodspecialnchill,
+        Priority::Low
     );
 }
