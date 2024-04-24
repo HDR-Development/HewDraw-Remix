@@ -96,13 +96,15 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
         MeterModule::watch_damage(agent.battle_object, false);
     }
+    FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
     frame(lua_state, 24.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
         if ArticleModule::is_generatable(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);
@@ -127,13 +129,16 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 12.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
         MeterModule::watch_damage(agent.battle_object, false);
     }
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
     frame(lua_state, 24.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
         if ArticleModule::is_generatable(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);

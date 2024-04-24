@@ -49,22 +49,22 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let pickel = pickel_boma.object();
     if is_excute(agent) {
         if VarModule::is_flag(pickel, vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE){
-            EFFECT_FOLLOW(agent, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            EFFECT_FOLLOW(agent, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            LAST_EFFECT_SET_COLOR(agent, 0.137, 0.85, 0.85);
+            EFFECT_FOLLOW(agent, Hash40::new("pickel_soul_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+            EFFECT_FOLLOW(agent, Hash40::new("pickel_soul_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
         } else {
             EFFECT_FOLLOW(agent, Hash40::new("pickel_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
             EFFECT_FOLLOW(agent, Hash40::new("pickel_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            LAST_EFFECT_SET_COLOR(agent, 1.0, 0.467, 0.0);
         }
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("pickel_fire_soot"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("pickel_soul_fire_soot"), -1);
     }
     frame(lua_state, 38.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("pickel_fire"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("pickel_soul_fire"), -1);
     }
 }
 

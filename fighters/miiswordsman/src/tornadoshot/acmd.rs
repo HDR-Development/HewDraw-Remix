@@ -11,7 +11,7 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 68, 61, 0, 48, 3.3, 0.0, 5.7, 2.6, Some(0.0), Some(2.8), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -6.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 80, 61, 0, 48, 3.3, 0.0, 5.7, 2.6, Some(0.0), Some(2.8), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -6.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_ENERGY);
     }
 }
 

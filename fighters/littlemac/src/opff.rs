@@ -34,6 +34,7 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
             if meter == 100.0 {
                 WorkModule::set_int(boma, 0, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_INT_KO_GAGE_MAX_KEEP_FRAME);
                 WorkModule::off_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_REQUEST_KO_GAUGE_MAX_EFFECT);
+                EffectModule::remove_common(boma, Hash40::new("charge_max"));
             }
             //println!("new damage: {}", VarModule::get_float(boma.object(), vars::littlemac::instance::CURRENT_DAMAGE));
             //println!("new meter: {}", WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE));
@@ -72,7 +73,7 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
 
 unsafe fn dreamland_express(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_12"))
-    && (18.0..20.0).contains(&fighter.motion_frame())
+    && (17.0..19.0).contains(&fighter.motion_frame())
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS);
     }
@@ -116,7 +117,7 @@ unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         let meter_inc = (meter + 40.0).clamp(0.0, 100.0);
         let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-        crate::vtable_hook::update_littlemac_ui(entry_id, meter + meter_inc);
+        crate::vtable_hook::update_littlemac_ui(entry_id, meter_inc);
         WorkModule::set_float(boma, meter_inc, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         EffectModule::req_on_joint(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::new(6.0, 15.0, 0.0), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
         //println!("meter_inc: {}", meter_inc);

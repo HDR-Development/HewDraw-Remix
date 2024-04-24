@@ -133,7 +133,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 34, 85, 0, 30, 4.5, 0.0, 6.0, 6.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 34, 85, 0, 30, 4.5, 0.0, 6.0, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -159,6 +159,23 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5.5, 5.5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.8);
+    }
+}
+
+unsafe extern "C" fn expression_specialsend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
     }
 }
 
@@ -193,8 +210,8 @@ unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("kneer"), 6.0, 361, 120, 0, 55, 6.0, 4.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("kneer"), 6.0, 361, 120, 0, 55, 6.0, -3.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneer"), 6.0, 361, 120, 0, 55, 6.0, 4.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("kneer"), 6.0, 361, 120, 0, 55, 6.0, -3.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
@@ -305,8 +322,10 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("effect_specialsend", effect_specialsend);
+    agent.acmd("expression_specialsend", expression_specialsend);
     agent.acmd("game_specialairsend", game_specialsend);
     agent.acmd("effect_specialairsend", effect_specialsend);
+    agent.acmd("expression_specialairsend", expression_specialsend);
     
     agent.acmd("game_specialhi", game_specialhi);
 

@@ -10,7 +10,9 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
         PostureModule::set_lr(boma, PostureModule::lr(boma));
         PostureModule::update_rot_y_lr(boma);
     }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 14.0);
     frame(lua_state, 13.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
     }

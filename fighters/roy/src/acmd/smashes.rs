@@ -176,21 +176,11 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_ALPHA(agent, 0.4);
         EFFECT_FOLLOW(agent, Hash40::new("roy_sword_light"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.4);
+        LANDING_EFFECT(agent, Hash40::new("sys_windwave"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("roy_sword_light"), Hash40::new("sword1"), 0, 0, 10.55, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_ALPHA(agent, 0.4);
-        EFFECT_FOLLOW(agent, Hash40::new("roy_sword_light"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_ALPHA(agent, 0.4);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("sys_windwave"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
@@ -213,7 +203,7 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_roy_rnd_attack_smash_l"));
     }
-    wait(lua_state, 6.0);
+    wait(lua_state, 10.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_roy_attackair_l01"));
     }

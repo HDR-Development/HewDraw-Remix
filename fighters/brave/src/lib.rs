@@ -5,7 +5,7 @@
 pub mod acmd;
 
 pub mod opff;
-//pub mod status;
+pub mod status;
 
 // articles
 
@@ -13,6 +13,7 @@ mod crash;
 mod deathball;
 mod explosion;
 mod fireball;
+mod lightning;
 mod spark;
 mod tornado;
 
@@ -74,6 +75,7 @@ pub fn install() {
     let agent = &mut Agent::new("brave");
     acmd::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.on_start(on_start);
     agent.install();
 
@@ -81,6 +83,7 @@ pub fn install() {
     deathball::install();
     explosion::install();
     fireball::install();
+    lightning::install();
     spark::install();
     tornado::install();
 }

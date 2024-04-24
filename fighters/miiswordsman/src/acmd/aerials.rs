@@ -27,7 +27,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
 		ATTACK(agent, 3, 0, Hash40::new("haver"), 9.0, 80, 90, 0, 44, 3.0, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
 	}
 	frame(lua_state, 28.0);
-	FT_MOTION_RATE_RANGE(agent, 22.0, 30.0, 18.0);
+	FT_MOTION_RATE_RANGE(agent, 22.0, 38.0, 18.0);
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
 	}

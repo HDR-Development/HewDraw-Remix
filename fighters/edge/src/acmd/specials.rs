@@ -27,8 +27,7 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 120.0);
     if is_excute(agent) {
-        let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-        VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
     }
     frame(lua_state, 140.0);
     if is_excute(agent) {
@@ -45,9 +44,8 @@ unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
-            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        if agent.kind() != *FIGHTER_KIND_EDGE || VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
         }
     }
     frame(lua_state, 15.0);
@@ -68,9 +66,8 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
-            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        if agent.kind() != *FIGHTER_KIND_EDGE || VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
         }
     }
     frame(lua_state, 35.0);

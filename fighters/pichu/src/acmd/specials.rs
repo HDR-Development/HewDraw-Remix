@@ -44,6 +44,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
             MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 120.0);
         }
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_NONE);
+        sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.3);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -65,6 +66,10 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
@@ -235,8 +240,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             let charge_state_remaining = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) as f32;
             // 5 seconds to use full strength Discharge before it starts decreasing in power
             let discharge_decrease_power_frame = charge_state_time - 300.0;
-            // 50% damage at minimum
-            let discharge_min_power_mul = 0.5;
+            // 75% damage at minimum
+            let discharge_min_power_mul = 0.75;
             let discharge_power_mul = 1.0 - ((1.0 - (charge_state_remaining.min(discharge_decrease_power_frame)/discharge_decrease_power_frame)) * (1.0 - discharge_min_power_mul));
             VarModule::set_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL, discharge_power_mul);
             // 75% size at minimum

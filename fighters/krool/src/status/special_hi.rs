@@ -1,8 +1,6 @@
 use super::*;
 use std::convert::TryInto;
 
-// FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START
-
 unsafe extern "C" fn special_hi_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, false, -1);
     ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_START, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -131,6 +129,10 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
             fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
         }
         else {
+            if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0
+            && ControlModule::get_stick_y(fighter.module_accessor) < WorkModule::get_param_float(fighter.module_accessor,hash40("common"), hash40("attack_lw4_stick_y")) {
+                fighter.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
             if MotionModule::is_end(fighter.module_accessor) {
                 fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL.into(), false.into());
             }
@@ -162,15 +164,18 @@ unsafe extern "C" fn special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) -
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
         }
-        // else {
-        //     let fall_special_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_spd_y");
-        //     fighter.clear_lua_stack();
-        //     lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        //     let mut speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-        //     if speed_y <= -fall_special_spd_y {
-        //         fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-        //     }
-        // }
+        else {
+            // let fall_special_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_spd_y");
+            // fighter.clear_lua_stack();
+            // lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            // let mut speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            // if speed_y <= -fall_special_spd_y {
+            //     fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+            // }
+            if ControlModule::get_stick_y(fighter.module_accessor) < WorkModule::get_param_float(fighter.module_accessor,hash40("common"), hash40("attack_lw4_stick_y")) {
+                fighter.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || !fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
@@ -265,7 +270,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         // accounts for 50 max charge frames (this ended up being 38 in practice, oops)
         let calc_charge_x = (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul)) * PostureModule::lr(fighter.module_accessor);
         let calc_charge_y = fly_charge_min_spd_y + (charge_frames * fly_charge_y_mul);
-        // max x: 0.97, max y: 3.0
+        // max x: 0.97, max y: 3.5
 
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
         sv_kinetic_energy!(reset_energy, fighter, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -463,7 +468,7 @@ unsafe extern "C" fn special_hi_lean_physics(fighter: &mut L2CFighterCommon) {
         }
         else {
             let fly_lean_f_spd_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_lean_f_spd_y");
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - 0.05);  //fly_lean_f_spd_y, change properly when prcs are no longer ass
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y - fly_lean_f_spd_y);
         }
     }
     else if (fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END) && fighter.status_frame() >= 15)

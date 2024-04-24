@@ -129,6 +129,26 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_itemheavyget(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if VarModule::is_flag(agent.object(), vars::donkey::instance::DID_SPAWN_BARREL) {
+        VarModule::off_flag(agent.object(), vars::donkey::instance::DID_SPAWN_BARREL);
+        FT_MOTION_RATE_RANGE(agent, 5.0, 25.0, 45.0);   //26
+    }
+    else {
+        FT_MOTION_RATE_RANGE(agent, 5.0, 25.0, 30.0);   //18
+    }
+    if is_excute(agent) {
+        ItemModule::pickup_item(agent.module_accessor, ItemSize{_address: *ITEM_SIZE_HEAVY as u8},
+            *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL,
+            QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8},
+            ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
+    }
+    frame(lua_state, 25.0);
+}
+
 unsafe extern "C" fn expression_superliftlanding(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -163,6 +183,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("game_escapeairslide", game_escapeairslide);
+
+    agent.acmd("game_itemheavyget", game_itemheavyget);
 
     agent.acmd("expression_superliftlanding", expression_superliftlanding);
     agent.acmd("expression_shoulderlanding", expression_shoulderlanding);
