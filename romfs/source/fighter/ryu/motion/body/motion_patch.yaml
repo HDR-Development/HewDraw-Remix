@@ -48,6 +48,9 @@ attack_12_s:
 attack_13:
   extra:
     cancel_frame: 28
+attack_air_b:
+  flags:
+    turn: true
 attack_command4:
   game_script: game_attackcommand4
   flags:

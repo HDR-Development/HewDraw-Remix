@@ -1337,6 +1337,7 @@
       <float hash="landing_attack_air_frame_lw">10</float>
       <float hash="scale">1.055</float>
       <float hash="shield_radius">9.1</float>
+      <int hash="attack_combo_max">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
