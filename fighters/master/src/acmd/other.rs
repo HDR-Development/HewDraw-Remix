@@ -105,17 +105,36 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
-    
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+unsafe extern "C" fn expression_cliffattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 62.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+}
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
+    
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
+
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("expression_cliffattack", expression_cliffattack, Priority::Low);
 }

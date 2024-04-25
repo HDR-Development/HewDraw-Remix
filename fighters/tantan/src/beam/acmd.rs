@@ -39,8 +39,8 @@ unsafe extern "C" fn effect_beam(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("game_bigshoot", game_shoot);
-    agent.acmd("effect_beam", effect_beam);
-    agent.acmd("effect_bigbeam", effect_beam);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("game_bigshoot", game_shoot, Priority::Low);
+    agent.acmd("effect_beam", effect_beam, Priority::Low);
+    agent.acmd("effect_bigbeam", effect_beam, Priority::Low);
 }

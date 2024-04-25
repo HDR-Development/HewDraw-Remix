@@ -137,8 +137,8 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("game_specialairn", game_specialn);
-    agent.acmd("effect_specialn", effect_specialn);
-    agent.acmd("effect_specialairn", effect_specialn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
+    agent.acmd("game_specialairn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialn", effect_specialn, Priority::Low);
+    agent.acmd("effect_specialairn", effect_specialn, Priority::Low);
 }

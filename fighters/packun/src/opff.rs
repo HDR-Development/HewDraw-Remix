@@ -57,25 +57,6 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
-        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
-            EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
-            if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
-            }
-            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-                EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), 0, 15.5, 0, 0, 0, 0, 1.2, false);
-            }
-            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
-            }
-        }
-        VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
-    }
-}
-
 /// handle speed application
 unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
@@ -283,13 +264,11 @@ unsafe fn monch(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
-	//spike_head_mesh_test(boma);
     sspecial_cancel(boma, status_kind, situation_kind);
     ptooie_scale(boma);
     stance_head(fighter);
     check_reset(fighter);
     check_apply_speeds(fighter);
-    stance_init_effects(fighter);
     motion_handler(fighter, boma, frame);
     fastfall_specials(fighter);
     reverse_switch(boma);

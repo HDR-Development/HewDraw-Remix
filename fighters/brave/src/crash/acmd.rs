@@ -100,7 +100,7 @@ unsafe extern "C" fn effect_crashend1(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_crash1", game_crash1);
-    agent.acmd("effect_crash1", effect_crash1);
-    agent.acmd("effect_crashend1", effect_crashend1);
+    agent.acmd("game_crash1", game_crash1, Priority::Low);
+    agent.acmd("effect_crash1", effect_crash1, Priority::Low);
+    agent.acmd("effect_crashend1", effect_crashend1, Priority::Low);
 }

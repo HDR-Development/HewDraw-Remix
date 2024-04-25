@@ -24,6 +24,8 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 49.0 - landing_lag, true, true, false);
         }
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_LAND_CANCEL);
+        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_buddy_special_n01"), 0);
         //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
 }

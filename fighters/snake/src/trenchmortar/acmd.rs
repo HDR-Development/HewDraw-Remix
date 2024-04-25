@@ -18,5 +18,5 @@ unsafe extern "C" fn game_impact(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_impact", game_impact);
+    agent.acmd("game_impact", game_impact, Priority::Low);
 }

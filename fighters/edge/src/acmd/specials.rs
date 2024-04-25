@@ -27,8 +27,7 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 120.0);
     if is_excute(agent) {
-        let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-        VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
     }
     frame(lua_state, 140.0);
     if is_excute(agent) {
@@ -45,9 +44,8 @@ unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
-            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        if agent.kind() != *FIGHTER_KIND_EDGE || VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
         }
     }
     frame(lua_state, 15.0);
@@ -68,9 +66,8 @@ unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
-            let fire = ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, true, 0);
-            VarModule::set_int(agent.battle_object, vars::edge::instance::FIRE_ID, fire as i32);
+        if agent.kind() != *FIGHTER_KIND_EDGE || VarModule::get_int(agent.battle_object, vars::edge::instance::FIRE_ID) == -1 {
+            ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, -1);
         }
     }
     frame(lua_state, 35.0);
@@ -435,34 +432,34 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnstart", game_specialnstart);
-    agent.acmd("game_specialairnstart", game_specialnstart);
-    agent.acmd("game_specialn1", game_specialn1);
-    agent.acmd("game_specialairn1", game_specialn1);
-    agent.acmd("game_specialn2", game_specialn2);
-    agent.acmd("game_specialairn2", game_specialn2);
+    agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specialairnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specialn1", game_specialn1, Priority::Low);
+    agent.acmd("game_specialairn1", game_specialn1, Priority::Low);
+    agent.acmd("game_specialn2", game_specialn2, Priority::Low);
+    agent.acmd("game_specialairn2", game_specialn2, Priority::Low);
 
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
 
-    agent.acmd("game_specialhi1", game_specialhi1);
+    agent.acmd("game_specialhi1", game_specialhi1, Priority::Low);
 
-    agent.acmd("game_specialhi1end", game_specialhi1end);
-    agent.acmd("game_specialairhi1end", game_specialairhi1end);
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("effect_specialhi2", effect_specialhi2);
-    agent.acmd("game_specialhi2end", game_specialhi2end);
-    agent.acmd("game_specialairhi2end", game_specialairhi2end);
+    agent.acmd("game_specialhi1end", game_specialhi1end, Priority::Low);
+    agent.acmd("game_specialairhi1end", game_specialairhi1end, Priority::Low);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
+    agent.acmd("game_specialhi2end", game_specialhi2end, Priority::Low);
+    agent.acmd("game_specialairhi2end", game_specialairhi2end, Priority::Low);
     
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_speciallw);
-    agent.acmd("effect_speciallw", effect_speciallw);
-    agent.acmd("effect_specialairlw", effect_speciallw);
-    agent.acmd("sound_speciallw", sound_speciallw);
-    agent.acmd("sound_specialairlw", sound_speciallw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
+    agent.acmd("sound_speciallw", sound_speciallw, Priority::Low);
+    agent.acmd("sound_specialairlw", sound_speciallw, Priority::Low);
     
-    agent.acmd("game_speciallwhit", game_speciallwhit);
-    agent.acmd("game_specialairlwhit", game_speciallwhit);
-    agent.acmd("effect_speciallwhit", effect_speciallwhit);
-    agent.acmd("effect_specialairlwhit", effect_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
+    agent.acmd("effect_specialairlwhit", effect_speciallwhit, Priority::Low);
 }

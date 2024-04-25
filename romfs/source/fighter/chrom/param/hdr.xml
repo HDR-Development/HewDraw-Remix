@@ -24,7 +24,7 @@
         <float hash="flip_accel_y_mul">1.1</float>
         <float hash="flip_speed_y_max_mul">1.0</float>
         <float hash="flip_speed_y_mul">0.5</float>
-        <float hash="flip_landing_frame">16.0</float>
+        <float hash="flip_landing_frame">22.0</float>
         <float hash="dive_accel_x_mul">0.375</float>
         <float hash="dive_speed_x_max_mul">0.5</float>
         <float hash="dive_accel_y_mul">1.375</float>

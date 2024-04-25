@@ -79,9 +79,9 @@ unsafe extern "C" fn effect_readyr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_readyl", sound_ready);
-    agent.acmd("sound_readyr", sound_ready);
+    agent.acmd("sound_readyl", sound_ready, Priority::Low);
+    agent.acmd("sound_readyr", sound_ready, Priority::Low);
 
-    agent.acmd("effect_readyl", effect_readyl);
-    agent.acmd("effect_readyr", effect_readyr);
+    agent.acmd("effect_readyl", effect_readyl, Priority::Low);
+    agent.acmd("effect_readyr", effect_readyr, Priority::Low);
 }

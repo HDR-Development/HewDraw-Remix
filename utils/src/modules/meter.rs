@@ -544,25 +544,44 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
     let initial_speed_y = *knockback_info.add(5);
-    let initial_pos_x = *knockback_info.add(8);
-    let initial_pos_y = *knockback_info.add(9);
+    // let initial_pos_x = *knockback_info.add(8);
+    // let initial_pos_y = *knockback_info.add(9);
     let reaction = *knockback_info.add(0x48 / 4);
     let angle = *knockback_info.add(0x10);
     let top_lw = defender_boma.get_param_float("battle_object", "fly_top_angle_lw");
     let top_hi = defender_boma.get_param_float("battle_object", "fly_top_angle_hi");
 
+    // let ecb_top = *GroundModule::get_rhombus(defender_boma, true).add(0);
     let ecb_bottom = *GroundModule::get_rhombus(defender_boma, true).add(1);
+    let ecb_left = *GroundModule::get_rhombus(defender_boma, true).add(2);
+    let ecb_right = *GroundModule::get_rhombus(defender_boma, true).add(3);
+
     let base_sdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_mul"));
     let sdi_frame = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_frame"));
     let sdi_max_count = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_max_count"));
     let base_asdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_auto_mul"));
     let sdi_mul = *knockback_info.add(24);
+
+    let hitlag_max = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_max"));
+    let hitlag_add = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_add"));
+    let hitlag_mul = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_mul"));
+    let damage = *knockback_info.add(22);
+    let hitlag = (2.0 * (damage * hitlag_mul + hitlag_add)).clamp(0.0, hitlag_max).floor();
+    let sdi_count = ((hitlag - 1.0) / (sdi_frame as f32)).clamp(0.0, sdi_max_count as f32).floor();
+    let sdi_distance = (sdi_count * base_sdi + base_asdi) * sdi_mul;
+
     // println!("base_sdi: {}", base_sdi);
     // println!("sdi_frame: {}", sdi_frame);
     // println!("sdi_max_count: {}", sdi_max_count);
     // println!("base_asdi: {}", base_asdi);
     // println!("sdi_mul: {}", sdi_mul);
 
+    // println!("hitlag_max: {}", hitlag_max);
+    // println!("hitlag_add: {}", hitlag_add);
+    // println!("hitlag_mul: {}", hitlag_mul);
+    // println!("damage: {}", damage);
+    // println!("hitlag: {}", hitlag);
+    // println!("sdi_distance: {}", sdi_distance);
     // for off in 0..128 {
     //     println!("{}: {}", off, *knockback_info.add(off));
     // }
@@ -599,26 +618,71 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
     let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
     let context_ref = context;
     let mut false_angle_num = 0;
-    for idx in 0..NUM_ANGLE_CHECK {
+    for idx in -1..NUM_ANGLE_CHECK + 1 {
         let ang = (min_di + (idx as f32 * step)).to_radians();
         context.x_launch_speed = ang.cos() * mag;
         context.y_launch_speed = ang.sin() * mag;
+
+        // special checks for max SDI left/right
+        if idx == -1 { // full SDI left (negative X)
+            let ang = if ang.sin() > 0.0 {max_di} else {min_di}.to_radians();
+            context.x_launch_speed = ang.cos() * mag;
+            context.y_launch_speed = ang.sin() * mag;
+
+            // check wall tech
+            let ecb_offset = ecb_left.x - ecb_bottom.x;
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+                &Vector2f{ x: -1.0 * sdi_distance + ecb_offset, y: 0.0},
+                true
+            ) == 1 {
+                // println!("idx: {} would be wall techable on the left", idx);
+                return false;
+            }
+            
+            context.x_pos -= sdi_distance;
+            context.x_pos_prev -= sdi_distance;
+        }
+        else if idx == NUM_ANGLE_CHECK { // full SDI right (positive X)
+            let ang = if ang.sin() > 0.0 {min_di} else {max_di}.to_radians();
+            context.x_launch_speed = ang.cos() * mag;
+            context.y_launch_speed = ang.sin() * mag;
+
+            // check wall tech
+            let ecb_offset = ecb_right.x - ecb_bottom.x;
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+                &Vector2f{ x: sdi_distance + ecb_offset, y: 0.0},
+                true
+            ) == 1 {
+                // println!("idx: {} would be wall techable on the right", idx);
+                return false;
+            }
+            
+            context.x_pos += sdi_distance;
+            context.x_pos_prev += sdi_distance;
+        }
+
         let mut x = 0;
         let mut does_angle_kill = false;
 
 
-        // first hitstun iteration, special amsah tech checks
+        // check possible amsah techs
         context.step();
         if context.y_pos - context.y_pos_prev < base_asdi * sdi_mul
         && GroundModule::ray_check(
             defender_boma, 
             &Vector2f{ x: context.x_pos, y: context.y_pos}, 
-            &Vector2f{ x: 0.0, y: base_asdi * sdi_mul}, // TODO: extend this by the possible SDI distance
+            &Vector2f{ x: 0.0, y: sdi_distance},
             true
         ) == 1 {
-            println!("idx: {} would be amsah techable", idx);
+            // println!("idx: {} would be amsah techable", idx);
             return false;
         }
+
+        // do first iteration of knockback check
         if GroundModule::ray_check(
             defender_boma, 
             &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
@@ -656,7 +720,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
             x += 1;
         }
         context = context_ref;
-        if !does_angle_kill {false_angle_num += 1;}
+        if idx != -1 && idx != NUM_ANGLE_CHECK && !does_angle_kill {false_angle_num += 1;}
         if false_angle_num > NUM_FALSE_ANGLES_ALLOWED { 
             // println!("false angles: at least {}", false_angle_num);
             return false; 

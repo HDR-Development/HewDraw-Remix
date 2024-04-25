@@ -56,9 +56,9 @@ unsafe extern "C" fn game_fallattackride(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fall", game_fall);
+    agent.acmd("game_fall", game_fall, Priority::Low);
 
-    agent.acmd("game_fallattack", game_fallattack);
+    agent.acmd("game_fallattack", game_fallattack, Priority::Low);
 
-    agent.acmd("game_fallattackride", game_fallattackride);
+    agent.acmd("game_fallattackride", game_fallattackride, Priority::Low);
 }

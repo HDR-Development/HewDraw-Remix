@@ -122,14 +122,76 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials", game_specials);
-	agent.acmd("effect_specials", effect_specials);
+unsafe extern "C" fn effect_specialnhold(agent: &mut L2CAgentBase) {
+    if is_excute(agent) && agent.is_situation(*SITUATION_KIND_GROUND) {
+        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -10, 0, 0, 0, 0, 0, 0.5, 10, 0, 4, 0, 0, 0, false);
+    }
+    wait(agent.lua_state_agent, 8.0);
+}
 
-	agent.acmd("game_specialhistart", game_specialhistart);
-    agent.acmd("game_specialairhistart", game_specialairhistart);
-    agent.acmd("game_specialairhi", game_specialairhi);
+unsafe extern "C" fn sound_specialnhold(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_mewtwo_special_n01"));
+    }
+}
+
+unsafe extern "C" fn effect_specialnmax(agent: &mut L2CAgentBase) {
+    if agent.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD) {
+        if is_excute(agent) {
+            EFFECT_FLW_POS(agent, Hash40::new("mewtwo_shadowball_max_sign"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.4, true);
+            EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        }
+        if is_excute(agent) {
+            if agent.is_situation(*SITUATION_KIND_GROUND) {
+                FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -10, 0, 0, 0, 0, 0, 0.8, 10, 0, 4, 0, 0, 0, false);
+            }
+            FLASH(agent, 0.9, 0.7, 1, 0.5);
+        }
+        wait(agent.lua_state_agent, 1.0);
+        if is_excute(agent) {
+            FLASH_FRM(agent, 5, 0.9, 0.4, 1, 0.1);
+        }
+        wait(agent.lua_state_agent, 8.0);
+        if is_excute(agent) {
+            COL_NORMAL(agent);
+        }
+        wait(agent.lua_state_agent, 1.0);
+    } else {
+        return effect_specialnhold(agent);
+    }
+}
+
+unsafe extern "C" fn sound_specialnmax(agent: &mut L2CAgentBase) {
+    if agent.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD) {
+        if is_excute(agent) {
+            PLAY_SE(agent, Hash40::new("se_mewtwo_special_n02"));
+            STOP_SE(agent, Hash40::new("se_mewtwo_special_n01"));
+            PLAY_STATUS(agent, Hash40::new("se_mewtwo_special_n07"));
+        }
+    } else {
+        if is_excute(agent) {
+            PLAY_STATUS(agent, Hash40::new("se_mewtwo_special_n07"));
+        }
+    }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
+	agent.acmd("effect_specials", effect_specials, Priority::Low);
+
+	agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhistart", game_specialairhistart, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+
+    agent.acmd("effect_specialnhold", effect_specialnhold, Priority::Low);
+    agent.acmd("sound_specialnhold", sound_specialnhold, Priority::Low);
+    agent.acmd("effect_specialnmax", effect_specialnmax, Priority::Low);
+    agent.acmd("sound_specialnmax", sound_specialnmax, Priority::Low);
+    agent.acmd("effect_specialairnhold", effect_specialnhold, Priority::Low);
+    agent.acmd("sound_specialairnhold", sound_specialnhold, Priority::Low);
+    agent.acmd("effect_specialairnmax", effect_specialnmax, Priority::Low);
+    agent.acmd("sound_specialairnmax", sound_specialnmax, Priority::Low);
 }

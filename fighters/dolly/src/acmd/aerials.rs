@@ -117,7 +117,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
-        VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        // VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         VarModule::off_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE);
@@ -126,14 +126,15 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
             VarModule::on_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE);
         }
     }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-             PostureModule::reverse_lr(boma);
-            PostureModule::update_rot_y_lr(boma);
-        }
-    }
+    // // will turn Terry around if holding the button
+    // frame(lua_state, 8.0);
+    // if is_excute(agent) {
+    //     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+    //         VarModule::on_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    //          PostureModule::reverse_lr(boma);
+    //         PostureModule::update_rot_y_lr(boma);
+    //     }
+    // }
     frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -262,13 +263,13 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 }

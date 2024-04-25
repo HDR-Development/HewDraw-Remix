@@ -283,33 +283,33 @@ unsafe extern "C" fn sound_justshieldoff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damageflyhi);
-    agent.acmd("sound_damageflylw", sound_damageflyhi);
-    agent.acmd("sound_damageflyn", sound_damageflyhi);
-    agent.acmd("sound_damageflytop", sound_damageflyhi);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damageflyhi, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damageflyhi, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damageflyhi, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damageflyhi, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
     
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
-    agent.acmd("game_escapen", game_escapen);
-    agent.acmd("game_escapef", game_escapef);
-    agent.acmd("game_escapeb", game_escapeb);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+    agent.acmd("game_escapen", game_escapen, Priority::Low);
+    agent.acmd("game_escapef", game_escapef, Priority::Low);
+    agent.acmd("game_escapeb", game_escapeb, Priority::Low);
 
-    agent.acmd("game_appeallwl", game_appeallwl);
-    agent.acmd("game_appealsr", game_appealsr);
-    agent.acmd("game_appealsl", game_appealsr);
-    agent.acmd("game_appealhir", game_appealhir);
-    agent.acmd("game_appealhil", game_appealhir);
-    agent.acmd("sound_appealhir", sound_appealhil);
-    agent.acmd("sound_appealhil", sound_appealhil);
-    agent.acmd("sound_appeallwr", sound_appeallwr);
-    agent.acmd("sound_appeallwl", sound_appeallwl);
+    agent.acmd("game_appeallwl", game_appeallwl, Priority::Low);
+    agent.acmd("game_appealsr", game_appealsr, Priority::Low);
+    agent.acmd("game_appealsl", game_appealsr, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhir, Priority::Low);
+    agent.acmd("game_appealhil", game_appealhir, Priority::Low);
+    agent.acmd("sound_appealhir", sound_appealhil, Priority::Low);
+    agent.acmd("sound_appealhil", sound_appealhil, Priority::Low);
+    agent.acmd("sound_appeallwr", sound_appeallwr, Priority::Low);
+    agent.acmd("sound_appeallwl", sound_appeallwl, Priority::Low);
 
     
-    agent.acmd("effect_justshieldoff", effect_justshieldoff);
-    agent.acmd("sound_justshieldoff", sound_justshieldoff);
+    agent.acmd("effect_justshieldoff", effect_justshieldoff, Priority::Low);
+    agent.acmd("sound_justshieldoff", sound_justshieldoff, Priority::Low);
 }

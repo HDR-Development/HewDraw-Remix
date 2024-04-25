@@ -200,11 +200,11 @@ unsafe extern "C" fn expression_attackcommand4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackcommand1", game_attackcommand1);
-    agent.acmd("game_attackcommand2", game_attackcommand2);
-    agent.acmd("game_attackcommand3", game_attackcommand3);
-    agent.acmd("game_attackcommand4", game_attackcommand4);
-    agent.acmd("effect_attackcommand4", effect_attackcommand4);
-    agent.acmd("sound_attackcommand4", sound_attackcommand4);
-    agent.acmd("expression_attackcommand4", expression_attackcommand4);
+    agent.acmd("game_attackcommand1", game_attackcommand1, Priority::Low);
+    agent.acmd("game_attackcommand2", game_attackcommand2, Priority::Low);
+    agent.acmd("game_attackcommand3", game_attackcommand3, Priority::Low);
+    agent.acmd("game_attackcommand4", game_attackcommand4, Priority::Low);
+    agent.acmd("effect_attackcommand4", effect_attackcommand4, Priority::Low);
+    agent.acmd("sound_attackcommand4", sound_attackcommand4, Priority::Low);
+    agent.acmd("expression_attackcommand4", expression_attackcommand4, Priority::Low);
 }

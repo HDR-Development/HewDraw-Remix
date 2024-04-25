@@ -52,9 +52,9 @@ unsafe extern "C" fn game_tron0(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot2", game_shoot2);
+    agent.acmd("game_shoot2", game_shoot2, Priority::Low);
 
-    agent.acmd("game_gigaspark", game_gigaspark);
+    agent.acmd("game_gigaspark", game_gigaspark, Priority::Low);
     
-    agent.acmd("game_tron0", game_tron0);
+    agent.acmd("game_tron0", game_tron0, Priority::Low);
 }

@@ -22,7 +22,6 @@ unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize
     if [*FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(boma.object(), vars::snake::instance::SNAKE_GRENADE_COUNTER, 0);
         VarModule::off_flag(boma.object(), vars::snake::instance::TRANQ_NEED_RELEOAD);
     }
 }

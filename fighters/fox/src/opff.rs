@@ -24,9 +24,9 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
 }   
 
 // Utaunt cancel into Fire Fox
-unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if motion_kind == (hash40("appeal_hi_r") | hash40("appeal_hi_l")) 
-    && frame > 41.0 && frame < 44.0 
+unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_motion_one_of(&[Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r")]) 
+    && (41.0..44.0).contains(&frame) 
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH, false);
     }
@@ -79,7 +79,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jump_cancel(fighter);
-    utaunt_cancel_fire_fox(boma, motion_kind, frame);
+    utaunt_cancel_fire_fox(boma, frame);
     firefox_startup_ledgegrab(fighter);
     frame_data(boma, motion_kind, frame);
     fastfall_specials(fighter);

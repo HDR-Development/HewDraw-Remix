@@ -188,18 +188,18 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialsstart", game_specialsstart);
-    agent.acmd("game_specialairsstart", game_specialairsstart);
-    agent.acmd("game_specialsjump", game_specialsjump);
-    agent.acmd("game_specialshitend", game_specialshitend);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
+    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
+    agent.acmd("game_specialsjump", game_specialsjump, Priority::Low);
+    agent.acmd("game_specialshitend", game_specialshitend, Priority::Low);
 
-    agent.acmd("game_specialhistart", game_specialhistart);
-    agent.acmd("game_specialairhistart", game_specialhistart);
-    agent.acmd("expression_specialhistart", expression_specialhistart);
-    agent.acmd("expression_specialairhistart", expression_specialairhistart);
-    agent.acmd("game_specialhiopen", game_specialhiopen);
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
+    agent.acmd("expression_specialhistart", expression_specialhistart, Priority::Low);
+    agent.acmd("expression_specialairhistart", expression_specialairhistart, Priority::Low);
+    agent.acmd("game_specialhiopen", game_specialhiopen, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("effect_speciallw", effect_speciallw);
-    agent.acmd("sound_speciallw", sound_speciallw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
+    agent.acmd("sound_speciallw", sound_speciallw, Priority::Low);
 }

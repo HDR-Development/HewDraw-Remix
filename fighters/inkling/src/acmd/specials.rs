@@ -73,10 +73,10 @@ unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnend", game_specialnend);
-    agent.acmd("game_specialairnend", game_specialairnend);
+    agent.acmd("game_specialnend", game_specialnend, Priority::Low);
+    agent.acmd("game_specialairnend", game_specialairnend, Priority::Low);
 
-    agent.acmd("effect_specialsend", effect_specialsend);
+    agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
 
-    agent.acmd("game_specialhijump", game_specialhijump);
+    agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
 }

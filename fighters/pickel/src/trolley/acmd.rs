@@ -24,5 +24,5 @@ unsafe extern "C" fn game_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialsdriveemptypartial", game_specialsdriveemptypartial);
+    agent.acmd("game_specialsdriveemptypartial", game_specialsdriveemptypartial, Priority::Low);
 }

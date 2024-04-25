@@ -370,21 +370,21 @@ unsafe extern "C" fn game_specialairlwend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("game_specialnturn", game_specialnturn);
-    agent.acmd("game_specialairn", game_specialairn);
-    agent.acmd("game_specialairnturn", game_specialairnturn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
+    agent.acmd("game_specialnturn", game_specialnturn, Priority::Low);
+    agent.acmd("game_specialairn", game_specialairn, Priority::Low);
+    agent.acmd("game_specialairnturn", game_specialairnturn, Priority::Low);
 
-    agent.acmd("game_specialsstart", game_specialsstart);
-    agent.acmd("game_specialsend", game_specialsend);
-    agent.acmd("expression_specialsend", expression_specialsend);
-    agent.acmd("game_specialairsend", game_specialairsend);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
+    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
+    agent.acmd("expression_specialsend", expression_specialsend, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
     
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialhi);
-    agent.acmd("game_specialhithrow", game_specialhithrow);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialhithrow", game_specialhithrow, Priority::Low);
 
-    agent.acmd("game_specialairlw", game_specialairlw);
-    agent.acmd("effect_specialairlw", effect_specialairlw);
-    agent.acmd("game_specialairlwend", game_specialairlwend);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
+    agent.acmd("game_specialairlwend", game_specialairlwend, Priority::Low);
 }

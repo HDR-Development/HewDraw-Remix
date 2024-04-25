@@ -10,7 +10,9 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
         PostureModule::set_lr(boma, PostureModule::lr(boma));
         PostureModule::update_rot_y_lr(boma);
     }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 14.0);
     frame(lua_state, 13.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
     }
@@ -63,12 +65,12 @@ unsafe extern "C" fn expression_specialno(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialno", game_specialno);
-    agent.acmd("game_specialairno", game_specialno);
-    agent.acmd("effect_specialno", effect_specialno);
-    agent.acmd("effect_specialairno", effect_specialno);
-    agent.acmd("sound_specialno", sound_specialno);
-    agent.acmd("sound_specialairno", sound_specialno);
-    agent.acmd("expression_specialno", expression_specialno);
-    agent.acmd("expression_specialairno", expression_specialno);
+    agent.acmd("game_specialno", game_specialno, Priority::Low);
+    agent.acmd("game_specialairno", game_specialno, Priority::Low);
+    agent.acmd("effect_specialno", effect_specialno, Priority::Low);
+    agent.acmd("effect_specialairno", effect_specialno, Priority::Low);
+    agent.acmd("sound_specialno", sound_specialno, Priority::Low);
+    agent.acmd("sound_specialairno", sound_specialno, Priority::Low);
+    agent.acmd("expression_specialno", expression_specialno, Priority::Low);
+    agent.acmd("expression_specialairno", expression_specialno, Priority::Low);
 }

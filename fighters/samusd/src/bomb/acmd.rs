@@ -45,8 +45,8 @@ unsafe extern "C" fn effect_burstattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fall", game_fall);
+    agent.acmd("game_fall", game_fall, Priority::Low);
     
-    agent.acmd("game_burstattack", game_burstattack);
-    agent.acmd("effect_burstattack", effect_burstattack);
+    agent.acmd("game_burstattack", game_burstattack, Priority::Low);
+    agent.acmd("effect_burstattack", effect_burstattack, Priority::Low);
 }

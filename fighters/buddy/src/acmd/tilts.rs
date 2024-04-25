@@ -89,8 +89,8 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         //Banjo//
-        ATTACK(agent, 0, 0, Hash40::new("handl"), 11.0, 70, 81, 0, 74, 3.6, 1.2, 0.0, -0.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("arml"), 11.0, 70, 81, 0, 74, 3.6, 1.2, 0.5, 1.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("handl"), 11.0, 70, 81, 0, 74, 3.6, 1.2, 0.0, -0.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("arml"), 11.0, 70, 81, 0, 74, 3.6, 1.2, 0.5, 1.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         //Kazooie//
         ATTACK(agent, 2, 0, Hash40::new("top"), 8.0, 82, 58, 0, 71, 5.3, 0.0, 6.25, -7.5, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BUDDY_WING, *ATTACK_REGION_PUNCH);
     }
@@ -250,14 +250,14 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3", game_attacks3);
-    agent.acmd("game_attacks3hi", game_attacks3hi);
-    agent.acmd("game_attacks3lw", game_attacks3lw);
+    agent.acmd("game_attacks3", game_attacks3, Priority::Low);
+    agent.acmd("game_attacks3hi", game_attacks3hi, Priority::Low);
+    agent.acmd("game_attacks3lw", game_attacks3lw, Priority::Low);
 
-    agent.acmd("game_attackhi3", game_attackhi3);
-    agent.acmd("effect_attackhi3", effect_attackhi3);
-    agent.acmd("sound_attackhi3", sound_attackhi3);
-    agent.acmd("expression_attackhi3", expression_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
+    agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
+    agent.acmd("sound_attackhi3", sound_attackhi3, Priority::Low);
+    agent.acmd("expression_attackhi3", expression_attackhi3, Priority::Low);
 
-    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
 }

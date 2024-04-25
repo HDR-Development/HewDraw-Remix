@@ -92,20 +92,20 @@ unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(agent, 1.75);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(agent, 1.75);
     }
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialairhi);
-    agent.acmd("effect_specialhistart", effect_specialhistart);
-    agent.acmd("effect_specialairhistart", effect_specialairhistart);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
+    agent.acmd("effect_specialairhistart", effect_specialairhistart, Priority::Low);
 
-    agent.acmd("game_speciallwattack", game_speciallwattack);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
 }

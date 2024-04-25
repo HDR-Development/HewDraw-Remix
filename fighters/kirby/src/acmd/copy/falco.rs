@@ -10,6 +10,6 @@ unsafe extern "C" fn sound_falcospecialnstart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_falcospecialnstart", sound_falcospecialnstart);
-    agent.acmd("sound_falcospecialairnstart", sound_falcospecialnstart);
+    agent.acmd("sound_falcospecialnstart", sound_falcospecialnstart, Priority::Low);
+    agent.acmd("sound_falcospecialairnstart", sound_falcospecialnstart, Priority::Low);
 }

@@ -30,9 +30,27 @@ unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_speciallwinstall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_damage_elec"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_hold"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT(agent, Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 12, 3, 0, 0, 0, 0.8, true, *EF_FLIP_AXIS_YZ);
     }
 }
 
@@ -149,14 +167,14 @@ unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_speciallwstart", game_speciallwstart);
-    agent.acmd("game_specialairlwstart", game_speciallwstart);
-    agent.acmd("game_speciallwinstall", game_speciallwinstall);
-    agent.acmd("effect_speciallwinstall", effect_speciallwinstall);
-    agent.acmd("sound_speciallwinstall", sound_speciallwinstall);
-    agent.acmd("expression_speciallwinstall", expression_speciallwinstall);
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_speciallw);
-    agent.acmd("game_speciallwturn", game_speciallwturn);
-    agent.acmd("game_specialairlwturn", game_speciallwturn);
+    agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("game_speciallwinstall", game_speciallwinstall, Priority::Low);
+    agent.acmd("effect_speciallwinstall", effect_speciallwinstall, Priority::Low);
+    agent.acmd("sound_speciallwinstall", sound_speciallwinstall, Priority::Low);
+    agent.acmd("expression_speciallwinstall", expression_speciallwinstall, Priority::Low);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("game_speciallwturn", game_speciallwturn, Priority::Low);
+    agent.acmd("game_specialairlwturn", game_speciallwturn, Priority::Low);
 }

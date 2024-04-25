@@ -81,10 +81,10 @@ unsafe extern "C" fn effect_stick(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-  agent.acmd("game_fly", game_fly);
-  agent.acmd("game_flynormalsub", game_flynormalsub);
-  agent.acmd("game_flyflicksub", game_flyflicksub);
-  //agent.acmd("game_hop", game_hop);
-  agent.acmd("game_stick", game_stick);
-  agent.acmd("effect_stick", effect_stick);
+  agent.acmd("game_fly", game_fly, Priority::Low);
+  agent.acmd("game_flynormalsub", game_flynormalsub, Priority::Low);
+  agent.acmd("game_flyflicksub", game_flyflicksub, Priority::Low);
+  //agent.acmd("game_hop", game_hop, Priority::Low);
+  agent.acmd("game_stick", game_stick, Priority::Low);
+  agent.acmd("effect_stick", effect_stick, Priority::Low);
 }

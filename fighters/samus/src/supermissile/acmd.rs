@@ -18,6 +18,6 @@ unsafe extern "C" fn game_straight(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_ready", game_ready);
-    agent.acmd("game_straight", game_straight);
+    agent.acmd("game_ready", game_ready, Priority::Low);
+    agent.acmd("game_straight", game_straight, Priority::Low);
 }

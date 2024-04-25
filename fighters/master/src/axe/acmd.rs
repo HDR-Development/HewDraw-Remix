@@ -80,7 +80,7 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_speciallw);
-    agent.acmd("effect_speciallwhit", effect_speciallwhit);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
 }

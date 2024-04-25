@@ -53,8 +53,8 @@ unsafe extern "C" fn sound_royspecialnend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_royspecialnend", sound_royspecialnend);
-    agent.acmd("sound_royspecialairnend", sound_royspecialnend);
-    agent.acmd("effect_royspecialnend", effect_royspecialnend);
-    agent.acmd("effect_royspecialairnend", effect_royspecialnend);
+    agent.acmd("sound_royspecialnend", sound_royspecialnend, Priority::Low);
+    agent.acmd("sound_royspecialairnend", sound_royspecialnend, Priority::Low);
+    agent.acmd("effect_royspecialnend", effect_royspecialnend, Priority::Low);
+    agent.acmd("effect_royspecialairnend", effect_royspecialnend, Priority::Low);
 }

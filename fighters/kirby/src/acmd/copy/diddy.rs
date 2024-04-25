@@ -59,27 +59,32 @@ unsafe extern "C" fn expression_diddyspecialairncancel(agent: &mut L2CAgentBase)
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.acmd("game_diddyspecialncancel", game_diddyspecialncancel);
-        agent.acmd("effect_diddyspecialncancel", effect_diddyspecialncancel);
-        agent.acmd("sound_diddyspecialncancel", sound_diddyspecialncancel);
+        agent.acmd("game_diddyspecialncancel", game_diddyspecialncancel, Priority::Low);
+        agent.acmd("effect_diddyspecialncancel", effect_diddyspecialncancel, Priority::Low);
+        agent.acmd("sound_diddyspecialncancel", sound_diddyspecialncancel, Priority::Low);
         agent.acmd(
             "expression_diddyspecialncancel",
             expression_diddyspecialncancel,
+            Priority::Low
         );
         agent.acmd(
             "game_diddyspecialairncancel",
             game_diddyspecialairncancel,
+            Priority::Low
         );
         agent.acmd(
             "effect_diddyspecialairncancel",
             effect_diddyspecialairncancel,
+            Priority::Low
         );
         agent.acmd(
             "sound_diddyspecialairncancel",
             sound_diddyspecialairncancel,
+            Priority::Low
         );
         agent.acmd(
             "expression_diddyspecialairncancel",
             expression_diddyspecialairncancel,
+            Priority::Low
         );
     }

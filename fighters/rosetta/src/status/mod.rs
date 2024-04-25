@@ -6,7 +6,7 @@ mod special_hi;
 
 /// Prevents down b being reused
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
+    if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) > 0 {
         false.into()
     } else {
         true.into()
@@ -16,6 +16,9 @@ unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterComm
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // set the callbacks on fighter init
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+    VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
+    VarModule::off_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
 }
 
 pub fn install(agent: &mut Agent) {

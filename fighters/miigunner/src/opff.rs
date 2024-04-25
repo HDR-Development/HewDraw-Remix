@@ -295,7 +295,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     laser_blaze_ff_land_cancel(boma);
     remove_homing_missiles(boma);
     missile_land_cancel(boma);
-	  arm_rocket_airdash(fighter);
+	arm_rocket_airdash(fighter);
     lunar_launch_actionability(fighter);
     lunar_launch_reset(fighter);
     lunar_launch_effect_reset(fighter);

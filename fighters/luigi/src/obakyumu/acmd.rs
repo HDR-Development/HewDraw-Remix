@@ -11,5 +11,5 @@ unsafe extern "C" fn effect_catch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_catch", effect_catch);
+    agent.acmd("effect_catch", effect_catch, Priority::Low);
 }

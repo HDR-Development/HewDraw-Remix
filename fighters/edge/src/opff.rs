@@ -17,18 +17,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Limit Blade Rush jump cancel on hit
-unsafe fn limit_blade_rush_jc(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32) {
-    //println!("Sephiroth status kind: {}", status_kind);
-    if status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH && WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) && situation_kind == *SITUATION_KIND_GROUND {
-        //println!("Limit Blade Rush");
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            //println!("========== Limit Blade Rush hit!");
-            boma.check_jump_cancel(false, false);
-        }
-    }
-}
-
 unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32) {
     //PM-like neutral-b canceling
     if status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_N_CANCEL {
@@ -84,7 +72,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     sword_length(boma);
-    limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
     refresh_flare(boma);
     fastfall_specials(fighter);

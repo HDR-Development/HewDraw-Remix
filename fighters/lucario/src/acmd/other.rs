@@ -230,28 +230,28 @@ unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
     
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("game_cliffattack", game_cliffattack);
+    agent.acmd("game_cliffattack", game_cliffattack, Priority::Low);
 
-    agent.acmd("game_catchattack", game_catchattack);
+    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
 
-    agent.acmd("game_slipattack", game_slipattack);
+    agent.acmd("game_slipattack", game_slipattack, Priority::Low);
 
-    agent.acmd("game_downattackd", game_downattackd);
-    agent.acmd("game_downattacku", game_downattacku);
+    agent.acmd("game_downattackd", game_downattackd, Priority::Low);
+    agent.acmd("game_downattacku", game_downattacku, Priority::Low);
     
-    agent.acmd("game_appealhil", game_appealhi);
-    agent.acmd("game_appealhir", game_appealhi);
+    agent.acmd("game_appealhil", game_appealhi, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhi, Priority::Low);
 }

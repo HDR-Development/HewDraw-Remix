@@ -185,25 +185,23 @@ unsafe extern "C" fn effect_specialairlwend(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnfire", stub);
-    agent.acmd("game_specialairnfire", stub);
+    agent.acmd("game_specialnfire", acmd_stub, Priority::Low);
+    agent.acmd("game_specialairnfire", acmd_stub, Priority::Low);
 
-    agent.acmd("sound_specials", sound_specials);
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specialairs);
-    agent.acmd("sound_specialairs", sound_specialairs);
+    agent.acmd("sound_specials", sound_specials, Priority::Low);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specialairs, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specialairs, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     
-    agent.acmd("game_speciallwhold", game_speciallwhold);
-    agent.acmd("game_specialairlwhold", game_specialairlwhold);
-    agent.acmd("game_speciallwend", game_speciallwend);
-    agent.acmd("game_specialairlwend", game_speciallwend);
-    agent.acmd("effect_speciallwstart", effect_speciallwstart);
-    agent.acmd("effect_specialairlwstart", effect_speciallwstart);
-    agent.acmd("effect_speciallwend", effect_speciallwend);
-    agent.acmd("effect_specialairlwend", effect_specialairlwend);
+    agent.acmd("game_speciallwhold", game_speciallwhold, Priority::Low);
+    agent.acmd("game_specialairlwhold", game_specialairlwhold, Priority::Low);
+    agent.acmd("game_speciallwend", game_speciallwend, Priority::Low);
+    agent.acmd("game_specialairlwend", game_speciallwend, Priority::Low);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("effect_specialairlwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("effect_speciallwend", effect_speciallwend, Priority::Low);
+    agent.acmd("effect_specialairlwend", effect_specialairlwend, Priority::Low);
 }

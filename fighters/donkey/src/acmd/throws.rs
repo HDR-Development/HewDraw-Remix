@@ -67,7 +67,7 @@ unsafe extern "C" fn game_throwff(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 60, 53, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 65, 53, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 14.0);
@@ -86,7 +86,7 @@ unsafe extern "C" fn game_throwfb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 60, 52, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 65, 53, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 15.0);
@@ -110,7 +110,7 @@ unsafe extern "C" fn game_throwfhi(agent: &mut L2CAgentBase) {
     let weight = WorkModule::get_param_float(boma.get_grabbed_opponent_boma(), hash40("weight"), 0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 36.0, 39.0 + 18.0 * (weight / 100.0 - 1.0));
     if is_excute(agent) {
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 90, 30, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 90, 30, 0, 110, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 14.0);
@@ -254,24 +254,24 @@ unsafe extern "C" fn effect_heavyitemthrowlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_throwff", game_throwff);
+    agent.acmd("game_throwff", game_throwff, Priority::Low);
 
-    agent.acmd("game_throwfb", game_throwfb);
+    agent.acmd("game_throwfb", game_throwfb, Priority::Low);
 
-    agent.acmd("game_throwfhi", game_throwfhi);
+    agent.acmd("game_throwfhi", game_throwfhi, Priority::Low);
 
-    agent.acmd("game_throwflw", game_throwflw);
+    agent.acmd("game_throwflw", game_throwflw, Priority::Low);
 
-    agent.acmd("game_itemheavythrowf", game_itemheavythrowf);
+    agent.acmd("game_itemheavythrowf", game_itemheavythrowf, Priority::Low);
 
-    agent.acmd("game_itemheavythrowb", game_itemheavythrowb);
+    agent.acmd("game_itemheavythrowb", game_itemheavythrowb, Priority::Low);
 
-    agent.acmd("game_itemheavythrowlw", game_itemheavythrowlw);
-    agent.acmd("game_itemheavythrowlw4", game_itemheavythrowlw);
-    agent.acmd("effect_itemheavythrowlw", effect_heavyitemthrowlw);
-    agent.acmd("effect_itemheavythrowlw4", effect_heavyitemthrowlw);
+    agent.acmd("game_itemheavythrowlw", game_itemheavythrowlw, Priority::Low);
+    agent.acmd("game_itemheavythrowlw4", game_itemheavythrowlw, Priority::Low);
+    agent.acmd("effect_itemheavythrowlw", effect_heavyitemthrowlw, Priority::Low);
+    agent.acmd("effect_itemheavythrowlw4", effect_heavyitemthrowlw, Priority::Low);
 }
