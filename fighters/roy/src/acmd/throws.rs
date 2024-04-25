@@ -77,9 +77,12 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        //let release_position = Vector3f{ x:1.0, y: -3.0, z: 14.75 };
-        //ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        let bone_position = Vector3f{ x:1.0, y: -3.0, z: 14.75 };
+        ModelModule::set_joint_translate(boma, Hash40::new("throw"), &bone_position, false, false);
     }
 }
 
@@ -92,7 +95,27 @@ unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+unsafe extern "C" fn sound_throwf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_throw_01"));
+    }
+    wait(lua_state, 11.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_roy_rnd_attack"));
+        PLAY_SE(agent, Hash40::new("se_common_throw_02"));
+        PLAY_DOWN_SE(agent, Hash40::new("se_common_down_soil_s"));
+        PLAY_SE(agent, Hash40::new("se_common_kick_hit_m"));
     }
 }
 
@@ -157,6 +180,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_throwf", game_throwf);
     agent.acmd("effect_throwf", effect_throwf);
+    agent.acmd("sound_throwf", sound_throwf);
     agent.acmd("game_throwb", game_throwb);
     agent.acmd("game_throwhi", game_throwhi);
     agent.acmd("game_throwlw", game_throwlw);

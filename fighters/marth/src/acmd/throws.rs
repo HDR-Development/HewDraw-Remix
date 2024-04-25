@@ -76,9 +76,12 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        //let release_position = Vector3f{ x:1.0, y: -3.0, z: 14.75 };
-        //ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        let release_position = Vector3f{ x:1.0, y: -3.0, z: 14.75 };
+        ModelModule::set_joint_translate(boma, Hash40::new("throw"), &release_position, false, false);
     }
 }
 
@@ -89,7 +92,7 @@ unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
     }
