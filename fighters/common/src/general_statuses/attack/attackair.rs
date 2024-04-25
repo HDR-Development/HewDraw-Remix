@@ -87,7 +87,8 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
         let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
         let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
         if fighter.left_stick_y() <= dive_cont_value
-        && VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value {
+        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value 
+        {
             let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
             if status_kind != 0 {
                 VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);

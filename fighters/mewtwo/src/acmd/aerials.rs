@@ -138,9 +138,8 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
             7 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), 0, 13, -6.2, 180, 35, 90, 0.98, true, *EF_FLIP_YZ),
             _ => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), 0, 13, -6.2, 180, 35, 90, 0.98, true, *EF_FLIP_YZ),
         };
-        LAST_EFFECT_SET_RATE(agent, 0.84);
     }
-    frame(lua_state, 17.5);
+    frame(lua_state, 18.5);
     if is_excute(agent) {
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_01"), true, true);
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_02"), true, true);
@@ -200,18 +199,19 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         match color {
-            0 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            1 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            2 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            3 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            4 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            5 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            6 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            7 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
-            _ => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 9, 85, 1.08, true, *EF_FLIP_YZ),
+            0 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            1 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("mewtwo_tail_attack_a_02"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            2 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("mewtwo_tail_attack_a_03"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            3 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("mewtwo_tail_attack_a_04"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            4 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("mewtwo_tail_attack_a_05"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            5 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("mewtwo_tail_attack_a_06"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            6 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("mewtwo_tail_attack_a_07"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            7 => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("mewtwo_tail_attack_a_08"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
+            _ => EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("mewtwo_tail_attack_a_01"), Hash40::new("top"), -1.5, 8.6, -1.8, 0, 11, 85, 1.08, true, *EF_FLIP_YZ),
         };
+        LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-    frame(lua_state, 16.0);
+    frame(lua_state, 16.5);
     if is_excute(agent) {
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_01"), true, true);
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_02"), true, true);
