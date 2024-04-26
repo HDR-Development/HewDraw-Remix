@@ -139,6 +139,7 @@ pub struct InputModule {
     hold_all: bool,
     hold_all_frame_max: i32,
     trigger_count: [usize; 32],
+    release_count: [usize; 32],
 }
 
 impl InputModule {
@@ -162,7 +163,8 @@ impl InputModule {
             },
             hold_all: false,
             hold_all_frame_max: -1,
-            trigger_count: [usize::MAX; 32]
+            trigger_count: [usize::MAX; 32],
+            release_count: [usize::MAX; 32]
         }
     }
 
@@ -386,6 +388,12 @@ impl InputModule {
         let module = require_input_module!(object);
         return module.trigger_count[button.bits().trailing_zeros() as usize];
     }
+
+    #[export_name = "InputModule__get_release_count"]
+    pub fn get_release_count(object: *mut BattleObject, button: Buttons) -> usize {
+        let module = require_input_module!(object);
+        return module.release_count[button.bits().trailing_zeros() as usize];
+    }
 }
 
 #[repr(C)]
@@ -457,6 +465,12 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
                 & !ControlModule::get_button_prev((*input_module.owner).module_accessor),
         )
     };
+    let released_buttons: Buttons = unsafe {
+        Buttons::from_bits_retain(
+            ControlModule::get_button_prev((*input_module.owner).module_accessor)
+                & !ControlModule::get_button((*input_module.owner).module_accessor),
+        )
+    };
 
     for trigger in input_module.trigger_count.iter_mut() {
         if *trigger < usize::MAX {
@@ -465,6 +479,15 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     }
     for button in triggered_buttons.iter() {
         input_module.trigger_count[button.bits().trailing_zeros() as usize] = 0;
+    }
+
+    for release in input_module.release_count.iter_mut() {
+        if *release < usize::MAX {
+            *release += 1;
+        }
+    }
+    for button in released_buttons.iter() {
+        input_module.release_count[button.bits().trailing_zeros() as usize] = 0;
     }
 
     let buttons: Buttons = unsafe {

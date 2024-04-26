@@ -8,13 +8,21 @@ fall_aerial:
   blend_frames: 5
 fall_special:
   blend_frames: 5
+jump_aerial_f:
+  extra:
+    no_stop_intp: true
+jump_aerial_b:
+  extra:
+    no_stop_intp: true
 guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
 attack_12:
+  animations:
+  - name: c00attack13.nuanmb
   extra:
-    cancel_frame: 18
+    cancel_frame: 27
 attack_13:
   extra:
     cancel_frame: 28

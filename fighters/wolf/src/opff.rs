@@ -45,6 +45,18 @@ unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// howl with taunt when landing a wolf flash
+unsafe fn awoo(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_s_end"), Hash40::new("special_air_s_end")]) 
+    && (2..4).contains(&(fighter.motion_frame() as u32))
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && fighter.is_button_on(Buttons::AppealAll) 
+    && !VarModule::is_flag(fighter.object(), vars::wolf::status::AWOO) {
+        PLAY_SE(fighter, Hash40::new("vc_wolf_appeal01"));
+        VarModule::on_flag(fighter.object(), vars::wolf::status::AWOO);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -79,6 +91,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
     shine_jump_cancel(fighter);
     firefox_startup_ledgegrab(fighter);
+    awoo(fighter);
     fastfall_specials(fighter);
 }
 

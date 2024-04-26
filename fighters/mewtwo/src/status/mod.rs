@@ -32,8 +32,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    // uncomment to enable float
-    // agent.on_start(on_start);
+    // comment out to disable float
+    agent.on_start(on_start);
 
     jump_aerial::install(agent);
     attack_air::install(agent);

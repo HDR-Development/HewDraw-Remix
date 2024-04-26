@@ -2,6 +2,7 @@ use super::*;
 
 mod diddy;
 mod edge;
+mod falco;
 mod ganon;
 mod koopa;
 mod koopajr;
@@ -18,10 +19,12 @@ mod ridley;
 mod roy;
 mod shizue;
 mod sonic;
+mod wolf;
 
 pub fn install(agent: &mut Agent) {
     diddy::install(agent);
     edge::install(agent);
+    falco::install(agent);
     ganon::install(agent);
     koopa::install(agent);
     koopajr::install(agent);
@@ -38,4 +41,5 @@ pub fn install(agent: &mut Agent) {
     roy::install(agent);
     shizue::install(agent);
     sonic::install(agent);
+    wolf::install(agent);
 }

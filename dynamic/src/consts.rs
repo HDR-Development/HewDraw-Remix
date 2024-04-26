@@ -353,6 +353,7 @@ pub mod vars {
             pub const BAYONET_ACTIVE: i32 = 0x0101;
             pub const FLUTTER_ENABLED: i32 = 0x0102;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0103;
+            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0104;
 
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;
@@ -383,11 +384,11 @@ pub mod vars {
         pub mod instance {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
-            pub const SOARING_SLASH_HIT: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
+            pub const AETHER_DIVE_READY: i32 = 0x1101;
+            pub const AETHER_DIVE_START: i32 = 0x1102;
         }
     }
 
@@ -507,12 +508,50 @@ pub mod vars {
     pub mod edge {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_BLADE_DASH_NO_HITBOX: i32 = 0x0100;
+            pub const FLASH_REFINE: i32 = 0x0100;
+            pub const FLASH_REFRACT: i32 = 0x0101;
+
+            // ints
+            pub const FIRE_ID: i32 = 0x0100;
+            pub const FLARE1_ID: i32 = 0x0101;
+
+            // floats
+            pub const FIRE_POS_X: i32 = 0x0100;
+            pub const FIRE_POS_Y: i32 = 0x0101;
+            pub const FLARE1_POS_X: i32 = 0x102;
+            pub const FLARE2_POS_Y: i32 = 0x0103;
         }
         pub mod status {
             // flags
-            pub const FLASH_HOLD: i32 = 0x1101;
-            pub const SPECIAL_N_FIRE: i32 = 0x1102;
+            pub const FLASH_HOLD: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_fire {
+        pub mod instance {
+            //flags
+            pub const REFLECT: i32 = 0x0100;
+        }
+        pub mod status {
+            // floats
+            pub const STICK_Y: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_flare1 {
+        pub mod status {
+            // flags
+            pub const REFRACTED: i32 = 0x1100;
+        }
+    }
+
+    pub mod edge_flash {
+        pub mod status {
+            // ints
+            pub const REFINE_COOLDOWN: i32 = 0x1100;
+            pub const REFRACT_COOLDOWN: i32 = 0x1101;
+            pub const LIFE: i32 = 0x1102;
+            pub const EFFECT_HANDLE: i32 = 0x1103;
         }
     }
 
@@ -1280,7 +1319,7 @@ pub mod vars {
     pub mod rosetta {
         pub mod instance {
             // ints
-            pub const COOLDOWN: i32 = 0x0100;
+            pub const WARP_EFFECT_HANDLER: i32 = 0x0100;
             pub const ROSA_X: i32 = 0x0101;
             pub const ROSA_Y: i32 = 0x0102;
             pub const TICO_X: i32 = 0x0103;
@@ -1293,13 +1332,9 @@ pub mod vars {
             pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
-            // ints
-            /// Used for determining what luma does
-            pub const LUMA_STATE: i32 = 0x1100;
-
             // flags
-            pub const IS_INVALID_TELEPORT: i32 = 0x1101;
-            pub const GROUNDED_TELEPORT: i32 = 0x1102;
+            pub const IS_INVALID_TELEPORT: i32 = 0x1100;
+            pub const GROUNDED_TELEPORT: i32 = 0x1101;
         }
     }
 
@@ -1545,6 +1580,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+            pub const AWOO: i32 = 0x1101;
         }
     }
 
@@ -1584,6 +1620,11 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
     }
 
+    pub mod chrom {
+        pub const SPECIAL_HI_FLIP: i32 = 0x1ea;
+        pub const SPECIAL_HI_DIVE: i32 = 0x1eb;
+    }
+
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0x1FB;
     }
@@ -1591,6 +1632,11 @@ pub mod statuses {
     pub mod diddy {
         pub const SPECIAL_N_CANCEL: i32 = 0x1FF;
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 0x200;
+    }
+
+    pub mod edge_flash {
+        pub const BURST: i32 = 0x2;
+        pub const VANISH: i32 = 0x3;
     }
 
     pub mod elight {

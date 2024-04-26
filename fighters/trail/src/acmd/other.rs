@@ -109,6 +109,15 @@ unsafe extern "C" fn sound_run(agent: &mut L2CAgentBase) {
     }
 }
 
+// disable sonic blade wall jump if sora performs a regular wall jump first
+unsafe extern "C" fn game_passivewalljump(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly);
     agent.acmd("sound_damageflylw", sound_damagefly);
@@ -123,4 +132,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeairslide", game_escapeairslide);
 
     agent.acmd("sound_run", sound_run);
+
+    agent.acmd("game_passivewalljump", game_passivewalljump);
 }
