@@ -153,22 +153,22 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
     
-    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
 
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
 
-    agent.acmd("game_appealhir", game_appealhir);
-    agent.acmd("game_appealhil", game_appealhil);
-    agent.acmd("game_appeallwr", game_appeallwr);
-    agent.acmd("game_appeallwl", game_appeallwl);
+    agent.acmd("game_appealhir", game_appealhir, Priority::Low);
+    agent.acmd("game_appealhil", game_appealhil, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallwr, Priority::Low);
+    agent.acmd("game_appeallwl", game_appeallwl, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
 
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 }

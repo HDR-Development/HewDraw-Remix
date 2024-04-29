@@ -111,16 +111,16 @@ unsafe extern "C" fn sound_specialairnfailure(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("game_specialnstart", game_specialnstart);
-    agent.acmd("game_specialnfailure", game_specialnfailure);
-    agent.acmd("effect_specialnfailure", effect_specialnfailure);
-    agent.acmd("game_specialairnfailure", game_specialairnfailure);
-    agent.acmd("effect_specialairnfailure", effect_specialairnfailure);
-    agent.acmd("sound_specialairnfailure", sound_specialairnfailure);
-    agent.acmd("game_speciallw", game_speciallw);
-    agent.acmd("game_specialairlw", game_speciallw);
-    agent.acmd("effect_speciallw", effect_speciallw);
-    agent.acmd("effect_specialairlw", effect_speciallw);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specialnfailure", game_specialnfailure, Priority::Low);
+    agent.acmd("effect_specialnfailure", effect_specialnfailure, Priority::Low);
+    agent.acmd("game_specialairnfailure", game_specialairnfailure, Priority::Low);
+    agent.acmd("effect_specialairnfailure", effect_specialairnfailure, Priority::Low);
+    agent.acmd("sound_specialairnfailure", sound_specialairnfailure, Priority::Low);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
 }

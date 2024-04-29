@@ -103,22 +103,22 @@ unsafe extern "C" fn game_passive(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
 
-    agent.acmd("sound_appealhil", sound_appealhil);
-    agent.acmd("sound_appealhir", sound_appealhir);
+    agent.acmd("sound_appealhil", sound_appealhil, Priority::Low);
+    agent.acmd("sound_appealhir", sound_appealhir, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("game_downforwardd", game_down);
-    agent.acmd("game_downforwardu", game_down);
+    agent.acmd("game_downforwardd", game_down, Priority::Low);
+    agent.acmd("game_downforwardu", game_down, Priority::Low);
     
-    agent.acmd("game_downbackd", game_down);
-    agent.acmd("game_downbacku", game_down);
+    agent.acmd("game_downbackd", game_down, Priority::Low);
+    agent.acmd("game_downbacku", game_down, Priority::Low);
 
-    agent.acmd("game_passivestandf", game_passive);
-    agent.acmd("game_passivestandb", game_passive);
+    agent.acmd("game_passivestandf", game_passive, Priority::Low);
+    agent.acmd("game_passivestandb", game_passive, Priority::Low);
 }

@@ -77,7 +77,7 @@ unsafe extern "C" fn richter_axe_sound(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fly", richter_axe_game);
-    agent.acmd("effect_fly", richter_axe_effect);
-    agent.acmd("sound_fly", richter_axe_sound);
+    agent.acmd("game_fly", richter_axe_game, Priority::Low);
+    agent.acmd("effect_fly", richter_axe_effect, Priority::Low);
+    agent.acmd("sound_fly", richter_axe_sound, Priority::Low);
 }

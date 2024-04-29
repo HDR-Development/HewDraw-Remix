@@ -102,7 +102,7 @@ unsafe extern "C" fn game_attacklonghold(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackshort", game_attackshort);
-    agent.acmd("game_attacklong", game_attacklong);
-    agent.acmd("game_attacklonghold", game_attacklonghold);
+    agent.acmd("game_attackshort", game_attackshort, Priority::Low);
+    agent.acmd("game_attacklong", game_attacklong, Priority::Low);
+    agent.acmd("game_attacklonghold", game_attacklonghold, Priority::Low);
 }

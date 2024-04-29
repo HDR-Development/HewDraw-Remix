@@ -45,6 +45,6 @@ unsafe extern "C" fn game_missile(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_bakyun", game_bakyun);
-    agent.acmd("game_missile", game_missile);
+    agent.acmd("game_bakyun", game_bakyun, Priority::Low);
+    agent.acmd("game_missile", game_missile, Priority::Low);
 }

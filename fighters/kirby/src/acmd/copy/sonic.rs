@@ -31,7 +31,7 @@ unsafe extern "C" fn sound_sonicspecialnhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_sonicspecialnhit", game_sonicspecialnhit);
-    agent.acmd("effect_sonicspecialnhit", effect_sonicspecialnhit);
-    agent.acmd("sound_sonicspecialnhit", sound_sonicspecialnhit);
+    agent.acmd("game_sonicspecialnhit", game_sonicspecialnhit, Priority::Low);
+    agent.acmd("effect_sonicspecialnhit", effect_sonicspecialnhit, Priority::Low);
+    agent.acmd("sound_sonicspecialnhit", sound_sonicspecialnhit, Priority::Low);
 }

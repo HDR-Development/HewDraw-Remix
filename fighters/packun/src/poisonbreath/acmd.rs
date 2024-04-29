@@ -100,13 +100,13 @@ unsafe extern "C" fn sound_explode(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_start", game_start);
-    agent.acmd("game_startmax", game_startmax);
+    agent.acmd("game_start", game_start, Priority::Low);
+    agent.acmd("game_startmax", game_startmax, Priority::Low);
 
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("game_shootmax", game_shootmax);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("game_shootmax", game_shootmax, Priority::Low);
     
-    agent.acmd("game_explode", game_explode);
-    agent.acmd("effect_explode", effect_explode);
-    agent.acmd("sound_explode", sound_explode);
+    agent.acmd("game_explode", game_explode, Priority::Low);
+    agent.acmd("effect_explode", effect_explode, Priority::Low);
+    agent.acmd("sound_explode", sound_explode, Priority::Low);
 }

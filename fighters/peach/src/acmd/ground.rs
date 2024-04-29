@@ -78,8 +78,8 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
     
-    agent.acmd("game_attackdash", game_attackdash);
-    agent.acmd("effect_attackdash", effect_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
 }

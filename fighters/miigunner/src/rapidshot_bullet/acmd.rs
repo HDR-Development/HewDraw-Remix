@@ -50,8 +50,8 @@ unsafe extern "C" fn game_flythrowhi2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fly", game_fly);
-    agent.acmd("game_flythrowb", game_flythrowb);
-    agent.acmd("game_flythrowhi", game_flythrowhi);
-    agent.acmd("game_flythrowhi2", game_flythrowhi2);
+    agent.acmd("game_fly", game_fly, Priority::Low);
+    agent.acmd("game_flythrowb", game_flythrowb, Priority::Low);
+    agent.acmd("game_flythrowhi", game_flythrowhi, Priority::Low);
+    agent.acmd("game_flythrowhi2", game_flythrowhi2, Priority::Low);
 }

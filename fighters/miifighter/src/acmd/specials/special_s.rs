@@ -150,8 +150,8 @@ unsafe extern "C" fn game_specialairs2start(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {;
-    agent.acmd("game_specials1end", game_specials1end);
-    agent.acmd("game_specialairs1end", game_specialairs1end);
+    agent.acmd("game_specials1end", game_specials1end, Priority::Low);
+    agent.acmd("game_specialairs1end", game_specialairs1end, Priority::Low);
 
-    agent.acmd("game_specialairs2start", game_specialairs2start);
+    agent.acmd("game_specialairs2start", game_specialairs2start, Priority::Low);
 }

@@ -1421,14 +1421,14 @@ unsafe extern "C" fn game_rotate(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_flyflickl", game_flyflickl);
-    agent.acmd("game_flyflickr", game_flyflickr);
+    agent.acmd("game_flyflickl", game_flyflickl, Priority::Low);
+    agent.acmd("game_flyflickr", game_flyflickr, Priority::Low);
     
-    agent.acmd("game_flyl", game_flyl);
-    agent.acmd("game_flyr", game_flyr);
+    agent.acmd("game_flyl", game_flyl, Priority::Low);
+    agent.acmd("game_flyr", game_flyr, Priority::Low);
 
-    agent.acmd("game_reflectedl", game_reflectedl);
-    agent.acmd("game_reflectedr", game_reflectedr);
+    agent.acmd("game_reflectedl", game_reflectedl, Priority::Low);
+    agent.acmd("game_reflectedr", game_reflectedr, Priority::Low);
 
-    agent.acmd("game_rotate", game_rotate);
+    agent.acmd("game_rotate", game_rotate, Priority::Low);
 }

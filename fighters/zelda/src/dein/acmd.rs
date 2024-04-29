@@ -60,5 +60,5 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_tame", effect_tame);
+    agent.acmd("effect_tame", effect_tame, Priority::Low);
 }

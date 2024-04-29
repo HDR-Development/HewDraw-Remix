@@ -26,8 +26,8 @@ unsafe extern "C" fn effect_chargemax(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_charge", game_charge);
-    agent.acmd("effect_charge", effect_charge);
-    agent.acmd("game_chargemax", game_charge);
-    agent.acmd("effect_chargemax", effect_chargemax);
+    agent.acmd("game_charge", game_charge, Priority::Low);
+    agent.acmd("effect_charge", effect_charge, Priority::Low);
+    agent.acmd("game_chargemax", game_charge, Priority::Low);
+    agent.acmd("effect_chargemax", effect_chargemax, Priority::Low);
 }

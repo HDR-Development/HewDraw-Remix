@@ -117,13 +117,13 @@ unsafe extern "C" fn sound_vanish(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_wait", game_wait);
-    agent.acmd("effect_wait", effect_wait);
-    agent.acmd("sound_wait", sound_wait);
+    agent.acmd("game_wait", game_wait, Priority::Low);
+    agent.acmd("effect_wait", effect_wait, Priority::Low);
+    agent.acmd("sound_wait", sound_wait, Priority::Low);
 
-    agent.acmd("game_attack", game_attack);
+    agent.acmd("game_attack", game_attack, Priority::Low);
 
-    agent.acmd("game_vanish", game_vanish);
-    agent.acmd("effect_vanish", effect_vanish);
-    agent.acmd("sound_vanish", sound_vanish);
+    agent.acmd("game_vanish", game_vanish, Priority::Low);
+    agent.acmd("effect_vanish", effect_vanish, Priority::Low);
+    agent.acmd("sound_vanish", sound_vanish, Priority::Low);
 }

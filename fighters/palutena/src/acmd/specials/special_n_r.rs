@@ -116,12 +116,12 @@ unsafe extern "C" fn expression_specialnr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnr", game_specialnr);
-    agent.acmd("game_specialairnr", game_specialnr);
-    agent.acmd("effect_specialnr", effect_specialnr);
-    agent.acmd("effect_specialairnr", effect_specialnr);
-    agent.acmd("sound_specialnr", sound_specialnr);
-    agent.acmd("sound_specialairnr", sound_specialnr);
-    agent.acmd("expression_specialnr", expression_specialnr);
-    agent.acmd("expression_specialairnr", expression_specialnr);
+    agent.acmd("game_specialnr", game_specialnr, Priority::Low);
+    agent.acmd("game_specialairnr", game_specialnr, Priority::Low);
+    agent.acmd("effect_specialnr", effect_specialnr, Priority::Low);
+    agent.acmd("effect_specialairnr", effect_specialnr, Priority::Low);
+    agent.acmd("sound_specialnr", sound_specialnr, Priority::Low);
+    agent.acmd("sound_specialairnr", sound_specialnr, Priority::Low);
+    agent.acmd("expression_specialnr", expression_specialnr, Priority::Low);
+    agent.acmd("expression_specialairnr", expression_specialnr, Priority::Low);
 }

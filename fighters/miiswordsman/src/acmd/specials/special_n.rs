@@ -274,24 +274,24 @@ unsafe extern "C" fn game_specialairn3end(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn1", game_specialn1);
-    agent.acmd("game_specialairn1", game_specialn1);
+    agent.acmd("game_specialn1", game_specialn1, Priority::Low);
+    agent.acmd("game_specialairn1", game_specialn1, Priority::Low);
 
-    agent.acmd("game_specialn2", game_specialn2);
-    agent.acmd("game_specialairn2", game_specialn2);
-    agent.acmd("effect_specialn2", effect_specialn2);
-    agent.acmd("effect_specialairn2", effect_specialn2);
-    agent.acmd("sound_specialn2", sound_specialn2);
-    agent.acmd("sound_specialairn2", sound_specialn2);
-    agent.acmd("expression_specialn2", expression_specialn2);
-    agent.acmd("expression_specialairn2", expression_specialn2);
+    agent.acmd("game_specialn2", game_specialn2, Priority::Low);
+    agent.acmd("game_specialairn2", game_specialn2, Priority::Low);
+    agent.acmd("effect_specialn2", effect_specialn2, Priority::Low);
+    agent.acmd("effect_specialairn2", effect_specialn2, Priority::Low);
+    agent.acmd("sound_specialn2", sound_specialn2, Priority::Low);
+    agent.acmd("sound_specialairn2", sound_specialn2, Priority::Low);
+    agent.acmd("expression_specialn2", expression_specialn2, Priority::Low);
+    agent.acmd("expression_specialairn2", expression_specialn2, Priority::Low);
 
-    agent.acmd("game_specialn3end", game_specialn3end);
-    agent.acmd("game_specialn3endturn", game_specialn3end);
-    agent.acmd("game_specialn3endmax", game_specialn3end);
-    agent.acmd("game_specialn3endmaxturn", game_specialn3end);
-    agent.acmd("game_specialairn3end", game_specialairn3end);
-    agent.acmd("game_specialairn3endturn", game_specialairn3end);
-    agent.acmd("game_specialairn3endmax", game_specialairn3end);
-    agent.acmd("game_specialairn3endmaxturn", game_specialairn3end);
+    agent.acmd("game_specialn3end", game_specialn3end, Priority::Low);
+    agent.acmd("game_specialn3endturn", game_specialn3end, Priority::Low);
+    agent.acmd("game_specialn3endmax", game_specialn3end, Priority::Low);
+    agent.acmd("game_specialn3endmaxturn", game_specialn3end, Priority::Low);
+    agent.acmd("game_specialairn3end", game_specialairn3end, Priority::Low);
+    agent.acmd("game_specialairn3endturn", game_specialairn3end, Priority::Low);
+    agent.acmd("game_specialairn3endmax", game_specialairn3end, Priority::Low);
+    agent.acmd("game_specialairn3endmaxturn", game_specialairn3end, Priority::Low);
 }

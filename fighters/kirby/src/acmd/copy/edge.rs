@@ -36,6 +36,6 @@ unsafe extern "C" fn game_edgespecialnstart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_edgespecialnstart", game_edgespecialnstart);
-    agent.acmd("game_edgespecialairnstart", game_edgespecialnstart);
+    agent.acmd("game_edgespecialnstart", game_edgespecialnstart, Priority::Low);
+    agent.acmd("game_edgespecialairnstart", game_edgespecialnstart, Priority::Low);
 }

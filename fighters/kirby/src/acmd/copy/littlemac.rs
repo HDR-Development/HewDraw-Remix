@@ -126,12 +126,12 @@ unsafe extern "C" fn expression_littlemacspecialn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_littlemacspecialn", game_littlemacspecialn);
-    agent.acmd("game_littlemacspecialairn", game_littlemacspecialn);
-    agent.acmd("effect_littlemacspecialn", effect_littlemacspecialn);
-    agent.acmd("effect_littlemacspecialairn", effect_littlemacspecialn);
-    agent.acmd("sound_littlemacspecialn", sound_littlemacspecialn);
-    agent.acmd("sound_littlemacspecialairn", sound_littlemacspecialn);
-    agent.acmd("expression_littlemacspecialn", expression_littlemacspecialn);
-    agent.acmd("expression_littlemacspecialairn", expression_littlemacspecialn);
+    agent.acmd("game_littlemacspecialn", game_littlemacspecialn, Priority::Low);
+    agent.acmd("game_littlemacspecialairn", game_littlemacspecialn, Priority::Low);
+    agent.acmd("effect_littlemacspecialn", effect_littlemacspecialn, Priority::Low);
+    agent.acmd("effect_littlemacspecialairn", effect_littlemacspecialn, Priority::Low);
+    agent.acmd("sound_littlemacspecialn", sound_littlemacspecialn, Priority::Low);
+    agent.acmd("sound_littlemacspecialairn", sound_littlemacspecialn, Priority::Low);
+    agent.acmd("expression_littlemacspecialn", expression_littlemacspecialn, Priority::Low);
+    agent.acmd("expression_littlemacspecialairn", expression_littlemacspecialn, Priority::Low);
 }

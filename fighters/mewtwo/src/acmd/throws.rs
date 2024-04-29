@@ -112,11 +112,11 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
     
-    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

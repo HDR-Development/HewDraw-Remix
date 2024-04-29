@@ -173,24 +173,26 @@ unsafe extern "C" fn expression_mariospecialnfire(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_mariospecialn", game_mariospecialn);
-    agent.acmd("game_mariospecialairn", game_mariospecialn);
-    agent.acmd("effect_mariospecialn", effect_mariospecialn);
-    agent.acmd("effect_mariospecialairn", effect_mariospecialn);
-    agent.acmd("sound_mariospecialn", sound_mariospecialn);
-    agent.acmd("sound_mariospecialairn", sound_mariospecialn);
-    agent.acmd("game_mariospecialnfire", game_mariospecialnfire);
-    agent.acmd("game_mariospecialairnfire", game_mariospecialnfire);
-    agent.acmd("effect_mariospecialnfire", effect_mariospecialnfire);
-    agent.acmd("effect_mariospecialairnfire", effect_mariospecialnfire);
-    agent.acmd("sound_mariospecialnfire", sound_mariospecialnfire);
-    agent.acmd("sound_mariospecialairnfire", sound_mariospecialnfire);
+    agent.acmd("game_mariospecialn", game_mariospecialn, Priority::Low);
+    agent.acmd("game_mariospecialairn", game_mariospecialn, Priority::Low);
+    agent.acmd("effect_mariospecialn", effect_mariospecialn, Priority::Low);
+    agent.acmd("effect_mariospecialairn", effect_mariospecialn, Priority::Low);
+    agent.acmd("sound_mariospecialn", sound_mariospecialn, Priority::Low);
+    agent.acmd("sound_mariospecialairn", sound_mariospecialn, Priority::Low);
+    agent.acmd("game_mariospecialnfire", game_mariospecialnfire, Priority::Low);
+    agent.acmd("game_mariospecialairnfire", game_mariospecialnfire, Priority::Low);
+    agent.acmd("effect_mariospecialnfire", effect_mariospecialnfire, Priority::Low);
+    agent.acmd("effect_mariospecialairnfire", effect_mariospecialnfire, Priority::Low);
+    agent.acmd("sound_mariospecialnfire", sound_mariospecialnfire, Priority::Low);
+    agent.acmd("sound_mariospecialairnfire", sound_mariospecialnfire, Priority::Low);
     agent.acmd(
         "expression_mariospecialnfire",
         expression_mariospecialnfire,
+        Priority::Low
     );
     agent.acmd(
         "expression_mariospecialairnfire",
         expression_mariospecialnfire,
+        Priority::Low
     );
 }

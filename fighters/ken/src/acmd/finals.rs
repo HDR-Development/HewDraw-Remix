@@ -484,17 +484,17 @@ unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_final", game_final);
-    agent.acmd("game_finalair", game_final);
-    agent.acmd("game_finalhit", game_finalhit);
-    agent.acmd("game_finalhit_com", game_finalhit);
-    agent.acmd("game_final_com2", game_final_com2);
-    agent.acmd("game_final_hit1", game_final_hit1);
-    agent.acmd("game_final_hit2", game_final_hit2);
-    agent.acmd("game_final_hit3", game_final_hit3);
-    agent.acmd("game_final_hit4", game_final_hit4);
-    agent.acmd("game_final_hitfinal", game_final_hitfinal);
+    agent.acmd("game_final", game_final, Priority::Low);
+    agent.acmd("game_finalair", game_final, Priority::Low);
+    agent.acmd("game_finalhit", game_finalhit, Priority::Low);
+    agent.acmd("game_finalhit_com", game_finalhit, Priority::Low);
+    agent.acmd("game_final_com2", game_final_com2, Priority::Low);
+    agent.acmd("game_final_hit1", game_final_hit1, Priority::Low);
+    agent.acmd("game_final_hit2", game_final_hit2, Priority::Low);
+    agent.acmd("game_final_hit3", game_final_hit3, Priority::Low);
+    agent.acmd("game_final_hit4", game_final_hit4, Priority::Low);
+    agent.acmd("game_final_hitfinal", game_final_hitfinal, Priority::Low);
     
-    agent.acmd("game_final2", game_final2);
-    agent.acmd("game_finalair2", game_final2);
+    agent.acmd("game_final2", game_final2, Priority::Low);
+    agent.acmd("game_finalair2", game_final2, Priority::Low);
 }
