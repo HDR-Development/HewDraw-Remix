@@ -160,10 +160,6 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         return false; 
     }
 
-    if is_teammate_alive(defender_boma) { 
-        println!("kill screen teammate stock exists"); 
-        return false; 
-    }
     if attacker_boma.is_fighter() && is_no_finishing_hit(attacker_boma) { 
         println!("kill screen incoming attack is_no_finishing_hit"); 
         return false; 
@@ -188,6 +184,11 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         }
         println!("kill screen training mode is not enabled"); 
         return false;
+    }
+
+    if is_teammate_alive(defender_boma) { 
+        println!("kill screen teammate stock exists"); 
+        return false; 
     }
 
     // ensure kill calculations only occur when the defender is on their last stock
@@ -237,8 +238,8 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
             crate::singletons::FighterManager(), 
             app::FighterEntryID(other_entry_id)
         );
-        if TeamModule::team_no(defender_boma) == TeamModule::team_no(other_boma) 
-        && app::lua_bind::FighterInformation::stock_count(fighter_info) > 0 { 
+        if dbg!(FighterUtil::get_team_color(defender_boma)) == dbg!(FighterUtil::get_team_color(other_boma)) 
+        && dbg!(app::lua_bind::FighterInformation::stock_count(fighter_info)) > 0 { 
             return true;
         }
     }
