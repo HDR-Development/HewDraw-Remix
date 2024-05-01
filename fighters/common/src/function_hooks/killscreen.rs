@@ -147,21 +147,21 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     if !defender_boma.is_fighter() { 
-        println!("kill screen defender is not fighter"); 
+        // println!("kill screen defender is not fighter"); 
         return false; 
     }
     if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { 
-        println!("kill screen attacker is not fighter or weapon"); 
+        // println!("kill screen attacker is not fighter or weapon"); 
         return false; 
     }
 
     if VarModule::get_int(defender_boma.object(), COUNTER) > 0 {
-        println!("kill screen is on cooldown"); 
+        // println!("kill screen is on cooldown"); 
         return false; 
     }
 
     if attacker_boma.is_fighter() && is_no_finishing_hit(attacker_boma) { 
-        println!("kill screen incoming attack is_no_finishing_hit"); 
+        // println!("kill screen incoming attack is_no_finishing_hit"); 
         return false; 
     }
 
@@ -182,12 +182,12 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         } else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
             return true;
         }
-        println!("kill screen training mode is not enabled"); 
+        // println!("kill screen training mode is not enabled"); 
         return false;
     }
 
     if is_teammate_alive(defender_boma) { 
-        println!("kill screen teammate stock exists"); 
+        // println!("kill screen teammate stock exists"); 
         return false; 
     }
 
@@ -198,7 +198,7 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         app::FighterEntryID(defender_entry_id)
     );
     if app::lua_bind::FighterInformation::stock_count(fighter_info) != 1 { 
-        println!("kill screen defender has more stocks"); 
+        // println!("kill screen defender has more stocks"); 
         return false; 
     }
 
