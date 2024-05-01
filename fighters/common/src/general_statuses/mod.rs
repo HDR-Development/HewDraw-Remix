@@ -112,7 +112,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
-            // sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
             change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
@@ -201,27 +201,46 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_lasso)]
 unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        // Disable Airdodging if you're pressing Grab.
-        let is_guard_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Guard input was pressed within max tap buffer window
-        let is_attack_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Attack input was pressed within max tap buffer window
-        // original line
-        // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
-        // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
-        // you will never get an air tether. That's the theory, anyway.
-        // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
-        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || is_guard_buffered)
-        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || is_attack_buffered)
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
-            let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
-            if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
-            && !LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
-                fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
-                return true.into();
-            }
-        }
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+        return false.into();
     }
-    false.into()
+
+    // specific air_lasso validity check
+    let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
+    if air_lasso == *FIGHTER_AIR_LASSO_TYPE_NONE
+    || LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
+        return false.into();
+    }
+    
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i128;
+
+    // actual grab button
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch) as i128;
+    if catch_trigger_count < buffer {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+
+    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) as i128;
+    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard) as i128;
+    let guard_start = guard_trigger_count;
+    let guard_end = if guard_trigger_count < guard_release_count { -1 } else { guard_release_count };
+
+    // special checks for air_lasso
+    // - attack button must be in the buffer window
+    // - shield button must be in the buffer window
+    // - attack button must have been pressed while shield was pressed/held
+    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll) as i128;
+    if attack_trigger_count < buffer 
+    && guard_trigger_count < buffer
+    && attack_trigger_count <= guard_start
+    && attack_trigger_count > guard_end {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
