@@ -160,7 +160,7 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
         return false; 
     }
 
-    if attacker_boma.is_fighter() && is_no_finishing_hit(attacker_boma) { 
+    if attacker_boma.is_fighter() && util::is_no_finishing_hit(attacker_boma) { 
         // println!("kill screen incoming attack is_no_finishing_hit"); 
         return false; 
     }
@@ -203,21 +203,6 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
     }
 
     return true;
-}
-
-pub unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
-    // for some reason this function always returns true for weapons
-    for is_abs in [false, true] {
-        for id in 0..8 {
-            let attack_data = AttackModule::attack_data(attacker_boma, id, is_abs);
-            let off = if is_abs { 0xd9 } else { 0xc9 };
-            if AttackModule::is_attack(attacker_boma, id, is_abs)
-            && *attack_data.cast::<bool>().add(off) {
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModuleAccessor) -> bool {
