@@ -1136,6 +1136,12 @@ unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
     call_original!(boma);
 }
 
+#[skyline::hook(replace=ControlModule::reset_trigger)]
+unsafe fn reset_trigger_hook(boma: &mut BattleObjectModuleAccessor) {
+    InputModule::reset_trigger(boma.object());
+    call_original!(boma)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -1181,6 +1187,7 @@ pub fn install() {
         exec_command_reset_attack_air_kind_hook,
         reset_flick_x,
         reset_flick_y,
+        reset_trigger_hook
     );
     skyline::nro::add_hook(nro_hook);
 }
