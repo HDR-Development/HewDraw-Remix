@@ -319,6 +319,12 @@ pub unsafe fn fgc_end_dashback(fighter: &mut L2CFighterCommon) {
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 		app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
     }
+    // turn around if we jumped at the very start of dashback
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+    && fighter.status_frame() < 4 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
 
     if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL) {
         let applied_speed_clamped = initial_speed.clamp(-run_speed_max, run_speed_max);
