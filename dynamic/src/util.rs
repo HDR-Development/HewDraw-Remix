@@ -322,3 +322,18 @@ extern "C" {
     #[link_name = "_ZN3app13sv_debug_draw14set_draw_colorEffff"]
     pub fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
 }
+
+pub unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+    // for some reason this function always returns true for weapons
+    for is_abs in [false, true] {
+        for id in 0..8 {
+            let attack_data = smash::app::lua_bind::AttackModule::attack_data(attacker_boma, id, is_abs);
+            let off = if is_abs { 0xd9 } else { 0xc9 };
+            if smash::app::lua_bind::AttackModule::is_attack(attacker_boma, id, is_abs)
+            && *attack_data.cast::<bool>().add(off) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
