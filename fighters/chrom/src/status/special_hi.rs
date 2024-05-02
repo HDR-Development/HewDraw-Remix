@@ -239,9 +239,7 @@ pub unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_CMD_EFFECT_AFTER_IMAGE_OFF, 0);
-    sv_module_access::effect(fighter.lua_state_agent);
+    EffectModule::remove_all_after_image(fighter.module_accessor, 0, 0);
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ROY_INSTANCE_WORK_ID_INT_SPECIAL_HI_CLIFF_NUM);
     0.into()
 }
@@ -252,7 +250,7 @@ pub unsafe extern "C" fn special_hi_2_pre(fighter: &mut L2CFighterCommon) -> L2C
         app::SituationKind(*SITUATION_KIND_AIR),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_AIR as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ALWAYS),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
@@ -345,7 +343,6 @@ pub unsafe extern "C" fn special_hi_3_main(fighter: &mut L2CFighterCommon) -> L2
     let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.dive_landing_frame");
     WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     
-    fighter.sub_fighter_cliff_check(L2CValue::I32(*GROUND_CLIFF_CHECK_KIND_ON_DROP));
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_3_main_loop as *const () as _))
 }
 
@@ -403,7 +400,9 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.status(Init, statuses::chrom::SPECIAL_HI_FLIP, special_hi_2_init);
     agent.status(Main, statuses::chrom::SPECIAL_HI_FLIP, special_hi_2_main);
     agent.status(Exec, statuses::chrom::SPECIAL_HI_FLIP, special_hi_2_exec);
+    agent.status(Exit, statuses::chrom::SPECIAL_HI_FLIP, special_hi_exit);
 
+    agent.status(Pre, statuses::chrom::SPECIAL_HI_DIVE, special_hi_2_pre);
     agent.status(Init, statuses::chrom::SPECIAL_HI_DIVE, special_hi_3_init);
     agent.status(Main, statuses::chrom::SPECIAL_HI_DIVE, special_hi_3_main);
     agent.status(CheckAttack, statuses::chrom::SPECIAL_HI_DIVE, special_hi_3_attack);
