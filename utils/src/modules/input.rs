@@ -394,6 +394,13 @@ impl InputModule {
         let module = require_input_module!(object);
         return module.release_count[button.bits().trailing_zeros() as usize];
     }
+
+    #[export_name = "InputModule__reset_trigger"]
+    pub fn reset_trigger(object: *mut BattleObject) {
+        let module = require_input_module!(object);
+        module.trigger_count = [usize::MAX; 32];
+        module.release_count = [usize::MAX; 32];
+    }
 }
 
 #[repr(C)]

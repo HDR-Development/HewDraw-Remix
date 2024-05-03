@@ -37,6 +37,9 @@ extern "Rust" {
     #[link_name = "InputModule__get_release_count"]
     fn InputModule__get_release_count(object: *mut BattleObject, button: Buttons) -> usize;
 
+    #[link_name = "InputModule__reset_trigger"]
+    fn InputModule__reset_trigger(object: *mut BattleObject);
+
     #[link_name = "InputModule__is_persist"]
     fn InputModule__is_persist(object: *mut BattleObject) -> bool;
 
@@ -233,5 +236,12 @@ pub mod InputModule {
     /// The frame count since the button was released
     pub fn get_release_count(object: *mut BattleObject, button: Buttons) -> usize {
         unsafe { InputModule__get_release_count(object, button) }
+    }
+
+    /// Resets all trigger counts and release counts
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    pub fn reset_trigger(object: *mut BattleObject) {
+        unsafe { InputModule__reset_trigger(object) }
     }
 }
