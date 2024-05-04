@@ -1,4 +1,4 @@
-use crate::consts::globals::*;
+use crate::consts::{globals::*, vars};
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
@@ -511,6 +511,8 @@ pub trait BomaExt {
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
     unsafe fn check_dash_cancel(&mut self) -> bool;
+    // Checks for status and enables transition to wall jump
+    unsafe fn check_wall_jump_cancel(&mut self) -> bool;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
@@ -1049,6 +1051,20 @@ impl BomaExt for BattleObjectModuleAccessor {
                 return true;
             }
         }
+        false
+    }
+
+    unsafe fn check_wall_jump_cancel(&mut self) -> bool {
+        if crate::VarModule::is_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
+            return false;
+        }
+        crate::VarModule::on_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.sub_transition_group_check_air_wall_jump().get_bool() {
+            crate::VarModule::on_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+            return true;
+        }
+        crate::VarModule::off_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
         false
     }
 

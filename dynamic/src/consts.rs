@@ -287,6 +287,8 @@ pub mod vars {
 
             pub const FLOAT_INHERIT_AERIAL: i32 = 0x1000;
 
+            pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x1050;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
