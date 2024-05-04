@@ -411,22 +411,22 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_catchattack", game_catchattack);
-    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
+    agent.acmd("effect_catchattack", effect_catchattack, Priority::Low);
 
-    agent.acmd("game_throwf", game_throwf);
-    agent.acmd("effect_throwf", effect_throwf);
-    agent.acmd("sound_throwf", sound_throwf);
-    agent.acmd("expression_throwf", expression_throwf);
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
+    agent.acmd("effect_throwf", effect_throwf, Priority::Low);
+    agent.acmd("sound_throwf", sound_throwf, Priority::Low);
+    agent.acmd("expression_throwf", expression_throwf, Priority::Low);
 
-    agent.acmd("game_throwhi", game_throwhi);
-    agent.acmd("effect_throwhi", effect_throwhi);
-    agent.acmd("sound_throwhi", sound_throwhi);
-    agent.acmd("expression_throwhi", expression_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
+    agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);
+    agent.acmd("sound_throwhi", sound_throwhi, Priority::Low);
+    agent.acmd("expression_throwhi", expression_throwhi, Priority::Low);
 
-    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

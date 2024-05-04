@@ -89,10 +89,10 @@ unsafe extern "C" fn expression_richterspecialairn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_richterspecialn", effect_richterspecialn);
-    agent.acmd("sound_richterspecialn", sound_richterspecialn);
-    agent.acmd("expression_richterspecialn", expression_richterspecialn);
-    agent.acmd("effect_richterspecialairn", effect_richterspecialairn);
-    agent.acmd("sound_richterspecialairn", sound_richterspecialairn);
-    agent.acmd("expression_richterspecialairn", expression_richterspecialairn);
+    agent.acmd("effect_richterspecialn", effect_richterspecialn, Priority::Low);
+    agent.acmd("sound_richterspecialn", sound_richterspecialn, Priority::Low);
+    agent.acmd("expression_richterspecialn", expression_richterspecialn, Priority::Low);
+    agent.acmd("effect_richterspecialairn", effect_richterspecialairn, Priority::Low);
+    agent.acmd("sound_richterspecialairn", sound_richterspecialairn, Priority::Low);
+    agent.acmd("expression_richterspecialairn", expression_richterspecialairn, Priority::Low);
 }

@@ -239,22 +239,22 @@ unsafe extern "C" fn sound_explode(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_start", game_start);
-    agent.acmd("game_startair", game_startair);
+    agent.acmd("game_start", game_start, Priority::Low);
+    agent.acmd("game_startair", game_startair, Priority::Low);
 
-    agent.acmd("game_loop", game_loop);
-    agent.acmd("effect_loop", effect_loop);
+    agent.acmd("game_loop", game_loop, Priority::Low);
+    agent.acmd("effect_loop", effect_loop, Priority::Low);
 
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("effect_shoot", effect_shoot);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("effect_shoot", effect_shoot, Priority::Low);
 
-    agent.acmd("game_fall", game_fall);
-    agent.acmd("effect_fall", effect_fall);
+    agent.acmd("game_fall", game_fall, Priority::Low);
+    agent.acmd("effect_fall", effect_fall, Priority::Low);
 
-    agent.acmd("game_wait", game_wait);
-    agent.acmd("effect_wait", effect_wait);
+    agent.acmd("game_wait", game_wait, Priority::Low);
+    agent.acmd("effect_wait", effect_wait, Priority::Low);
 
-    agent.acmd("game_explode", game_explode);
-    agent.acmd("effect_explode", effect_explode);
-    agent.acmd("sound_explode", sound_explode);
+    agent.acmd("game_explode", game_explode, Priority::Low);
+    agent.acmd("effect_explode", effect_explode, Priority::Low);
+    agent.acmd("sound_explode", sound_explode, Priority::Low);
 }

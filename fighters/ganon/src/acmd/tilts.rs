@@ -373,24 +373,24 @@ unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attacks3", game_attacks3);
-    agent.acmd("game_attacks3hi", game_attacks3hi);
-    agent.acmd("game_attacks3lw", game_attacks3lw);
-    agent.acmd("effect_attacks3hi", effect_attacks3hi);
-    agent.acmd("effect_attacks3lw", effect_attacks3lw);
+    agent.acmd("game_attacks3", game_attacks3, Priority::Low);
+    agent.acmd("game_attacks3hi", game_attacks3hi, Priority::Low);
+    agent.acmd("game_attacks3lw", game_attacks3lw, Priority::Low);
+    agent.acmd("effect_attacks3hi", effect_attacks3hi, Priority::Low);
+    agent.acmd("effect_attacks3lw", effect_attacks3lw, Priority::Low);
 
-    agent.acmd("game_attackhi3", game_attackhi3);
-    agent.acmd("effect_attackhi3", effect_attackhi3);
-    agent.acmd("sound_attackhi3", sound_attackhi3);
-    agent.acmd("expression_attackhi3", expression_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
+    agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
+    agent.acmd("sound_attackhi3", sound_attackhi3, Priority::Low);
+    agent.acmd("expression_attackhi3", expression_attackhi3, Priority::Low);
 
-    agent.acmd("game_attacklw3", game_attacklw3);
-    agent.acmd("effect_attacklw3", effect_attacklw3);
-    agent.acmd("sound_attacklw3", sound_attacklw3);
-    agent.acmd("expression_attacklw3", expression_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
+    agent.acmd("effect_attacklw3", effect_attacklw3, Priority::Low);
+    agent.acmd("sound_attacklw3", sound_attacklw3, Priority::Low);
+    agent.acmd("expression_attacklw3", expression_attacklw3, Priority::Low);
 
-    agent.acmd("game_attacklw32", game_attacklw32);
-    agent.acmd("effect_attacklw32", effect_attacklw32);
-    agent.acmd("sound_attacklw32", sound_attacklw32);
-    agent.acmd("expression_attacklw32", expression_attacklw32);
+    agent.acmd("game_attacklw32", game_attacklw32, Priority::Low);
+    agent.acmd("effect_attacklw32", effect_attacklw32, Priority::Low);
+    agent.acmd("sound_attacklw32", sound_attacklw32, Priority::Low);
+    agent.acmd("expression_attacklw32", expression_attacklw32, Priority::Low);
 }

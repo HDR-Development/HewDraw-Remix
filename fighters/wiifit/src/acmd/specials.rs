@@ -34,5 +34,5 @@ unsafe extern "C" fn game_specialsheading(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialsheading", game_specialsheading);
+    agent.acmd("game_specialsheading", game_specialsheading, Priority::Low);
 }

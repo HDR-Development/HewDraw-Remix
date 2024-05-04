@@ -60,9 +60,9 @@ unsafe extern "C" fn sound_pillar(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("effect_shoot", effect_shoot);
-    agent.acmd("game_pillar", game_pillar);
-    agent.acmd("effect_pillar", effect_pillar);
-    agent.acmd("sound_pillar", sound_pillar);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("effect_shoot", effect_shoot, Priority::Low);
+    agent.acmd("game_pillar", game_pillar, Priority::Low);
+    agent.acmd("effect_pillar", effect_pillar, Priority::Low);
+    agent.acmd("sound_pillar", sound_pillar, Priority::Low);
 }

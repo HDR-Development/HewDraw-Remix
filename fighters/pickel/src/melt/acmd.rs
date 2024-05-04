@@ -25,7 +25,7 @@ unsafe extern "C" fn sound_passive(agent: &mut L2CAgentBase) {
 } 
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_passive", game_passive);
-    agent.acmd("effect_passive", effect_passive);
-    agent.acmd("sound_passive", sound_passive);
+    agent.acmd("game_passive", game_passive, Priority::Low);
+    agent.acmd("effect_passive", effect_passive, Priority::Low);
+    agent.acmd("sound_passive", sound_passive, Priority::Low);
 }

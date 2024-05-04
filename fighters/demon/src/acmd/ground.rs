@@ -644,18 +644,18 @@ unsafe extern "C" fn game_attacksquat4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackdash", game_attackdash);
-    agent.acmd("game_attackstand1", game_attackstand1);
-    agent.acmd("game_attackstand21", game_attackstand21);
-    agent.acmd("game_attackstand22", game_attackstand22);
-    agent.acmd("game_attackstand23", game_attackstand23);
-    agent.acmd("game_attackstand24", game_attackstand24);
-    agent.acmd("game_attackstand31", game_attackstand31);
-    agent.acmd("game_attackstand32", game_attackstand32);
-    agent.acmd("game_attackstand4", game_attackstand4);
-    agent.acmd("game_attackstand5", game_attackstand5);
-    agent.acmd("game_attackstand6", game_attackstand6);
-    agent.acmd("game_attacksquat2", game_attacksquat2);
-    agent.acmd("game_attacksquat3", game_attacksquat3);
-    agent.acmd("game_attacksquat4", game_attacksquat4);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("game_attackstand1", game_attackstand1, Priority::Low);
+    agent.acmd("game_attackstand21", game_attackstand21, Priority::Low);
+    agent.acmd("game_attackstand22", game_attackstand22, Priority::Low);
+    agent.acmd("game_attackstand23", game_attackstand23, Priority::Low);
+    agent.acmd("game_attackstand24", game_attackstand24, Priority::Low);
+    agent.acmd("game_attackstand31", game_attackstand31, Priority::Low);
+    agent.acmd("game_attackstand32", game_attackstand32, Priority::Low);
+    agent.acmd("game_attackstand4", game_attackstand4, Priority::Low);
+    agent.acmd("game_attackstand5", game_attackstand5, Priority::Low);
+    agent.acmd("game_attackstand6", game_attackstand6, Priority::Low);
+    agent.acmd("game_attacksquat2", game_attacksquat2, Priority::Low);
+    agent.acmd("game_attacksquat3", game_attacksquat3, Priority::Low);
+    agent.acmd("game_attacksquat4", game_attacksquat4, Priority::Low);
 }

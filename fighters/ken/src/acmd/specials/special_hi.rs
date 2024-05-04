@@ -43,7 +43,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
             ATTACK(agent, 0, 0, Hash40::new("armr"), 6.8, 80, 112, 0, 78, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         } else if boma.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W
         || boma.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 6.8, 80, 112, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), 6.8, 80, 109, 0, 77, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {
             ATTACK(agent, 0, 0, Hash40::new("armr"), 6.8, 80, 107, 0, 76, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         }
@@ -301,14 +301,14 @@ unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialairhi", game_specialairhi);
-    agent.acmd("game_specialairhicommand", game_specialairhi);
-    agent.acmd("game_specialairhiend", game_specialairhiend);
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialhicommand", game_specialhi);
-    agent.acmd("game_specialhifall", game_specialhifall);
-    agent.acmd("effect_specialhi", effect_specialhi);
-    agent.acmd("effect_specialhicommand", effect_specialhi);
-    agent.acmd("effect_specialairhi", effect_specialhi);
-    agent.acmd("effect_specialairhicommand", effect_specialhi);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("game_specialairhicommand", game_specialairhi, Priority::Low);
+    agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialhicommand", game_specialhi, Priority::Low);
+    agent.acmd("game_specialhifall", game_specialhifall, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialhicommand", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhicommand", effect_specialhi, Priority::Low);
 }

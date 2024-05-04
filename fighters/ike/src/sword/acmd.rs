@@ -33,6 +33,6 @@ unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
 }
     
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_appeallw", game_appeallw);
-    agent.acmd("effect_appeallw", effect_appeallw);
+    agent.acmd("game_appeallw", game_appeallw, Priority::Low);
+    agent.acmd("effect_appeallw", effect_appeallw, Priority::Low);
 }

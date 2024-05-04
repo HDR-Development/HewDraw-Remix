@@ -102,13 +102,13 @@ unsafe extern "C" fn game_speciallwfailure(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    // agent.acmd("game_specialnshoot", game_specialnshoot);
-    // agent.acmd("game_specialairnshoot", game_specialnshoot);
+    // agent.acmd("game_specialnshoot", game_specialnshoot, Priority::Low);
+    // agent.acmd("game_specialairnshoot", game_specialnshoot, Priority::Low);
 
-    agent.acmd("expression_specialairsreturn", expression_specialairsreturn);
+    agent.acmd("expression_specialairsreturn", expression_specialairsreturn, Priority::Low);
 
-    agent.acmd("game_specialairhiend", game_specialairhiend);
+    agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
 
-    agent.acmd("game_speciallwfailure", game_speciallwfailure);
-    agent.acmd("game_specialairlwfailure", game_speciallwfailure);
+    agent.acmd("game_speciallwfailure", game_speciallwfailure, Priority::Low);
+    agent.acmd("game_specialairlwfailure", game_speciallwfailure, Priority::Low);
 }

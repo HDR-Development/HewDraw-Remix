@@ -251,21 +251,21 @@ unsafe extern "C" fn game_specialnspitb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_throwf", game_throwf);
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
 
-    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("game_throwb", game_throwb, Priority::Low);
 
-    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
 
-    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 
-    agent.acmd("game_specialnspitf", game_specialnspitf);
-    agent.acmd("game_specialairnspitf", game_specialnspitf);
+    agent.acmd("game_specialnspitf", game_specialnspitf, Priority::Low);
+    agent.acmd("game_specialairnspitf", game_specialnspitf, Priority::Low);
     
-    agent.acmd("game_specialnspitb", game_specialnspitb);
-    agent.acmd("game_specialairnspitb", game_specialnspitb);
+    agent.acmd("game_specialnspitb", game_specialnspitb, Priority::Low);
+    agent.acmd("game_specialairnspitb", game_specialnspitb, Priority::Low);
 }

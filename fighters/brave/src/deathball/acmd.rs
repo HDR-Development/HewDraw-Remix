@@ -26,6 +26,6 @@ unsafe extern "C" fn effect_deathball2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_deathball2", game_deathball2);
-    agent.acmd("effect_deathball2", effect_deathball2);
+    agent.acmd("game_deathball2", game_deathball2, Priority::Low);
+    agent.acmd("effect_deathball2", effect_deathball2, Priority::Low);
 }

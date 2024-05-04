@@ -221,14 +221,14 @@ unsafe extern "C" fn game_speciallwflyr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnbite", game_specialnbite);
-    agent.acmd("game_specialairnbite", game_specialairnbite);
+    agent.acmd("game_specialnbite", game_specialnbite, Priority::Low);
+    agent.acmd("game_specialairnbite", game_specialairnbite, Priority::Low);
 
-    agent.acmd("game_specialhijump", game_specialhijump);
-    agent.acmd("expression_specialhijump", expression_specialhijump);
+    agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
+    agent.acmd("expression_specialhijump", expression_specialhijump, Priority::Low);
     
-    agent.acmd("game_speciallwlr", game_speciallwlr);
-    agent.acmd("game_specialairlwlr", game_speciallwlr);
-    agent.acmd("game_speciallwflyr", game_speciallwflyr);
-    agent.acmd("game_specialairlwflyr", game_speciallwflyr);
+    agent.acmd("game_speciallwlr", game_speciallwlr, Priority::Low);
+    agent.acmd("game_specialairlwlr", game_speciallwlr, Priority::Low);
+    agent.acmd("game_speciallwflyr", game_speciallwflyr, Priority::Low);
+    agent.acmd("game_specialairlwflyr", game_speciallwflyr, Priority::Low);
 }

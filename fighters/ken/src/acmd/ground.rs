@@ -9,8 +9,8 @@ unsafe extern "C" fn game_attack11w(agent: &mut L2CAgentBase) {
         boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         boma.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         boma.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO); // it's here this early to make light jab --> heavy jab feel like the other target combos
-        ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 180, 25, 8, 25, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(7.5), Some(9.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 105, 25, 10, 25, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(7.5), Some(9.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 180, 25, 8, 25, 4.5, 0.0, 12.5, 8.0, Some(0.0), Some(8.5), Some(8.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 105, 25, 10, 25, 4.5, 0.0, 12.5, 8.0, Some(0.0), Some(8.5), Some(8.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -178,22 +178,22 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11w", game_attack11w);
-    agent.acmd("effect_attack11w", effect_attack11w);
-    agent.acmd("sound_attack11w", sound_attack11w);
-    agent.acmd("expression_attack11w", expression_attack11w);
-    agent.acmd("game_attack11s", game_attack11s);
-    agent.acmd("game_attack11nears", game_attack11s);
-    agent.acmd("game_attack12", game_attack11s);
-    agent.acmd("effect_attack11s", effect_attack11s);
-    agent.acmd("effect_attack11nears", effect_attack11s);
-    agent.acmd("effect_attack12", effect_attack11s);
-    agent.acmd("sound_attack11s", sound_attack11s);
-    agent.acmd("sound_attack11nears", sound_attack11s);
-    agent.acmd("sound_attack12", sound_attack11s);
-    agent.acmd("expression_attack11s", expression_attack11s);
-    agent.acmd("expression_attack11nears", expression_attack11s);
-    agent.acmd("expression_attack12", expression_attack11s);
+    agent.acmd("game_attack11w", game_attack11w, Priority::Low);
+    agent.acmd("effect_attack11w", effect_attack11w, Priority::Low);
+    agent.acmd("sound_attack11w", sound_attack11w, Priority::Low);
+    agent.acmd("expression_attack11w", expression_attack11w, Priority::Low);
+    agent.acmd("game_attack11s", game_attack11s, Priority::Low);
+    agent.acmd("game_attack11nears", game_attack11s, Priority::Low);
+    agent.acmd("game_attack12", game_attack11s, Priority::Low);
+    agent.acmd("effect_attack11s", effect_attack11s, Priority::Low);
+    agent.acmd("effect_attack11nears", effect_attack11s, Priority::Low);
+    agent.acmd("effect_attack12", effect_attack11s, Priority::Low);
+    agent.acmd("sound_attack11s", sound_attack11s, Priority::Low);
+    agent.acmd("sound_attack11nears", sound_attack11s, Priority::Low);
+    agent.acmd("sound_attack12", sound_attack11s, Priority::Low);
+    agent.acmd("expression_attack11s", expression_attack11s, Priority::Low);
+    agent.acmd("expression_attack11nears", expression_attack11s, Priority::Low);
+    agent.acmd("expression_attack12", expression_attack11s, Priority::Low);
     
-    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

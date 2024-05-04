@@ -9,5 +9,5 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_final", game_final);
+    agent.acmd("game_final", game_final, Priority::Low);
 }

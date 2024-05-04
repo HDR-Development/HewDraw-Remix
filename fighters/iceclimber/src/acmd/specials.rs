@@ -81,11 +81,11 @@ unsafe extern "C" fn game_specialairn_nana(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
 
-    agent.acmd("game_specialn_nana", game_specialn_nana);
+    agent.acmd("game_specialn_nana", game_specialn_nana, Priority::Low);
 
-    agent.acmd("game_specialairn", game_specialairn);
+    agent.acmd("game_specialairn", game_specialairn, Priority::Low);
 
-    agent.acmd("game_specialairn_nana", game_specialairn_nana);
+    agent.acmd("game_specialairn_nana", game_specialairn_nana, Priority::Low);
 }

@@ -345,22 +345,22 @@ unsafe extern "C" fn game_speciallwf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("effect_specialnstart", effect_specialnstart);
-    agent.acmd("effect_specialairnstart", effect_specialnstart);
+    agent.acmd("effect_specialnstart", effect_specialnstart, Priority::Low);
+    agent.acmd("effect_specialairnstart", effect_specialnstart, Priority::Low);
 
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("effect_specials", effect_specials);
-    agent.acmd("effect_specialairs", effect_specials);
-    agent.acmd("sound_specials", sound_specials);
-    agent.acmd("sound_specialairs", sound_specials);
-    agent.acmd("expression_specials", expression_specials);
-    agent.acmd("expression_specialairs", expression_specials);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("effect_specials", effect_specials, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specials, Priority::Low);
+    agent.acmd("sound_specials", sound_specials, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specials, Priority::Low);
+    agent.acmd("expression_specials", expression_specials, Priority::Low);
+    agent.acmd("expression_specialairs", expression_specials, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
     
-    agent.acmd("game_speciallwattack", game_speciallwattack);
-    agent.acmd("game_specialairlwattack", game_speciallwattack);
-    agent.acmd("game_speciallwf", game_speciallwf);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("game_speciallwf", game_speciallwf, Priority::Low);
 }

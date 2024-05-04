@@ -134,33 +134,40 @@ unsafe extern "C" fn expression_ridleyspecialairnexplode(agent: &mut L2CAgentBas
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_ridleyspecialnexplode", game_ridleyspecialnexplode);
+    agent.acmd("game_ridleyspecialnexplode", game_ridleyspecialnexplode, Priority::Low);
     agent.acmd(
         "effect_ridleyspecialnexplode",
         effect_ridleyspecialnexplode,
+        Priority::Low
     );
     agent.acmd(
         "sound_ridleyspecialnexplode",
         sound_ridleyspecialnexplode,
+        Priority::Low
     );
     agent.acmd(
         "expression_ridleyspecialnexplode",
         expression_ridleyspecialnexplode,
+        Priority::Low
     );
     agent.acmd(
         "game_ridleyspecialairnexplode",
         game_ridleyspecialairnexplode,
+        Priority::Low
     );
     agent.acmd(
         "effect_ridleyspecialairnexplode",
         effect_ridleyspecialairnexplode,
+        Priority::Low
     );
     agent.acmd(
         "sound_ridleyspecialairnexplode",
         sound_ridleyspecialairnexplode,
+        Priority::Low
     );
     agent.acmd(
         "expression_ridleyspecialairnexplode",
         expression_ridleyspecialairnexplode,
+        Priority::Low
     );
 }

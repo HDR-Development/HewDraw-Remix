@@ -169,7 +169,13 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
 
     if fighter.global_table[globals::STATUS_KIND] == FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if fighter.global_table[globals::STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_TURN_RUN {
+        if ![
+            *FIGHTER_STATUS_KIND_RUN,
+            *FIGHTER_STATUS_KIND_TURN_DASH,
+            *FIGHTER_STATUS_KIND_TURN_RUN,
+            *FIGHTER_RYU_STATUS_KIND_DASH_BACK,
+            *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK,
+        ].contains(&fighter.global_table[globals::STATUS_KIND_INTERRUPT].get_i32()) {
             update_lr(fighter, lr);
         }
         return 0.into();

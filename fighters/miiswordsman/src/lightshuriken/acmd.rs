@@ -87,6 +87,6 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_fly", game_fly);
-    agent.acmd("effect_fly", effect_fly);
+    agent.acmd("game_fly", game_fly, Priority::Low);
+    agent.acmd("effect_fly", effect_fly, Priority::Low);
 }
