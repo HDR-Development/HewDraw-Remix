@@ -116,26 +116,26 @@ unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn palutena_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32) {
     // Wall Ride momentum fixes
-    let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-    let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-
     if boma.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2) {
-        let touch_normal_y_left = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-        let touch_normal_y_right = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-        if (touch_right && touch_normal_y_right != 0.0)
-        || (touch_left && touch_normal_y_left != 0.0)
-        {
-            let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-
+        let init_speed_x = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X);
+        let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
+        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
+            if !VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
+                VarModule::on_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE);
+            }
             if init_speed_y > 0.0 {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
             }
+        } else if VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, init_speed_x, init_speed_y);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
     }
     else if boma.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3) {
-        if touch_right || touch_left {
+        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
             if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
                 let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
                 KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);

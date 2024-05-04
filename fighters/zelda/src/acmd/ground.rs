@@ -63,15 +63,62 @@ unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, 5.5, 0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11.7, 7.5, 0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 0.95);
+        EFFECT(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 11.7, 12.0, 0, 0, 0, 1.05, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.25);
     }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, 8.5, 0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, true);
+}
+
+unsafe extern "C" fn game_attack100(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    loop {
+        frame(lua_state, 1.0);
+        game_attack100sub(agent);
+        frame(lua_state, 3.0);
+        game_attack100sub(agent);
+        frame(lua_state, 5.0);
+        game_attack100sub(agent);
+        frame(lua_state, 7.0);
+        game_attack100sub(agent);
+        frame(lua_state, 9.0);
+        game_attack100sub(agent);
+        frame(lua_state, 11.0);
+        game_attack100sub(agent);
+        frame(lua_state, 13.0);
+        game_attack100sub(agent);
+        frame(lua_state, 15.0);
+        wait_loop_clear(agent);
     }
-    frame(lua_state, 5.0);
+}
+
+unsafe extern "C" fn game_attack100sub(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 15, 11.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 361, 20, 0, 4, 6.0, 0.0, 8.5, 8.0, Some(0.0), Some(8.5), Some(13.0), 0.5, 0.6, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 3.0, false);
+        ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 8.0);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
+    }
+}
+
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 140, 0, 45, 6.0, 0.0, 8.5, 10.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 361, 140, 0, 45, 6.0, 0.0, 8.5, 15.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -117,6 +164,10 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11, Priority::Low);
     agent.acmd("effect_attack11", effect_attack11, Priority::Low);
+
+    agent.acmd("game_attack100", game_attack100, Priority::Low);
+
+    agent.acmd("game_attack100end", game_attack100end, Priority::Low);
 
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
     agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);

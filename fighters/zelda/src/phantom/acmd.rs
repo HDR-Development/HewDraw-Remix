@@ -5,15 +5,6 @@ unsafe extern "C" fn game_build(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 	frame(lua_state, 0.0);
 	if is_excute(agent) {
-		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let zelda = utils::util::get_battle_object_from_id(owner_id);
-		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
-			let pos_x = PostureModule::pos_x(boma);
-			let pos_y = PostureModule::pos_y(boma);
-			let pos = Vector3f { x: pos_x + 35.2 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
-			PostureModule::set_pos(boma, &pos);
-			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
-		}
 		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 	}
 	frame(lua_state, 2.0);
@@ -480,7 +471,7 @@ unsafe extern "C" fn game_attackmax(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		FT_MOTION_RATE(agent, 1.0);
 		ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 100, 130, 0, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-		ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 6, 100, 85, 0, 8.5, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+		ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 25, 100, 85, 0, 8.5, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
@@ -565,13 +556,13 @@ unsafe extern "C" fn game_cancel(agent: &mut L2CAgentBase) {
 	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
 	frame(lua_state, 1.0);
-	if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
+	if VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED) {
 		FT_MOTION_RATE_RANGE(agent, 1.0, 34.0, 99.0);
 	}
 	frame(lua_state, 30.0);//100
-	if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
+	if VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED) {
 		FT_MOTION_RATE_RANGE(agent, 30.0, 90.0, 320.0); //8 seconds
-		VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+		VarModule::off_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED);
 	}
 }
 

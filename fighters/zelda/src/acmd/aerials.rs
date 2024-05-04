@@ -184,6 +184,19 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_zelda_attackair_f01"));
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_zelda_attackair_f01"));
+    }
+}
+
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -286,6 +299,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
     agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
     agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
+    agent.acmd("sound_attackairb", sound_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 
