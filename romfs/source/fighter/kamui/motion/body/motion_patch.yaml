@@ -14,10 +14,10 @@ guard_off:
     cancel_frame: 12
 attack_12:
   extra:
-    cancel_frame: 24
+    cancel_frame: 22
 attack_11:
   extra:
-    cancel_frame: 21
+    cancel_frame: 19
 attack_12:
   extra:
     cancel_frame: 24
@@ -34,13 +34,13 @@ attack_lw3:
     cancel_frame: 26
 attack_s4_s:
   extra:
-    cancel_frame: 62
+    cancel_frame: 61
 attack_s4_hi:
   extra:
-    cancel_frame: 62
+    cancel_frame: 61
 attack_s4_lw:
   extra:
-    cancel_frame: 62
+    cancel_frame: 61
 attack_hi4:
   extra:
     cancel_frame: 57
@@ -55,7 +55,7 @@ attack_air_f:
     cancel_frame: 33
 attack_air_hi:
   extra:
-    cancel_frame: 41
+    cancel_frame: 38
 special_n_end_1:
   extra:
     cancel_frame: 45
