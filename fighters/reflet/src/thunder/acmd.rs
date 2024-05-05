@@ -36,17 +36,14 @@ unsafe extern "C" fn game_gigaspark(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_tron0(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let reflet_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(agent.boma(), *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let charge = VarModule::get_int(reflet_boma.object(), vars::reflet::instance::THUNDER_CHARGE);
-    //let damage = (1 + (charge-1)*9/14) as f32;
-    let damage = 1.5 + (charge/2) as f32;
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(agent.boma(), *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent) {
-        if charge > 0 && charge <= 8 {
-            ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 145, 0, 75, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -0.5, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-
-        } else {
-            ATTACK(agent, 0, 0, Hash40::new("top"), 5.5, 45, 145, 0, 75, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        }
+        let damage = match owner_module_accessor.kind() {
+            0x38 => 1.5 + VarModule::get_float(owner_module_accessor.object(), vars::reflet::instance::THUNDER_CHARGE) / 2.0,
+            0x6 => 1.5 + VarModule::get_float(owner_module_accessor.object(), vars::kirby::instance::THUNDER_CHARGE) / 2.0,
+            _ => 4.0
+        };
+        ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 145, 0, 75, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -0.5, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
         AttackModule::set_no_finish_camera(agent.boma(), 0, true, false);
     }
 }

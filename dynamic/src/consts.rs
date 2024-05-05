@@ -708,10 +708,15 @@ pub mod vars {
             // flags
             pub const SHOULD_CYCLE_MATERIAL: i32 = 0x01F4;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
-            pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
 
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x01F5;
+            // copy ability
+            // ints
+            pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
+            // copy ability
+            // floats
+            pub use super::super::reflet::instance::THUNDER_CHARGE;
         }
         pub mod status {
             // copy ability
@@ -1221,11 +1226,13 @@ pub mod vars {
         }
         pub mod instance {
             // flags
-            pub const THUNDER_CHARGE: i32 = 0x0100;
-            pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
 
             // ints
             pub const LEVIN_AERIAL_LENIENCY: i32 = 0x0100;
+
+            // floats
+            pub const THUNDER_CHARGE: i32 = 0x0100;
         }
     }
 
