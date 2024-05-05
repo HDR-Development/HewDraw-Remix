@@ -117,7 +117,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    frame(lua_state, 1.33);
+    frame(lua_state, 0.66);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_wolf_special_s01"));
         PLAY_SE(agent, Hash40::new("se_wolf_special_s02"));
