@@ -18,9 +18,6 @@ attack_12:
 attack_11:
   extra:
     cancel_frame: 19
-attack_12:
-  extra:
-    cancel_frame: 24
 attack_s3_s:
   flags:
     move: true
@@ -55,7 +52,7 @@ attack_air_f:
     cancel_frame: 33
 attack_air_hi:
   extra:
-    cancel_frame: 38
+    cancel_frame: 41
 special_n_end_1:
   extra:
     cancel_frame: 45
