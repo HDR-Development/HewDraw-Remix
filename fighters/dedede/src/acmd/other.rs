@@ -133,6 +133,78 @@ unsafe extern "C" fn sound_landingfallspecial(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn appeal_sr_mask_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_dedede_appeal02"));
+        PLAY_STATUS(agent, Hash40::new("se_dedede_attack100"));
+    }
+    frame(lua_state, 81.0);
+    if is_excute(agent) {
+        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+    }
+    frame(lua_state, 89.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_dedede_attack100end"));
+    }
+}
+
+unsafe extern "C" fn appeal_sr_mask_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 20.0);
+    for _ in 0..2 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_spin_wind"), Hash40::new("hammer2"), 2, 0, 0, 0, 0, 89, 0.75, true, 0.6);
+        }
+        wait(lua_state, 10.0);
+        if is_excute(agent) {
+            EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_spin_wind"), Hash40::new("hammer2"), -2, 0, 0, 0, 0, 89, 0.8, true, 0.6);
+        }
+        wait(lua_state, 10.0);
+    }
+}
+
+unsafe extern "C" fn appeal_sr_mask_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 51.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 58.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits_l"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -150,4 +222,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
     agent.acmd("sound_landingfallspecial", sound_landingfallspecial, Priority::Low);
+
+    agent.acmd("expression_appealsr_mask", appeal_sr_mask_expression, Priority::Low);
+    agent.acmd("effect_appealsr_mask", appeal_sr_mask_effect, Priority::Low);
+    agent.acmd("sound_appealsr_mask", appeal_sr_mask_sound, Priority::Low);
 }

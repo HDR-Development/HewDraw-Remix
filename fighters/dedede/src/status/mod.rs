@@ -7,6 +7,8 @@ mod special_lw;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon){
     VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
+    VarModule::set_flag(fighter.battle_object, vars::dedede::instance::DISABLE_JET_SPEED, false);
+    VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0);
 }
 
 pub fn install(agent: &mut Agent) {

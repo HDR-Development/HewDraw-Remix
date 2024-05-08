@@ -11,6 +11,7 @@ pub mod status;
 
 pub mod gordo;
 pub mod star;
+pub mod jethammer;
 
 use smash::{
     lib::{
@@ -53,4 +54,5 @@ pub fn install() {
 
     gordo::install();
     star::install();
+    jethammer::install();
 }

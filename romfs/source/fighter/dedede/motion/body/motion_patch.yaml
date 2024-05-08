@@ -77,6 +77,12 @@ special_s_start:
   extra:
     cancel_frame: 57
 attack_lw4_hold:
+special_lw:
+  flags:
+    move: false
+special_air_lw:
+  flags:
+    move: false
 special_hi_jump:
   extra:
     intangible_start_frame: 0
@@ -109,3 +115,32 @@ catch_attack:
 furafura_end:
   extra:
     cancel_frame: 10
+appeal_s_r_mask:
+  game_script: game_appeal_sr_mask
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: "j01appealsrmask.nuanmb"
+  scripts:
+  - expression_appealsr_mask
+  - sound_appealsr_mask
+  - effect_appealsr_mask
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 50
+    freeze_during_hitstop: false

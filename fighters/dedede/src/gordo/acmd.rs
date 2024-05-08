@@ -7,10 +7,6 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
     let gordo_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);    
     
     if is_excute(agent){
-        if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
-            PostureModule::reverse_rot_y_lr(boma);
-            PostureModule::reverse_lr(boma);
-        }
         /* Prevents backwards gordos */
         if PostureModule::lr(owner_module_accessor) * gordo_speed_x < 0.0{
             KineticModule::mul_speed(boma, &Vector3f{x: -1.0, y: 1.0,z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
@@ -23,9 +19,8 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
                 if VarModule::is_flag(owner_module_accessor.object(), vars::dedede::instance::IS_DASH_GORDO){
 
                     let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 2.0) * 0.25);
-                    ATTACK(agent, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 120, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
-                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
-                    
+                    ATTACK(agent, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 55, 0, 50, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.8);
                     //Reduces the max amount of bounces by 1 per recatch on the same gordo
                     if (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER)) < 0{
                         StatusModule::change_status_request(boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, true);
@@ -34,8 +29,8 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
                 else{
                     /* Reduces damage on every bounce, by 10% of its last damage in this case */
                     let bounce_dmg_multiplier = ((WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) as f32 + 8.0) * 0.1);
-                    ATTACK(agent, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 110, 60, 0, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
-                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
+                    ATTACK(agent, 0, 0, Hash40::new("hip"), 7.5 * bounce_dmg_multiplier, 60, 55, 0, 50, 6.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+                    ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.8);
                 }
             }
         }

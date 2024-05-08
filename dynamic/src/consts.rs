@@ -412,9 +412,12 @@ pub mod vars {
             pub const IS_DASH_GORDO: i32 = 0x0101;
             pub const IS_ANGLED_FLAG: i32 = 0x0102;
             pub const IS_REMOVED_FLAG: i32 = 0x0103;
+            pub const EQUIP_MASK: i32 = 0x0106;
+            pub const DISABLE_JET_SPEED: i32 = 0x0107;
 
             //ints
             pub const RECATCH_COUNTER: i32 = 0x0104;
+            pub const JET_START_SITUATION: i32 = 0x0108;
 
             //floats
             pub const INHALE_STICK_Y: i32 = 0x0105;

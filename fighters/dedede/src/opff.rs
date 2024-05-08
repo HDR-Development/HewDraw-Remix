@@ -83,13 +83,17 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
                         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                         
                         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-                            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.5, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.8, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
                             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_get"), 0.0, 1.0, false, 0.0, false, false);
+                            MotionModule::set_rate(fighter.module_accessor, 1.15);
+                            //1.15 Rate FAF = 42
 
                         }
                         else{
+                            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.2, y: 0.0, z:1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
                             StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_get"), 0.0, 1.0, false, 0.0, false, false);
+                            MotionModule::set_rate(fighter.module_accessor, 1.15);
                         }
 
                         //Prevents turnarounds
@@ -119,6 +123,9 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
             if fighter.status_frame() > 1 && fighter.status_frame() < 4{
                 ControlModule::reset_main_stick(boma);
             }
+            if StatusModule::is_situation_changed(fighter.module_accessor){
+                MotionModule::set_rate(fighter.module_accessor, 1.4);
+            }
         }
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, false);
     }
@@ -126,6 +133,71 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
     else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG){
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, false);
         VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0); 
+    }
+}
+
+unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    let mask_is_equipped = VarModule::is_flag(boma.object(), vars::dedede::instance::EQUIP_MASK);
+    let mask_is_exist = ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK);
+    if fighter.is_motion(Hash40::new("appeal_s_r")){
+        if frame as i32 == 3 
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        && fighter.status() != *FIGHTER_STATUS_KIND_REBIRTH{
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_r_mask"), 3.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    if fighter.is_motion(Hash40::new("appeal_s_r_mask")){
+        if !mask_is_exist && frame < 11.0{
+            ArticleModule::generate_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK, false, -1);
+            let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK);
+            let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let article_boma = sv_battle_object::module_accessor(article_id);
+            ModelModule::set_scale(article_boma, 1.1);
+            LinkModule::set_model_constraint_pos_ort(article_boma, *LINK_NO_ARTICLE, Hash40::new("attach"), Hash40::new("havel"),  *CONSTRAINT_FLAG_POSITION as u32 | *CONSTRAINT_FLAG_ORIENTATION as u32, false); 
+        }
+        if frame as i32 == 12{
+            if !mask_is_equipped && mask_is_exist{
+                let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK);
+                let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+                let article_boma = sv_battle_object::module_accessor(article_id);
+                LinkModule::set_model_constraint_pos_ort(article_boma, *LINK_NO_ARTICLE, Hash40::new("have"), Hash40::new("head"),  *CONSTRAINT_FLAG_POSITION as u32 | *CONSTRAINT_FLAG_ORIENTATION as u32, false); 
+                EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 18, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+                VarModule::on_flag(boma.object(), vars::dedede::instance::EQUIP_MASK);
+            }
+            else{
+                ArticleModule::remove_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+                VarModule::off_flag(boma.object(), vars::dedede::instance::EQUIP_MASK);
+            }
+        }  
+    }  
+    //Model scale on the mask during up tilt 
+    if fighter.is_motion(Hash40::new("attack_hi3"))
+    && mask_is_exist{
+        let article = ArticleModule::get_article(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        if (fighter.motion_frame() > 7.0 && fighter.motion_frame() < 16.0) {
+            ModelModule::set_scale(article_boma, 1.3);
+        }
+        else{
+            ModelModule::set_scale(article_boma, 1.1);
+        }
+    }
+    //Removing shaking from ftilt, dair, up air, rapid jab with the mask on
+    if fighter.is_motion_one_of(&[Hash40::new("attack_s3_s"), Hash40::new("attack_air_hi"), Hash40::new("attack_100")])
+    && mask_is_exist{
+        ShakeModule::stop(boma);
+    }
+
+    //ensuring the flag resets when the mask does not exist
+    if mask_is_equipped && !mask_is_exist{
+        VarModule::off_flag(boma.object(), vars::dedede::instance::EQUIP_MASK);
+    }
+
+    // remove mask on entry and death
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD])
+    && mask_is_equipped {
+        ArticleModule::remove_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -228,9 +300,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_S_MISS,
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE,
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_TURN,
-        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP,
-        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_FALL,
-        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_PASS
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -261,6 +331,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     angled_inhale_shot(fighter);
     super_jump_fail_edge_cancel(fighter);
     fastfall_specials(fighter);
+    mask_toggle(fighter, boma, frame);
 }
 
 pub extern "C" fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
