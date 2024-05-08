@@ -148,15 +148,6 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_landingairb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EffectModule::kill_kind(agent.module_accessor, Hash40::new("sys_spin_wind"), false, false);
-    }
-}
-
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -257,7 +248,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
     agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
-    agent.acmd("effect_landingairb", effect_landingairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
     
