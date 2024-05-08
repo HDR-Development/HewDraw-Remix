@@ -128,6 +128,55 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let lr = sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR);
+    if is_excute(agent) {
+        if lr < 0.0 {
+            EFFECT_FLW_UNSYNC_VIS(agent, Hash40::new("zelda_flor_start_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        } else {
+            EFFECT_FLW_UNSYNC_VIS(agent, Hash40::new("zelda_flor_start_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+        }
+        LAST_EFFECT_SET_SCALE_W(agent, 0.85, 0.95, 0.85);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            if lr < 0.0 {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, false);
+            }
+            else {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, false);
+            }
+            LAST_EFFECT_SET_SCALE_W(agent, 0.55, 0.8, 0.55);
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_FLW_UNSYNC_VIS(agent, Hash40::new("zelda_flor_teleport"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1, false);
+        EffectModule::enable_sync_init_pos_last(boma);
+        LAST_EFFECT_SET_RATE(agent, 1.15);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.18, 0.87, 0, 0.6);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.18, 0.87, 0, 0.6);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.6, 1, 1, 0.5);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -189,7 +238,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
     let lr = sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR);
     if is_excute(agent) {
         FLASH(agent, 0.62, 0.94, 0.9, 0.6);
@@ -235,7 +284,6 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
             else {
                 EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, -1, 0, 0, 0, 0.75, false);
             }
-            LAST_EFFECT_SET_RATE(agent, 1.2);
             LAST_EFFECT_SET_SCALE_W(agent, 0.55, 0.8, 0.55);
         }
     }
@@ -266,6 +314,9 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialairhistart", game_specialairhistart, Priority::Low);
+    agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
+    agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
+
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
