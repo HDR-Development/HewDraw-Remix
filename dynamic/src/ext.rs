@@ -1241,7 +1241,11 @@ impl BomaExt for BattleObjectModuleAccessor {
             );
         }
 
-        CancelModule::enable_cancel(self);
+        if self.motion_frame() >= 4.0
+        && !CancelModule::is_enable_cancel(self) {
+            CancelModule::enable_cancel(self);
+        }
+
         if self.is_situation(*SITUATION_KIND_AIR) {
             let fighter = crate::util::get_fighter_common_from_accessor(self);
             fighter.sub_air_check_fall_common();
