@@ -426,6 +426,7 @@ unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
     if fighter.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
     && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
         // *FIGHTER_STATUS_KIND_ATTACK_S4
     ]) {
         check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);

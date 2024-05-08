@@ -13,7 +13,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(agent) {
         // agent.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-        // agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
@@ -41,11 +41,11 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    // wait(lua_state, 10.0);
-    // if is_excute(agent) {
-    //     agent.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-    //     agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    // }
+    wait(lua_state, 10.0);
+    if is_excute(agent) {
+        // agent.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
@@ -134,6 +134,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        agent.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -171,6 +172,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 10.0);
     if is_excute(agent) {
+        agent.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
