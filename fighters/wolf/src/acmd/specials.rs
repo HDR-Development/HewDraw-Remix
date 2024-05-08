@@ -117,7 +117,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    frame(lua_state, 1.33);
+    frame(lua_state, 0.66);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_wolf_special_s01"));
         PLAY_SE(agent, Hash40::new("se_wolf_special_s02"));
@@ -129,11 +129,12 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        AttackModule::clear(boma, 1, false);
+        AttackModule::set_target_category(agent.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 34, 85, 0, 30, 4.5, 0.0, 6.0, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {

@@ -22,21 +22,8 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
         return;
     }
     
-    // Wall Jump & ECB correction
-    if situation_kind == *SITUATION_KIND_AIR {
-        //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.05));
-        if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
-            let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-            let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-            if touch_left || touch_right {
-                if boma.is_cat_flag(Cat1::WallJumpLeft) || boma.is_cat_flag(Cat1::WallJumpRight)
-                || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-                }
-            }
-        }
-    }
+    // Wall Jump
+    boma.check_wall_jump_cancel();
 
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(boma);

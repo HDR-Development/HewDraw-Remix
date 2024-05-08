@@ -7,7 +7,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -40,7 +40,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     if is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 5.5, 3.0, 9.0, 3.0);
@@ -116,7 +116,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     if is_excute(agent) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);

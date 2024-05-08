@@ -8,6 +8,7 @@ mod special_hi;
 mod special_lw;
 mod special_n;
 mod special_s;
+mod attack_air;
 mod attack;
 mod dash;
 mod guard;
@@ -349,6 +350,7 @@ pub fn install(agent: &mut Agent) {
     special_lw::install(agent);
     special_n::install(agent);
     special_s::install(agent);
+    attack_air::install(agent);
     attack::install(agent);
     dash::install(agent);
     guard::install(agent);

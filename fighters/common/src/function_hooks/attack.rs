@@ -93,6 +93,11 @@ unsafe fn get_hitstop_mul(ctx: &mut skyline::hooks::InlineCtx) {
 static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
+unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
+    let mul = (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0);
+    return mul;
+}
+
 // This runs directly after knockback is calculated
 #[skyline::hook(offset = 0x402f04, inline)]
 unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
@@ -113,7 +118,7 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
         let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
         if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
             // Set hitlag for attacker
-            *(((fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as i32;
+            *(((fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as i32;
         }
         asm!("fmov s0, w8", in("w8") kb)
     }
@@ -131,7 +136,7 @@ unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
         let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
         if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
             // Set hitlag for attacker
-            *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+            *ctx.registers[0].w.as_mut() = (hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32;
         }
     }
 }
@@ -150,7 +155,7 @@ unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
         let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
         if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
             // Set hitlag for attacking article
-            *ctx.registers[21].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+            *ctx.registers[21].w.as_mut() = (hitlag as f32 * calc_hitlag_mul(opponent_boma, kb)).round().min(max_hitlag) as u32;
         }
     }
 }
@@ -162,11 +167,15 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     if !boma.is_item() {
         let hitlag = *ctx.registers[0].w.as_ref();
         let kb = DamageModule::reaction(boma, 0);
-        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        let mut max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
         let attr = *((*ctx.registers[20].x.as_ref() + 0xb8) as *mut u64);
+        
+        if [hash40("collision_attr_elec"),].contains(&attr) {
+            max_hitlag *= WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_elec_mul"));
+        }
         if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
             // Set hitlag for defender
-            *ctx.registers[0].w.as_mut() = (hitlag as f32 * (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0)).round().min(max_hitlag) as u32;
+            *ctx.registers[0].w.as_mut() = (hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32;
         }
     }
     IS_KB_CALC_EARLY = false;

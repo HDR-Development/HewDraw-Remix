@@ -239,7 +239,16 @@ pub unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    EffectModule::remove_all_after_image(fighter.module_accessor, 0, 0);
+    if !(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_4,
+        statuses::chrom::SPECIAL_HI_FLIP,
+        statuses::chrom::SPECIAL_HI_DIVE
+    ]).contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
+        EffectModule::remove_all_after_image(fighter.module_accessor, 0, 0);
+    }
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ROY_INSTANCE_WORK_ID_INT_SPECIAL_HI_CLIFF_NUM);
     0.into()
 }
