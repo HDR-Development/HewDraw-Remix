@@ -23,10 +23,10 @@ throw_hi:
     cancel_frame: 41
 attack_12:
   extra:
-    cancel_frame: 22
+    cancel_frame: 21
 attack_11:
   extra:
-    cancel_frame: 21
+    cancel_frame: 20
 attack_lw3:
   extra:
     cancel_frame: 42
