@@ -193,10 +193,46 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_attack)]
 unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_CLIFF_ROBBED {
-        false.into()
-    } else {
-        call_original!(fighter)
+        return false.into();
     }
+    
+
+    if fighter.global_table[0x2E].get_bool() { // CHECK_AIR_ATTACK_UNIQ
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x2E].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    if !fighter.is_situation(*SITUATION_KIND_AIR) {
+        return false.into();
+    }
+
+    if !fighter.is_cat_flag(Cat1::AttackN) {
+        return false.into();
+    }
+
+    if fighter.sub_transition_group_check_air_jump_attack().get_bool() {
+        return true.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_AIR) 
+    && fighter.sub_is_item_shoot_air().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SHOOT_AIR.into(), true.into());
+        return true.into();
+    }
+
+    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR) {
+        return false.into();
+    }
+
+    // check for grab button, set Z-NAir
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch);
+    VarModule::set_flag(fighter.battle_object, vars::common::instance::IS_Z_NAIR, catch_trigger_count < buffer);
+
+    fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
+    return true.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_lasso)]

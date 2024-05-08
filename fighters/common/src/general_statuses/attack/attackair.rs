@@ -100,10 +100,17 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
     original!()(fighter)
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_end_AttackAir)]
+unsafe extern "C" fn status_end_AttackAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_Z_NAIR);
+    original!()(fighter)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            status_attackair_main_common
+            status_attackair_main_common,
+            status_end_AttackAir
         );
     }
 }
