@@ -7,7 +7,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -120,7 +120,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {

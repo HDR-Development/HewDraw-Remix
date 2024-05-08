@@ -153,7 +153,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.95);
     frame(lua_state, 7.0);

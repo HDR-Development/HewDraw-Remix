@@ -128,7 +128,7 @@ unsafe extern "C" fn effect_attacks4charge(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
@@ -175,6 +175,23 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 7, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("ryu_attack_arc"), Hash40::new("ryu_attack_arc"), Hash40::new("top"), -2, 13, 0, 16, -30, 76, 1, true, *EF_FLIP_YZ, 0.5);
+        LAST_EFFECT_SET_RATE(agent, 1.4);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -212,6 +229,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attacks4charge", effect_attacks4charge, Priority::Low);
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
+    agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
 
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
 }
