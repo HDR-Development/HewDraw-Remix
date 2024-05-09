@@ -1318,25 +1318,24 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 } as i128;
+        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { ControlModule::get_command_life_count_max(self) } as usize;
         // actual parry button -- if this is in buffer, it's a parry
-        let parry_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Parry) as i128;
+        let parry_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Parry);
         if parry_trigger_count < buffer {
             return true;
         }
 
-        let guard_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Guard) as i128;
-        let guard_release_count = InputModule::get_release_count(self.object(), Buttons::Guard) as i128;
-        let guard_start = guard_trigger_count;
-        let guard_end = if guard_trigger_count < guard_release_count { -1 } else { guard_release_count };
+        let guard_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Guard);
+        let guard_release_count = InputModule::get_release_count(self.object(), Buttons::Guard);
+        let is_guard_held = ControlModule::check_button_on(self, *CONTROL_PAD_BUTTON_GUARD);
 
         // special checks for manual parry
         // - manual parry button must be in the buffer window
         // - manual parry button must have been pressed while shield was pressed/held
-        let parry_manual_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::ParryManual) as i128;
+        let parry_manual_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::ParryManual);
         if parry_manual_trigger_count < buffer 
-        && parry_manual_trigger_count <= guard_start
-        && dbg!(parry_manual_trigger_count) > dbg!(guard_end) {
+        && parry_manual_trigger_count <= guard_trigger_count
+        && (is_guard_held || parry_manual_trigger_count > guard_release_count) {
             return true;
         }
         return false;
