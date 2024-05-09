@@ -18,6 +18,7 @@ mod attack;
 mod shield;
 mod turn;
 mod walk;
+mod pass;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -705,6 +706,7 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
+    pass::install();
     passive::install();
     damagefall::install();
     downdamage::install();
