@@ -214,29 +214,28 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
         return false.into();
     }
     
-    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i128;
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
 
     // actual grab button
-    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch) as i128;
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch);
     if catch_trigger_count < buffer {
         fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
         return true.into();
     }
 
-    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) as i128;
-    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard) as i128;
-    let guard_start = guard_trigger_count;
-    let guard_end = if guard_trigger_count < guard_release_count { -1 } else { guard_release_count };
+    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard);
+    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard);
+    let is_guard_held = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
 
     // special checks for air_lasso
     // - attack button must be in the buffer window
     // - shield button must be in the buffer window
     // - attack button must have been pressed while shield was pressed/held
-    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll) as i128;
+    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll);
     if attack_trigger_count < buffer 
     && guard_trigger_count < buffer
-    && attack_trigger_count <= guard_start
-    && attack_trigger_count > guard_end {
+    && attack_trigger_count <= guard_trigger_count
+    && (is_guard_held || attack_trigger_count > guard_release_count) {
         fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
         return true.into();
     }
