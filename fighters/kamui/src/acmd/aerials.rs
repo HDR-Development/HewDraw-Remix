@@ -309,11 +309,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sheik_atk_lw"), Hash40::new("top"), 0, 6, 0, -90, 0, 0, 0.8, true, 0.9);
-        LAST_EFFECT_SET_RATE(agent, 1.1);
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sheik_atk_lw"), Hash40::new("top"), 2, 6, 0, -90, 0, 0, 0.8, true, 0.9);
-        LAST_EFFECT_SET_RATE(agent, 1.1);
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 13, -2.5, 78, 0, 0, 1.1, true, 0.9);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 13, 0, 90, 0, 0, 1.1, true, 0.9);
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
