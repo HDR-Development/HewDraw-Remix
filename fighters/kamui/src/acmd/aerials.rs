@@ -314,12 +314,6 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sheik_atk_lw"), Hash40::new("top"), 2, 6, 0, -90, 0, 0, 0.8, true, 0.9);
         LAST_EFFECT_SET_RATE(agent, 1.1);
         EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 13, -2.5, 78, 0, 0, 1.1, true, 0.9);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_club_tornado"), Hash40::new("top"), 0.0, -5.0, 0.0, 120, 70, 100, 0.65, true);
-        LAST_EFFECT_SET_RATE(agent, 6.0);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_club_tornado"), false, true);
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -336,7 +330,6 @@ unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_club_tornado"), true, true);
         EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_line_b"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("kamui_ryusensya_shot"), false, true);
         EFFECT_OFF_KIND(agent, Hash40::new("kamui_counter_splash"), false, true);
