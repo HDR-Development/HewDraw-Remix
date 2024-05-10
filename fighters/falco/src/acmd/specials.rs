@@ -137,7 +137,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
@@ -153,7 +153,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

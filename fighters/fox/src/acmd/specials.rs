@@ -82,7 +82,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent){
         AttackModule::clear_all(boma);
     }
@@ -123,7 +123,7 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent){
         AttackModule::clear_all(boma);
     }
