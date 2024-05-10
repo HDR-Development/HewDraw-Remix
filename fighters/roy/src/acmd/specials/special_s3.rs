@@ -102,6 +102,9 @@ unsafe extern "C" fn game_specials3s(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
     frame(lua_state, 37.0);
