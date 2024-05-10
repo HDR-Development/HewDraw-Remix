@@ -33,7 +33,8 @@ unsafe fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         return 1.into()
     }
-    if fighter.status_frame() > 31 && fighter.is_cat_flag(Cat1::SpecialAny) {
+    if fighter.status_frame() > 31 && fighter.is_cat_flag(Cat1::SpecialAny)
+    && !VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
         VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
         fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
     }
