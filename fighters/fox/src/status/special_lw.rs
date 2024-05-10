@@ -116,9 +116,77 @@ pub unsafe extern "C" fn special_lw_loop_end(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
+pub unsafe extern "C" fn special_lw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::reset_flick_x(fighter.module_accessor);
+    ControlModule::reset_flick_y(fighter.module_accessor);
+    fighter.on_flag(*FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_FLAG_HIT_TO_RESTART);
+    special_lw_hit_motion_helper(fighter);
+    fighter.main_shift(special_lw_hit_main_loop)
+}
+
+unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status_req(*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP, false);
+        return 0.into();
+    }
+    
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        special_lw_hit_motion_helper(fighter);
+    }
+
+    return 0.into();
+}
+
+unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_FLAG_CONTINUE) {
+            if PostureModule::lr(fighter.module_accessor) == -1.0 {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hit_l"), 0.0, 1.0, false, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
+            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_FLAG_CONTINUE);
+        }
+        else {
+            if PostureModule::lr(fighter.module_accessor) == -1.0 {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_hit_l"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_hit"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
+    }
+    else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_FLAG_CONTINUE) {    
+            if PostureModule::lr(fighter.module_accessor) == -1.0 {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hit_l"), 0.0, 1.0, false, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
+            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_FOX_REFLECTOR_STATUS_WORK_ID_FLAG_CONTINUE);
+        }
+        else {
+            if PostureModule::lr(fighter.module_accessor) == -1.0 {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_hit_l"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_hit"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
     agent.status(End, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP, special_lw_loop_end);
+    agent.status(Main, *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT, special_lw_hit_main);
 }
