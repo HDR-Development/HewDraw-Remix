@@ -489,6 +489,13 @@ pub unsafe extern "C" fn special_lw_hit_main(fighter: &mut L2CFighterCommon) -> 
 
 unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.check_jump_cancel(false, false) {
+            return 0.into();
+        }
+        if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            fighter.change_status(statuses::falco::SPECIAL_LW_END.into(), false.into()); 
+            return 0.into();
+        }
         fighter.change_status(statuses::falco::SPECIAL_LW_LOOP.into(), false.into());
         return 0.into();
     }
