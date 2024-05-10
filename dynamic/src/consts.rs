@@ -593,6 +593,7 @@ pub mod vars {
             // flags
             pub const SET_ATTACK: i32 = 0x1100;
             pub const SET_EFFECT: i32 = 0x1101;
+            pub const REFLECTOR_CONTINUE: i32 = 0x1102;
 
             // ints
             pub const SPECIAL_LW_STOP_Y_FRAME: i32 = 0x1100;
@@ -1655,6 +1656,7 @@ pub mod statuses {
     pub mod falco {
         pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
         pub const SPECIAL_LW_END: i32 = 0x1e9;
+        pub const SPECIAL_LW_HIT: i32 = 0x1ea;
     }
 
     pub mod gamewatch {
