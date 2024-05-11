@@ -279,12 +279,8 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
 unsafe fn side_special_walljump(boma: &mut BattleObjectModuleAccessor, cat1: i32) {
     if boma.is_status_one_of(&[ *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK,
                                 *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END ]) 
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP)
-    && GroundModule::is_wall_touch_line(boma, (*GROUND_TOUCH_FLAG_LEFT_SIDE as u32 | *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32))
-    && (boma.is_cat_flag(Cat1::WallJumpLeft | Cat1::WallJumpRight) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)) {
-        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
+    && boma.is_situation(*SITUATION_KIND_AIR) {
+        boma.check_wall_jump_cancel();
     }
 }
 

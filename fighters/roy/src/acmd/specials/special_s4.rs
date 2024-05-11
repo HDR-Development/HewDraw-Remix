@@ -38,7 +38,7 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_specials4hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_roy_attack05"));
     }
@@ -117,14 +117,13 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_specials4s(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_roy_attack06"));
     }
     frame(lua_state, 16.0);
-        if is_excute(agent) {
-            PLAY_SE(agent, Hash40::new("se_roy_smash_s01"));
-            
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_roy_smash_s01"));
     }
 }
 

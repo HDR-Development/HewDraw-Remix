@@ -187,9 +187,8 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
         VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-        // yellow moves: neutral/side
-        if fighter.is_motion(Hash40::new("attack_dash"))
-        || fighter.is_motion(Hash40::new("attack_s3_s"))
+        // yellow moves: side
+        if fighter.is_motion(Hash40::new("attack_s3_s"))
         || fighter.is_motion(Hash40::new("attack_s4_s"))
         || fighter.is_motion(Hash40::new("attack_air_f"))
         || fighter.is_motion(Hash40::new("attack_air_b")) {

@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 // status script import
 
+mod attack_air;
 mod attack;
 mod dash;
 mod wait;
@@ -169,7 +170,13 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     }
 
     if fighter.global_table[globals::STATUS_KIND] == FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if fighter.global_table[globals::STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_TURN_RUN {
+        if ![
+            *FIGHTER_STATUS_KIND_RUN,
+            *FIGHTER_STATUS_KIND_TURN_DASH,
+            *FIGHTER_STATUS_KIND_TURN_RUN,
+            *FIGHTER_RYU_STATUS_KIND_DASH_BACK,
+            *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK,
+        ].contains(&fighter.global_table[globals::STATUS_KIND_INTERRUPT].get_i32()) {
             update_lr(fighter, lr);
         }
         return 0.into();
@@ -295,6 +302,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
+    attack_air::install(agent);
     attack::install(agent);
     dash::install(agent);
     wait::install(agent);

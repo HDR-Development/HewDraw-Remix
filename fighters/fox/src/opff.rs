@@ -14,7 +14,6 @@ unsafe fn laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 // Fox Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END])
     && !fighter.is_in_hitlag()

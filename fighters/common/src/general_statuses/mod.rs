@@ -114,6 +114,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
             sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_wall_jump,
             sub_transition_group_check_ground_jump_mini_attack,
             change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
@@ -240,6 +241,39 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
         fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
         return true.into();
     }
+    return false.into();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_wall_jump)]
+unsafe fn sub_transition_group_check_air_wall_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[0x31].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x31].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+        return false.into();
+    }
+
+    // unused since we removed wall clings but y'know just in case
+    let attach_wall_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attach_wall_type"), 0);
+    if attach_wall_type == *FIGHTER_ATTACH_WALL_TYPE_NORMAL
+    && fighter.sub_fighter_general_term_is_can_attach_wall().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACH_WALL.into(), true.into());
+        return true.into();
+    }
+
+    let wall_jump_type = WorkModule::get_param_int(fighter.module_accessor, hash40("wall_jump_type"), 0);
+    if (wall_jump_type == *FIGHTER_WALL_JUMP_TYPE_NORMAL
+    || VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP))
+    && fighter.sub_fighter_general_term_is_can_wall_jump().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(), true.into());
+        return true.into();
+    }
+
     return false.into();
 }
 
