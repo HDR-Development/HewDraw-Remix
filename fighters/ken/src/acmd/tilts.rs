@@ -7,7 +7,7 @@ unsafe extern "C" fn game_attacks3w(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     if is_excute(agent) {
         boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -167,7 +167,7 @@ unsafe extern "C" fn game_attackhi3s(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     if is_excute(agent) {
         AttackModule::clear_all(boma);
@@ -287,7 +287,7 @@ unsafe extern "C" fn game_attacklw3w(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
@@ -338,7 +338,7 @@ unsafe extern "C" fn game_attacklw3s(agent: &mut L2CAgentBase) {
     let mut dmg = 1.0;
     if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
-        dmg = 1.10;
+        dmg = 1.05;
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {

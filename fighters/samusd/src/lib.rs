@@ -11,6 +11,7 @@ pub mod status;
 
 mod bomb;
 mod cshot;
+mod gbeam;
 mod missile;
 mod supermissile;
 
@@ -55,6 +56,7 @@ pub fn install() {
 
     bomb::install();
     cshot::install();
+    gbeam::install();
     missile::install();
     supermissile::install();
 }

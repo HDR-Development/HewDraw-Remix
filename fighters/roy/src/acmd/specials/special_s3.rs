@@ -220,7 +220,7 @@ unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_specials3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_roy_attack03"));
     }

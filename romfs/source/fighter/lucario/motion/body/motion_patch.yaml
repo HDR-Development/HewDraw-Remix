@@ -48,7 +48,7 @@ attack_hi4:
     - sound_attackhi4
     - effect_attackhi4
   extra:
-    xlu_start: 5
+    xlu_start: 7
     xlu_end: 9
     cancel_frame: 25
     no_stop_intp: false
