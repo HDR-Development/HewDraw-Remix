@@ -148,7 +148,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     ].contains(&status_kind) {
         end_magic_series(fighter, boma, status_kind, situation_kind);
         let meter_amount = MeterModule::meter(fighter.battle_object);
-        MeterModule::drain_direct(fighter.battle_object, meter_amount);
+        MeterModule::drain_direct(fighter.battle_object, meter_amount * 2.0 / 3.0);
     }
 }
 
@@ -311,6 +311,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
     if is_special
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
             AttackModule::clear_all(fighter.module_accessor);
