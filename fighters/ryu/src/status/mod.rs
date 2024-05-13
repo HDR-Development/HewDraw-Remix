@@ -252,6 +252,7 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
 
     // the supers
     if is_special
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
