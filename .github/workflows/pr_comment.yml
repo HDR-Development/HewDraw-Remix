@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v7.0.1
         with:
           script: |
             const {owner, repo} = context.repo;

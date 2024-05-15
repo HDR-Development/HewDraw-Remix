@@ -5,16 +5,18 @@ unsafe extern "C" fn wait_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("wait"), 0.0, 1.0, false, 0.0, false, false);
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
+    GroundModule::set_collidable(weapon.module_accessor, false);
+    if (&mut *(*edge).module_accessor).kind() != *FIGHTER_KIND_EDGE {
+        StatusModule::change_status_force(weapon.module_accessor, statuses::edge_flash::BURST, false);
+        return 1.into()
+    }
     let life = ParamModule::get_int(edge, ParamType::Agent, "param_flash.life");
     VarModule::set_int(weapon.battle_object, vars::edge_flash::status::LIFE, life);
-    GroundModule::set_collidable(weapon.module_accessor, false);
-    if (&mut *(*edge).module_accessor).kind() == *FIGHTER_KIND_EDGE {
-        if VarModule::is_flag(edge, vars::edge::status::FLASH_HOLD) {
-            let pos_x = PostureModule::pos_x(weapon.module_accessor);
-            let pos_y = PostureModule::pos_y(weapon.module_accessor);
-            let offset_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.hold_offset_x");
-            PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(pos_x + (offset_x * PostureModule::lr(weapon.module_accessor)), pos_y, 0.0));
-        }
+    if VarModule::is_flag(edge, vars::edge::status::FLASH_HOLD) {
+        let pos_x = PostureModule::pos_x(weapon.module_accessor);
+        let pos_y = PostureModule::pos_y(weapon.module_accessor);
+        let offset_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.hold_offset_x");
+        PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(pos_x + (offset_x * PostureModule::lr(weapon.module_accessor)), pos_y, 0.0));
     }
     weapon.fastshift(L2CValue::Ptr(wait_main_loop as *const () as _))
 }
@@ -27,46 +29,48 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
         StatusModule::change_status_force(weapon.module_accessor, statuses::edge_flash::VANISH, false);
         return 1.into()
     }
-    // burst
-    if edge_boma.is_status_one_of(&[*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH]) {
-        let pos_x = PostureModule::pos_x(weapon.module_accessor) - PostureModule::pos_x(edge_boma);
-        let pos_y = PostureModule::pos_y(weapon.module_accessor) - PostureModule::pos_y(edge_boma);
-        let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.burst_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
-        let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.burst_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
-        if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
-            if PostureModule::lr(edge_boma).signum() != PostureModule::lr(weapon.module_accessor).signum() {
-                PostureModule::reverse_lr(weapon.module_accessor);
-            }
-            SoundModule::play_se(weapon.module_accessor, Hash40::new("se_edge_special_l04"), true, false, false, false, app::enSEType(0));
-            StatusModule::change_status_force(weapon.module_accessor, statuses::edge_flash::BURST, false);
-            return 1.into()
-        }
-    }
-    // refine flare
-    if VarModule::get_int(edge, vars::edge::instance::FIRE_ID) != -1 {
-        let pos_x = VarModule::get_float(edge, vars::edge::instance::FIRE_POS_X) - PostureModule::pos_x(weapon.module_accessor);
-        let pos_y = VarModule::get_float(edge, vars::edge::instance::FIRE_POS_Y) - PostureModule::pos_y(weapon.module_accessor);
-        let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refine_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
-        let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refine_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
-        if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
-            if VarModule::get_int(weapon.battle_object, vars::edge_flash::status::REFINE_COOLDOWN) <= 0 {
-                let cooldown = ParamModule::get_int(edge, ParamType::Agent, "param_flash.refine_cooldown");
-                VarModule::set_int(weapon.battle_object, vars::edge_flash::status::REFINE_COOLDOWN, cooldown);
-                VarModule::on_flag(edge, vars::edge::instance::FLASH_REFINE);
+    if edge_boma.kind() == *FIGHTER_KIND_EDGE {
+        // burst
+        if edge_boma.is_status_one_of(&[*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH]) {
+            let pos_x = PostureModule::pos_x(weapon.module_accessor) - PostureModule::pos_x(edge_boma);
+            let pos_y = PostureModule::pos_y(weapon.module_accessor) - PostureModule::pos_y(edge_boma);
+            let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.burst_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
+            let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.burst_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
+            if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
+                if PostureModule::lr(edge_boma).signum() != PostureModule::lr(weapon.module_accessor).signum() {
+                    PostureModule::reverse_lr(weapon.module_accessor);
+                }
+                SoundModule::play_se(weapon.module_accessor, Hash40::new("se_edge_special_l04"), true, false, false, false, app::enSEType(0));
+                StatusModule::change_status_force(weapon.module_accessor, statuses::edge_flash::BURST, false);
+                return 1.into()
             }
         }
-    }
-    // refract shadow flare
-    if VarModule::get_int(edge, vars::edge::instance::FLARE1_ID) != -1 {
-        let pos_x = VarModule::get_float(edge, vars::edge::instance::FLARE1_POS_X) - PostureModule::pos_x(weapon.module_accessor);
-        let pos_y = VarModule::get_float(edge, vars::edge::instance::FLARE2_POS_Y) - PostureModule::pos_y(weapon.module_accessor);
-        let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refract_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
-        let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refract_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
-        if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
-            let cooldown = ParamModule::get_int(edge, ParamType::Agent, "param_flash.refract_cooldown");
-            VarModule::set_int(weapon.battle_object, vars::edge_flash::status::REFRACT_COOLDOWN, cooldown);
-            VarModule::on_flag(edge, vars::edge::instance::FLASH_REFRACT);
+        // refine flare
+        if VarModule::get_int(edge, vars::edge::instance::FIRE_ID) != -1 {
+            let pos_x = VarModule::get_float(edge, vars::edge::instance::FIRE_POS_X) - PostureModule::pos_x(weapon.module_accessor);
+            let pos_y = VarModule::get_float(edge, vars::edge::instance::FIRE_POS_Y) - PostureModule::pos_y(weapon.module_accessor);
+            let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refine_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
+            let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refine_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
+            if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
+                if VarModule::get_int(weapon.battle_object, vars::edge_flash::status::REFINE_COOLDOWN) <= 0 {
+                    let cooldown = ParamModule::get_int(edge, ParamType::Agent, "param_flash.refine_cooldown");
+                    VarModule::set_int(weapon.battle_object, vars::edge_flash::status::REFINE_COOLDOWN, cooldown);
+                    VarModule::on_flag(edge, vars::edge::instance::FLASH_REFINE);
+                }
+            }
         }
+        // refract shadow flare
+        if VarModule::get_int(edge, vars::edge::instance::FLARE1_ID) != -1 {
+            let pos_x = VarModule::get_float(edge, vars::edge::instance::FLARE1_POS_X) - PostureModule::pos_x(weapon.module_accessor);
+            let pos_y = VarModule::get_float(edge, vars::edge::instance::FLARE2_POS_Y) - PostureModule::pos_y(weapon.module_accessor);
+            let dist_mod_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refract_dist_mod_x") * PostureModule::scale(weapon.module_accessor);
+            let dist_mod_y = ParamModule::get_float(edge, ParamType::Agent, "param_flash.refract_dist_mod_y") * PostureModule::scale(weapon.module_accessor);
+            if pos_x.abs() < dist_mod_x && pos_y.abs() < dist_mod_y {
+                let cooldown = ParamModule::get_int(edge, ParamType::Agent, "param_flash.refract_cooldown");
+                VarModule::set_int(weapon.battle_object, vars::edge_flash::status::REFRACT_COOLDOWN, cooldown);
+                VarModule::on_flag(edge, vars::edge::instance::FLASH_REFRACT);
+            }
+        } 
     }
 
     return 0.into()

@@ -102,7 +102,7 @@ attack_s3_s_w:
     cancel_frame: 27
 attack_s4_s:
   extra:
-    cancel_frame: 36
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
