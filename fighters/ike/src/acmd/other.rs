@@ -159,15 +159,10 @@ unsafe extern "C" fn sound_appeallwr(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE(agent, 17.0/13.0);
     if is_excute(agent) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         ArticleModule::generate_article(boma, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, Hash40::new("appeal_lw"), false, 0.0);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
     }
 }
 
