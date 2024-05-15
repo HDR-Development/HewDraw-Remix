@@ -16,29 +16,6 @@ unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 }
 
-// Ike Quick Draw Jump, Wall Jump, and Attack Cancels
-unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32) {
-    if status_kind != *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH {
-        return;
-    }
-    
-    // Wall Jump
-    boma.check_wall_jump_cancel();
-
-    // Jump and Attack cancels
-    let pad_flag = ControlModule::get_pad_flag(boma);
-    
-    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);
-    }
-    if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            VarModule::set_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw
-            boma.check_jump_cancel(true, false);
-        }
-    }
-}
-
 unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if StatusModule::is_changing(boma) {
         return;
@@ -422,7 +399,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
-    quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
     quickdraw_instakill(fighter, boma);
     quickdraw_attack_arm_bend(boma);
     jab_lean(boma);
