@@ -34,7 +34,7 @@ jobs:
           echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
 
       # wait for any previous versions to be tagged and committed
-      - uses: lewagon/wait-on-check-action@v1.2.0
+      - uses: lewagon/wait-on-check-action@v1.3.4
         continue-on-error: true
         with:
           ref: ${{ steps.last_merge.outputs.short_hash }}
@@ -44,7 +44,7 @@ jobs:
           allowed-conclusions: success,skipped,cancelled,failure
 
       # tag push
-      - uses: jefflinse/pr-semver-bump@v1
+      - uses: jefflinse/pr-semver-bump@v1.6.0
         name: Bump and Tag Version
         id: push_tag
         with:
@@ -57,7 +57,7 @@ jobs:
       # github changelog
       - name: "Generate release changelog"
         id: github_changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: heinrichreimer/github-changelog-generator-action@v2.4
         with:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
           stripHeaders: true

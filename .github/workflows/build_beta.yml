@@ -45,7 +45,7 @@ jobs:
     # github changelog
     - name: "Generate release changelog"
       id: github_changelog
-      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      uses: heinrichreimer/github-changelog-generator-action@v2.4
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         token: ${{ secrets.GITHUB_TOKEN  }}
