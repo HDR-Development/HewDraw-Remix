@@ -208,14 +208,14 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/upload-artifact@v4.1.7
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: changelog
         
     - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
 
-    - uses: actions/upload-artifact@v4.1.7
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: version
         
