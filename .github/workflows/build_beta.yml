@@ -38,7 +38,7 @@ jobs:
 
     
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
       with: 
         fetch-depth: 0
 
@@ -58,7 +58,7 @@ jobs:
         simpleList: true
 
     - name: Upload changelog
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: changelog
         path: CHANGELOG.md
@@ -74,7 +74,7 @@ jobs:
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5.1.0
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
@@ -88,7 +88,7 @@ jobs:
         echo "##[set-output name=tag;]$TRIMMED";
 
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     # build the project
     - run: |
@@ -103,7 +103,7 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload version
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: version
         path: hdr_version.txt
@@ -139,7 +139,7 @@ jobs:
     needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     - id: romfs_latest
       uses: pozetroninc/github-action-get-latest-release@master
@@ -208,14 +208,14 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/upload-artifact@v4.1.7
       with:
         name: changelog
         
     - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/upload-artifact@v4.1.7
       with:
         name: version
         
@@ -273,7 +273,7 @@ jobs:
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     # download the nightly
     - id: latest_nightly

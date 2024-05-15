@@ -20,7 +20,7 @@ jobs:
         run: exit 1
 
       - name: checkout version
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.4
         with: 
           fetch-depth: 0
 
@@ -70,7 +70,7 @@ jobs:
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: changelog
           path: CHANGELOG.md
@@ -84,12 +84,12 @@ jobs:
       image: hewdrawremix/hewdraw-builder:latest
     steps:
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5.1.0
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     #- name: Rust Cache
     #  uses: Swatinem/rust-cache@v2.5.1
@@ -111,13 +111,13 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload version artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: version
         path: hdr_version.txt
 
     - name: Upload distributions artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: distributions
         path: distributions
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [plugin_build, version_and_changelog]
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/upload-artifact@v4.1.7
       with:
         name: distributions
 
@@ -151,7 +151,7 @@ jobs:
     needs: upload_to_release
     steps:
       - name: checkout version
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.4
         with: 
           fetch-depth: 0
       - uses: ahmadnassri/action-workflow-queue@v1
@@ -165,7 +165,7 @@ jobs:
     needs: [version_and_changelog, wait_for_previous_builds]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
@@ -217,14 +217,14 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/upload-artifact@v4.1.7
       with:
         name: changelog
         
     - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/upload-artifact@v4.1.7
       with:
         name: version
         
@@ -282,7 +282,7 @@ jobs:
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     # get the nightly
     - id: latest_nightly
@@ -347,7 +347,7 @@ jobs:
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     # get the beta
     - id: latest_beta
