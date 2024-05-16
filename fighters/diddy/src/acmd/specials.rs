@@ -84,8 +84,11 @@ unsafe extern "C" fn game_specialsstick(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairsjump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.4);
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_ATTACK);
+        VarModule::on_flag(agent.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_JUMP);
+    }
 }
 
 unsafe extern "C" fn game_specialairskick(agent: &mut L2CAgentBase) {
