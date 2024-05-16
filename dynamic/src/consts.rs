@@ -449,6 +449,9 @@ pub mod vars {
             // flags
             pub const SPECIAL_S_ENABLE_ATTACK: i32 = 0x1100;
             pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+
+            // floats
+            pub const SPECIAL_HI_INITIAL_POWER: i32 = 0x1100;
         }
 
         pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;

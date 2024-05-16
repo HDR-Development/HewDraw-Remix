@@ -9,7 +9,11 @@ pub unsafe extern "C" fn special_hi_upper_main(fighter: &mut L2CFighterCommon) -
         start_spd_y *= mul;
     }
 
+    let charge_value_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_charge_frame_max")) as f32;
     let charge_value = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_WORK_INT_CHARGE_VALUE) as f32;
+    let power = 10.0 + (10.0 * charge_value / charge_value_max);
+    VarModule::set_float(fighter.battle_object, vars::diddy::status::SPECIAL_HI_INITIAL_POWER, power);
+
     let start_spd_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_jet_start_spd_y_mul"));
     start_spd_y += charge_value * start_spd_y_mul;
 
