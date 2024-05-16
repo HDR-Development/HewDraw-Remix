@@ -34,12 +34,6 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
         return 0.into();
     }
 
-    // idk what this does
-    if fighter.global_table[0x26].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x26].get_ptr());
-        callable(fighter);
-    }
-
     // skip direct cancels from restricted statuses
     let skip_cancels = fighter.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_GUARD,
@@ -52,16 +46,21 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
         return 0.into();
     }
 
+    // idk what this does
+    if fighter.global_table[0x26].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x26].get_ptr());
+        callable(fighter);
+    }
+
     // DSpecial cancel
     if fighter.is_cat_flag(Cat1::SpecialLw)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
-        if fighter.global_table[0x3B].get_bool() && {
+        let mut cont = true;
+        if fighter.global_table[0x3B].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x3B].get_ptr());
-            callable(fighter).get_bool()
-        } {
-            return 1.into();
+            cont = callable(fighter).get_bool();
         }
-        else {
+        if cont {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
             return 1.into();
         }
