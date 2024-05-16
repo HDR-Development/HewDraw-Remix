@@ -3,27 +3,13 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
     //PM-like neutral-b canceling
-    if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_CANCEL {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if WorkModule::get_int(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }
-        }
-    }
-}
-
-// Pac-Man Bonus Fruit Toss Airdodge Cancel
-unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 11.0 {
-            boma.check_airdodge_cancel();
-        }
+    if boma.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_CANCEL)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && WorkModule::get_int(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+        WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS);
+        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
 }
 
@@ -52,6 +38,14 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END)
     && fighter.is_situation(*SITUATION_KIND_GROUND) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
+unsafe fn butt_bounce(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("attack_air_lw"))
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && fighter.motion_frame() < 40.0 {
+        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
     }
 }
 
@@ -89,10 +83,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    nspecial_cancels(boma, status_kind, situation_kind);
-    bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+    nspecial_cancels(boma);
     side_special_freefall(fighter);
     up_special_proper_landing(fighter);
+    butt_bounce(fighter);
     fastfall_specials(fighter);
 }
 
