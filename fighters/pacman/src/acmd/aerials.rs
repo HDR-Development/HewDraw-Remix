@@ -60,51 +60,49 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attackairn(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 5.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_none") as i64);
         VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_normal") as i64);
-        HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_OFF);
-        HIT_NODE(fighter, Hash40::new("pizzapacman"), *HIT_STATUS_NORMAL);
-    }
-    if is_excute(fighter) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("pizzapacman"), *HIT_STATUS_NORMAL);
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("pizzapacman"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 11.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 30.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, true, 0);
         ItemModule::set_attach_item_visibility(boma, true, *ATTACH_ITEM_GROUP_ALL as u8);
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
         VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_none") as i64);
-        HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("pizzapacman"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("pizzapacman"), *HIT_STATUS_OFF);
     }
 }
 
@@ -140,8 +138,8 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        ATTACK(agent, 0, 0, Hash40::new("kneer"), 11.5, 361, 120, 0, 30, 4.5, 4.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("legr"), 11.5, 361, 120, 0, 30, 5.9, 1.6, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneer"), 11.5, 361, 115, 0, 30, 4.5, 4.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("legr"), 11.5, 361, 115, 0, 30, 5.9, 1.6, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {

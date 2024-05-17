@@ -1089,6 +1089,17 @@ pub mod vars {
         }
     }
 
+    pub mod pacman {
+        pub mod instance {
+            // flags
+            pub const TRAMPOLINE_AERIAL_USED: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const TRAMPOLINE_AERIAL: i32 = 0x1100;
+        }
+    }
+
     pub mod palutena {
         pub mod status {
             // flags

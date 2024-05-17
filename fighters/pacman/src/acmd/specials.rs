@@ -24,11 +24,50 @@ unsafe extern "C" fn expression_specialairsreturn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        if !WorkModule::is_flag(boma, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_TRAMPOLINE_JUMP) {
+            ArticleModule::generate_article(boma, *FIGHTER_PACMAN_GENERATE_ARTICLE_TRAMPOLINE, false, -1);
+        }
+    }
+}
+
+unsafe extern "C" fn game_specialairhiloop(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 5.0, 90, 90, 0, 40, 5.0, -0.5, 2.0, 0.0, Some(0.5), Some(2.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    wait(lua_state, 9.0);
+    if is_excute(agent) {
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 6.0, 86, 95, 0, 40, 4.4, -0.5, 2.0, 0.0, Some(0.5), Some(2.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 7.0, 60, 70, 0, 40, 3.8, -0.5, 2.0, 0.0, Some(0.5), Some(2.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::pacman::status::TRAMPOLINE_AERIAL);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi");
+        VarModule::on_flag(agent.battle_object, vars::pacman::status::TRAMPOLINE_AERIAL);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::pacman::status::TRAMPOLINE_AERIAL);
     }
 }
 
@@ -57,6 +96,9 @@ unsafe extern "C" fn game_speciallwfailure(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairsreturn", expression_specialairsreturn, Priority::Low);
 
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhiloop", game_specialairhiloop, Priority::Low);
     agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
 
     agent.acmd("game_speciallwfailure", game_speciallwfailure, Priority::Low);

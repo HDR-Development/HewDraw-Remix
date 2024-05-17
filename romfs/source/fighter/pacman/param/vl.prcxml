@@ -109,6 +109,7 @@
     <struct index="0">
       <float hash="air_accel_x_mul">1</float>
       <float hash="air_max_speed_x_mul">1</float>
+      <float hash="landing_frame">33</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -116,10 +117,16 @@
   </list>
   <list hash="param_firehydrant">
     <struct index="0">
-      <int hash="hp">16</int>
+      <int hash="hp">12</int>
+      <float hash="smash_reflect_speed_mul">0.85</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="hit_data_firehydrant">
+    <struct index="0">
+      <float hash="size">7</float>
+    </struct>
   </list>
 </struct>

@@ -3,16 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    //PM-like neutral-b canceling
-    if boma.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_CANCEL)
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && WorkModule::get_int(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS);
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-    }
-}
-
 unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
     && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
@@ -83,7 +73,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    nspecial_cancels(boma);
     side_special_freefall(fighter);
     up_special_proper_landing(fighter);
     butt_bounce(fighter);
