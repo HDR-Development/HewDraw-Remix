@@ -14,7 +14,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     - id: romfs_zip
       uses: robinraju/release-downloader@v1.8
