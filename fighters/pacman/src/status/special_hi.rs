@@ -4,6 +4,15 @@ pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CV
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_FALL);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_TRAMPOLINE_JUMP) {
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_HI_JUMP_NUM);
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            //println!("started in air");
+            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::DISABLE_SPECIAL_HI);
+            VarModule::off_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_GROUND_START);
+        }
+        else {
+            //println!("started on ground");
+            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_GROUND_START);
+        }
     }
     if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_HI_WORK_FLAG_AIR);
@@ -85,6 +94,14 @@ pub unsafe extern "C" fn special_hi_loop_main(fighter: &mut L2CFighterCommon) ->
     let mut attack_size_mul = 1.0;
     let jump_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_HI_JUMP_NUM);
     if jump_num > 0 {
+        // don't disable up special from multiple bounces off a grounded trampoline
+        if !VarModule::is_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_GROUND_START) {
+            //println!("used air bounce");
+            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::DISABLE_SPECIAL_HI);
+        }
+        // else {
+        //     println!("bounced from grounded trampoline, carry on");
+        // }
         let mut ivar4 = 0;
         while ivar4 < jump_num {
             let param_attack_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("attack_mul"));
@@ -176,13 +193,13 @@ pub unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub unsafe extern "C" fn special_hi_check_aerial(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::pacman::status::TRAMPOLINE_AERIAL) {
+    if VarModule::is_flag(fighter.battle_object, vars::pacman::status::SPECIAL_HI_AERIAL) {
         if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
         }
         if fighter.sub_transition_group_check_air_attack().get_bool() {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_FALL);
-            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::TRAMPOLINE_AERIAL_USED);
+            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_AERIAL_USED);
         }
     }
     else {

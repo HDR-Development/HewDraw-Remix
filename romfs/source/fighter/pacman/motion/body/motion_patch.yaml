@@ -51,13 +51,13 @@ attack_s4_s:
     cancel_frame: 57
 attack_air_n:
   extra:
-    cancel_frame: 43
+    cancel_frame: 45
 attack_air_f:
   extra:
-    cancel_frame: 32
+    cancel_frame: 34
 attack_air_b:
   extra:
-    cancel_frame: 38
+    cancel_frame: 42
 attack_air_hi:
   extra:
     cancel_frame: 35
@@ -82,6 +82,12 @@ special_air_s_return:
 special_air_n_cancel:
   extra:
     cancel_frame: 7
+special_lw:
+  extra:
+    cancel_frame: 37
+special_air_lw:
+  extra:
+    cancel_frame: 37
 catch_attack:
   extra:
     cancel_frame: 0

@@ -1881,7 +1881,7 @@
       <float hash="air_brake_x">0.0125</float>
       <float hash="air_accel_y">0.085</float>
       <float hash="air_speed_y_stable">1.7</float>
-      <float hash="damage_fly_top_air_accel_y">0.0765</float>
+      <float hash="damage_fly_top_air_accel_y">0.09</float>
       <float hash="damage_fly_top_speed_y_stable">1.7</float>
       <float hash="dive_speed_y">2.472</float>
       <float hash="weight">90</float>

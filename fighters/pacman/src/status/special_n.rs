@@ -33,35 +33,32 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
         }
     }
 
-    let mut charge_up_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("charge_up_frame")); //l90
-    let unk = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), 0x1b9db69840);  //la0
-    let charge_rank = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK); //lb0
+    let mut charge_up_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("charge_up_frame"));
+    let unk = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), 0x1b9db69840);
+    let charge_rank = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK);
     if unk <= charge_rank {
         charge_up_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("changed_charge_up_frame"));
     }
-    let charge_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_CHARGE_FRAME);    //l60
-    let rank_max = WorkModule::get_int(fighter.module_accessor, *PACMAN_SPECIAL_N_RANK_MAX);
+    let charge_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_CHARGE_FRAME);
     if charge_up_frame <= charge_frame {
-        if charge_rank < rank_max {
+        if charge_rank < *PACMAN_SPECIAL_N_RANK_MAX {
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK);
-            if charge_rank >= rank_max {
-                WorkModule::set_int(fighter.module_accessor, rank_max, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK);
+            if *PACMAN_SPECIAL_N_RANK_MAX <= charge_rank {
+                WorkModule::set_int(fighter.module_accessor, *PACMAN_SPECIAL_N_RANK_MAX, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_N_MAX_HAVE_ITEM);
             }
             WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_CHARGE_FRAME);
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x240e24407a));
         }
     }
+    if fighter.is_button_trigger(Buttons::Special) {
+        fighter.change_status(FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+        return 1.into();
+    }
     if !fighter.is_pad_flag(PadFlag::SpecialTrigger) {
         if !fighter.is_pad_flag(PadFlag::AttackTrigger) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_N_PULL_THROW) {
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    fighter.change_status(FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into());
-                    return 1.into();
-                }
-            }
-            if rank_max <= charge_rank {
-                let max_hold_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);    //l70
+            if *PACMAN_SPECIAL_N_RANK_MAX <= charge_rank {
+                let max_hold_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);
                 if max_hold_count == 0 {
                     fighter.push_lua_stack(&mut L2CValue::I32(*MA_MSC_EFFECT_REQUEST_FOLLOW));
                     fighter.push_lua_stack(&mut L2CValue::new_hash(0x10259d5bb4));
@@ -81,7 +78,7 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
                     fighter.pop_lua_stack(1);
                     app::FighterUtil::flash_eye_info(fighter.module_accessor);
                 }
-                let max_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));   //l60
+                let max_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));
                 if max_charge_frame <= max_hold_count {
                     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x22baf2b632));
                     fighter.change_status(FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_CANCEL.into(), false.into());
@@ -122,26 +119,23 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
                 }
                 // airdodge transition removed
             }
-
-            return 0.into();
         }
     }
 
-    fighter.change_status(FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into());
-    return 1.into();
+    return 0.into();
 }
 
 //FUN_710002d300
 pub unsafe extern "C" fn special_n_hold_set_physics_1(fighter: &mut L2CFighterCommon) {
-    let mut sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);  //l70
-    let speed_y_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("speed_y_max"));   //l50
+    let mut sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let speed_y_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("speed_y_max"));
     if speed_y_max < sum_speed_y {
         sum_speed_y = speed_y_max;
     }
-    let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);   //l90
-    let air_accel_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("air_accel_y_mul"));   //l80
-    let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0); //l60
-    let air_max_speed_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("air_max_speed_y_mul"));   //l40
+    let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+    let air_accel_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("air_accel_y_mul"));
+    let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+    let air_max_speed_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("air_max_speed_y_mul"));
 
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, sum_speed_y);
@@ -154,16 +148,16 @@ pub unsafe extern "C" fn special_n_hold_set_physics_1(fighter: &mut L2CFighterCo
 
 //FUN_710002df20
 pub unsafe extern "C" fn special_n_hold_set_physics_2(fighter: &mut L2CFighterCommon) {
-    let mut sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);  //l50
+    let mut sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_speed_x, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_speed_x * 0.7, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
     else {
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_speed_x, 0.0);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_speed_x * 0.7, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
@@ -182,8 +176,7 @@ pub unsafe extern "C" fn special_n_hold_substatus(fighter: &mut L2CFighterCommon
     if param_2.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_CHARGE_FRAME);
         let charge_rank = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK);
-        let rank_max = WorkModule::get_int(fighter.module_accessor, *PACMAN_SPECIAL_N_RANK_MAX);
-        if rank_max <= charge_rank {
+        if *PACMAN_SPECIAL_N_RANK_MAX <= charge_rank {
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);
         }
     }

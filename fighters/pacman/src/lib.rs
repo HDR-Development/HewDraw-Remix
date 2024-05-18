@@ -9,6 +9,7 @@ pub mod status;
 
 // articles
 mod firehydrant;
+mod trampoline;
 
 use smash::{
     lib::{
@@ -50,4 +51,5 @@ pub fn install() {
     agent.install();
 
     firehydrant::install();
+    trampoline::install();
 }
