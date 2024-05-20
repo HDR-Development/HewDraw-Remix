@@ -41,8 +41,8 @@ jobs:
             const existing_comment = comments.find((c) => c.user.login === 'github-actions[bot]');
             if (existing_comment) {
               core.info(`Updating comment ${existing_comment.id}`);
-              await github.issues.updateComment({repo, owner, comment_id: existing_comment.id, body});
+              await github.rest.issues.updateComment({repo, owner, comment_id: existing_comment.id, body});
             } else {
               core.info(`Creating a comment`);
-              await github.issues.createComment({repo, owner, issue_number, body});
+              await github.rest.issues.createComment({repo, owner, issue_number, body});
             }
