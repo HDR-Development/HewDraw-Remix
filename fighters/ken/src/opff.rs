@@ -216,7 +216,8 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     ].contains(&motion_kind) && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
-        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        && fighter.is_situation(*SITUATION_KIND_GROUND)
+        && fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -297,7 +298,8 @@ unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
-        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        && fighter.is_situation(*SITUATION_KIND_GROUND)
+        && fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -392,8 +394,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
     && boma.is_button_on(Buttons::SpecialAll) {
         // shoryu super
-        if boma.is_cat_flag(Cat1::SpecialHi) 
-        || boma.is_cat_flag(Cat4::SpecialHiCommand) {
+        if boma.is_cat_flag(Cat4::SpecialHiCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -401,8 +402,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
             return;
         }
         // tatsu super
-        if boma.is_cat_flag(Cat1::SpecialS) 
-        || boma.is_cat_flag(Cat4::SpecialSCommand) {
+        if boma.is_cat_flag(Cat4::SpecialSCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
