@@ -259,25 +259,6 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
         return true.into();
     }
 
-    // the supers
-    if is_special
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND) {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-            AttackModule::clear_all(fighter.module_accessor);
-            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        } else if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
-            AttackModule::clear_all(fighter.module_accessor);
-            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        }
-        return true.into();
-    }
-
     // tatsu
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0

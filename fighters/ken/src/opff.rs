@@ -215,6 +215,14 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         hash40("special_air_hi_command")
     ].contains(&motion_kind) && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+            return;
+        }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
@@ -288,6 +296,14 @@ unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && boma.is_button_on(Buttons::SpecialAll)
     && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+            return;
+        }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         // burst of speed specifically for EX tatsu
         KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
@@ -370,24 +386,29 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         return;
     }
 
-    // check final smashes
-    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
-    let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
-    if is_special
+    // check supers
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && boma.is_button_on(Buttons::SpecialAll) {
+        // shoryu super
+        if boma.is_cat_flag(Cat1::SpecialHi) 
+        || boma.is_cat_flag(Cat4::SpecialHiCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        } else if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
+            return;
+        }
+        // tatsu super
+        if boma.is_cat_flag(Cat1::SpecialS) 
+        || boma.is_cat_flag(Cat4::SpecialSCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
             fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+            return;
         }
-        return;
     }
 
     if is_nspecial_cancel || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
