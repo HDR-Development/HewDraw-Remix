@@ -30,6 +30,11 @@ pub unsafe extern "C" fn final_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     let meter_amount = MeterModule::meter(fighter.battle_object);
     MeterModule::drain_direct(fighter.battle_object, meter_amount);
+    let lr = fighter.get_float(*FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
     return 0.into();
 }
 
@@ -39,6 +44,11 @@ pub unsafe extern "C" fn final2_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     let ret = smashline::original_status(Pre, fighter, *FIGHTER_RYU_STATUS_KIND_FINAL2)(fighter);
     let meter_amount = MeterModule::meter(fighter.battle_object);
     MeterModule::drain_direct(fighter.battle_object, meter_amount);
+    let lr = fighter.get_float(*FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
     ret
 }
 
