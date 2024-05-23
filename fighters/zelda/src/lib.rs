@@ -49,7 +49,7 @@ pub fn install() {
     let agent = &mut Agent::new("zelda");
     acmd::install(agent);
     opff::install(agent);
-    status::install(agent);
+    //status::install(agent);
     agent.install();
 
     dein::install();

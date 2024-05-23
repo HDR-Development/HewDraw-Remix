@@ -135,7 +135,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         JostleModule::set_status(boma, true);
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            FT_MOTION_RATE_RANGE(agent, 1.0, 34.0, 13.0);
+            FT_MOTION_RATE_RANGE(agent, 1.0, 35.0, 16.0);
         }
     }
     frame(lua_state, 2.0);
@@ -153,7 +153,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0); //f4
     if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-        FT_MOTION_RATE(agent, 29.0/(34.0 - 11.0));
+        FT_MOTION_RATE(agent, 29.0/(35.0 - 11.0));
     }
 }
 

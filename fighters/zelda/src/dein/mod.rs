@@ -6,6 +6,6 @@ mod status;
 pub fn install() {
     let agent = &mut Agent::new("zelda_dein");
     acmd::install(agent);
-    status::install(agent);
+    //status::install(agent);
     agent.install();
 }
