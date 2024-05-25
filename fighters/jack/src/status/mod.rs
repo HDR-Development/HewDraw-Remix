@@ -52,7 +52,7 @@ unsafe extern "C" fn move_customizer(fighter: &mut L2CFighterCommon) -> L2CValue
 unsafe extern "C" fn special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rebel_gauge = WorkModule::get_float(fighter.module_accessor, 0x4D);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST)
-    && rebel_gauge < 25.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+    && rebel_gauge < 40.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
         return 0.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST)

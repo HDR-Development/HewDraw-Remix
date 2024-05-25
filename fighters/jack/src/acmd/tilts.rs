@@ -115,7 +115,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 4.0/(9.0-1.0));
+    FT_MOTION_RATE(agent, 5.0/(9.0-1.0));
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 11.0);
