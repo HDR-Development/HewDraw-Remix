@@ -15,7 +15,7 @@
       <float hash="fly_accel_y_stick">0.12</float>
       <float hash="0x132407a5bc">0</float>
       <float hash="0x1c53b2d25b">0</float>
-      <float hash="landing_frame">12</float>
+      <float hash="landing_frame">14</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
