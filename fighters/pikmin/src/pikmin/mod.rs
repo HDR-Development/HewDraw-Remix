@@ -20,7 +20,7 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 dmg: 1.05,
-                shield_dmg: 0.25,
+                shield_dmg: 0.45,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_fire"),
@@ -53,7 +53,7 @@ impl From<i32> for PikminInfo {
             },
             3 => PikminInfo { // White
                 dmg: 0.75,
-                shield_dmg: 0.75,
+                shield_dmg: 0.55,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_purple"),
