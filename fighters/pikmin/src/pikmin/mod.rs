@@ -27,7 +27,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_fire"),
                 sound: *COLLISION_SOUND_ATTR_FIRE,
                 color: Vector3f{x: 1.0, y: 0.05, z: 0.0},
-                cling_frame: 5
+                cling_frame: 4
             },
             1 => PikminInfo { // yellow
                 dmg: 0.94,
@@ -49,7 +49,7 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_water"),
                 sound: *COLLISION_SOUND_ATTR_WATER,
                 color: Vector3f{x: 0.1, y: 0.4, z: 1.0},
-                cling_frame: 5
+                cling_frame: 4
             },
             3 => PikminInfo { // White
                 dmg: 0.75,
