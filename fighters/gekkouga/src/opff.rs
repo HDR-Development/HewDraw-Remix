@@ -14,7 +14,7 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 // Greninja Shadow Sneak Jump Cancel
 unsafe fn shadow_sneak_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
-        if boma.status_frame() > 1 && boma.status_frame() < 7
+        if boma.status_frame() > 1 && boma.status_frame() < 6
         {
             if situation_kind == *SITUATION_KIND_GROUND {
                 boma.check_jump_cancel(false, false);
