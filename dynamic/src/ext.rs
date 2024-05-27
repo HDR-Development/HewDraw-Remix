@@ -463,6 +463,7 @@ pub trait BomaExt {
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn dec_int(&mut self, what: i32);
     unsafe fn get_float(&mut self, what: i32) -> f32;
     unsafe fn get_int64(&mut self, what: i32) -> u64;
     unsafe fn is_flag(&mut self, what: i32) -> bool;
@@ -492,6 +493,11 @@ pub trait BomaExt {
         object: impl Hash40Ext,
         param: impl Hash40Ext,
     );
+
+    unsafe fn enable_transition_term(&mut self, arg2: i32);
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]);
+    unsafe fn unable_transition_term(&mut self, arg2: i32);
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]);
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
@@ -796,6 +802,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::get_int(self, what)
     }
 
+    unsafe fn dec_int(&mut self, what: i32) {
+        WorkModule::dec_int(self, what)
+    }
+
     unsafe fn get_float(&mut self, what: i32) -> f32 {
         WorkModule::get_float(self, what)
     }
@@ -872,6 +882,23 @@ impl BomaExt for BattleObjectModuleAccessor {
         let obj = obj.into();
         let field = field.into();
         WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn enable_transition_term(&mut self, arg2: i32) {
+        WorkModule::enable_transition_term(self, arg2)
+    }
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::enable_transition_term(self, *term);
+        }
+    }
+    unsafe fn unable_transition_term(&mut self, arg2: i32) {
+        WorkModule::unable_transition_term(self, arg2)
+    }
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::unable_transition_term(self, *term);
+        }
     }
 
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
