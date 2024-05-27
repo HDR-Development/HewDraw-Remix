@@ -29,7 +29,6 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 // Wolf Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END])
     && !fighter.is_in_hitlag()

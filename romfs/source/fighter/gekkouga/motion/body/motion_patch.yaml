@@ -81,3 +81,9 @@ special_air_lw:
 furafura_end:
   extra:
     cancel_frame: 10
+appeal_lw_r:
+  extra:
+    cancel_frame: 80
+appeal_lw_l:
+  extra:
+    cancel_frame: 80

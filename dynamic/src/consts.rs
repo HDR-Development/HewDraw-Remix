@@ -287,6 +287,8 @@ pub mod vars {
 
             pub const FLOAT_INHERIT_AERIAL: i32 = 0x1000;
 
+            pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x1050;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -446,6 +448,13 @@ pub mod vars {
         pub mod status {
             // ints
             pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
+
+            // flags
+            pub const SPECIAL_S_ENABLE_ATTACK: i32 = 0x1100;
+            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+
+            // floats
+            pub const SPECIAL_HI_INITIAL_POWER: i32 = 0x1100;
         }
 
         pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
@@ -594,6 +603,7 @@ pub mod vars {
             // flags
             pub const SET_ATTACK: i32 = 0x1100;
             pub const SET_EFFECT: i32 = 0x1101;
+            pub const REFLECTOR_CONTINUE: i32 = 0x1102;
 
             // ints
             pub const SPECIAL_LW_STOP_Y_FRAME: i32 = 0x1100;
@@ -1656,6 +1666,7 @@ pub mod statuses {
     pub mod falco {
         pub const SPECIAL_LW_LOOP: i32 = 0x1e8;
         pub const SPECIAL_LW_END: i32 = 0x1e9;
+        pub const SPECIAL_LW_HIT: i32 = 0x1ea;
     }
 
     pub mod gamewatch {

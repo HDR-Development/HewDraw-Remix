@@ -19,9 +19,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("throw"), 4.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR, 1);
     }
     frame(lua_state, 23.0);
@@ -34,22 +31,19 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 3.0);
-    frame(lua_state, 2.0);
-    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 14.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 17.0);
     game_CaptureCutCommon(agent);
     if is_excute(agent) {
         CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 7.5, 13.0, Some(0.0), Some(7.5), Some(5.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("throw"), 4.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 7.5, 23.0, Some(0.0), Some(7.5), Some(15.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -81,8 +75,9 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 7.5, -22.0, Some(0.0), Some(7.5), Some(-9.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR, 1);
     }
@@ -113,9 +108,9 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    //agent.acmd("game_catch", game_catch, Priority::Low);
-    //agent.acmd("game_catchdash", game_catchdash, Priority::Low);
-    //agent.acmd("game_catchturn", game_catchturn, Priority::Low);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
 }

@@ -18,6 +18,7 @@ mod attack;
 mod shield;
 mod turn;
 mod walk;
+mod pass;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -113,6 +114,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
             sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_wall_jump,
             sub_transition_group_check_ground_jump_mini_attack,
             change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
@@ -214,32 +216,64 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
         return false.into();
     }
     
-    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i128;
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
 
     // actual grab button
-    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch) as i128;
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch);
     if catch_trigger_count < buffer {
         fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
         return true.into();
     }
 
-    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) as i128;
-    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard) as i128;
-    let guard_start = guard_trigger_count;
-    let guard_end = if guard_trigger_count < guard_release_count { -1 } else { guard_release_count };
+    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard);
+    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard);
+    let is_guard_held = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
 
     // special checks for air_lasso
     // - attack button must be in the buffer window
     // - shield button must be in the buffer window
     // - attack button must have been pressed while shield was pressed/held
-    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll) as i128;
+    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll);
     if attack_trigger_count < buffer 
     && guard_trigger_count < buffer
-    && attack_trigger_count <= guard_start
-    && attack_trigger_count > guard_end {
+    && attack_trigger_count <= guard_trigger_count
+    && (is_guard_held || attack_trigger_count > guard_release_count) {
         fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
         return true.into();
     }
+    return false.into();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_wall_jump)]
+unsafe fn sub_transition_group_check_air_wall_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[0x31].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x31].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+        return false.into();
+    }
+
+    // unused since we removed wall clings but y'know just in case
+    let attach_wall_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attach_wall_type"), 0);
+    if attach_wall_type == *FIGHTER_ATTACH_WALL_TYPE_NORMAL
+    && fighter.sub_fighter_general_term_is_can_attach_wall().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACH_WALL.into(), true.into());
+        return true.into();
+    }
+
+    let wall_jump_type = WorkModule::get_param_int(fighter.module_accessor, hash40("wall_jump_type"), 0);
+    if (wall_jump_type == *FIGHTER_WALL_JUMP_TYPE_NORMAL
+    || VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP))
+    && fighter.sub_fighter_general_term_is_can_wall_jump().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(), true.into());
+        return true.into();
+    }
+
     return false.into();
 }
 
@@ -706,6 +740,7 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
+    pass::install();
     passive::install();
     damagefall::install();
     downdamage::install();

@@ -137,7 +137,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
@@ -153,7 +153,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
@@ -310,6 +310,47 @@ unsafe extern "C" fn expression_speciallwend(agent: &mut L2CAgentBase) {
 //     }
 // }
 
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
+    }
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 27.0, 18.0);
+}
+
+unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if !VarModule::is_flag(agent.battle_object, vars::falco::status::SET_EFFECT) {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2, 0, 0, 0, 0.8, true);
+            EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.2, 0, -0.5, 0, 0, 0, 1, true);
+            VarModule::on_flag(agent.battle_object, vars::falco::status::SET_EFFECT);
+        }
+    }
+}
+
+unsafe extern "C" fn sound_speciallwhit(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_falco_special_l03"));
+    }
+}
+
+unsafe extern "C" fn expression_speciallwhit(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_justshield"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
     agent.acmd("game_specialnloop", game_specialnloop, Priority::Low);
@@ -347,4 +388,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairlwend", expression_speciallwend, Priority::Low);
     agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);
     agent.acmd("sound_specialairnstart", sound_specialnstart, Priority::Low);
+
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
+    agent.acmd("effect_specialairlwhit", effect_speciallwhit, Priority::Low);
+    agent.acmd("sound_speciallwhit", sound_speciallwhit, Priority::Low);
+    agent.acmd("sound_specialairlwhit", sound_speciallwhit, Priority::Low);
+    agent.acmd("expression_speciallwhit", expression_speciallwhit, Priority::Low);
+    agent.acmd("expression_specialairlwhit", expression_speciallwhit, Priority::Low);
 }
