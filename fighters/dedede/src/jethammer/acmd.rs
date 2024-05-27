@@ -16,6 +16,6 @@ unsafe extern "C" fn jethammer_special_lw_attack_game(agent: &mut L2CAgentBase){
 }
 
 pub fn install(agent: &mut Agent){
-    agent.acmd("effect_speciallwattack", jethammer_special_lw_attack_effect);
-    agent.acmd("game_speciallwattack", jethammer_special_lw_attack_game);
+    agent.acmd("effect_speciallwattack", jethammer_special_lw_attack_effect, Priority::Low);
+    agent.acmd("game_speciallwattack", jethammer_special_lw_attack_game, Priority::Low);
 }
