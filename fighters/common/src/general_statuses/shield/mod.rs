@@ -4,6 +4,9 @@ mod guard;
 mod guard_damage;
 mod guard_off;
 mod guard_on;
+mod shield_break_fly;
+mod shield_break_fall;
+mod shield_break_down;
 pub mod misc;
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -13,6 +16,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         guard_damage::install();
         guard_off::install();
         guard_on::install();
+        shield_break_fly::install();
+        shield_break_fall::install();
+        shield_break_down::install();
         misc::install();
     }
 }
