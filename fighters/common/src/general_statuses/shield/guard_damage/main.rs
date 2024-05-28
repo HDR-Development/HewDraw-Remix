@@ -12,141 +12,61 @@ const ZERO_VEC: Vector3f = Vector3f {
 unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if !arg.get_bool() {
         fighter.FighterStatusGuard__landing_effect_control();
-        return L2CValue::I32(0);
+        return false.into();
     }
+    let boma = fighter.module_accessor;
 
-    let mut min_frame = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME
-    );
-    if 0 < min_frame {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+    let mut min_frame = fighter.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+    if min_frame > 0 {
+        fighter.dec_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
         min_frame -= 1;
     }
 
-    if
-        ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) &&
-        min_frame <= 0
-    {
-        WorkModule::unable_transition_term(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD
-        );
+    if min_frame <= 0 && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_GUARD) {
+        fighter.unable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD);
     }
 
-    let just_frame = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME
-    );
-    if
-        WorkModule::is_flag(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD
-        ) &&
-        0 < just_frame
-    {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-        if just_frame - 1 == 0 {
-            ShieldModule::set_status(
-                fighter.module_accessor,
-                *FIGHTER_SHIELD_KIND_GUARD,
-                app::ShieldStatus(*SHIELD_STATUS_NONE),
-                0
-            );
-            let type_of_guard = app::FighterUtil::get_shield_type_of_guard(
-                fighter.global_table[0x2].get_i32()
-            ) as i32;
-            ShieldModule::set_shield_type(
-                fighter.module_accessor,
-                app::ShieldType(type_of_guard),
-                *FIGHTER_SHIELD_KIND_GUARD,
-                0
-            );
-            ReflectorModule::set_status(
-                fighter.module_accessor,
-                0,
-                app::ShieldStatus(*SHIELD_STATUS_NONE),
-                *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD
-            );
+    let just_frame = fighter.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+    if just_frame > 0 && fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        fighter.dec_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+        if just_frame == 1 {
+            ShieldModule::set_status(boma, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
+            let type_of_guard = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[0x2].get_i32()) as i32;
+            ShieldModule::set_shield_type(boma, app::ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
+            ReflectorModule::set_status(boma, 0, app::ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         }
     }
 
     // this code is responsible for making the static shield effect transparent as shieldlag ends
-    let stiff_frame = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME
-    ) as f32;
-    let static_eff_handle = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE
-    );
+    let stiff_frame = fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) as f32;
+    let static_eff_handle = fighter.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
     let static_alpha_decay_frame = 10.0 as f32;
     if stiff_frame < static_alpha_decay_frame && static_eff_handle != 0 {
-        EffectModule::set_alpha(
-            fighter.module_accessor,
-            static_eff_handle as u32,
-            stiff_frame / static_alpha_decay_frame
-        );
+        EffectModule::set_alpha(boma, static_eff_handle as u32, stiff_frame / static_alpha_decay_frame);
     }
 
-    if
-        !WorkModule::count_down_int(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME,
-            0
-        )
-    {
-        return L2CValue::I32(0);
+    if !WorkModule::count_down_int(boma, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME, 0) {
+        return false.into();
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        if
-            WorkModule::is_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE
-            )
-        {
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {
-                ModelModule::disable_gold_eye(fighter.module_accessor);
+
+    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if fighter.is_flag(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
+            if !fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {
+                ModelModule::disable_gold_eye(boma);
             }
-            WorkModule::off_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE
-            );
+            fighter.off_flag(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
         }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-            HitModule::set_whole(fighter.module_accessor, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-            WorkModule::off_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU
-            );
+
+        if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            HitModule::set_whole(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+            fighter.off_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
         }
-        EffectModule::req_on_joint(
-            fighter.module_accessor,
-            Hash40::new("sys_windwave"),
-            Hash40::new("top"),
-            &ZERO_VEC,
-            &ZERO_VEC,
-            1.0,
-            &ZERO_VEC,
-            &ZERO_VEC,
-            false,
-            0,
-            0,
-            0
-        );
+        EffectModule::req_on_joint(boma, Hash40::new("sys_windwave"), Hash40::new("top"), &ZERO_VEC, &ZERO_VEC, 1.0, &ZERO_VEC, &ZERO_VEC, false, 0, 0, 0);
     } else {
-        let disable_frame = WorkModule::get_param_int(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("guard_damage_just_shield_disable_frame")
-        );
-        WorkModule::set_int(
-            fighter.module_accessor,
-            disable_frame,
-            *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_JUST_SHIELD_FRAME
-        );
+        let disable_frame = fighter.get_param_int("common", "guard_damage_just_shield_disable_frame");
+        fighter.set_int(disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_JUST_SHIELD_FRAME);
     }
-    L2CValue::I32(0)
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_common)]
