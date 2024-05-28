@@ -8,47 +8,15 @@ unsafe fn lucario_guard_damage_init(fighter: &mut L2CFighterCommon) {
     if fighter.kind() != *FIGHTER_KIND_LUCARIO {
         return;
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        let mul = ParamModule::get_float(
-            fighter.battle_object,
-            ParamType::Agent,
-            "aura.parry_meter_gain_mul"
-        );
-        MeterModule::add(
-            fighter.object(),
-            mul *
-                WorkModule::get_float(
-                    fighter.module_accessor,
-                    *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER
-                )
-        );
-        VarModule::set_int(
-            fighter.battle_object,
-            vars::lucario::instance::METER_PAUSE_REGEN_FRAME,
-            0
-        );
+    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        let mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.parry_meter_gain_mul");
+        MeterModule::add(fighter.object(),mul * fighter.get_float(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
+        VarModule::set_int(fighter.battle_object,vars::lucario::instance::METER_PAUSE_REGEN_FRAME,0);
     } else {
-        let mul = ParamModule::get_float(
-            fighter.battle_object,
-            ParamType::Agent,
-            "aura.shield_damage_meter_drain_mul"
-        );
-        MeterModule::drain_direct(
-            fighter.object(),
-            mul *
-                WorkModule::get_float(
-                    fighter.module_accessor,
-                    *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER
-                )
-        );
-        let frames = (90).max(
-            VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME)
-        );
-        VarModule::set_int(
-            fighter.object(),
-            vars::lucario::instance::METER_PAUSE_REGEN_FRAME,
-            frames
-        );
+        let mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.shield_damage_meter_drain_mul");
+        MeterModule::drain_direct(fighter.object(),mul * fighter.get_float(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
+        let frames = (90).max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(fighter.object(),vars::lucario::instance::METER_PAUSE_REGEN_FRAME,frames);
     }
 }
 
@@ -156,37 +124,17 @@ unsafe fn ftStatusUniqProcessGuardDamage_initStatus(fighter: &mut L2CFighterComm
     sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         fighter_status_guard::set_just_shield_scale(fighter);
+        return 0.into();
+    } 
+    let shield_scale = if fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME) > 0 {
+        let prev_shield = fighter.get_float(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+        fighter_status_guard::calc_shield_scale(fighter, prev_shield.into()).get_f32()
     } else {
-        let shield_scale = if
-            0 <
-            WorkModule::get_int(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME
-            )
-        {
-            let prev_shield = WorkModule::get_float(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD
-            );
-            fighter_status_guard::calc_shield_scale(fighter, prev_shield.into()).get_f32()
-        } else {
-            let shield = WorkModule::get_float(
-                fighter.module_accessor,
-                *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD
-            );
-            fighter_status_guard::calc_shield_scale(fighter, shield.into()).get_f32()
-        };
-        ModelModule::set_joint_scale(
-            fighter.module_accessor,
-            Hash40::new("throw"),
-            &(Vector3f {
-                x: shield_scale,
-                y: shield_scale,
-                z: shield_scale,
-            })
-        );
-    }
-    L2CValue::I32(0)
+        let shield = fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        fighter_status_guard::calc_shield_scale(fighter, shield.into()).get_f32()
+    };
+    ModelModule::set_joint_scale( fighter.module_accessor, Hash40::new("throw"), &(Vector3f {x: shield_scale, y: shield_scale, z: shield_scale}));
+    return 0.into();
 }
 
 pub fn install() {
