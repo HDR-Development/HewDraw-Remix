@@ -181,6 +181,31 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     IS_KB_CALC_EARLY = false;
 }
 
+// this code sets hitlag on parry to a static amount
+static mut IS_HITLAG_FOR_PARRY: bool = false;
+// check if opponent is parrying our attack and set a flag for later
+#[skyline::hook(offset = 0x0627880)]
+unsafe fn x0627880(battle_object: *mut BattleObject, arg1: u64) {
+    let collision_event = *(arg1 as *const *const u32).add(2);
+    let opponent_battle_object_id = *collision_event.add(9);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+    IS_HITLAG_FOR_PARRY = 
+        opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
+        && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
+        && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0;
+    call_original!(battle_object, arg1)
+}
+// if opponent is parrying our attack, set hitlag to static amount
+#[skyline::hook(offset = 0x0627cc0, inline)]
+unsafe fn x0627cc0(ctx: &mut skyline::hooks::InlineCtx) {
+    if IS_HITLAG_FOR_PARRY {
+        IS_HITLAG_FOR_PARRY = false;
+        *ctx.registers[8].x.as_mut() = 18;
+        //TODO: set a common flag here for was_attack_parried, use it to disable on-shield cancels on-parry
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         attack_module_set_attack,
@@ -190,6 +215,7 @@ pub fn install() {
         post_calc_reaction,
         set_weapon_hitlag,
         set_fighter_hitlag,
-        handle_on_attack_event
+        handle_on_attack_event,
+        x0627880, x0627cc0
     );
 }
