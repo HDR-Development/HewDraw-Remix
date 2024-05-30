@@ -1109,6 +1109,9 @@ pub mod vars {
             pub const POWER_BOARD_SLOT_1: i32 = 0x0100;
             pub const POWER_BOARD_SLOT_2: i32 = 0x0101;
             pub const SET_COLOR: i32 = 0x0102;
+            // kirby specific
+            pub const CYAN_ENERGY: i32 = 0x0103;
+            pub const EXCESS_ENERGY: i32 = 0x0104;
         }
     }
 

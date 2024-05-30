@@ -16,7 +16,19 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear(boma, 1, false);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        if agent.kind() == *FIGHTER_KIND_KIRBY {
+            if VarModule::get_int(boma.object(), vars::palutena::instance::CYAN_ENERGY) >= 3 {
+                SEARCH(agent, 0, 0, Hash40::new("bust"), 150.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
+            }
+        }
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
 }
 

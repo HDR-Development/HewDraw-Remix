@@ -10,7 +10,18 @@
       <int hash="special_n_discharge_frame">24</int>
       <int hash="special_n_shootspan_frame">99999</int>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="special_n_auto_target_deg_angle">90</float>
+      <float hash="special_n_auto_target_distance">11</float>
+      <hash40 hash="special_n_auto_target_base_joint">bust</float>
+      <float hash="special_n_auto_target_start_x_offset">-0.4</float>
+      <float hash="special_n_auto_target_start_y_offset">0.4</float>
+      <float hash="special_n_speed_x_mul">0.6</float>
+      <float hash="special_n_speed_y_mul">1</float>
+      <float hash="special_n_speed_y_add">0</float>
+      <int hash="special_n_discharge_frame">14</float>
+      <int hash="special_n_shootspan_frame">6</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
@@ -18,6 +29,11 @@
     <struct index="0">
       <float hash="speed">2.4</float>
       <int hash="life">280</int>
+    </struct>
+    <struct index="1">
+      <float hash="speed">8</float>
+      <int hash="life">40</int>
+      <int hash="is_penetration">1</int>
     </struct>
   </list>
   <list hash="param_special_hi">

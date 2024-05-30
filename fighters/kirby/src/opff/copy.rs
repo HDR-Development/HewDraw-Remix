@@ -564,15 +564,43 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// Colorless Attack Dash Cancel on Hit
-// This is unique to Kirby due to only having access to colorless attack.
-unsafe fn colorless_attack_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 19.0 {
-            boma.check_dash_cancel();
+// Palutena Cyan Energy
+// This Energy is unique to Kirby and allows Auto Reticle to be used. Colorless Attack gives 3 energy instead of 1.
+unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f32, boma: &mut BattleObjectModuleAccessor) {
+    let current_energy = VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        if fighter.is_motion(Hash40::new("attack_s3_hi"))
+        || fighter.is_motion(Hash40::new("attack_s3_s"))
+        || fighter.is_motion(Hash40::new("attack_s3_lw"))
+        || fighter.is_motion(Hash40::new("attack_s4_hi"))
+        || fighter.is_motion(Hash40::new("attack_s4_s"))
+        || fighter.is_motion(Hash40::new("attack_s4_lw"))
+        || fighter.is_motion(Hash40::new("attack_air_f"))
+        || fighter.is_motion(Hash40::new("attack_air_b"))
+        || fighter.is_motion(Hash40::new("attack_hi3"))
+        || fighter.is_motion(Hash40::new("attack_hi4"))
+        || fighter.is_motion(Hash40::new("attack_air_hi"))
+        || fighter.is_motion(Hash40::new("attack_lw3"))
+        || fighter.is_motion(Hash40::new("attack_lw4"))
+        || fighter.is_motion(Hash40::new("attack_air_lw")) {
+            VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+        }
+        if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, current_energy + 3);
         }
     }
 }
+
+// 
+unsafe fn cyan_charge_limiter(fighter: &mut L2CFighterCommon) {
+    // Limits storeable energy to 6. Colorless Attack can increase it to 9 if the attacks connects, but if Auto Reticle is interrupted, it is reset to 6.
+    if !fighter.is_motion_one_of(&[Hash40::new("palutena_special_n"), Hash40::new("palutena_special_air_n")])
+    && VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) > 6 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 6)
+    }
+}
+    
+
 
 // Dark Pit's Bow Land Cancel
 unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
@@ -934,6 +962,9 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
     }
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) != 0 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0)
+    }
 }
 
 unsafe fn lucas_offense_effct_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -1087,7 +1118,10 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
             pacman_nspecial_cancels(boma, status_kind, situation_kind);
         },
         // Palutena
-        0x36 => colorless_attack_dash_cancel(boma, status_kind, situation_kind, cat[0], frame),
+        0x36 => {
+            cyan_charge(fighter, status_kind, frame, boma);
+            cyan_charge_limiter(fighter);
+        },
         // Dark Pit
         0x1F => pitb_bow_lc(boma, status_kind, situation_kind, cat[1], stick_y),
         // Charizard

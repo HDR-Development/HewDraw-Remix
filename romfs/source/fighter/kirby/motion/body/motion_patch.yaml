@@ -79,7 +79,7 @@ attack_s3_hi:
     cancel_frame: 27
 attack_air_lw:
   extra:
-    cancel_frame: 50
+    cancel_frame: 48
 attack_air_hi:
   extra:
     cancel_frame: 35
@@ -765,10 +765,10 @@ pacman_special_air_n_cancel:
     cancel_frame: 7
 palutena_special_n:
   extra:
-    cancel_frame: 33
+    cancel_frame: 43
 palutena_special_air_n:
   extra:
-    cancel_frame: 26
+    cancel_frame: 43
 pit_special_n_fire_s:
   extra:
     cancel_frame: 30

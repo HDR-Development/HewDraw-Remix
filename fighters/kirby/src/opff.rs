@@ -59,6 +59,14 @@ unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
 //     }
 // }
 
+unsafe fn debug_print(boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PALUTENA {
+        println!("Current Energy: {}", VarModule::get_int(boma.object(), vars::palutena::instance::CYAN_ENERGY));
+        println!("Excess Energy: {}", VarModule::get_int(boma.object(), vars::palutena::instance::EXCESS_ENERGY));
+    }
+}
+
+
 unsafe fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
@@ -139,6 +147,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
     dash_attack_jump_cancels(boma);
+    debug_print(boma);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
     hammer_swing_drift_landcancel(fighter);
