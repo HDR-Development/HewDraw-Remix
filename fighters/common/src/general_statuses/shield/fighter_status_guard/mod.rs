@@ -118,16 +118,16 @@ pub unsafe fn check_hit_stop_delay_flick(
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__is_continue_just_shield_count)]
 pub unsafe fn is_continue_just_shield_count(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let just_shield_count = WorkModule::get_int(
-        fighter.module_accessor,
-        *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT
-    );
-    let max_count = WorkModule::get_param_int(
-        fighter.module_accessor,
-        hash40("common"),
-        hash40("continue_just_shield_count")
-    );
-    L2CValue::Bool(just_shield_count <= max_count)
+    // let just_shield_count = WorkModule::get_int(
+    //     fighter.module_accessor,
+    //     *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT
+    // );
+    // let max_count = WorkModule::get_param_int(
+    //     fighter.module_accessor,
+    //     hash40("common"),
+    //     hash40("continue_just_shield_count")
+    // );
+    return true.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__landing_effect_control)]

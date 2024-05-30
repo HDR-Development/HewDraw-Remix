@@ -10,6 +10,7 @@ const ZERO_VEC: Vector3f = Vector3f {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_GuardDamageUniq)]
 unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
     if !arg.get_bool() {
         fighter.FighterStatusGuard__landing_effect_control();
         return false.into();
@@ -155,6 +156,10 @@ unsafe fn status_guard_damage_main_common_air(fighter: &mut L2CFighterCommon) ->
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_damage_main_common)]
 unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    misc::check_enable_cstick_buffer_rolls(fighter);
+    if status_guard_damage_main_common_air(fighter).get_bool() {
+        return false.into();
+    }
     let special_stick_y = fighter.get_param_float("common", "special_stick_y");
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if special_stick_y <= fighter.global_table[STICK_Y].get_f32() 
@@ -173,23 +178,21 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
         return true.into();
     }
 
-    if fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 
-    || fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-            if CancelModule::is_enable_cancel(fighter.module_accessor) 
-            && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-                return false.into();
-            }
-            if MotionModule::is_end(fighter.module_accessor) 
-            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-                return false.into();
-            }
-        } else if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
-            VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-            return true.into();
+    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if CancelModule::is_enable_cancel(fighter.module_accessor) 
+        && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return false.into();
         }
+        if MotionModule::is_end(fighter.module_accessor) 
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            return false.into();
+        }
+    } else if fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
+        VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        return true.into();
     }
 
     false.into()
@@ -197,31 +200,12 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_GuardDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    misc::check_enable_cstick_buffer_rolls(fighter);
-    if status_guard_damage_main_common_air(fighter).get_bool() {
-        return false.into();
-    }
-
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND 
-    && fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) 
-    && !fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
-        let is_hit = StopModule::is_hit(fighter.module_accessor);
-        if is_hit {
-            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-                StopModule::cancel_hit_stop(fighter.module_accessor);
-                return false.into();
-            }
-            fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
-        }
-    }
     status_guard_damage_main_common(fighter);
     return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage)]
 unsafe fn status_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
-    misc::check_enable_cstick_buffer_rolls(fighter);
     status_GuardDamage_common(fighter, true.into());
     fighter.sub_shift_status_main(L2CValue::Ptr(status_GuardDamage_Main as *const () as _))
 }

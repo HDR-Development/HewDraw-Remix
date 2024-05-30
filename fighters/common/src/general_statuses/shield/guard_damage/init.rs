@@ -57,17 +57,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         MotionAnimcmdModule::call_script_single(boma, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new_raw(0x1a29f56bfb), -1);
         EffectModule::kill_kind(boma, Hash40::new("sys_genesis_end"), true, true);
         SoundModule::stop_se(boma, Hash40::new("se_item_backshield_guard01"), 0);
-
         WorkModule::inc_int(boma, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT);
-        if fighter_status_guard::is_continue_just_shield_count(fighter).get_bool() {
-            ShieldModule::set_status(boma, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
-            ShieldModule::set_shield_type(boma, app::ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
-            ReflectorModule::set_status(boma, 0, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-            GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        } else {
-            CancelModule::enable_cancel(boma);
-            fighter.on_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK);
-        }
     } else {
         let catch_frame = fighter.get_param_int("common", "shield_setoff_catch_frame");
         if catch_frame > 0 {

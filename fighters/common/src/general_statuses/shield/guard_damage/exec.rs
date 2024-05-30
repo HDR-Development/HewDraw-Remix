@@ -94,9 +94,6 @@ unsafe fn FighterStatusUniqProcessGuardDamage_leave_stop(
     if fighter.get_param_int("param_motion", "just_shield_motion") == 0 {
         let rate = MotionModule::rate(fighter.module_accessor);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("guard_off"), 0.0, rate, false, 0.0, false, false);
-        if !fighter_status_guard::is_continue_just_shield_count(fighter).get_bool() {
-            CancelModule::enable_cancel(fighter.module_accessor);
-        }
     }
 
     if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE) 
