@@ -74,6 +74,8 @@ unsafe fn sub_GuardDamageUniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> 
 unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValue) {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
+    ControlModule::reset_trigger(fighter.module_accessor);
+    ControlModule::clear_command(fighter.module_accessor, true);
     fighter.global_table[FLICK_X].assign(&L2CValue::I32(0xfe));
 
     if !fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
@@ -111,8 +113,16 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             }
         }
     } else {
-        fighter.set_int(0, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+        fighter.enable_transition_term_many(&[
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        ]);
         fighter.unable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD);
+        fighter.set_int(0, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
         fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME);
         fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_ESCAPE_FRAME);
         HitModule::set_whole(fighter.module_accessor, app::HitStatus(*HIT_STATUS_XLU), 0);
@@ -168,31 +178,65 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
     }
 
     if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        if fighter.is_button_release(Buttons::Guard) 
-        || fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 {
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+        // grounded transitions
+        if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            return fighter.sub_wait_ground_check_common(false.into());
         }
-    } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD) 
-    && fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD.into(), false.into());
-        return true.into();
-    }
+    
+        // check OOP options (subset of OOS options)
 
-    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        if CancelModule::is_enable_cancel(fighter.module_accessor) 
-        && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return false.into();
+        // shorthop aerial
+        if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
+            return true.into();
         }
+    
+        // USpecial/USmash
+        if fighter.check_guard_attack_special_hi(false.into()).get_bool() {
+            return true.into();
+        }
+        
+        // parry, force instant transition even during hitstop for chained parries
+        if (fighter.is_button_trigger(Buttons::Parry) || fighter.is_button_trigger(Buttons::ParryManual))
+        && fighter.is_parry_input() {
+            VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            StopModule::cancel_hit_stop(fighter.module_accessor);
+            StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_GUARD_OFF, true);
+            return true.into();
+        }
+    
+        // jump
+        if fighter.sub_check_button_jump().get_bool() || fighter.sub_check_button_frick().get_bool() {
+            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
+            return true.into();
+        }
+    
+        // item toss/grab
+        if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            if misc::check_item_oos(fighter).get_bool() {
+                return true.into();
+            }
+        } else if misc::check_grab_oos(fighter).get_bool() {
+            return true.into();
+        }
+
+        // end animation, wait transition
         if MotionModule::is_end(fighter.module_accessor) 
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             return false.into();
         }
-    } else if fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 
-    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
-        VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-        return true.into();
+    } else if fighter.get_int(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME) == 0 {
+        // transition to guard after shieldstun ends
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD) {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD.into(), false.into());
+            return true.into();
+        }
+        // if guard is disabled, transition to guard off
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
+            VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            return true.into();
+        }
     }
 
     false.into()

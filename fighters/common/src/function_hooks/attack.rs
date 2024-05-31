@@ -208,7 +208,7 @@ unsafe fn x0627cc0(ctx: &mut skyline::hooks::InlineCtx) {
 // set defender hitlag
 #[skyline::hook(offset = 0x0641948, inline)]
 unsafe fn x0641948(ctx: &mut skyline::hooks::InlineCtx) {
-    let hitlag = 12;
+    let hitlag = 10;
     let battle_object = &mut *(*ctx.registers[19].x.as_ref() as *mut BattleObject);
     battle_object.set_float(hitlag as f32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_HIT_STOP_FRAME);
     let fighter = *ctx.registers[19].x.as_ref();
