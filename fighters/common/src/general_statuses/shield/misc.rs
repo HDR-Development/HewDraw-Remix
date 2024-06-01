@@ -426,7 +426,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // check parry
-    if fighter.is_parry_input() {
+    if fighter.is_cat_flag(CatHdr::Parry) {
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
         VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
         return true.into();

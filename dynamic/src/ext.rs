@@ -278,6 +278,7 @@ bitflags! {
         const ShieldDrop = 0x2;
         const WallJumpLeft = 0x4;
         const WallJumpRight = 0x8;
+        const Parry = 0x10;
     }
 
     #[derive(Copy, Clone)]
@@ -519,6 +520,8 @@ pub trait BomaExt {
     unsafe fn check_dash_cancel(&mut self) -> bool;
     // Checks for status and enables transition to wall jump
     unsafe fn check_wall_jump_cancel(&mut self) -> bool;
+    // Checks for parry
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
@@ -529,7 +532,6 @@ pub trait BomaExt {
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 
-    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -1095,6 +1097,17 @@ impl BomaExt for BattleObjectModuleAccessor {
         false
     }
 
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue {
+        if self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME) != 0
+        || self.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD) {
+            return false.into();
+        }
+        if self.is_cat_flag(CatHdr::Parry) {
+            return true.into();
+        }
+        return false.into();
+    }
+
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
     ///
     /// # Arguments
@@ -1344,29 +1357,6 @@ impl BomaExt for BattleObjectModuleAccessor {
         *((next + 0x8) as *const i32)
     }
 
-    unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { ControlModule::get_command_life_count_max(self) } as usize;
-        // actual parry button -- if this is in buffer, it's a parry
-        let parry_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Parry);
-        if parry_trigger_count < buffer {
-            return true;
-        }
-
-        let guard_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Guard);
-        let guard_release_count = InputModule::get_release_count(self.object(), Buttons::Guard);
-        let is_guard_held = ControlModule::check_button_on(self, *CONTROL_PAD_BUTTON_GUARD);
-
-        // special checks for manual parry
-        // - manual parry button must be in the buffer window
-        // - manual parry button must have been pressed while shield was pressed/held
-        let parry_manual_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::ParryManual);
-        if parry_manual_trigger_count < buffer 
-        && parry_manual_trigger_count <= guard_trigger_count
-        && (is_guard_held || parry_manual_trigger_count > guard_release_count) {
-            return true;
-        }
-        return false;
-    }
 }
 
 pub trait LuaUtil {
