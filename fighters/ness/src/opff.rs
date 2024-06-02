@@ -20,7 +20,7 @@ unsafe fn psi_magnet_jump_cancel(fighter: &mut L2CFighterCommon) {
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]) {
-        if fighter.status_frame() > 0 { // Allows for jump cancel on frame 8 in game (this is dictated by how long game_speciallw_start takes)
+        if fighter.status_frame() > 2 { // Allows for jump cancel on frame 8 in game (this is dictated by how long game_speciallw_start takes)
             if !fighter.is_in_hitlag() {
                 fighter.check_jump_cancel(false, false);
             }
@@ -62,7 +62,7 @@ unsafe fn magnet_stall_prevention(boma: &mut BattleObjectModuleAccessor, id: usi
 
 // Ness PK Thunder cancel
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
-    if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD {
+    if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD && boma.status_frame() > 2 {
         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
             if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
@@ -188,7 +188,7 @@ unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_turnaround(fighter);
     psi_magnet_jump_cancel(fighter);
-    //pk_thunder_cancel(boma, id, status_kind, situation_kind);
+    pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //magnet_stall_prevention(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     //pk_fire_ff(boma, stick_y);

@@ -17,6 +17,8 @@ attack_13:
 special_s:
   flags:
     move: false
+  extra:
+    cancel_frame: 52
 guard_off:
   blend_frames: 4
   extra:
@@ -67,13 +69,13 @@ special_air_lw_end:
     cancel_frame: 20
 special_n_fire:
   extra:
-    cancel_frame: 43
+    cancel_frame: 36
 special_n_end:
   extra:
     cancel_frame: 43
 special_air_n_fire:
   extra:
-    cancel_frame: 43
+    cancel_frame: 36
 special_air_n_end:
   extra:
     cancel_frame: 43
