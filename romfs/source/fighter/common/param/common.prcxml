@@ -29,10 +29,10 @@
   <float hash="dive_cont_value">-0.6415</float>
   <int hash="tread_jump_after_xlu_frame">0</int>
   <int hash="tread_jump_disable_frame_after_attack">8</int>
-  <float hash="shield_max">72</float>
+  <float hash="shield_max">73.5</float>
   <int hash="shield_min_frame">4</int>
-  <float hash="shield_dec1">0.4</float>
-  <float hash="shield_recovery1">0.085</float>
+  <float hash="shield_dec1">0.35</float> <!-- 3.5 seconds to empty shield -->
+  <float hash="shield_recovery1">0.0875</float> <!-- 14 seconds to full shield -->
   <float hash="shield_damage_mul">1.0</float>
   <float hash="shield_setoff_mul">0.55</float>
   <float hash="shield_setoff_mul_fighter_shot">0.5156</float>
