@@ -7,6 +7,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
     let shield_type = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;
     ShieldModule::set_shield_type(fighter.module_accessor, app::ShieldType(shield_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+    fighter.clear_commands(CatHdr::Parry);
 
     if !fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         return;
@@ -27,7 +28,6 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
     ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     InputModule::disable_persist(fighter.battle_object);
     InputModule::clear_commands(fighter.battle_object, 4, CatHdr::Parry.bits().trailing_zeros() as i32);
-    fighter.clear_commands(CatHdr::Parry);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_exitStatus)]
