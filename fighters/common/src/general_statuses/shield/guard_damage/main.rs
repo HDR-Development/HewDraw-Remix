@@ -233,8 +233,8 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
         }
         // if guard is disabled, transition to guard off
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
     }

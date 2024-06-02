@@ -427,8 +427,8 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // check parry
     if fighter.is_cat_flag(CatHdr::Parry) {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
         VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
         return true.into();
     }
 
@@ -512,8 +512,8 @@ pub unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
             ) <= 0 &&
             fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
             VarModule::off_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
             true.into()
         } else {
             false.into()

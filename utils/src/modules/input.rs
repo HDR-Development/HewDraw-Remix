@@ -401,6 +401,19 @@ impl InputModule {
         module.trigger_count = [usize::MAX; 32];
         module.release_count = [usize::MAX; 32];
     }
+
+    #[export_name = "InputModule__get_command_life"]
+    pub fn get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8 {
+        if category == 4 {
+            return require_input_module!(object).hdr_cat.valid_frames[flag as usize];
+        }
+
+        let cats = unsafe {
+            let control_module = *((*object).module_accessor as *const u64).add(0x48 / 8);
+            std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
+        };
+        return cats[category as usize].lifetimes_mut()[flag as usize];
+    }
 }
 
 #[repr(C)]
@@ -614,7 +627,6 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     if input_module.hdr_cat.valid_frames[parry_offset] != 0
     && !(parry_input && input_module.hdr_cat.valid_frames[parry_offset] == 1) {
         input_module.hdr_cat.valid_frames[parry_offset] -= 1;
-        dbg!(input_module.hdr_cat.valid_frames[parry_offset]);
     }
 
     // ShieldDrop cat flag
