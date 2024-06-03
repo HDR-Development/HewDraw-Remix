@@ -558,8 +558,6 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::Cat4(cat) => (3, cat.bits()),
             CommandCat::CatHdr(cat) => (4, cat.bits()),
         };
-        dbg!(cat);
-        dbg!(bits);
 
         return crate::modules::InputModule::get_command_life(self.object(), cat, bits);
     }
