@@ -95,6 +95,8 @@
   <list hash="param_special_s">
     <struct index="0">
       <int hash="dash_max_frame">14</int>
+      <float hash="dash_min_power">6</float>
+      <float hash="dash_max_power">9</float>
       <float hash="dash_power_mul">2</float>
     </struct>
     <hash40 index="1">dummy</hash40>

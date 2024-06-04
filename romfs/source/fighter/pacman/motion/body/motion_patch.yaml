@@ -45,7 +45,7 @@ attack_s3_lw:
     cancel_frame: 30
 attack_hi3:
   extra:
-    cancel_frame: 30
+    cancel_frame: 28
 attack_s4_s:
   extra:
     cancel_frame: 57
@@ -63,7 +63,10 @@ attack_air_hi:
     cancel_frame: 35
 attack_air_lw:
   extra:
-    cancel_frame: 50
+    cancel_frame: 60
+landing_air_lw:
+  animations:
+    - name: a04landingfallspecial.nuanmb
 special_n_shoot:
   extra:
     cancel_frame: 40

@@ -27,8 +27,8 @@ unsafe extern "C" fn attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     // dair bounce
     if fighter.is_motion(Hash40::new("attack_air_lw"))
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && fighter.motion_frame() < 40.0 {
-        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
+    && fighter.motion_frame() < 50.0 {
+        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 50.0, true, true, false);
     }
     if !status_AttackAir_Main(fighter).get_bool() {
         // something from common impl (thanks Suddy)

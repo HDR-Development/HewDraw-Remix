@@ -58,7 +58,7 @@ unsafe extern "C" fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
-    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    MeterModule::add(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_DEAD)(fighter)
 }
@@ -70,7 +70,7 @@ unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
-    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    MeterModule::add(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
@@ -99,7 +99,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     MeterModule::reset(fighter.battle_object);
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
-    MeterModule::add(fighter.battle_object, dbg!(MeterModule::meter_per_level(fighter.battle_object)));
+    MeterModule::add(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
 }
 
