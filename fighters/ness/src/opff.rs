@@ -20,7 +20,7 @@ unsafe fn psi_magnet_jump_cancel(fighter: &mut L2CFighterCommon) {
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]) {
-        if fighter.status_frame() > 2 { // Allows for jump cancel on frame 8 in game (this is dictated by how long game_speciallw_start takes)
+        if fighter.status_frame() > 0 { // Allows for jump cancel on frame 6 in game (this is dictated by how long game_speciallw_start takes)
             if !fighter.is_in_hitlag() {
                 fighter.check_jump_cancel(false, false);
             }
@@ -61,48 +61,45 @@ unsafe fn magnet_stall_prevention(boma: &mut BattleObjectModuleAccessor, id: usi
 }
 
 // Ness PK Thunder cancel
-unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
-    if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD && boma.status_frame() > 2 {
-        if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
-                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
-            }
-            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
-            }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, true);
+unsafe fn pk_thunder_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if StatusModule::is_changing(fighter.module_accessor)
+        && (VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI)
+        || ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_THUNDER)) {
+            sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
+            WorkModule::set_int(fighter.module_accessor, 10, *FIGHTER_NESS_STATUS_SPECIAL_HI_WORK_INT_STOP_Y_TIME); //Set to 10 to prevent issue from him flying upwards during early up b cancel frames
+        }
+        if MotionModule::is_end(fighter.module_accessor)
+        && (VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI)
+        || ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_THUNDER)) {
+            fighter.change_status(FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END.into(), true.into());
         }
     }
-
-    if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END
-        && situation_kind == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+    if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD) && fighter.status_frame() > 2 {
+        if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            //VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI);
+            fighter.change_status(FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END.into(), true.into());
         }
     }
-
-    /*
-    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
-        println!("Up Special Interrupt flag active")
-    }
-
-    if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END{
-        println!("..... PKT1 COOLDOWN .....");
-    }
-
-    if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END
-        && (MotionModule::frame(boma) >= (MotionModule::end_frame(boma)-3.0))
-        && situation_kind == *SITUATION_KIND_AIR {
-        println!("PKT ending animation is over");
-        if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            println!("PKT special airtime interrupt flag set");
-            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+    if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
+        if StatusModule::is_changing(fighter.module_accessor)
+        && (VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI)
+        || ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_THUNDER)) {
+            let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * 0.4, 0.0);
+        }
+        // removes variable landing lag
+        if !StatusModule::is_changing(fighter.module_accessor)
+        && StatusModule::is_situation_changed(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
+        }
+        if MotionModule::is_end(fighter.module_accessor)
+        && !fighter.is_prev_status_one_of(&[*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_AGAIN]) {
+            let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { *FIGHTER_STATUS_KIND_WAIT } else { *FIGHTER_STATUS_KIND_FALL };
+            fighter.change_status(status.into(), false.into());
         }
     }
-    */
 }
 
 // PK Thunder wall ride momentum fix
@@ -188,7 +185,7 @@ unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_turnaround(fighter);
     psi_magnet_jump_cancel(fighter);
-    pk_thunder_cancel(boma, id, status_kind, situation_kind);
+    pk_thunder_cancel(fighter);
     //magnet_stall_prevention(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     //pk_fire_ff(boma, stick_y);

@@ -51,6 +51,9 @@ attack_s3_lw:
 attack_s3_hi:
   extra:
     cancel_frame: 32
+attack_air_lw:
+  extra:
+    cancel_frame: 48
 fall_aerial_f:
   blend_frames: 5
 fall_aerial_b:

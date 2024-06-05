@@ -1066,6 +1066,10 @@ pub mod vars {
     }
 
     pub mod ness {
+        pub mod instance {
+            //flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const THUNDER_LOOSE: i32 = 0x1100;
