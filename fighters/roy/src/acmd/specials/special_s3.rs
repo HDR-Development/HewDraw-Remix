@@ -241,11 +241,19 @@ unsafe extern "C" fn expression_specials3lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_piercess"), 0);
+    }
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 16.0);
+    frame(lua_state, 22.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
     }
