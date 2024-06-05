@@ -8,6 +8,9 @@ fall_aerial:
   blend_frames: 5
 fall_special:
   blend_frames: 5
+landing_fall_special:
+  animations:
+    - name: c05landingairlw.nuanmb
 guard_off:
   blend_frames: 4
   extra:
