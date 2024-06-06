@@ -1729,3 +1729,6 @@ pub mod statuses {
         pub const SPECIAL_S_END: i32 = 0x1EB;
     }
 }
+
+// extra lua_consts
+pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);

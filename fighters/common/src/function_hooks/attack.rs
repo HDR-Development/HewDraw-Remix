@@ -214,6 +214,18 @@ unsafe fn x0641948(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = *ctx.registers[19].x.as_ref();
     *(fighter as *mut i32).add(0xf740 / 4) = hitlag;
 }
+// set parry AttackModule inflict flag
+#[skyline::hook(offset = 0x03df93c, inline)]
+unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
+    let opponent_battle_object_id = *(*ctx.registers[22].x.as_ref() as *const u32).add(0x24 / 4);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+    if opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
+    && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
+    && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
+        *ctx.registers[8].w.as_mut() = *ctx.registers[8].w.as_ref() | *COLLISION_KIND_MASK_PARRY as u32;
+    }
+}
 
 pub fn install() {
     skyline::install_hooks!(
@@ -225,6 +237,6 @@ pub fn install() {
         set_weapon_hitlag,
         set_fighter_hitlag,
         handle_on_attack_event,
-        x0627880, x0627cc0, x0641948
+        x0627880, x0627cc0, x0641948, x03df93c
     );
 }
