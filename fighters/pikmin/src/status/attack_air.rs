@@ -165,6 +165,23 @@ unsafe extern "C" fn link_event_store_l2c_table(fighter: &mut L2CFighterCommon, 
     ret
 }
 
+
+pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let next_status = fighter.global_table[STATUS_KIND].get_i32();
+    if [
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
+    ].contains(&next_status) 
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI, 
+        *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT
+    ].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 1)) {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+    }
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end);
 }

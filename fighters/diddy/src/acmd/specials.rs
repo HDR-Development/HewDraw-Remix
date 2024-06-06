@@ -84,8 +84,11 @@ unsafe extern "C" fn game_specialsstick(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairsjump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.4);
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_ATTACK);
+        VarModule::on_flag(agent.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_JUMP);
+    }
 }
 
 unsafe extern "C" fn game_specialairskick(agent: &mut L2CAgentBase) {
@@ -115,6 +118,43 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        JostleModule::set_status(boma, false);
+        WorkModule::on_flag(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_FLAG_BOBY_ROLL_START);
+        GroundModule::select_cliff_hangdata(boma, *FIGHTER_DIDDY_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        let power = VarModule::get_float(agent.battle_object, vars::diddy::status::SPECIAL_HI_INITIAL_POWER);
+        ATTACK(agent, 0, 0, Hash40::new("waist"), power, 361, 100, 0, 30, 4.0, -3.0, 0.0, -5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 1, 0, Hash40::new("waist"), power, 361, 100, 0, 30, 4.0, -3.0, 0.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("waist"), 10.0, 55, 100, 0, 30, 3.2, -3.0, 0.0, -5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 1, 0, Hash40::new("waist"), 10.0, 55, 100, 0, 30, 3.2, -3.0, 0.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("waist"), 8.0, 60, 100, 0, 20, 2.8, -3.0, 0.0, -5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 1, 0, Hash40::new("waist"), 8.0, 60, 100, 0, 20, 2.8, -3.0, 0.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+    }
+    wait(lua_state, 19.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(agent) {
+        WorkModule::off_flag(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_FLAG_BOBY_ROLL_START);
+        WorkModule::on_flag(boma, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_FLAG_ROLL_COMP_START);
+        JostleModule::set_status(boma, true);
+        GroundModule::select_cliff_hangdata(boma, *FIGHTER_CLIFF_HANG_DATA_DEFAULT as u32);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialncancel", game_specialncancel, Priority::Low);
     agent.acmd("effect_specialncancel", acmd_stub, Priority::Low);
@@ -132,4 +172,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairskick", game_specialairskick, Priority::Low);
 
     agent.acmd("game_specialairhistart", game_specialairhistart, Priority::Low);
+
+    agent.acmd("game_specialairhijump", game_specialairhijump, Priority::Low);
 }
