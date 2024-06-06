@@ -768,12 +768,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
-    if fighter_kind == *FIGHTER_KIND_PIKMIN {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT {
-            return 0;
-        }
-    }
-
     if fighter_kind == *FIGHTER_KIND_LUCARIO {
         if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH {
             if frame < 17.0 {
