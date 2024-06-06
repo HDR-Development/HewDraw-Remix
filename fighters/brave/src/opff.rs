@@ -65,7 +65,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_air_f"),
             Hash40::new("attack_air_b"),
             Hash40::new("attack_air_lw")
-        ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
+        ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)) {
             EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);

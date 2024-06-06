@@ -223,7 +223,7 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
     if opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
     && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
     && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
-        *ctx.registers[8].w.as_mut() = *ctx.registers[8].w.as_ref() | *COLLISION_KIND_MASK_PARRY as u32;
+        *ctx.registers[8].w.as_mut() = *COLLISION_KIND_MASK_PARRY as u32;
     }
 }
 
