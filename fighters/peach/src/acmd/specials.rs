@@ -9,7 +9,7 @@ unsafe extern "C" fn game_specialshitend(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         }
     }

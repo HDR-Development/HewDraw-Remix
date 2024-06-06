@@ -9,7 +9,7 @@ unsafe extern "C" fn attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     if MotionModule::motion_kind(fighter.module_accessor) != dairAnim.hash{
         return false.into();
     }
-    if (AttackModule::is_infliction_status(fighter.module_accessor,  *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)){
+    if (AttackModule::is_infliction_status(fighter.module_accessor,  *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)){
         MotionModule::change_motion(fighter.module_accessor, dairRiseAnim, 18.0, 1.0, false, 0.0, false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("sys_machstamp"),false,true);
         AttackModule::clear_all(fighter.module_accessor);

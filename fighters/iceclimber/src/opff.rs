@@ -55,7 +55,7 @@ unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut Battl
 
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)
     && frame < 55.0
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
@@ -68,7 +68,7 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
             } else if fighter.kind() == *FIGHTER_KIND_NANA {
                 PLAY_SE(fighter, Hash40::new("vc_nana_attack04"));
             } 
-        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
             SET_SPEED_EX(fighter, 0, 0.75, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             if fighter.kind() == *FIGHTER_KIND_POPO {
                 PLAY_SE(fighter, Hash40::new("vc_popo_attack04"));

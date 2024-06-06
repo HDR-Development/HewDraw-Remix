@@ -30,7 +30,7 @@ unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fr
 //Onslaught Shield Activation + No Freefall on hit
 unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion_one_of(&[Hash40::new("special_s1_start"),Hash40::new("special_air_s1_start")]) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END, true);
         }
     }

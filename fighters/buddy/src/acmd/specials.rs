@@ -420,7 +420,7 @@ unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
     let boma = agent.boma(); 
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
         if (!has_hit_shield
         && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0) {
             CancelModule::enable_cancel(boma);
@@ -428,7 +428,7 @@ unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
         if (!has_hit_shield
         && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
@@ -453,7 +453,7 @@ unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialairswall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
-    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
     let lr = PostureModule::lr(boma)==0.0;
     let size = if (has_hit_shield) {0.5} else {0.75};
     let xRot = if (lr) {-90.0} else {90.0};

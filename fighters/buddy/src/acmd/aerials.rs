@@ -336,7 +336,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 46.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
             KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
@@ -383,7 +383,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
             EFFECT_OFF_KIND(agent, Hash40::new("buddy_air_lw"),false,false);
             EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1.1, true);
             sv_animcmd::EFFECT_WORK(lua_state);
