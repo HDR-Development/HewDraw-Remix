@@ -29,19 +29,19 @@ unsafe extern "C" fn special_lw_fall_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue{
-    //VarModule::on_flag(fighter.battle_object, vars::dedede::instance::DISABLE_SPECIAL_LW);
-
+    //Continue spinning if the button is held down
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) 
     && MotionModule::frame(fighter.module_accessor) < 25.0 
     && MotionModule::frame(fighter.module_accessor) > 13.0
     && StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_GROUND{
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::DISABLE_JET_SPEED, true);
+        KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT);
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("dedede_final_jet"), false, true);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
         let rate = MotionModule::rate(fighter.module_accessor);
-        if rate < 3.0{
-            MotionModule::set_rate(fighter.module_accessor, rate * (1.25));
+        if rate < 2.0{
+            MotionModule::set_rate(fighter.module_accessor, rate * (1.2));
         }
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER){
             let article = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER);
@@ -53,10 +53,10 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
         }
 
     }
-    if MotionModule::is_end(fighter.module_accessor) {
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-            //fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(),false.into());
-        }
+
+    //Bonk upon hitting a shield
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD){
+        fighter.change_status_req(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE, false);
     }
 
     if MotionModule::frame(fighter.module_accessor) > 30.0 && StatusModule::is_situation_changed(fighter.module_accessor){
@@ -72,11 +72,13 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn special_lw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue{
+    VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN, false);
+
     if MotionModule::is_end(fighter.module_accessor) &&
     StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_AIR{
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_special"), 0.0, 1.0, false, 0.0, false, false);
 
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());         //crashes (IDK why help)
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
 
     }
 

@@ -22,6 +22,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="start_speed_x">1.5</float>
+      <float hash="smash_start_speed_mul_x">1.6</float>
       <float hash="throw_angle_max">75</float>
       <float hash="throw_angle_min">310</float>
       <float hash="search_radius">0</float>
