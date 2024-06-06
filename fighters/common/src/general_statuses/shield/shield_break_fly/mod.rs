@@ -86,7 +86,8 @@ unsafe fn status_ShieldBreakFly_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         return true.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_DOWN_WAIT.into(), false.into());
+        let next_status = if fighter.is_cat_flag(Cat2::DownToDownStandFB) { FIGHTER_STATUS_KIND_DOWN_STAND_FB} else { FIGHTER_STATUS_KIND_DOWN_STAND };
+        fighter.change_status(next_status.into(), true.into());
         return true.into();
     }
 
