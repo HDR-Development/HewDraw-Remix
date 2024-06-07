@@ -208,7 +208,7 @@ unsafe extern "C" fn game_attack11s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_attack11nears(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11s(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
