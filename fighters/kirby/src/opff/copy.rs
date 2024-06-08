@@ -457,6 +457,67 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, status: i32){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+
+    if (VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE))
+    {
+        if (status == *FIGHTER_STATUS_KIND_ATTACK_S3 )
+        {
+            let transition_frame = 21.0;
+            let can_cancel = fighter.motion_frame() >= transition_frame;
+            if (!can_cancel) {return;}
+
+            fighter.change_status(statuses::kirby::BUDDY_BUDDY_BAYONET_END.into(), false.into());
+
+            let currentEggs=
+            //VarModule::get_int(boma.object(), vars::buddy::instance::BAYONET_EGGS);
+            BAYONET_EGGS[entry];
+            WorkModule::set_int(fighter.module_accessor,
+                currentEggs,
+                *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT
+            );
+
+            VarModule::off_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+        }
+    }
+    else if [
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_F,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_B,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_LANDING
+    ].contains(&status)
+    {
+        let currentEggs = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+        //VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,currentEggs);
+        BAYONET_EGGS[entry] = currentEggs;
+    }
+}
+
+unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon){
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+	let eggs_shot = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+    let eggs_Weakest = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_2_num"));
+    let eggs_Weak = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_1_num"));
+	if (eggs_shot >= eggs_Weak
+	&& !fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_END))
+	{
+		let sweatRate = if (eggs_shot<eggs_Weakest) {25.0} else {15.0};
+		let sweatSize = if (eggs_shot<eggs_Weakest) {0.625} else {0.9};
+		let modulo = fighter.motion_frame() % sweatRate;
+		if (modulo<1.0)
+		{
+			EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_sweat"), Hash40::new("top"), 0, 8.5, 7.5, 0, 0, 0, sweatSize, true);
+		}
+	}
+}
+
 // Peanut Popgun Airdodge Cancel
 unsafe fn peanut_popgun_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
@@ -1095,7 +1156,11 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         // Captain Falcon
         0xB => repeated_falcon_punch_turnaround(fighter),
         // Banjo & Kazooie
-        0x54 => blue_eggs_land_cancels(fighter),
+        0x54 => {
+            blue_eggs_land_cancels(fighter);
+            breegull_bayonet(fighter, boma, motion_kind, status_kind);
+            indicator_breegull_fatigue(fighter);
+        },
         // Diddy Kong
         0x27 => {
             peanut_popgun_ac(boma, status_kind, situation_kind, cat[1], frame);
