@@ -57,14 +57,14 @@
       <int hash="rslash_hold_frame">1</int>
       <float hash="rslash_air_start_spd_y">2.5</float>
       <float hash="rslash_air_gravity_y_mul">0.7</float>
-      <float hash="rslash_air_accel_x_mul">0.05</float>
-      <float hash="rslash_air_max_x_mul">1.2</float>
-      <float hash="rslash_end_air_accel_x_mul">0.05</float>
+      <float hash="rslash_air_accel_x_mul">0.025</float>
+      <float hash="rslash_air_max_x_mul">0.8</float>
+      <float hash="rslash_end_air_accel_x_mul">0.025</float>
       <float hash="rslash_end_air_max_x">1.2</float>
-      <float hash="rslash_fall_special_accel_x_mul">0.05</float>
-      <float hash="rslash_fall_special_speed_x_max_mul">1.2</float>
+      <float hash="rslash_fall_special_accel_x_mul">0.025</float>
+      <float hash="rslash_fall_special_speed_x_max_mul">0.8</float>
       <float hash="rslash_air_spd_x_mul">0.5</float>
-      <float hash="rslash_air_init_spd_mul">1</float>
+      <float hash="rslash_air_init_spd_mul">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

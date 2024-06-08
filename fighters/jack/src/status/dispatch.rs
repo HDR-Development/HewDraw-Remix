@@ -81,8 +81,9 @@ unsafe extern "C" fn dispatch_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
             FIGHTER_STATUS_KIND_WAIT
         };
         fighter.change_status(status.into(), false.into());
+        return 1.into();
     }
-    0.into()
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {

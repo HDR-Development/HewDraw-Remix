@@ -1171,6 +1171,10 @@ pub fn install() {
     // Found in ControlModule::exec_command
     skyline::patching::Patch::in_text(0x6bd6c4).nop();
 
+    // Always have the game check for wall jump flick inputs, even
+    // if the character doesn't normally have a wall jump.
+    skyline::patching::Patch::in_text(0x6bc420).nop();
+
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,

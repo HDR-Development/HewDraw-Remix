@@ -155,7 +155,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
+    special_lw_landing_lag(fighter, boma, status_kind, situation_kind);
     dim_cape_early_attack_cancel(boma, status_kind, frame);
     flag_resets(boma, id, status_kind, motion_kind, frame);
     transition_fall(boma, id, status_kind);
