@@ -40,7 +40,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 8, 2, -90, -90, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 9, 4, 0, -120, -90, 1.0, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
