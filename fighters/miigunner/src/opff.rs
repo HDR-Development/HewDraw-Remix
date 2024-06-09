@@ -105,7 +105,7 @@ unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn laser_blaze_ff_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion_one_of(&[
         Hash40::new("special_air_n2_start"),
         Hash40::new("special_air_n2_loop"),
@@ -114,7 +114,8 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor) {
         Hash40::new("special_n2_loop"),
         Hash40::new("special_n2_end") ]) {
         if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            WorkModule::set_float(fighter.module_accessor, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
         if boma.is_situation(*SITUATION_KIND_AIR) {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
@@ -292,7 +293,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     charge_handle(boma);
     nspecial_cancels(boma);
     reflector_jc(boma);
-    laser_blaze_ff_land_cancel(boma);
+    laser_blaze_ff_land_cancel(fighter, boma);
     remove_homing_missiles(boma);
     missile_land_cancel(boma);
 	arm_rocket_airdash(fighter);
