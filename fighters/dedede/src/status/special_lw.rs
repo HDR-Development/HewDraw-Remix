@@ -77,9 +77,7 @@ unsafe extern "C" fn special_lw_attack_end(fighter: &mut L2CFighterCommon) -> L2
     if MotionModule::is_end(fighter.module_accessor) &&
     StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_AIR{
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_special"), 0.0, 1.0, false, 0.0, false, false);
-
         fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-
     }
 
 

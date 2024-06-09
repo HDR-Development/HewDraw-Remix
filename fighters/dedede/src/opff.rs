@@ -141,7 +141,7 @@ unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     let mask_is_exist = ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_MASK);
     if fighter.is_motion(Hash40::new("appeal_s_r")){
         if frame as i32 == 3 
-        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         && fighter.status() != *FIGHTER_STATUS_KIND_REBIRTH{
                 MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_r_mask"), 3.0, 1.0, false, 0.0, false, false);
         }
