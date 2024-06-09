@@ -829,6 +829,7 @@ pub unsafe extern "C" fn expression_specialhi3_attack(agent: &mut L2CAgentBase) 
     let boma = agent.boma();
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
