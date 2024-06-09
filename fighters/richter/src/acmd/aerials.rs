@@ -240,6 +240,19 @@ unsafe extern "C" fn effect_attackairflw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -446,10 +459,13 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairfhi", game_attackairfhi, Priority::Low);
     agent.acmd("effect_attackairfhi", effect_attackairfhi, Priority::Low);
+    agent.acmd("expression_attackairfhi", expression_attackairf, Priority::Low);
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
     agent.acmd("game_attackairflw", game_attackairflw, Priority::Low);
     agent.acmd("effect_attackairflw", effect_attackairflw, Priority::Low);
+    agent.acmd("expression_attackairflw", expression_attackairf, Priority::Low);
 
     agent.acmd("game_attackairbhi", game_attackairb, Priority::Low);
     agent.acmd("effect_attackairbhi", effect_attackairb, Priority::Low);

@@ -134,10 +134,18 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
+    //With Pikmin
+    frame(lua_state, 5.0);
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
+    if is_excute(agent) {
+        if (pikmin_count != 0) {
+            RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+    //Without Pikmin
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
-        if (pikmin_count != 0) {
+        if (pikmin_count == 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
     }
