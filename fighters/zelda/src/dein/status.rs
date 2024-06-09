@@ -1,13 +1,13 @@
 use super::*;
 
-unsafe extern "C" fn move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn tame_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 		let zelda = utils::util::get_battle_object_from_id(owner_id);
 		let dein = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID) as u32;
 		dein_remove(weapon, dein);
 	}
-    smashline::original_status(Main, weapon, *WEAPON_ZELDA_DEIN_STATUS_KIND_MOVE)(weapon)
+    smashline::original_status(Main, weapon, *WEAPON_ZELDA_DEIN_STATUS_KIND_TAME)(weapon)
 }
 
 pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase, dein: u32) {
@@ -33,5 +33,5 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *WEAPON_ZELDA_DEIN_STATUS_KIND_MOVE, move_main);
+    agent.status(Main, *WEAPON_ZELDA_DEIN_STATUS_KIND_TAME, tame_main);
 }
