@@ -347,13 +347,13 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 12.5);
-    if is_excute(agent) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_78_slash"), 28, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(lua_state, 20.0);
+    frame(lua_state, 10.5);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 12.5);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_78_slash"), 28);
     }
 }
 
