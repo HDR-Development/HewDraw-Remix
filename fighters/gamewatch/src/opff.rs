@@ -3,10 +3,11 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn ff_chef_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
         if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
         if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
@@ -106,7 +107,7 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    ff_chef_land_cancel(boma);
+    ff_chef_land_cancel(fighter, boma);
     parachute(fighter);
     once_per_airtime(fighter);
     jc_judge_four(boma);
