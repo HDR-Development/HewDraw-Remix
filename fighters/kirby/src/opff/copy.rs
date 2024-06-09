@@ -1022,6 +1022,15 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+        let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+        EffectModule::kill(fighter.module_accessor, handle, false, false);
+        let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+        EffectModule::kill(fighter.module_accessor, handle2, false, false);
+        let handle3 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3) as u32;
+        EffectModule::kill(fighter.module_accessor, handle3, false, false);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, -1);
     }
     if VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) != 0 {
         VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0)

@@ -16,7 +16,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        AttackModule::clear(boma, 1, false);
+        AttackModule::clear(boma, 0, false);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
