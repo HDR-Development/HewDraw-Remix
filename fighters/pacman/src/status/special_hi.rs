@@ -59,7 +59,7 @@ pub unsafe extern "C" fn special_hi_loop_main(fighter: &mut L2CFighterCommon) ->
     let mut height_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_HEIGHT_MUL);
     if height_mul != 0.0 {
         let jump_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_HI_JUMP_NUM);
-        let mul = if jump_count == 1 { 0.85 } else { 0.75 };
+        let mul = if jump_count == 1 { 0.9 } else { 0.89 };
         start_height_y *= height_mul * mul;
     }
     WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_HEIGHT_MUL);
