@@ -67,7 +67,7 @@ unsafe fn debug_print(boma: &mut BattleObjectModuleAccessor) {
 }
 
 
-unsafe fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
             AttackModule::clear_all(fighter.module_accessor);
@@ -152,7 +152,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     debug_print(boma);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
-    hammer_swing_drift_landcancel(fighter);
+    hammer_swing_drift_landcancel(fighter, boma);
     fastfall_specials(fighter);
     cutter_size(boma, status_kind);
 
