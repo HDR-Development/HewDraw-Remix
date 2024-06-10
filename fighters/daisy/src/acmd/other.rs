@@ -90,6 +90,73 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("hip"), 4.0, 55, 100, 0, 20, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        let lr = PostureModule::lr(boma);
+        EFFECT(agent, Hash40::new("sys_steam3"), Hash40::new("top"), (-3.8 * lr), 10, -1.5, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);
+    }
+    wait(lua_state, 32.0);
+    EFFECT_OFF_KIND(agent, Hash40::new("sys_steam3"), true, true);
+}
+
+unsafe extern "C" fn sound_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_appeal_l01"));
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_stage_suddendeath_in_end"));
+    }
+    frame(lua_state, 65.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_cliffcatch"));
+    }
+    frame(lua_state, 90.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_wakeup"));
+    }
+}
+
+unsafe extern "C" fn expression_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 46.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 110.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -102,4 +169,13 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwl", effect_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwr", effect_appeallw, Priority::Low);
+    agent.acmd("sound_appeallwl", sound_appeallw, Priority::Low);
+    agent.acmd("sound_appeallwr", sound_appeallw, Priority::Low);
+    agent.acmd("expression_appeallwl", expression_appeallw, Priority::Low);
+    agent.acmd("expression_appeallwr", expression_appeallw, Priority::Low);
 }

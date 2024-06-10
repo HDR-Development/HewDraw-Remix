@@ -6,6 +6,7 @@ mod attack_air;
 mod special_s;
 mod special_lw;
 mod uniq_float;
+mod appeal;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -72,4 +73,5 @@ pub fn install(agent: &mut Agent) {
     special_s::install(agent);
     special_lw::install(agent);
     uniq_float::install(agent);
+    appeal::install(agent);
 }
