@@ -32,10 +32,10 @@ attack_hi4_r:
     cancel_frame: 45
 attack_hi3:
   extra:
-    cancel_frame: 32
+    cancel_frame: 35
 attack_hi3_l:
   extra:
-    cancel_frame: 32
+    cancel_frame: 35
 special_hi:
   extra:
     intangible_start_frame: 0
