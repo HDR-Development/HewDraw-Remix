@@ -18,27 +18,27 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_max(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 3.0, 361, 100, 20, 0, 3.0, 0.0, 0.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_INKLING_HIT, *ATTACK_REGION_WATER);
+    if is_excute(agent) {
+        ATTACK(agent, 2, 0, Hash40::new("top"), 3.0, 361, 100, 20, 0, 3.0, 0.0, 0.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_INKLING_HIT, *ATTACK_REGION_WATER);
         AttackModule::enable_safe_pos(agent.module_accessor);
         AttackModule::set_ink_value(agent.module_accessor, 2, 10.0);
     }
 }
 unsafe extern "C" fn effect_max(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("inkling_splashooter_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("inkling_splashooter_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
     }
-    if macros::is_excute(agent) {
+    if is_excute(agent) {
         let r = WorkModule::get_float(agent.module_accessor, *WEAPON_INKLING_INKBULLET_INSTANCE_WORK_ID_FLOAT_R);
         let g = WorkModule::get_float(agent.module_accessor, *WEAPON_INKLING_INKBULLET_INSTANCE_WORK_ID_FLOAT_G);
         let b =WorkModule::get_float(agent.module_accessor,  *WEAPON_INKLING_INKBULLET_INSTANCE_WORK_ID_FLOAT_B);
-        macros::LAST_PARTICLE_SET_COLOR(agent,r,g,b);
+        LAST_PARTICLE_SET_COLOR(agent,r,g,b);
     }
 }
 
 unsafe extern "C" fn sound_max(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_inkling_special_n01"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_inkling_special_n01"));
     }
 }
 
