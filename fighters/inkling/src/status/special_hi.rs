@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 pub unsafe extern "C" fn special_hi_rot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object,vars::inkling::status::SPECIAL_HI_ATTACK);
@@ -28,16 +27,6 @@ pub unsafe extern "C" fn special_hi_rot_exec(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install(agent: &mut Agent)  {
-    smashline::Agent::new("inkling")
-        .status(
-            Exec,
-            *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT,
-            special_hi_rot_exec,
-        )
-        .status(
-            Init,
-            *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT,
-            special_hi_rot_init,
-        )
-        .install();
+    agent.status(Exec, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT, special_hi_rot_exec);
+    agent.status(Init, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_ROT, special_hi_rot_init);
 }

@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK
 
@@ -21,7 +20,7 @@ pub unsafe extern "C" fn special_s_run_main(fighter: &mut L2CFighterCommon) -> L
     smashline::original_status(Main, fighter, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN)(fighter)
 }
 
-// special_s_jump_end_init
+// FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_JUMP_END
 
 pub unsafe extern "C" fn special_s_jump_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Burn double jump when jumping out of Splat Roller
@@ -34,6 +33,8 @@ pub unsafe extern "C" fn special_s_jump_end_init(fighter: &mut L2CFighterCommon)
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, special_s_walk_main);
+
     agent.status(Main, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, special_s_run_main);
+    
     agent.status(Init, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_JUMP_END, special_s_jump_end_init);
 }

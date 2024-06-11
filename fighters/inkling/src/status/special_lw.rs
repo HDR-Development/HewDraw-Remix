@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_lw_empty_main(agent: &mut L2CFighterCommon) -> L2CValue {
     let use_cancel_anim = VarModule::is_flag(agent.battle_object, vars::inkling::instance::SPECIAL_LW_CANCELLED);    
@@ -86,6 +85,8 @@ pub unsafe extern "C" fn special_lw_throw_init(fighter: &mut L2CFighterCommon) -
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
     agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec);
+
     agent.status(Init, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_THROW, special_lw_throw_init);
+    
     agent.status(Main, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_EMPTY, special_lw_empty_main);
 }
