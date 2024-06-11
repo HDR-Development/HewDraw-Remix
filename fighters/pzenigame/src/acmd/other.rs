@@ -163,21 +163,21 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
     
-    agent.acmd("effect_dash", effect_dash);
-    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("effect_dash", effect_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
 
-    agent.acmd("effect_runbrake", effect_runbrake);
-    agent.acmd("effect_runbrakel", effect_runbrakel);
-    agent.acmd("effect_runbraker", effect_runbraker);
-    agent.acmd("effect_turnrun", effect_turnrun);
-    agent.acmd("effect_turnrunbrake", effect_turnrunbrake);
+    agent.acmd("effect_runbrake", effect_runbrake, Priority::Low);
+    agent.acmd("effect_runbrakel", effect_runbrakel, Priority::Low);
+    agent.acmd("effect_runbraker", effect_runbraker, Priority::Low);
+    agent.acmd("effect_turnrun", effect_turnrun, Priority::Low);
+    agent.acmd("effect_turnrunbrake", effect_turnrunbrake, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 }

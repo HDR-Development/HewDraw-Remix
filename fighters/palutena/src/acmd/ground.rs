@@ -43,9 +43,6 @@ unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-    }
     frame(lua_state, 5.0);
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_NORMAL);
@@ -106,13 +103,6 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
-    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -128,17 +118,12 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
     }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
-    }
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack11);
-    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
+    agent.acmd("game_attack100end", game_attack100end, Priority::Low);
     
-    agent.acmd("game_attackdash", game_attackdash);
-    agent.acmd("effect_attackdash", effect_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
 }

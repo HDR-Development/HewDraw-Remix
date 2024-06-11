@@ -30,6 +30,6 @@ unsafe extern "C" fn game_movechild(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_move", game_move);
-    agent.acmd("game_movechild", game_movechild);
+    agent.acmd("game_move", game_move, Priority::Low);
+    agent.acmd("game_movechild", game_movechild, Priority::Low);
 }

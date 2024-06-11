@@ -109,18 +109,29 @@ unsafe extern "C" fn sound_run(agent: &mut L2CAgentBase) {
     }
 }
 
+// disable sonic blade wall jump if sora performs a regular wall jump first
+unsafe extern "C" fn game_passivewalljump(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_damageflyhi", sound_damagefly);
-    agent.acmd("sound_damageflylw", sound_damagefly);
-    agent.acmd("sound_damageflyn", sound_damagefly);
-    agent.acmd("sound_damageflytop", sound_damagefly);
-    agent.acmd("sound_damageflyroll", sound_damageflyroll);
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
 
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
 
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("sound_run", sound_run);
+    agent.acmd("sound_run", sound_run, Priority::Low);
+
+    agent.acmd("game_passivewalljump", game_passivewalljump, Priority::Low);
 }

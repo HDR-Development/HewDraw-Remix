@@ -57,8 +57,8 @@ unsafe extern "C" fn effect_specialairs5(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialairs5", game_specialairs5);
-    agent.acmd("game_specials5", game_specialairs5);
-    agent.acmd("effect_specialairs5", effect_specialairs5);
-    agent.acmd("effect_specials5", effect_specialairs5);
+    agent.acmd("game_specialairs5", game_specialairs5, Priority::Low);
+    agent.acmd("game_specials5", game_specialairs5, Priority::Low);
+    agent.acmd("effect_specialairs5", effect_specialairs5, Priority::Low);
+    agent.acmd("effect_specials5", effect_specialairs5, Priority::Low);
 }

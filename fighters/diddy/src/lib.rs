@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+mod barreljet;
+
 use smash::{
     lib::{
         L2CValue,
@@ -44,5 +46,7 @@ pub fn install() {
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
-    agent.install(); 
+    agent.install();
+
+    barreljet::install();
 }

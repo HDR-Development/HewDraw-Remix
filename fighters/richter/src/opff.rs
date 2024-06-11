@@ -34,28 +34,20 @@ unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// allow fair and bair to transition into their angled variants when the stick is angled up/down
+// allow fair to transition into their angled variants when the stick is angled up/down
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
-    let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-        ControlModule::get_sub_stick_y(fighter.module_accessor)
-    }
-    else {
-        ControlModule::get_stick_y(fighter.module_accessor)
-    };
     if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
     && (11.0..12.0).contains(&frame) {
+        let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+            ControlModule::get_sub_stick_y(fighter.module_accessor)
+        }
+        else {
+            ControlModule::get_stick_y(fighter.module_accessor)
+        };
         if stick_y > 0.5 { // stick is held up
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_hi"), -1.0, 1.0, 0.0, false, false);
         } else if stick_y < -0.5 { // stick is held down
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_lw"), -1.0, 1.0, 0.0, false, false);
-        }
-    } 
-    else if fighter.is_motion_one_of(&[Hash40::new("attack_air_b"), Hash40::new("attack_air_b_hi"), Hash40::new("attack_air_b_lw")])
-    && (11.0..12.0).contains(&frame) {
-        if stick_y > 0.5 { // stick is held up
-            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_hi"), -1.0, 1.0, 0.0, false, false);
-        } else if stick_y < -0.5 { // stick is held down
-            MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_lw"), -1.0, 1.0, 0.0, false, false);
         }
     }
 }

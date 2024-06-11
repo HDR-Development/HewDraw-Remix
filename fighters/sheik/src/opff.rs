@@ -3,11 +3,21 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN && boma.status_frame() > 14 {
-        if situation_kind == *SITUATION_KIND_AIR {
-            boma.check_jump_cancel(false, false);
-            boma.check_airdodge_cancel();
+unsafe fn bouncing_fish_transitions(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK) {
+        if MotionModule::is_end(fighter.module_accessor)
+        && fighter.is_situation(*SITUATION_KIND_AIR) {
+            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT) {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+            }
+        }
+    }
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN)
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT);
+        if fighter.status_frame() > 14 {
+            fighter.check_jump_cancel(false, false);
+            fighter.check_airdodge_cancel();
         }
     }
 }
@@ -52,6 +62,36 @@ extern "Rust" {
 //     }
 // }
 
+pub unsafe fn vanish_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    // Wall Ride momentum fixes
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE) {
+        let init_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_X);
+        let init_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_Y);
+        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
+            if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
+                VarModule::on_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE);
+            }
+            if init_speed_y > 0.0 {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
+                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+            }
+        } else if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, init_speed_x, init_speed_y);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        }
+    }
+    else if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END) {
+        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
+            if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
+                let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
+                KineticModule::mul_speed(fighter.module_accessor, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            }
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -89,11 +129,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
+    bouncing_fish_transitions(fighter);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
-    //hitfall_aerials(fighter, frame);
     vanish_landing_lag(fighter);
     fastfall_specials(fighter);
+    vanish_wall_ride(fighter);
 }
 
 pub extern "C" fn sheik_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

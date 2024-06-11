@@ -32,6 +32,6 @@ unsafe extern "C" fn effect_bound(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_throwed", game_throwed);
-    agent.acmd("effect_bound", effect_bound);
+    agent.acmd("game_throwed", game_throwed, Priority::Low);
+    agent.acmd("effect_bound", effect_bound, Priority::Low);
 }

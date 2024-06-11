@@ -26,17 +26,21 @@ pub fn install(agent: &mut Agent) {
     agent.acmd(
         "effect_shizuespecialnfailure",
         effect_shizuespecialnfailure,
+        Priority::Low
     );
     agent.acmd(
         "effect_shizuespecialairnfailure",
         effect_shizuespecialnfailure,
+        Priority::Low
     );
     agent.acmd(
         "expression_shizuespecialnfailure",
         expression_shizuespecialnfailure,
+        Priority::Low
     );
     agent.acmd(
         "expression_shizuespecialairnfailure",
         expression_shizuespecialnfailure,
+        Priority::Low
     );
 }

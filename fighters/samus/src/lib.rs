@@ -10,6 +10,7 @@ pub mod opff;
 // articles
 
 mod cshot;
+mod gbeam;
 mod supermissile;
 
 use smash::{
@@ -51,5 +52,6 @@ pub fn install() {
     agent.install();
 
     cshot::install();
+    gbeam::install();
     supermissile::install();
 }

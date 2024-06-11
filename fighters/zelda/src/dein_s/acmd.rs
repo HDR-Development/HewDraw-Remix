@@ -17,6 +17,20 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
 	}
 }
 
+unsafe extern "C" fn effect_move(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("zelda_din_bomb"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.29, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_RATE(agent, 1.1);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_move", game_move);
+    agent.acmd("game_move", game_move, Priority::Low);
+    agent.acmd("effect_move", effect_move, Priority::Low);
 }

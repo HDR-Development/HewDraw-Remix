@@ -181,14 +181,14 @@ unsafe extern "C" fn sound_attackbeamloop(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackshort", game_attackshort);
-    agent.acmd("game_attacklong", game_attacklong);
+    agent.acmd("game_attackshort", game_attackshort, Priority::Low);
+    agent.acmd("game_attacklong", game_attacklong, Priority::Low);
 
-    agent.acmd("game_attackdragonshootlong", game_attackdragonshootlong);
-    agent.acmd("effect_attackdragonshootlong", effect_attackdragonshootlong);
+    agent.acmd("game_attackdragonshootlong", game_attackdragonshootlong, Priority::Low);
+    agent.acmd("effect_attackdragonshootlong", effect_attackdragonshootlong, Priority::Low);
 
-    agent.acmd("game_specialairhiattack", game_specialairhiattack);
-    agent.acmd("game_specialairhiattackdragon", game_specialairhiattack);
+    agent.acmd("game_specialairhiattack", game_specialairhiattack, Priority::Low);
+    agent.acmd("game_specialairhiattackdragon", game_specialairhiattack, Priority::Low);
 
-    agent.acmd("sound_attackbeamloop", sound_attackbeamloop);
+    agent.acmd("sound_attackbeamloop", sound_attackbeamloop, Priority::Low);
 }

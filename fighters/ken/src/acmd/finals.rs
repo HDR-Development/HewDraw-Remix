@@ -28,8 +28,8 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 365, 100, 48, 17, 11.0, 0.0, 8.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 1.0, 365, 100, 48, 17, 11.0, 0.0, 8.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 365, 100, 48, 17, 11.0, 0.0, 8.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 365, 100, 48, 17, 11.0, 0.0, 8.0, 8.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         AttackModule::set_no_dead_all(boma, true, false);
         AttackModule::set_no_uniq_effect_all(boma, true, false);
         AttackModule::set_damage_shake_scale(boma, 0.18);
@@ -484,17 +484,17 @@ unsafe extern "C" fn ken_shinryuken_effect_final(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_final", game_final);
-    agent.acmd("game_finalair", game_final);
-    agent.acmd("game_finalhit", game_finalhit);
-    agent.acmd("game_finalhit_com", game_finalhit);
-    agent.acmd("game_final_com2", game_final_com2);
-    agent.acmd("game_final_hit1", game_final_hit1);
-    agent.acmd("game_final_hit2", game_final_hit2);
-    agent.acmd("game_final_hit3", game_final_hit3);
-    agent.acmd("game_final_hit4", game_final_hit4);
-    agent.acmd("game_final_hitfinal", game_final_hitfinal);
+    agent.acmd("game_final", game_final, Priority::Low);
+    agent.acmd("game_finalair", game_final, Priority::Low);
+    agent.acmd("game_finalhit", game_finalhit, Priority::Low);
+    agent.acmd("game_finalhit_com", game_finalhit, Priority::Low);
+    agent.acmd("game_final_com2", game_final_com2, Priority::Low);
+    agent.acmd("game_final_hit1", game_final_hit1, Priority::Low);
+    agent.acmd("game_final_hit2", game_final_hit2, Priority::Low);
+    agent.acmd("game_final_hit3", game_final_hit3, Priority::Low);
+    agent.acmd("game_final_hit4", game_final_hit4, Priority::Low);
+    agent.acmd("game_final_hitfinal", game_final_hitfinal, Priority::Low);
     
-    agent.acmd("game_final2", game_final2);
-    agent.acmd("game_finalair2", game_final2);
+    agent.acmd("game_final2", game_final2, Priority::Low);
+    agent.acmd("game_finalair2", game_final2, Priority::Low);
 }

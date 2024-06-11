@@ -16,6 +16,7 @@ unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
         }
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 16.0);
     frame(lua_state, 20.0);
     if is_excute(agent) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -93,12 +94,12 @@ unsafe extern "C" fn expression_specialny(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialny", game_specialny);
-    agent.acmd("game_specialairny", game_specialny);
-    agent.acmd("effect_specialny", effect_specialny);
-    agent.acmd("effect_specialairny", effect_specialny);
-    agent.acmd("sound_specialny", sound_specialny);
-    agent.acmd("sound_specialairny", sound_specialny);
-    agent.acmd("expression_specialny", expression_specialny);
-    agent.acmd("expression_specialairny", expression_specialny);
+    agent.acmd("game_specialny", game_specialny, Priority::Low);
+    agent.acmd("game_specialairny", game_specialny, Priority::Low);
+    agent.acmd("effect_specialny", effect_specialny, Priority::Low);
+    agent.acmd("effect_specialairny", effect_specialny, Priority::Low);
+    agent.acmd("sound_specialny", sound_specialny, Priority::Low);
+    agent.acmd("sound_specialairny", sound_specialny, Priority::Low);
+    agent.acmd("expression_specialny", expression_specialny, Priority::Low);
+    agent.acmd("expression_specialairny", expression_specialny, Priority::Low);
 }

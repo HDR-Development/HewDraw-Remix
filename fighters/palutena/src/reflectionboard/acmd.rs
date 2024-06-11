@@ -14,6 +14,22 @@ unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_break(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+            EFFECT(agent, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
+        else {
+            EFFECT(agent, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
+    }
+}
+
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("effect_break", effect_break, Priority::Low);
 }

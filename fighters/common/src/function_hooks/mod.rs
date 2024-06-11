@@ -3,6 +3,7 @@ use crate::globals::*;
 use std::arch::asm;
 pub mod energy;
 pub mod effect;
+pub mod finals;
 pub mod get_param;
 pub mod transition;
 pub mod djcancel;
@@ -11,6 +12,7 @@ pub mod hitstun;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
+pub mod killscreen;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
@@ -733,6 +735,7 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
 pub fn install() {
     energy::install();
     effect::install();
+    finals::install();
     get_param::install();
     transition::install();
     djcancel::install();
@@ -741,6 +744,7 @@ pub fn install() {
     momentum_transfer::install();
     misc::install();
     jumps::install();
+    killscreen::install();
     stage_hazards::install();
     set_fighter_status_data::install();
     attack::install();

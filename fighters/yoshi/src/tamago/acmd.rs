@@ -22,6 +22,6 @@ unsafe extern "C" fn game_burst(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_throwed", game_throwed);
-    agent.acmd("game_burst", game_burst);
+    agent.acmd("game_throwed", game_throwed, Priority::Low);
+    agent.acmd("game_burst", game_burst, Priority::Low);
 }

@@ -33,6 +33,6 @@ unsafe extern "C" fn game_dhspecialnend1(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_dhspecialnend1", game_dhspecialnend1);
-    agent.acmd("game_dhspecialairnend1", game_dhspecialnend1);
+    agent.acmd("game_dhspecialnend1", game_dhspecialnend1, Priority::Low);
+    agent.acmd("game_dhspecialairnend1", game_dhspecialnend1, Priority::Low);
 }

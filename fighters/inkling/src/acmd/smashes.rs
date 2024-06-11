@@ -198,12 +198,10 @@ FT_MOTION_RATE(agent, 0.806);
 }
 
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_attacks4", game_attacks4)
-        .acmd("game_attacks4charge", game_attacks4charge)
-        .acmd("game_attackhi4", game_attackhi4)
-        .acmd("game_attackhi4charge", game_attackhi4charge)
-        .acmd("game_attacklw4", game_attacklw4)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4, Priority::Low);
+    agent.acmd("game_attacks4charge", game_attacks4charge, Priority::Low);
+    agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
+    agent.acmd("game_attackhi4charge", game_attackhi4charge, Priority::Low);
+    agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
 }

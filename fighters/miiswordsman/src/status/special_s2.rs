@@ -72,7 +72,7 @@ unsafe extern "C" fn special_s2_dash_main_loop(fighter: &mut L2CFighterCommon) -
     // custom [
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         if fighter.check_jump_cancel(true, false) {
             return 1.into()
         }
@@ -82,18 +82,8 @@ unsafe extern "C" fn special_s2_dash_main_loop(fighter: &mut L2CFighterCommon) -
         return 1.into()
     }
     // Wall Jump
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP) {
-            let touch_right = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-            let touch_left = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-            if touch_left || touch_right {
-                if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP);
-                    fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(),true.into());
-                    return 1.into()
-                }
-            }
-        }
+    if fighter.check_wall_jump_cancel() {
+        return 1.into();
     }
     // ]
     let slash_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_WORK_INT_DASH_COUNT);

@@ -74,17 +74,21 @@ pub fn install(agent: &mut Agent) {
     agent.acmd(
         "effect_miigunnerspecialn1firemax",
         effect_miigunnerspecialn1firemax,
+        Priority::Low
     );
     agent.acmd(
         "effect_miigunnerspecialairn1firemax",
         effect_miigunnerspecialn1firemax,
+        Priority::Low
     );
     agent.acmd(
         "sound_miigunnerspecialn1firemax",
         sound_miigunnerspecialn1firemax,
+        Priority::Low
     );
     agent.acmd(
         "sound_miigunnerspecialairn1firemax",
         sound_miigunnerspecialn1firemax,
+        Priority::Low
     );
 }

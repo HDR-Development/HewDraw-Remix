@@ -17,7 +17,7 @@ escape:
     move: false
 throw_lw:
   extra:
-    cancel_frame: 41
+    cancel_frame: 43
 throw_hi:
   extra:
     cancel_frame: 39

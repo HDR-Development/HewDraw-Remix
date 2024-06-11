@@ -11,6 +11,89 @@ unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
     return false;
 }
 
+unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::off_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
+            WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
+            WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_ENABLE_SHOOT);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_specialnfire(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 
+    && !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("buddy_missile_shot_l"), Hash40::new("top"), 0, 10, 9, 0, 0, 0, 1, false);
+        }
+        else {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("buddy_missile_shot_r"), Hash40::new("top"), 0, 10, 9, 0, 0, 0, 1, false);
+        }
+    }
+}
+if is_excute(agent) {
+    EFFECT_FOLLOW_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, Hash40::new("k_all"), 0, -6, 0, 0, 0, 0, 0.8, true);
+}
+frame(lua_state, 16.0);
+if is_excute(agent) {
+    EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_FLYING, false, true);
+}
+}
+
+unsafe extern "C" fn sound_specialnfire(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_buddy_special_n01"));
+    }
+    frame(lua_state, 42.0);
+    if is_excute(agent) {
+        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
+            PLAY_SE(agent, Hash40::new("se_buddy_special_n04_01"));
+        }
+    }
+    frame(lua_state, 55.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_buddy_step_left_m"));
+    }
+    frame(lua_state, 61.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_buddy_step_right_m"));
+    }
+    frame(lua_state, 73.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_buddy_special_n04_02"));
+    }
+}
+
+unsafe extern "C" fn expression_specialnfire(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+}
+
 unsafe extern "C" fn game_specialnupperfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -402,20 +485,24 @@ unsafe extern "C" fn sound_specialairswall(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnupperfire", game_specialnupperfire);
-    agent.acmd("game_specialnfire2", game_specialnfire2);
+    agent.acmd("game_specialnfire", game_specialnfire, Priority::Low);
+    agent.acmd("effect_specialnfire", effect_specialnfire, Priority::Low);
+    agent.acmd("sound_specialnfire", sound_specialnfire, Priority::Low);
+    agent.acmd("expression_specialnfire", expression_specialnfire, Priority::Low);
+    agent.acmd("game_specialnupperfire", game_specialnupperfire, Priority::Low);
+    agent.acmd("game_specialnfire2", game_specialnfire2, Priority::Low);
 
-    agent.acmd("game_specialsdash", game_specialsdash);
+    agent.acmd("game_specialsdash", game_specialsdash, Priority::Low);
 
-    agent.acmd("game_specialairsstart", game_specialairsstart);
-    agent.acmd("effect_specialairsstart", effect_specialairsstart);
-    agent.acmd("sound_specialairsstart", sound_specialairsstart);
-    agent.acmd("game_specialairsdash", game_specialairsdash);
-    agent.acmd("effect_specialairsdash", effect_specialairsdash);
-    agent.acmd("sound_specialairsdash", sound_specialairsdash);
-    agent.acmd("expression_specialairsdash", expression_specialairsdash);
-    agent.acmd("game_specialairsend", game_specialairsend);
-    agent.acmd("game_specialairswall", game_specialairswall);
-    agent.acmd("effect_specialairswall", effect_specialairswall);
-    agent.acmd("sound_specialairswall", sound_specialairswall);
+    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
+    agent.acmd("effect_specialairsstart", effect_specialairsstart, Priority::Low);
+    agent.acmd("sound_specialairsstart", sound_specialairsstart, Priority::Low);
+    agent.acmd("game_specialairsdash", game_specialairsdash, Priority::Low);
+    agent.acmd("effect_specialairsdash", effect_specialairsdash, Priority::Low);
+    agent.acmd("sound_specialairsdash", sound_specialairsdash, Priority::Low);
+    agent.acmd("expression_specialairsdash", expression_specialairsdash, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
+    agent.acmd("game_specialairswall", game_specialairswall, Priority::Low);
+    agent.acmd("effect_specialairswall", effect_specialairswall, Priority::Low);
+    agent.acmd("sound_specialairswall", sound_specialairswall, Priority::Low);
 }

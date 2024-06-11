@@ -95,10 +95,10 @@ unsafe extern "C" fn effect_specials2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("game_specialairs", game_specialairs);
-    agent.acmd("game_specials2", game_specials2);
-    agent.acmd("effect_specials2", effect_specials2);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specialairs, Priority::Low);
+    agent.acmd("game_specials2", game_specials2, Priority::Low);
+    agent.acmd("effect_specials2", effect_specials2, Priority::Low);
 }

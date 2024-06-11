@@ -21,6 +21,6 @@ unsafe extern "C" fn game_pillarair(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_pillar", game_pillar);
-    agent.acmd("game_pillarair", game_pillarair);
+    agent.acmd("game_pillar", game_pillar, Priority::Low);
+    agent.acmd("game_pillarair", game_pillarair, Priority::Low);
 }

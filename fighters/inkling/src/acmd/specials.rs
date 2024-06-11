@@ -117,19 +117,17 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("inkling")
-        .acmd("game_specialnend", game_specialnend)
-        .acmd("game_specialairnend", game_specialairnend)
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialnend", game_specialnend, Priority::Low);
+    agent.acmd("game_specialairnend", game_specialairnend, Priority::Low);
 
-        .acmd("effect_specialsend", effect_specialsend)
+    agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
 
-        .acmd("game_specialhijump", game_specialhijump)
-        .acmd("game_specialhiattack",game_specialhiattack)
-        .acmd("effect_specialhiattack",effect_specialhiattack)
-        .acmd("sound_specialhiattack",sound_specialhiattack)
+    agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
+    agent.acmd("game_specialhiattack", game_specialhiattack, Priority::Low);
+    agent.acmd("effect_specialhiattack", effect_specialhiattack, Priority::Low);
+    agent.acmd("sound_specialhiattack", sound_specialhiattack, Priority::Low);
         
-        .acmd("game_speciallwstart",game_speciallwstart)
-        .acmd("game_specialairlwstart",game_speciallwstart)
-        .install();
+    agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
 }

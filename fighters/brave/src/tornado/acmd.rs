@@ -76,10 +76,10 @@ unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialhi1", game_specialhi1);
-    agent.acmd("effect_specialhi1", effect_specialhi1);
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("effect_specialhi2", effect_specialhi2);
-    agent.acmd("game_specialhi3", game_specialhi3);
-    agent.acmd("effect_specialhi3", effect_specialhi3);
+    agent.acmd("game_specialhi1", game_specialhi1, Priority::Low);
+    agent.acmd("effect_specialhi1", effect_specialhi1, Priority::Low);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
+    agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
+    agent.acmd("effect_specialhi3", effect_specialhi3, Priority::Low);
 }

@@ -238,7 +238,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     lightning_screw_uppercut(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     enable_both_recovery_specials(boma);
-    rotate_forward_bair(boma);
+    // rotate_forward_bair(boma);
     fastfall_specials(fighter);
     up_special_freefall(fighter, boma);
 }

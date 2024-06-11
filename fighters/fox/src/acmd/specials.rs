@@ -82,7 +82,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent){
         AttackModule::clear_all(boma);
     }
@@ -123,28 +123,28 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 1.66);
     if is_excute(agent){
         AttackModule::clear_all(boma);
     }
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialsstart", game_specialsstart);
-    agent.acmd("game_specialairsstart", game_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
+    agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);
 
-    agent.acmd("game_specialairsend", game_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
-    agent.acmd("game_specialhihold", game_specialhihold);
-    agent.acmd("game_specialhiholdair", game_specialhihold);
+    agent.acmd("game_specialhihold", game_specialhihold, Priority::Low);
+    agent.acmd("game_specialhiholdair", game_specialhihold, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
-    agent.acmd("sound_specialhi", sound_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("sound_specialhi", sound_specialhi, Priority::Low);
 
-    agent.acmd("game_speciallwstart", game_speciallwstart);
-    agent.acmd("effect_speciallwstart", effect_speciallwstart);
-    agent.acmd("sound_speciallwstart", sound_speciallwstart);
-    agent.acmd("game_specialairlwstart", game_specialairlwstart);
-    agent.acmd("effect_specialairlwstart", effect_speciallwstart);
-    agent.acmd("sound_specialairlwstart", sound_speciallwstart);
+    agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("sound_speciallwstart", sound_speciallwstart, Priority::Low);
+    agent.acmd("game_specialairlwstart", game_specialairlwstart, Priority::Low);
+    agent.acmd("effect_specialairlwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("sound_specialairlwstart", sound_speciallwstart, Priority::Low);
 }

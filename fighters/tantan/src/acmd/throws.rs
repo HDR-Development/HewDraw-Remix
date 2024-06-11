@@ -77,9 +77,9 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("sound_catch", sound_catch);
-    agent.acmd("expression_catch", expression_catch);
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("sound_catch", sound_catch, Priority::Low);
+    agent.acmd("expression_catch", expression_catch, Priority::Low);
     
-    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
 }

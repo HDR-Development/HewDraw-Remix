@@ -19,6 +19,6 @@ unsafe extern "C" fn game_spitshoot(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("game_spitshoot", game_spitshoot);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("game_spitshoot", game_spitshoot, Priority::Low);
 }

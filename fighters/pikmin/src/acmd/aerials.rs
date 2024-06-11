@@ -77,11 +77,11 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
@@ -127,7 +127,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
@@ -135,9 +134,18 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
+    //With Pikmin
     frame(lua_state, 5.0);
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         if (pikmin_count != 0) {
+            RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        }
+    }
+    //Without Pikmin
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        if (pikmin_count == 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
     }
@@ -182,23 +190,23 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     //With Pikmin
-    frame(lua_state, 8.0);
+    frame(lua_state, 7.0);
+    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
     }
     //Without Pikmin
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         if (pikmin_count == 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
@@ -243,7 +251,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
@@ -252,8 +259,9 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     //With Pikmin
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
+        let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
         if (pikmin_count != 0) {
             RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
         }
@@ -298,22 +306,20 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
-    agent.acmd("effect_attackairn", stub);
-    agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", expression_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
+    agent.acmd("effect_attackairn", acmd_stub, Priority::Low);
+    agent.acmd("sound_attackairn", sound_attackairn, Priority::Low);
+    agent.acmd("expression_attackairn", expression_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
-    agent.acmd("expression_attackairf", expression_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
-    agent.acmd("expression_attackairb", expression_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
-    agent.acmd("expression_attackairhi", expression_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
+    agent.acmd("expression_attackairhi", expression_attackairhi, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 }

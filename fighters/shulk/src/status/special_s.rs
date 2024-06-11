@@ -114,6 +114,9 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
                 if VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 5 {
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                }
+                else if VarModule::get_int(fighter.battle_object, vars::shulk::instance::SPECIAL_S_STEP) == 6 {
                     fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
                 }
                 else {

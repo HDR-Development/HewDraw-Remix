@@ -10,6 +10,7 @@ pub mod status;
 // articles
 
 mod bindball;
+mod shadowball;
 
 use smash::{
     lib::{
@@ -51,4 +52,5 @@ pub fn install() {
     agent.install();
 
     bindball::install();
+    shadowball::install();
 }

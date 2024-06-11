@@ -33,12 +33,9 @@ unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_R, 4);
-    }
-    frame(lua_state, 4.5);
-    if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 6.5);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
@@ -168,11 +165,11 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_attack11", game_attack11);
-    agent.acmd("expression_attack11", expression_attack11);
-    agent.acmd("game_attack12", game_attack12);
-    agent.acmd("game_attack13", game_attack13);
-    agent.acmd("effect_attack13", effect_attack13);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
+    agent.acmd("expression_attack11", expression_attack11, Priority::Low);
+    agent.acmd("game_attack12", game_attack12, Priority::Low);
+    agent.acmd("game_attack13", game_attack13, Priority::Low);
+    agent.acmd("effect_attack13", effect_attack13, Priority::Low);
     
-    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

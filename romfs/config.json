@@ -117,6 +117,9 @@
 		],
 		"fighter/ken/cmn": [
 			"fighter/ken/param/hdr.xml"
+		],
+		"fighter/littlemac/cmn": [
+			"fighter/littlemac/param/hdr.xml"
 		]
 	}
 }

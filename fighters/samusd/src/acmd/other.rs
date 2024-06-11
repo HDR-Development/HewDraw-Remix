@@ -250,16 +250,16 @@ unsafe extern "C" fn effect_downattacku(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_dash", game_dash);
-    agent.acmd("sound_dash", sound_dash);
-    agent.acmd("game_turndash", game_turndash);
+    agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
     
-    agent.acmd("game_escapeair", game_escapeair);
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("effect_slipattack", effect_slipattack);
-    agent.acmd("effect_cliffattack", effect_cliffattack);
-    agent.acmd("effect_catchattack", effect_catchattack);
-    agent.acmd("effect_downattackd", effect_downattackd);
-    agent.acmd("effect_downattacku", effect_downattacku);
+    agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
+    agent.acmd("effect_cliffattack", effect_cliffattack, Priority::Low);
+    agent.acmd("effect_catchattack", effect_catchattack, Priority::Low);
+    agent.acmd("effect_downattackd", effect_downattackd, Priority::Low);
+    agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
 }

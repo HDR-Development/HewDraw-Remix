@@ -17,7 +17,7 @@ special:
     cancel_frame: 40
 attack_12:
   extra:
-    cancel_frame: 27
+    cancel_frame: 30
 special_s:
   flags:
     move: false
@@ -76,6 +76,14 @@ attack_s4_lw:
 attack_s3_hi:
   extra:
     cancel_frame: 33
+special_air_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_air_s:
   extra:
     cancel_frame: 51
@@ -88,9 +96,6 @@ special_n_f_max:
 special_air_n_c:
   extra:
     cancel_frame: 9
-air_catch_landing:
-  extra:
-    cancel_frame: 28
 catch:
   extra:
     cancel_frame: 67

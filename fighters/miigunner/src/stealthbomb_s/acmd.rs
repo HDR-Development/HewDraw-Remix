@@ -33,6 +33,6 @@ unsafe extern "C" fn effect_move(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_move", game_move);
-    agent.acmd("effect_move", effect_move);
+    agent.acmd("game_move", game_move, Priority::Low);
+    agent.acmd("effect_move", effect_move, Priority::Low);
 }

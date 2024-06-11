@@ -201,18 +201,18 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent){
-    agent.acmd("game_specialsthrow", game_specialsthrow);
-    agent.acmd("effect_specialsthrow", effect_specialsthrow);
+    agent.acmd("game_specialsthrow", game_specialsthrow, Priority::Low);
+    agent.acmd("effect_specialsthrow", effect_specialsthrow, Priority::Low);
 
-    agent.acmd("game_specialsshot", game_specialsshot);
-    agent.acmd("effect_specialsshot", effect_specialsshot);
+    agent.acmd("game_specialsshot", game_specialsshot, Priority::Low);
+    agent.acmd("effect_specialsshot", effect_specialsshot, Priority::Low);
 
-    agent.acmd("game_specialsattack", game_specialsattack);
-    agent.acmd("effect_specialsattack", effect_specialsattack);
+    agent.acmd("game_specialsattack", game_specialsattack, Priority::Low);
+    agent.acmd("effect_specialsattack", effect_specialsattack, Priority::Low);
 
-    agent.acmd("game_specialswallstop", game_specialswallstop);
+    agent.acmd("game_specialswallstop", game_specialswallstop, Priority::Low);
 
-    agent.acmd("game_specialsstart", game_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
 
-    agent.acmd("game_specialairsstart", game_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
 }

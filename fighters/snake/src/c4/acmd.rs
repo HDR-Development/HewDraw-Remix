@@ -201,16 +201,14 @@ unsafe extern "C" fn game_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent: &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_establishtarget", game_establishtarget);
+    agent.acmd("game_establishtarget", game_establishtarget, Priority::Low);
 
-    agent.acmd("game_sticktarget", stub);
-    agent.acmd("effect_sticktarget", effect_sticktarget);
-    agent.acmd("sound_sticktarget", sound_sticktarget);
+    agent.acmd("game_sticktarget", acmd_stub, Priority::Low);
+    agent.acmd("effect_sticktarget", effect_sticktarget, Priority::Low);
+    agent.acmd("sound_sticktarget", sound_sticktarget, Priority::Low);
 
-    agent.acmd("effect_stickother", effect_stickother);
+    agent.acmd("effect_stickother", effect_stickother, Priority::Low);
     
-    agent.acmd("game_explosion", game_explosion);
+    agent.acmd("game_explosion", game_explosion, Priority::Low);
 }

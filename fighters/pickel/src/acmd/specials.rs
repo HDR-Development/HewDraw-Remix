@@ -11,5 +11,5 @@ unsafe extern "C" fn sound_specialn1getgold(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("sound_specialn1getgold", sound_specialn1getgold);
+    agent.acmd("sound_specialn1getgold", sound_specialn1getgold, Priority::Low);
 }

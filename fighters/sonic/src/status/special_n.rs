@@ -104,8 +104,18 @@ pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterComm
     ret
 }
 
+pub unsafe extern "C" fn special_n_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_prev_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT) {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING_LIGHT);
+        return 1.into();
+    }
+    smashline::original_status(Pre, fighter, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_LANDING)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     
     agent.status(Pre, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START, special_n_homing_start_pre);
+    
+    agent.status(Pre, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_LANDING, special_n_landing_pre);
 }
