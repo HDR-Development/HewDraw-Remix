@@ -313,7 +313,10 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
         statuses::ryu::ATTACK_COMMAND_4
-    ]) && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) || VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC));
+    ]) && (
+        AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
+    ) || VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC));
 
     let is_nspecial_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
@@ -375,7 +378,8 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_in_hitlag() 
     || CancelModule::is_enable_cancel(boma)
-    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
 
@@ -399,7 +403,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
     || CancelModule::is_enable_cancel(boma) 
     || boma.is_in_hitlag() 
-    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
 
@@ -456,6 +461,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if fighter.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         // *FIGHTER_STATUS_KIND_ATTACK_S4

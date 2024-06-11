@@ -1234,7 +1234,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             if AttackModule::is_infliction_status(
                 self,
                 *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) {
+            )
+            && !AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
                 crate::VarModule::inc_int(
                     self.object(),
                     crate::consts::vars::common::instance::HITFALL_BUFFER,

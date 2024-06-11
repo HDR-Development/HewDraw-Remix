@@ -69,6 +69,7 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
         }
 
         if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_PARRY)
         && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
             StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
         }

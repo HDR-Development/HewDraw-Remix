@@ -124,7 +124,7 @@ unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS) && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+        if VarModule::is_flag(agent.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS) && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             EFFECT_FOLLOW(agent, Hash40::new("sys_level_up"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 0, 0, 0.1, true);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         }
@@ -145,7 +145,7 @@ unsafe extern "C" fn sound_attack13(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS)
-        && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) || is_training_mode()) {
+        && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) || is_training_mode()) {
             match smash::app::sv_math::rand(smash::hash40("fighter"), 3) {
                 0 => PLAY_SE(agent, Hash40::new("vc_littlemac_special_l02")),
                 1 => PLAY_SE(agent, Hash40::new("vc_littlemac_special_n02")),

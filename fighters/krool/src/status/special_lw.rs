@@ -78,7 +78,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)    // restore armor on full charge hit
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         WorkModule::set_float(fighter.module_accessor, 4.0, 0x4d);
         VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
     }

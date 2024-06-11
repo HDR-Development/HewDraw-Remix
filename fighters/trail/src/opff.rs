@@ -32,7 +32,7 @@ unsafe fn nair_sword_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
 unsafe fn attack_lw4_rebound(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW4) 
     && (19.0..20.5).contains(&frame)
-    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)
+    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     //&& !StopModule::is_hit(fighter.module_accessor) 
     {
         VarModule::on_flag(boma.object(), vars::trail::instance::ATTACK_LW4_REBOUND);
@@ -59,14 +59,14 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
     // Fair momentum handling now moved to OPFF since params that affect both nair and fair's momentum on hit were standardized to give nair regular momentum
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F){
         if boma.is_motion(Hash40::new("attack_air_f")) || boma.is_motion(Hash40::new("attack_air_f2")){
-            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY){
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
                 let initial_x_mul = 0.35;
                 let control_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) as *mut smash::app::KineticEnergy;
                 smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.1, 1.0, 1.0));
                 // println!("is_infliction triggered!");
             }
             
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY){
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
                 //let x_mul = WorkModule::get_param_float(boma, hash40("param_private"), hash40("attack_air_hit_speed_max_x_mul"))
                 // Max airspeed multiplier
                 let max_x_mul = 0.65;
@@ -231,7 +231,7 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
                 return;
             }
         }
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             VarModule::on_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
         }
     }

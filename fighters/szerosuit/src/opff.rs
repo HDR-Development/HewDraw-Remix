@@ -39,7 +39,7 @@ unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_k
 // Transitions ZSS into Flip Jump's footstool rebund animation upon connecting with dair
 unsafe fn dair_rebound(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) && fighter.is_motion(Hash40::new("attack_air_lw")) {
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) && !fighter.is_in_hitlag(){
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !fighter.is_in_hitlag(){
             VarModule::on_flag(fighter.battle_object, vars::szerosuit::status::ATTACK_AIR_LW_REBOUND);
             fighter.change_status_req(*FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_LW_FLIP, true);
         }

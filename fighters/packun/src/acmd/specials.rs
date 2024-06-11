@@ -150,7 +150,8 @@ unsafe extern "C" fn game_specialsshoots(agent: &mut L2CAgentBase) {
         }
     }
     wait(lua_state, 3.0);
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         FT_DESIRED_RATE(agent, 30.0, 16.0);
     }
     else {

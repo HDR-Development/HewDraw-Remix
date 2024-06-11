@@ -45,7 +45,7 @@ unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
     }
     if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
     && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY))
+    || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD))
     {
         StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST, true);
     }

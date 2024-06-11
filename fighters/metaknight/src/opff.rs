@@ -31,7 +31,7 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
             VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
         }
     }
-    // if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+    // if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
     //     if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
     //         VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
     //     }
@@ -75,7 +75,7 @@ unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 /// this cancels side special early if you hit the opponent
 unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH)
-        && AttackModule::is_infliction_status(fighter.boma(), *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+        && AttackModule::is_infliction_status(fighter.boma(), *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         // Allows MK to rebound off of shield
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_S_WORK_FLAG_HIT);
         // Transition to rebound

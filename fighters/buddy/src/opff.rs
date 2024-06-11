@@ -47,7 +47,7 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon){
     if fighter.is_motion(Hash40::new("attack_air_lw"))
     && fighter.motion_frame() < 46.0
     {
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
         }
     }
@@ -108,7 +108,7 @@ unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
     let side_special_wall = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL);
     if (!side_special_wall) {return;}
-    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
     if (has_hit_shield) {return;}
     if (VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)>=1) {return;}
 
@@ -127,7 +127,7 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
     let side_special = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH);
     if !side_special {return;}
 
-    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
     if (has_hit_shield) {return;}
 
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
@@ -200,7 +200,7 @@ unsafe fn beakbomb_checkForHit(fighter: &mut L2CFighterCommon, boma: &mut Battle
     if StatusModule::is_changing(boma) {
         return;
     }
-    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY);
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
     if (!has_hit_shield) {return;}
     
     if (fighter.motion_frame() > 0.0) //If motion frame is 0, game crashes

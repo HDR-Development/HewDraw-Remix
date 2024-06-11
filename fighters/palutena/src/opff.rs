@@ -185,6 +185,7 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
 // sets set_color var, controlling when a color is charged
 unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
         VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
         // yellow moves: side
