@@ -11,9 +11,9 @@ mod other;
 pub fn install(agent: &mut Agent) {
     ground::install(agent);
     tilts::install(agent);
-    smashes::install();
+    smashes::install(agent);
     aerials::install(agent);
-    specials::install();
+    specials::install(agent);
     throws::install(agent);
-    other::install();
+    other::install(agent);
 }
