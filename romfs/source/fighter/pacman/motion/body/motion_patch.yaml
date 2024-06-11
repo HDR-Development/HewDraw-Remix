@@ -72,3 +72,6 @@ catch_attack:
 furafura_end:
   extra:
     cancel_frame: 10
+step_pose_back:
+  extra:
+    cancel_frame: 6

@@ -87,3 +87,6 @@ appeal_lw_r:
 appeal_lw_l:
   extra:
     cancel_frame: 80
+step_pose_back:
+  extra:
+    cancel_frame: 6

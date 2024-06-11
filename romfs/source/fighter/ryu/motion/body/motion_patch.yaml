@@ -256,3 +256,6 @@ special_s_end:
 throw_lw:
   extra:
     cancel_frame: 41
+step_pose_back:
+  extra:
+    cancel_frame: 6

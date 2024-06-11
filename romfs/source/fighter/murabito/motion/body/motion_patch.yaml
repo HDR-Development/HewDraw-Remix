@@ -53,3 +53,6 @@ throw_hi:
 throw_lw:
   extra:
     cancel_frame: 31
+step_pose_back:
+  extra:
+    cancel_frame: 6

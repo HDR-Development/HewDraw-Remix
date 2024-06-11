@@ -439,7 +439,7 @@ unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, 
             }
         }
         else if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END {
-            let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
+            let charge_frames = if fighter.is_prev_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START) { 0.0 } else { VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 };
             let fly_charge_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_min_spd_x");
             let fly_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_x_mul");
             let calc_charge_x = (max_spd_x + (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul))) * stick_mul_x_delta;
@@ -450,8 +450,8 @@ unsafe extern "C" fn special_hi_movement_helper(fighter: &mut L2CFighterCommon, 
             let charge_frames = VarModule::get_int(fighter.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
             let fly_charge_min_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_min_spd_x");
             let fly_charge_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fly_charge_x_mul");
-            let calc_charge_x = (fall_max_spd_x + (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul))) * stick_mul_x_delta;
-            sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_x * stick_mul_x_delta, 0.0);
+            let calc_charge_x = (fall_max_spd_x + (fly_charge_min_spd_x + (charge_frames * fly_charge_x_mul * 0.8))) * stick_mul_x_delta;
+            sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_charge_x, 0.0);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fall_max_spd_y * stick_mul_fall_y_delta);
         }
 
@@ -573,10 +573,81 @@ unsafe extern "C" fn special_hi_lerp_motion(fighter: &mut L2CFighterCommon, moti
 
 }
 
+unsafe extern "C" fn special_hi_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    0.into()
+}
+
+unsafe extern "C" fn special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::change_status(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, *WEAPON_KROOL_BACKPACK_STATUS_KIND_LANDING, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+    }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_landing"), 0.0, 1.0, false, 0.0, false, false);
+    let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_frame"));
+    let special_hi_landing = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("special_hi_landing"));
+    if 0 < landing_frame {
+        MotionModule::set_rate(fighter.module_accessor, special_hi_landing/landing_frame as f32);
+    }
+    GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_KROOL_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    fighter.main_shift(special_hi_landing_main_loop)
+}
+
+unsafe extern "C" fn special_hi_landing_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) && (fighter.sub_wait_ground_check_common(false.into()).get_bool() || fighter.sub_air_check_fall_common().get_bool()) {
+        return 1.into();
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_WAIT } else { FIGHTER_STATUS_KIND_FALL };
+        fighter.change_status(status.into(), false.into());
+    }
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+    }
+
+    return 0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_main);
     agent.status(Exit, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, special_hi_start_exit);
     agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, special_hi_main);
     agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, special_hi_end_main);
     agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main);
+    agent.status(Pre, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_pre);
+    agent.status(Main, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main);
 }
