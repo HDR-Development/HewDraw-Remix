@@ -172,11 +172,11 @@ unsafe extern "C" fn richter_attack_13_expression(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }

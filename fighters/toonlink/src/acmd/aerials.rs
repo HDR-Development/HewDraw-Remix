@@ -329,6 +329,13 @@ unsafe extern "C" fn effect_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_aircatchlanding(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 21.0, 16.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
@@ -346,5 +353,5 @@ pub fn install(agent: &mut Agent) {
     
     agent.acmd("game_aircatch", game_aircatch, Priority::Low);
     agent.acmd("effect_aircatch", effect_aircatch, Priority::Low);
-    agent.acmd("game_aircatchlanding", acmd_stub, Priority::Low);
+    agent.acmd("game_aircatchlanding", game_aircatchlanding, Priority::Low);
 }

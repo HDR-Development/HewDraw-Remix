@@ -94,6 +94,18 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_zelda_attackair_b01"));
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_zelda_appeal_l01"));
+    }
+}
+
 pub fn install(agent: &mut Agent) {
 	agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
 	agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -106,4 +118,7 @@ pub fn install(agent: &mut Agent) {
 
 	agent.acmd("game_escapeair", game_escapeair, Priority::Low);
 	agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("sound_appeallwl", sound_appeallw, Priority::Low);
+	agent.acmd("sound_appeallwr", sound_appeallw, Priority::Low);
 }
