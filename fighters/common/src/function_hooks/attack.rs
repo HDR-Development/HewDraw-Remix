@@ -202,7 +202,6 @@ unsafe fn x0627cc0(ctx: &mut skyline::hooks::InlineCtx) {
     if IS_HITLAG_FOR_PARRY {
         IS_HITLAG_FOR_PARRY = false;
         *ctx.registers[8].x.as_mut() = 18;
-        //TODO: set a common flag here for was_attack_parried, use it to disable on-shield cancels on-parry
     }
 }
 // set defender hitlag
@@ -224,6 +223,17 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
     && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
     && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
         *ctx.registers[8].w.as_mut() = *ctx.registers[8].w.as_ref() | *COLLISION_KIND_MASK_PARRY as u32;
+        if opponent_boma.is_fighter() {
+            let kind = opponent_boma.kind();
+            if kind == *FIGHTER_KIND_RYU || kind == *FIGHTER_KIND_KEN {
+                opponent_boma.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+                opponent_boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+            }
+            if kind == *FIGHTER_KIND_DOLLY {
+                opponent_boma.off_flag(*FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+                opponent_boma.off_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+            }
+        }
     }
 }
 
