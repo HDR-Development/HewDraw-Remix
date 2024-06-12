@@ -178,10 +178,6 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
     }
 
     if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        // grounded transitions
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            return fighter.sub_wait_ground_check_common(false.into());
-        }
     
         // check OOP options (subset of OOS options)
 
@@ -219,6 +215,11 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
             return true.into();
         }
 
+        // grounded transitions
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return true.into();
+        }
         // end animation, wait transition
         if MotionModule::is_end(fighter.module_accessor) 
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
