@@ -629,35 +629,53 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
 // This Energy is unique to Kirby and allows Auto Reticle to be used. Colorless Attack gives 3 energy instead of 1.
 unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f32, boma: &mut BattleObjectModuleAccessor) {
     let current_energy = VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+    if fighter.motion_frame() < 2.0 {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        if fighter.is_motion(Hash40::new("attack_s3_hi"))
-        || fighter.is_motion(Hash40::new("attack_s3_s"))
-        || fighter.is_motion(Hash40::new("attack_s3_lw"))
-        || fighter.is_motion(Hash40::new("attack_s4_hi"))
-        || fighter.is_motion(Hash40::new("attack_s4_s"))
-        || fighter.is_motion(Hash40::new("attack_s4_lw"))
-        || fighter.is_motion(Hash40::new("attack_air_f"))
-        || fighter.is_motion(Hash40::new("attack_air_b"))
-        || fighter.is_motion(Hash40::new("attack_hi3"))
-        || fighter.is_motion(Hash40::new("attack_hi4"))
-        || fighter.is_motion(Hash40::new("attack_air_hi"))
-        || fighter.is_motion(Hash40::new("attack_lw3"))
-        || fighter.is_motion(Hash40::new("attack_lw4"))
-        || fighter.is_motion(Hash40::new("attack_air_lw")) {
-            VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+        if VarModule::is_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
+            if fighter.is_motion(Hash40::new("attack_s3_hi"))
+            || fighter.is_motion(Hash40::new("attack_s3_s"))
+            || fighter.is_motion(Hash40::new("attack_s3_lw"))
+            || fighter.is_motion(Hash40::new("attack_air_f"))
+            || fighter.is_motion(Hash40::new("attack_air_b"))
+            || fighter.is_motion(Hash40::new("attack_hi3"))
+            || fighter.is_motion(Hash40::new("attack_hi4"))
+            || fighter.is_motion(Hash40::new("attack_air_hi"))
+            || fighter.is_motion(Hash40::new("attack_lw3"))
+            || fighter.is_motion(Hash40::new("attack_air_lw"))
+            || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 {
+                //println!("Hit detected! Increasing energy NOW!");
+                VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+                VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+                MeterModule::add(boma.object(), 1.0);
+            }
         }
         if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
+            //println!("Hit detected! Increasing energy NOW!");
+            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
             VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, current_energy + 3);
+            MeterModule::add(boma.object(), 3.0);
+        }
+        if fighter.is_motion(Hash40::new("attack_s4_hi"))
+        || fighter.is_motion(Hash40::new("attack_s4_s"))
+        || fighter.is_motion(Hash40::new("attack_s4_lw"))
+        || fighter.is_motion(Hash40::new("attack_hi4"))
+        || fighter.is_motion(Hash40::new("attack_lw4")) { // Seperate check for S4 attacks because the previous method does not work.
+            //println!("Seperate check for Smash Attacks passed. Increasing energy NOW!");
+            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+            VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+            MeterModule::add(boma.object(), 1.0);
         }
     }
 }
 
 // 
 unsafe fn cyan_charge_limiter(fighter: &mut L2CFighterCommon) {
-    // Limits storeable energy to 6. Colorless Attack can increase it to 9 if the attacks connects, but if Auto Reticle is interrupted, it is reset to 6.
+    // Limits storeable energy to 6. Colorless Attack can increase it even more if the attacks connects, but if not consumed, it is reset to 6.
     if !fighter.is_motion_one_of(&[Hash40::new("palutena_special_n"), Hash40::new("palutena_special_air_n")])
     && VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) > 6 {
-        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 6)
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 6);
     }
 }
     
@@ -1011,7 +1029,7 @@ unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Ba
     }
 }
 
-//Bowser & Lucas
+// No Copy Ability
 unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_KOOPA {
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
@@ -1033,7 +1051,8 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, -1);
     }
     if VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) != 0 {
-        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0)
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0);
+        MeterModule::drain_direct(boma.object(), 6.0);
     }
 }
 

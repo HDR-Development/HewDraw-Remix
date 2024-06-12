@@ -3,6 +3,7 @@ use super::*;
 unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    WorkModule::set_customize_no(agent.module_accessor, 0, 0); // Reset to default parameterts in case they are ever changed by a copy ability.
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 18.0);

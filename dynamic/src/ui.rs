@@ -34,6 +34,12 @@ extern "C" {
     
     #[link_name = "UiManager__change_power_board_color"]
     fn ui_manager_change_power_board_color(entry_id: u32, color_1: i32, color_2: i32);
+
+    #[link_name = "UiManager__set_cyan_meter_enable"]
+    fn ui_manager_set_cyan_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_cyan_meter_info"]
+    fn ui_manager_set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
     
     #[link_name = "UiManager__set_pichu_meter_enable"]
     fn ui_manager_set_pichu_meter_enable(entry_id: u32, enable: bool);
@@ -128,6 +134,18 @@ pub mod UiManager {
         }
     }
     
+    pub fn set_cyan_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_cyan_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+        unsafe {
+            super::ui_manager_set_cyan_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
     pub fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
         unsafe {
             super::ui_manager_set_pichu_meter_enable(entry_id, enable)

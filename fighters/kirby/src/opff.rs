@@ -59,14 +59,6 @@ unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
 //     }
 // }
 
-unsafe fn debug_print(boma: &mut BattleObjectModuleAccessor) {
-    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PALUTENA {
-        println!("Current Energy: {}", VarModule::get_int(boma.object(), vars::palutena::instance::CYAN_ENERGY));
-        println!("Excess Energy: {}", VarModule::get_int(boma.object(), vars::palutena::instance::EXCESS_ENERGY));
-    }
-}
-
-
 unsafe fn hammer_swing_drift_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
@@ -149,7 +141,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
     dash_attack_jump_cancels(boma);
-    debug_print(boma);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
     hammer_swing_drift_landcancel(fighter, boma);
@@ -166,6 +157,28 @@ pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCo
     }
 }
 
+pub extern "C" fn cyan_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_PALUTENA {
+            utils::ui::UiManager::set_cyan_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, false);
+            return;
+        }
+        MeterModule::update(fighter.object(), false);
+        MeterModule::set_meter_cap(fighter.object(), 2);
+        MeterModule::set_meter_per_level(fighter.object(), 3.0);
+        utils::ui::UiManager::set_cyan_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_cyan_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            MeterModule::meter_per_level(fighter.object()),
+        );
+    }
+}
+
 pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
@@ -174,4 +187,5 @@ pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, kirby_frame_wrapper);
+    agent.on_line(Main, cyan_meter);
 }

@@ -13,14 +13,14 @@
     <struct index="1">
       <float hash="special_n_auto_target_deg_angle">90</float>
       <float hash="special_n_auto_target_distance">11</float>
-      <hash40 hash="special_n_auto_target_base_joint">bust</float>
+      <hash40 hash="special_n_auto_target_base_joint">bust</hash40>
       <float hash="special_n_auto_target_start_x_offset">-0.4</float>
       <float hash="special_n_auto_target_start_y_offset">0.4</float>
       <float hash="special_n_speed_x_mul">0.6</float>
       <float hash="special_n_speed_y_mul">1</float>
       <float hash="special_n_speed_y_add">0</float>
-      <int hash="special_n_discharge_frame">14</float>
-      <int hash="special_n_shootspan_frame">6</float>
+      <int hash="special_n_discharge_frame">21</int>
+      <int hash="special_n_shootspan_frame">6</int>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
@@ -31,7 +31,7 @@
       <int hash="life">280</int>
     </struct>
     <struct index="1">
-      <float hash="speed">8</float>
+      <float hash="speed">6</float>
       <int hash="life">40</int>
       <int hash="is_penetration">1</int>
     </struct>
