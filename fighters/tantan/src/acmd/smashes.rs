@@ -40,7 +40,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
             ranges = [10.0,20.0,27.0,34.0,41.0];
             size = 5.0;
 
-            ATTACK(agent, 0, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, 6.0, 0.0, 0.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            ATTACK(agent, 0, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, 6.0, 0.0, 0.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         }
         else if is_dragonized {
             damage = 15.0;
@@ -57,7 +57,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     for i in 0..5{
         range = ranges[i];
         if (is_doubledragon && is_dragonized) {
-            ATTACK(agent, 1, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, size, 0.0, 0.0, -range, Some(0.0), Some(0.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            ATTACK(agent, 1, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, size, 0.0, 0.0, -range, Some(0.0), Some(0.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         }
         else{
             ATTACK(agent, 2, 0, Hash40::new("pl1_gimmickc"), damage, 361, 75, 0, 60, size*1.2, 0.0, 0.0, 0.0, Some(range), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);

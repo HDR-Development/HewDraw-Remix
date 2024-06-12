@@ -1,13 +1,138 @@
 use super::*;
 
+unsafe fn check_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    // Dont use cancels if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+    if CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() {
+        return;
+    }
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        return;
+    }
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+    ]) {
+        return;
+    }
+    
+    let terms = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+    ];
+    let mut enableds = [false; 10];
+    for x in 0..terms.len() {
+        enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
+    }
+    for val in terms.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+    }
+    if situation_kind != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special()
+    } else {
+        fighter.sub_transition_group_check_ground_special()
+    };
+    for x in 0..terms.len() {
+        if !enableds[x] {
+            WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
+        }
+    }
+}
+
+unsafe fn magic_series_lucario(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+    if CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() 
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        return;
+    }
+    
+    // Tilt cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+    ].contains(&status_kind) {
+        if boma.is_cat_flag(Cat1::AttackS3) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackHi3) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackLw3) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+        }
+    }
+
+    // Smash cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+        // *FIGHTER_STATUS_KIND_ATTACK_S3,
+        // *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        // *FIGHTER_STATUS_KIND_ATTACK_LW3,
+    ].contains(&status_kind) {
+        if boma.is_cat_flag(Cat1::AttackS4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+        }
+        if boma.is_cat_flag(Cat1::AttackHi4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+        }
+        if boma.is_cat_flag(Cat1::AttackLw4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+        }
+    }
+
+    // Special cancels
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK, 
+        *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status_kind) {
+        if boma.is_cat_flag(Cat1::SpecialN) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+        }
+        if boma.is_cat_flag(Cat1::SpecialS) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+        }
+        if boma.is_cat_flag(Cat1::SpecialHi) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+        }
+        if boma.is_cat_flag(Cat1::SpecialLw) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+        }
+    }
+}
+
 // Magic Series
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     let cat1 = cat[0];
     let cat4 = cat[3];
     // Level 1: Jab and Dash Attack Cancels
     if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for tilt attack inputs
             if boma.is_cat_flag(Cat1::AttackS3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
@@ -80,8 +205,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for smash attack inputs
             if boma.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
@@ -143,8 +275,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
 
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -193,8 +332,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
     // Aerial Cancels
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for jump inputs
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                 boma.check_jump_cancel(false, false);
@@ -241,10 +387,11 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 // Copy Abilities
 // Fox Drift and Laser Land Cancel
-unsafe fn fox_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn fox_drift_laser_landcancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
         if situation_kind == *SITUATION_KIND_AIR {
             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
@@ -255,10 +402,11 @@ unsafe fn fox_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, stat
 }
 
 // Falco Drift and Laser Land Cancel
-unsafe fn falco_drift_laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn falco_drift_laser_landcancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
         if situation_kind == *SITUATION_KIND_AIR {
             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
@@ -368,10 +516,11 @@ unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, sta
 }
 
 // Chef Drift and Land Cancel
-unsafe fn chef_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn chef_drift_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
         if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
@@ -392,7 +541,7 @@ unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
                 //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
                 WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
-                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
+                MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
             }
         }
         else if situation_kind == *SITUATION_KIND_AIR {
@@ -682,7 +831,7 @@ unsafe fn cyan_charge_limiter(fighter: &mut L2CFighterCommon) {
 
 
 // Dark Pit's Bow Land Cancel
-unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn pitb_bow_lc(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if(WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_PITB){
         if [*FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT,
             *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_CHARGE,
@@ -690,7 +839,8 @@ unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
             *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_TURN].contains(&status_kind) {
             if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT {
                 if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+                    WorkModule::set_float(boma, 7.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
                 }
             }
         }
@@ -1145,20 +1295,20 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
 
     match copy {
         // Ryu
-        0x3C => magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame),
+        0x3C => check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame),
         // Ken
         0x3D => {
-            magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+            check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
             ken_air_hado_distinguish(fighter, boma, frame);
         },
         // Lucario
-        0x2C => magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame),
+        0x2C => magic_series_lucario(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame),
         // Terry
         0x55 => magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame),
         // Fox
-        0x7 => fox_drift_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y),
+        0x7 => fox_drift_laser_landcancel(fighter, boma, status_kind, situation_kind, cat[1], stick_y),
         // Falco
-        0x14 => falco_drift_laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y),
+        0x14 => falco_drift_laser_landcancel(fighter, boma, status_kind, situation_kind, cat[1], stick_y),
         // Wolf
         0x2F => wolf_drift_airdodge_cancel(boma, status_kind, situation_kind, cat[1], frame),
         // Greninja
@@ -1173,7 +1323,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         // Wario
         0x21 => bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame),
         // Mr. Game & Watch
-        0x1C => chef_drift_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y),
+        0x1C => chef_drift_land_cancel(fighter, boma, status_kind, situation_kind, cat[1], stick_y),
         // Zelda
         0x11 => nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame),
         // Hero
@@ -1216,7 +1366,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
             cyan_charge_limiter(fighter);
         },
         // Dark Pit
-        0x1F => pitb_bow_lc(boma, status_kind, situation_kind, cat[1], stick_y),
+        0x1F => pitb_bow_lc(fighter, boma, status_kind, situation_kind, cat[1], stick_y),
         // Charizard
         0x26 => plizardon_flame_cancel(boma, status_kind, situation_kind, frame),
         // Mega Man

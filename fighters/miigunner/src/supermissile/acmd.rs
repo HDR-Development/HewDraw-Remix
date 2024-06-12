@@ -32,7 +32,7 @@ unsafe extern "C" fn game_sburst(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let gunner = utils::util::get_battle_object_from_id(owner_id);
         if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
-            ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 50, 75, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 50, 75, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 4.0);

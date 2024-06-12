@@ -8,9 +8,40 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pass_common,
             status_Pass_Main_sub_hook,
         );
     }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_Pass_common)]
+unsafe extern "C" fn status_pass_common(fighter: &mut L2CFighterCommon) {
+    fighter.sub_air_check_fall_common_pre();
+    let transitions = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
+    ];
+    for val in transitions.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+    }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("pass"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_fall_common_uniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_fall_common_uniq as *const () as _));
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Pass_Main_sub)]
@@ -34,12 +65,6 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
         return 0.into();
     }
 
-    // idk what this does
-    if fighter.global_table[0x26].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x26].get_ptr());
-        callable(fighter);
-    }
-
     // skip direct cancels from restricted statuses
     let skip_cancels = fighter.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_GUARD,
@@ -52,16 +77,21 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
         return 0.into();
     }
 
+    // idk what this does
+    if fighter.global_table[0x26].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x26].get_ptr());
+        callable(fighter);
+    }
+
     // DSpecial cancel
     if fighter.is_cat_flag(Cat1::SpecialLw)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
-        if fighter.global_table[0x3B].get_bool() && {
+        let mut cont = true;
+        if fighter.global_table[0x3B].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x3B].get_ptr());
-            callable(fighter).get_bool()
-        } {
-            return 1.into();
+            cont = callable(fighter).get_bool();
         }
-        else {
+        if cont {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
             return 1.into();
         }
@@ -102,21 +132,28 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
     }
 
     // DSmash cancel
-    if fighter.is_cat_flag(Cat1::AttackLw4) {
-        if fighter.global_table[0x59].get_bool() && {
+    if fighter.is_cat_flag(Cat1::AttackLw4)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) {
+        let mut cont = true;
+        if fighter.global_table[0x59].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x59].get_ptr());
-            callable(fighter).get_bool()
-        } {
-            return 1.into();
+            cont = callable(fighter).get_bool();
         }
-        else {
+        if cont {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW4_START.into(), true.into());
             return 1.into();
         }
     }
 
     // DTilt cancel
-    if fighter.is_cat_flag(Cat1::AttackLw3) {
+    if fighter.global_table[0x55].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x55].get_ptr());
+        if callable(fighter).get_bool() {
+            return 1.into();
+        }
+    }
+    if fighter.is_cat_flag(Cat1::AttackLw3)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3) {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), true.into());
         return 1.into();
     }

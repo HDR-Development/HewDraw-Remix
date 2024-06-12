@@ -3,9 +3,13 @@ use globals::*;
 // status script import
 
 mod special_n;
+
 mod special_s;
 mod special_s_jump;
+
 mod special_hi;
+mod special_hi_upper;
+
 mod jump_squat;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -36,8 +40,12 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_n::install(agent);
+
     special_s::install(agent);
     special_s_jump::install(agent);
+
     special_hi::install(agent);
+    special_hi_upper::install(agent);
+
     jump_squat::install(agent);
 }
