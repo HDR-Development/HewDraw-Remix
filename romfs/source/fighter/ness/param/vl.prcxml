@@ -24,7 +24,7 @@
       <float hash="accel_y">-0.009</float>
       <float hash="speed_max_x">3.0</float>
       <float hash="speed_max_y">-0.5</float>
-      <float hash="power_min">6</float>
+      <float hash="power_min">8</float>
       <float hash="power_mul">0.2</float>
       <float hash="count">92</float>
       <float hash="size_min">1.05</float>
