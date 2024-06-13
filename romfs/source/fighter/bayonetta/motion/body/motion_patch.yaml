@@ -60,7 +60,7 @@ appeal_hi_l:
 attack_s4_s:
 attack_s3_s:
   extra:
-    cancel_frame: 46
+    cancel_frame: 48
 appeal_hi_r:
   extra:
     cancel_frame: 26

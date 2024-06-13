@@ -2252,7 +2252,7 @@
       <float hash="walk_speed_max">0.975</float>
       <float hash="ground_brake">0.069</float>
       <float hash="dash_speed">1.806</float>
-      <float hash="run_accel_mul">0.096</float>
+      <float hash="run_accel_mul">0.1</float>
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">1.65</float>
       <int hash="jump_squat_frame">4</int>
@@ -2281,6 +2281,7 @@
       <float hash="shield_radius">12.6</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="combo_attack_32_end">1</float>
       <float hash="combo_attack_33_end">1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
