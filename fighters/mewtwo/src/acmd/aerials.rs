@@ -109,9 +109,12 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("s_tail7"), 11.0, 361, 95, 0, 5, 3.8, -0.4, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 18.0);
-    MotionModule::set_rate(boma, (37.0 - 18.0) / 22.0);
+    MotionModule::set_rate(boma, (37.0 - 18.0) / 20.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 20.5);//3f after clear
+    if is_excute(agent) {
         HIT_NO(agent, 12, *HIT_STATUS_OFF);
         HIT_NO(agent, 13, *HIT_STATUS_OFF);
     }
@@ -156,7 +159,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    MotionModule::set_rate(boma, (10.0 - 1.0) / 7.0);
+    MotionModule::set_rate(boma, (7.0 - 1.0) / 3.67);
     frame(lua_state, 3.0);
     if is_excute(agent) {
         HIT_NO(agent, 12, *HIT_STATUS_NORMAL);
@@ -168,7 +171,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("s_tail2"), 10.0, 55, 92, 0, 13, 4.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(agent, 1, 0, Hash40::new("s_tail5"), 11.0, 55, 93, 0, 13, 4.1, 0.1, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(agent, 1, 0, Hash40::new("s_tail5"), 11.0, 55, 92, 0, 13, 4.1, 0.1, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         ATTACK(agent, 2, 0, Hash40::new("s_tail7"), 12.0, 55, 103, 0, 13, 3.7, -0.3, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 11.0);
@@ -181,7 +184,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         HIT_NO(agent, 12, *HIT_STATUS_OFF);
         HIT_NO(agent, 13, *HIT_STATUS_OFF);
@@ -211,7 +214,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
         };
         LAST_EFFECT_SET_RATE(agent, 1.1);
     }
-    frame(lua_state, 16.5);
+    frame(lua_state, 17.0);
     if is_excute(agent) {
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_01"), true, true);
         EffectModule::kill_kind(boma, Hash40::new("mewtwo_tail_attack_a_02"), true, true);
