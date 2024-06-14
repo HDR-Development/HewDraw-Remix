@@ -520,7 +520,9 @@ unsafe extern "C" fn game_aircatchlanding(agent: &mut L2CAgentBase) {
         ArticleModule::change_motion(boma, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("air_catch_landing"), false, -1.0);
     }
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 21.0, 13.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 15.0, 9.0);//10
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 20.0);
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
