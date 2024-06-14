@@ -52,8 +52,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             // landing transition
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                WorkModule::set_float(fighter.module_accessor, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
                 return 0.into();
             }
             special_lw_set_kinetic(fighter);
