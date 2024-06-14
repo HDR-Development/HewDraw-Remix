@@ -10,7 +10,7 @@ pub unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2A].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            WorkModule::set_float(boma, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
     }
