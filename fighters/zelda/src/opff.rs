@@ -72,7 +72,7 @@ unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_
                 EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
                 EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
                 WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
-                MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
+                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
             }
         }
         else if situation_kind == *SITUATION_KIND_AIR {
@@ -86,12 +86,11 @@ unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_
 }
 
 /// Handles land canceling when airborne
-unsafe fn dins_fire_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                WorkModule::set_float(boma, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
             }
         }
     }
@@ -171,7 +170,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma, frame);
-    dins_fire_cancels(fighter, boma);
+    dins_fire_cancels(boma);
     nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     phantom_special_cancel(fighter, boma);
     phantom_platdrop_effect(fighter, boma);
