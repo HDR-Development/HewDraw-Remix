@@ -37,7 +37,7 @@
   <float hash="shield_setoff_mul">0.55</float>
   <float hash="shield_setoff_mul_fighter_shot">0.5156</float>
   <float hash="shield_stiff_mul_attack_4">1</float>
-  <float hash="shield_stiff_mul_attack_air">1.35</float>
+  <float hash="shield_stiff_mul_attack_air">1</float>
   <float hash="shield_setoff_speed_mul">0.051</float>
   <float hash="shield_setoff_speed_max">1.2</float>
   <float hash="shield_rebound_ground_brake">1.15</float>
