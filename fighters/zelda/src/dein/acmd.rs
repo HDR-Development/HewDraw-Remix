@@ -11,9 +11,10 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
+			let tame_size = agent.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
 			// Generate and store effects
-			let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.6, false, 0, 0, 0, 0, 0, false, false);
-			let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), 1.0, false, 0, 0, 0, 0, 0, false, false);
+			let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.35 + 0.005 * tame_size, false, 0, 0, 0, 0, 0, false, false);
+			let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), 0.8 + 0.024 * tame_size, false, 0, 0, 0, 0, 0, false, false);
 			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH, flash_handle);
 			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle);
 		}
@@ -38,8 +39,8 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
 					let tame_size = agent.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
-					let flash_size = if h == 50 { 1.0 + 0.003 * tame_size } else if h == 80 { 1.0 + 0.0135 * tame_size } else if h == 112 { 1.0 + 0.0165 * tame_size } else { 1.0 + 0.021 * tame_size };
-					let fire_size = if h == 146 { 0.8 + 0.0037 * tame_size } else { 0.8 + 0.024 * tame_size };
+					let flash_size = if h == 50 { 0.45 + 0.01 * tame_size } else if h == 80 { 0.6 + 0.0145 * tame_size } else if h == 112 { 0.75 + 0.019 * tame_size } else { 0.9 + 0.023 * tame_size };
+					let fire_size = if h == 146 { 0.8 + 0.037 * tame_size } else { 0.8 + 0.024 * tame_size };
 					let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), flash_size, false, 0, 0, 0, 0, 0, false, false);
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
 					// Apply color blend
@@ -59,6 +60,16 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 	}
 }
 
+unsafe extern "C" fn sound_tame(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 141.0);//20 before hitbox
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_zelda_appeal_s01"));
+	}
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("effect_tame", effect_tame, Priority::Low);
+	agent.acmd("sound_tame", sound_tame, Priority::Low);
 }
