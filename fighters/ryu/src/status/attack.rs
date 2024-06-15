@@ -52,7 +52,8 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             if AttackModule::is_infliction_status(
                 fighter.module_accessor,
                 *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT,
-            ) {
+            )
+            && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
                 if ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
                     return 1.into();
                 }
@@ -65,7 +66,8 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             if AttackModule::is_infliction_status(
                 fighter.module_accessor,
                 *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT,
-            ) {
+            )
+            && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
                 if ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
                     return 1.into();
                 }

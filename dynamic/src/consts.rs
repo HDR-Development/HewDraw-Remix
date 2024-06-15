@@ -141,7 +141,6 @@ pub mod vars {
             pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0024; // Ness and Lucas use this
 
             pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
-            pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
 
             pub const STALL_PREVENTION: i32 = 0x0027; //Ness and Lucas down b stall prevention
 
@@ -287,6 +286,8 @@ pub mod vars {
 
             pub const FLOAT_INHERIT_AERIAL: i32 = 0x1000;
 
+            pub const IS_TELEPORT_WALL_RIDE: i32 = 0x1000; // Mewtwo, Palutena, Sheik, and Zelda use this
+
             pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x1050;
 
             // ints
@@ -297,6 +298,8 @@ pub mod vars {
             pub const FLOAT_ENABLE_UNIQ: i32 = 0x1001;
             pub const FLOAT_MTRANS: i32 = 0x1002;
 
+            pub const WARP_EFF_HANDLER: i32 = 0x1000;
+
             // floats
 
             pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
@@ -304,7 +307,8 @@ pub mod vars {
 
             pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
 
-            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
+            pub const TELEPORT_INITIAL_SPEED_X: i32 = 0x1000;
+            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1001;
         }
     }
 
@@ -1616,16 +1620,17 @@ pub mod vars {
     pub mod zelda {
         pub mod instance {
             // flags
-            pub const DEIN_ACTIVE: i32 = 0x0100;
-            pub const PHANTOM_HIT: i32 = 0x0101;
-            pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
+            pub const PHANTOM_HIT: i32 = 0x0100;
+            pub const FORWARD_PHANTOM: i32 = 0x0101;
+            pub const PHANTOM_DISABLED: i32 = 0x0102;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
-            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0101;
-            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0102;
-            pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
-            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0104;
+            pub const DEIN_OBJECT_ID_2: i32 = 0x0101;
+            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0102;
+            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0103;
+            pub const PHANTOM_EFF_HANDLER: i32 = 0x0104;
+            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0105;
         }
     }
 }
@@ -1729,3 +1734,6 @@ pub mod statuses {
         pub const SPECIAL_S_END: i32 = 0x1EB;
     }
 }
+
+// extra lua_consts
+pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);
