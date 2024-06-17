@@ -6,7 +6,8 @@ unsafe fn check_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
     || boma.is_in_hitlag() {
         return;
     }
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
     if !fighter.is_status_one_of(&[
@@ -50,7 +51,8 @@ unsafe fn magic_series_lucario(fighter: &mut L2CFighterCommon, boma: &mut Battle
     // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
     if CancelModule::is_enable_cancel(boma) 
     || boma.is_in_hitlag() 
-    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
     
@@ -122,8 +124,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     let cat4 = cat[3];
     // Level 1: Jab and Dash Attack Cancels
     if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for tilt attack inputs
             if boma.is_cat_flag(Cat1::AttackS3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
@@ -196,8 +205,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for smash attack inputs
             if boma.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
@@ -259,8 +275,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
 
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -309,8 +332,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
     // Aerial Cancels
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
+        if (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
+            && !boma.is_in_hitlag()
+        )
+        || (
+            AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+            && !boma.is_in_hitlag()
+        ) {
             // Check for jump inputs
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                 boma.check_jump_cancel(false, false);

@@ -41,6 +41,7 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
 
 unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag()
     && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_S3,

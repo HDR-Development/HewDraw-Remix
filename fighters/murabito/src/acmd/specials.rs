@@ -23,6 +23,23 @@ unsafe extern "C" fn game_speciallw1(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallw3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 6.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 36, 5.0, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 23, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 1, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 36, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 23, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+    }
+    frame(agent.lua_state_agent, 8.0);
+    if is_excute(agent) {
+        ATTACK(agent, 2, 0, Hash40::new("top"), 14.0, 361, 100, 0, 36, 5.0, 0.0, 5.5, 11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 23, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 3, 0, Hash40::new("top"), 14.0, 361, 100, 0, 36, 3.0, 0.0, 6.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 23, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+    }
+    frame(agent.lua_state_agent, 9.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
 unsafe extern "C" fn game_speciallw3hit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -48,6 +65,8 @@ unsafe extern "C" fn game_specialairlw3hit(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw1", game_speciallw1, Priority::Low);
     
+    agent.acmd("game_speciallw3", game_speciallw3, Priority::Low);
+    agent.acmd("game_specialairlw3", game_speciallw3, Priority::Low);
     agent.acmd("game_speciallw3hit", game_speciallw3hit, Priority::Low);
     agent.acmd("game_specialairlw3hit", game_specialairlw3hit, Priority::Low);
 }
