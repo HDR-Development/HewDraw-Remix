@@ -20,6 +20,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    FT_MOTION_RATE(agent, 16.0 / 21.0);
 }
 
 unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
