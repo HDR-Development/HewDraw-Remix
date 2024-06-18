@@ -16,11 +16,13 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 2.0);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 2, 2.0);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE_RANGE(agent, 9.0, 30.0, 16.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    FT_MOTION_RATE(agent, 16.0 / 21.0);
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {

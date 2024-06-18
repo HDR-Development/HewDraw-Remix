@@ -901,7 +901,7 @@
       <float hash="dive_speed_y">3.024</float>
       <float hash="weight">85</float>
       <float hash="landing_attack_air_frame_f">10</float>
-      <float hash="landing_attack_air_frame_h">9</float>
+      <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_n">10</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_lw">13</float>
