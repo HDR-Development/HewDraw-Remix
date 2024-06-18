@@ -278,6 +278,7 @@ bitflags! {
         const ShieldDrop = 0x2;
         const WallJumpLeft = 0x4;
         const WallJumpRight = 0x8;
+        const Parry = 0x10;
     }
 
     #[derive(Copy, Clone)]
@@ -400,6 +401,7 @@ impl FastShift for L2CFighterBase {
 pub trait BomaExt {
     // INPUTS
     unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T);
+    unsafe fn get_command_life<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> u8;
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -463,6 +465,7 @@ pub trait BomaExt {
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn dec_int(&mut self, what: i32);
     unsafe fn get_float(&mut self, what: i32) -> f32;
     unsafe fn get_int64(&mut self, what: i32) -> u64;
     unsafe fn is_flag(&mut self, what: i32) -> bool;
@@ -493,6 +496,11 @@ pub trait BomaExt {
         param: impl Hash40Ext,
     );
 
+    unsafe fn enable_transition_term(&mut self, arg2: i32);
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]);
+    unsafe fn unable_transition_term(&mut self, arg2: i32);
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]);
+
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity;
@@ -513,6 +521,8 @@ pub trait BomaExt {
     unsafe fn check_dash_cancel(&mut self) -> bool;
     // Checks for status and enables transition to wall jump
     unsafe fn check_wall_jump_cancel(&mut self) -> bool;
+    // Checks for parry
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
@@ -523,7 +533,6 @@ pub trait BomaExt {
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 
-    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -538,6 +547,19 @@ impl BomaExt for BattleObjectModuleAccessor {
         };
 
         crate::modules::InputModule::clear_commands(self.object(), cat, bits);
+    }
+
+    unsafe fn get_command_life<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> u8 {
+        let cat = fighter_pad_cmd_flag.into();
+        let (cat, bits) = match cat {
+            CommandCat::Cat1(cat) => (0, cat.bits()),
+            CommandCat::Cat2(cat) => (1, cat.bits()),
+            CommandCat::Cat3(cat) => (2, cat.bits()),
+            CommandCat::Cat4(cat) => (3, cat.bits()),
+            CommandCat::CatHdr(cat) => (4, cat.bits()),
+        };
+
+        return crate::modules::InputModule::get_command_life(self.object(), cat, bits);
     }
 
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
@@ -796,6 +818,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::get_int(self, what)
     }
 
+    unsafe fn dec_int(&mut self, what: i32) {
+        WorkModule::dec_int(self, what)
+    }
+
     unsafe fn get_float(&mut self, what: i32) -> f32 {
         WorkModule::get_float(self, what)
     }
@@ -872,6 +898,23 @@ impl BomaExt for BattleObjectModuleAccessor {
         let obj = obj.into();
         let field = field.into();
         WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn enable_transition_term(&mut self, arg2: i32) {
+        WorkModule::enable_transition_term(self, arg2)
+    }
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::enable_transition_term(self, *term);
+        }
+    }
+    unsafe fn unable_transition_term(&mut self, arg2: i32) {
+        WorkModule::unable_transition_term(self, arg2)
+    }
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::unable_transition_term(self, *term);
+        }
     }
 
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
@@ -1068,6 +1111,17 @@ impl BomaExt for BattleObjectModuleAccessor {
         false
     }
 
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue {
+        if self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME) != 0
+        || self.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD) {
+            return false.into();
+        }
+        if self.is_cat_flag(CatHdr::Parry) {
+            return true.into();
+        }
+        return false.into();
+    }
+
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
     ///
     /// # Arguments
@@ -1180,7 +1234,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             if AttackModule::is_infliction_status(
                 self,
                 *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) {
+            )
+            && !AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
                 crate::VarModule::inc_int(
                     self.object(),
                     crate::consts::vars::common::instance::HITFALL_BUFFER,
@@ -1317,29 +1372,6 @@ impl BomaExt for BattleObjectModuleAccessor {
         *((next + 0x8) as *const i32)
     }
 
-    unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { ControlModule::get_command_life_count_max(self) } as usize;
-        // actual parry button -- if this is in buffer, it's a parry
-        let parry_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Parry);
-        if parry_trigger_count < buffer {
-            return true;
-        }
-
-        let guard_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::Guard);
-        let guard_release_count = InputModule::get_release_count(self.object(), Buttons::Guard);
-        let is_guard_held = ControlModule::check_button_on(self, *CONTROL_PAD_BUTTON_GUARD);
-
-        // special checks for manual parry
-        // - manual parry button must be in the buffer window
-        // - manual parry button must have been pressed while shield was pressed/held
-        let parry_manual_trigger_count = InputModule::get_trigger_count(self.object(), Buttons::ParryManual);
-        if parry_manual_trigger_count < buffer 
-        && parry_manual_trigger_count <= guard_trigger_count
-        && (is_guard_held || parry_manual_trigger_count > guard_release_count) {
-            return true;
-        }
-        return false;
-    }
 }
 
 pub trait LuaUtil {

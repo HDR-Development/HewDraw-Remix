@@ -40,6 +40,9 @@ extern "Rust" {
     #[link_name = "InputModule__reset_trigger"]
     fn InputModule__reset_trigger(object: *mut BattleObject);
 
+    #[link_name = "InputModule__get_command_life"]
+    fn InputModule__get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8;
+
     #[link_name = "InputModule__is_persist"]
     fn InputModule__is_persist(object: *mut BattleObject) -> bool;
 
@@ -243,5 +246,16 @@ pub mod InputModule {
     /// * `object` - Owning `BattleObject` instance
     pub fn reset_trigger(object: *mut BattleObject) {
         unsafe { InputModule__reset_trigger(object) }
+    }
+
+    /// Returns the remaining valid frames of an input in the buffer
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `category` - Which command flag category the input is under (valid values are 0-3)
+    /// * `flag` - Which flag in the category you are checking hold buffer for
+    /// # Returns
+    /// The frame count until the input will no longer be valid
+    pub fn get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8 {
+        unsafe { InputModule__get_command_life(object, category, flag) }
     }
 }
