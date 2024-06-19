@@ -85,6 +85,7 @@ unsafe fn pk_thunder_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END) {
         if StatusModule::is_changing(fighter.module_accessor)
         && (VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI)
+        //&& VarModule::is_flag(fighter.object(), vars::ness::instance::IS_SPECIAL_HI_ATTACK)
         || ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_NESS_GENERATE_ARTICLE_PK_THUNDER)) {
             let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * 0.4, 0.0);
@@ -94,10 +95,12 @@ unsafe fn pk_thunder_cancel(fighter: &mut L2CFighterCommon) {
         && StatusModule::is_situation_changed(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
         }
-        if MotionModule::is_end(fighter.module_accessor)
-        && !fighter.is_prev_status_one_of(&[*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_AGAIN]) {
-            let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { *FIGHTER_STATUS_KIND_WAIT } else { *FIGHTER_STATUS_KIND_FALL };
-            fighter.change_status(status.into(), false.into());
+        if MotionModule::is_end(fighter.module_accessor) {
+            if (fighter.is_prev_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD) && VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI))
+            || !fighter.is_prev_status_one_of(&[*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_AGAIN, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD]) {
+                let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { *FIGHTER_STATUS_KIND_WAIT } else { *FIGHTER_STATUS_KIND_FALL };
+                fighter.change_status(status.into(), false.into());
+            }
         }
     }
 }

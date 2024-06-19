@@ -1,19 +1,5 @@
 use super::*;
 
-unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.2);
-}
-
-unsafe extern "C" fn game_specialairnstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.2);
-}
-
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -264,8 +250,6 @@ unsafe extern "C" fn effect_specialairlwend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
-    agent.acmd("game_specialairnstart", game_specialairnstart, Priority::Low);
     agent.acmd("game_specialnfire", acmd_stub, Priority::Low);
     agent.acmd("game_specialairnfire", acmd_stub, Priority::Low);
 
