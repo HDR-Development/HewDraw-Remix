@@ -72,13 +72,13 @@ special_air_lw_end:
     cancel_frame: 20
 special_n_fire:
   extra:
-    cancel_frame: 36
+    cancel_frame: 39
 special_n_end:
   extra:
     cancel_frame: 43
 special_air_n_fire:
   extra:
-    cancel_frame: 36
+    cancel_frame: 39
 special_air_n_end:
   extra:
     cancel_frame: 43
