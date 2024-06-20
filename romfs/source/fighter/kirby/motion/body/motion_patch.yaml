@@ -963,4 +963,4 @@ furafura_end:
     cancel_frame: 10
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb

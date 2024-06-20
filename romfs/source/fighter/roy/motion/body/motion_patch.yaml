@@ -239,4 +239,4 @@ special_air_s4_back:
       no_stop_intp: false
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb

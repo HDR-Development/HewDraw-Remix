@@ -89,4 +89,4 @@ appeal_lw_l:
     cancel_frame: 80
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb

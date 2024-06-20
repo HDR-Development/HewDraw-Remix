@@ -55,4 +55,4 @@ throw_lw:
     cancel_frame: 31
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb
