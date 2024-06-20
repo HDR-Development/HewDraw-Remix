@@ -97,6 +97,11 @@ unsafe fn status_ShieldBreakFly_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         return true.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
+        WorkModule::set_flag(
+            fighter.module_accessor,
+            MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("down_spot_u")),
+            *FIGHTER_STATUS_DOWN_FLAG_UP
+        );
         fighter.change_status(FIGHTER_STATUS_KIND_FURAFURA_STAND.into(), true.into());
         return true.into();
     }

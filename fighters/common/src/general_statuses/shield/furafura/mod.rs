@@ -6,6 +6,7 @@ use super::*;
 unsafe fn status_FuraFura(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("furafura"), 0.0, 1.0, false, 0.0, false, false);
     ControlModule::end_clatter_motion_rate(fighter.module_accessor);
+    ControlModule::end_clatter(fighter.module_accessor, 0);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_FuraFura_Main as *const () as _))
 }
 
@@ -20,15 +21,15 @@ unsafe fn status_FuraFura_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("furafura"), 0.0, 1.0, false, 0.0, false, false);
     }
 
-    // let lerp_start = 0.0;
-    // let lerp_end = 100.0;
-    // let lerp_min = 1.0;
-    // let lerp_max = 2.0;
-    // let damage = DamageModule::damage(fighter.module_accessor, 0).clamp(lerp_start, lerp_end);
-    // let ratio = (damage - lerp_start) / (lerp_end - lerp_start);
-    // let end_mul = Lerp::lerp(&lerp_min, &lerp_max, &ratio);
-    let end_frame = dbg!(fighter.get_param_float("common", "furafura_frame"));
-    if fighter.status_frame() as f32 >= end_frame {
+    let lerp_start = 25.0_f64;
+    let lerp_end = 125.0_f64;
+    let lerp_min = 1.0_f64;
+    let lerp_max = 2.0_f64;
+    let damage = DamageModule::damage(fighter.module_accessor, 0) as f64;
+    let lerp_scalar = (damage - lerp_start) / (lerp_end - lerp_start);
+    let end_mul = dbg!(lerp_min.lerp(&lerp_max, &lerp_scalar).clamp(lerp_min, lerp_max));
+    let end_frame = fighter.get_param_float("common", "furafura_frame") as f64;
+    if fighter.status_frame() as f64 >= end_frame * end_mul {
         fighter.change_status(FIGHTER_STATUS_KIND_FURAFURA_END.into(), false.into());
         return false.into();
     }
