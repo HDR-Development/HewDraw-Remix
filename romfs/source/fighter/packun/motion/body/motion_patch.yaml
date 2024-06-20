@@ -292,3 +292,6 @@ appeal_hi_2:
     xlu_end: 0
     cancel_frame: 17
     no_stop_intp: false
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb

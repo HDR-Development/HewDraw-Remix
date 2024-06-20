@@ -181,3 +181,6 @@ special_air_n_end_f:
 special_n_end_f:
   extra:
     cancel_frame: 48
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb

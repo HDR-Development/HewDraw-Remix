@@ -96,3 +96,6 @@ air_catch_landing:
 furafura_end:
   extra:
     cancel_frame: 10
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb

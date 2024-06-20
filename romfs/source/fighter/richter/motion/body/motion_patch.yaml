@@ -168,3 +168,6 @@ special_air_hi:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
