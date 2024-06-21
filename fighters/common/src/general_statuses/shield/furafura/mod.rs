@@ -24,11 +24,13 @@ unsafe fn status_FuraFura_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lerp_start = 25.0_f64;
     let lerp_end = 125.0_f64;
     let lerp_min = 1.0_f64;
-    let lerp_max = 2.0_f64;
+    let lerp_max = 5.0_f64 / 3.0_f64;
     let damage = DamageModule::damage(fighter.module_accessor, 0) as f64;
     let lerp_scalar = (damage - lerp_start) / (lerp_end - lerp_start);
-    let end_mul = dbg!(lerp_min.lerp(&lerp_max, &lerp_scalar).clamp(lerp_min, lerp_max));
+    let end_mul = lerp_min.lerp(&lerp_max, &lerp_scalar).clamp(lerp_min, lerp_max);
     let end_frame = fighter.get_param_float("common", "furafura_frame") as f64;
+    let motion_rate = 1.5 / end_mul;
+    MotionModule::set_rate(fighter.module_accessor, motion_rate as f32);
     if fighter.status_frame() as f64 >= end_frame * end_mul {
         fighter.change_status(FIGHTER_STATUS_KIND_FURAFURA_END.into(), false.into());
         return false.into();
