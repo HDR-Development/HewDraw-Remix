@@ -14,6 +14,7 @@ unsafe fn status_FuraFura(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_FuraFura_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        ControlModule::clear_command(fighter.module_accessor, true);
         return true.into();
     }
 
