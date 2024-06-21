@@ -67,6 +67,8 @@ unsafe fn sub_status_shield_break_fly_common(fighter: &mut L2CFighterCommon, arg
 
     if arg1.get_bool(){
         SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guardbreak"), true, false, false, false, enSEType(0));
+        SlowModule::set_whole(fighter.module_accessor, 8, 25);
+        EffectModule::req_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), false, true, true);
     }
 
     let shield_break_xlu_frame = fighter.get_param_int("common", "shield_break_xlu_frame");
@@ -96,6 +98,11 @@ unsafe fn status_ShieldBreakFly_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return true.into();
     }
+
+    if dbg!(fighter.status_frame()) == 8 {
+        EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
+    }
+
     if MotionModule::is_end(fighter.module_accessor) {
         WorkModule::set_flag(
             fighter.module_accessor,
