@@ -35,7 +35,8 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
             FT_DESIRED_RATE(agent, 17.0, 7.0);
         }
     }
