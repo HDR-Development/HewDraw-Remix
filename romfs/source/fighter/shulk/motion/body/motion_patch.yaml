@@ -150,7 +150,7 @@ catch:
     cancel_frame: 36
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 shield_break_fly:
   animations:
     - name: f04downspotd.nuanmb

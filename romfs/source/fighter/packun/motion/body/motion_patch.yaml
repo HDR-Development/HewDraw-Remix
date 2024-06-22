@@ -261,7 +261,7 @@ attack_s3_s_a:
     no_stop_intp: false
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 appeal_hi_2:
   game_script: game_appealhi2
   flags:

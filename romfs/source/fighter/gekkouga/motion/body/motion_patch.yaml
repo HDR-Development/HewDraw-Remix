@@ -80,7 +80,7 @@ special_air_lw:
     xlu_end: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 appeal_lw_r:
   extra:
     cancel_frame: 80
