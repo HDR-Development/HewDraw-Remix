@@ -1,14 +1,14 @@
 use super::*;
 
-unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
-    let boma = agent.boma();
-    let is_csticking = ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
-    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_BUDDY
-    && (is_csticking) {
-        return true;
-    }
-    return false;
-}
+// unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
+//    let boma = agent.boma();
+//    let is_csticking = ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+//    if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_BUDDY
+//    && (is_csticking) {
+//        return true;
+//    }
+//    return false;
+//}
 
 // Normals
 unsafe extern "C" fn game_buddyattacks3(agent: &mut L2CAgentBase) {
