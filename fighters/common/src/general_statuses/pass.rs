@@ -1,21 +1,36 @@
 use super::*;
 use globals::*;
 
-pub fn install() {
-    skyline::nro::add_hook(nro_hook);
-}
-
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            status_pass_common,
-            status_Pass_Main_sub_hook,
-        );
-    }
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Pass)]
+unsafe extern "C" fn status_pre_Pass(fighter: &mut L2CFighterCommon) {
+	StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        true,
+        0,
+        (*FIGHTER_STATUS_ATTR_DISABLE_GROUND_FRICTION) as u32,
+        0,
+        0
+    );
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Pass_common)]
-unsafe extern "C" fn status_pass_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_Pass_common(fighter: &mut L2CFighterCommon) {
     fighter.sub_air_check_fall_common_pre();
     let transitions = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
@@ -45,7 +60,7 @@ unsafe extern "C" fn status_pass_common(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Pass_Main_sub)]
-pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2CValue) -> L2CValue {
+unsafe fn status_Pass_Main_sub(fighter: &mut L2CFighterCommon, arg1: L2CValue) -> L2CValue {
     let pass_frame = fighter.get_int(*FIGHTER_STATUS_PASS_WORK_INT_FRAME);
     if pass_frame == 0 {
         if !fighter.is_flag(*FIGHTER_STATUS_PASS_FLAG_IS_SET_PASS) {
@@ -158,4 +173,49 @@ pub unsafe fn status_Pass_Main_sub_hook(fighter: &mut L2CFighterCommon, arg1: L2
         return 1.into();
     }
     return 0.into();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_set_pass)]
+unsafe extern "C" fn sub_set_pass(fighter: &mut L2CFighterCommon) {
+    ControlModule::reset_flick_y(fighter.module_accessor);
+    ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    fighter.global_table[FLICK_Y].assign(&0xFE.into());
+
+    GroundModule::pass_floor(fighter.module_accessor);
+    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
+    let prev_situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+    fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(prev_situation_kind));
+    fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+
+    let pass_speed_y = fighter.get_param_float("common", "pass_speed_y");
+    KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(0.0, pass_speed_y, 0.0));
+
+    // if entering platdrop with more than max horizontal air speed
+    // multiply horizontal speed by horizontal jump speed multiplier
+    // then clamp it to between max horizontal air speed and 1.8 times max horizontal air speed
+    let curr_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
+    if curr_speed_x.abs() > air_speed_x_stable {
+        let jump_speed_x_mul = fighter.get_param_float("jump_speed_x_mul", "");
+        let new_speed_x = (curr_speed_x.abs() * jump_speed_x_mul).clamp(air_speed_x_stable, 1.8 * air_speed_x_stable) * curr_speed_x.signum();
+        let adjust_speed_x = (new_speed_x - curr_speed_x) * PostureModule::lr(fighter.module_accessor);
+        KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(adjust_speed_x, 0.0, 0.0));
+    }
+
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            status_pre_Pass,
+            status_Pass_common,
+            status_Pass_Main_sub,
+            sub_set_pass
+        );
+    }
+}
+
+pub fn install() {
+    skyline::nro::add_hook(nro_hook);
 }
