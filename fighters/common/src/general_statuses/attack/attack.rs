@@ -203,8 +203,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
                 let attack_100_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
                 let attack_100_enable_cnt = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_100_enable_cnt"), 0);
                 // let attack_100_enable_cnt = 2;
-                // if attack_100_enable_cnt <= attack_100_count {
-                if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                if attack_100_enable_cnt <= attack_100_count {
                     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());
                         return 1.into();
