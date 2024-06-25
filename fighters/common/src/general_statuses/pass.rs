@@ -6,7 +6,7 @@ unsafe extern "C" fn status_pre_Pass(fighter: &mut L2CFighterCommon) {
 	StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *FIGHTER_KINETIC_TYPE_GROUND_STOP,
         *GROUND_CORRECT_KIND_KEEP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
@@ -23,7 +23,7 @@ unsafe extern "C" fn status_pre_Pass(fighter: &mut L2CFighterCommon) {
         false,
         true,
         0,
-        (*FIGHTER_STATUS_ATTR_DISABLE_GROUND_FRICTION) as u32,
+        0,
         0,
         0
     );
@@ -32,30 +32,25 @@ unsafe extern "C" fn status_pre_Pass(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = L2CFighterCommon_status_Pass_common)]
 unsafe extern "C" fn status_Pass_common(fighter: &mut L2CFighterCommon) {
     fighter.sub_air_check_fall_common_pre();
-    let transitions = [
+    fighter.enable_transition_term_many(&[
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
-    ];
-    for val in transitions.iter() {
-        WorkModule::enable_transition_term(fighter.module_accessor, *val);
-    }
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("pass"),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    ]);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("pass"), 0.0, 1.0, false, 0.0, false, false);
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_fall_common_uniq(false.into());
     }
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_fall_common_uniq as *const () as _));
 }
 
@@ -197,12 +192,11 @@ unsafe extern "C" fn sub_set_pass(fighter: &mut L2CFighterCommon) {
     let curr_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
     let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
     if curr_speed_x.abs() > air_speed_x_stable {
-        let jump_speed_x_mul = fighter.get_param_float("jump_speed_x_mul", "");
-        let new_speed_x = (curr_speed_x.abs() * jump_speed_x_mul).clamp(air_speed_x_stable, 1.8 * air_speed_x_stable) * curr_speed_x.signum();
+        let jump_speed_x_mul = fighter.get_param_float("jump_speed_x_mul", "").sqrt(); // normalized
+        let new_speed_x = (curr_speed_x.abs() * jump_speed_x_mul).clamp(air_speed_x_stable, air_speed_x_stable * 1.7) * curr_speed_x.signum();
         let adjust_speed_x = (new_speed_x - curr_speed_x) * PostureModule::lr(fighter.module_accessor);
         KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(adjust_speed_x, 0.0, 0.0));
     }
-
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
