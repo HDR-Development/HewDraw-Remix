@@ -5,6 +5,7 @@ mod ganon;
 mod lucario;
 mod ptrainer;
 mod littlemac;
+mod gekkouga;
 mod reflet;
 mod rockman;
 mod krool;
@@ -16,6 +17,7 @@ pub fn install() {
     lucario::install();
     ptrainer::install();
     littlemac::install();
+    gekkouga::install();
     reflet::install();
     rockman::install();
     krool::install();

@@ -45,4 +45,16 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_doll_log">
+    <struct index="0">
+      <float hash="speed_y">2.0</float>
+      <float hash="accel_y">0.1</float>
+      <float hash="smash_max_speed_x">2.0</float>
+      <float hash="smash_max_speed_y">2.0</float>
+      <float hash="smash_accel_y">0.1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>
