@@ -193,8 +193,9 @@ unsafe extern "C" fn sub_set_pass(fighter: &mut L2CFighterCommon) {
     let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
     if curr_speed_x.abs() > air_speed_x_stable {
         let jump_speed_x_mul = fighter.get_param_float("jump_speed_x_mul", "").sqrt(); // normalized
-        let new_speed_x = (curr_speed_x.abs() * jump_speed_x_mul).clamp(air_speed_x_stable, air_speed_x_stable * 1.7) * curr_speed_x.signum();
-        let adjust_speed_x = (new_speed_x - curr_speed_x) * PostureModule::lr(fighter.module_accessor);
+        let pass_air_speed_x_max_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "pass_air_speed_x_max_mul");
+        let new_speed_x = (curr_speed_x.abs() * jump_speed_x_mul).clamp(air_speed_x_stable, dbg!(air_speed_x_stable * pass_air_speed_x_max_mul)) * curr_speed_x.signum();
+        let adjust_speed_x = (dbg!(new_speed_x) - curr_speed_x) * PostureModule::lr(fighter.module_accessor);
         KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(adjust_speed_x, 0.0, 0.0));
     }
 }
