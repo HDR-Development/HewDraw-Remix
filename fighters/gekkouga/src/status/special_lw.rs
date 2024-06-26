@@ -86,13 +86,22 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     special_lw_sub_helper(fighter);
 
     if VarModule::get_int(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_VANISH_TIMER) == 0 {
-        // let status = if VarModule::is_flag(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_TELEPORT_OK) {
-        //     *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_ATTACK
-        // }
-        // else {
-        //     statuses::gekkouga::SPECIAL_LW_JUMP
-        // };
-        // fighter.change_status(status.into(), false.into());
+        let eff = EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("gekkouga_migawari_smoke"),
+            Hash40::new("top"),
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            1.0,
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            false,
+            0,
+            0,
+            0
+        ) as u32;
+        EffectModule::set_rate(fighter.module_accessor, eff, 2.0);
+
         fighter.change_status(statuses::gekkouga::SPECIAL_LW_JUMP.into(), false.into());
     }
     0.into()

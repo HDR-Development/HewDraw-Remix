@@ -24,13 +24,6 @@ unsafe extern "C" fn game_speciallwjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_speciallwjump(agent: &mut L2CAgentBase) {
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("gekkouga_migawari_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
-    }
-}
-
 unsafe extern "C" fn sound_speciallwjump(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_gekkouga_jump01"));
@@ -41,6 +34,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
 
     agent.acmd("game_speciallwjump", game_speciallwjump, Priority::Low);
-    agent.acmd("effect_speciallwjump", effect_speciallwjump, Priority::Low);
     agent.acmd("sound_speciallwjump", sound_speciallwjump, Priority::Low);
 }
