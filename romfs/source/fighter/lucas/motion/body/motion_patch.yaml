@@ -115,4 +115,7 @@ throw_f:
     cancel_frame: 43
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
