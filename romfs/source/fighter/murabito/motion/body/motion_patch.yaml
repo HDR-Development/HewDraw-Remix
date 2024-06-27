@@ -36,7 +36,7 @@ fall_special:
   blend_frames: 5
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 guard_off:
   blend_frames: 4
   extra:
@@ -53,6 +53,9 @@ throw_hi:
 throw_lw:
   extra:
     cancel_frame: 31
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
 step_pose_back:
   extra:
     cancel_frame: 6

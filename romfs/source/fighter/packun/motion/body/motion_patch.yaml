@@ -261,7 +261,7 @@ attack_s3_s_a:
     no_stop_intp: false
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 appeal_hi_2:
   game_script: game_appealhi2
   flags:
@@ -292,6 +292,9 @@ appeal_hi_2:
     xlu_end: 0
     cancel_frame: 17
     no_stop_intp: false
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
 step_pose_back:
   extra:
     cancel_frame: 6

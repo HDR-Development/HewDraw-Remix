@@ -159,6 +159,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
 unsafe fn status_guard_damage_main_common_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
+        ControlModule::clear_command(fighter.module_accessor, true);
         return true.into();
     }
     return false.into();
