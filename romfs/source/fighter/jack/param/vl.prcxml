@@ -19,12 +19,14 @@
     </struct>
   </list>
   <struct hash="param_private">
+    <float hash="rebel_gauge_add">0</float>
     <float hash="rebel_gauge_damage_add">0</float>
     <float hash="rebel_gauge_damage_add_handi">0</float>
     <float hash="rebel_gauge_add_dead">1</float>
     <int hash="doyle_frame">1200</int>
     <float hash="rebel_gauge_keep_ratio">0</float>
     <float hash="rebel_gauge_add_handi_mul">0</float>
+    <int hash="summon_dispatch_xlu_frame">0</int>
   </struct>
   <list hash="rebel_gauge_damage_rate">
     <float index="0">12</float>

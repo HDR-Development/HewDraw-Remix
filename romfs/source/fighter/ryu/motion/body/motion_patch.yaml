@@ -144,7 +144,7 @@ fall_special:
   blend_frames: 5
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 guard_off:
   blend_frames: 4
   extra:
@@ -256,3 +256,6 @@ special_s_end:
 throw_lw:
   extra:
     cancel_frame: 41
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
