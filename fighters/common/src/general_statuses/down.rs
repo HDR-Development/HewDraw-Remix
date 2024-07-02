@@ -84,6 +84,7 @@ unsafe fn sub_down_wait_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         } else {
             Hash40::new("down_wait_u")
         };
+        MotionModule::change_motion(fighter.module_accessor, down_motion, 0.0, 1.0, false, 0.0, false, false);
     }
 
     if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) 
