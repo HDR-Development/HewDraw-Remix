@@ -7,6 +7,26 @@ unsafe extern "C" fn game_specialnend1(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 5.0);
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        if ArticleModule::is_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND) {
+            let article = ArticleModule::get_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND);
+            let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let article_boma = &mut (*sv_battle_object::module_accessor(object_id));
+            use interpolation::Lerp;
+            let base_damage = 10.0 as f32;
+            let max_damage = 20.0 as f32;
+            let base_size = 5.5 as f32;
+            let max_size = 6.5 as f32;
+            let lerp = WorkModule::get_float(article_boma, *WEAPON_KAMUI_DRAGONHAND_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
+            let damage = Lerp::lerp(&base_damage, &max_damage, &lerp);
+            let size = Lerp::lerp(&base_size, &max_size, &lerp);
+            ATTACK(agent, 0, 0, Hash40::new("havel"), damage, 50, 100, 0, 50, size, 0.0, -3.0, 0.0, Some(0.0), Some(3.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
     frame(lua_state, 17.0);
     FT_MOTION_RATE_RANGE(agent, 17.0, 45.0, 19.0);
     if is_excute(agent) {
@@ -15,6 +35,50 @@ unsafe extern "C" fn game_specialnend1(agent: &mut L2CAgentBase) {
     frame(lua_state, 50.0);
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn game_specialnend2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.4);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.0);
+        if ArticleModule::is_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND) {
+            let article = ArticleModule::get_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND);
+            let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let article_boma = &mut (*sv_battle_object::module_accessor(object_id));
+            use interpolation::Lerp;
+            let base_damage = 10.0 as f32;
+            let max_damage = 20.0 as f32;
+            let base_size = 5.5 as f32;
+            let max_size = 6.5 as f32;
+            let lerp = WorkModule::get_float(article_boma, *WEAPON_KAMUI_DRAGONHAND_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
+            let damage = Lerp::lerp(&base_damage, &max_damage, &lerp);
+            let size = Lerp::lerp(&base_size, &max_size, &lerp);
+            if WorkModule::is_flag(article_boma, *WEAPON_KAMUI_DRAGONHAND_INSTANCE_WORK_ID_FLAG_IS_KAMUI) {
+                ATTACK(agent, 0, 0, Hash40::new("top"), damage, 50, 100, 0, 50, size, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            }
+            else {
+                ATTACK(agent, 0, 0, Hash40::new("top"), damage, 50, 100, 0, 50, size, 0.0, 8.9, 22.0, Some(0.0), Some(8.9), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+            }
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_N_FLAG_AIR_CONTROL);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(agent) {
+        ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -369,6 +433,8 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend1", game_specialnend1, Priority::Low);
     agent.acmd("game_specialairnend1", game_specialnend1, Priority::Low);
+    agent.acmd("game_specialnend2", game_specialnend2, Priority::Low);
+    agent.acmd("game_specialairnend2", game_specialnend2, Priority::Low);
 
     agent.acmd("game_specialsattack", game_specialsattack, Priority::Low);
     agent.acmd("game_specialairsattack", game_specialairsattack, Priority::Low);

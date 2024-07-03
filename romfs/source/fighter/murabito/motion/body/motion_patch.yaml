@@ -56,3 +56,6 @@ throw_lw:
 shield_break_fly:
   animations:
     - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6
