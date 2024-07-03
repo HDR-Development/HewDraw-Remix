@@ -85,11 +85,37 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
+    let doll_id = super::status::special_lw::gekkouga_get_sub_id(fighter.battle_object);
+    if sv_battle_object::is_active(doll_id) {
+        let doll_module_accessor = sv_battle_object::module_accessor(doll_id);
+
+        let pos_x = PostureModule::pos_x(fighter.module_accessor);
+        let pos_y = PostureModule::pos_y(fighter.module_accessor);
+        let doll_pos_x = PostureModule::pos_x(doll_module_accessor);
+        let doll_pos_y = PostureModule::pos_y(doll_module_accessor);
+        // println!("Greninja Pos: {}, {}", pos_x, pos_y);
+        // println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
+
+        let mut angle = (doll_pos_y - pos_y).atan2(doll_pos_x - pos_x).to_degrees();
+        // println!("angle: {}", angle);
+        let distance = sv_math::vec2_distance(pos_x, pos_y, doll_pos_x, doll_pos_y);
+        // println!("distance: {}", distance);
+
+        let can_teleport = distance <= 80.0;
+        VarModule::set_flag(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_CAN_TELEPORT, can_teleport);
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_CAN_TELEPORT);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
     shadow_sneak_smash_attack_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //dair_jc(boma, situation_kind, cat[0], motion_kind, frame);
     fastfall_specials(fighter);
+    substitute_teleport_check(fighter);
 }
 
 pub extern "C" fn gekkouga_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

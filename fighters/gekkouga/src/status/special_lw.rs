@@ -1,7 +1,7 @@
 use super::*;
 
 #[no_mangle]
-unsafe extern "C" fn gekkouga_get_sub_id(battle_object: *mut BattleObject) -> u32 {
+pub unsafe extern "C" fn gekkouga_get_sub_id(battle_object: *mut BattleObject) -> u32 {
     let sub_const = if VarModule::is_flag(battle_object, vars::gekkouga::instance::SPECIAL_LW_IS_DOLL) {
         0x100000C2
     }
@@ -49,9 +49,11 @@ unsafe extern "C" fn special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_SAVE_SPEED);
     let doll_id = gekkouga_get_sub_id(fighter.battle_object);
-    if VarModule::get_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_SUMMON_SUB_COOLDOWN) <= 0
-    && !sv_battle_object::is_active(doll_id) {
+    if !sv_battle_object::is_active(doll_id) {
         VarModule::on_flag(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_SPAWN_SUB);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_CAN_TELEPORT) {
+        VarModule::on_flag(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_TELEPORT_OK);
     }
     VarModule::set_int(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_VANISH_TIMER, 15);
     MotionModule::change_motion(
@@ -85,7 +87,8 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_lw_sub_helper(fighter);
 
-    if VarModule::get_int(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_VANISH_TIMER) == 0 {
+    let vanish_timer = VarModule::get_int(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_VANISH_TIMER);
+    if vanish_timer == 1 {
         let eff = EffectModule::req_on_joint(
             fighter.module_accessor,
             Hash40::new("gekkouga_migawari_smoke"),
@@ -101,7 +104,8 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             0
         ) as u32;
         EffectModule::set_rate(fighter.module_accessor, eff, 2.0);
-
+    }
+    else if vanish_timer == 0 {
         fighter.change_status(statuses::gekkouga::SPECIAL_LW_JUMP.into(), false.into());
     }
     0.into()

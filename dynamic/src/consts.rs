@@ -663,6 +663,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_LW_IS_DOLL: i32 = 0x0100;
+            pub const SPECIAL_LW_CAN_TELEPORT: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_LW_SUMMON_SUB_COOLDOWN: i32 = 0x0100;

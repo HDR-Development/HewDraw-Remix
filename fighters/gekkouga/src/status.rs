@@ -1,6 +1,6 @@
 use super::*;
 
-mod special_lw;
+pub mod special_lw;
 mod special_lw_jump;
 
 unsafe extern "C" fn gekkouga_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
