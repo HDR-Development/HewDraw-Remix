@@ -51,11 +51,24 @@ unsafe fn sub_status_shield_break_fly_common(fighter: &mut L2CFighterCommon, arg
     
     // fighter.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHECK_DEAD_AREA_FORCE);
     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-    
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("damage_hi_1"), 0.0, 1.0, false, 0.0, false, false);
+
+    let shield_break_motion = Hash40::new("shield_break_fly");
+    let start_frame = 3.0;
+    let mut end_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, shield_break_motion, true);
+    if end_frame == 0.0 {
+        end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, shield_break_motion);
+    }
+    if end_frame > start_frame {
+        end_frame -= start_frame;
+    }
+    let desired_end_frame = 30.0;
+    let rate = end_frame / desired_end_frame;
+    MotionModule::change_motion(fighter.module_accessor, shield_break_motion, start_frame, rate, false, 0.0, false, false);
 
     if arg1.get_bool(){
         SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guardbreak"), true, false, false, false, enSEType(0));
+        SlowModule::set_whole(fighter.module_accessor, 8, 25);
+        EffectModule::req_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), false, true, true);
     }
 
     let shield_break_xlu_frame = fighter.get_param_int("common", "shield_break_xlu_frame");
@@ -83,40 +96,22 @@ unsafe fn status_ShieldBreakFly_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     }
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        ControlModule::clear_command(fighter.module_accessor, true);
         return true.into();
     }
+
+    if dbg!(fighter.status_frame()) == 8 {
+        EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
+    }
+
     if MotionModule::is_end(fighter.module_accessor) {
-        let next_status = if fighter.is_cat_flag(Cat2::DownToDownStandFB) { FIGHTER_STATUS_KIND_DOWN_STAND_FB} else { FIGHTER_STATUS_KIND_DOWN_STAND };
-        fighter.change_status(next_status.into(), true.into());
+        WorkModule::set_flag(
+            fighter.module_accessor,
+            MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("down_spot_u")),
+            *FIGHTER_STATUS_DOWN_FLAG_UP
+        );
+        fighter.change_status(FIGHTER_STATUS_KIND_FURAFURA_STAND.into(), true.into());
         return true.into();
-    }
-
-    if !fighter.is_motion_one_of(&[Hash40::new("down_spot_d"), Hash40::new("down_spot_u")]) {
-        let shield_break_motion = if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("down_spot_d")) {
-            fighter.off_flag(*FIGHTER_STATUS_DOWN_FLAG_UP);
-            Hash40::new("down_spot_d")
-        } else {
-            fighter.on_flag(*FIGHTER_STATUS_DOWN_FLAG_UP);
-            Hash40::new("down_spot_u")
-        };
-
-        let start_frame = 3.0;
-        let mut end_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, shield_break_motion, true);
-        if end_frame == 0.0 {
-            end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, shield_break_motion);
-        }
-        if end_frame > start_frame {
-            end_frame -= start_frame;
-        }
-        let desired_end_frame = fighter.get_param_float("common", "furafura_frame");
-        let rate = (2.0 * end_frame) / ((5.0 * desired_end_frame) - (3.0 * end_frame)); // doing maths because we speed the motion up midway through to make it look good
-        MotionModule::change_motion(fighter.module_accessor, shield_break_motion, start_frame, rate, false, 0.0, false, false);
-        // smash_script::macros::PLAY_STATUS(fighter, Hash40::new("se_common_dizzy"));
-        return false.into();
-    } else {
-        if fighter.motion_frame() >= MotionModule::end_frame(fighter.module_accessor) * 2.0 / 5.0 {
-            MotionModule::set_rate(fighter.module_accessor, 1.0);
-        }
     }
 
     return false.into();

@@ -84,6 +84,8 @@ unsafe fn FighterStatusUniqProcessGuardDamage_leave_stop(
     arg1: L2CValue,
     arg2: L2CValue
 ) -> L2CValue {
+    fighter.FighterStatusGuard__check_hit_stop_delay(true.into());
+
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_damage2"), false, false);
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_damage3"), false, false);
 

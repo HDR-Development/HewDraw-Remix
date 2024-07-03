@@ -700,6 +700,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1100;
+            pub const IS_QUICK_DRAW_GROUND: i32 = 0x1101;
         }
     }
 

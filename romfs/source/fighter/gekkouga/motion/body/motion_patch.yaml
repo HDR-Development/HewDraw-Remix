@@ -111,10 +111,16 @@ special_lw_jump:
     freeze_during_hitstop: false
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 appeal_lw_r:
   extra:
     cancel_frame: 80
 appeal_lw_l:
   extra:
     cancel_frame: 80
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

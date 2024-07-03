@@ -42,7 +42,7 @@ unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 14, 2, 5, 165, 0.95, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 9, 2, 5, 165, 0.95, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
 }
@@ -90,7 +90,7 @@ unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -3, 13.5, 14.5, 32, 6, -192, 0.9, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 13.5, 5, 30, 0, 195, 1, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
 }
@@ -138,7 +138,7 @@ unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 11, -15, 0, 195, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 6, -15, 0, 195, 1, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
 }
@@ -175,7 +175,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 11, -5, 1.7, -39, -92, 1.65, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 11, -4, 1.7, -39, -92, 1.65, true);
         LAST_EFFECT_SET_RATE(agent, 1);
     }
     frame(lua_state, 18.0);

@@ -55,16 +55,6 @@ unsafe extern "C" fn expression_landingheavy(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 0.0);
-    if is_excute(agent) {
-        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_XLU);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
-    }
     frame(lua_state, 16.0);
     if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
