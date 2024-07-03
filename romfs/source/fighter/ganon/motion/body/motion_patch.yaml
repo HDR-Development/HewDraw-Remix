@@ -64,7 +64,7 @@ attack_11:
   flags:
     move: true
   extra:
-    cancel_frame: 25
+    cancel_frame: 30
 attack_lw3:
   extra:
     cancel_frame: 32
@@ -281,3 +281,6 @@ furafura_end:
 shield_break_fly:
   animations:
     - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

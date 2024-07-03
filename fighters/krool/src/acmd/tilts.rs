@@ -170,16 +170,16 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         if WorkModule::get_float(boma, 0x4d) >= 1.0 {
             WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
         }
+        HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(agent, 1.0);
-    if is_excute(agent) {
-        HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-    }
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
+        HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
         let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
         let damage = 0.15 * (charge as f32);
         let hitlag = 1.0 + 0.025 * (charge as f32);

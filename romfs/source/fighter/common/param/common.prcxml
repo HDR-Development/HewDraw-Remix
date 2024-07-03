@@ -47,7 +47,7 @@
   <float hash="0x2cacbf2a63">12</float>
   <float hash="just_shield_speed_rate">0.00</float>
   <float hash="shield_reset">30</float>
-  <int hash="shield_setoff_escape">999</int>
+  <int hash="shield_setoff_escape">10</int>
   <float hash="0x20d241cd64">0.85</float>
   <int hash="guard_damage_just_shield_disable_frame">1</int>
   <int hash="shield_break_xlu_frame">30</int>

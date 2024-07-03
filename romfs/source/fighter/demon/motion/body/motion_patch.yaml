@@ -14,12 +14,17 @@ guard_off:
     cancel_frame: 12
 attack_rage_drive:
   extra:
-      xlu_start: 0
-      xlu_end: 0
+    xlu_start: 0
+    xlu_end: 0
 attack_air_rage_drive:
   extra:
-      xlu_start: 0
-      xlu_end: 0
+    xlu_start: 0
+    xlu_end: 0
+landing_air_lw:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 0
 catch:
   extra:
     cancel_frame: 38
@@ -35,3 +40,6 @@ furafura_end:
 shield_break_fly:
   animations:
     - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

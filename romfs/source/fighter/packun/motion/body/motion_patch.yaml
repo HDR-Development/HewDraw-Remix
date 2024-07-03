@@ -295,3 +295,6 @@ appeal_hi_2:
 shield_break_fly:
   animations:
     - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

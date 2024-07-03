@@ -10,6 +10,7 @@ pub mod status;
 // articles
 
 mod breath;
+mod food;
 mod parachute;
 mod rescue;
 
@@ -53,6 +54,7 @@ pub fn install() {
     agent.install();
 
     breath::install();
+    food::install();
     parachute::install();
     rescue::install();
 }

@@ -80,3 +80,6 @@ furafura_end:
 shield_break_fly:
   animations:
     - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

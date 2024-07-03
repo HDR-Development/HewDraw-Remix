@@ -47,7 +47,7 @@ special_s_2:
     cancel_frame: 58
 attack_dash:
   extra:
-    cancel_frame: 42
+    cancel_frame: 45
 attack_s3_s:
 attack_s3_lw:
 attack_air_b:
@@ -105,3 +105,6 @@ furafura_end:
 shield_break_fly:
   animations:
     - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

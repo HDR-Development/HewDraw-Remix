@@ -48,3 +48,6 @@ furafura_end:
 shield_break_fly:
   animations:
     - name: f01damageflyn.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6
