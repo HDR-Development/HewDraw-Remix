@@ -667,6 +667,7 @@ pub mod vars {
 
             // ints
             pub const SPECIAL_LW_SUMMON_SUB_COOLDOWN: i32 = 0x0100;
+            pub const SPECIAL_LW_MARKER_EFF_HANDLE: i32 = 0x0101;
         }
         pub mod status {
             // flags
