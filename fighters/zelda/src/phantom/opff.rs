@@ -8,13 +8,15 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let zelda = utils::util::get_battle_object_from_id(owner_id);
     let zelda_boma = &mut *(*zelda).module_accessor;
-    //hitcheck
+    //check if phantom landed a hit
     if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
     }
+    //apply death timer to destroyed phantom if it didn't land a clean hit
     if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {
-        VarModule::on_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
-    }//misc mechanics
+        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED);
+    }
+    //misc mechanics
     if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
         let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         if weapon.is_situation(*SITUATION_KIND_AIR) {
@@ -69,6 +71,7 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
         }
 
         if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_PARRY)
         && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
             StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
         }

@@ -27,7 +27,7 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="special_n_hold_count">17</int>
-      <float hash="special_n_damage_drop_prob">1</float>
+      <float hash="special_n_damage_drop_prob">0.667</float>
       <int hash="special_n_no_cancel_frame">600</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -54,7 +54,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="special_lw_enable_cancel_frame">10</int>
+      <int hash="special_lw_enable_cancel_frame">13</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

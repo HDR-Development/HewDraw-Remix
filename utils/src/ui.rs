@@ -2,6 +2,7 @@ use once_cell::sync::Lazy;
 use parking_lot::RwLock;
 
 use self::aura_meter::AuraMeter;
+use self::cyan_meter::CyanMeter;
 use self::ex_meter::ExMeter;
 use self::ff_meter::FfMeter;
 use self::pichu_meter::PichuMeter;
@@ -9,6 +10,7 @@ use self::power_board::PowerBoard;
 use self::robot_meter::RobotMeter;
 
 mod aura_meter;
+mod cyan_meter;
 mod ex_meter;
 mod ff_meter;
 mod pichu_meter;
@@ -27,6 +29,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| {
         ex_meter: [ExMeter::default(); 8],
         ff_meter: [FfMeter::default(); 8],
         power_board: [PowerBoard::default(); 8],
+        cyan_meter: [CyanMeter::default(); 8],
         pichu_meter: [PichuMeter::default(); 8],
         aura_meter: [AuraMeter::default(); 8],
         robot_meter: [RobotMeter::default(); 8],
@@ -38,6 +41,7 @@ pub struct UiManager {
     ex_meter: [ExMeter; 8],
     ff_meter: [FfMeter; 8],
     power_board: [PowerBoard; 8],
+    cyan_meter: [CyanMeter; 8],
     pichu_meter: [PichuMeter; 8],
     aura_meter: [AuraMeter; 8],
     robot_meter: [RobotMeter; 8],
@@ -191,6 +195,19 @@ impl UiManager {
         let mut manager = UI_MANAGER.write();
         manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
             .change_color(color_1, color_2);
+    }
+
+    #[export_name = "UiManager__set_cyan_meter_enable"]
+    pub extern "C" fn set_cyan_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        manager.cyan_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+    }
+
+    #[export_name = "UiManager__set_cyan_meter_info"]
+    pub extern "C" fn set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+        let mut manager = UI_MANAGER.write();
+        manager.cyan_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+            .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_pichu_meter_enable"]
@@ -353,6 +370,7 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.ex_meter[index] = ExMeter::new(layout_udata);
     manager.ff_meter[index] = FfMeter::new(layout_udata);
     manager.power_board[index] = PowerBoard::new(layout_udata);
+    manager.cyan_meter[index] = CyanMeter::new(layout_udata);
     manager.pichu_meter[index] = PichuMeter::new(layout_udata);
     manager.aura_meter[index] = AuraMeter::new(layout_udata);
     manager.robot_meter[index] = RobotMeter::new(layout_udata);
@@ -388,6 +406,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for power_board in mgr.power_board.iter_mut() {
         if power_board.is_valid() && power_board.is_enabled() {
             power_board.update();
+        }
+    }
+    for cyan_meter in mgr.cyan_meter.iter_mut() {
+        if cyan_meter.is_valid() && cyan_meter.is_enabled() {
+            cyan_meter.update();
         }
     }
     for pichu_meter in mgr.pichu_meter.iter_mut() {

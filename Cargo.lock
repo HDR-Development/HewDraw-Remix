@@ -810,6 +810,7 @@ name = "kamui"
 version = "0.1.0"
 dependencies = [
  "dynamic",
+ "interpolation",
  "skyline 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "skyline_smash",
  "smash_script",
@@ -2055,7 +2056,7 @@ dependencies = [
 [[package]]
 name = "skyline_smash"
 version = "0.1.0"
-source = "git+https://github.com/blu-dev/skyline-smash#742efe1059c7d28a8f0e00f1f0f8faf29a8b2171"
+source = "git+https://github.com/blu-dev/skyline-smash#6002f4c835a9433b279b124ccbf6b469aa4a8445"
 dependencies = [
  "compile-time-lua-bind-hash",
  "lazy_static",

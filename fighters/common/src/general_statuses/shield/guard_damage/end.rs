@@ -8,21 +8,12 @@ unsafe fn status_end_GuardDamage(fighter: &mut L2CFighterCommon) -> L2CValue {
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_damage"), true, true);
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_damage2"), true, true);
     effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_damage3"), true, true);
-    // effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw("sys_shield_smoke"), true, true);
-    if
-        WorkModule::is_flag(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE
-        ) &&
-        0 < SlowModule::whole_frame(fighter.module_accessor)
-    {
+    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE)
+    && SlowModule::whole_frame(fighter.module_accessor) > 0 {
         SlowModule::clear_whole(fighter.module_accessor);
-        WorkModule::off_flag(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE
-        );
+        fighter.off_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE);
     }
-    L2CValue::I32(0)
+    return 0.into();
 }
 
 pub fn install() {

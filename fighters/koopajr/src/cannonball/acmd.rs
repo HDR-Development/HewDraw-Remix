@@ -10,7 +10,7 @@ unsafe extern "C" fn game_hop(weapon: &mut L2CAgentBase) {
         PostureModule::reverse_lr(boma);
     }
     if is_excute(weapon) {
-        ATTACK(weapon,0,0,Hash40::new("top"),1.0,48,52,0,90,3.8,0.0,0.0,0.0,None,None,None,1.0,0.0,*ATTACK_SETOFF_KIND_THRU,*ATTACK_LR_CHECK_F,false,8,0.0,0,true,false,false,false,false,*COLLISION_SITUATION_MASK_GA,*COLLISION_CATEGORY_MASK_ALL,*COLLISION_PART_MASK_ALL,false,Hash40::new("collision_attr_normal"),*ATTACK_SOUND_LEVEL_L,*COLLISION_SOUND_ATTR_PUNCH,*ATTACK_REGION_OBJECT);
+        ATTACK(weapon,0,0,Hash40::new("top"),1.0,48,52,0,90,3.8,0.0,0.0,0.0,None,None,None,1.0,0.0,*ATTACK_SETOFF_KIND_THRU,*ATTACK_LR_CHECK_F,false,13,0.0,0,true,false,false,false,false,*COLLISION_SITUATION_MASK_GA,*COLLISION_CATEGORY_MASK_ALL,*COLLISION_PART_MASK_ALL,false,Hash40::new("collision_attr_normal"),*ATTACK_SOUND_LEVEL_L,*COLLISION_SOUND_ATTR_PUNCH,*ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 1.0);
     if is_excute(weapon) {

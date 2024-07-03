@@ -51,29 +51,18 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 1.5);
         LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -5.5, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 55.0);
+    frame(lua_state, 54.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sheik_fushin_end"), Hash40::new("top"), 0, 7, 2.5, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-    }
-}
-
-unsafe extern "C" fn effect_specialairhistart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 27.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 5, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
-    }
-    frame(lua_state, 36.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sheik_fushin_start_air"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.77, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(agent, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_killer_end"), Hash40::new("top"), 0, 8.5, 3, 0, 0, 0, 0.55, true);
+        LAST_EFFECT_SET_RATE(agent, 1.25);
+        LAST_EFFECT_SET_COLOR(agent, 0.58, 0.55, 0.5);
+        LAST_EFFECT_SET_ALPHA(agent, 0.4);
     }
     frame(lua_state, 55.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sheik_fushin_end"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_killer_end"), Hash40::new("top"), 0, 8.5, 3, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.58, 0.55, 0.5);
+        LAST_EFFECT_SET_ALPHA(agent, 0.4);
     }
 }
 
@@ -105,7 +94,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
-    agent.acmd("effect_specialairhistart", effect_specialairhistart, Priority::Low);
+    agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
 
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
 }
