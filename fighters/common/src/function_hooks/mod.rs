@@ -24,6 +24,7 @@ mod lua_bind_hook;
 mod fighterspecializer;
 mod fighter_util;
 mod vtables;
+mod item;
 
 #[repr(C)]
 pub struct TempModule {
@@ -756,6 +757,7 @@ pub fn install() {
     fighterspecializer::install();
     fighter_util::install();
     vtables::install();
+    item::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
