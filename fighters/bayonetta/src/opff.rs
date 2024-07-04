@@ -85,15 +85,6 @@ unsafe fn bat_within_air_motion(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn check_jump(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_WALL_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_TREAD_JUMP]) 
-    && StatusModule::is_changing(boma)
-    && boma.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT) < 2 
-    && VarModule::get_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
-        boma.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -132,7 +123,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     reset_flags(fighter, boma);
     forward_tilt(boma);
     bat_within_air_motion(fighter);
-    check_jump(boma);
     fastfall_specials(fighter);
 }
 
