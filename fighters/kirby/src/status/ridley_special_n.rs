@@ -37,13 +37,13 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 fighter.set_situation(SITUATION_KIND_GROUND.into());
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_hold"), -1.0, 1.0, 0.0, false, false);
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("ridley_special_n_hold"), -1.0, 1.0, 0.0, false, false);
             }
             else {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 fighter.set_situation(SITUATION_KIND_AIR.into());
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_hold"), -1.0, 1.0, 0.0, false, false);
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("ridley_special_air_n_hold"), -1.0, 1.0, 0.0, false, false);
             }
         }
     }

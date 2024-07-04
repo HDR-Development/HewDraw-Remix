@@ -1,5 +1,6 @@
 use super::*;
 
+mod special_n;
 mod special_s2;
 mod special_s3;
 mod special_s4;
@@ -165,6 +166,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specials1", effect_specials1, Priority::Low);
     agent.acmd("effect_specialairs1", effect_specials1, Priority::Low);
     agent.acmd("expression_specials1", expression_specials1, Priority::Low);
+    special_n::install(agent);
     special_s2::install(agent);
     special_s3::install(agent);
     special_s4::install(agent);

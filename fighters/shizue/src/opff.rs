@@ -59,6 +59,7 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag() 
     && VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST) {
         if fighter.is_cat_flag(Cat1::SpecialHi) {

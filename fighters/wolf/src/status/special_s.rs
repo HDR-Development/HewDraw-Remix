@@ -317,6 +317,7 @@ unsafe extern "C" fn special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> 
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             } else if VarModule::is_flag(fighter.object(), SPECIAL_S_RESERVE_FALL) {
+                VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             } else {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
