@@ -1088,6 +1088,10 @@ pub mod vars {
     }
 
     pub mod ness {
+        pub mod instance {
+            //flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const THUNDER_LOOSE: i32 = 0x1100;
@@ -1118,6 +1122,20 @@ pub mod vars {
         }
     }
 
+    pub mod pacman {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const SPECIAL_HI_GROUND_START: i32 = 0x0101;
+            pub const SPECIAL_HI_AERIAL_USED: i32 = 0x0102;
+            pub const SPECIAL_S_GROUND_START: i32 = 0x0103;
+        }
+        pub mod status {
+            // flags
+            pub const SPECIAL_HI_AERIAL: i32 = 0x1100;
+        }
+    }
+
     pub mod palutena {
         pub mod status {
             // flags
@@ -1138,6 +1156,9 @@ pub mod vars {
             pub const POWER_BOARD_SLOT_1: i32 = 0x0100;
             pub const POWER_BOARD_SLOT_2: i32 = 0x0101;
             pub const SET_COLOR: i32 = 0x0102;
+            // kirby specific
+            pub const CYAN_ENERGY: i32 = 0x0103;
+            pub const EXCESS_ENERGY: i32 = 0x0104;
         }
     }
 
@@ -1714,6 +1735,7 @@ pub mod statuses {
         pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
         pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
         pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
+        pub const BUDDY_BUDDY_BAYONET_END: i32 = 0x3ED;
     }
 
     pub mod krool {
