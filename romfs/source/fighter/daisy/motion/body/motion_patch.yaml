@@ -42,14 +42,18 @@ attack_s4_s:
   extra:
     cancel_frame: 50
 attack_s4_hi:
+  animations:
+    - name: c03attacks4hi.nuanmb
   extra:
     cancel_frame: 48
+attack_s4_lw:
+  animations:
+    - name: c03attacks4lw.nuanmb
+  extra:
+    cancel_frame: 53
 attack_air_b:
   extra:
     cancel_frame: 32
-attack_s4_lw:
-  extra:
-    cancel_frame: 53
 special_s_end:
   extra:
     cancel_frame: 37

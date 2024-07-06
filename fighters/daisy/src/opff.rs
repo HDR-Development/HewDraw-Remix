@@ -2,6 +2,8 @@ use super::*;
 use globals::*;
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
+use vars::daisy::instance::*;
+
 unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP {
         let lr = PostureModule::lr(boma);
@@ -42,6 +44,29 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
         } else {
             MotionModule::change_motion(boma, Hash40::new("jump_aerial_b2"), 0.0, 1.0, false, 0.0, false, false);
         }
+    }
+}
+
+// have daisy always hold the racket for forward smash
+unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
+    if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) && fighter.motion_frame() < 40.0)
+    || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
+        VarModule::on_flag(fighter.object(), IS_ACTIVE_RACKET);
+        if PostureModule::lr(fighter.boma()) == 1.0 {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panm"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubm"), false);
+        } else {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panmflip"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubmflip"), false);
+        }
+    } else if VarModule::is_flag(fighter.object(), IS_ACTIVE_RACKET) {
+        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
+        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
+        VarModule::off_flag(fighter.object(), IS_ACTIVE_RACKET);
     }
 }
 
@@ -114,8 +139,6 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
         }
     }
 }
-
-use vars::daisy::instance::*;
 
 // fuck effect iteration lol
 unsafe fn effect_helper(fighter: &mut L2CFighterCommon) {
@@ -304,6 +327,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     wall_bounce(boma, status_kind);
     //up_special_freefall_land_cancel(fighter);
     triple_jump_motion(fighter, boma);
+    racket_visibility(fighter);
     parasol_removal(fighter, boma);
     set_vegetable_team(fighter, boma);
     effect_helper(fighter);

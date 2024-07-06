@@ -425,8 +425,9 @@ pub mod vars {
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
             pub const DISABLE_SPECIAL_S: i32 = 0x0101;
+            pub const IS_ACTIVE_RACKET: i32 = 0x0102;
 
-            pub const IS_EDIT_EFF: i32 = 0x0102;
+            pub const IS_EDIT_EFF: i32 = 0x0109;
         }
     }
 
