@@ -97,14 +97,16 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     } else {
         let item_id = VarModule::get_int(boma.object(), vars::daisy::instance::VEGETABLE_ID) as u32;
         let item_boma = sv_battle_object::module_accessor(item_id);
+        // bool for if daisy is the owner of a carrot before affecting it, preventing ownership jank in daisy dittos
+        let is_owner = TeamModule::hit_team_no(item_boma) == TeamModule::hit_team_no(boma);
         // measure how far the item is from daisy
         let x_distance = PostureModule::pos_x(boma) - PostureModule::pos_x(item_boma);
         let y_distance = (PostureModule::pos_y(boma) + 10.0) - PostureModule::pos_y(item_boma);
         // make sure the item is far enough away from daisy to prevent oddities with hitting herself
         let is_separated = x_distance.abs() > 15.0 || y_distance.abs() > 15.0;
-
+        
         if TeamModule::hit_team_no(item_boma) as i32 != -1
-        && is_separated {
+        && is_owner && is_separated {
             //println!("changing {} hit team to universal", TeamModule::hit_team_no(item_boma));
             TeamModule::set_hit_team(item_boma, -1);
         }
@@ -112,6 +114,7 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
         let current_damage = DamageModule::damage(item_boma, 0);
         let prev_damage = VarModule::get_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE);
         if current_damage > prev_damage && is_separated { 
+            //println!("current {}, prev {}", current_damage, prev_damage);
             if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 let num_players = Fighter::get_fighter_entry_count();
                 let mut opponent_team = 7;
