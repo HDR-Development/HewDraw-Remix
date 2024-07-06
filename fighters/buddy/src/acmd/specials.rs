@@ -5,7 +5,7 @@ use super::*;
 unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
     let boma = agent.boma();
     let is_csticking = ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
-    if (is_csticking) {
+    if (is_csticking) && agent.kind() != *FIGHTER_KIND_KIRBY {
         return true;
     }
     return false;

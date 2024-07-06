@@ -126,6 +126,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         ATTACK(agent, 4, 0, Hash40::new("armr"), 14.0, 78, 75, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 15.0);
+    FT_MOTION_RATE_RANGE(agent, 15.0, 27.0, 7.0);
     if is_excute(agent) {
         AttackModule::clear(boma, 3, false);
         AttackModule::clear(boma, 4, false);
@@ -133,10 +134,13 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         ATTACK(agent, 1, 0, Hash40::new("haver"), 8.0, 78, 75, 0, 50, 4.5, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_SWORD);
         ATTACK(agent, 2, 0, Hash40::new("haver"), 8.0, 78, 75, 0, 50, 4.5, 0.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_SWORD);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 27.0);
+    FT_MOTION_RATE_RANGE(agent, 27.0, 38.0, 16.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 38.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 41.0);
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -197,7 +201,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("haver"), 0, 0, 0, -80, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 27.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("ganon_sword_flare"), false, false);
     }

@@ -53,6 +53,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
 unsafe fn sub_status_guard_off_main_common_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        ControlModule::clear_command(fighter.module_accessor, true);
         return true.into();
     }
     return false.into();

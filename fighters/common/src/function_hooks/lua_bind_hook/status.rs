@@ -338,7 +338,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             // Prevent airdodging out of upB for first 10 frames
             if boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_SHOOT)
             && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE
-            && boma.status_frame() < 10 {
+            && boma.status_frame() < 20 {
                 return 0;
             }
         }

@@ -3,37 +3,14 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    //PM-like neutral-b canceling
-    if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_CANCEL {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if WorkModule::get_int(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }
-        }
-    }
-}
-
-// Pac-Man Bonus Fruit Toss Airdodge Cancel
-unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 11.0 {
-            boma.check_airdodge_cancel();
-        }
-    }
-}
-
 unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
     && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && CancelModule::is_enable_cancel(fighter.module_accessor)
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_S_WORK_FLAG_EAT_POWER_ESA) {
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_S_WORK_FLAG_EAT_POWER_ESA)
+    && !VarModule::is_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_S_GROUND_START) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
@@ -43,6 +20,7 @@ unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_prev_situation(*SITUATION_KIND_AIR)
     && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if fighter.status_frame() < 30 && VarModule::is_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_S_GROUND_START) { return; }
         fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
     }
 }
@@ -52,6 +30,25 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END)
     && fighter.is_situation(*SITUATION_KIND_GROUND) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
+unsafe fn empty_hydrant_physics(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) 
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
+        if StatusModule::is_changing(fighter.module_accessor)
+        && fighter.is_situation(*SITUATION_KIND_AIR) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 26.0, true, false, false);
+            }
+            else {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
     }
 }
 
@@ -89,10 +86,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    nspecial_cancels(boma, status_kind, situation_kind);
-    bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
     side_special_freefall(fighter);
     up_special_proper_landing(fighter);
+    empty_hydrant_physics(fighter);
     fastfall_specials(fighter);
 }
 

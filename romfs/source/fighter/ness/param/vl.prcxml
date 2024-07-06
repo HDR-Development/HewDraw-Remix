@@ -11,7 +11,7 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="nobang_time">14</int>
+      <int hash="nobang_time">12</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -19,9 +19,18 @@
   </list>
   <list hash="param_pkflash">
     <struct index="0">
-      <float hash="accel_x">0.04</float>
-      <float hash="speed_max_x">0.875</float>
-      <int hash="bang_time">11</int>
+      <float hash="speed">-0.4</float>
+      <float hash="accel_x">0.059</float>
+      <float hash="accel_y">-0.009</float>
+      <float hash="speed_max_x">2.7</float>
+      <float hash="speed_max_y">-0.5</float>
+      <float hash="power_min">8</float>
+      <float hash="power_mul">0.2</float>
+      <float hash="count">92</float>
+      <float hash="size_min">0.6</float>
+      <float hash="size_max">1.5</float>
+      <int hash="bang_time">13</int>
+      <float hash="angle">90</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -29,6 +38,9 @@
   </list>
     <list hash="param_pkfire">
     <struct index="0">
+      <int hash="life">24</int>
+      <float hash="angle_ground">-4.4</float>
+      <float hash="angle_air">-40</float>
       <int hash="pillar_life">55</int>
       <float hash="pillar_scale_min">0.65</float>
     </struct>
@@ -58,9 +70,9 @@
   </list>
     <list hash="param_pkthunder">
     <struct index="0">
-      <float hash="speed">2</float>
+      <float hash="speed">1.5</float>
       <float hash="angle">90</float>
-      <float hash="life">120</float>
+      <float hash="life">90</float>
       <float hash="stick_min">0.5</float>
       <float hash="add_angle">9</float>
     </struct>
