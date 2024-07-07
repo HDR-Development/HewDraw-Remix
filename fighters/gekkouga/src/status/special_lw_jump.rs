@@ -38,7 +38,7 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
         set_speed,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        1.8
+        1.65
     );
     sv_kinetic_energy!(
         set_speed,
