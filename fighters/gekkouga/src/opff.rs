@@ -12,23 +12,23 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 }
 
 // Greninja Shadow Sneak Smash Attack Cancel
-unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
-        if boma.status_frame() < 6 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::AttackS4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
-                }
-                if boma.is_cat_flag(Cat1::AttackHi4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
-                }
-                if boma.is_cat_flag(Cat1::AttackLw4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
-                }
-            }
-        }
-    }
-}
+// unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+//     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
+//         if boma.status_frame() < 6 {
+//             if situation_kind == *SITUATION_KIND_GROUND {
+//                 if boma.is_cat_flag(Cat1::AttackS4) {
+//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
+//                 }
+//                 if boma.is_cat_flag(Cat1::AttackHi4) {
+//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
+//                 }
+//                 if boma.is_cat_flag(Cat1::AttackLw4) {
+//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
+//                 }
+//             }
+//         }
+//     }
+// }
 
 // Dair Jump Cancel
 unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, cat1: i32, motion_kind: u64, frame: f32) {
@@ -105,10 +105,11 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
 
         let pos_x = PostureModule::pos_x(fighter.module_accessor);
         let pos_y = PostureModule::pos_y(fighter.module_accessor);
-        let doll_pos_x = PostureModule::pos_x(doll_module_accessor);
-        let doll_pos_y = PostureModule::pos_y(doll_module_accessor);
-        // println!("Greninja Pos: {}, {}", pos_x, pos_y);
-        // println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
+        let doll_pos = *GroundModule::get_rhombus(doll_module_accessor, true).add(1);
+        let doll_pos_x = doll_pos.x;
+        let doll_pos_y = doll_pos.y;
+        println!("Greninja Pos: {}, {}", pos_x, pos_y);
+        println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
 
         let mut angle = (doll_pos_y - pos_y).atan2(doll_pos_x - pos_x).to_degrees();
         // println!("angle: {}", angle);
@@ -175,7 +176,7 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
-    shadow_sneak_smash_attack_cancel(boma, status_kind, situation_kind, cat[0], frame);
+    // shadow_sneak_smash_attack_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //dair_jc(boma, situation_kind, cat[0], motion_kind, frame);
     fastfall_specials(fighter);
     substitute_teleport_check(fighter);

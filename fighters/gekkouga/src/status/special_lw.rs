@@ -166,8 +166,10 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         let doll_id = gekkouga_get_sub_id(fighter.battle_object);
         if sv_battle_object::is_active(doll_id) {
             let doll_module_accessor = sv_battle_object::module_accessor(doll_id);
-            let doll_pos = PostureModule::pos(doll_module_accessor);
-            PostureModule::set_pos(fighter.module_accessor, doll_pos);
+            let doll_pos = *GroundModule::get_rhombus(doll_module_accessor, true).add(1);
+            let doll_pos_x = doll_pos.x;
+            let doll_pos_y = doll_pos.y;
+            PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: doll_pos_x, y: doll_pos_y, z: 0.0});
         }
     }
 
