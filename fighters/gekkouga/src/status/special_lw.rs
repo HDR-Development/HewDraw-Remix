@@ -116,23 +116,6 @@ unsafe extern "C" fn special_lw_sub_helper(fighter: &mut L2CFighterCommon) {
     && MotionModule::is_end(fighter.module_accessor) {
         VarModule::on_flag(fighter.battle_object, vars::gekkouga::status::SPECIAL_LW_VANISH);
 
-        // Call smoke effects
-        let eff = EffectModule::req_on_joint(
-            fighter.module_accessor,
-            Hash40::new("gekkouga_migawari_smoke"),
-            Hash40::new("top"),
-            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-            1.0,
-            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-            false,
-            0,
-            0,
-            0
-        ) as u32;
-        EffectModule::set_rate(fighter.module_accessor, eff, 2.0);
-
         // Reset all momentum
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
 
