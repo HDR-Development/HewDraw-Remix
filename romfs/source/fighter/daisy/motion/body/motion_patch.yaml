@@ -80,6 +80,9 @@ special_s_hit_end:
 special_air_s_end:
   extra:
     cancel_frame: 43
+special_air_hi_start:
+  animations:
+    - name: d02specialhistart.nuanmb
 catch:
   extra:
     cancel_frame: 35
@@ -97,7 +100,7 @@ furafura_end:
     cancel_frame: 34
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb
 step_pose_back:
   extra:
     cancel_frame: 6

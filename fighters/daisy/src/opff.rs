@@ -70,18 +70,45 @@ unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// forcibly remove daisy's parasol from select animations
-unsafe fn parasol_removal(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    let is_parasol_motion = fighter.is_motion_one_of(&[
-        Hash40::new("entry_l"),
-        Hash40::new("entry_r"),
-        Hash40::new("fall_special"),
-        Hash40::new("landing_fall_special")
+// various methods for handling daisy's crystal models and effects
+unsafe fn crystal_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    // statuses to allow the crystal gauntlet
+    let is_gauntlet_status = fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        //*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END
     ]);
 
-    if is_parasol_motion
-    && ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
-        ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    if ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        // toggle the correct fist mesh depending on the direction daisy is facing
+        if PostureModule::lr(boma) == 1.0 {
+            ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_glove"), false);
+            ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_gloveleft"), true);
+        } else {
+            ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_glove"), true);
+            ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_gloveleft"), false);
+        }
+        
+        // remove the gauntlet if not in an allowed status
+        if !is_gauntlet_status {
+            ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+
+    // shatter the crystals when daisy is hit out of neutral special
+    if VarModule::is_flag(boma.object(), IS_ACTIVE_CRYSTAL)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        PLAY_SE(fighter, Hash40::new("se_common_freeze"));
+        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
+        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
+        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
+        VarModule::off_flag(boma.object(), IS_ACTIVE_CRYSTAL);
     }
 }
 
@@ -143,160 +170,6 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 }
 
-// fuck effect iteration lol
-unsafe fn effect_helper(fighter: &mut L2CFighterCommon) {
-    // enter effect edit mode if all buttons are held, otherwise end the function
-    if !VarModule::is_flag(fighter.object(), IS_EDIT_EFF) {
-        if fighter.is_button_on(Buttons::Attack)
-        && fighter.is_button_on(Buttons::Special)
-        && fighter.is_button_on(Buttons::Guard)
-        && fighter.is_button_on(Buttons::AppealAll) {
-            println!("Entering effect editing mode."); 
-            let vec1 = Vector4f{ x: 0.85, y: 0.85, z: 0.85, w: 0.2};
-            let vec2 = Vector4f{ x: 0.0, y: 1.0, z: 0.0, w: 0.8};
-            ColorBlendModule::set_main_color(fighter.boma(), &vec1, &vec2, 0.21, 2.2, 5, true);
-            MotionModule::set_rate(fighter.boma(), 0.0);
-            VarModule::on_flag(fighter.object(), IS_EDIT_EFF);
-
-            // display what the player will be changing by default
-            let mode = VarModule::get_int(fighter.object(), EFF_MODE);
-            let axis = match VarModule::get_int(fighter.object(), EFF_AXIS) {
-                0 => "x",
-                1 => "y",
-                _ => "z"
-            };
-            match mode {
-                0 => println!("editing {} position", axis),
-                1 => println!("editing {} rotation", axis),
-                _ => println!("editing effect scale")
-            }
-
-            return;
-        } 
-        
-        else { return; }
-    }
-
-    // if the code made it to this point, that means we are in effect editing mode
-
-    // cycle between the different modes with left taunt
-    if fighter.is_button_trigger(Buttons::AppealSL) {
-        let mode = VarModule::get_int(fighter.object(), EFF_MODE);
-        let axis = match VarModule::get_int(fighter.object(), EFF_AXIS) {
-            0 => "x",
-            1 => "y",
-            _ => "z"
-        };
-        match mode {
-            0 => {
-                VarModule::set_int(fighter.object(), EFF_MODE, 1);
-                println!("editing {} rotation", axis);
-            }
-            1 => {
-                VarModule::set_int(fighter.object(), EFF_MODE, 2);
-                println!("editing effect scale");
-            }
-            _ => {
-                VarModule::set_int(fighter.object(), EFF_MODE, 0);
-                println!("editing {} position", axis);
-            }
-        }
-    }
-
-    // cycle between the different axis with right taunt
-    if fighter.is_button_trigger(Buttons::AppealSR)
-    && VarModule::get_int(fighter.object(), EFF_MODE) != 2 {
-        let mode = match VarModule::get_int(fighter.object(), EFF_MODE) {
-            0 => "position",
-            _ => "rotation"
-        };
-        let axis = VarModule::get_int(fighter.object(), EFF_AXIS);
-        match axis {
-            0 => {
-                VarModule::set_int(fighter.object(), EFF_AXIS, 1);
-                println!("editing y {}", mode);
-            }
-            1 => {
-                VarModule::set_int(fighter.object(), EFF_AXIS, 2);
-                println!("editing z {}", mode);
-            }
-            _ => {
-                VarModule::set_int(fighter.object(), EFF_AXIS, 0);
-                println!("editing x {}", mode);
-            }
-        }
-    }
-
-    // adjust the value with up and down taunt
-    if fighter.is_button_trigger(Buttons::AppealHi | Buttons::AppealLw) {
-        let mode = VarModule::get_int(fighter.object(), EFF_MODE);
-        let axis = VarModule::get_int(fighter.object(), EFF_AXIS);
-        // set whether to increase or decrease the value depending on the button
-        let mul = 
-            if fighter.is_button_trigger(Buttons::AppealHi) { 1.0 }
-            else { -1.0 };
-        // define how much we are changing the value by
-        let increment = match mode {
-            /* position */ 0 => 0.5,
-            /* rotation */ 1 => 5.0,
-            /* scale */ _ => 0.05
-        };
-        // figure out which value we are supposed to be changing
-        let eff_const = 
-            if mode == 0 { match axis {
-                0 => EFF_POS_X,
-                1 => EFF_POS_Y,
-                _ => EFF_POS_Z
-            } } 
-            else if mode == 1 { match axis {
-                0 => EFF_ROT_X,
-                1 => EFF_ROT_Y,
-                _ => EFF_ROT_Z
-            } }
-            else {
-                EFF_SCALE
-            };
-
-        // change the value
-        VarModule::add_float(fighter.object(), eff_const, increment * mul);
-
-        // print our current effect settings to the terminal
-        println!(
-            "Effect parameters:
-            Position - x: {}, y: {}, z: {}
-            Rotation - x: {}, y: {}, z: {}
-            Scale - {:.2}",
-            VarModule::get_float(fighter.object(), EFF_POS_X),
-            VarModule::get_float(fighter.object(), EFF_POS_Y),
-            VarModule::get_float(fighter.object(), EFF_POS_Z),
-            VarModule::get_float(fighter.object(), EFF_ROT_X),
-            VarModule::get_float(fighter.object(), EFF_ROT_Y),
-            VarModule::get_float(fighter.object(), EFF_ROT_Z),
-            VarModule::get_float(fighter.object(), EFF_SCALE)
-        );
-    }
-
-    // exit effect editing mode by pressing the attack button
-    if fighter.is_button_trigger(Buttons::Attack) {
-        println!("Exiting effect editing mode.");
-        ColorBlendModule::cancel_main_color(fighter.boma(), 0);
-        MotionModule::set_rate(fighter.boma(), 1.0);
-        VarModule::off_flag(fighter.object(), IS_EDIT_EFF);
-    }
-
-    // to utilize these dynamic values in an effect script, use the following code
-    // 
-    // let x_pos = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_POS_X);
-    // let y_pos = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_POS_Y);
-    // let z_pos = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_POS_Z);
-    // let x_rot = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_ROT_X);
-    // let y_rot = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_ROT_Y);
-    // let z_rot = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_ROT_Z);
-    // let scale = VarModule::get_float(agent.object(), vars::daisy::instance::EFF_SCALE);
-    // 
-    // args: x_pos, y_pos, z_pos, x_rot, y_rot, z_rot, scale
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -331,9 +204,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //up_special_freefall_land_cancel(fighter);
     triple_jump_motion(fighter, boma);
     racket_visibility(fighter);
-    parasol_removal(fighter, boma);
+    crystal_handling(fighter, boma);
     set_vegetable_team(fighter, boma);
-    effect_helper(fighter);
     fastfall_specials(fighter);
 }
 

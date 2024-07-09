@@ -52,7 +52,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0/(17.0-16.5));
+        //FT_MOTION_RATE(agent, 1.0/(17.0-16.5));
         ATTACK(agent, 0, 0, Hash40::new("shoulderl"), 14.0, 42, 75, 0, 50, 3.0, -0.5, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 1, 0, Hash40::new("arml"), 14.0, 42, 75, 0, 50, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 2, 0, Hash40::new("arml"), 14.0, 42, 75, 0, 50, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
@@ -61,15 +61,15 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 10.0/(40.0-25.0));
-    }
-    frame(lua_state, 40.0);
-    if is_excute(agent) {
-        //FT_MOTION_RATE(agent, 1.0);
-        FT_MOTION_RATE(agent, 0.75);
-    }
+    // frame(lua_state, 25.0);
+    // if is_excute(agent) {
+    //     FT_MOTION_RATE(agent, 10.0/(40.0-25.0));
+    // }
+    // frame(lua_state, 40.0);
+    // if is_excute(agent) {
+    //     //FT_MOTION_RATE(agent, 1.0);
+    //     FT_MOTION_RATE(agent, 0.75);
+    // }
     frame(lua_state, 50.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

@@ -407,27 +407,15 @@ pub mod vars {
             // ints
             pub const VEGETABLE_ID: i32 = 0x0100;
             
-            pub const EFF_MODE: i32 = 0x0101;
-            pub const EFF_AXIS: i32 = 0x0102;
-            
             // floats
-            pub const EFF_POS_X: i32 = 0x0103;
-            pub const EFF_POS_Y: i32 = 0x0104;
-            pub const EFF_POS_Z: i32 = 0x0105;
-            pub const EFF_ROT_X: i32 = 0x0106;
-            pub const EFF_ROT_Y: i32 = 0x0107;
-            pub const EFF_ROT_Z: i32 = 0x0108;
-            pub const EFF_SCALE: i32 = 0x0109;
-
-            pub const VEGETABLE_DAMAGE: i32 = 0x0110;
+            pub const VEGETABLE_DAMAGE: i32 = 0x0101;
             
             // flag
             // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
             pub const DISABLE_SPECIAL_S: i32 = 0x0101;
             pub const IS_ACTIVE_RACKET: i32 = 0x0102;
-
-            pub const IS_EDIT_EFF: i32 = 0x0109;
+            pub const IS_ACTIVE_CRYSTAL: i32 = 0x0103;
         }
     }
 

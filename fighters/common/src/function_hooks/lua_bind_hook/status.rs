@@ -354,7 +354,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             // Prevents Daisy from floating out of upB
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
             && next_status == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL {
-                next_status = *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END;
+                next_status = *FIGHTER_STATUS_KIND_FALL_SPECIAL;
             }
             // Prevents Daisy from being able to use both aerial jumps immediately after one another
             else if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL)

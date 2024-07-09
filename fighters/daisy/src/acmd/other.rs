@@ -130,7 +130,7 @@ unsafe extern "C" fn sound_appeallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_daisy_cliffcatch"));
     }
-    frame(lua_state, 90.0);
+    frame(lua_state, 96.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("vc_daisy_wakeup"));
     }
