@@ -417,6 +417,11 @@ pub mod vars {
             pub const IS_ACTIVE_RACKET: i32 = 0x0102;
             pub const IS_ACTIVE_CRYSTAL: i32 = 0x0103;
         }
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_DIVE_START: i32 = 0x1100;   // placeholder
+            pub const SPECIAL_N_DIVE_END: i32 = 0x1101;     // placeholder
+        }
     }
 
     pub mod dedede{

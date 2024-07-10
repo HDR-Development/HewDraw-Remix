@@ -114,33 +114,16 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 10.0/(11.0-5.0));
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
-    }
-}
-
-unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 7.0/(11.0-5.0));
-    }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
-    }
+    FT_MOTION_RATE_RANGE(agent, 5.0, 15.0, 7.0);
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialsjump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    FT_MOTION_RATE_RANGE(agent, 1.0, 25.0, 15.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 15.0/(25.0-1.0));
         JostleModule::set_status(boma, false);
         SEARCH(agent, 0, 0, Hash40::new("hip"), 3.5, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
     }
@@ -149,7 +132,9 @@ unsafe extern "C" fn game_specialsjump(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_PEACH_SPECIAL_S_BRAKE);
     }
     frame(lua_state, 25.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
+        search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
         WorkModule::enable_transition_term(boma, *FIGHTER_PEACH_STATUS_SPECIAL_S_JUMP_ID_TIME_OUT);
     }
 }
@@ -159,13 +144,16 @@ unsafe extern "C" fn game_specialshitend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 75, 60, 0, 90, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
-        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
     }
     frame(lua_state, 4.0);
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        FT_MOTION_RATE_RANGE(agent, 4.0, 23.0, 24.0);
+    }
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(agent, 1.4);
     }
+    frame(lua_state, 23.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
@@ -346,7 +334,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairn", acmd_stub, Priority::Low);
 
     agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
-    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
+    agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);
     agent.acmd("game_specialsjump", game_specialsjump, Priority::Low);
     agent.acmd("game_specialshitend", game_specialshitend, Priority::Low);
 

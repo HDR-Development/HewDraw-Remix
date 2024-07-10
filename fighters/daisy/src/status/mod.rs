@@ -3,8 +3,9 @@ use globals::*;
 // status script import
 
 mod attack_air;
-mod special_s;
 mod special_lw;
+mod special_n;
+mod special_s;
 mod uniq_float;
 mod appeal;
 
@@ -70,8 +71,9 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     attack_air::install(agent);
-    special_s::install(agent);
     special_lw::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
     uniq_float::install(agent);
     appeal::install(agent);
 }
