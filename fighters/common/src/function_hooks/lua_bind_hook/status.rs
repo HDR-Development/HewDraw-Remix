@@ -321,10 +321,8 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR {
-            // Prevent airdodging out of upB for first 10 frames
-            if boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_SHOOT)
-            && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE
-            && boma.status_frame() < 20 {
+            // Prevent airdodging out of upB
+            if next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE {
                 return 0;
             }
         }
