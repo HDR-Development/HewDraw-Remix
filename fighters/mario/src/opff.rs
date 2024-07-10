@@ -155,7 +155,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
                 }
                 if frame >= 6.0 && frame < 35.0 {  
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.0);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 0.5);
                 }
                 if frame >= 35.0 && frame < 45.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
