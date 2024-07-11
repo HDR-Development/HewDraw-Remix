@@ -5,6 +5,8 @@
 **/.vscode/
 !scripts/*
 .vscode
+.cargo
+.zed
 distributions/
 scripts/change_summary.txt
 scripts/log.txt
