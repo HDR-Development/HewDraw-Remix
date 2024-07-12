@@ -31,13 +31,15 @@ unsafe extern "C" fn special_n_r_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_r_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_r"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_r"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_r"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
         VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
     }
@@ -58,7 +60,7 @@ unsafe extern "C" fn special_n_r_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_r"), -1.0, 1.0, 0.0, false, false);
@@ -73,10 +75,10 @@ unsafe extern "C" fn special_n_r_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
@@ -118,13 +120,15 @@ unsafe extern "C" fn special_n_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_b"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_b"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_b"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
         VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
     }
@@ -160,10 +164,10 @@ unsafe extern "C" fn special_n_b_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
@@ -205,13 +209,15 @@ unsafe extern "C" fn special_n_y_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_y_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_y"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_y"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_y"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
         VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
     }
@@ -247,10 +253,10 @@ unsafe extern "C" fn special_n_y_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
@@ -292,13 +298,15 @@ unsafe extern "C" fn special_n_p_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_p_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_p"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_p"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_p"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     if fighter.kind() == *FIGHTER_KIND_KIRBY {
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
     }
@@ -331,10 +339,10 @@ unsafe extern "C" fn special_n_p_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
@@ -376,14 +384,15 @@ unsafe extern "C" fn special_n_o_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_o_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_o"), 0.0, 1.0, false, 0.0, false, false);
-        
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_o"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_o"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     if fighter.kind() == *FIGHTER_KIND_KIRBY {
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
     }
@@ -416,10 +425,10 @@ unsafe extern "C" fn special_n_o_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
@@ -460,14 +469,15 @@ unsafe extern "C" fn special_n_g_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_n_g_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_g"), 0.0, 1.0, false, 0.0, false, false);
-        
-    }
-    else {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_g"), 0.0, 1.0, false, 0.0, false, false);
     }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_g"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     if fighter.kind() == *FIGHTER_KIND_KIRBY {
         HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
     }
@@ -500,10 +510,10 @@ unsafe extern "C" fn special_n_g_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     return 0.into()
