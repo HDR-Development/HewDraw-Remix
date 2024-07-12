@@ -60,9 +60,9 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4) {
-        if WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON)
-        && boma.status_frame() <= 14 {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
+    && WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+        if boma.status_frame() <= 14 {
             ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &Vector3f::new(1.0, 1.075, 1.0475));
         }
     }

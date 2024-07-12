@@ -98,7 +98,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         else {
             ATTACK(agent, 0, 0, Hash40::new("sword"), 9.0, 55, 84, 0, 45, 3.5, 1.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             ATTACK(agent, 1, 0, Hash40::new("sword"), 9.0, 55, 84, 0, 45, 3.5, 1.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 2, 0, Hash40::new("armr"),  9.0, 55, 84, 0, 45, 3.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 2, 0, Hash40::new("armr"), 9.0, 55, 84, 0, 45, 3.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     frame(lua_state, 13.0);
@@ -143,10 +143,6 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         }
-        frame(lua_state, 14.0);
-        if is_excute(agent) {
-            EFFECT(agent, Hash40::new("reflet_attack_flash"), Hash40::new("sword"), 0, 8, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-        }
     }
     else {
         frame(lua_state, 11.0);
@@ -157,6 +153,10 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 20, 2, -90, 0, 0, 0.4, true);
             LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        }
+        frame(lua_state, 14.0);
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("reflet_attack_flash"), Hash40::new("sword"), 0, 8, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         }
         frame(lua_state, 16.0);
         if is_excute(agent) {
