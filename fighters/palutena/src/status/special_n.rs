@@ -1,5 +1,72 @@
 use super::*;
 
+unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let color_1 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1);
+    let color_2 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2);
+    if color_1 == 1 {
+        if color_2 == 2 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_P);
+            //println!("and why he ourple");
+            return 1.into();
+        }
+        else if color_2 == 3 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_O);
+            //println!("bornana");
+            return 1.into();
+        }
+        else {
+            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
+                VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+            }
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_R);
+            //println!("red");
+            return 1.into();
+        }
+    }
+    else if color_1 == 2 {
+        if color_2 == 1 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_P);
+            //println!("and why he ourple");
+            return 1.into();
+        }
+        else if color_2 == 3 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_G);
+            //println!("i like cash from my hair to my ass");
+            return 1.into();
+        }
+        else {
+            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
+                VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+            }
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_B);
+            //println!("blud");
+            return 1.into();
+        }
+    }
+    else if color_1 == 3 {
+        if color_2 == 1 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_O);
+            //println!("bornana");
+            return 1.into();
+        }
+        else if color_2 == 2 {
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_G);
+            //println!("i like cash from my hair to my ass");
+            return 1.into();
+        }
+        else {
+            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
+                VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
+            }
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_Y);
+            //println!("ielo");
+            return 1.into();
+        }
+    }
+
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
+}
+
 // red: burn attack
 unsafe extern "C" fn special_n_r_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -62,7 +129,7 @@ unsafe extern "C" fn special_n_r_main_loop(fighter: &mut L2CFighterCommon) -> L2
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                KineticModule::change_kinetic(fighter.module_accessor, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_r"), -1.0, 1.0, 0.0, false, false);
             }
             else {
@@ -525,6 +592,8 @@ unsafe extern "C" fn special_n_g_end(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+
     agent.status(Pre, statuses::palutena::SPECIAL_N_R, special_n_r_pre);
     agent.status(Main, statuses::palutena::SPECIAL_N_R, special_n_r_main);
     agent.status(End, statuses::palutena::SPECIAL_N_R, special_n_r_end);

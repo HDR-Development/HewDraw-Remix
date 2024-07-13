@@ -155,12 +155,12 @@ unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32)
     }
 }
 
-// Training Mode Aegis Reflector timer taunt reset & color charging
+// Training Mode color charging
 unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if (fighter.is_motion(Hash40::new("appeal_s_r")) || fighter.is_motion(Hash40::new("appeal_s_l")))
         && fighter.motion_frame() == 2.0 {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
         if (fighter.is_motion(Hash40::new("appeal_hi_r")) || fighter.is_motion(Hash40::new("appeal_hi_l")))
         && fighter.motion_frame() == 2.0 {
@@ -168,7 +168,7 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
         }
         if (fighter.is_motion(Hash40::new("appeal_lw_r")) || fighter.is_motion(Hash40::new("appeal_lw_l")))
         && fighter.motion_frame() == 2.0 {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
     }
 }
@@ -179,12 +179,12 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
     && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
         VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-        // yellow moves: side
+        // red moves: side
         if fighter.is_motion(Hash40::new("attack_s3_s"))
         || fighter.is_motion(Hash40::new("attack_s4_s"))
         || fighter.is_motion(Hash40::new("attack_air_f"))
         || fighter.is_motion(Hash40::new("attack_air_b")) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
 
         // blue moves: up
@@ -194,11 +194,11 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
         }
 
-        // red moves: down
+        // yellow moves: down
         else if fighter.is_motion(Hash40::new("attack_lw3"))
         || fighter.is_motion(Hash40::new("attack_lw4"))
         || fighter.is_motion(Hash40::new("attack_air_lw")) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
     }
 }
@@ -239,66 +239,6 @@ unsafe fn power_board(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     
 }
 
-// checks which color spell should be cast
-unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        let color_1 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1);
-        let color_2 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2);
-        if color_1 == 1 {
-            if color_2 == 2 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
-                //println!("and why he ourple");
-
-            }
-            else if color_2 == 3 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
-                //println!("bornana");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_R.into(), false.into());
-                //println!("red");
-            }
-        }
-        else if color_1 == 2 {
-            if color_2 == 1 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
-                //println!("and why he ourple");
-            }
-            else if color_2 == 3 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
-                //println!("i like cash from my hair to my ass");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_B.into(), false.into());
-                //println!("blud");
-            }
-        }
-        else if color_1 == 3 {
-            if color_2 == 1 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
-                //println!("bornana");
-            }
-            else if color_2 == 2 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
-                //println!("i like cash from my hair to my ass");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_Y.into(), false.into());
-                //println!("ielo");
-            }
-        }
-    }
-}
-
 pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
@@ -326,7 +266,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     dj_upB_jump_refresh(fighter);
     power_board(fighter, boma, status_kind);
     color_charge(fighter);
-    power_cast(fighter);
     fastfall_specials(fighter);
 }
 
