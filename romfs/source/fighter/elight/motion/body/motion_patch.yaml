@@ -17,7 +17,7 @@ attack_12:
     cancel_frame: 22
 attack_11:
   extra:
-    cancel_frame: 17
+    cancel_frame: 19
 attack_lw3:
   extra:
     cancel_frame: 30

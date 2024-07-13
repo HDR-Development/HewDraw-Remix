@@ -1,5 +1,7 @@
 use super::*;
 
+mod special_lw;
+
 /// Prevents up b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::eflame::instance::DISABLE_SPECIAL_HI) {
@@ -106,4 +108,6 @@ extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
+
+    special_lw::install(agent);
 }

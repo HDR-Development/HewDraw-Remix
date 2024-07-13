@@ -96,17 +96,7 @@ unsafe extern "C" fn game_specialairhifall(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 5.0/(12.0-1.0));
-
-    frame(lua_state, 12.0);
-    FT_MOTION_RATE(agent, 1.0);
-}
-
-unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 5.0/(12.0-1.0));
-
+    FT_MOTION_RATE(agent, 8.0/(12.0-1.0));
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
 }
@@ -116,5 +106,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhifall", game_specialairhifall, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
 }
