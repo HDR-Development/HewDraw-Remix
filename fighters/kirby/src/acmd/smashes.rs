@@ -182,7 +182,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         let damage_foot = if copy_lucas { 16.0 } else { 14.0 };
         let bkb_foot = if copy_lucas { 28 } else { 25 };
         let kbg_foot = if copy_lucas { 89 } else { 92 };
-        let damage_body = if copy_lucas { 15.0 } else { 10.0 };
+        let damage_body = if copy_lucas { 15.0 } else { 11.0 };
         let bkb_body = if copy_lucas { 80 } else { 80 };
         let kbg_body = if copy_lucas { 70 } else { 40 };
         let hitlag = if copy_lucas { 1.15 } else { 1.0 };

@@ -12,6 +12,35 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+attack_13:
+  game_script: game_attack13
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackend.nuanmb
+  scripts:
+  - expression_attack13
+  - sound_attack13
+  - effect_attack13
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 33
+    freeze_during_hitstop: true
 attack_hi4:
   extra:
     cancel_frame: 55
@@ -297,6 +326,96 @@ brave_special_air_n_cancel:
 brave_special_air_n_jump_cancel:
   extra:
     cancel_frame: 8
+buddy_attack_s3_hi:
+  game_script: game_buddyattacks3hi
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: buddyc01attacks3hi.nuanmb
+      unk: 0
+  scripts:
+    - expression_buddyattacks3hi
+    - sound_buddyattacks3hi
+    - effect_buddyattacks3hi
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 38
+    no_stop_intp: false
+buddy_attack_s3_s:
+  game_script: game_buddyattacks3
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: buddyc01attacks3s.nuanmb
+      unk: 0
+  scripts:
+    - expression_buddyattacks3
+    - sound_buddyattacks3
+    - effect_buddyattacks3
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 38
+    no_stop_intp: false
+buddy_attack_s3_lw:
+  game_script: game_buddyattacks3lw
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: buddyc01attacks3lw.nuanmb
+      unk: 0
+  scripts:
+    - expression_buddyattacks3lw
+    - sound_buddyattacks3lw
+    - effect_buddyattacks3lw
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 38
+    no_stop_intp: false
 buddy_special_n_shoot_end:
   extra:
     cancel_frame: 8
@@ -765,10 +884,10 @@ pacman_special_air_n_cancel:
     cancel_frame: 7
 palutena_special_n:
   extra:
-    cancel_frame: 33
+    cancel_frame: 43
 palutena_special_air_n:
   extra:
-    cancel_frame: 26
+    cancel_frame: 43
 pit_special_n_fire_s:
   extra:
     cancel_frame: 30
