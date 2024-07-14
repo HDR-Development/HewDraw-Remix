@@ -523,11 +523,6 @@ unsafe fn chef_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_k
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
-        if situation_kind == *SITUATION_KIND_AIR {
-            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-        }
     }
 }
 
@@ -601,6 +596,67 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
+}
+
+// unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, status: i32){
+//    if StatusModule::is_changing(boma) {
+//        return;
+//    }
+//    let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//
+//    if (VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE))
+//    {
+//        if (status == *FIGHTER_STATUS_KIND_ATTACK_S3 )
+//        {
+//            let transition_frame = 21.0;
+//            let can_cancel = fighter.motion_frame() >= transition_frame;
+//            if (!can_cancel) {return;}
+//
+//            fighter.change_status(statuses::kirby::BUDDY_BUDDY_BAYONET_END.into(), false.into());
+//
+//            let currentEggs=
+//            //VarModule::get_int(boma.object(), vars::buddy::instance::BAYONET_EGGS);
+//            BAYONET_EGGS[entry];
+//            WorkModule::set_int(fighter.module_accessor,
+//                currentEggs,
+//                *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT
+//            );
+//
+//            VarModule::off_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+//        }
+//    }
+//    else if [
+//        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT,
+//        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_F,
+//        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_B,
+//        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_TURN,
+//        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_LANDING
+//    ].contains(&status)
+//    {
+//        let currentEggs = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+//        //VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,currentEggs);
+//        BAYONET_EGGS[entry] = currentEggs;
+//    }
+//}
+
+unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon){
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+	let eggs_shot = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+    let eggs_Weakest = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_2_num"));
+    let eggs_Weak = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_1_num"));
+	if (eggs_shot >= eggs_Weak
+	&& !fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_END))
+	{
+		let sweatRate = if (eggs_shot<eggs_Weakest) {25.0} else {15.0};
+		let sweatSize = if (eggs_shot<eggs_Weakest) {0.625} else {0.9};
+		let modulo = fighter.motion_frame() % sweatRate;
+		if (modulo<1.0)
+		{
+			EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_sweat"), Hash40::new("top"), 0, 8.5, 7.5, 0, 0, 0, sweatSize, true);
+		}
+	}
 }
 
 // Peanut Popgun Airdodge Cancel
@@ -710,15 +766,61 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// Colorless Attack Dash Cancel on Hit
-// This is unique to Kirby due to only having access to colorless attack.
-unsafe fn colorless_attack_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 19.0 {
-            boma.check_dash_cancel();
+// Palutena Cyan Energy
+// This Energy is unique to Kirby and allows Auto Reticle to be used. Colorless Attack gives 3 energy instead of 1.
+unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f32, boma: &mut BattleObjectModuleAccessor) {
+    let current_energy = VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+    if fighter.motion_frame() < 2.0 {
+        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+    }
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        if VarModule::is_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
+            if fighter.is_motion(Hash40::new("attack_s3_hi"))
+            || fighter.is_motion(Hash40::new("attack_s3_s"))
+            || fighter.is_motion(Hash40::new("attack_s3_lw"))
+            || fighter.is_motion(Hash40::new("attack_air_f"))
+            || fighter.is_motion(Hash40::new("attack_air_b"))
+            || fighter.is_motion(Hash40::new("attack_hi3"))
+            || fighter.is_motion(Hash40::new("attack_hi4"))
+            || fighter.is_motion(Hash40::new("attack_air_hi"))
+            || fighter.is_motion(Hash40::new("attack_lw3"))
+            || fighter.is_motion(Hash40::new("attack_air_lw"))
+            || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 {
+                //println!("Hit detected! Increasing energy NOW!");
+                VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+                VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+                MeterModule::add(boma.object(), 1.0);
+            }
+        }
+        if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
+            //println!("Hit detected! Increasing energy NOW!");
+            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, current_energy + 3);
+            MeterModule::add(boma.object(), 3.0);
+        }
+        if fighter.is_motion(Hash40::new("attack_s4_hi"))
+        || fighter.is_motion(Hash40::new("attack_s4_s"))
+        || fighter.is_motion(Hash40::new("attack_s4_lw"))
+        || fighter.is_motion(Hash40::new("attack_hi4"))
+        || fighter.is_motion(Hash40::new("attack_lw4")) { // Seperate check for S4 attacks because the previous method does not work.
+            //println!("Seperate check for Smash Attacks passed. Increasing energy NOW!");
+            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+            VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+            MeterModule::add(boma.object(), 1.0);
         }
     }
 }
+
+// 
+unsafe fn cyan_charge_limiter(fighter: &mut L2CFighterCommon) {
+    // Limits storeable energy to 6. Colorless Attack can increase it even more if the attacks connects, but if not consumed, it is reset to 6.
+    if !fighter.is_motion_one_of(&[Hash40::new("palutena_special_n"), Hash40::new("palutena_special_air_n")])
+    && VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) > 6 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 6);
+    }
+}
+    
+
 
 // Dark Pit's Bow Land Cancel
 unsafe fn pitb_bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
@@ -1068,7 +1170,7 @@ unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Ba
     }
 }
 
-//Bowser & Lucas
+// No Copy Ability
 unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_KOOPA {
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
@@ -1079,6 +1181,19 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+        let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+        EffectModule::kill(fighter.module_accessor, handle, false, false);
+        let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+        EffectModule::kill(fighter.module_accessor, handle2, false, false);
+        let handle3 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3) as u32;
+        EffectModule::kill(fighter.module_accessor, handle3, false, false);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, -1);
+    }
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) != 0 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0);
+        MeterModule::drain_direct(boma.object(), 6.0);
     }
 }
 
@@ -1210,7 +1325,11 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         // Captain Falcon
         0xB => repeated_falcon_punch_turnaround(fighter),
         // Banjo & Kazooie
-        0x54 => blue_eggs_land_cancels(fighter),
+        0x54 => {
+            blue_eggs_land_cancels(fighter);
+            // breegull_bayonet(fighter, boma, motion_kind, status_kind);
+            indicator_breegull_fatigue(fighter);
+        },
         // Diddy Kong
         0x27 => {
             peanut_popgun_ac(boma, status_kind, situation_kind, cat[1], frame);
@@ -1233,7 +1352,10 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
             pacman_nspecial_cancels(boma, status_kind, situation_kind);
         },
         // Palutena
-        0x36 => colorless_attack_dash_cancel(boma, status_kind, situation_kind, cat[0], frame),
+        0x36 => {
+            cyan_charge(fighter, status_kind, frame, boma);
+            cyan_charge_limiter(fighter);
+        },
         // Dark Pit
         0x1F => pitb_bow_lc(boma, status_kind, situation_kind, cat[1], stick_y),
         // Charizard
@@ -1265,6 +1387,8 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x1 => donkey_nspecial_cancels(fighter, boma, status_kind, situation_kind),
         // Samus
         0x3 => samus_nspecial_cancels(fighter, status_kind, situation_kind),
+        // Dark Samus
+        0x4 => samus_nspecial_cancels(fighter, status_kind, situation_kind),
         // Robin
         0x38 => reflet_nspecial_cancels(fighter, status_kind, situation_kind),
         // Sheik

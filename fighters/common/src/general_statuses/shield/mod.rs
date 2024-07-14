@@ -1,5 +1,6 @@
 use super::*;
 mod fighter_status_guard;
+mod furafura;
 mod guard;
 mod guard_damage;
 mod guard_off;
@@ -10,6 +11,7 @@ pub mod misc;
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         fighter_status_guard::install();
+        furafura::install();
         guard::install();
         guard_damage::install();
         guard_off::install();

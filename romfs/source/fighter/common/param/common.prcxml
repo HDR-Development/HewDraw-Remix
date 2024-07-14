@@ -47,10 +47,10 @@
   <float hash="0x2cacbf2a63">12</float>
   <float hash="just_shield_speed_rate">0.00</float>
   <float hash="shield_reset">30</float>
-  <int hash="shield_setoff_escape">999</int>
+  <int hash="shield_setoff_escape">10</int>
   <float hash="0x20d241cd64">0.85</float>
   <int hash="guard_damage_just_shield_disable_frame">1</int>
-  <int hash="shield_break_xlu_frame">24</int>
+  <int hash="shield_break_xlu_frame">30</int>
   <int hash="escape_flick_y">3</int>
   <float hash="escape_stick_y">-0.7386</float>
   <int hash="escape_fb_flick_x">3</int>
@@ -154,7 +154,8 @@
   <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
   <int hash="damage_fly_reflect_disable_escape_frame">999</int>
   <float hash="dead_down_damage_speed">999</float>
-  <float hash="furafura_frame">120</float>
+  <float hash="furafura_frame">150</float>
+  <float hash="furafura_clatter_frame">0</float>
   <float hash="bury_jump_y_speed_mul">1.15</float>
   <float hash="mewtwo_thrown_reaction_frame_mul">1</float>
   <int hash="mewtwo_thrown_reaction_frame_max">15</int>

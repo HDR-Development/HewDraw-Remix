@@ -155,8 +155,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_lucasspecialairnhold", game_lucasspecialnhold, Priority::Low);
     agent.acmd("effect_lucasspecialnhold", effect_lucasspecialnhold, Priority::Low);
     agent.acmd("effect_lucasspecialairnhold", effect_lucasspecialnhold, Priority::Low);
-    agent.acmd("sound_lucasspecialairnhold", effect_lucasspecialnhold, Priority::Low);
-    agent.acmd("sound_lucasspecialnhold", effect_lucasspecialnhold, Priority::Low);
+    agent.acmd("sound_lucasspecialairnhold", sound_lucasspecialnhold, Priority::Low);
+    agent.acmd("sound_lucasspecialnhold", sound_lucasspecialnhold, Priority::Low);
     agent.acmd("game_lucasspecialnfire", game_lucasspecialnfire, Priority::Low);
     agent.acmd("game_lucasspecialairnfire", game_lucasspecialnfire, Priority::Low);
     agent.acmd("effect_lucasspecialnfire", effect_lucasspecialnfire, Priority::Low);

@@ -11,6 +11,7 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            attack_mtrans_pre_process,
             attack_combo_none_uniq_chk_button,
             attack_combo_uniq_chk_button,
             check_100_count_button,
@@ -29,6 +30,32 @@ pub unsafe extern "Rust" fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
         *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 |
         *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
     ) == 0;
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_mtrans_pre_process)]
+unsafe extern "C" fn attack_mtrans_pre_process(fighter: &mut L2CFighterCommon) {
+    ControlModule::reset_trigger(fighter.module_accessor);
+    AttackModule::clear_all(fighter.module_accessor);
+    AttackModule::clear_inflict_kind_status(fighter.module_accessor);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, MA_MSC_CMD_CANCEL_UNABLE_CANCEL);
+    sv_module_access::cancel(fighter.lua_state_agent);
+    fighter.pop_lua_stack(1);
+    ControlModule::clear_command(fighter.module_accessor, false);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
+    WorkModule::set_int64(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    ComboModule::set(fighter.module_accessor, *FIGHTER_COMBO_KIND_S1);
+
+    // // <HDR>
+    // WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT)
+    // // </HDR>
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
@@ -127,17 +154,17 @@ unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CVal
     if only_jabs(fighter) {
         if fighter.global_table[IS_STOPPING].get_bool() {
             if !ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
-                if !ControlModule::check_button_on_release(fighter.module_accessor, button) {
+                // if !ControlModule::check_button_on_release(fighter.module_accessor, button) {
                     return;
-                }
+                // }
             }
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
         }
         else {
             if !ControlModule::check_button_trigger(fighter.module_accessor, button) {
-                if !ControlModule::check_button_release(fighter.module_accessor, button) {
+                // if !ControlModule::check_button_release(fighter.module_accessor, button) {
                     return;
-                }
+                // }
             }
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
         }
@@ -175,6 +202,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100) {
                 let attack_100_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
                 let attack_100_enable_cnt = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_100_enable_cnt"), 0);
+                // let attack_100_enable_cnt = 2;
                 if attack_100_enable_cnt <= attack_100_count {
                     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());

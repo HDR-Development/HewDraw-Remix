@@ -223,8 +223,8 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
             crate::singletons::FighterManager(), 
             app::FighterEntryID(other_entry_id)
         );
-        if dbg!(FighterUtil::get_team_color(defender_boma)) == dbg!(FighterUtil::get_team_color(other_boma)) 
-        && dbg!(app::lua_bind::FighterInformation::stock_count(fighter_info)) > 0 { 
+        if FighterUtil::get_team_color(defender_boma) == FighterUtil::get_team_color(other_boma)
+        && app::lua_bind::FighterInformation::stock_count(fighter_info) > 0 { 
             return true;
         }
     }

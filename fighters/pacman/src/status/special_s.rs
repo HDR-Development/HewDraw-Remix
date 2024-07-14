@@ -47,6 +47,6 @@ pub unsafe extern "C" fn fall_special_init(fighter: &mut L2CFighterCommon) -> L2
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main);
-    agent.status( Main,*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main);
+    agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main);
     agent.status(Init, *FIGHTER_STATUS_KIND_FALL_SPECIAL, fall_special_init);
 }
