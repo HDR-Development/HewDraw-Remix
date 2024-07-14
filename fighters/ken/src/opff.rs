@@ -278,7 +278,7 @@ unsafe fn ken_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     if boma.is_situation(*SITUATION_KIND_GROUND) 
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
         if frame < 70.0 { // the autocancel frame
-            WorkModule::set_float(boma, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            WorkModule::set_float(boma, 14.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
         } else {
             boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
