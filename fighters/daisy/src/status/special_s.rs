@@ -37,6 +37,10 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if !StopModule::is_stop(fighter.module_accessor) {
         special_s_check_flick(fighter);
     }
+    VarModule::off_flag(fighter.battle_object, vars::daisy::instance::SPECIAL_S_GROUND_START);
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        VarModule::on_flag(fighter.battle_object, vars::daisy::instance::SPECIAL_S_GROUND_START);
+    }
     fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(special_s_check_flick as *const () as _));
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     fighter.set_situation(SITUATION_KIND_AIR.into());

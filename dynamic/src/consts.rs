@@ -411,16 +411,16 @@ pub mod vars {
             pub const VEGETABLE_DAMAGE: i32 = 0x0101;
             
             // flag
-            // Used to check if sideb wall bounce happens
             pub const IS_WALLBOUNCE: i32 = 0x0100;
             pub const DISABLE_SPECIAL_S: i32 = 0x0101;
-            pub const IS_ACTIVE_RACKET: i32 = 0x0102;
-            pub const IS_ACTIVE_CRYSTAL: i32 = 0x0103;
+            pub const RACKET_ACTIVE: i32 = 0x0102;
+            pub const SPECIAL_S_GROUND_START: i32 = 0x0104;
         }
         pub mod status {
             // flags
-            pub const SPECIAL_N_DIVE_START: i32 = 0x1100;   // placeholder
-            pub const SPECIAL_N_DIVE_END: i32 = 0x1101;     // placeholder
+            pub const CRYSTAL_ACTIVE: i32 = 0x1100;
+            pub const SPECIAL_N_DIVE_START: i32 = 0x1101;   // placeholder
+            pub const SPECIAL_N_DIVE_END: i32 = 0x1102;     // placeholder
         }
     }
 

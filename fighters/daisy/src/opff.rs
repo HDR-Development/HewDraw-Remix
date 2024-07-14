@@ -51,7 +51,7 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
     if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) && fighter.motion_frame() < 40.0)
     || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
-        VarModule::on_flag(fighter.object(), IS_ACTIVE_RACKET);
+        VarModule::on_flag(fighter.object(), RACKET_ACTIVE);
         if PostureModule::lr(fighter.boma()) == 1.0 {
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), true);
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
@@ -63,10 +63,10 @@ unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panmflip"), false);
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubmflip"), false);
         }
-    } else if VarModule::is_flag(fighter.object(), IS_ACTIVE_RACKET) {
+    } else if VarModule::is_flag(fighter.object(), RACKET_ACTIVE) {
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
-        VarModule::off_flag(fighter.object(), IS_ACTIVE_RACKET);
+        VarModule::off_flag(fighter.object(), RACKET_ACTIVE);
     }
 }
 
@@ -96,19 +96,6 @@ unsafe fn crystal_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         if !is_gauntlet_status {
             ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
-    }
-
-    // shatter the crystals when daisy is hit out of neutral special
-    if VarModule::is_flag(boma.object(), IS_ACTIVE_CRYSTAL)
-    && !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        PLAY_SE(fighter, Hash40::new("se_common_freeze"));
-        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
-        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
-        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
-        VarModule::off_flag(boma.object(), IS_ACTIVE_CRYSTAL);
     }
 }
 
