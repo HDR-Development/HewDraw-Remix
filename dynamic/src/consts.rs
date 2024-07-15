@@ -1123,6 +1123,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const CAN_INCREASE_COLOR: i32 = 0x1100;
+            pub const TELEPORT_AIR_START: i32 = 0x1101;
 
             // floats
             pub const ADD_DAMAGE: i32 = 0x1100;

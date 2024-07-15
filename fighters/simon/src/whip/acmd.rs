@@ -1,5 +1,62 @@
 use super::*;
 
+// jabs
+
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
+        WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
+            agent.battle_object as *mut Weapon as *mut smash::app::Weapon
+        );
+        WeaponSpecializer_SimonWhip::set_node_fix_flag_list(
+            agent.battle_object as *mut Weapon as *mut smash::app::Weapon,
+            6, 7, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+        );
+    }
+}
+
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 0.0);
+    if is_excute(agent) {
+        WeaponSpecializer_SimonWhip::set_chain_2_visibility(
+            agent.battle_object as *mut Weapon,
+            true
+        );
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        WeaponSpecializer_SimonWhip::set_chain_2_visibility(
+            agent.battle_object as *mut Weapon,
+            false
+        );
+    }
+}
+
 // tilts
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
@@ -144,6 +201,9 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attack13", game_attack13, Priority::Low);
+    agent.acmd("effect_attack13", effect_attack13, Priority::Low);
+
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);

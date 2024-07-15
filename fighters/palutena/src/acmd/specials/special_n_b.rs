@@ -16,7 +16,7 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
     }
     frame(lua_state, 4.0);
-    FT_DESIRED_RATE(agent, 14.0, 8.0);
+    FT_DESIRED_RATE(agent, 14.0, 10.0);
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
@@ -28,16 +28,10 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(boma);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
-            FT_DESIRED_RATE(agent, 17.0, 7.0);
+            FT_DESIRED_RATE(agent, 17.0, 10.0);
         }
     }
     frame(lua_state, 43.0);

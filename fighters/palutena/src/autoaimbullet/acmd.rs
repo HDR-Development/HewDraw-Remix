@@ -5,8 +5,8 @@ unsafe extern "C" fn game_shot(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let palutena = owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA;
-    let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {10.0} else {6.0};
-    let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {0.5} else {0.25};
+    let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {7.0} else {4.0};
+    let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::POWERED) {0.4} else {0.2};
     if !palutena {
         if is_excute(agent) {
             WorkModule::set_customize_no(boma, 1, 0);

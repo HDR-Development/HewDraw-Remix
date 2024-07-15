@@ -3,10 +3,6 @@ use super::*;
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
-    }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_N_FLAG_SEARCH);
