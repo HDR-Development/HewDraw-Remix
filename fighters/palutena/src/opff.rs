@@ -34,12 +34,17 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
-    && !StatusModule::is_changing(boma)
-    && boma.status_frame() == 1 {
-        VarModule::off_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            VarModule::on_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3]) {
+        return;
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if StatusModule::is_changing(boma) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                VarModule::on_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+            }
+            else {
+                VarModule::off_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+            }
         }
     }
     if fighter.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2) {
@@ -50,7 +55,7 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             }
         }
         // Allow turnaround based on stick position when reappearing
-        if !StatusModule::is_changing(boma) && MotionModule::is_end(boma) {
+        if MotionModule::is_end(boma) {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
         }
@@ -61,22 +66,23 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
         }
     }
-    if fighter.is_prev_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3) {
-        if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
-        }
-    }
-    // Actionability when double jump isn't burned
-    if fighter.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3)
-    && !StatusModule::is_changing(boma)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && boma.get_num_used_jumps() < boma.get_jump_count_max() 
-    && !VarModule::is_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL) {
-        VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-        CancelModule::enable_cancel(boma);
-        // Consume double jump, except when Teleport is initiated on ground
-        if !VarModule::is_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT) {
-            WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    if fighter.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3) {
+        if StatusModule::is_changing(boma) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
+            }
+            else {
+                // Actionability when double jump isn't burned
+                if boma.get_num_used_jumps() < boma.get_jump_count_max()
+                && !VarModule::is_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL) {
+                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    CancelModule::enable_cancel(boma);
+                    // Consume double jump, except when Teleport is initiated on ground
+                    if !VarModule::is_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT) {
+                        WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                    }
+                }
+            }
         }
     }
 }

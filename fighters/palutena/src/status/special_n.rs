@@ -117,9 +117,9 @@ unsafe extern "C" fn special_n_main_loop_common(fighter: &mut L2CFighterCommon, 
 
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                KineticModule::change_kinetic(fighter.module_accessor, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(g_mot), -1.0, 1.0, 0.0, false, false);
             }
             else {

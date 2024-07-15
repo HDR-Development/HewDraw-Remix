@@ -2757,7 +2757,7 @@
       <float hash="damage_fly_top_air_accel_y">0.108</float>
       <float hash="landing_attack_air_frame_f">8</float>
       <float hash="landing_attack_air_frame_b">9</float>
-      <float hash="landing_attack_air_frame_lw">27</float>
+      <float hash="landing_attack_air_frame_lw">22</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.067</float>
       <float hash="shield_radius">12.6</float>
