@@ -186,9 +186,9 @@ unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_n_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::daisy::status::CRYSTAL_ACTIVE) {
         PLAY_SE(fighter, Hash40::new("se_common_freeze"));
-        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -7, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
-        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 10, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 13, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
         EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);

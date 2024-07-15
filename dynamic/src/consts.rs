@@ -421,6 +421,7 @@ pub mod vars {
             pub const CRYSTAL_ACTIVE: i32 = 0x1100;
             pub const SPECIAL_N_DIVE_START: i32 = 0x1101;   // placeholder
             pub const SPECIAL_N_DIVE_END: i32 = 0x1102;     // placeholder
+            pub const IS_AIR_STRIKE: i32 = 0x1103;
         }
     }
 

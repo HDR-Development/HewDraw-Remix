@@ -134,7 +134,7 @@ unsafe extern "C" fn special_s_away_end_main(fighter: &mut L2CFighterCommon) -> 
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)(fighter);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.675, 1.0, 1.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ID_GROUND);
+        KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.75, 1.0, 1.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ID_GROUND);
     }
     ret
 }
