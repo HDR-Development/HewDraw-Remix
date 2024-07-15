@@ -153,15 +153,6 @@ special_air_hi_h:
 elight_special_n2:
   extra:
     cancel_frame: 71
-demon_special_n:
-  extra:
-    cancel_frame: 134
-demon_special_n_hi:
-  extra:
-    cancel_frame: 134
-demon_special_air_n:
-  extra:
-    cancel_frame: 110
 elight_special_n:
   extra:
     cancel_frame: 71
@@ -870,6 +861,18 @@ miigunner_special_n1_cancel:
 miigunner_special_air_n1_cancel:
   extra:
     cancel_frame: 9
+ness_special_n_fire:
+  extra:
+    cancel_frame: 36
+ness_special_n_end:
+  extra:
+    cancel_frame: 36
+ness_special_air_n_fire:
+  extra:
+    cancel_frame: 36
+ness_special_air_n_end:
+  extra:
+    cancel_frame: 36
 pacman_special_n_shoot:
   extra:
     cancel_frame: 40
