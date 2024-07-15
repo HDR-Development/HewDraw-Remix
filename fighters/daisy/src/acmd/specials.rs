@@ -11,6 +11,10 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
     frame(lua_state, 9.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 2.5, 24, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
@@ -45,18 +49,22 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, 0);
-        VarModule::on_flag(agent.battle_object, vars::daisy::status::IS_AIR_STRIKE);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 315, 100, 50, 0, 4.5, 0.0, 6.5, 6.0, Some(0.0), Some(6.5), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        VarModule::on_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_DIVE);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 315, 100, 50, 0, 4.5, 0.0, 6.5, 6.0, Some(0.0), Some(6.5), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        VarModule::off_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_DIVE);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 51.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AUTOCANCEL);
         ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(0));
     }
 }
@@ -66,7 +74,7 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 1, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -74,17 +82,19 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 22, -8, 55, 0, 0, 1.0, false);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11, -4, -120, 0, 0, 1.0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.3);
     }
-    for i in 0..15 {
+    for i in 0..5 {
         if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11, -4, -120, 0, 0, 1.0, false);
+            LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.3);
             EFFECT_FOLLOW(agent, Hash40::new("sys_freezer"), Hash40::new("arml"), 4, 0, 0, 0, 0, 0, (0.30 - (i as f32 * 0.015)), false);
             LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         }
-        wait(lua_state, 2.0);
+        wait(lua_state, 5.0);
     }
-    wait(lua_state, 51.0);
+    frame(lua_state, 51.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_erace_smoke"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
@@ -123,17 +133,12 @@ unsafe extern "C" fn game_specialnattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE);
         ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, 0);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::daisy::status::CRYSTAL_ACTIVE);
-        if !VarModule::is_flag(agent.battle_object, vars::daisy::status::IS_AIR_STRIKE) {
-            // grounded
-            ATTACK(agent, 0, 0, Hash40::new("top"), 14.0, 75, 80, 0, 90, 7.0, 0.0, 7.0, -5.0, Some(0.0), Some(7.0), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        if !VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 17.0, 75, 83, 0, 64, 4.0, 0.0, 4.0, -6.5, Some(0.0), Some(4.0), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         } else {
-            // aerial
-            ATTACK(agent, 0, 0, Hash40::new("top"), 11.0, 60, 75, 0, 90, 7.0, 0.0, 7.0, -5.0, Some(0.0), Some(7.0), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 60, 83, 0, 64, 4.0, 0.0, 4.0, -6.5, Some(0.0), Some(4.0), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 5.0);
@@ -146,7 +151,7 @@ unsafe extern "C" fn game_specialnattack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::daisy::status::CRYSTAL_ACTIVE);
+        VarModule::off_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE);
     }
 }
 
@@ -155,31 +160,35 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
+        let offset = if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) { 3 } else { 0 };
         QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-        EFFECT_FLIP(agent, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0, 0, 9, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        EFFECT_FLIP(agent, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 3 + offset, 0, 9, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.2);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, 13, 0, 200, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.25, 0.8, 0.25));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, -7, 0, 200, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, 13 + offset, 0, 200, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.25, 0.8, 0.25));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 3.7, 7, 0, 200, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, -7 + offset, 0, 200, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
+        EffectModule::set_scale_last(boma, &Vector3f::new(0.25, 0.8, 0.25));
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 3.7, 7 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 4.7, -2, 0, 200, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 4.7, -2 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.5, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 4.7, 8, 0, 200, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 4.7, 8 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.5, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 3.7, -1, 0, 200, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 3.7, -1 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
+        if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
+            EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
@@ -187,12 +196,13 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {
+        let offset = if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) { 0 } else { 3 };
         EFFECT_OFF_KIND(agent, Hash40::new("sys_ice"), false, false);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -10, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -10 + offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 10, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 10 + offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 0 + offset, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
     }
 }
@@ -259,9 +269,7 @@ unsafe extern "C" fn game_specialshitend(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 78, 75, 0, 60, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
     }
     frame(lua_state, 4.0);
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        FT_MOTION_RATE_RANGE(agent, 4.0, 23.0, 25.0);
-    }
+    FT_MOTION_RATE_RANGE(agent, 4.0, 23.0, 25.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

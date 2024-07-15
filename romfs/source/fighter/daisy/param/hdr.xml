@@ -2,8 +2,6 @@
 <struct>
     <int hash="triple_jump_lockout_frame">25</int>
     <struct hash="param_special_n">
-      <int hash="dive_start_frame">20</int>
-      <int hash="dive_end_frame">45</int>
       <float hash="start_brake_speed_x">-0.03</float>
       <float hash="start_limit_speed_x">1.2</float>
       <float hash="start_limit_speed_x_turn_add">0.2</float>
@@ -15,5 +13,6 @@
       <float hash="start_stable_speed_y">0.1</float>
       <float hash="dive_speed_x">1.0</float>
       <float hash="dive_speed_y">-3.0</float>
+      <float hash="landing_frame">20</float>
     </struct>
 </struct>

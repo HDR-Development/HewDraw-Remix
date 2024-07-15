@@ -411,17 +411,16 @@ pub mod vars {
             pub const VEGETABLE_DAMAGE: i32 = 0x0101;
             
             // flag
-            pub const IS_WALLBOUNCE: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
-            pub const RACKET_ACTIVE: i32 = 0x0102;
-            pub const SPECIAL_S_GROUND_START: i32 = 0x0104;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const ATTACK_S4_RACKET_ACTIVE: i32 = 0x0101;
+            pub const SPECIAL_S_GROUND_START: i32 = 0x0102;
         }
         pub mod status {
             // flags
-            pub const CRYSTAL_ACTIVE: i32 = 0x1100;
-            pub const SPECIAL_N_DIVE_START: i32 = 0x1101;   // placeholder
-            pub const SPECIAL_N_DIVE_END: i32 = 0x1102;     // placeholder
-            pub const IS_AIR_STRIKE: i32 = 0x1103;
+            pub const SPECIAL_N_CRYSTAL_ACTIVE: i32 = 0x1100;
+            pub const SPECIAL_N_AIR_START: i32 = 0x1101;
+            pub const SPECIAL_N_DIVE: i32 = 0x1102;
+            pub const SPECIAL_N_AUTOCANCEL: i32 = 0x1103;
         }
     }
 

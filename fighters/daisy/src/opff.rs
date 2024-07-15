@@ -14,17 +14,10 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
         } else {
             touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
         };
-        if touch_wall && (1..25).contains(&frame){
-                VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
+        if touch_wall && (1..25).contains(&frame) {
+            VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
-    }
-    else if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END {
-        if VarModule::is_flag(boma.object(), vars::daisy::instance::IS_WALLBOUNCE) {
-            MotionModule::set_rate(boma, 0.6);
-        }
-    } else {
-        VarModule::off_flag(boma.object(), vars::daisy::instance::IS_WALLBOUNCE);
     }
 }
 
@@ -51,7 +44,7 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
     if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) && fighter.motion_frame() < 40.0)
     || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
-        VarModule::on_flag(fighter.object(), RACKET_ACTIVE);
+        VarModule::on_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE);
         if PostureModule::lr(fighter.boma()) == 1.0 {
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), true);
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
@@ -63,10 +56,10 @@ unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panmflip"), false);
             ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubmflip"), false);
         }
-    } else if VarModule::is_flag(fighter.object(), RACKET_ACTIVE) {
+    } else if VarModule::is_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE) {
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
-        VarModule::off_flag(fighter.object(), RACKET_ACTIVE);
+        VarModule::off_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE);
     }
 }
 

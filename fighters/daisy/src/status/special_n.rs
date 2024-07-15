@@ -36,6 +36,7 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
+        VarModule::on_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_AIR_START);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n"), 0.0, 1.0, false, 0.0, false, false);
@@ -66,16 +67,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             }
         }
         if fighter.is_situation(*SITUATION_KIND_AIR) {
-            let dive_start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_n.dive_start_frame");
-            let dive_end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_n.dive_end_frame");
-            if fighter.status_frame() == dive_start_frame {
-                special_n_physics(fighter, true, false);
-            }
-            else if fighter.status_frame() == dive_end_frame {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-            else if (dive_start_frame..dive_end_frame).contains(&fighter.status_frame()) {
+            if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_DIVE) {
                 fighter.check_wall_jump_cancel();
+            }
+            if fighter.status_frame() == 20 {
+                special_n_physics(fighter, true, false);
             }
         }
     }
@@ -96,17 +92,28 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         
         return 0.into();
     }
-    if StatusModule::is_situation_changed(fighter.module_accessor) {
+    if StatusModule::is_situation_changed(fighter.module_accessor)
+    && !StatusModule::is_changing(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-            if fighter.status_frame() < ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_n.dive_end_frame") {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_attack"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {  // temporary until air anim is created (will probably just make autocancel)
-                WorkModule::set_float(fighter.module_accessor, 20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                return 1.into();
+            if !fighter.is_motion(Hash40::new("special_n_attack")) {
+                if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_DIVE) {
+                    VarModule::off_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_DIVE);
+                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_attack"), 0.0, 1.0, false, 0.0, false, false);
+                }
+                else {
+                    if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_AUTOCANCEL) {
+                        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+                        return 1.into();
+                    }
+                    else {
+                        let landing_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_n.landing_frame") as f32;
+                        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                        return 1.into();
+                    }
+                }
             }
         }
         else {
@@ -114,8 +121,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return 1.into();
-            // MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n"), 0.0, 1.0, false, 0.0, false, false);
-            // special_n_physics(fighter, true);
         }
     }
     
@@ -171,11 +176,6 @@ unsafe extern "C" fn special_n_physics(fighter: &mut L2CFighterCommon, dive: boo
         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, limit_speed_x * facing, 0.0);
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, stable_speed_x, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-
-        // let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-        // let control_x_stable_speed = air_speed_x_stable * (ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_n.start_control_x_mul") - 0.25);
-        // sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, control_x_stable_speed, 0.0);
-        // KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 
@@ -184,7 +184,7 @@ unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_n_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::daisy::status::CRYSTAL_ACTIVE) {
+    if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE) {
         PLAY_SE(fighter, Hash40::new("se_common_freeze"));
         EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -7, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(fighter, 0.3, 1.0, 0.8);
