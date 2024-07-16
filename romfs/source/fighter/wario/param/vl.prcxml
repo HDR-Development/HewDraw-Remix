@@ -16,7 +16,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="escape_speed_x">1.25</float>
-      <float hash="escape_speed_y">2.5</float>
+      <float hash="escape_speed_y">1.25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
