@@ -535,7 +535,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 #[skyline::hook(replace = L2CFighterCommon_sub_dash_uniq_process_main_internal)]
 unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !WorkModule::is_enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) {
-        let stick_x = fighter.left_stick_x();
+        let stick_x = if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_DEMON {
+            fighter.global_table[STICK_X].get_f32()
+        }
+        else {
+            fighter.left_stick_x()
+        };
         let walk_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x206138766c);
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_backdash = if param_1.get_bool() { -1.0 } else { 1.0 };
