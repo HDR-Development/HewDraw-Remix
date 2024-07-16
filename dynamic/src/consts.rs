@@ -750,6 +750,10 @@ pub mod vars {
             pub use super::super::mario::status::FIREBRAND;
             pub use super::super::luigi::status::THUNDERHAND;
             pub use super::super::mariod::status::CHILL_PILL;
+            pub use super::super::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE;
+            pub use super::super::daisy::status::SPECIAL_N_AIR_START;
+            pub use super::super::daisy::status::SPECIAL_N_DIVE;
+            pub use super::super::daisy::status::SPECIAL_N_AUTOCANCEL;
             pub const MINING_TIMER: i32 = 0x11F4;
             pub const KO_PUNCH_GRAVITY: i32 = 0x11F5;
             pub const KO_PUNCH_GRAVITY_END: i32 = 0x11F6;

@@ -156,6 +156,14 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
             VarModule::set_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE, current_damage);
         }
     }
+
+    // also hide the carrot (and other items) when daisy is shielding
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_GUARD,
+        *FIGHTER_STATUS_KIND_GUARD_ON
+    ]) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
 }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {

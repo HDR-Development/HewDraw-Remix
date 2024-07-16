@@ -141,8 +141,8 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_aire_back_atk"), Hash40::new("daisy_aire_back_atk"), Hash40::new("top"), 6, 3, 11.5, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
-        EFFECT(agent, Hash40::new("daisy_aire_back_atk_petals"), Hash40::new("top"), 6, 3, 11.5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_aire_back_atk"), Hash40::new("daisy_aire_back_atk"), Hash40::new("top"), 1, 3, 11.5, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
+        EFFECT(agent, Hash40::new("daisy_aire_back_atk_petals"), Hash40::new("top"), 1, 3, 11.5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
