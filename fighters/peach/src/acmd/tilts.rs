@@ -90,6 +90,19 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1, 2, 7, 4, 0, 190, 0.9, true, *EF_FLIP_YZ, 0.4);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
 
@@ -97,4 +110,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
     
     agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
+    agent.acmd("effect_attacklw3", effect_attacklw3, Priority::Low);
 }

@@ -12,6 +12,35 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+attack_13:
+  game_script: game_attack13
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackend.nuanmb
+  scripts:
+  - expression_attack13
+  - sound_attack13
+  - effect_attack13
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 33
+    freeze_during_hitstop: true
 attack_hi4:
   extra:
     cancel_frame: 55
@@ -121,9 +150,6 @@ special_air_hi_h:
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-elight_special_n2:
-  extra:
-    cancel_frame: 71
 daisy_special_n:
   extra:
     xlu_start: 0
@@ -163,16 +189,10 @@ daisy_special_n_attack:
       xlu_end: 0
       cancel_frame: 41
       no_stop_intp: false
-demon_special_n:
-  extra:
-    cancel_frame: 134
-demon_special_n_hi:
-  extra:
-    cancel_frame: 134
-demon_special_air_n:
-  extra:
-    cancel_frame: 110
 elight_special_n:
+  extra:
+    cancel_frame: 71
+elight_special_n2:
   extra:
     cancel_frame: 71
 elight_special_air_n:
@@ -880,6 +900,18 @@ miigunner_special_n1_cancel:
 miigunner_special_air_n1_cancel:
   extra:
     cancel_frame: 9
+ness_special_n_fire:
+  extra:
+    cancel_frame: 36
+ness_special_n_end:
+  extra:
+    cancel_frame: 36
+ness_special_air_n_fire:
+  extra:
+    cancel_frame: 36
+ness_special_air_n_end:
+  extra:
+    cancel_frame: 36
 pacman_special_n_shoot:
   extra:
     cancel_frame: 40

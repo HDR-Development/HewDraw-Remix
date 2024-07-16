@@ -167,7 +167,7 @@ special_n_b:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 45
+    cancel_frame: 51
     no_stop_intp: false
 special_air_n_b:
   game_script: game_specialairnb
@@ -194,7 +194,7 @@ special_air_n_b:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 45
+    cancel_frame: 51
     no_stop_intp: false
 special_n_y:
   game_script: game_specialny
