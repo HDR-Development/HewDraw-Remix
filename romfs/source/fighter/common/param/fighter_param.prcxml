@@ -735,7 +735,7 @@
       <float hash="jump_speed_x_max">1.7</float>
       <float hash="jump_initial_y">17.0573</float>
       <float hash="mini_jump_y">12</float>
-      <float hash="jump_aerial_y">46.51</float>
+      <float hash="jump_aerial_y">41.778</float>
       <float hash="air_accel_x_mul">0.06</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">0.83</float>
