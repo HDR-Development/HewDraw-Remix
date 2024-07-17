@@ -166,7 +166,7 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
     if is_training_mode() {
         if (fighter.is_motion(Hash40::new("appeal_s_r")) || fighter.is_motion(Hash40::new("appeal_s_l")))
         && fighter.motion_frame() == 2.0 {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
         if (fighter.is_motion(Hash40::new("appeal_hi_r")) || fighter.is_motion(Hash40::new("appeal_hi_l")))
         && fighter.motion_frame() == 2.0 {
@@ -174,7 +174,7 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
         }
         if (fighter.is_motion(Hash40::new("appeal_lw_r")) || fighter.is_motion(Hash40::new("appeal_lw_l")))
         && fighter.motion_frame() == 2.0 {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
     }
 }
@@ -185,12 +185,12 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
     && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && VarModule::is_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
         VarModule::off_flag(fighter.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-        // red moves: side
+        // yellow moves: side
         if fighter.is_motion(Hash40::new("attack_s3_s"))
         || fighter.is_motion(Hash40::new("attack_s4_s"))
         || fighter.is_motion(Hash40::new("attack_air_f"))
         || fighter.is_motion(Hash40::new("attack_air_b")) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
 
         // blue moves: up
@@ -200,11 +200,11 @@ unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
         }
 
-        // yellow moves: down
+        // red moves: down
         else if fighter.is_motion(Hash40::new("attack_lw3"))
         || fighter.is_motion(Hash40::new("attack_lw4"))
         || fighter.is_motion(Hash40::new("attack_air_lw")) {
-            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
         }
     }
 }
