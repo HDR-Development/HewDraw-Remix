@@ -460,17 +460,14 @@ unsafe extern "C" fn expression_throwb_nana(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
-
     agent.acmd("game_catch_nana", game_catch, Priority::Low);
     agent.acmd("sound_catch_nana", sound_catch_nana, Priority::Low);
 
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
-
     agent.acmd("game_catchdash_nana", game_catchdash, Priority::Low);
     agent.acmd("sound_catchdash_nana", sound_catchdash_nana, Priority::Low);
 
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
-
     agent.acmd("game_catchturn_nana", game_catchturn, Priority::Low);
     agent.acmd("sound_catchturn_nana", sound_catchturn_nana, Priority::Low);
 
@@ -479,28 +476,24 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_catchattack_nana", expression_catchattack_nana, Priority::Low);
 
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
-
     agent.acmd("game_throwlw_nana", game_throwlw, Priority::Low);
     agent.acmd("effect_throwlw_nana", effect_throwlw_nana, Priority::Low);
     agent.acmd("sound_throwlw_nana", sound_throwlw_nana, Priority::Low);
     agent.acmd("expression_throwlw_nana", expression_throwlw_nana, Priority::Low);
 
     agent.acmd("game_throwf", game_throwf, Priority::Low);
-
     agent.acmd("game_throwf_nana", game_throwf, Priority::Low);
     agent.acmd("effect_throwf_nana", effect_throwf_nana, Priority::Low);
     agent.acmd("sound_throwf_nana", sound_throwf_nana, Priority::Low);
     agent.acmd("expression_throwf_nana", expression_throwf_nana, Priority::Low);
 
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
-
     agent.acmd("game_throwhi_nana", game_throwhi, Priority::Low);
     agent.acmd("effect_throwhi_nana", effect_throwhi_nana, Priority::Low);
     agent.acmd("sound_throwhi_nana", sound_throwhi_nana, Priority::Low);
     agent.acmd("expression_throwhi_nana", expression_throwhi_nana, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
-
     agent.acmd("game_throwb_nana", game_throwb, Priority::Low);
     agent.acmd("effect_throwb_nana", effect_throwb_nana, Priority::Low);
     agent.acmd("sound_throwb_nana", sound_throwb_nana, Priority::Low);

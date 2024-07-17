@@ -82,12 +82,14 @@ unsafe extern "C" fn catchwait_nana_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent: &mut Agent) {
+pub fn install_popo(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
 }
 
 pub fn install_nana(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
+    agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
     agent.status(Main, *FIGHTER_STATUS_KIND_THROW, throw_nana);
     agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, catchwait_nana_main);
 }
