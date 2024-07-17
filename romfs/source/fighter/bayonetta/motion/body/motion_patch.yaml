@@ -14,7 +14,7 @@ guard_off:
     cancel_frame: 12
 throw_b:
   extra:
-    cancel_frame: 47
+    cancel_frame: 45
 throw_lw:
   extra:
     cancel_frame: 41
@@ -26,7 +26,7 @@ attack_12:
     cancel_frame: 27
 attack_13:
   extra:
-    cancel_frame: 27
+    cancel_frame: 29
 attack_11:
   extra:
     cancel_frame: 27
@@ -45,7 +45,7 @@ special_lw:
     cancel_frame: 66
 attack_hi3:
   extra:
-    cancel_frame: 25
+    cancel_frame: 26
 appeal_lw_r:
   blend_frames: 10
   animations:
@@ -60,7 +60,7 @@ appeal_hi_l:
 attack_s4_s:
 attack_s3_s:
   extra:
-    cancel_frame: 46
+    cancel_frame: 48
 appeal_hi_r:
   extra:
     cancel_frame: 26
@@ -84,6 +84,9 @@ attack_s3_s2:
   blend_frames: 1
   extra:
     cancel_frame: 47
+attack_dash:
+  extra:
+    cancel_frame: 44
 attack_air_n:
   extra:
     cancel_frame: 51
@@ -154,6 +157,7 @@ special_s_hold_end:
   extra:
     cancel_frame: 61
 special_air_s_d:
+  blend_frames: 2
 special_air_s_d_hit:
   extra:
     cancel_frame: 32

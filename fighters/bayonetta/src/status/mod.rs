@@ -8,6 +8,7 @@ mod attackair;
 mod specialairs;
 mod specialn;
 mod specials;
+mod specialhi;
 mod jumpaerial;
 
 pub fn install(agent: &mut Agent) {
@@ -18,5 +19,6 @@ pub fn install(agent: &mut Agent) {
     specialairs::install(agent);
     specialn::install(agent);
     specials::install(agent);
+    specialhi::install(agent);
     jumpaerial::install(agent);
 }
