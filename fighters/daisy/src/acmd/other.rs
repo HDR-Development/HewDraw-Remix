@@ -157,6 +157,68 @@ unsafe extern "C" fn expression_appeallw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        if !ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
+            ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, 0);
+            ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
+            let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
+            let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let article_boma = sv_battle_object::module_accessor(article_id);
+            let offset = Vector3f {
+                x: PostureModule::pos_x(boma) + (10.0 * PostureModule::lr(boma)),
+                y: PostureModule::pos_y(boma) + 7.0,
+                z: -6.0
+            };
+            PostureModule::set_pos(article_boma, &offset);
+            PostureModule::set_scale(article_boma, 1.2, true);
+            LinkModule::unlink(article_boma, *WEAPON_LINK_NO_CONSTRAINT); // detaches the article from daisy
+            VarModule::set_int(agent.battle_object, vars::daisy::instance::YAPPING_TIMER, 999);
+            
+            EFFECT_FLIP(agent, Hash40::new("sys_erace_smoke"), Hash40::new("sys_erace_smoke"), Hash40::new("top"), 11, 11, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 0.9);
+    }
+}
+
+unsafe extern "C" fn sound_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_appeal_s01"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_wear02"));
+    }
+}
+
+unsafe extern "C" fn expression_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 100.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -178,4 +240,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_appeallwr", sound_appeallw, Priority::Low);
     agent.acmd("expression_appeallwl", expression_appeallw, Priority::Low);
     agent.acmd("expression_appeallwr", expression_appeallw, Priority::Low);
+
+    agent.acmd("game_appealspecial", game_appealspecial, Priority::Low);
+    agent.acmd("effect_appealspecial", effect_appealspecial, Priority::Low);
+    agent.acmd("sound_appealspecial", sound_appealspecial, Priority::Low);
+    agent.acmd("expression_appealspecial", expression_appealspecial, Priority::Low);
 }

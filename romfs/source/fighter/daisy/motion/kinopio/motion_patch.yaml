@@ -1,0 +1,6 @@
+catch_wait:
+  blend_frames: 8
+catch_attack:
+  flags:
+    loop: true
+  blend_frames: 8

@@ -195,3 +195,33 @@ special_n_attack:
       xlu_end: 0
       cancel_frame: 41
       no_stop_intp: false
+appeal_s_special:
+    game_script: game_appealspecial
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+      unk_800: false
+      unk_1000: false
+      unk_2000: false
+    blend_frames: 0
+    animations:
+      - name: j01appealspecial.nuanmb
+        unk: 0
+    scripts:
+      - expression_appealspecial
+      - sound_appealspecial
+      - effect_appealspecial
+    extra:
+      xlu_start: 0
+      xlu_end: 0
+      cancel_frame: 50
+      no_stop_intp: false

@@ -166,6 +166,118 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 }
 
+// i wonder what you taste like
+unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    // transitions to special taunt if the button is released within 2 frames
+    if fighter.is_motion_one_of(&[
+        Hash40::new("appeal_s_l"),
+        Hash40::new("appeal_s_r"),
+        ])
+    && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+    && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)
+    && fighter.motion_frame() as i32 == 3 {
+        MotionModule::change_motion_inherit_frame(boma, Hash40::new("appeal_s_special"), -1.0, 1.0, 0.0, false, false);
+    }
+
+    if VarModule::get_int(boma.object(), YAPPING_TIMER) > 0 {
+        VarModule::dec_int(boma.object(), YAPPING_TIMER)
+    }
+
+    if ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        let timer = VarModule::get_int(boma.object(), YAPPING_TIMER);
+        
+        // initiate rng for what line the flower will say
+        if (970..971).contains(&timer) {
+            let mut quote_data: [&str;2] = ["dummy", "dummy"];
+            let mut yapping_frames = 0; // approximate amount of frames each line takes to complete
+            let rng = app::sv_math::rand(hash40("fighter"), 25);
+           match (rng as i32) {
+                0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 90; },
+                1 =>  { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 100; },
+                2 =>  { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 85; },
+                3 =>  { quote_data = ["se_daisy_appeal_x04_everyday", "daisy_flower_bubble_04"]; yapping_frames = 100; },
+                4 =>  { quote_data = ["se_daisy_appeal_x05_feelsoff", "daisy_flower_bubble_05"]; yapping_frames = 180; },
+                5 =>  { quote_data = ["se_daisy_appeal_x06_focus", "daisy_flower_bubble_06"]; yapping_frames = 140; },
+                6 =>  { quote_data = ["se_daisy_appeal_x07_howyadoin", "daisy_flower_bubble_07"]; yapping_frames = 60; },
+                7 =>  { quote_data = ["se_daisy_appeal_x08_something", "daisy_flower_bubble_08"]; yapping_frames = 90; },
+                8 =>  { quote_data = ["se_daisy_appeal_x09_keeptrying", "daisy_flower_bubble_09"]; yapping_frames = 130; },
+                9 =>  { quote_data = ["se_daisy_appeal_x10_almost", "daisy_flower_bubble_10"]; yapping_frames = 100; },
+                10 =>  { quote_data = ["se_daisy_appeal_x11_goodday", "daisy_flower_bubble_11"]; yapping_frames = 130; },
+                11 =>  { quote_data = ["se_daisy_appeal_x12_newspecies", "daisy_flower_bubble_12"]; yapping_frames = 100; },
+                12 =>  { quote_data = ["se_daisy_appeal_x13_taste", "daisy_flower_bubble_13"]; yapping_frames = 100; },
+                13 =>  { quote_data = ["se_daisy_appeal_x14_nexttime", "daisy_flower_bubble_14"]; yapping_frames = 70; },
+                14 =>  { quote_data = ["se_daisy_appeal_x15_ohhey", "daisy_flower_bubble_15"]; yapping_frames = 60; },
+                15 =>  { quote_data = ["se_daisy_appeal_x16_party", "daisy_flower_bubble_16"]; yapping_frames = 125; },
+                16 =>  { quote_data = ["se_daisy_appeal_x17_peaceful", "daisy_flower_bubble_17"]; yapping_frames = 100; },
+                17 =>  { quote_data = ["se_daisy_appeal_x18_rooting", "daisy_flower_bubble_18"]; yapping_frames = 90; },
+                18 =>  { quote_data = ["se_daisy_appeal_x19_sogood", "daisy_flower_bubble_19"]; yapping_frames = 100; },
+                19 =>  { quote_data = ["se_daisy_appeal_x20_summoned", "daisy_flower_bubble_20"]; yapping_frames = 120; },
+                20 =>  { quote_data = ["se_daisy_appeal_x21_surprise", "daisy_flower_bubble_21"]; yapping_frames = 70; },
+                21 =>  { quote_data = ["se_daisy_appeal_x22_wellthen", "daisy_flower_bubble_22"]; yapping_frames = 40; },
+                22 =>  { quote_data = ["se_daisy_appeal_x23_what", "daisy_flower_bubble_23"]; yapping_frames = 100; },
+                23 =>  { quote_data = ["se_daisy_appeal_x24_where", "daisy_flower_bubble_24"]; yapping_frames = 75; },
+                _ =>  { quote_data = ["se_daisy_appeal_x25_yikes", "daisy_flower_bubble_25"]; yapping_frames = 40; }
+            };
+            ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_attack"), true, 0.0);
+            SoundModule::play_se(boma, Hash40::new(quote_data[0]), true, false, false, false, app::enSEType(0));
+            let effect = EffectModule::req_on_joint(article_boma, Hash40::new(quote_data[1]), Hash40::new("top"), &Vector3f::new(0.5, 11.25, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            VarModule::set_int(boma.object(), FLOWER_EFFECT_ID, effect as i32);
+            VarModule::set_int(boma.object(), YAPPING_TIMER, (30 + yapping_frames));
+            VarModule::on_flag(fighter.battle_object, START_FLOWER_EFFECT);
+            VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
+        }
+
+        // handles the visuals of the speech bubble effect
+        if VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) > 0 {
+            VarModule::dec_int(fighter.battle_object, FLOWER_EFFECT_FRAMES);
+        }
+
+        if VarModule::is_flag(fighter.battle_object, START_FLOWER_EFFECT) {
+            let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
+            let frame = VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) as f32;
+            if frame > 0.0 {
+                let mul = 1.0 - (frame * 0.05);
+                EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
+                EffectModule::set_alpha(boma, effect as u32, 1.0 - (0.2 * frame));
+            } else {
+                EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4, 1.6, 1.4));
+                EffectModule::set_alpha(boma, effect as u32, 1.0);
+                VarModule::off_flag(fighter.battle_object, START_FLOWER_EFFECT);
+            }
+        }
+
+        if VarModule::is_flag(fighter.battle_object, END_FLOWER_EFFECT) {
+            let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
+            let frame = VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) as f32;
+            if frame > 0.0 {
+                let mul = 0.75 + (frame * 0.05);
+                EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
+                EffectModule::set_alpha(boma, effect as u32, (0.1 * frame));
+            } else {
+                EffectModule::kill(boma, effect as u32, true, true);
+                VarModule::off_flag(fighter.battle_object, END_FLOWER_EFFECT);
+            }
+        }
+
+        // when the line is over, change motion back to normal and remove bubble
+        if timer == 30 {
+            ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
+            VarModule::on_flag(fighter.battle_object, END_FLOWER_EFFECT);
+            VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
+        }
+
+        // removes the flower once all is said and done
+        if timer <= 0 {
+            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.0, 5.0, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::set_rate(boma, effect as u32, 1.0);
+            ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, ArticleOperationTarget(0));
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -202,6 +314,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     racket_visibility(fighter);
     crystal_handling(fighter, boma);
     set_vegetable_team(fighter, boma);
+    appeal_special(fighter, boma);
     fastfall_specials(fighter);
 }
 
