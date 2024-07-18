@@ -188,10 +188,6 @@ unsafe extern "C" fn effect_daisyspecialnattack(agent: &mut L2CAgentBase) {
             EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
         }
     }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_erace_smoke"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-    }
     frame(lua_state, 41.0);
     if is_excute(agent) {
         let offset = if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) { 0 } else { 3 };

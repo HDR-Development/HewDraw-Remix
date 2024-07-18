@@ -95,7 +95,8 @@ unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 48.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("hip"), 4.0, 55, 100, 0, 20, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
+        ATTACK(agent, 0, 0, Hash40::new("hip"), 4.0, 90, 100, 165, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_HIP);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 10.0, false);
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
@@ -161,10 +162,11 @@ unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        if !ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
+    if !ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
+        if is_excute(agent) {
             ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, 0);
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
             let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
             let article_boma = sv_battle_object::module_accessor(article_id);
@@ -178,7 +180,12 @@ unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
             LinkModule::unlink(article_boma, *WEAPON_LINK_NO_CONSTRAINT); // detaches the article from daisy
             VarModule::set_int(agent.battle_object, vars::daisy::instance::YAPPING_TIMER, 999);
             
-            EFFECT_FLIP(agent, Hash40::new("sys_erace_smoke"), Hash40::new("sys_erace_smoke"), Hash40::new("top"), 11, 11, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::set_rate(boma, effect as u32, 1.0);
+        }
+        wait(lua_state, 3.0);
+        if is_excute(agent) {
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
     }
 }

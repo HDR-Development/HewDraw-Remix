@@ -195,37 +195,37 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             let mut yapping_frames = 0; // approximate amount of frames each line takes to complete
             let rng = app::sv_math::rand(hash40("fighter"), 25);
            match (rng as i32) {
-                0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 90; },
-                1 =>  { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 100; },
-                2 =>  { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 85; },
-                3 =>  { quote_data = ["se_daisy_appeal_x04_everyday", "daisy_flower_bubble_04"]; yapping_frames = 100; },
-                4 =>  { quote_data = ["se_daisy_appeal_x05_feelsoff", "daisy_flower_bubble_05"]; yapping_frames = 180; },
-                5 =>  { quote_data = ["se_daisy_appeal_x06_focus", "daisy_flower_bubble_06"]; yapping_frames = 140; },
+                0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 84; },
+                1 =>  { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 82; },
+                2 =>  { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 76; },
+                3 =>  { quote_data = ["se_daisy_appeal_x04_everyday", "daisy_flower_bubble_04"]; yapping_frames = 95; },
+                4 =>  { quote_data = ["se_daisy_appeal_x05_feelsoff", "daisy_flower_bubble_05"]; yapping_frames = 173; },
+                5 =>  { quote_data = ["se_daisy_appeal_x06_focus", "daisy_flower_bubble_06"]; yapping_frames = 125; },
                 6 =>  { quote_data = ["se_daisy_appeal_x07_howyadoin", "daisy_flower_bubble_07"]; yapping_frames = 60; },
-                7 =>  { quote_data = ["se_daisy_appeal_x08_something", "daisy_flower_bubble_08"]; yapping_frames = 90; },
-                8 =>  { quote_data = ["se_daisy_appeal_x09_keeptrying", "daisy_flower_bubble_09"]; yapping_frames = 130; },
-                9 =>  { quote_data = ["se_daisy_appeal_x10_almost", "daisy_flower_bubble_10"]; yapping_frames = 100; },
-                10 =>  { quote_data = ["se_daisy_appeal_x11_goodday", "daisy_flower_bubble_11"]; yapping_frames = 130; },
-                11 =>  { quote_data = ["se_daisy_appeal_x12_newspecies", "daisy_flower_bubble_12"]; yapping_frames = 100; },
-                12 =>  { quote_data = ["se_daisy_appeal_x13_taste", "daisy_flower_bubble_13"]; yapping_frames = 100; },
-                13 =>  { quote_data = ["se_daisy_appeal_x14_nexttime", "daisy_flower_bubble_14"]; yapping_frames = 70; },
+                7 =>  { quote_data = ["se_daisy_appeal_x08_something", "daisy_flower_bubble_08"]; yapping_frames = 80; },
+                8 =>  { quote_data = ["se_daisy_appeal_x09_keeptrying", "daisy_flower_bubble_09"]; yapping_frames = 124; },
+                9 =>  { quote_data = ["se_daisy_appeal_x10_almost", "daisy_flower_bubble_10"]; yapping_frames = 94; },
+                10 =>  { quote_data = ["se_daisy_appeal_x11_goodday", "daisy_flower_bubble_11"]; yapping_frames = 122; },
+                11 =>  { quote_data = ["se_daisy_appeal_x12_newspecies", "daisy_flower_bubble_12"]; yapping_frames = 92; },
+                12 =>  { quote_data = ["se_daisy_appeal_x13_taste", "daisy_flower_bubble_13"]; yapping_frames = 95; },
+                13 =>  { quote_data = ["se_daisy_appeal_x14_nexttime", "daisy_flower_bubble_14"]; yapping_frames = 66; },
                 14 =>  { quote_data = ["se_daisy_appeal_x15_ohhey", "daisy_flower_bubble_15"]; yapping_frames = 60; },
                 15 =>  { quote_data = ["se_daisy_appeal_x16_party", "daisy_flower_bubble_16"]; yapping_frames = 125; },
-                16 =>  { quote_data = ["se_daisy_appeal_x17_peaceful", "daisy_flower_bubble_17"]; yapping_frames = 100; },
-                17 =>  { quote_data = ["se_daisy_appeal_x18_rooting", "daisy_flower_bubble_18"]; yapping_frames = 90; },
-                18 =>  { quote_data = ["se_daisy_appeal_x19_sogood", "daisy_flower_bubble_19"]; yapping_frames = 100; },
-                19 =>  { quote_data = ["se_daisy_appeal_x20_summoned", "daisy_flower_bubble_20"]; yapping_frames = 120; },
-                20 =>  { quote_data = ["se_daisy_appeal_x21_surprise", "daisy_flower_bubble_21"]; yapping_frames = 70; },
+                16 =>  { quote_data = ["se_daisy_appeal_x17_peaceful", "daisy_flower_bubble_17"]; yapping_frames = 94; },
+                17 =>  { quote_data = ["se_daisy_appeal_x18_rooting", "daisy_flower_bubble_18"]; yapping_frames = 84; },
+                18 =>  { quote_data = ["se_daisy_appeal_x19_sogood", "daisy_flower_bubble_19"]; yapping_frames = 92; },
+                19 =>  { quote_data = ["se_daisy_appeal_x20_summoned", "daisy_flower_bubble_20"]; yapping_frames = 98; },
+                20 =>  { quote_data = ["se_daisy_appeal_x21_surprise", "daisy_flower_bubble_21"]; yapping_frames = 62; },
                 21 =>  { quote_data = ["se_daisy_appeal_x22_wellthen", "daisy_flower_bubble_22"]; yapping_frames = 40; },
-                22 =>  { quote_data = ["se_daisy_appeal_x23_what", "daisy_flower_bubble_23"]; yapping_frames = 100; },
-                23 =>  { quote_data = ["se_daisy_appeal_x24_where", "daisy_flower_bubble_24"]; yapping_frames = 75; },
-                _ =>  { quote_data = ["se_daisy_appeal_x25_yikes", "daisy_flower_bubble_25"]; yapping_frames = 40; }
+                22 =>  { quote_data = ["se_daisy_appeal_x23_what", "daisy_flower_bubble_23"]; yapping_frames = 88; },
+                23 =>  { quote_data = ["se_daisy_appeal_x24_where", "daisy_flower_bubble_24"]; yapping_frames = 65; },
+                _ =>  { quote_data = ["se_daisy_appeal_x25_yikes", "daisy_flower_bubble_25"]; yapping_frames = 36; }
             };
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_attack"), true, 0.0);
             SoundModule::play_se(boma, Hash40::new(quote_data[0]), true, false, false, false, app::enSEType(0));
             let effect = EffectModule::req_on_joint(article_boma, Hash40::new(quote_data[1]), Hash40::new("top"), &Vector3f::new(0.5, 11.25, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             VarModule::set_int(boma.object(), FLOWER_EFFECT_ID, effect as i32);
-            VarModule::set_int(boma.object(), YAPPING_TIMER, (30 + yapping_frames));
+            VarModule::set_int(boma.object(), YAPPING_TIMER, (40 + yapping_frames));
             VarModule::on_flag(fighter.battle_object, START_FLOWER_EFFECT);
             VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
         }
@@ -263,7 +263,7 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         }
 
         // when the line is over, change motion back to normal and remove bubble
-        if timer == 30 {
+        if timer == 40 {
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
             VarModule::on_flag(fighter.battle_object, END_FLOWER_EFFECT);
             VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
@@ -271,7 +271,7 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
         // removes the flower once all is said and done
         if timer <= 0 {
-            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.0, 5.0, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             EffectModule::set_rate(boma, effect as u32, 1.0);
             ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, ArticleOperationTarget(0));
         }

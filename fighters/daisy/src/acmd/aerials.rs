@@ -46,9 +46,9 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("shoulderl"), 14.0, 42, 75, 0, 50, 3.0, -0.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 1, 0, Hash40::new("arml"), 14.0, 42, 75, 0, 50, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 2, 0, Hash40::new("arml"), 14.0, 42, 75, 0, 50, 4.5, 4.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 0, 0, Hash40::new("shoulderl"), 15.0, 42, 78, 0, 50, 3.0, -0.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 1, 0, Hash40::new("arml"), 15.0, 42, 78, 0, 50, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 2, 0, Hash40::new("arml"), 15.0, 42, 78, 0, 50, 4.5, 4.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_FRYINGPAN, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
@@ -68,10 +68,10 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 12, -4, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 2.0);
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_smash_skillet"), Hash40::new("daisy_smash_skillet_l"), Hash40::new("top"), 10, 2.5, 4.5, 15, 10, 80, 0.75, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_smash_skillet"), Hash40::new("daisy_smash_skillet_l"), Hash40::new("top"), 1.5, 4.0, 4.5, 20, 10, 85, 0.75, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 0.4);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
