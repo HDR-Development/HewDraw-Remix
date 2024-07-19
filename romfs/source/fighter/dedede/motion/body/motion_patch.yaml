@@ -173,7 +173,6 @@ appeal_s_r_mask:
     intangible_end_frame: 0
     cancel_frame: 50
     freeze_during_hitstop: false
-    cancel_frame: 34
 shield_break_fly:
   animations:
     - name: f03downspotu.nuanmb

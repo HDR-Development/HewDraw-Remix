@@ -281,9 +281,8 @@ unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
+    && (fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_END,
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_LOOP,
@@ -302,6 +301,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_TURN,
         *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK
         ]) 
+        || fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+        && fighter.motion_frame() > 18.0
+    )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
