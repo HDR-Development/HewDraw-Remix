@@ -38,11 +38,11 @@ unsafe extern "C" fn status_TurnRunBrake_main(fighter: &mut L2CFighterCommon) ->
 
 pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(), 30.0, 30.0);
-    let pos = PostureModule::pos_2d(fighter.module_accessor);
+    let pos = *PostureModule::pos(fighter.module_accessor);
     let is_under_platform = GroundModule::ray_check(
         fighter.module_accessor, 
         &Vector2f{ x: pos.x, y: pos.y + 38.0}, 
-        &Vector2f{ x: 0.0, y: -37.0},
+        &Vector2f{ x: 0.0, y: -26.0},
         true
     ) == 1;
     let motion = if is_near_cliff {
