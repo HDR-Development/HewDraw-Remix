@@ -2,65 +2,75 @@ use super::*;
 use globals::*;
 // status script import
 
-unsafe extern "C" fn ics_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[OBJECT_ID] == FIGHTER_KIND_NANA {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_FORBID) {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-        }
-    }
-    fighter.status_Dash_Main();
-    0.into()
-}
-
-// FIGHTER_STATUS_KIND_DASH //
-
-pub unsafe extern "C" fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_Dash_Sub();
-    fighter.sub_shift_status_main(L2CValue::Ptr(ics_dash_main as *const () as _))
-}
-
 // FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP //
 
 pub unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+unsafe extern "C" fn status_Dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_Dash();
+}
+
+unsafe extern "C" fn status_Dash_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return false.into();
+}
+
+unsafe extern "C" fn status_Turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_Turn();
+}
+
+unsafe extern "C" fn status_TurnDash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_TurnDash();
+}
+
+unsafe extern "C" fn status_TurnDash_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return false.into();
+}
+
+unsafe extern "C" fn status_TurnRun_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_TurnRun();
+}
+
+unsafe extern "C" fn status_TurnRunBrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_TurnRunBrake();
+}
+
 pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue {
-
-    // TODO: this check has issues.
-    // - if we grab on a platform far off stage (like smashville) this check fails
-    let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(),30.0,30.0);
-
-    let throw_name;
-    if is_near_cliff {
-        // the side of the stage she's on 
-        // TODO: don't assume that's the direction of the closest ledge 
-        let center_x = GroundModule::get_center_pos(fighter.boma());
-        let side = center_x.signum();
-
-        let facing = PostureModule::lr(fighter.boma());
-
-        let selected = app::sv_math::rand(hash40("fighter"), 100); 
-        throw_name = match selected {
-            0..=59 => match side == facing {
-                true => "throw_f", // if she's facing the edge
-                false => "throw_b", // if she's facing away from the edge
-            },
-            _ => "throw_lw"
-        };
+    let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(), 30.0, 30.0);
+    let pos = PostureModule::pos_2d(fighter.module_accessor);
+    let is_under_platform = GroundModule::ray_check(
+        fighter.module_accessor, 
+        &Vector2f{ x: pos.x, y: pos.y + 38.0}, 
+        &Vector2f{ x: 0.0, y: 37.0},
+        true
+    ) == 1;
+    let motion = if is_near_cliff {
+        // TODO: this check assumes that the direction of ledge is always outwards,
+        // and that the mathematical origin is contained within the stage.
+        // It will fail if grabbing from a platform that's past ledge, 
+        // or if grabbing on a stage that has been shifted far horizontally in lvd.
+        if PostureModule::lr(fighter.boma()) == GroundModule::get_center_pos(fighter.boma()).signum() {
+            Hash40::new("throw_f")
+        } else {
+            Hash40::new("throw_b")
+        }
+    } else if is_under_platform {
+        Hash40::new("throw_hi")
     } else {
-        // any other scenario, random weighted throw
-        let selected = app::sv_math::rand(hash40("fighter"), 100);
-        throw_name = match selected {
-            0..=14 => "throw_b",
-            15..=29 => "throw_f",
-            30..=49 => "throw_lw",
-            _ => "throw_hi"
-        };
-    }
+        Hash40::new("throw_lw")
+    };
+
+    let pos = PostureModule::pos_2d(fighter.module_accessor);
+    let is_platform_above = GroundModule::ray_check(
+        fighter.module_accessor, 
+        &Vector2f{ x: pos.x, y: pos.y + 38.0}, 
+        &Vector2f{ x: 0.0, y: -37.0},
+        true
+    ) == 1;
 
     // change into the selected motion
-    MotionModule::change_motion(fighter.boma(), Hash40::new(throw_name), 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.boma(), motion, 0.0, 1.0, false, 0.0, false, false);
 
     // shift into the L2CFighterCommon's throw impl (instead of nana's default, modified impl)
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _))
@@ -82,14 +92,44 @@ unsafe extern "C" fn catchwait_nana_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+unsafe extern "C" fn popo_status_kind_throw_nana_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT);
+    return true.into();
+}
+
+unsafe extern "C" fn popo_status_kind_throw_nana_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_shift_status_main(L2CValue::Ptr(popo_status_kind_throw_nana_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn popo_status_kind_throw_nana_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
+    fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    return true.into();
+}
+
 pub fn install_popo(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
+    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, status_Dash_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_DASH, status_Dash_exit);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN, status_Turn_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_TurnRun_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_TurnRunBrake_main);
 }
 
 pub fn install_nana(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, dash);
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
+    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, status_Dash_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_DASH, status_Dash_exit);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN, status_Turn_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_TurnRun_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_TurnRunBrake_main);
     agent.status(Main, *FIGHTER_STATUS_KIND_THROW, throw_nana);
     agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, catchwait_nana_main);
+    agent.status(Pre, *FIGHTER_POPO_STATUS_KIND_THROW_NANA, popo_status_kind_throw_nana_pre);
+    agent.status(Main, *FIGHTER_POPO_STATUS_KIND_THROW_NANA, popo_status_kind_throw_nana_main);
 }
