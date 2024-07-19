@@ -153,6 +153,9 @@ special_air_lw_step_f:
 special_air_n:
   extra:
     cancel_frame: 70
+special_air_n_empty:
+  extra:
+    cancel_frame: 70
 special_air_s_end:
   extra:
     cancel_frame: 21
@@ -208,4 +211,10 @@ throw_lw:
     cancel_frame: 41
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

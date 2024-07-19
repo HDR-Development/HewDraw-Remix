@@ -181,6 +181,62 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     IS_KB_CALC_EARLY = false;
 }
 
+// this code sets hitlag on parry to a static amount
+static mut IS_HITLAG_FOR_PARRY: bool = false;
+// check if defender is parrying and set a flag for later
+#[skyline::hook(offset = 0x0627880)]
+unsafe fn x0627880(battle_object: *mut BattleObject, arg1: u64) {
+    let collision_event = *(arg1 as *const *const u32).add(2);
+    let opponent_battle_object_id = *collision_event.add(9);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+    IS_HITLAG_FOR_PARRY = 
+        opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
+        && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
+        && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0;
+    call_original!(battle_object, arg1)
+}
+// if defender is parrying, set attacker hitlag to static amount
+#[skyline::hook(offset = 0x0627cc0, inline)]
+unsafe fn x0627cc0(ctx: &mut skyline::hooks::InlineCtx) {
+    if IS_HITLAG_FOR_PARRY {
+        IS_HITLAG_FOR_PARRY = false;
+        *ctx.registers[8].x.as_mut() = 18;
+    }
+}
+// set defender hitlag
+#[skyline::hook(offset = 0x0641948, inline)]
+unsafe fn x0641948(ctx: &mut skyline::hooks::InlineCtx) {
+    let hitlag = 10;
+    let battle_object = &mut *(*ctx.registers[19].x.as_ref() as *mut BattleObject);
+    battle_object.set_float(hitlag as f32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_HIT_STOP_FRAME);
+    let fighter = *ctx.registers[19].x.as_ref();
+    *(fighter as *mut i32).add(0xf740 / 4) = hitlag;
+}
+// set parry AttackModule inflict flag
+#[skyline::hook(offset = 0x03df93c, inline)]
+unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
+    let opponent_battle_object_id = *(*ctx.registers[22].x.as_ref() as *const u32).add(0x24 / 4);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+    if opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
+    && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
+    && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
+        *ctx.registers[8].w.as_mut() = *ctx.registers[8].w.as_ref() | *COLLISION_KIND_MASK_PARRY as u32;
+        if opponent_boma.is_fighter() {
+            let kind = opponent_boma.kind();
+            if kind == *FIGHTER_KIND_RYU || kind == *FIGHTER_KIND_KEN {
+                opponent_boma.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+                opponent_boma.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+            }
+            if kind == *FIGHTER_KIND_DOLLY {
+                opponent_boma.off_flag(*FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+                opponent_boma.off_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+            }
+        }
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         attack_module_set_attack,
@@ -190,6 +246,7 @@ pub fn install() {
         post_calc_reaction,
         set_weapon_hitlag,
         set_fighter_hitlag,
-        handle_on_attack_event
+        handle_on_attack_event,
+        x0627880, x0627cc0, x0641948, x03df93c
     );
 }

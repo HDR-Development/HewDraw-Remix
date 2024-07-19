@@ -38,8 +38,8 @@ unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn check_special_lw_hit(fighter: &mut L2CFighterCommon) {
-    if dbg!(fighter.is_flag(0x200000e0)) // FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_REFLECTOR
-    && dbg!(!fighter.is_status(statuses::falco::SPECIAL_LW_HIT) || fighter.motion_frame() > 10.0) {
+    if fighter.is_flag(0x200000e0) // FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_REFLECTOR
+    && (!fighter.is_status(statuses::falco::SPECIAL_LW_HIT) || fighter.motion_frame() > 10.0) {
         fighter.change_status(statuses::falco::SPECIAL_LW_HIT.into(), false.into());
     }
 }

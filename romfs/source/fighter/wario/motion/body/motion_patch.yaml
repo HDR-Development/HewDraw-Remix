@@ -73,6 +73,12 @@ attack_air_lw2:
     intangible_end_frame: 0
     cancel_frame: 45
     freeze_during_hitstop: false
+special_n_bite_end:
+  extra:
+    cancel_frame: 27
+special_air_n_bite_end:
+  extra:
+    cancel_frame: 27
 catch:
   extra:
     cancel_frame: 36
@@ -90,4 +96,10 @@ throw_hi:
     cancel_frame: 85
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

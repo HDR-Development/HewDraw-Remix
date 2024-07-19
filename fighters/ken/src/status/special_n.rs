@@ -17,7 +17,7 @@ pub unsafe extern "C" fn special_n_command_pre(fighter: &mut L2CFighterCommon) -
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND);
         return 1.into();
     }
-    smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND)(fighter)
+    smashline::original_status(Pre, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND)(fighter)
 }
 
 pub fn install(agent: &mut Agent) {

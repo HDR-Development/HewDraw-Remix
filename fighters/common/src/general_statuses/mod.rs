@@ -254,7 +254,9 @@ unsafe fn sub_transition_group_check_air_wall_jump(fighter: &mut L2CFighterCommo
     }
 
     // basic validity checks
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || fighter.is_status(*FIGHTER_STATUS_KIND_WALL_JUMP)
+    || fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_WALL_JUMP_COUNT) >= 2 {
         return false.into();
     }
 
@@ -363,12 +365,31 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
-    // if fighter.is_button_on(Buttons::Parry) {
-    //     VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-    //     fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-    //     return true.into()
-    // }
-    call_original!(fighter)
+    
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        return false.into();
+    }
+
+    if fighter.global_table[0x4f].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x4f].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
+        if fighter.sub_check_command_parry().get_bool() {
+            VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+            return true.into();
+        }
+        if fighter.sub_check_command_guard().get_bool() {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+            return true.into();
+        }
+    }
+
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]

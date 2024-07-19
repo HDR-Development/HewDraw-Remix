@@ -3,14 +3,11 @@ use super::*;
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
-    }
     frame(lua_state, 12.0);
     // checking SITUATION_KIND_AIR so we don't get a ground hadouken on the 1 frame of landing
     // I could just rewrite the status script to prevent this but thats a lot.
     if is_excute(agent) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
         VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
         if agent.kind() != *FIGHTER_KIND_KIRBY 
@@ -44,13 +41,9 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE(agent, 1.0);
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
-    }
     frame(lua_state, 12.0);
     if is_excute(agent) {
+        boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
         VarModule::on_flag(agent.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
         if agent.kind() != *FIGHTER_KIND_KIRBY 
@@ -58,7 +51,7 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
             MeterModule::add(agent.battle_object, 0.7 * MeterModule::damage_gain_mul(agent.battle_object));
         }
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 14.0);
     if agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         FT_MOTION_RATE_RANGE(agent, 15.0, 70.0, 18.0);
     } else if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {

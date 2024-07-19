@@ -26,6 +26,7 @@
       <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
+      <int hash="panel_7_tabemono_count_hit">1</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -56,17 +57,19 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
-  <list hash="param_special_s">
+  <list hash="param_special_hi">
     <struct index="0">
-      <int hash="panel_7_tabemono_count_hit">1</int>
+      <float hash="pass_speed_mul">0.75</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
-  <list hash="param_special_hi">
+  <list hash="param_special_lw">
     <struct index="0">
-      <float hash="pass_speed_mul">0.75</float>
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
