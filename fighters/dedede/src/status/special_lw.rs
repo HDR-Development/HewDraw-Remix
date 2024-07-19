@@ -32,10 +32,12 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
     //Continue spinning if the button is held down
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) 
     && MotionModule::frame(fighter.module_accessor) < 25.0 
-    && MotionModule::frame(fighter.module_accessor) > 13.0
+    && MotionModule::frame(fighter.module_accessor) > 23.0
     && StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_GROUND{
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT);
+        if !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN){
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT);
+        }
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("dedede_final_jet"), false, true);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);

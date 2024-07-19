@@ -361,7 +361,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         FT_MOTION_RATE(agent, 45.0/(30.0));
         VarModule::set_flag(agent.battle_object, vars::dedede::instance::JET_GROUND_BONK, true);
         DamageModule::add_damage(agent.module_accessor, 3.5, 0);
-        KineticModule::clear_speed_all(agent.module_accessor);
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -403,9 +402,11 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(agent) {
         VarModule::set_flag(agent.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN, false);
+        VarModule::set_flag(agent.battle_object, vars::dedede::instance::JET_GROUND_BONK, false);
         KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         FT_MOTION_RATE(agent, 10.0/(39.0-30.0));
         AttackModule::clear_all(boma);
+        
     }
 }
 
