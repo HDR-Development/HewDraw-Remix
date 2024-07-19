@@ -184,9 +184,9 @@ unsafe extern "C" fn effect_daisyspecialnattack(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 3.7, -1 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
-        if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
-            EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
-        }
+        // if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
+        //     EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
+        // }
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {

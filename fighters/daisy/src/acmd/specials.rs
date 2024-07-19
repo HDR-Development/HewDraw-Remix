@@ -140,6 +140,8 @@ unsafe extern "C" fn game_specialnattack(agent: &mut L2CAgentBase) {
         } else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 60, 83, 0, 64, 4.0, 0.0, 4.0, -6.5, Some(0.0), Some(4.0), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         }
+        ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 75, 78, 0, 64, 3.5, 0.0, 10.5, -6.5, Some(0.0), Some(10.5), Some(-6.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 2, 0, Hash40::new("top"), 6.0, 75, 78, 0, 64, 3.5, 0.0, 10.5, 12.5, Some(0.0), Some(10.5), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
@@ -186,9 +188,9 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 3.7, -1 + offset, 0, 200, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
-        if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
-            EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
-        }
+        // if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
+        //     EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
+        // }
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {

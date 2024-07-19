@@ -141,13 +141,14 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
                         break;
                     }
                 }
-                //println!("Changing to team {}", opponent_team);
+                //println!("ID {} changing to team {}", item_id, opponent_team);
                 TeamModule::set_team(item_boma, opponent_team, false);
                 StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             } else {
                 //println!("Hit by Daisy");
                 let team = TeamModule::hit_team_no(boma) as i32;
                 TeamModule::set_team(item_boma, team, false);
+                //println!("ID {} changing to team {}", item_id, team);
                 StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             }
             VarModule::set_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE, current_damage);
