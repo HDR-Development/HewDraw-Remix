@@ -6,6 +6,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.65);
     frame(lua_state, 1.0);
     if is_excute(agent) {
+        WHOLE_HIT(agent, *HIT_STATUS_XLU);
         CHECK_VALID_FINAL_START_CAMERA(agent, 0, 0, 20, 0, 0, 0);
         SLOW_OPPONENT(agent, 10.0, 70.0);
     }
@@ -195,6 +196,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
     if is_excute(agent) {
         boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_BRANCH_HIT);
