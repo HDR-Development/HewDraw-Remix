@@ -87,7 +87,7 @@ unsafe extern "C" fn effect_daisyspecialairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11, -4, -120, 0, 0, 1.0, false);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.3);
+        LAST_EFFECT_SET_COLOR(agent, 0.6, 0.6, 0.6);
     }
     for i in 0..5 {
         if is_excute(agent) {
@@ -138,6 +138,8 @@ unsafe extern "C" fn game_daisyspecialnattack(agent: &mut L2CAgentBase) {
         } else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 60, 83, 0, 64, 4.0, 0.0, 4.0, -6.5, Some(0.0), Some(4.0), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         }
+        ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 75, 78, 0, 64, 3.5, 0.0, 10.5, -6.5, Some(0.0), Some(10.5), Some(-6.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 2, 0, Hash40::new("top"), 6.0, 75, 78, 0, 64, 3.5, 0.0, 10.5, 12.5, Some(0.0), Some(10.5), Some(12.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
@@ -156,50 +158,72 @@ unsafe extern "C" fn game_daisyspecialnattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_daisyspecialnattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    let is_aerial = VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START);
+    let offset = if is_aerial { 3.0 } else { 0.0 };
+    let crystals: [[f32;10];6] = [
+            //  pos_x   pos_y   pos_z   rot_x   rot_y   rot_z   scale_x scale_y scale_z num
+            [    0.0,   7.0,    13.0,   0.0,    200.0,  0.0,    0.25,   0.8,    0.25,   0.0    ],
+            [    0.0,   7.0,    -7.0,   0.0,    200.0,  0.0,    0.25,   0.8,    0.25,   1.0    ],
+            [   10.0,   3.7,     7.0,   0.0,    200.0,  0.0,    0.15,   0.4,    0.15,   2.0    ],
+            [   10.0,   4.7,    -2.0,   0.0,    200.0,  0.0,    0.15,   0.5,    0.15,   3.0    ],
+            [  -10.0,   4.7,     8.0,   0.0,    200.0,  0.0,    0.15,   0.5,    0.15,   4.0    ],
+            [  -10.0,   3.7,    -1.0,   0.0,    200.0,  0.0,    0.15,   0.4,    0.15,   5.0    ],
+        ];
+    let mut crystal_handles: [u32;6] = [0, 0, 0, 0, 0, 0];
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        let offset = if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) { 3 } else { 0 };
         QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-        EFFECT_FLIP(agent, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 3 + offset, 0, 9, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        EFFECT_FLIP(agent, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 3.0 + offset, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.2);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7.0 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13.0 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, 13 + offset, 0, 200, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.25, 0.8, 0.25));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 0, 7, -7 + offset, 0, 200, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.25, 0.8, 0.25));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 3.7, 7 + offset, 0, 200, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), 10, 4.7, -2 + offset, 0, 200, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.5, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 4.7, 8 + offset, 0, 200, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.5, 0.15));
-        EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), -10, 3.7, -1 + offset, 0, 200, 0, 1.0, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EffectModule::set_scale_last(boma, &Vector3f::new(0.15, 0.4, 0.15));
-        // if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) {
-        //     EFFECT_DETACH_KIND(agent, Hash40::new("sys_ice"), -1);
-        // }
+        if !is_aerial {
+            for entry in crystals {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], 1, true);
+                EffectModule::set_scale_last(boma, &Vector3f::new(entry[6], entry[7], entry[8]));
+                LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
+            }
+        } else {
+            for entry in crystals {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), entry[0] + offset, entry[1], entry[2], entry[3], entry[4], entry[5], 1, true);
+                EffectModule::set_scale_last(boma, &Vector3f::new(entry[6], entry[7], entry[8]));
+                LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
+                let handle = EffectModule::get_last_handle(boma) as u32;
+                crystal_handles[entry[9] as usize] = handle;
+            } 
+        }
+    }
+    if is_aerial {
+        // distance that kirby has traveled from the original origin point, per frame. may have to be re-recorded if physics are ever updated
+        let x_offsets: [f32;12] = [0.0, 0.92, 1.76, 2.52, 3.2, 3.8, 4.32, 4.76, 5.12, 5.4, 5.6, 5.72];
+        for x_delta in x_offsets {
+            if is_excute(agent) {
+                //EFFECT_OFF_KIND(agent, Hash40::new("sys_ice"), false, false);
+                for entry in crystals {
+                    EffectModule::set_pos(boma, crystal_handles[entry[9] as usize], &Vector3f{
+                        x: entry[0],
+                        y: entry[1],
+                        z: PostureModule::pos_z(boma) + entry[2] + offset - x_delta
+                    })
+                } 
+            }
+            wait(lua_state, 1.0);
+        }
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {
-        let offset = if VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START) { 0 } else { 3 };
         EFFECT_OFF_KIND(agent, Hash40::new("sys_ice"), false, false);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -10 + offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7.0 + -offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 10 + offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13.0 + -offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 0 + offset, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 3.0 + -offset, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
     }
 }
+
 
 unsafe extern "C" fn sound_daisyspecialnattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;

@@ -109,10 +109,10 @@ unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 48.0);
     if is_excute(agent) {
-        let lr = PostureModule::lr(boma);
-        EFFECT(agent, Hash40::new("sys_steam3"), Hash40::new("top"), (-3.8 * lr), 10, -1.5, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FLIP(agent, Hash40::new("sys_steam3"), Hash40::new("sys_steam3"), Hash40::new("top"), -5.0, 10, -2.0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        EFFECT_FLIP(agent, Hash40::new("sys_steam3"), Hash40::new("sys_steam3"), Hash40::new("top"), -5.0, 10, -2.0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
     }
-    wait(lua_state, 32.0);
+    wait(lua_state, 34.0);
     EFFECT_OFF_KIND(agent, Hash40::new("sys_steam3"), true, true);
 }
 

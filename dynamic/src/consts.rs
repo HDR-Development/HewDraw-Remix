@@ -405,18 +405,17 @@ pub mod vars {
             // ints
             pub const VEGETABLE_ID: i32 = 0x0100;
             pub const YAPPING_TIMER: i32 = 0x0101;
-            pub const FLOWER_EFFECT_ID: i32 = 0x0103;
-            pub const FLOWER_EFFECT_FRAMES: i32 = 0x0104;
+            pub const FLOWER_EFFECT_ID: i32 = 0x0102;
+            pub const FLOWER_EFFECT_FRAMES: i32 = 0x0103;
             
             // floats
-            pub const VEGETABLE_DAMAGE: i32 = 0x0101;
+            pub const VEGETABLE_DAMAGE: i32 = 0x0100;
             
             // flag
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
-            pub const ATTACK_S4_RACKET_ACTIVE: i32 = 0x0101;
-            pub const SPECIAL_S_GROUND_START: i32 = 0x0102;
-            pub const START_FLOWER_EFFECT: i32 = 0x0103;
-            pub const END_FLOWER_EFFECT: i32 = 0x0104;
+            pub const SPECIAL_S_GROUND_START: i32 = 0x0101;
+            pub const START_FLOWER_EFFECT: i32 = 0x0102;
+            pub const END_FLOWER_EFFECT: i32 = 0x0103;
         }
         pub mod status {
             // flags

@@ -22,6 +22,11 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketmflip"), false);
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketm"), false);
+    }
 }
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
@@ -116,6 +121,11 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketmflip"), false);
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketm"), false);
+    }
 }
 
 unsafe extern "C" fn effect_attacks4hi(agent: &mut L2CAgentBase) {
@@ -158,6 +168,11 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketmflip"), false);
+        ModelModule::set_mesh_visibility(boma, Hash40::new("racketm"), false);
     }
 }
 

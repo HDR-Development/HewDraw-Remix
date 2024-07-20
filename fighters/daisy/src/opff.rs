@@ -40,29 +40,6 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 }
 
-// have daisy always hold the racket for forward smash
-unsafe fn racket_visibility(fighter: &mut L2CFighterCommon) {
-    if (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) && fighter.motion_frame() < 40.0)
-    || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
-        VarModule::on_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE);
-        if PostureModule::lr(fighter.boma()) == 1.0 {
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), true);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panm"), false);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubm"), false);
-        } else {
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), true);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("panmflip"), false);
-            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("clubmflip"), false);
-        }
-    } else if VarModule::is_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE) {
-        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketm"), false);
-        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("racketmflip"), false);
-        VarModule::off_flag(fighter.object(), ATTACK_S4_RACKET_ACTIVE);
-    }
-}
-
 // various methods for handling daisy's crystal models and effects
 unsafe fn crystal_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // statuses to allow the crystal gauntlet
@@ -128,7 +105,7 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 
         let current_damage = DamageModule::damage(item_boma, 0);
         let prev_damage = VarModule::get_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE);
-        if current_damage > prev_damage && is_separated { 
+        if current_damage > prev_damage { 
             //println!("current {}, prev {}", current_damage, prev_damage);
             if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 let num_players = Fighter::get_fighter_entry_count();
@@ -143,14 +120,13 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
                 }
                 //println!("ID {} changing to team {}", item_id, opponent_team);
                 TeamModule::set_team(item_boma, opponent_team, false);
-                StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             } else {
                 //println!("Hit by Daisy");
                 let team = TeamModule::hit_team_no(boma) as i32;
                 TeamModule::set_team(item_boma, team, false);
                 //println!("ID {} changing to team {}", item_id, team);
-                StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             }
+            StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             VarModule::set_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE, current_damage);
         } else if current_damage != prev_damage {
             // handle the variable in other scenarios. mostly on item despawn
@@ -312,7 +288,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     wall_bounce(boma, status_kind);
     //up_special_freefall_land_cancel(fighter);
     triple_jump_motion(fighter, boma);
-    racket_visibility(fighter);
     crystal_handling(fighter, boma);
     set_vegetable_team(fighter, boma);
     appeal_special(fighter, boma);
