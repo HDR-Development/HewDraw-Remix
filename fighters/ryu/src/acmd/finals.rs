@@ -5,6 +5,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
+        WHOLE_HIT(agent, *HIT_STATUS_XLU);
         CHECK_VALID_FINAL_START_CAMERA(agent, 0, 7, 20, 0, 0, 0);
         SLOW_OPPONENT(agent, 80.0, 50.0);
     }
@@ -63,6 +64,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
         AttackModule::clear_all(boma);
     }
 }
@@ -120,10 +122,49 @@ unsafe extern "C" fn game_finalhit(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_final2(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        WHOLE_HIT(agent, *HIT_STATUS_XLU);
+        SLOW_OPPONENT(agent, 100.0, 60.0);
+        CHECK_VALID_FINAL_START_CAMERA(agent, 0, 7, 20, 0, 0, 0);
+    }
+    if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
+        frame(agent.lua_state_agent, 10.0);
+        if is_excute(agent) {
+            FT_SET_FINAL_FEAR_FACE(agent, 50);
+            REQ_FINAL_START_CAMERA(agent, Hash40::new("d04final.nuanmb"), false);
+            FT_START_CUTIN(agent);
+        }
+    }
+    else {
+        if is_excute(agent) {
+            let scale = PostureModule::scale(agent.module_accessor);
+            CAM_ZOOM_IN_arg5(agent, 3.0, 0.0, scale * 1.8, 0.0, 0.0);
+            FT_START_CUTIN(agent);
+        }
+    }
+    frame(agent.lua_state_agent, 31.0);
+    if is_excute(agent) {
+        CAM_ZOOM_OUT(agent);
+    }
+    frame(agent.lua_state_agent, 70.0);
+    if is_excute(agent) {
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_RYU_GENERATE_ARTICLE_SHINKUHADOKEN, false, -1);
+    }
+    frame(agent.lua_state_agent, 75.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_REMOVE_FINAL_AURA);
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_final", game_final, Priority::Low);
     agent.acmd("game_finalair", game_final, Priority::Low);
     
     agent.acmd("game_finalhit", game_finalhit, Priority::Low);
     agent.acmd("game_finalairhit", game_finalhit, Priority::Low);
+
+    agent.acmd("game_final2", game_final2, Priority::Low);
+    agent.acmd("game_finalair2", game_final2, Priority::Low);
 }
