@@ -7,6 +7,11 @@ pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CV
     return 1.into();
 }
 
+pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_LW);
+    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
 
 pub unsafe extern "C" fn special_lw_step_f_init(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -130,6 +135,7 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
     agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, special_lw_step_f_init);
     
     agent.status(Pre, statuses::ken::INSTALL, special_lw_install_pre);
