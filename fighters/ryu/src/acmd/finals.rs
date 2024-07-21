@@ -151,10 +151,13 @@ unsafe extern "C" fn game_final2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_RYU_GENERATE_ARTICLE_SHINKUHADOKEN, false, -1);
     }
+    frame(agent.lua_state_agent, 71.0);
+    if is_excute(agent) {
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
+    }
     frame(agent.lua_state_agent, 75.0);
     if is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_REMOVE_FINAL_AURA);
-        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
 }
 
