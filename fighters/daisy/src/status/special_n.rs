@@ -184,6 +184,7 @@ unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_n_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE) {
         PLAY_SE(fighter, Hash40::new("se_common_freeze"));
         EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), -7, 1, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);

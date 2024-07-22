@@ -108,7 +108,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        //FT_MOTION_RATE(agent, 1.0);
+        AttackModule::clear_all(boma);
     }
 }
 

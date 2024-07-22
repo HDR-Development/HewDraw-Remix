@@ -162,14 +162,14 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let is_aerial = VarModule::is_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_AIR_START);
     let offset = if is_aerial { 3.0 } else { 0.0 };
-    let crystals: [[f32;10];6] = [
-            //  pos_x   pos_y   pos_z   rot_x   rot_y   rot_z   scale_x scale_y scale_z id
-            [    0.0,   7.0,    13.0,   0.0,    200.0,  0.0,    0.25,   0.8,    0.25,   0.0    ],
-            [    0.0,   7.0,    -7.0,   0.0,    200.0,  0.0,    0.25,   0.8,    0.25,   1.0    ],
-            [   10.0,   3.7,     7.0,   0.0,    200.0,  0.0,    0.15,   0.4,    0.15,   2.0    ],
-            [   10.0,   4.7,    -2.0,   0.0,    200.0,  0.0,    0.15,   0.5,    0.15,   3.0    ],
-            [  -10.0,   4.7,     8.0,   0.0,    200.0,  0.0,    0.15,   0.5,    0.15,   4.0    ],
-            [  -10.0,   3.7,    -1.0,   0.0,    200.0,  0.0,    0.15,   0.4,    0.15,   5.0    ],
+    let crystals: [[f32;7];6] = [
+            // pos_x  pos_y   pos_z  scale_x scale_y scale_z  id
+            [   0.0,   7.0,   13.0,   0.25,    0.8,   0.25,   0.0  ],
+            [   0.0,   7.0,   -7.0,   0.25,    0.8,   0.25,   1.0  ],
+            [  10.0,   3.7,    7.0,   0.15,    0.4,   0.15,   2.0  ],
+            [  10.0,   4.7,   -2.0,   0.15,    0.5,   0.15,   3.0  ],
+            [ -10.0,   4.7,    8.0,   0.15,    0.5,   0.15,   4.0  ],
+            [ -10.0,   3.7,   -1.0,   0.15,    0.4,   0.15,   5.0  ],
         ];
     let mut crystal_handles: [u32;6] = [0, 0, 0, 0, 0, 0];
     frame(lua_state, 1.0);
@@ -181,20 +181,14 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
         EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13.0 + offset, 1, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        if !is_aerial {
-            for entry in crystals {
-                EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], 1, true);
-                EffectModule::set_scale_last(boma, &Vector3f::new(entry[6], entry[7], entry[8]));
-                LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-            }
-        } else {
-            for entry in crystals {
-                EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), entry[0] + offset, entry[1], entry[2], entry[3], entry[4], entry[5], 1, true);
-                EffectModule::set_scale_last(boma, &Vector3f::new(entry[6], entry[7], entry[8]));
-                LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
+        for entry in crystals {
+            EFFECT_FOLLOW(agent, Hash40::new("sys_ice"), Hash40::new("top"), entry[0] + offset, entry[1], entry[2], 0.0, 200.0, 0.0, 1, true);
+            EffectModule::set_scale_last(boma, &Vector3f::new(entry[3], entry[4], entry[5]));
+            LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
+            if is_aerial {
                 let handle = EffectModule::get_last_handle(boma) as u32;
-                crystal_handles[entry[9] as usize] = handle;
-            } 
+                crystal_handles[entry[6] as usize] = handle;
+            }
         }
     }
     if is_aerial {
@@ -204,7 +198,7 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
             if is_excute(agent) {
                 //EFFECT_OFF_KIND(agent, Hash40::new("sys_ice"), false, false);
                 for entry in crystals {
-                    EffectModule::set_pos(boma, crystal_handles[entry[9] as usize], &Vector3f{
+                    EffectModule::set_pos(boma, crystal_handles[entry[6] as usize], &Vector3f{
                         x: entry[0],
                         y: entry[1],
                         z: PostureModule::pos_z(boma) + entry[2] + offset - x_delta
@@ -221,11 +215,11 @@ unsafe extern "C" fn effect_specialnattack(agent: &mut L2CAgentBase) {
     frame(lua_state, 41.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("sys_ice"), false, false);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7.0 + -offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), -7.0 - offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13.0 + -offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 13.0 - offset, 1, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
-        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 3.0 + -offset, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_freezer"), Hash40::new("top"), 3.0 - offset, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.3, 1.0, 0.8);
     }
 }
@@ -314,7 +308,7 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), app::AttackDirectionAxis(*ATTACK_DIRECTION_Y), app::AttackDirectionAxis(*ATTACK_DIRECTION_Y), app::AttackDirectionAxis(*ATTACK_DIRECTION_Y));
-        ATTACK(agent, 0, 0, Hash40::new("top"), 14.5, 65, 75, 0, 70, 6.0, 0.0, 6.0, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 14.5, 65, 75, 0, 70, 6.0, 0.0, 6.0, 5.5, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {

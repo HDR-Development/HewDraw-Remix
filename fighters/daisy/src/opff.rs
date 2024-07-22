@@ -4,8 +4,8 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 
 use vars::daisy::instance::*;
 
-unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP {
+unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP) {
         let lr = PostureModule::lr(boma);
         let frame = MotionModule::frame(boma) as i32;
         let mut touch_wall = false;
@@ -18,13 +18,6 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
             VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
-    }
-}
-
-unsafe fn up_special_freefall_land_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL)
-    && fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
 
@@ -41,15 +34,14 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 }
 
 // various methods for handling daisy's crystal models and effects
-unsafe fn crystal_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    // statuses to allow the crystal gauntlet
-    let is_gauntlet_status = fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        //*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END
-    ]);
-
+unsafe fn crystal_handling(boma: &mut BattleObjectModuleAccessor) {
     if ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
+        // statuses to allow the crystal gauntlet
+        let is_gauntlet_status = boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            //*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END
+        ]);
         let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR);
         let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
         let article_boma = sv_battle_object::module_accessor(article_id);
@@ -61,17 +53,12 @@ unsafe fn crystal_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_glove"), true);
             ModelModule::set_mesh_visibility(article_boma, Hash40::new("daisy_gloveleft"), false);
         }
-        
-        // remove the gauntlet if not in an allowed status
-        if !is_gauntlet_status {
-            ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        }
     }
 }
 
 // handles the hit team for daisy's vegetable item, allowing it to be hit around
-unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if ItemModule::get_have_item_kind(fighter.boma(), 0) == *ITEM_KIND_DAISYDAIKON {
+unsafe fn set_vegetable_team(boma: &mut BattleObjectModuleAccessor) {
+    if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_DAISYDAIKON {
         let item_id = ItemModule::get_have_item_id(boma, 0) as u32;
         let item_boma = sv_battle_object::module_accessor(item_id);
         VarModule::set_int(boma.object(), vars::daisy::instance::VEGETABLE_ID, item_id as i32);
@@ -135,7 +122,7 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 
     // also hide the carrot (and other items) when daisy is shielding
-    if fighter.is_status_one_of(&[
+    if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_GUARD,
         *FIGHTER_STATUS_KIND_GUARD_ON
     ]) {
@@ -144,15 +131,15 @@ unsafe fn set_vegetable_team(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 }
 
 // i wonder what you taste like
-unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
     // transitions to special taunt if the button is released within 2 frames
-    if fighter.is_motion_one_of(&[
+    if boma.is_motion_one_of(&[
         Hash40::new("appeal_s_l"),
         Hash40::new("appeal_s_r"),
         ])
     && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L)
     && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)
-    && fighter.motion_frame() as i32 == 3 {
+    && boma.motion_frame() as i32 == 3 {
         MotionModule::change_motion_inherit_frame(boma, Hash40::new("appeal_s_special"), -1.0, 1.0, 0.0, false, false);
     }
 
@@ -203,18 +190,18 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             let effect = EffectModule::req_on_joint(article_boma, Hash40::new(quote_data[1]), Hash40::new("top"), &Vector3f::new(0.5, 11.25, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             VarModule::set_int(boma.object(), FLOWER_EFFECT_ID, effect as i32);
             VarModule::set_int(boma.object(), YAPPING_TIMER, (40 + yapping_frames));
-            VarModule::on_flag(fighter.battle_object, START_FLOWER_EFFECT);
-            VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
+            VarModule::on_flag(boma.object(), START_FLOWER_EFFECT);
+            VarModule::set_int(boma.object(), FLOWER_EFFECT_FRAMES, 5);
         }
 
         // handles the visuals of the speech bubble effect
-        if VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) > 0 {
-            VarModule::dec_int(fighter.battle_object, FLOWER_EFFECT_FRAMES);
+        if VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) > 0 {
+            VarModule::dec_int(boma.object(), FLOWER_EFFECT_FRAMES);
         }
 
-        if VarModule::is_flag(fighter.battle_object, START_FLOWER_EFFECT) {
+        if VarModule::is_flag(boma.object(), START_FLOWER_EFFECT) {
             let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
-            let frame = VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) as f32;
+            let frame = VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) as f32;
             if frame > 0.0 {
                 let mul = 1.0 - (frame * 0.05);
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
@@ -222,28 +209,28 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             } else {
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4, 1.6, 1.4));
                 EffectModule::set_alpha(boma, effect as u32, 1.0);
-                VarModule::off_flag(fighter.battle_object, START_FLOWER_EFFECT);
+                VarModule::off_flag(boma.object(), START_FLOWER_EFFECT);
             }
         }
 
-        if VarModule::is_flag(fighter.battle_object, END_FLOWER_EFFECT) {
+        if VarModule::is_flag(boma.object(), END_FLOWER_EFFECT) {
             let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
-            let frame = VarModule::get_int(fighter.battle_object, FLOWER_EFFECT_FRAMES) as f32;
+            let frame = VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) as f32;
             if frame > 0.0 {
                 let mul = 0.75 + (frame * 0.05);
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
                 EffectModule::set_alpha(boma, effect as u32, (0.1 * frame));
             } else {
                 EffectModule::kill(boma, effect as u32, true, true);
-                VarModule::off_flag(fighter.battle_object, END_FLOWER_EFFECT);
+                VarModule::off_flag(boma.object(), END_FLOWER_EFFECT);
             }
         }
 
         // when the line is over, change motion back to normal and remove bubble
         if timer == 40 {
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
-            VarModule::on_flag(fighter.battle_object, END_FLOWER_EFFECT);
-            VarModule::set_int(fighter.battle_object, FLOWER_EFFECT_FRAMES, 5);
+            VarModule::on_flag(boma.object(), END_FLOWER_EFFECT);
+            VarModule::set_int(boma.object(), FLOWER_EFFECT_FRAMES, 5);
         }
 
         // removes the flower once all is said and done
@@ -255,43 +242,42 @@ unsafe fn appeal_special(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_PEACH_STATUS_KIND_SPECIAL_N_HIT,
-        ]) 
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+// unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+//     if !fighter.is_in_hitlag()
+//     && !StatusModule::is_changing(fighter.module_accessor)
+//     && fighter.is_status_one_of(&[
+//         *FIGHTER_STATUS_KIND_SPECIAL_N,
+//         *FIGHTER_PEACH_STATUS_KIND_SPECIAL_N_HIT,
+//         ]) 
+//     && fighter.is_situation(*SITUATION_KIND_AIR) {
+//         fighter.sub_air_check_dive();
+//         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+//             if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+//                 fighter.clear_lua_stack();
+//                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+//                 let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
 
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+//                 fighter.clear_lua_stack();
+//                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+//                 app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
                 
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+//                 fighter.clear_lua_stack();
+//                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+//                 app::sv_kinetic_energy::enable(fighter.lua_state_agent);
 
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
-    }
-}
+//                 KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+//             }
+//         }
+//     }
+// }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    wall_bounce(boma, status_kind);
-    //up_special_freefall_land_cancel(fighter);
+    wall_bounce(boma);
     triple_jump_motion(fighter, boma);
-    crystal_handling(fighter, boma);
-    set_vegetable_team(fighter, boma);
-    appeal_special(fighter, boma);
-    fastfall_specials(fighter);
+    crystal_handling(boma);
+    set_vegetable_team(boma);
+    appeal_special(boma);
+    //fastfall_specials(fighter);
 }
 
 pub unsafe extern "C" fn daisy_frame_wrapper(fighter: &mut L2CFighterCommon) {

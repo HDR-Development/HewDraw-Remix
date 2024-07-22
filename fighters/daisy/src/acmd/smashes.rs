@@ -282,6 +282,35 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_common_smash_start_03"));
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_attack07"));
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_smash_l01"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_smash_l02"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_smash_l02"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_smash_l02"));
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
     agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
@@ -301,4 +330,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackhi4", sound_attackhi4, Priority::Low);
 
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
+    agent.acmd("sound_attacklw4", sound_attacklw4, Priority::Low);
 }
