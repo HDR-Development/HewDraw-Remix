@@ -143,7 +143,7 @@ catch_attack:
     cancel_frame: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 appeal_s_r_mask:
   game_script: game_appeal_sr_mask
   flags:
