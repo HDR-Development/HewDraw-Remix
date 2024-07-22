@@ -15,7 +15,6 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor) {
             touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
         };
         if touch_wall && (1..25).contains(&frame) {
-            VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
     }
@@ -33,15 +32,8 @@ unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     }
 }
 
-// various methods for handling daisy's crystal models and effects
 unsafe fn crystal_handling(boma: &mut BattleObjectModuleAccessor) {
     if ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
-        // statuses to allow the crystal gauntlet
-        let is_gauntlet_status = boma.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            //*FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END
-        ]);
         let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR);
         let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
         let article_boma = sv_battle_object::module_accessor(article_id);
@@ -56,25 +48,24 @@ unsafe fn crystal_handling(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// handles the hit team for daisy's vegetable item, allowing it to be hit around
-unsafe fn set_vegetable_team(boma: &mut BattleObjectModuleAccessor) {
+// handles daisy's vegetable item, allowing it to be hit around
+unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
     if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_DAISYDAIKON {
         let item_id = ItemModule::get_have_item_id(boma, 0) as u32;
         let item_boma = sv_battle_object::module_accessor(item_id);
-        VarModule::set_int(boma.object(), vars::daisy::instance::VEGETABLE_ID, item_id as i32);
+        VarModule::set_int(boma.object(), VEGETABLE_ID, item_id as i32);
         let team = TeamModule::hit_team_no(boma) as i32;
         TeamModule::set_team(item_boma, team, true);
         TeamModule::set_hit_team(item_boma, team);
         HitModule::sleep(item_boma, true); // disable hurtbox when holding
     } else {
-        let item_id = VarModule::get_int(boma.object(), vars::daisy::instance::VEGETABLE_ID) as u32;
+        let item_id = VarModule::get_int(boma.object(), VEGETABLE_ID) as u32;
         let item_boma = sv_battle_object::module_accessor(item_id);
         // bool for if daisy is the owner of a carrot before affecting it, preventing ownership jank in daisy dittos
         let is_owner = TeamModule::hit_team_no(item_boma) == TeamModule::hit_team_no(boma);
-        // measure how far the item is from daisy
+        // measure how far the item is from daisy, used to prevent oddities with hitting herself
         let x_distance = PostureModule::pos_x(boma) - PostureModule::pos_x(item_boma);
         let y_distance = (PostureModule::pos_y(boma) + 10.0) - PostureModule::pos_y(item_boma);
-        // make sure the item is far enough away from daisy to prevent oddities with hitting herself
         let is_separated = x_distance.abs() > 15.0 || y_distance.abs() > 15.0;
         
         // toggle the hurtbox if an opponent is holding the carrot
@@ -90,8 +81,9 @@ unsafe fn set_vegetable_team(boma: &mut BattleObjectModuleAccessor) {
             TeamModule::set_hit_team(item_boma, -1);
         }
 
+        // tracks the source of whatever hits the carrot, and swaps its team accordingly
         let current_damage = DamageModule::damage(item_boma, 0);
-        let prev_damage = VarModule::get_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE);
+        let prev_damage = VarModule::get_float(boma.object(), VEGETABLE_DAMAGE);
         if current_damage > prev_damage { 
             //println!("current {}, prev {}", current_damage, prev_damage);
             if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
@@ -114,14 +106,14 @@ unsafe fn set_vegetable_team(boma: &mut BattleObjectModuleAccessor) {
                 //println!("ID {} changing to team {}", item_id, team);
             }
             StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
-            VarModule::set_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE, current_damage);
+            VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
         } else if current_damage != prev_damage {
             // handle the variable in other scenarios. mostly on item despawn
-            VarModule::set_float(boma.object(), vars::daisy::instance::VEGETABLE_DAMAGE, current_damage);
+            VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
         }
     }
 
-    // also hide the carrot (and other items) when daisy is shielding
+    // hide the carrot (and other items) when daisy is shielding
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_GUARD,
         *FIGHTER_STATUS_KIND_GUARD_ON
@@ -132,111 +124,101 @@ unsafe fn set_vegetable_team(boma: &mut BattleObjectModuleAccessor) {
 
 // i wonder what you taste like
 unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
-    // transitions to special taunt if the button is released within 2 frames
-    if boma.is_motion_one_of(&[
-        Hash40::new("appeal_s_l"),
-        Hash40::new("appeal_s_r"),
-        ])
+    // transitions to the special taunt if the button is released within 2 frames
+    if boma.is_motion_one_of(&[Hash40::new("appeal_s_l"), Hash40::new("appeal_s_r")])
     && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L)
     && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)
     && boma.motion_frame() as i32 == 3 {
         MotionModule::change_motion_inherit_frame(boma, Hash40::new("appeal_s_special"), -1.0, 1.0, 0.0, false, false);
     }
 
-    if VarModule::get_int(boma.object(), YAPPING_TIMER) > 0 {
-        VarModule::dec_int(boma.object(), YAPPING_TIMER)
-    }
-
     if ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
         let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
         let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
         let article_boma = sv_battle_object::module_accessor(article_id);
-        let timer = VarModule::get_int(boma.object(), YAPPING_TIMER);
-        
-        // initiate rng for what line the flower will say
-        if (970..971).contains(&timer) {
+
+        let idle_frames = 40; // how long the flower sticks around after it's done talking
+        let yap_timer = VarModule::get_int(boma.object(), YAPPING_TIMER);
+        if yap_timer > 0 { VarModule::dec_int(boma.object(), YAPPING_TIMER); }
+        if (970..971).contains(&yap_timer) {
             let mut quote_data: [&str;2] = ["dummy", "dummy"];
             let mut yapping_frames = 0; // approximate amount of frames each line takes to complete
             let rng = app::sv_math::rand(hash40("fighter"), 25);
-           match (rng as i32) {
-                0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 84; },
-                1 =>  { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 82; },
-                2 =>  { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 76; },
-                3 =>  { quote_data = ["se_daisy_appeal_x04_everyday", "daisy_flower_bubble_04"]; yapping_frames = 95; },
-                4 =>  { quote_data = ["se_daisy_appeal_x05_feelsoff", "daisy_flower_bubble_05"]; yapping_frames = 173; },
-                5 =>  { quote_data = ["se_daisy_appeal_x06_focus", "daisy_flower_bubble_06"]; yapping_frames = 125; },
-                6 =>  { quote_data = ["se_daisy_appeal_x07_howyadoin", "daisy_flower_bubble_07"]; yapping_frames = 60; },
-                7 =>  { quote_data = ["se_daisy_appeal_x08_something", "daisy_flower_bubble_08"]; yapping_frames = 80; },
-                8 =>  { quote_data = ["se_daisy_appeal_x09_keeptrying", "daisy_flower_bubble_09"]; yapping_frames = 124; },
-                9 =>  { quote_data = ["se_daisy_appeal_x10_almost", "daisy_flower_bubble_10"]; yapping_frames = 94; },
-                10 =>  { quote_data = ["se_daisy_appeal_x11_goodday", "daisy_flower_bubble_11"]; yapping_frames = 122; },
-                11 =>  { quote_data = ["se_daisy_appeal_x12_newspecies", "daisy_flower_bubble_12"]; yapping_frames = 92; },
-                12 =>  { quote_data = ["se_daisy_appeal_x13_taste", "daisy_flower_bubble_13"]; yapping_frames = 95; },
-                13 =>  { quote_data = ["se_daisy_appeal_x14_nexttime", "daisy_flower_bubble_14"]; yapping_frames = 66; },
-                14 =>  { quote_data = ["se_daisy_appeal_x15_ohhey", "daisy_flower_bubble_15"]; yapping_frames = 60; },
-                15 =>  { quote_data = ["se_daisy_appeal_x16_party", "daisy_flower_bubble_16"]; yapping_frames = 125; },
-                16 =>  { quote_data = ["se_daisy_appeal_x17_peaceful", "daisy_flower_bubble_17"]; yapping_frames = 94; },
-                17 =>  { quote_data = ["se_daisy_appeal_x18_rooting", "daisy_flower_bubble_18"]; yapping_frames = 84; },
-                18 =>  { quote_data = ["se_daisy_appeal_x19_sogood", "daisy_flower_bubble_19"]; yapping_frames = 92; },
-                19 =>  { quote_data = ["se_daisy_appeal_x20_summoned", "daisy_flower_bubble_20"]; yapping_frames = 98; },
-                20 =>  { quote_data = ["se_daisy_appeal_x21_surprise", "daisy_flower_bubble_21"]; yapping_frames = 62; },
-                21 =>  { quote_data = ["se_daisy_appeal_x22_wellthen", "daisy_flower_bubble_22"]; yapping_frames = 40; },
-                22 =>  { quote_data = ["se_daisy_appeal_x23_what", "daisy_flower_bubble_23"]; yapping_frames = 88; },
-                23 =>  { quote_data = ["se_daisy_appeal_x24_where", "daisy_flower_bubble_24"]; yapping_frames = 65; },
-                _ =>  { quote_data = ["se_daisy_appeal_x25_yikes", "daisy_flower_bubble_25"]; yapping_frames = 36; }
+           match (rng as i32) { // assign data for what the flower will say based on rng
+                 0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 84; },
+                 1 => { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 82; },
+                 2 => { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 76; },
+                 3 => { quote_data = ["se_daisy_appeal_x04_everyday", "daisy_flower_bubble_04"]; yapping_frames = 95; },
+                 4 => { quote_data = ["se_daisy_appeal_x05_feelsoff", "daisy_flower_bubble_05"]; yapping_frames = 173; },
+                 5 => { quote_data = ["se_daisy_appeal_x06_focus", "daisy_flower_bubble_06"]; yapping_frames = 125; },
+                 6 => { quote_data = ["se_daisy_appeal_x07_howyadoin", "daisy_flower_bubble_07"]; yapping_frames = 60; },
+                 7 => { quote_data = ["se_daisy_appeal_x08_something", "daisy_flower_bubble_08"]; yapping_frames = 80; },
+                 8 => { quote_data = ["se_daisy_appeal_x09_keeptrying", "daisy_flower_bubble_09"]; yapping_frames = 124; },
+                 9 => { quote_data = ["se_daisy_appeal_x10_almost", "daisy_flower_bubble_10"]; yapping_frames = 94; },
+                10 => { quote_data = ["se_daisy_appeal_x11_goodday", "daisy_flower_bubble_11"]; yapping_frames = 122; },
+                11 => { quote_data = ["se_daisy_appeal_x12_newspecies", "daisy_flower_bubble_12"]; yapping_frames = 92; },
+                12 => { quote_data = ["se_daisy_appeal_x13_taste", "daisy_flower_bubble_13"]; yapping_frames = 95; },
+                13 => { quote_data = ["se_daisy_appeal_x14_nexttime", "daisy_flower_bubble_14"]; yapping_frames = 66; },
+                14 => { quote_data = ["se_daisy_appeal_x15_ohhey", "daisy_flower_bubble_15"]; yapping_frames = 60; },
+                15 => { quote_data = ["se_daisy_appeal_x16_party", "daisy_flower_bubble_16"]; yapping_frames = 125; },
+                16 => { quote_data = ["se_daisy_appeal_x17_peaceful", "daisy_flower_bubble_17"]; yapping_frames = 94; },
+                17 => { quote_data = ["se_daisy_appeal_x18_rooting", "daisy_flower_bubble_18"]; yapping_frames = 84; },
+                18 => { quote_data = ["se_daisy_appeal_x19_sogood", "daisy_flower_bubble_19"]; yapping_frames = 92; },
+                19 => { quote_data = ["se_daisy_appeal_x20_summoned", "daisy_flower_bubble_20"]; yapping_frames = 98; },
+                20 => { quote_data = ["se_daisy_appeal_x21_surprise", "daisy_flower_bubble_21"]; yapping_frames = 62; },
+                21 => { quote_data = ["se_daisy_appeal_x22_wellthen", "daisy_flower_bubble_22"]; yapping_frames = 40; },
+                22 => { quote_data = ["se_daisy_appeal_x23_what", "daisy_flower_bubble_23"]; yapping_frames = 88; },
+                23 => { quote_data = ["se_daisy_appeal_x24_where", "daisy_flower_bubble_24"]; yapping_frames = 65; },
+                 _ => { quote_data = ["se_daisy_appeal_x25_yikes", "daisy_flower_bubble_25"]; yapping_frames = 36; }
             };
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_attack"), true, 0.0);
             SoundModule::play_se(boma, Hash40::new(quote_data[0]), true, false, false, false, app::enSEType(0));
-            let effect = EffectModule::req_on_joint(article_boma, Hash40::new(quote_data[1]), Hash40::new("top"), &Vector3f::new(0.5, 11.25, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-            VarModule::set_int(boma.object(), FLOWER_EFFECT_ID, effect as i32);
-            VarModule::set_int(boma.object(), YAPPING_TIMER, (40 + yapping_frames));
-            VarModule::on_flag(boma.object(), START_FLOWER_EFFECT);
+            let effect_id = EffectModule::req_on_joint(article_boma, Hash40::new(quote_data[1]), Hash40::new("top"), &Vector3f::new(0.5, 11.25, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            VarModule::set_int(boma.object(), FLOWER_EFFECT_ID, effect_id as i32);
+            VarModule::set_int(boma.object(), YAPPING_TIMER, (idle_frames + yapping_frames));
             VarModule::set_int(boma.object(), FLOWER_EFFECT_FRAMES, 5);
+            VarModule::on_flag(boma.object(), START_FLOWER_EFFECT);
         }
 
-        // handles the visuals of the speech bubble effect
-        if VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) > 0 {
-            VarModule::dec_int(boma.object(), FLOWER_EFFECT_FRAMES);
-        }
-
+        // handles the animation of the speech bubble effect
+        let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
+        let effect_frame = VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) as f32;
+        if effect_frame as i32 > 0 { VarModule::dec_int(boma.object(), FLOWER_EFFECT_FRAMES); }
+        // speech bubble entry
         if VarModule::is_flag(boma.object(), START_FLOWER_EFFECT) {
-            let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
-            let frame = VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) as f32;
-            if frame > 0.0 {
-                let mul = 1.0 - (frame * 0.05);
+            if effect_frame > 0.0 {
+                let mul = 1.0 - (effect_frame * 0.05);
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
-                EffectModule::set_alpha(boma, effect as u32, 1.0 - (0.2 * frame));
+                EffectModule::set_alpha(boma, effect as u32, 1.0 - (0.2 * effect_frame));
             } else {
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4, 1.6, 1.4));
                 EffectModule::set_alpha(boma, effect as u32, 1.0);
                 VarModule::off_flag(boma.object(), START_FLOWER_EFFECT);
             }
         }
-
+        // speech bubble exit
         if VarModule::is_flag(boma.object(), END_FLOWER_EFFECT) {
-            let effect = VarModule::get_int(boma.object(), FLOWER_EFFECT_ID);
-            let frame = VarModule::get_int(boma.object(), FLOWER_EFFECT_FRAMES) as f32;
-            if frame > 0.0 {
-                let mul = 0.75 + (frame * 0.05);
+            if effect_frame > 0.0 {
+                let mul = 0.75 + (effect_frame * 0.05);
                 EffectModule::set_scale(boma, effect as u32, &Vector3f::new(1.4 * mul, 1.6 * mul, 1.4 * mul));
-                EffectModule::set_alpha(boma, effect as u32, (0.1 * frame));
+                EffectModule::set_alpha(boma, effect as u32, (0.1 * effect_frame));
             } else {
                 EffectModule::kill(boma, effect as u32, true, true);
                 VarModule::off_flag(boma.object(), END_FLOWER_EFFECT);
             }
         }
 
-        // when the line is over, change motion back to normal and remove bubble
-        if timer == 40 {
+        // when the dialogue is over, return to idle and remove the effect
+        if yap_timer == idle_frames {
             ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, Hash40::new("catch_wait"), true, 0.0);
-            VarModule::on_flag(boma.object(), END_FLOWER_EFFECT);
             VarModule::set_int(boma.object(), FLOWER_EFFECT_FRAMES, 5);
+            VarModule::on_flag(boma.object(), END_FLOWER_EFFECT);
         }
 
         // removes the flower once all is said and done
-        if timer <= 0 {
-            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-            EffectModule::set_rate(boma, effect as u32, 1.0);
+        if yap_timer <= 0 {
+            let exit_effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::set_rate(boma, exit_effect as u32, 1.0);
             ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, ArticleOperationTarget(0));
         }
     }
@@ -275,7 +257,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     wall_bounce(boma);
     triple_jump_motion(fighter, boma);
     crystal_handling(boma);
-    set_vegetable_team(boma);
+    vegetable_handling(boma);
     appeal_special(boma);
     //fastfall_specials(fighter);
 }

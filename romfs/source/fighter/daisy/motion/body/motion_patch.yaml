@@ -57,6 +57,9 @@ attack_s4_lw:
     - name: c03attacks4lw.nuanmb
   extra:
     cancel_frame: 53
+attack_lw4:
+  extra:
+    cancel_frame: 52
 attack_air_b:
   extra:
     cancel_frame: 32
