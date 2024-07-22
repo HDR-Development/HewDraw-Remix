@@ -1270,6 +1270,28 @@ unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn ken_hado_landcancel(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND,
+        *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N2_COMMAND,
+    ]) {
+        return;
+    }
+
+    if boma.is_situation(*SITUATION_KIND_GROUND) 
+    && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        if frame < 70.0 { // the autocancel frame
+            WorkModule::set_float(boma, 14.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        }
+    }
+}
+
+
 pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     let inhaledstatus = StatusModule::status_kind(fighter.module_accessor);
     // enable copying flags when inhaling an opponent
@@ -1291,6 +1313,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x3D => {
             check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
             ken_air_hado_distinguish(fighter, boma, frame);
+            ken_hado_landcancel(boma, frame)
         },
         // Lucario
         0x2C => magic_series_lucario(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame),

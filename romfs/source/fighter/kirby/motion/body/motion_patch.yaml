@@ -189,24 +189,9 @@ daisy_special_n_attack:
       xlu_end: 0
       cancel_frame: 41
       no_stop_intp: false
-elight_special_n:
-  extra:
-    cancel_frame: 71
-elight_special_n2:
-  extra:
-    cancel_frame: 71
-elight_special_air_n:
-  extra:
-    cancel_frame: 71
 tantan_special_n_end:
   extra:
     cancel_frame: 40
-elight_special_air_n2:
-  extra:
-    cancel_frame: 71
-demon_special_air_n_hi:
-  extra:
-    cancel_frame: 110
 koopa_special_n_max:
   game_script: game_koopaspecialnmax
   flags:
@@ -232,7 +217,7 @@ koopa_special_n_max:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 65
     no_stop_intp: false
 koopa_special_air_n_max:
   game_script: game_koopaspecialairnmax
@@ -259,7 +244,7 @@ koopa_special_air_n_max:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 60
+    cancel_frame: 65
     no_stop_intp: false
 mewtwo_special_n_shoot:
   extra:
@@ -334,12 +319,6 @@ tantan_special_air_n_end:
 mewtwo_special_air_n_shoot:
   extra:
     cancel_frame: 28
-dedede_special_n_shot_object_spit:
-  extra:
-    cancel_frame: 22
-dedede_special_air_n_shot_object_spit:
-  extra:
-    cancel_frame: 22
 zelda_special_n:
   extra:
     intangible_start_frame: 5
@@ -350,6 +329,21 @@ zelda_special_air_n:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 64
+bayonetta_special_air_n_end_h:
+  extra:
+    cancel_frame: 58
+bayonetta_special_n_end_h:
+  extra:
+    cancel_frame: 58
+bayonetta_special_air_n_end_f:
+  extra:
+    cancel_frame: 48
+bayonetta_special_n_end_f:
+  extra:
+    cancel_frame: 48
+brave_special_n_cancel:
+  extra:
+    cancel_frame: 8
 brave_special_air_n_cancel:
   extra:
     cancel_frame: 8
@@ -488,6 +482,14 @@ chrom_special_air_n_end2:
 chrom_special_air_n_end_max:
   extra:
     cancel_frame: 38
+daisy_special_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+daisy_special_air_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 diddy_special_n_cancel:
   game_script: game_diddyspecialncancel
   flags:
@@ -557,10 +559,10 @@ donkey_special_air_n_cancel:
     cancel_frame: 9
 edge_special_n1:
   extra:
-    cancel_frame: 46
+    cancel_frame: 44
 edge_special_air_n1:
   extra:
-    cancel_frame: 46
+    cancel_frame: 44
 edge_special_n2:
   extra:
     cancel_frame: 60
@@ -669,18 +671,27 @@ kamui_special_n_end_1:
 kamui_special_air_n_end_1:
   extra:
     cancel_frame: 45
+ken_special_air_n:
+  extra:
+    cancel_frame: 70
+ken_special_air_n_empty:
+  extra:
+    cancel_frame: 70
 koopajr_special_n_shoot:
   extra:
     cancel_frame: 32
 koopajr_special_air_n_shoot:
   extra:
     cancel_frame: 32
+link_special_n_start:
+  flags:
+    move: false
 lucario_special_n_cancel:
   extra:
-    cancel_frame: 7
+    cancel_frame: 9
 lucario_special_air_n_cancel:
   extra:
-    cancel_frame: 7
+    cancel_frame: 9
 lucina_special_n_end:
   extra:
     cancel_frame: 45
@@ -930,15 +941,29 @@ palutena_special_n:
 palutena_special_air_n:
   extra:
     cancel_frame: 43
+peach_special_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+peach_special_air_n:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 pit_special_n_fire_s:
   extra:
     cancel_frame: 30
+pit_special_air_n_fire_s:
+  extra:
+    cancel_frame: 32
 pit_special_n_fire_hi:
   extra:
     cancel_frame: 30
 pit_special_air_n_fire_hi:
   extra:
     cancel_frame: 30
+reflet_special_n_start:
+  flags:
+    move: false
 reflet_special_n_cancel:
   extra:
     cancel_frame: 8
@@ -946,9 +971,13 @@ reflet_special_air_n_cancel:
   extra:
     cancel_frame: 8
 richter_special_air_n:
+  flags:
+    move: false
   extra:
     cancel_frame: 37
 richter_special_n:
+  flags:
+    move: false
   extra:
     cancel_frame: 37
 ridley_special_n_shoot:
@@ -1045,6 +1074,12 @@ rockman_special_air_n_turn:
 rockman_special_air_n_turn_empty:
   extra:
     cancel_frame: 35
+ryu_special_n:
+  flags:
+    move: false
+ryu_special_n_empty:
+  flags:
+    move: false
 samus_special_n_c:
   extra:
     cancel_frame: 9
@@ -1060,6 +1095,9 @@ samusd_special_n_c:
 samusd_special_air_n_c:
   extra:
     cancel_frame: 9
+sheiik_special_n_start:
+  flags:
+    move: false
 sheik_special_air_n_end:
   extra:
     cancel_frame: 32
@@ -1069,6 +1107,72 @@ sheik_special_n_cancel:
 sheik_special_air_n_cancel:
   extra:
     cancel_frame: 8
+shizue_special_n:
+  extra:
+    xlu_start: 5
+    xlu_end: 8
+shizue_special_air_n:
+  extra:
+    xlu_start: 5
+    xlu_end: 8
+shulk_special_n_end:
+  extra:
+    cancel_frame: 10
+shulk_special_n_jump:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_n_speed:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_n_shield:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_n_buster:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_n_smash:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_end:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_jump:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_speed:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_shield:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_buster:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+shulk_special_air_n_smash:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
 simon_special_n:
   extra:
     cancel_frame: 60
@@ -1107,12 +1211,21 @@ sonic_special_n_hit:
 szerosuit_special_n_landing:
   extra:
     cancel_frame: 15
+wario_special_n_bite_end:
+  extra:
+    cancel_frame: 27
+wario_special_air_n_bite_end:
+  extra:
+    cancel_frame: 27
 wiifit_special_n_cancel:
   extra:
     cancel_frame: 8
 wiifit_special_air_n_cancel:
   extra:
     cancel_frame: 8
+younglink_special_n_start:
+  flags:
+    move: false
 younglink_special_n_end:
   extra:
     cancel_frame: 23
