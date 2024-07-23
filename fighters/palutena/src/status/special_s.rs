@@ -90,7 +90,7 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_s_momentum_helper(fighter: &mut L2CFighterCommon, start: L2CValue) {
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if start.get_bool() {
-        let special_n_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_n_speed_x_mul"));
+        let special_n_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_speed_x_mul"));
         speed_x *= special_n_speed_x_mul;
     }
 
