@@ -10,6 +10,8 @@ mod rockman;
 mod krool;
 mod brave;
 
+mod ryu_shinkuhadoken;
+
 pub fn install() {
     donkey::install();
     ganon::install();
@@ -20,4 +22,6 @@ pub fn install() {
     rockman::install();
     krool::install();
     brave::install();
+
+    ryu_shinkuhadoken::install();
 }

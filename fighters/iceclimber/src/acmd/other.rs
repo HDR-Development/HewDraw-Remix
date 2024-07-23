@@ -161,11 +161,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflytop_nana", sound_damagefly_nana, Priority::Low);
 
     agent.acmd("game_dash", game_dash, Priority::Low);
+    agent.acmd("game_dash_nana", game_dash, Priority::Low);
     agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("sound_dash_nana", sound_dash, Priority::Low);
 
     agent.acmd("game_turndash", game_turndash, Priority::Low);
+    agent.acmd("game_turndash_nana", game_turndash, Priority::Low);
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeair_nana", game_escapeair, Priority::Low);
 
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+    agent.acmd("game_escapeairslide_nana", game_escapeairslide, Priority::Low);
 }
