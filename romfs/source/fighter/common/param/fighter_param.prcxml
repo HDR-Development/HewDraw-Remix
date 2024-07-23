@@ -555,12 +555,12 @@
     </struct>
     <!-- NANA -->
     <struct index="15">
-      <float hash="walk_speed_max">0.95</float>
-      <float hash="ground_brake">0.035</float>
+      <float hash="walk_speed_max">1.108</float>
+      <float hash="ground_brake">0.0385</float>
       <float hash="dash_speed">1.4</float>
-      <float hash="run_accel_mul">0.05</float>
+      <float hash="run_accel_mul">0.06</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.4</float>
+      <float hash="run_speed_max">1.545</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">0.6</float>
       <float hash="jump_initial_y">9.7132</float>
@@ -1551,9 +1551,9 @@
       <float hash="damage_fly_top_speed_y_stable">2.02</float>
       <float hash="dive_speed_y">2.728</float>
       <float hash="weight">96</float>
-      <float hash="landing_attack_air_frame_n">7</float>
+      <float hash="landing_attack_air_frame_n">10</float>
       <float hash="landing_attack_air_frame_f">8</float>
-      <float hash="landing_attack_air_frame_b">12</float>
+      <float hash="landing_attack_air_frame_b">15</float>
       <float hash="landing_attack_air_frame_hi">10</float>
       <float hash="landing_attack_air_frame_lw">10</float>
       <int hash="landing_heavy_frame">5</int>

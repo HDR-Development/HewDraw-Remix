@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 
 mod special_n;
+mod special_s;
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
@@ -21,4 +22,5 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_n::install(agent);
+    special_s::install(agent);
 }
