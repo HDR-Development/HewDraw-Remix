@@ -95,7 +95,6 @@ unsafe extern "C" fn special_n_color_pre(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-// red: burn attack
 unsafe extern "C" fn special_n_main_common(fighter: &mut L2CFighterCommon, g_mot: u64, a_mot: u64) {
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -141,6 +140,7 @@ unsafe extern "C" fn special_n_main_loop_common(fighter: &mut L2CFighterCommon, 
     return 0.into()
 }
 
+// red: burn attack
 unsafe extern "C" fn special_n_r_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_main_common(fighter, hash40("special_n_r"), hash40("special_air_n_r"));
     
