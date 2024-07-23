@@ -44,7 +44,7 @@
   <int hash="guard_off_cancel_frame">14</int>
   <int hash="guard_off_disable_shield_recovery">14</int>
   <int hash="shield_just_frame">7</int>
-  <float hash="0x2cacbf2a63">12</float>
+  <float hash="0x2cacbf2a63">6</float>
   <float hash="just_shield_speed_rate">0.00</float>
   <float hash="shield_reset">30</float>
   <int hash="shield_setoff_escape">10</int>
