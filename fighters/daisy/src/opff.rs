@@ -87,6 +87,7 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
         let prev_damage = VarModule::get_float(boma.object(), VEGETABLE_DAMAGE);
         if current_damage > prev_damage { 
             //println!("current {}, prev {}", current_damage, prev_damage);
+            let mut player_hit = false;
             if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 let num_players = Fighter::get_fighter_entry_count();
                 let mut opponent_team = 7;
@@ -95,6 +96,7 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
                     if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT) {
                         opponent_team = TeamModule::hit_team_no(opponent_boma) as i32;
                         //println!("Hit by opponent on team {}", opponent_team);
+                        player_hit = true;
                         break;
                     }
                 }
@@ -104,25 +106,37 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
                 //println!("Hit by Daisy");
                 let team = TeamModule::hit_team_no(boma) as i32;
                 TeamModule::set_team(item_boma, team, false);
-                //println!("ID {} changing to team {}", item_id, team);
+                //println!("ID {} changing to team {}", item_id, team)
+                player_hit = true;
             }
             StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
-            if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
-                VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 10);
+            if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT)
+            && !player_hit {
+                VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 15);
                 VarModule::on_flag(boma.object(), VEGETABLE_LOCKOUT);
+                //println!("lockout start");
             }
         } else if current_damage != prev_damage {
             // handle the variable in other scenarios. mostly on item despawn
             VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
+        }
+
+        // starts lockout if the carrot hits something
+        if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT)
+        && AttackModule::is_infliction(item_boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 15);
+            VarModule::on_flag(boma.object(), VEGETABLE_LOCKOUT);
+            //println!("lockout start");
         }
     }
 
     // handles the carrot hurtbox lockout window
     if VarModule::get_int(boma.object(), VEGETABLE_LOCKOUT_FRAME) > 0 {
         VarModule::dec_int(boma.object(), VEGETABLE_LOCKOUT_FRAME);
-    } else {
+    } else if VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
         VarModule::off_flag(boma.object(), VEGETABLE_LOCKOUT);
+        //println!("lockout end");
     }
 
     // hide the carrot (and other items) when daisy is shielding
