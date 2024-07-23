@@ -68,8 +68,9 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
         let y_distance = (PostureModule::pos_y(boma) + 10.0) - PostureModule::pos_y(item_boma);
         let is_separated = x_distance.abs() > 15.0 || y_distance.abs() > 15.0;
         
-        // toggle the hurtbox if an opponent is holding the carrot
-        if StatusModule::status_kind(item_boma) == *ITEM_STATUS_KIND_HAVE {
+        // decides whether or not the hurtbox should be active
+        if StatusModule::status_kind(item_boma) == *ITEM_STATUS_KIND_HAVE 
+        || VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
             HitModule::sleep(item_boma, true);
         } else {
             HitModule::sleep(item_boma, false);
@@ -107,10 +108,21 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
             }
             StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
             VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
+            if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
+                VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 10);
+                VarModule::on_flag(boma.object(), VEGETABLE_LOCKOUT);
+            }
         } else if current_damage != prev_damage {
             // handle the variable in other scenarios. mostly on item despawn
             VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
         }
+    }
+
+    // handles the carrot hurtbox lockout window
+    if VarModule::get_int(boma.object(), VEGETABLE_LOCKOUT_FRAME) > 0 {
+        VarModule::dec_int(boma.object(), VEGETABLE_LOCKOUT_FRAME);
+    } else {
+        VarModule::off_flag(boma.object(), VEGETABLE_LOCKOUT);
     }
 
     // hide the carrot (and other items) when daisy is shielding
