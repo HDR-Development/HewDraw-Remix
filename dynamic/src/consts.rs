@@ -1769,6 +1769,10 @@ pub mod statuses {
         pub const ATTACK_COMMAND_4: i32 = 0x203;
     }
 
+    pub mod ryu_shinkuhadoken {
+        pub const FINISH: i32 = 0x2;
+    }
+
     pub mod samusd {
         pub const FLOAT: i32 = 0x1F6;
     }
