@@ -18,6 +18,7 @@ mod sonic_special_n;
 mod edge_special_n;
 mod bayonetta_special_n_cancel;
 mod reflet_special_n;
+mod palutena_special_n;
 // mod buddy_bayonet_end;
 
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -271,5 +272,6 @@ pub fn install(agent: &mut Agent) {
     edge_special_n::install(agent);
     bayonetta_special_n_cancel::install(agent);
     reflet_special_n::install(agent);
+    palutena_special_n::install(agent);
     // buddy_bayonet_end::install(agent);
 }

@@ -33,62 +33,56 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    palutena_teleport_wall_ride(fighter, boma, id, status_kind, situation_kind, cat[0]);
-    actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
-    var_reset(fighter, id, status_kind);
-    training_mode_taunts(fighter, id, status_kind);
-    dj_upB_jump_refresh(fighter);
-    power_board(fighter, boma, status_kind);
-    color_charge(fighter);
-    power_cast(fighter);
-    fastfall_specials(fighter);
-}
-
-unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if StatusModule::is_changing(fighter.module_accessor)
-    && (fighter.is_situation(*SITUATION_KIND_GROUND)
-        || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
-    {
-        VarModule::off_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
+unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3]) {
+        return;
     }
-
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && !StatusModule::is_changing(boma)
-    && boma.status_frame() == 1 {
-        VarModule::off_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
-        if situation_kind == *SITUATION_KIND_GROUND {
-            VarModule::on_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if StatusModule::is_changing(boma) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                VarModule::on_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+            }
+            else {
+                VarModule::off_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT);
+            }
         }
     }
-    // Allows Palutena to turnaround based on stick position when reappearing
-    if status_kind == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2
-    && !StatusModule::is_changing(boma)
-    && MotionModule::is_end(boma) {
-        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+    if fighter.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2) {
+        if StatusModule::is_changing(boma) {
+            if !VarModule::is_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT)
+            && !(boma.get_num_used_jumps() < boma.get_jump_count_max()) {
+                VarModule::on_flag(fighter.battle_object, vars::palutena::status::TELEPORT_AIR_START);
+            }
+        }
+        // Allow turnaround based on stick position when reappearing
+        if MotionModule::is_end(boma) {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
         }
-    }
-
-    if fighter.is_prev_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3) {
-        if StatusModule::is_changing(fighter.module_accessor) {
+        // Prevent actionability toggle when touching ground during the travel
+        if GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32)
+        && !VarModule::is_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL)
+        && VarModule::is_flag(boma.object(), vars::palutena::status::TELEPORT_AIR_START) {
             VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
         }
     }
-    
-    // Actionability when double jump isn't burned
-    if status_kind == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3
-    && !StatusModule::is_changing(boma)
-    && situation_kind == *SITUATION_KIND_AIR
-    && boma.get_num_used_jumps() < boma.get_jump_count_max() 
-    && !VarModule::is_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL) {
-        VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-        CancelModule::enable_cancel(boma);
-        // Consume double jump, except when Teleport is initiated on ground
-        if !VarModule::is_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT) {
-            WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    if fighter.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3) {
+        if StatusModule::is_changing(boma) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL);
+            }
+            else {
+                // Actionability when double jump isn't burned
+                if boma.get_num_used_jumps() < boma.get_jump_count_max()
+                && !VarModule::is_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_FREEFALL) {
+                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    CancelModule::enable_cancel(boma);
+                    // Consume double jump, except when Teleport is initiated on ground
+                    if !VarModule::is_flag(boma.object(), vars::palutena::instance::GROUNDED_TELEPORT) {
+                        WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                    }
+                }
+            }
         }
     }
 }
@@ -141,6 +135,9 @@ pub unsafe fn palutena_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFight
                 KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
         }
+        if StatusModule::is_changing(boma) && boma.is_situation(*SITUATION_KIND_GROUND) {
+            KineticModule::mul_speed(boma, &Vector3f::new(0.6, 1.0, 1.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+        }
     }
 }
 
@@ -164,7 +161,7 @@ unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32)
     }
 }
 
-// Training Mode Aegis Reflector timer taunt reset & color charging
+// Training Mode color charging
 unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if (fighter.is_motion(Hash40::new("appeal_s_r")) || fighter.is_motion(Hash40::new("appeal_s_l")))
@@ -248,66 +245,6 @@ unsafe fn power_board(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     
 }
 
-// checks which color spell should be cast
-unsafe fn power_cast(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        let color_1 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1);
-        let color_2 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2);
-        if color_1 == 1 {
-            if color_2 == 2 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
-                //println!("and why he ourple");
-
-            }
-            else if color_2 == 3 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
-                //println!("bornana");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_R.into(), false.into());
-                //println!("red");
-            }
-        }
-        else if color_1 == 2 {
-            if color_2 == 1 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_P.into(), false.into());
-                //println!("and why he ourple");
-            }
-            else if color_2 == 3 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
-                //println!("i like cash from my hair to my ass");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_B.into(), false.into());
-                //println!("blud");
-            }
-        }
-        else if color_1 == 3 {
-            if color_2 == 1 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_O.into(), false.into());
-                //println!("bornana");
-            }
-            else if color_2 == 2 {
-                fighter.change_status(statuses::palutena::SPECIAL_N_G.into(), false.into());
-                //println!("i like cash from my hair to my ass");
-            }
-            else {
-                if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
-                    VarModule::on_flag(fighter.object(), vars::palutena::instance::POWERED);
-                }
-                fighter.change_status(statuses::palutena::SPECIAL_N_Y.into(), false.into());
-                //println!("ielo");
-            }
-        }
-    }
-}
-
 pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
@@ -325,6 +262,17 @@ pub extern "C" fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommo
             VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
         );
     }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    palutena_teleport_wall_ride(fighter, boma, id, status_kind, situation_kind, cat[0]);
+    teleport_logic(fighter, boma);
+    var_reset(fighter, id, status_kind);
+    training_mode_taunts(fighter, id, status_kind);
+    dj_upB_jump_refresh(fighter);
+    power_board(fighter, boma, status_kind);
+    color_charge(fighter);
+    fastfall_specials(fighter);
 }
 
 pub extern "C" fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

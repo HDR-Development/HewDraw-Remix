@@ -314,13 +314,11 @@ pub mod vars {
 
     pub mod bayonetta {
         pub mod instance {
-            // flags
-            pub const IS_HIT: i32 = 0x0100;
-
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
             pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x0102;
+            pub const DABK_COUNT: i32 = 0x0103;
         }
         pub mod status {
             // floats
@@ -1123,6 +1121,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const CAN_INCREASE_COLOR: i32 = 0x1100;
+            pub const TELEPORT_AIR_START: i32 = 0x1101;
 
             // floats
             pub const ADD_DAMAGE: i32 = 0x1100;
@@ -1660,8 +1659,7 @@ pub mod vars {
 pub mod statuses {
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
-        pub const SPECIAL_S_EDGE: i32 = 0x1F3;
-        pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
+        pub const SPECIAL_N_CANCEL: i32 = 0x1F3;
     }
 
     pub mod chrom {

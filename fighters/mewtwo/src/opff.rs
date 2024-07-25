@@ -3,17 +3,8 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
  
-unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if StatusModule::is_changing(fighter.module_accessor)
-    && (fighter.is_situation(*SITUATION_KIND_GROUND)
-        || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
-    {
-        VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
-    }
-
-    
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 {
+unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2) {
         if StatusModule::is_changing(boma) {
             if boma.get_num_used_jumps() >= boma.get_jump_count_max() {
                 VarModule::off_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL);
@@ -26,22 +17,20 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOAT);
                 } //Burns jump, enables flag if started without using DJ
             }
-         } else if MotionModule::is_end(boma) && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL) {
+        } else if MotionModule::is_end(boma) && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL) {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
         } // Allows M2 to turnaround based on stick position when reappearing
     }
-
     if fighter.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3) {
         if StatusModule::is_changing(fighter.module_accessor) {
             VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
         }
     }
-
     // Actionability when double jump isn't burned
     if fighter.is_motion(Hash40::new("special_air_hi"))
     && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL)
-    && frame > 9.0 { //8f -> 10, 2x travel speed
+    && fighter.motion_frame() > 9.0 {
         VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         CancelModule::enable_cancel(boma);
     }
@@ -123,7 +112,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
+    teleport_logic(fighter, boma);
     mewtwo_teleport_wall_ride(fighter, boma, status_kind, id);
     dj_upB_jump_refresh(fighter);
     fastfall_specials(fighter);

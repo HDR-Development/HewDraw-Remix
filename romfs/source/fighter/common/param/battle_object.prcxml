@@ -16,8 +16,11 @@
   <float hash="hitstop_frame_add">4</float>
   <float hash="hitstop_frame_mul">0.45</float>
   <float hash="hitstop_elec_mul">1.25</float>
-  <int hash="just_shield_hitstop_frame_add">22</int>
-  <int hash="just_shield_hitstop_frame_max">23</int>
+  <int hash="just_shield_hitstop_frame_add">12</int>
+  <int hash="0x28492c704c">12</int>
+  <int hash="0x323a6f8f63">2</int>
+  <int hash="0x2bef82b907">2</int>
+  <int hash="just_shield_hitstop_frame_max">12</int>
   <float hash="just_shield_reflect_attack_mul">1.0</float>
   <float hash="just_shield_reflect_speed_mul">1.0</float>
   <float hash="just_shield_reflect_life_mul">1</float>

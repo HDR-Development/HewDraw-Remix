@@ -14,10 +14,10 @@ unsafe extern "C" fn effect_shoot(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         agent.clear_lua_stack();
-        lua_args!(agent, Hash40::new("mewtwo_kanasibari"), Hash40::new("top"), 0, -1, -1, 0, 0, 0, 1, false);
+        lua_args!(agent, Hash40::new("mewtwo_kanasibari"), Hash40::new("top"), 0, -1, -1.1, 0, 0, 0, 1, false);
         sv_animcmd::EFFECT_FLW_POS_UNSYNC_VIS(agent.lua_state_agent);
-        LAST_EFFECT_SET_SCALE_W(agent, 1.1, 0.8, 1.1);
-        LAST_EFFECT_SET_RATE(agent, 1.2);
+        LAST_EFFECT_SET_SCALE_W(agent, 1.1, 0.78, 1.1);
+        LAST_EFFECT_SET_RATE(agent, 1.23);
     }
 }
 
