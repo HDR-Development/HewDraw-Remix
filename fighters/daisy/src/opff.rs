@@ -90,7 +90,7 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
             let mut player_hit = false;
             if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 let num_players = Fighter::get_fighter_entry_count();
-                let mut opponent_team = 7;
+                let mut opponent_team = -1;
                 for i in 0..num_players{
                     let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
                     if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT) {
@@ -100,13 +100,15 @@ unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
                         break;
                     }
                 }
-                //println!("ID {} changing to team {}", item_id, opponent_team);
-                TeamModule::set_team(item_boma, opponent_team, false);
+                if opponent_team != -1 {
+                    //println!("ID {} changing to team {}", item_id, opponent_team);
+                    TeamModule::set_team(item_boma, opponent_team, false);
+                }
             } else {
                 //println!("Hit by Daisy");
                 let team = TeamModule::hit_team_no(boma) as i32;
                 TeamModule::set_team(item_boma, team, false);
-                //println!("ID {} changing to team {}", item_id, team)
+                //println!("ID {} changing to team {}", item_id, team);
                 player_hit = true;
             }
             StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
