@@ -27,29 +27,42 @@ attack_12:
 attack_11:
   extra:
     cancel_frame: 16
+attack_s3_s:
+  extra:
+    cancel_frame: 33
+attack_hi3:
+  extra:
+    cancel_frame: 32
 attack_lw3:
   flags:
     move: false
   extra:
-    cancel_frame: 28
+    cancel_frame: 29
 attack_hi4:
   extra:
     cancel_frame: 48
 attack_dash:
   extra:
-    cancel_frame: 36
+    cancel_frame: 38
 attack_s4_s:
   extra:
     cancel_frame: 50
 attack_s4_hi:
+  animations:
+    - name: c03attacks4hi.nuanmb
   extra:
     cancel_frame: 48
+attack_s4_lw:
+  animations:
+    - name: c03attacks4lw.nuanmb
+  extra:
+    cancel_frame: 53
+attack_lw4:
+  extra:
+    cancel_frame: 52
 attack_air_b:
   extra:
     cancel_frame: 32
-attack_s4_lw:
-  extra:
-    cancel_frame: 53
 special_s_end:
   extra:
     cancel_frame: 37
@@ -60,6 +73,7 @@ special_n:
   extra:
     xlu_start: 0
     xlu_end: 0
+    cancel_frame: 0
 special_air_n:
   extra:
     xlu_start: 0
@@ -70,6 +84,9 @@ special_s_hit_end:
 special_air_s_end:
   extra:
     cancel_frame: 43
+special_air_hi_start:
+  animations:
+    - name: d02specialhistart.nuanmb
 catch:
   extra:
     cancel_frame: 35
@@ -87,7 +104,127 @@ furafura_end:
     cancel_frame: 34
 shield_break_fly:
   animations:
-    - name: f04downspotd.nuanmb
+    - name: f03downspotu.nuanmb
 step_pose_back:
   extra:
     cancel_frame: 6
+jump_aerial_f2:
+    game_script: game_jumpaerialfront
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+      unk_800: false
+      unk_1000: false
+      unk_2000: false
+    blend_frames: 0
+    animations:
+      - name: a03jumpaerialf2.nuanmb
+        unk: 0
+    scripts:
+      - expression_jumpaerialfront
+      - sound_jumpaerialfront
+      - effect_jumpaerialfront
+    extra:
+      xlu_start: 0
+      xlu_end: 0
+      cancel_frame: 0
+      no_stop_intp: false
+jump_aerial_b2:
+  game_script: game_jumpaerialback
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: a03jumpaerialb2.nuanmb
+      unk: 0
+  scripts:
+    - expression_jumpaerialback
+    - sound_jumpaerialback
+    - effect_jumpaerialback
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
+special_n_attack:
+    game_script: game_specialnattack
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+      unk_800: false
+      unk_1000: false
+      unk_2000: false
+    blend_frames: 0
+    animations:
+      - name: d00specialnattack.nuanmb
+        unk: 0
+    scripts:
+      - expression_specialnattack
+      - sound_specialnattack
+      - effect_specialnattack
+    extra:
+      xlu_start: 0
+      xlu_end: 0
+      cancel_frame: 41
+      no_stop_intp: false
+appeal_s_special:
+    game_script: game_appealspecial
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+      unk_800: false
+      unk_1000: false
+      unk_2000: false
+    blend_frames: 0
+    animations:
+      - name: j01appealspecial.nuanmb
+        unk: 0
+    scripts:
+      - expression_appealspecial
+      - sound_appealspecial
+      - effect_appealspecial
+    extra:
+      xlu_start: 0
+      xlu_end: 0
+      cancel_frame: 50
+      no_stop_intp: false

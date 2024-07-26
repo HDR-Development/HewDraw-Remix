@@ -90,6 +90,156 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_entry(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ArticleModule::remove_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn effect_entry(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("daisy_entry_l"), Hash40::new("top"), 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("hip"), 4.0, 90, 100, 165, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_HIP);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 10.0, false);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        EFFECT_FLIP(agent, Hash40::new("sys_steam3"), Hash40::new("sys_steam3"), Hash40::new("top"), -5.0, 10, -2.0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        EFFECT_FLIP(agent, Hash40::new("sys_steam3"), Hash40::new("sys_steam3"), Hash40::new("top"), -5.0, 10, -2.0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    }
+    wait(lua_state, 34.0);
+    EFFECT_OFF_KIND(agent, Hash40::new("sys_steam3"), true, true);
+}
+
+unsafe extern "C" fn sound_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_appeal_l01"));
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_stage_suddendeath_in_end"));
+    }
+    frame(lua_state, 65.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_cliffcatch"));
+    }
+    frame(lua_state, 96.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_daisy_wakeup"));
+    }
+}
+
+unsafe extern "C" fn expression_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 46.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 110.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
+unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 25.0);
+    if !ArticleModule::is_exist(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, 0);
+            ArticleModule::change_status(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, statuses::daisy_kinopio::YAP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
+            let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let article_boma = sv_battle_object::module_accessor(article_id);
+            let offset = Vector3f {
+                x: PostureModule::pos_x(boma) + (10.0 * PostureModule::lr(boma)),
+                y: PostureModule::pos_y(boma) + 7.0,
+                z: -6.0
+            };
+            PostureModule::set_pos(article_boma, &offset);
+            PostureModule::set_scale(article_boma, 1.2, true);
+            LinkModule::unlink(article_boma, *WEAPON_LINK_NO_CONSTRAINT); // detaches the article from daisy
+            let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::set_rate(boma, effect as u32, 1.0);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 0.9);
+    }
+}
+
+unsafe extern "C" fn sound_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_appeal_s01"));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_daisy_wear02"));
+    }
+}
+
+unsafe extern "C" fn expression_appealspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 100.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -102,4 +252,23 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_entryl", game_entry, Priority::Low);
+    agent.acmd("game_entryr", game_entry, Priority::Low);
+    agent.acmd("effect_entryl", effect_entry, Priority::Low);
+    agent.acmd("effect_entryr", effect_entry, Priority::Low);
+
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwl", effect_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwr", effect_appeallw, Priority::Low);
+    agent.acmd("sound_appeallwl", sound_appeallw, Priority::Low);
+    agent.acmd("sound_appeallwr", sound_appeallw, Priority::Low);
+    agent.acmd("expression_appeallwl", expression_appeallw, Priority::Low);
+    agent.acmd("expression_appeallwr", expression_appeallw, Priority::Low);
+
+    agent.acmd("game_appealspecial", game_appealspecial, Priority::Low);
+    agent.acmd("effect_appealspecial", effect_appealspecial, Priority::Low);
+    agent.acmd("sound_appealspecial", sound_appealspecial, Priority::Low);
+    agent.acmd("expression_appealspecial", expression_appealspecial, Priority::Low);
 }

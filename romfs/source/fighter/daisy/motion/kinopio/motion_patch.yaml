@@ -1,0 +1,50 @@
+yap:
+  game_script: game_catchattack
+  flags:
+    turn: false
+    loop: true
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 8
+  animations:
+  - name: e00catchattack.nuanmb
+    unk: 0
+  scripts:
+  - sound_catchattack
+  - effect_catchattack
+  extra: ~
+yapnt:
+  game_script: game_catchwait
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 8
+  animations:
+  - name: e00catchwait.nuanmb
+    unk: 0
+  scripts:
+  - sound_catchwait
+  - effect_catchwait
+  extra: ~
