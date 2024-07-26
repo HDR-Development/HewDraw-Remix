@@ -187,7 +187,6 @@ unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             ArticleModule::generate_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, 0);
             ArticleModule::change_status(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, statuses::daisy_kinopio::YAP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            ArticleModule::set_visibility_whole(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             let article = ArticleModule::get_article(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO);
             let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
             let article_boma = sv_battle_object::module_accessor(article_id);
@@ -201,10 +200,6 @@ unsafe extern "C" fn game_appealspecial(agent: &mut L2CAgentBase) {
             LinkModule::unlink(article_boma, *WEAPON_LINK_NO_CONSTRAINT); // detaches the article from daisy
             let effect = EffectModule::req_on_joint(article_boma, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             EffectModule::set_rate(boma, effect as u32, 1.0);
-        }
-        wait(lua_state, 3.0);
-        if is_excute(agent) {
-            ArticleModule::set_visibility_whole(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
     }
 }

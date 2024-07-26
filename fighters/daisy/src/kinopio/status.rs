@@ -22,6 +22,7 @@ unsafe extern "C" fn yap_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     VarModule::off_flag(weapon.object(), YAP_ON);
     VarModule::off_flag(weapon.object(), YAP_OFF);
     VarModule::set_int(weapon.object(), YAPPING_TIMER, 999);
+    VisibilityModule::set_whole(weapon.module_accessor, false);
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("yapnt"), 0.0, 1.0, false, 0.0, false, false);
     weapon.fastshift(L2CValue::Ptr(yap_main_loop as *const () as _))
 }
@@ -31,7 +32,11 @@ unsafe extern "C" fn yap_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if yap_timer > 0 { VarModule::dec_int(weapon.object(), YAPPING_TIMER); }
     let idle_frames = 40;   // how long the flower sticks around after it's done talking
 
-    if weapon.status_frame() == 30 {
+    if weapon.status_frame() == 3 {
+        VisibilityModule::set_whole(weapon.module_accessor, true);
+    }
+    let start_frame = if VarModule::is_flag(weapon.object(), PARRY_YAP) { 10 } else { 30 };
+    if weapon.status_frame() == start_frame {
         let mut quote_data: [&str;2] = ["dummy", "dummy"];
         let mut yapping_frames = 0; // approximate amount of frames each line takes to complete
         let rng = app::sv_math::rand(hash40("fighter"), 25);

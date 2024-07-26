@@ -420,6 +420,7 @@ pub mod vars {
             // flags
             pub const YAP_ON: i32 = 0x1100;
             pub const YAP_OFF: i32 = 0x1101;
+            pub const PARRY_YAP: i32 = 0x1102;
 
             // ints
             pub const IDLE_FRAMES: i32 = 0x1100;
