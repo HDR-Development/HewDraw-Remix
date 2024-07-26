@@ -90,7 +90,8 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
         } else {
             PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
         }
-        PLAY_SE(agent, Hash40::new("se_daisy_smash_s02"));
+        let handle = SoundModule::play_se(boma, Hash40::new("se_daisy_smash_s02"), true, false, false, false, enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 1.25, 0);
     }
 }
 

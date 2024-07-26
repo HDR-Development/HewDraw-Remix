@@ -26,7 +26,13 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
+        let rng = app::sv_math::rand(hash40("fighter"), 5);
+        match rng {
+            0 => PLAY_SE(agent, Hash40::new("vc_daisy_attack02")),
+            1 => PLAY_SE(agent, Hash40::new("vc_daisy_attack03")),
+            2 => PLAY_SE(agent, Hash40::new("vc_daisy_attack04")),
+            _ => PLAY_SE(agent, Hash40::new("vc_daisy_attack04")),
+        };
         PLAY_SE(agent, Hash40::new("se_common_smashswing_02"));
     }
 }
@@ -106,11 +112,18 @@ unsafe extern "C" fn sound_specialairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         let rng = app::sv_math::rand(hash40("fighter"), 5);
-        if rng > 2 {
-            PLAY_SE(agent, Hash40::new("vc_daisy_attack07"));
-        } else {
-            PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
-        }
+        match rng {
+            0..=2 => PLAY_SE(agent, Hash40::new("vc_daisy_attack07")),
+            3 => PLAY_SE(agent, Hash40::new("vc_daisy_attack02")),
+            4 => PLAY_SE(agent, Hash40::new("vc_daisy_attack03")),
+            5 => PLAY_SE(agent, Hash40::new("vc_daisy_attack04")),
+            _ => PLAY_SE(agent, Hash40::new("vc_daisy_attack04")),
+        };
+        // if rng > 2 {
+        //     PLAY_SE(agent, Hash40::new("vc_daisy_attack07"));
+        // } else {
+            
+        // }
         PLAY_SE(agent, Hash40::new("se_common_smashswing_02"));
     }
     frame(lua_state, 14.0);

@@ -70,7 +70,7 @@ unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
             let mut quote_data: [&str;2] = ["dummy", "dummy"];
             let mut yapping_frames = 0; // approximate amount of frames each line takes to complete
             let rng = app::sv_math::rand(hash40("fighter"), 25);
-           match (rng as i32) { // assign data for what the flower will say based on rng
+            match (rng as i32) { // assign data for what the flower will say based on rng
                  0 => { quote_data = ["se_daisy_appeal_x01_onward", "daisy_flower_bubble_01"]; yapping_frames = 84; },
                  1 => { quote_data = ["se_daisy_appeal_x02_company", "daisy_flower_bubble_02"]; yapping_frames = 82; },
                  2 => { quote_data = ["se_daisy_appeal_x03_great", "daisy_flower_bubble_03"]; yapping_frames = 76; },

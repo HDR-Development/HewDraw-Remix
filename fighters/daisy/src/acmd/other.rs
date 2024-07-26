@@ -98,6 +98,19 @@ unsafe extern "C" fn game_entry(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_entry(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("daisy_entry_l"), Hash40::new("top"), 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -249,6 +262,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_entryl", game_entry, Priority::Low);
     agent.acmd("game_entryr", game_entry, Priority::Low);
+    agent.acmd("effect_entryl", effect_entry, Priority::Low);
+    agent.acmd("effect_entryr", effect_entry, Priority::Low);
 
     agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
     agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
