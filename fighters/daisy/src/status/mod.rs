@@ -83,5 +83,5 @@ pub fn install(agent: &mut Agent) {
     uniq_float::install(agent);
     catch::install(agent);
     appeal::install(agent);
-    //guard_damage::install(agent);
+    guard_damage::install(agent);
 }

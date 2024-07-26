@@ -2,8 +2,9 @@ use super::*;
 
 unsafe extern "C" fn guard_damage_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
-        || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+        if (ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+        || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R))
+        && (1.0..4.0).contains(&fighter.motion_frame()) {
             if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO) {
                 ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, false, 0);
                 ArticleModule::change_status(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KINOPIO, statuses::daisy_kinopio::YAP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
