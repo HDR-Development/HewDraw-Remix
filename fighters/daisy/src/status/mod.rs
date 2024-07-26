@@ -68,9 +68,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
-
-    VarModule::off_flag(fighter.battle_object, vars::daisy::instance::START_FLOWER_EFFECT);
-    VarModule::off_flag(fighter.battle_object, vars::daisy::instance::END_FLOWER_EFFECT);
 }
 
 pub fn install(agent: &mut Agent) {

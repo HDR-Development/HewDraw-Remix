@@ -401,17 +401,10 @@ pub mod vars {
     }
 
     pub mod daisy {
-        pub mod instance {
-            // ints
-            pub const YAPPING_TIMER: i32 = 0x0102;
-            pub const FLOWER_EFFECT_ID: i32 = 0x0103;
-            pub const FLOWER_EFFECT_FRAMES: i32 = 0x0104;
-                        
+        pub mod instance {   
             // flag
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
             pub const SPECIAL_S_GROUND_START: i32 = 0x0101;
-            pub const START_FLOWER_EFFECT: i32 = 0x0103;
-            pub const END_FLOWER_EFFECT: i32 = 0x0104;
         }
         pub mod status {
             // flags
@@ -419,6 +412,20 @@ pub mod vars {
             pub const SPECIAL_N_AIR_START: i32 = 0x1101;
             pub const SPECIAL_N_DIVE: i32 = 0x1102;
             pub const SPECIAL_N_AUTOCANCEL: i32 = 0x1103;
+        }
+    }
+
+    pub mod daisy_kinopio {
+        pub mod status {
+            // flags
+            pub const YAP_ON: i32 = 0x1100;
+            pub const YAP_OFF: i32 = 0x1101;
+
+            // ints
+            pub const IDLE_FRAMES: i32 = 0x1100;
+            pub const YAPPING_TIMER: i32 = 0x1101;
+            pub const FLOWER_EFFECT_ID: i32 = 0x1102;
+            pub const FLOWER_EFFECT_FRAMES: i32 = 0x1103;
         }
     }
 
@@ -1686,6 +1693,10 @@ pub mod statuses {
 
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0x1FB;
+    }
+
+    pub mod daisy_kinopio {
+        pub const YAP: i32 = 0x1;
     }
 
     pub mod diddy {

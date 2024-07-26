@@ -26,7 +26,7 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        let rng = app::sv_math::rand(hash40("fighter"), 5);
+        let rng = app::sv_math::rand(hash40("fighter"), 3);
         match rng {
             0 => PLAY_SE(agent, Hash40::new("vc_daisy_attack02")),
             1 => PLAY_SE(agent, Hash40::new("vc_daisy_attack03")),
@@ -111,7 +111,7 @@ unsafe extern "C" fn sound_specialairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        let rng = app::sv_math::rand(hash40("fighter"), 5);
+        let rng = app::sv_math::rand(hash40("fighter"), 6);
         match rng {
             0..=2 => PLAY_SE(agent, Hash40::new("vc_daisy_attack07")),
             3 => PLAY_SE(agent, Hash40::new("vc_daisy_attack02")),
