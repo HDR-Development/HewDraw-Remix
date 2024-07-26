@@ -10,6 +10,9 @@ unsafe fn sub_status_guard_common(fighter: &mut L2CFighterCommon) {
     if !StopModule::is_stop(fighter.module_accessor) {
         misc::sub_guard_on_uniq(fighter, false.into());
     }
+    if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_DAISYDAIKON {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
     fighter.global_table[SUB_STATUS].assign(
         &L2CValue::Ptr(misc::sub_guard_on_uniq as *const () as _)
     );

@@ -291,6 +291,16 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *FIGHTER_KIND_DAISY {
+            if x1 == hash40("param_special_s") {
+                if x2 == hash40("special_s_jump_dec_accel_y")
+                && VarModule::is_flag(boma_reference.object(), vars::daisy::instance::SPECIAL_S_GROUND_START) {
+                    return 0.05;
+                }
+            }
+        }
+
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
