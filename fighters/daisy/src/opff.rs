@@ -48,108 +48,6 @@ unsafe fn crystal_handling(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// handles daisy's vegetable item, allowing it to be hit around
-unsafe fn vegetable_handling(boma: &mut BattleObjectModuleAccessor) {
-    if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_DAISYDAIKON {
-        let item_id = ItemModule::get_have_item_id(boma, 0) as u32;
-        let item_boma = sv_battle_object::module_accessor(item_id);
-        VarModule::set_int(boma.object(), VEGETABLE_ID, item_id as i32);
-        let team = TeamModule::hit_team_no(boma) as i32;
-        TeamModule::set_team(item_boma, team, true);
-        TeamModule::set_hit_team(item_boma, team);
-        HitModule::sleep(item_boma, true); // disable hurtbox when holding
-    } else {
-        let item_id = VarModule::get_int(boma.object(), VEGETABLE_ID) as u32;
-        let item_boma = sv_battle_object::module_accessor(item_id);
-        // bool for if daisy is the owner of a carrot before affecting it, preventing ownership jank in daisy dittos
-        let is_owner = TeamModule::hit_team_no(item_boma) == TeamModule::hit_team_no(boma);
-        // measure how far the item is from daisy, used to prevent oddities with hitting herself
-        let x_distance = PostureModule::pos_x(boma) - PostureModule::pos_x(item_boma);
-        let y_distance = (PostureModule::pos_y(boma) + 10.0) - PostureModule::pos_y(item_boma);
-        let is_separated = x_distance.abs() > 15.0 || y_distance.abs() > 15.0;
-        
-        // decides whether or not the hurtbox should be active
-        if StatusModule::status_kind(item_boma) == *ITEM_STATUS_KIND_HAVE 
-        || VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
-            HitModule::sleep(item_boma, true);
-        } else {
-            HitModule::sleep(item_boma, false);
-        }
-
-        if TeamModule::hit_team_no(item_boma) as i32 != -1
-        && is_owner && is_separated {
-            //println!("changing {} hit team to universal", TeamModule::hit_team_no(item_boma));
-            TeamModule::set_hit_team(item_boma, -1);
-        }
-
-        // tracks the source of whatever hits the carrot, and swaps its team accordingly
-        let current_damage = DamageModule::damage(item_boma, 0);
-        let prev_damage = VarModule::get_float(boma.object(), VEGETABLE_DAMAGE);
-        if current_damage > prev_damage { 
-            //println!("current {}, prev {}", current_damage, prev_damage);
-            let mut player_hit = false;
-            if !AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
-                let num_players = Fighter::get_fighter_entry_count();
-                let mut opponent_team = -1;
-                for i in 0..num_players{
-                    let opponent_boma = sv_battle_object::module_accessor(Fighter::get_id_from_entry_id(i));
-                    if AttackModule::is_infliction(opponent_boma, *COLLISION_KIND_MASK_HIT) {
-                        opponent_team = TeamModule::hit_team_no(opponent_boma) as i32;
-                        //println!("Hit by opponent on team {}", opponent_team);
-                        player_hit = true;
-                        break;
-                    }
-                }
-                if opponent_team != -1 {
-                    //println!("ID {} changing to team {}", item_id, opponent_team);
-                    TeamModule::set_team(item_boma, opponent_team, false);
-                }
-            } else {
-                //println!("Hit by Daisy");
-                let team = TeamModule::hit_team_no(boma) as i32;
-                TeamModule::set_team(item_boma, team, false);
-                //println!("ID {} changing to team {}", item_id, team);
-                player_hit = true;
-            }
-            StatusModule::change_status_force(item_boma, *ITEM_STATUS_KIND_THROW, true); // resets the throw status so the hitbox doesn't clear
-            VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
-            if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT)
-            && !player_hit {
-                VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 15);
-                VarModule::on_flag(boma.object(), VEGETABLE_LOCKOUT);
-                //println!("lockout start");
-            }
-        } else if current_damage != prev_damage {
-            // handle the variable in other scenarios. mostly on item despawn
-            VarModule::set_float(boma.object(), VEGETABLE_DAMAGE, current_damage);
-        }
-
-        // starts lockout if the carrot hits something
-        if !VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT)
-        && AttackModule::is_infliction(item_boma, *COLLISION_KIND_MASK_HIT) {
-            VarModule::set_int(boma.object(), VEGETABLE_LOCKOUT_FRAME, 15);
-            VarModule::on_flag(boma.object(), VEGETABLE_LOCKOUT);
-            //println!("lockout start");
-        }
-    }
-
-    // handles the carrot hurtbox lockout window
-    if VarModule::get_int(boma.object(), VEGETABLE_LOCKOUT_FRAME) > 0 {
-        VarModule::dec_int(boma.object(), VEGETABLE_LOCKOUT_FRAME);
-    } else if VarModule::is_flag(boma.object(), VEGETABLE_LOCKOUT) {
-        VarModule::off_flag(boma.object(), VEGETABLE_LOCKOUT);
-        //println!("lockout end");
-    }
-
-    // hide the carrot (and other items) when daisy is shielding
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_GUARD,
-        *FIGHTER_STATUS_KIND_GUARD_ON
-    ]) {
-        ItemModule::set_have_item_visibility(boma, false, 0);
-    }
-}
-
 // i wonder what you taste like
 unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
     // transitions to the special taunt if the button is released within 2 frames
@@ -285,9 +183,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     wall_bounce(boma);
     triple_jump_motion(fighter, boma);
     crystal_handling(boma);
-    vegetable_handling(boma);
     appeal_special(boma);
     //fastfall_specials(fighter);
+
+    // FYI there's process_daisydaikon_knockback in function_hooks/killscreen.rs
 }
 
 pub unsafe extern "C" fn daisy_frame_wrapper(fighter: &mut L2CFighterCommon) {

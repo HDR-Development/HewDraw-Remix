@@ -71,7 +71,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 
     VarModule::off_flag(fighter.battle_object, vars::daisy::instance::START_FLOWER_EFFECT);
     VarModule::off_flag(fighter.battle_object, vars::daisy::instance::END_FLOWER_EFFECT);
-    VarModule::set_int(fighter.battle_object, vars::daisy::instance::VEGETABLE_ID, -1);
 }
 
 pub fn install(agent: &mut Agent) {
