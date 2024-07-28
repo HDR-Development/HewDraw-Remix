@@ -3,51 +3,93 @@ use super::*;
 // FIGHTER_STATUS_KIND_SPECIAL_S
 
 pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
-    let trolleyArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
-    let canCart = hasIron && !trolleyArticle;
-    if canCart {
-        VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
-    }
-
-    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_STATUS_ATTR_DISABLE_INTERRUPT_WARP | *FIGHTER_STATUS_ATTR_START_TURN) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    
+    return 0.into();
 }
 
-// Prevents side special from being used again if it has already been used once in the current airtime
-unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR)
-    && VarModule::is_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S) {
+pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+     }
+    fighter.sub_change_motion_by_situation(
+        Hash40::new("special_air_s_start").into(), 
+        Hash40::new("special_air_s_start").into(), 
         false.into()
-    } else {
-        true.into()
-    }
-}
-
-// Re-enables the ability to use side special when connecting to ground or cliff
-unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let still_SideSpecial = fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE
-        ]
     );
 
-    if (!fighter.is_situation(*SITUATION_KIND_AIR) && !still_SideSpecial) 
-    || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
-        VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
-    }
-
-    return true.into();
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) {
-    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        } else {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+
+        return 1.into();
+    }
+
+    if StatusModule::is_situation_changed(fighter.module_accessor)
+    && !StatusModule::is_changing(fighter.module_accessor) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s_start"), -1.0, 1.0, 0.0, false, false);
+        } else {
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 1.into();
+        }
+    }
+
+    return 0.into();
+}
+
+pub unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue{
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_start(special_s_init);
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
 }

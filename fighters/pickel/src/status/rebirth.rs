@@ -11,14 +11,14 @@ pub unsafe extern "C" fn rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValu
     let gold = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD);
     let diamond = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_DIAMOND);
     let redstone = WorkModule::get_int(fighter.boma(), *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
-    let reduce_half: [[i32;2];4] = [ // these materials will be reduced by 50% on respawn
+    let reduce_mats: [[i32;2];4] = [ // these materials will be reduced by 25% on respawn
         [*FIGHTER_PICKEL_MATERIAL_KIND_GRADE_1, dirt],
         [*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, wood],
         [*FIGHTER_PICKEL_MATERIAL_KIND_STONE, stone],
         [*FIGHTER_PICKEL_MATERIAL_KIND_IRON, iron]]; 
-    for material in reduce_half {
+    for material in reduce_mats {
         if material[1] > 1 {
-            let reduction = (material[1] / 2);
+            let reduction = (material[1]/ 4);
             FighterSpecializer_Pickel::sub_material_num(fighter.boma(), material[0], reduction);
         }
     }     

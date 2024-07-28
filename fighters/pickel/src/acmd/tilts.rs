@@ -110,6 +110,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
     let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
     let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let fist = *FIGHTER_PICKEL_MATERIAL_KIND_NONE;
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -120,29 +121,24 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(agent) {
         material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if material_kind != gold {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
-        } else {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.4);
-        }
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 
+            if material_kind == gold { 1.4 } else { 1.0 }
+        );
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut damage = 5.5; // default damage, used for wood and gold
-            if material_kind == stone {
-                damage = 6.8; // damage for stone
-            } else if material_kind == iron {
-                damage = 7.5; // damage for iron
-            } else if material_kind == diamond {
-                damage = 8.7; // damage for diamond
-            }
+        if material_kind != fist {
+            let damage = match material_kind {
+                stone => 6.8,
+                gold => 5.5,
+                diamond => 8.7,
+                _ => 5.5 // wood / gold
+            };
             WorkModule::set_float(boma, 5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
-            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 78, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 78, 78, 0, 56, 4.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        } else {
-            // fist hitbox
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 4.2, 78, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 88, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 88, 78, 0, 56, 4.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        } else { // fist hitbox
+            ATTACK(agent, 0, 0, Hash40::new("armr"), 4.2, 88, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     wait(lua_state, 8.0);
@@ -271,7 +267,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
             VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FT_MOTION_RATE(agent, 12.0/(3.0-2.0));
+            FT_MOTION_RATE(agent, 4.0);
         } else {
             FT_MOTION_RATE(agent, 1.0);
         }
@@ -309,9 +305,8 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(agent) {
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            EFFECT(agent, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 7.2, 1, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.075, false);
-            EFFECT_FOLLOW(agent, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, false);
+            EFFECT(agent, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 1, -2, 1, 0, 0, 0, 0.075, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 1, -2, 1, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(agent, 0.5);
         } else {
             EFFECT(agent, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 6.2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);

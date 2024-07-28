@@ -110,7 +110,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
-        frame(lua_state, 7.0);
+        frame(lua_state, 8.0);
         material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if [wood, stone, iron, gold, diamond].contains(&material_kind) {
             let mut damage: [f32;4] = [8.0, 9.0, 10.0, 11.0]; // default damage, used for wood and gold
@@ -125,8 +125,8 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
                 FT_MOTION_RATE(agent, 1.0);
                 ATTACK(agent, 0, 0, Hash40::new("shoulderr"), damage[0], 361, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
                 ATTACK(agent, 1, 0, Hash40::new("armr"), damage[0], 361, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 361, 69, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 361, 69, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 361, 75, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 361, 75, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
                 WorkModule::set_float(boma, 6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             }
             wait(lua_state, 3.0);
@@ -614,6 +614,35 @@ unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     }      
 }
 
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+    }
+    frame(lua_state, 12.0);
+    FT_MOTION_RATE(agent, 1.8); // the higher the number, the longer the line will end up being cast
+    if is_excute(agent) {
+        ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, *WEAPON_PICKEL_FISHINGROD_STATUS_KIND_SHOOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("air_catch"), false, -1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {        
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    frame(lua_state, 18.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
@@ -626,4 +655,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 
     agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
+
+    agent.acmd("game_aircatch", game_aircatch, Priority::Low);
 }

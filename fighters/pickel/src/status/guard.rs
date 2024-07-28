@@ -25,8 +25,22 @@ unsafe extern "C" fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.status_end_GuardDamage()
 }
 
+// FIGHTER_STATUS_KIND_GUARD_OFF 
+
+unsafe extern "C" fn guardoff_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.motion_frame() >= 3.5 
+    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+
+    fighter.sub_ftStatusUniqProcessGuardOff_execStatus()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_GUARD, guard_main);
+
     agent.status(Pre, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_pre);
     agent.status(End, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, guarddamage_end);
+
+    agent.status(Exec, *FIGHTER_STATUS_KIND_GUARD_OFF, guardoff_exec);
 }

@@ -10,13 +10,10 @@ pub mod status;
 // articles
 
 mod fire;
+mod fishingrod;
 mod forge;
 mod melt;
 mod trolley;
-
-// material table hook
-
-pub mod material_table;
 
 use smash::{
     lib::{
@@ -50,6 +47,8 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
+pub const FIGHTER_PICKEL_GENERATE_ARTICLE_ENDERPEARL: i32 = 0x8;
+
 pub fn install() {
     let agent = &mut Agent::new("pickel");
     acmd::install(agent);
@@ -58,9 +57,11 @@ pub fn install() {
     agent.install();
 
     fire::install();
+    fishingrod::install();
     forge::install();
     melt::install();
     trolley::install();
 
-    material_table::install();
+    // doesnt work on steve (?)
+    //smashline::clone_weapon("mario", "fireball", "pickel", "enderpearl", true);
 }
