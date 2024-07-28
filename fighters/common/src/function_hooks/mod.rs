@@ -9,6 +9,7 @@ pub mod transition;
 pub mod djcancel;
 pub mod momentum_transfer;
 pub mod hitstun;
+pub mod iceclimber;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
@@ -741,6 +742,7 @@ pub fn install() {
     transition::install();
     djcancel::install();
     hitstun::install();
+    iceclimber::install();
     controls::install();
     momentum_transfer::install();
     misc::install();

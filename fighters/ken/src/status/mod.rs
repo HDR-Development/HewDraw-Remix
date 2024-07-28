@@ -18,6 +18,14 @@ utils::import_noreturn!(common::shoto_status::{
     ryu_idkwhatthisis2
 });
 
+pub unsafe extern "C" fn ken_final_set_area(fighter: &mut L2CFighterCommon, enable: L2CValue) {
+    for x in 0..*FIGHTER_AREA_KIND_NUM {
+        if x != *FIGHTER_AREA_KIND_WIND && x != *FIGHTER_AREA_KIND_WIND_RAD {
+            AreaModule::enable_area(fighter.module_accessor, x, enable.get_bool(), -1);
+        }
+    }
+}
+
 extern "Rust" {
     // from common::shoto_status
     fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;

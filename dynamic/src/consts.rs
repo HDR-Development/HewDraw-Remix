@@ -314,13 +314,11 @@ pub mod vars {
 
     pub mod bayonetta {
         pub mod instance {
-            // flags
-            pub const IS_HIT: i32 = 0x0100;
-
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const FAIR_STATE: i32 = 0x0101;
             pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x0102;
+            pub const DABK_COUNT: i32 = 0x0103;
         }
         pub mod status {
             // floats
@@ -403,11 +401,32 @@ pub mod vars {
     }
 
     pub mod daisy {
-        pub mod instance {
+        pub mod instance {   
             // flag
-            // Used to check if sideb wall bounce happens
-            pub const IS_WALLBOUNCE: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const SPECIAL_S_GROUND_START: i32 = 0x0101;
+        }
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_CRYSTAL_ACTIVE: i32 = 0x1100;
+            pub const SPECIAL_N_AIR_START: i32 = 0x1101;
+            pub const SPECIAL_N_DIVE: i32 = 0x1102;
+            pub const SPECIAL_N_AUTOCANCEL: i32 = 0x1103;
+        }
+    }
+
+    pub mod daisy_kinopio {
+        pub mod status {
+            // flags
+            pub const YAP_ON: i32 = 0x1100;
+            pub const YAP_OFF: i32 = 0x1101;
+            pub const PARRY_YAP: i32 = 0x1102;
+
+            // ints
+            pub const IDLE_FRAMES: i32 = 0x1100;
+            pub const YAPPING_TIMER: i32 = 0x1101;
+            pub const FLOWER_EFFECT_ID: i32 = 0x1102;
+            pub const FLOWER_EFFECT_FRAMES: i32 = 0x1103;
         }
     }
 
@@ -754,6 +773,10 @@ pub mod vars {
             pub use super::super::mario::status::FIREBRAND;
             pub use super::super::luigi::status::THUNDERHAND;
             pub use super::super::mariod::status::CHILL_PILL;
+            pub use super::super::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE;
+            pub use super::super::daisy::status::SPECIAL_N_AIR_START;
+            pub use super::super::daisy::status::SPECIAL_N_DIVE;
+            pub use super::super::daisy::status::SPECIAL_N_AUTOCANCEL;
             pub const MINING_TIMER: i32 = 0x11F4;
             pub const KO_PUNCH_GRAVITY: i32 = 0x11F5;
             pub const KO_PUNCH_GRAVITY_END: i32 = 0x11F6;
@@ -1140,6 +1163,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const CAN_INCREASE_COLOR: i32 = 0x1100;
+            pub const TELEPORT_AIR_START: i32 = 0x1101;
 
             // floats
             pub const ADD_DAMAGE: i32 = 0x1100;
@@ -1677,8 +1701,7 @@ pub mod vars {
 pub mod statuses {
     pub mod bayonetta {
         pub const SPECIAL_S_KICK: i32 = 0x1F2;
-        pub const SPECIAL_S_EDGE: i32 = 0x1F3;
-        pub const SPECIAL_N_CANCEL: i32 = 0x1F4;
+        pub const SPECIAL_N_CANCEL: i32 = 0x1F3;
     }
 
     pub mod chrom {
@@ -1688,6 +1711,10 @@ pub mod statuses {
 
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0x1FB;
+    }
+
+    pub mod daisy_kinopio {
+        pub const YAP: i32 = 0x1;
     }
 
     pub mod diddy {
@@ -1767,6 +1794,10 @@ pub mod statuses {
     pub mod ryu {
         pub const INSTALL: i32 = 0x202;
         pub const ATTACK_COMMAND_4: i32 = 0x203;
+    }
+
+    pub mod ryu_shinkuhadoken {
+        pub const FINISH: i32 = 0x2;
     }
 
     pub mod samusd {

@@ -265,7 +265,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi");
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -280,7 +280,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("top"), 4.0, 100, 100, 150, 0, 4.0, 0.0, 4.3, 9.2, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN, *ATTACK_REGION_PUNCH);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }

@@ -33,7 +33,10 @@ unsafe extern "C" fn game_specialairntronend(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 8.0 / 7.0);
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
         WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);

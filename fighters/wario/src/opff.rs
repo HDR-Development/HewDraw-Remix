@@ -7,13 +7,8 @@ unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor) {
     if StatusModule::is_changing(boma) {
         return;
     }
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_OPEN_WAIT, *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE])
-    && boma.is_situation(*SITUATION_KIND_GROUND)
-    && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-        KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    }
     if boma.is_status(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE) {
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+        if boma.is_pad_flag(PadFlag::SpecialTrigger) {
             boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
         }
     }

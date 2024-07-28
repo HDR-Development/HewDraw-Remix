@@ -32,6 +32,7 @@
       <float hash="shield_radius">10</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -66,7 +67,7 @@
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
-      <float hash="passive_wall_jump_x_speed">1.25</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -103,6 +104,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -137,6 +139,7 @@
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.2</float>
       <float hash="tread_jump_speed_y_mul">0.7</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -172,6 +175,7 @@
       <float hash="shield_radius">7.7</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -204,8 +208,12 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">0.98</float>
       <float hash="shield_radius">8.4</float>
+      <int hash="attack_combo_max">4</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.85</float>
       <float hash="tread_mini_jump_speed_y_mul">0.85</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -237,8 +245,12 @@
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">10</float>
       <float hash="landing_attack_air_frame_lw">10</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -274,6 +286,7 @@
       <float hash="shield_radius">8.5</float>
       <float hash="tread_jump_speed_y_mul">0.82</float>
       <float hash="tread_mini_jump_speed_y_mul">0.82</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -316,6 +329,7 @@
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
       <float hash="passive_wall_jump_y_speed">2.3</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -355,6 +369,7 @@
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
       <float hash="passive_wall_jump_y_speed">1.9</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -389,8 +404,10 @@
       <float hash="landing_attack_air_frame_hi">8</float>
       <float hash="scale">1.03</float>
       <float hash="shield_radius">11</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -422,6 +439,7 @@
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
       <float hash="throw_item_power_mul">1</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -459,6 +477,7 @@
       <float hash="shield_radius">11</float>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -495,6 +514,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -528,18 +548,19 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="tread_jump_speed_y_mul">0.835</float>
       <float hash="tread_mini_jump_speed_y_mul">0.835</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
     </struct>
     <!-- NANA -->
     <struct index="15">
-      <float hash="walk_speed_max">0.95</float>
-      <float hash="ground_brake">0.035</float>
+      <float hash="walk_speed_max">1.108</float>
+      <float hash="ground_brake">0.0385</float>
       <float hash="dash_speed">1.4</float>
-      <float hash="run_accel_mul">0.05</float>
+      <float hash="run_accel_mul">0.06</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.4</float>
+      <float hash="run_speed_max">1.545</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">0.6</float>
       <float hash="jump_initial_y">9.7132</float>
@@ -561,6 +582,7 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="tread_jump_speed_y_mul">0.835</float>
       <float hash="tread_mini_jump_speed_y_mul">0.835</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -594,8 +616,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">11.5</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -629,8 +655,10 @@
       <float hash="landing_attack_air_frame_b">11</float>
       <float hash="landing_attack_air_frame_lw">11</float>
       <int hash="landing_heavy_frame">5</int>
+      <int hash="attack_100_enable_cnt">1</int>
       <float hash="tread_jump_speed_y_mul">0.79</float>
       <float hash="tread_mini_jump_speed_y_mul">0.79</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -668,6 +696,7 @@
       <float hash="shield_radius">10</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -706,6 +735,7 @@
       <float hash="shield_radius">8.3</float>
       <float hash="tread_jump_speed_y_mul">0.82</float>
       <float hash="tread_mini_jump_speed_y_mul">0.82</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -724,7 +754,7 @@
       <float hash="jump_speed_x_max">1.7</float>
       <float hash="jump_initial_y">17.0573</float>
       <float hash="mini_jump_y">12</float>
-      <float hash="jump_aerial_y">46.51</float>
+      <float hash="jump_aerial_y">41.778</float>
       <float hash="air_accel_x_mul">0.06</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">0.83</float>
@@ -740,9 +770,13 @@
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">10</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.82</float>
       <float hash="tread_mini_jump_speed_y_mul">0.82</float>
       <float hash="passive_wall_jump_y_speed">3.43</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -780,6 +814,7 @@
       <float hash="shield_radius">12.5</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -811,8 +846,10 @@
       <float hash="landing_attack_air_frame_lw">16</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">10.4</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -849,6 +886,7 @@
       <float hash="shield_radius">13.4</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -878,8 +916,12 @@
       <float hash="landing_attack_air_frame_hi">9</float>
       <int hash="landing_heavy_frame">5</int>
       <bool hash="wall_jump_type">false</bool>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_12_end">20</float>
+      <int hash="attack_100_enable_cnt">1</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -912,6 +954,7 @@
       <float hash="shield_radius">12.4</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -944,8 +987,12 @@
       <float hash="landing_attack_air_frame_lw">10</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">10</float>
+      <int hash="attack_combo_max">2</int>
+      <float hash="combo_attack_12_end">20</float>
+      <int hash="attack_100_enable_cnt">1</int>
       <float hash="tread_jump_speed_y_mul">0.835</float>
       <float hash="tread_mini_jump_speed_y_mul">0.835</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -981,6 +1028,7 @@
       <float hash="shield_radius">10.7</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1013,8 +1061,10 @@
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">11</float>
       <float hash="landing_attack_air_frame_lw">10</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.9</float>
       <float hash="tread_mini_jump_speed_y_mul">0.9</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1056,6 +1106,7 @@
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <float hash="passive_wall_jump_y_speed">2.6</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1094,6 +1145,7 @@
       <float hash="shield_radius">10</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1130,6 +1182,7 @@
       <float hash="shield_radius">12.4</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1166,6 +1219,7 @@
       <float hash="shield_radius">12.2</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1202,6 +1256,7 @@
       <float hash="shield_radius">9.2</float>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1236,8 +1291,12 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1.14</float>
       <float hash="shield_radius">10</float>
+      <int hash="attack_combo_max">4</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1270,6 +1329,7 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1307,6 +1367,7 @@
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
       <float hash="item_lift_accel_mul">0.0792308</float>
       <float hash="item_lift_speed_max">1.15252</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1342,6 +1403,7 @@
       <int hash="attack_combo_max">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1379,6 +1441,7 @@
       <float hash="shield_radius">10.6</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1414,9 +1477,13 @@
       <float hash="landing_attack_air_frame_lw">15</float>
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">0.93</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <int hash="jump_count_max">4</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1452,8 +1519,10 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">0.95</float>
       <float hash="shield_radius">10.3</float>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1482,9 +1551,9 @@
       <float hash="damage_fly_top_speed_y_stable">2.02</float>
       <float hash="dive_speed_y">2.728</float>
       <float hash="weight">96</float>
-      <float hash="landing_attack_air_frame_n">7</float>
+      <float hash="landing_attack_air_frame_n">10</float>
       <float hash="landing_attack_air_frame_f">8</float>
-      <float hash="landing_attack_air_frame_b">12</float>
+      <float hash="landing_attack_air_frame_b">15</float>
       <float hash="landing_attack_air_frame_hi">10</float>
       <float hash="landing_attack_air_frame_lw">10</float>
       <int hash="landing_heavy_frame">5</int>
@@ -1492,6 +1561,7 @@
       <float hash="shield_radius">10.6</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1529,6 +1599,7 @@
       <float hash="shield_radius">13</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1567,6 +1638,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1605,6 +1677,7 @@
       <float hash="shield_radius">8.7</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1643,6 +1716,7 @@
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1682,6 +1756,7 @@
       <float hash="combo_attack_13_end">20</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1716,6 +1791,7 @@
       <float hash="shield_radius">12.5</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1749,8 +1825,10 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">12.6</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1787,8 +1865,10 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.11</float>
       <float hash="shield_radius">10.7</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.785</float>
       <float hash="tread_mini_jump_speed_y_mul">0.785</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1821,8 +1901,10 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">10</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.65</float>
       <float hash="tread_mini_jump_speed_y_mul">0.65</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1859,6 +1941,7 @@
       <float hash="shield_radius">12.5</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1895,6 +1978,7 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1930,9 +2014,11 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">11.8</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -1969,6 +2055,7 @@
       <float hash="shield_radius">12</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2001,8 +2088,12 @@
       <float hash="landing_attack_air_frame_hi">7</float>
       <float hash="landing_attack_air_frame_lw">12</float>
       <int hash="landing_heavy_frame">4</int>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2037,8 +2128,10 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">9.5</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2076,6 +2169,7 @@
       <float hash="shield_radius">12.3</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2114,6 +2208,7 @@
       <float hash="shield_radius">12.6</float>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2148,8 +2243,10 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">0.99</float>
       <float hash="shield_radius">11.8</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2159,9 +2256,9 @@
       <float hash="walk_speed_max">0.975</float>
       <float hash="ground_brake">0.069</float>
       <float hash="dash_speed">1.806</float>
-      <float hash="run_accel_mul">0.0816</float>
+      <float hash="run_accel_mul">0.1</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.635</float>
+      <float hash="run_speed_max">1.65</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.5</float>
@@ -2181,13 +2278,16 @@
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">8</float>
-      <float hash="landing_attack_air_frame_lw">18</float>
+      <float hash="landing_attack_air_frame_lw">20</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.03</float>
       <float hash="shield_radius">12.6</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="combo_attack_32_end">1</float>
       <float hash="combo_attack_33_end">1</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2224,8 +2324,10 @@
       <float hash="landing_attack_air_frame_lw">11</float>
       <float hash="scale">1.06</float>
       <float hash="shield_radius">10.3</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2257,9 +2359,11 @@
       <float hash="landing_attack_air_frame_hi">12</float>
       <float hash="landing_attack_air_frame_lw">14</float>
       <int hash="landing_heavy_frame">5</int>
+      <int hash="attack_100_enable_cnt">2</int>
       <int hash="jump_count_max">4</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2289,9 +2393,13 @@
       <float hash="landing_attack_air_frame_lw">18</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">13</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2328,6 +2436,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2362,6 +2471,7 @@
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2401,6 +2511,7 @@
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.805</float>
       <float hash="tread_mini_jump_speed_y_mul">0.805</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2433,9 +2544,11 @@
       <float hash="landing_attack_air_frame_b">14</float>
       <float hash="landing_attack_air_frame_hi">7</float>
       <float hash="landing_attack_air_frame_lw">11</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2473,6 +2586,7 @@
       <float hash="shield_radius">12.5</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2510,6 +2624,7 @@
       <float hash="shield_radius">12.1</float>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2543,8 +2658,10 @@
       <float hash="landing_attack_air_frame_hi">8</float>
       <float hash="landing_attack_air_frame_lw">18</float>
       <int hash="landing_heavy_frame">4</int>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2582,6 +2699,7 @@
       <float hash="shield_radius">12.4</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2616,8 +2734,10 @@
       <float hash="landing_attack_air_frame_lw">20</float>
       <float hash="scale">1.02</float>
       <float hash="shield_radius">12</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2649,8 +2769,10 @@
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">7</float>
       <float hash="landing_attack_air_frame_lw">13</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2687,6 +2809,7 @@
       <float hash="shield_radius">11.4</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2710,13 +2833,14 @@
       <float hash="damage_fly_top_air_accel_y">0.108</float>
       <float hash="landing_attack_air_frame_f">8</float>
       <float hash="landing_attack_air_frame_b">9</float>
-      <float hash="landing_attack_air_frame_lw">27</float>
+      <float hash="landing_attack_air_frame_lw">22</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.067</float>
       <float hash="shield_radius">12.6</float>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2747,9 +2871,9 @@
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">10</float>
-      <bool hash="wall_jump_type">true</bool>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="passive_wall_jump_y_speed">1.8</float>
-      <float hash="passive_wall_jump_x_speed">1.2</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2778,9 +2902,11 @@
       <float hash="landing_attack_air_frame_n">9</float>
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">11</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2808,9 +2934,11 @@
       <float hash="landing_attack_air_frame_n">9</float>
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_lw">11</float>
-      <bool hash="wall_jump_type">true</bool>
+      <int hash="attack_100_enable_cnt">2</int>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2848,6 +2976,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2885,8 +3014,12 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.19</float>
       <float hash="shield_radius">9.9</float>
+      <int hash="attack_combo_max">3</int>
+      <float hash="combo_attack_13_end">25</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2925,6 +3058,7 @@
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -2961,6 +3095,7 @@
       <float hash="shield_radius">9.5</float>
       <float hash="tread_jump_speed_y_mul">0.81</float>
       <float hash="tread_mini_jump_speed_y_mul">0.81</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3000,6 +3135,7 @@
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.7</float>
       <float hash="tread_jump_speed_y_mul">0.7</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3036,9 +3172,10 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <int hash="landing_heavy_frame">4</int>
       <int hash="jump_count_max">3</int>
-      <bool hash="wall_jump_type">true</bool>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3077,6 +3214,7 @@
       <float hash="scale">0.95</float>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3115,6 +3253,7 @@
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3146,9 +3285,11 @@
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">11</float>
       <float hash="landing_attack_air_frame_lw">10</float>
+      <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.9</float>
       <float hash="tread_mini_jump_speed_y_mul">0.9</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3186,6 +3327,7 @@
       <float hash="shield_radius">12.3</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
@@ -3221,13 +3363,14 @@
       <float hash="landing_attack_air_frame_lw">18</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">12.3</float>
-      <bool hash="wall_jump_type">true</bool>
+      <int hash="attack_combo_max">3</int>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
-      <int hash="attack_combo_max">3</int>
       <float hash="common_effect_0_r">0.902</float>
       <float hash="common_effect_0_g">0.784</float>
       <float hash="common_effect_0_b">0.333</float>

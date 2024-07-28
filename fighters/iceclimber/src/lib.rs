@@ -50,8 +50,7 @@ pub fn install() {
     acmd::install(popo);
     acmd::install(nana);
 
-    status::install(popo);
-    status::install(nana);
+    status::install_popo(popo);
     status::install_nana(nana);
 
     opff::install_popo(popo);

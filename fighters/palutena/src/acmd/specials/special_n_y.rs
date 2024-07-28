@@ -3,9 +3,6 @@ use super::*;
 unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let hitlag = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {0.5} else {0.75};
-    let paralyze = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {0.6} else {0.3};
-    let power = if VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED) {2} else {4};
     frame(lua_state, 1.0);
     if is_excute(agent) {
         if !MeterModule::drain(boma.object(), 2) {
