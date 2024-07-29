@@ -116,7 +116,24 @@ unsafe fn process_knockback(ctx: &skyline::hooks::InlineCtx) {
     if let Some((defender, attacker)) = IS_CALCULATING {
         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
         if (*boma).battle_object_id == defender {
+            process_daisydaikon_knockback(defender, attacker);
             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref() as *const f32);
+        }
+    }
+}
+
+pub unsafe extern "C" fn process_daisydaikon_knockback(defender: u32, attacker: u32) {
+    let defender_boma = &mut *(*util::get_battle_object_from_id(defender)).module_accessor;
+    let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
+    if defender_boma.is_item() {
+        if (defender_boma.kind() == *ITEM_KIND_DAISYDAIKON) {
+            if attacker_boma.is_fighter() {
+                let attacker_team_no = (TeamModule::hit_team_no(attacker_boma) as i32);
+                TeamModule::set_team(defender_boma, attacker_team_no, false);
+            } else {
+                HitModule::set_xlu_frame_global(defender_boma, 15, 0);
+            }
+            StatusModule::change_status_force(defender_boma, *ITEM_STATUS_KIND_THROW, true);
         }
     }
 }

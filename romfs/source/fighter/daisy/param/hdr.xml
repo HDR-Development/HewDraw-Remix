@@ -1,4 +1,18 @@
- <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <struct>
     <int hash="triple_jump_lockout_frame">25</int>
+    <struct hash="param_special_n">
+      <float hash="start_brake_speed_x">-0.03</float>
+      <float hash="start_limit_speed_x">1.2</float>
+      <float hash="start_limit_speed_x_turn_add">0.2</float>
+      <float hash="start_start_speed_x">1.0</float>
+      <float hash="start_start_speed_x_turn_add">0.4</float>
+      <float hash="start_stable_speed_x">0.0</float>
+      <float hash="start_limit_speed_y">1.0</float>
+      <float hash="start_accel_y">-0.025</float>
+      <float hash="start_stable_speed_y">0.1</float>
+      <float hash="dive_speed_x">1.0</float>
+      <float hash="dive_speed_y">-3.0</float>
+      <float hash="landing_frame">20</float>
+    </struct>
 </struct>

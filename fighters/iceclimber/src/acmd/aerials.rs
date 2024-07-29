@@ -181,36 +181,30 @@ unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
-
     agent.acmd("game_attackairn_nana", game_attackairn, Priority::Low);
 
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
-    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
-
     agent.acmd("game_attackairf_nana", game_attackairf, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
     agent.acmd("effect_attackairf_nana", effect_attackairf, Priority::Low);
 
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
-    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
-
     agent.acmd("game_attackairb_nana", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
     agent.acmd("effect_attackairb_nana", effect_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
-    agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
-
     agent.acmd("game_attackairhi_nana", game_attackairhi, Priority::Low);
+    agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
     agent.acmd("effect_attackairhi_nana", effect_attackairhi, Priority::Low);
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
-    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
-
     agent.acmd("game_attackairlw_nana", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
     agent.acmd("effect_attackairlw_nana", effect_attackairlw, Priority::Low);
 
     agent.acmd("effect_landingairlw", effect_landingairlw, Priority::Low);
-    agent.acmd("expression_landingairlw", expression_landingairlw, Priority::Low);
-
     agent.acmd("effect_landingairlw_nana", effect_landingairlw, Priority::Low);
+    agent.acmd("expression_landingairlw", expression_landingairlw, Priority::Low);
     agent.acmd("expression_landingairlw_nana", expression_landingairlw, Priority::Low);
 }
