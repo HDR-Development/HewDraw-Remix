@@ -1,0 +1,26 @@
+pearl_fly:
+    game_script: game_pearlfly
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+      unk_800: false
+      unk_1000: false
+      unk_2000: false
+    blend_frames: 0
+    animations:
+      - name: wait.nuanmb
+        unk: 0
+    scripts:
+      - effect_pearlfly
+      - sound_pearlfly
+      - expression_pearlfly
+    extra: ~

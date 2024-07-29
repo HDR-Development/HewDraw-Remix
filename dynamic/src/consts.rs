@@ -1227,6 +1227,13 @@ pub mod vars {
         }
     }
 
+    pub mod pickel_forge {
+        pub mod instance {
+            // ints 
+            pub const OWNER_ID: i32 = 0x0100;
+        }
+    }
+
     pub mod pikachu {
         pub mod instance {
             // flags
@@ -1764,6 +1771,10 @@ pub mod statuses {
         pub const SPECIAL_N_P: i32 = 0x1EC;
         pub const SPECIAL_N_O: i32 = 0x1ED;
         pub const SPECIAL_N_G: i32 = 0x1EE;
+    }
+
+    pub mod pickel_forge {
+        pub const PEARL_FLY: i32 = 0x2;
     }
 
     pub mod reflet {

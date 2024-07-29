@@ -24,9 +24,12 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        //if !ArticleModule::is_exist(boma, FIGHTER_PICKEL_GENERATE_ARTICLE_ENDERPEARL) {
-            ArticleModule::generate_article(boma, FIGHTER_PICKEL_GENERATE_ARTICLE_ENDERPEARL, false, -1);
-        //}
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        if agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD) >=1 {
+            ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE, false, -1);
+            ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE, WEAPON_PICKEL_FORGE_STATUS_KIND_PEARL_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            FighterSpecializer_Pickel::sub_material_num(boma, *FIGHTER_PICKEL_MATERIAL_KIND_GOLD, 1);
+        }
     }
 }
 

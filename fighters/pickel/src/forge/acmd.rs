@@ -55,10 +55,43 @@ unsafe extern "C" fn game_fallattackride(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_pearlfly(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+}
+
+unsafe extern "C" fn effect_pearlfly(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        // placeholder
+        EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.1);
+    }
+}
+
+unsafe extern "C" fn sound_pearlfly(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+}
+
+unsafe extern "C" fn expression_pearlfly(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_fall", game_fall, Priority::Low);
 
     agent.acmd("game_fallattack", game_fallattack, Priority::Low);
 
     agent.acmd("game_fallattackride", game_fallattackride, Priority::Low);
+
+    agent.acmd("game_pearlfly", game_pearlfly, Priority::Low);
+    agent.acmd("effect_pearlfly", effect_pearlfly, Priority::Low);
+    agent.acmd("sound_pearlfly", sound_pearlfly, Priority::Low);
+    agent.acmd("expression_pearlfly", expression_pearlfly, Priority::Low);
 }

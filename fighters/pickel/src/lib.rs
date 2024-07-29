@@ -47,7 +47,7 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-pub const FIGHTER_PICKEL_GENERATE_ARTICLE_ENDERPEARL: i32 = 0x8;
+pub const WEAPON_PICKEL_FORGE_STATUS_KIND_PEARL_FLY: i32 = statuses::pickel_forge::PEARL_FLY;
 
 pub fn install() {
     let agent = &mut Agent::new("pickel");
@@ -61,7 +61,4 @@ pub fn install() {
     forge::install();
     melt::install();
     trolley::install();
-
-    // doesnt work on steve (?)
-    //smashline::clone_weapon("mario", "fireball", "pickel", "enderpearl", true);
 }
