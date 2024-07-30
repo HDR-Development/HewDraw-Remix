@@ -39,7 +39,7 @@ unsafe extern "C" fn sound_speciallwjump(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    // agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_speciallw", acmd_stub, Priority::Low);
     agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
 
     agent.acmd("game_speciallwjump", game_speciallwjump, Priority::Low);
