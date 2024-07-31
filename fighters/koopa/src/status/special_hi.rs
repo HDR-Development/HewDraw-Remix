@@ -3,7 +3,7 @@ use super::*;
 // FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_A
 
 pub unsafe extern "C" fn special_hi_a_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
+    if fighter.is_prev_status(*FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
     }
