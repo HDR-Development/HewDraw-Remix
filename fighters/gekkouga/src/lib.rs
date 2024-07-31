@@ -5,7 +5,7 @@
 pub mod acmd;
 
 pub mod opff;
-//pub mod status;
+pub mod status;
 
 // articles
 
@@ -46,6 +46,7 @@ use smashline::*;
 pub fn install() {
     let agent = &mut Agent::new("gekkouga");
     acmd::install(agent);
+    status::install(agent);
     opff::install(agent);
     agent.install();
 

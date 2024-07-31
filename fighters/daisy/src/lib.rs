@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+pub mod kinopio;
+
 use smash::{
     lib::{
         L2CValue,
@@ -45,4 +47,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    kinopio::install();
 }

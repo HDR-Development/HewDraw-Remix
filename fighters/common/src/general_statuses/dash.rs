@@ -50,7 +50,7 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
-    
+
     // added to hdr, not present in original
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
@@ -267,7 +267,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     */
 
     interrupt_if!(fighter.sub_transition_group_check_ground_guard().get_bool());
-    
+
     if fighter.sub_transition_group_check_special_command().get_bool()
     || fighter.sub_transition_group_check_ground_special().get_bool()
     || fighter.sub_transition_specialflag_hoist().get_bool()
@@ -300,7 +300,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         return L2CValue::I32(1);
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4) 
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4)
     && {
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
@@ -327,7 +327,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     // dash startup -> fsmash leniency window
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
-    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0  
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
     {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
@@ -452,7 +452,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
-    
+
     // Disables dashbacks when stick falls below threshold
     // For ease of moonwalking
     let moonwalk_disable_dashback_stick_y = ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
@@ -519,7 +519,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     // f3 perfect pivots
     if fighter.global_table[CURRENT_FRAME].get_i32() == 1  // if you are on f2 of current dash
-    && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
+    && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN
     && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // AND you are in a backdash
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
         // trigger late pivot
@@ -535,7 +535,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 #[skyline::hook(replace = L2CFighterCommon_sub_dash_uniq_process_main_internal)]
 unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !WorkModule::is_enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) {
-        let stick_x = fighter.left_stick_x();
+        let stick_x = if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_DEMON {
+            fighter.global_table[STICK_X].get_f32()
+        }
+        else {
+            fighter.left_stick_x()
+        };
         let walk_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x206138766c);
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_backdash = if param_1.get_bool() { -1.0 } else { 1.0 };

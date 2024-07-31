@@ -1,5 +1,6 @@
 use super::*;
 
+mod daisy;
 mod diddy;
 mod edge;
 mod falco;
@@ -22,6 +23,7 @@ mod sonic;
 mod wolf;
 
 pub fn install(agent: &mut Agent) {
+    daisy::install(agent);
     diddy::install(agent);
     edge::install(agent);
     falco::install(agent);
