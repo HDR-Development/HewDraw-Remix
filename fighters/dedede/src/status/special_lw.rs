@@ -10,22 +10,18 @@ unsafe extern "C" fn special_lw_jump_squat_exec(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn special_lw_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK, true);
-
-    return smashline::original_status(Pre, fighter, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_WAIT)(fighter);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK);
+    1.into()
 }
 
 unsafe extern "C" fn special_lw_walk_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK, true);
-
-    return smashline::original_status(Pre, fighter, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_WALK)(fighter);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK);
+    1.into()
 }
 
 unsafe extern "C" fn special_lw_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK, true);
-
-    return smashline::original_status(Pre, fighter, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_FALL)(fighter);
-
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK);
+    1.into()
 }
 
 unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue{
@@ -58,7 +54,8 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
 
     //Bonk upon hitting a shield
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD){
-        fighter.change_status_req(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE, false);
+        fighter.change_status((*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE).into(), false.into());
+        return 0.into();
     }
 
     if MotionModule::frame(fighter.module_accessor) > 30.0 && StatusModule::is_situation_changed(fighter.module_accessor){
@@ -66,6 +63,7 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_special"), 0.0, 1.0, false, 0.0, false, false);
 
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into()); 
+            return 0.into();
         }
     }
 
@@ -75,14 +73,6 @@ unsafe extern "C" fn special_lw_attack_exec(fighter: &mut L2CFighterCommon) -> L
 
 unsafe extern "C" fn special_lw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue{
     VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN, false);
-
-    if MotionModule::is_end(fighter.module_accessor) &&
-    StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_AIR{
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_special"), 0.0, 1.0, false, 0.0, false, false);
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-    }
-
-
     return 0.into()
 }
 

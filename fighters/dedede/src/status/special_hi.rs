@@ -2,18 +2,15 @@ use super::*;
 
 // FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE
 
-unsafe extern "C" fn special_hi_failure_main(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if VarModule::is_flag(fighter.battle_object, vars::dedede::instance::JET_GROUND_BONK){
-        smashline::original_status(Main, fighter, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE)(fighter);
+unsafe extern "C" fn special_hi_failure_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::JET_GROUND_BONK){
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL);
+        return 1.into();
     }
-    else{
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_fall_special"), 0.0, 1.0, false, 0.0, false, false);
-        StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-    }
-    return 0.into();
+    smashline::original_status(Pre, fighter, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE)(fighter)
 
 }
 
 pub fn install(agent: &mut Agent){
-    agent.status(Main, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE, special_hi_failure_main);
+    agent.status(Pre, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE, special_hi_failure_pre);
 }
