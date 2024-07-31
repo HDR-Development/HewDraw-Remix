@@ -1,6 +1,12 @@
 use super::*;
 
 #[no_mangle]
+pub unsafe fn peach_float_start_pre_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    smashline::original_status(Pre, fighter, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START)(fighter)
+}
+
+#[no_mangle]
 unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_TRANS_ID_FALL_CONTROL);
@@ -228,10 +234,15 @@ pub unsafe fn peach_float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2
 
 // FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START
 
+unsafe extern "C" fn uniq_float_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    peach_float_start_pre_common(fighter)
+}
+
 unsafe extern "C" fn uniq_float_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     peach_float_start_main_common(fighter)
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start_pre);
     agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, uniq_float_start_main);
 }
