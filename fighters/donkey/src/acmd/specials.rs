@@ -142,7 +142,9 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        }
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
