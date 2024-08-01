@@ -1,5 +1,5 @@
 name: build_nightly
-on: 
+on:
   push:
     branches:
       - dev
