@@ -146,7 +146,7 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lifetime = (fighter.get_command_life(CatHdr::Parry) as i32);
     let buffer = (ControlModule::get_command_life_count_max(fighter.module_accessor) as i32);
     let shield_just_frame = (fighter.get_param_int("common", "shield_just_frame"));
-    let just_frame = ((shield_just_frame + lifetime + 1 - buffer).clamp(3, shield_just_frame));
+    let just_frame = ((shield_just_frame + lifetime + 1 - buffer).clamp(2, shield_just_frame));
     fighter.set_int(just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
 
     let guard_off_cancel_frame = fighter.get_param_int("common", "guard_off_cancel_frame");
