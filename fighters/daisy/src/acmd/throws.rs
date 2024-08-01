@@ -123,6 +123,21 @@ unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        agent.clear_lua_stack();
+        lua_args!(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        smash::app::sv_animcmd::FT_ATTACK_ABS_CAMERA_QUAKE(lua_state);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
 unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -259,6 +274,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_throwf", game_throwf, Priority::Low);
     agent.acmd("effect_throwf", effect_throwf, Priority::Low);
+    agent.acmd("expression_throwf", effect_throwf, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
     agent.acmd("effect_throwb", effect_throwb, Priority::Low);
