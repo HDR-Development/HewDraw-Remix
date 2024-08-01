@@ -61,7 +61,7 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
                 let max_hold_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);
                 if max_hold_count == 0 {
                     fighter.push_lua_stack(&mut L2CValue::I32(*MA_MSC_EFFECT_REQUEST_FOLLOW));
-                    fighter.push_lua_stack(&mut L2CValue::new_hash(0x10259d5bb4));
+                    fighter.push_lua_stack(&mut L2CValue::new_hash(hash40("pacman_fruit_max")));
                     fighter.push_lua_stack(&mut L2CValue::new_hash(hash40("havel")));
                     fighter.push_lua_stack(&mut L2CValue::new_num(0.0));
                     fighter.push_lua_stack(&mut L2CValue::new_num(0.0));

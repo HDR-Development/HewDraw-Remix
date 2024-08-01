@@ -65,7 +65,7 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
                     //fighter.set_int64(Hash40::new("special_air_n_loop_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
                 }
                 app::FighterUtil::flash_eye_info(fighter.module_accessor);
-                PLAY_SE(fighter, Hash40::new_raw(0x189615e963));
+                PLAY_SE(fighter, Hash40::new("se_bayonetta_special_n05"));
                 fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_CHARGE_MAX);
                 fighter.set_int(1, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_STEP);
             }
