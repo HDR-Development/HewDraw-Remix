@@ -679,7 +679,24 @@ pub mod vars {
     }
 
     pub mod gekkouga {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_LW_IS_DOLL: i32 = 0x0100;
+            pub const SPECIAL_LW_CAN_TELEPORT: i32 = 0x0101;
 
+            // ints
+            pub const SPECIAL_LW_SUMMON_SUB_COOLDOWN: i32 = 0x0100;
+            pub const SPECIAL_LW_MARKER_EFF_HANDLE: i32 = 0x0101;
+        }
+        pub mod status {
+            // flags
+            pub const SPECIAL_LW_SPAWN_SUB: i32 = 0x1150;
+            pub const SPECIAL_LW_VANISH: i32 = 0x1151;
+            pub const SPECIAL_LW_TELEPORT_OK: i32 = 0x1152;
+
+            // ints
+            pub const SPECIAL_LW_VANISH_TIMER: i32 = 0x1150;
+        }
     }
 
     pub mod iceclimbers {
@@ -1733,6 +1750,10 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0x1EC;
+    }
+
+    pub mod gekkouga {
+        pub const SPECIAL_LW_JUMP: i32 = 0x1F1;
     }
 
     pub mod ken {

@@ -6,6 +6,7 @@ mod lucario;
 mod pickel;
 mod ptrainer;
 mod littlemac;
+mod gekkouga;
 mod reflet;
 mod rockman;
 mod krool;
@@ -22,6 +23,7 @@ pub fn install() {
     pickel::install();
     ptrainer::install();
     littlemac::install();
+    gekkouga::install();
     reflet::install();
     rockman::install();
     krool::install();

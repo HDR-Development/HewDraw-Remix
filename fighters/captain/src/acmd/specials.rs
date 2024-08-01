@@ -215,14 +215,22 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        KineticModule::add_speed(boma, &Vector3f::new(-1.5, 2.5, 0.0));
         ATTACK(agent, 2, 0, Hash40::new("top"), 10.0, 60, 80, 0, 60, 4.0, 0.0, 8.0, 5.5, Some(0.0), Some(1.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        AttackModule::clear(boma, 2, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            KineticModule::add_speed(boma, &Vector3f::new(-1.5, 2.5, 0.0));
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
+        }
+        else {
+            KineticModule::add_speed(boma, &Vector3f::new(-0.75, 2.5, 0.0));
+            let air_accel_x_mul = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0);
+            let air_accel_x_add = WorkModule::get_param_float(boma, hash40("air_accel_x_add"), 0);
+            sv_kinetic_energy!(controller_set_accel_x_mul, agent, air_accel_x_mul * 0.5);
+            sv_kinetic_energy!(controller_set_accel_x_add, agent, air_accel_x_add * 0.5);
+        }
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 30.0);
