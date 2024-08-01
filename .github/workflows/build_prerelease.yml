@@ -1,4 +1,4 @@
-name: build_nightly
+name: build_prerelease
 on:
   push:
     branches:
@@ -100,7 +100,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-prerelease name=hdr && cd ..
       env:
         HOME: /root
 
@@ -139,12 +139,12 @@ jobs:
         prerelease: true
         file_glob: true
         asset_name: the_asset
-        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-prerelease
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
   
-  # wait for any previous nightlies to complete, since we dont want to step on any 
+  # wait for any previous prereleases to complete, since we dont want to step on any 
   # full package uploads prior to this one.
   wait_for_previous_builds:
     runs-on: ubuntu-20.04
@@ -180,12 +180,12 @@ jobs:
     - id: package_latest
       uses: pozetroninc/github-action-get-latest-release@master
       with:
-        repository: HDR-Development/HDR-Nightlies
+        repository: HDR-Development/HDR-PreReleases
 
     # build the upgrade.zip and deletions.json
     - name: make upgrade artifacts
       run: |
-        python3 scripts/make_diff.py nightly
+        python3 scripts/make_diff.py prerelease
 
     - name: show upgrade artifacts
       run: |
@@ -200,7 +200,7 @@ jobs:
         prerelease: false
         file_glob: true
         asset_name: upgrade
-        repo_name: HDR-Development/HDR-Nightlies
+        repo_name: HDR-Development/HDR-PreReleases
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
@@ -213,7 +213,7 @@ jobs:
         prerelease: false
         file_glob: true
         asset_name: deletions
-        repo_name: HDR-Development/HDR-Nightlies
+        repo_name: HDR-Development/HDR-PreReleases
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
@@ -256,13 +256,13 @@ jobs:
     #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_HDRSTAGETOOL }}
     #   with:
     #     source_file: 'artifacts/lvd.zip'
-    #     destination_folder: 'nightly'
+    #     destination_folder: 'prerelease'
     #     destination_repo: 'SuddyN/HDRStageTool'
     #     user_email: 'suddy121800@hotmail.com'
     #     user_name: 'SuddyN'
     #     destination_branch: 'gh-pages'
 
-    - name: Upload full package to nightlies
+    - name: Upload full package to prereleases
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
@@ -270,33 +270,33 @@ jobs:
         prerelease: false
         file_glob: true
         asset_name: artifacts
-        repo_name: HDR-Development/HDR-Nightlies
-        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        repo_name: HDR-Development/HDR-PreReleases
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-prerelease
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
-  ################  handle the creation of to-nightly.zip  ################
-  to_nightly:
+  ################  handle the creation of to-prerelease.zip  ################
+  to_prerelease:
     runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
       uses: actions/checkout@v4.1.4
 
-    # get the nightly
-    - id: latest_nightly
+    # get the prerelease
+    - id: latest_prerelease
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HDR-Development/HDR-Nightlies"
+        repository: "HDR-Development/HDR-PreReleases"
         tag: ${{ needs.version_and_changelog.outputs.version }}
         fileName: "switch-package.zip"
 
-    # move the nightly to the artifacts dir
+    # move the prerelease to the artifacts dir
     - run: mkdir artifacts && mv switch-package.zip artifacts
 
-    # build the to-nightly.zip
-    - name: make to-nightly.zip artifact
+    # build the to-prerelease.zip
+    - name: make to-prerelease.zip artifact
       run: |
         python3 scripts/make_diff.py beta
 
@@ -304,9 +304,9 @@ jobs:
       run: |
         ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
-    - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
+    - run: mv upgrade_artifacts/upgrade.zip to-prerelease.zip
 
-    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
+    - run: mv upgrade_artifacts/deletions.json to_prerelease_deletions.json
 
     # get the most recent latest beta
     - id: latest_beta
@@ -314,28 +314,28 @@ jobs:
       with:
         repository: HDR-Development/HDR-Releases
 
-    # upload the to-nightly.zip to the beta for the launcher
-    - name: Upload to-nightly.zip to beta
+    # upload the to-prerelease.zip to the beta for the launcher
+    - name: Upload to-prerelease.zip to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to-nightly.zip
+        file: to-prerelease.zip
         prerelease: false
         file_glob: false
-        asset_name: to-nightly.zip
+        asset_name: to-prerelease.zip
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
 
-    # upload the to_nightly_deletions.json to the beta for the launcher
-    - name: Upload to_nightly_deletions.json to beta
+    # upload the to_prerelease_deletions.json to the beta for the launcher
+    - name: Upload to_prerelease_deletions.json to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to_nightly_deletions.json
+        file: to_prerelease_deletions.json
         prerelease: false
         file_glob: false
-        asset_name: to_nightly_deletions.json
+        asset_name: to_prerelease_deletions.json
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
@@ -363,7 +363,7 @@ jobs:
     # build the to-beta.zip
     - name: make to-beta.zip artifact
       run: |
-        python3 scripts/make_diff.py https://github.com/HDR-Development/HDR-Nightlies/releases/download/${{ needs.version_and_changelog.outputs.version }}/switch-package.zip
+        python3 scripts/make_diff.py https://github.com/HDR-Development/HDR-PreReleases/releases/download/${{ needs.version_and_changelog.outputs.version }}/switch-package.zip
 
     - name: show upgrade artifacts
       run: |
@@ -374,7 +374,7 @@ jobs:
     - run: mv upgrade_artifacts/deletions.json to_beta_deletions.json
 
     # upload the to-beta.zip to the beta for the launcher
-    - name: Upload to-beta.zip to nightly
+    - name: Upload to-beta.zip to prerelease
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
@@ -382,12 +382,12 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to-beta.zip
-        repo_name: HDR-Development/HDR-Nightlies
+        repo_name: HDR-Development/HDR-PreReleases
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
     
     # upload the to_beta_deletions.json to the beta for the launcher
-    - name: Upload to_beta_deletions.json to nightly
+    - name: Upload to_beta_deletions.json to prerelease
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
@@ -395,6 +395,6 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to_beta_deletions.json
-        repo_name: HDR-Development/HDR-Nightlies
+        repo_name: HDR-Development/HDR-PreReleases
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
