@@ -1227,7 +1227,7 @@ pub mod vars {
         }
     }
 
-    pub mod pickel_forge {
+    pub mod pickel_trolley {
         pub mod instance {
             // ints 
             pub const OWNER_ID: i32 = 0x0100;
@@ -1773,7 +1773,7 @@ pub mod statuses {
         pub const SPECIAL_N_G: i32 = 0x1EE;
     }
 
-    pub mod pickel_forge {
+    pub mod pickel_trolley {
         pub const PEARL_FLY: i32 = 0x2;
     }
 

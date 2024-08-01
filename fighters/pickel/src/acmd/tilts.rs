@@ -135,10 +135,10 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
                 _ => 5.5 // wood / gold
             };
             WorkModule::set_float(boma, 5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
-            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 88, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 88, 78, 0, 56, 4.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 85, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 85, 78, 0, 56, 4.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         } else { // fist hitbox
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 4.2, 88, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), 4.2, 85, 78, 0, 56, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     wait(lua_state, 8.0);
@@ -305,9 +305,9 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(agent) {
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            EFFECT(agent, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 1, -2, 1, 0, 0, 0, 0.075, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 1, -2, 1, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(agent, 0.5);
+            EFFECT(agent, Hash40::new("sys_hit_aura"), Hash40::new("top"), 3.5, 3, 0, 0, 0, 0, 0.075, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 3.5, 3, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(agent, 1.8);
         } else {
             EFFECT(agent, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 6.2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }

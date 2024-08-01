@@ -17,10 +17,9 @@ pearl_fly:
       unk_2000: false
     blend_frames: 0
     animations:
-      - name: wait.nuanmb
+      - name: d01specialswait.nuanmb
         unk: 0
     scripts:
-      - effect_pearlfly
       - sound_pearlfly
-      - expression_pearlfly
+      - effect_pearlfly
     extra: ~

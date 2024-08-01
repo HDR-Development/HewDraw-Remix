@@ -129,9 +129,6 @@ unsafe fn hitstun_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 
     //println!("{}", MotionModule::motion_kind(boma));
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
-        println!("attack air");
-    }
 }
 
 extern "Rust" {
