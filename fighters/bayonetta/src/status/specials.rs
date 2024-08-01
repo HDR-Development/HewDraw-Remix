@@ -24,7 +24,7 @@ unsafe extern "C" fn ground_checks(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[CURRENT_FRAME].get_i32() + 1;
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         if fighter.is_in_hitlag() {special_s_slow_hit(fighter); }
-        else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        else if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT) {
             if fighter.is_cat_flag(Cat1::SpecialAny | Cat1::AttackN) 
             && frame >= 20 && frame <= 35 {
                 GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
@@ -109,11 +109,12 @@ unsafe extern "C" fn special_s_kick_main_loop(fighter: &mut L2CFighterCommon) ->
 unsafe extern "C" fn special_s_slow_hit(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mul_x = fighter.get_param_float("param_special_s", "hs_shooting_speed_mul_x");
     let shield_x = fighter.get_param_float("param_special_s", "guard_speed_mul_x");
+    fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT);
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, shield_x);
     } else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ATTACK) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, mul_x);
-        fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT);
+        fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT_BEFORE_GUARD);
     }
     0.into()
 }
