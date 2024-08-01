@@ -19,7 +19,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
@@ -58,7 +58,7 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
@@ -97,7 +97,7 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
