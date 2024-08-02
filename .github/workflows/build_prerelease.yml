@@ -184,7 +184,7 @@ jobs:
 
     - name: make package
       run: |
-        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }}
+        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} none
 
     # get the most recent latest full release
     - id: package_latest
