@@ -144,6 +144,7 @@ jobs:
     - id: romfs_latest
       uses: pozetroninc/github-action-get-latest-release@master
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: HDR-Development/romfs-release
 
     # validate that the chosen release exists
