@@ -178,21 +178,25 @@ jobs:
 
     # get the most recent latest full release
     - id: package_latest
+      continue-on-error: true
       uses: pozetroninc/github-action-get-latest-release@master
       with:
         repository: HDR-Development/HDR-PreReleases
 
     # build the upgrade.zip and deletions.json
     - name: make upgrade artifacts
+      if: steps.package_latest.outcome != 'failure'
       run: |
         python3 scripts/make_diff.py prerelease
 
     - name: show upgrade artifacts
+      if: steps.package_latest.outcome != 'failure'
       run: |
         ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade data to previous release
+      if: steps.package_latest.outcome != 'failure'
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
@@ -206,6 +210,7 @@ jobs:
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade deletions to previous release
+      if: steps.package_latest.outcome != 'failure'
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
