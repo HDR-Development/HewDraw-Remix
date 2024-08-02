@@ -42,11 +42,12 @@ unsafe fn material_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
             // let next = VarModule::get_int(boma.object(), MATERIAL_INDEX) + 1;
             // println!("next entry: {}", next);
         }
-        let hit_articles: [i32;4] = [ // articles that are allowed to advance the index on hit
+        let hit_articles: [i32;5] = [ // articles that are allowed to advance the index on hit
             *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE,
             *FIGHTER_PICKEL_GENERATE_ARTICLE_MELT,
             *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE,
-            *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY ];
+            *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY,
+            *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD ];
         for weapon in hit_articles {
             if ArticleModule::is_exist(boma, weapon) 
             && VarModule::is_flag(boma.object(), SHOULD_CYCLE_MATERIAL) {

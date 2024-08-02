@@ -569,35 +569,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_ATTACK_FLAG_FORGE_GENERATE_ENABLE);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        let article = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE);
-        let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
-        let article_boma = sv_battle_object::module_accessor(object_id);
-        let anvil_pos_y = PostureModule::pos_y(article_boma);
-        VarModule::set_float(agent.battle_object, vars::pickel::instance::FORGE_START_Y_POS, anvil_pos_y);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    } 
-}
-
 unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -623,7 +594,7 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
     }
     frame(lua_state, 12.0);
-    FT_MOTION_RATE(agent, 1.8); // the higher the number, the longer the line will end up being cast
+    FT_MOTION_RATE(agent, 2.0); // the higher the number, the longer the line will end up being cast
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, *WEAPON_PICKEL_FISHINGROD_STATUS_KIND_SHOOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("air_catch"), false, -1.0);
@@ -651,8 +622,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
-
-    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 
     agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
 

@@ -255,22 +255,19 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    let mut is_soul_fire = false;
     frame(lua_state, 1.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
     FT_MOTION_RATE(agent, 8.0);
     frame(lua_state, 2.0);
     if is_excute(agent) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
+            is_soul_fire = true;
+            VarModule::on_flag(agent.battle_object, vars::pickel::status::IS_SOUL_FIRE);
         }
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FT_MOTION_RATE(agent, 4.0);
-        } else {
-            FT_MOTION_RATE(agent, 1.0);
-        }
+        FT_MOTION_RATE(agent, if is_soul_fire { 4.0 } else { 1.0 } );
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -281,30 +278,24 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         if !ArticleModule::is_exist(boma,  *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE){
             ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE, false, 0);
         }
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FT_MOTION_RATE(agent, 1.0);
-            //FT_MOTION_RATE(agent, 25.0/(30.0-5.0));
-        } else {
-            FT_MOTION_RATE(agent, 15.0/(30.0-5.0));
-        }
+        FT_MOTION_RATE(agent, if is_soul_fire { 1.0 } else { 0.6 } );
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            //FT_MOTION_RATE(agent, 2.0);
-            FT_MOTION_RATE(agent, 0.5);
-        } else {
-            FT_MOTION_RATE(agent, 1.0);
-        }
+        FT_MOTION_RATE(agent, if is_soul_fire { 0.5 } else { 1.0 } );
     }
 }
 
 unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    let mut is_soul_fire = false;
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(agent.battle_object, vars::pickel::status::IS_SOUL_FIRE) {
+            is_soul_fire = true;
+        }
+        if is_soul_fire {
             EFFECT(agent, Hash40::new("sys_hit_aura"), Hash40::new("top"), 3.5, 3, 0, 0, 0, 0, 0.075, 0, 0, 0, 0, 0, 0, false);
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 3.5, 3, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(agent, 1.8);
@@ -314,15 +305,9 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
+        if is_soul_fire {
             FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        } else {
-            FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -2, 0, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         }
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_DETACH_KIND(agent, Hash40::new("sys_damage_aura"), -1);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {

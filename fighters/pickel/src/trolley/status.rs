@@ -106,13 +106,19 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
 
     // play effects
     PLAY_SE(weapon, Hash40::new("se_pickel_final07"));
+    let owner_pos = Vector2f { 
+        x: PostureModule::pos_x(owner_boma), 
+        y: PostureModule::pos_y(owner_boma)
+    };
     EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.82, 0, 0, 0, -90, 0, 0, true);
+    LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
+    EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), owner_pos.x - pos.x, 10.0 + (owner_pos.y - pos.y), 0, 0, 0, 0, 0.82, 0, 0, 0, -90, 0, 0, true);
     LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
     // teleport and inflict damage
     //if trigger == "infliction" { pos.y -= 5.0 }; // position slightly lower on hit (has clipping issues, re-assess later)
     PostureModule::set_pos(owner_boma, &pos);
     PostureModule::init_pos(owner_boma, &pos, true, true);
-    DamageModule::add_damage(owner_boma, 4.0, 0);
+    DamageModule::add_damage(owner_boma, 7.0, 0);
     if trigger == "ground" {
         GroundModule::correct(owner_boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
@@ -127,10 +133,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     }
 
     // remove the article
-    weapon.clear_lua_stack();
-    weapon.push_lua_stack(&mut L2CValue::new_int(0x199c462b5d));
-    app::sv_battle_object::notify_event_msc_cmd(weapon.lua_state_agent);
-    weapon.pop_lua_stack(1).get_bool();
+    notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
 
     return 1.into();
 }
