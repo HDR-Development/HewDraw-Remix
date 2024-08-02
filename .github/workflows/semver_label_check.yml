@@ -35,7 +35,7 @@ jobs:
           script: |
               core.setFailed('This change is still under construction.')
 
-      # ensure that this change is not awaiting approval
+      # ensure that this change is not awaiting review
       - name: check_review_label
         if: >
             contains(github.event.pull_request.labels.*.name, 'pending review')
@@ -43,6 +43,16 @@ jobs:
         with:
           script: |
               core.setFailed('This change has not yet been agreed upon.')
+
+      # ensure that this is not a character change waiting for balance approval
+      - name: check_balance_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'character change')
+            && !contains(github.event.pull_request.labels.*.name, 'balance approved')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This character change has not been approved for balance yet.')
       
       - name: all_is_well
         run: echo "This PR is in an appropriately labeled state."
