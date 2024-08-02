@@ -170,6 +170,7 @@ jobs:
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: HDR-Development/romfs-release
 
     - name: make package
