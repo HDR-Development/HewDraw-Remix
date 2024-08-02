@@ -13,7 +13,6 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.arg
   exit(0)
 
 hdr_version = sys.argv[1]
-romfs_version = sys.argv[2]
 
 shutil.rmtree("package", True)
 if os.path.exists("switch-package.zip"):
@@ -33,6 +32,9 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
         print("getting release from url: " + url)
 
     urllib.request.urlretrieve(url, asset)
+    extract(asset, extract_directory)
+
+def extract(asset: str, extract_directory = None):
     with zipfile.ZipFile(asset, 'r') as zip_ref: 
         if extract_directory:
             extract_home = extract_directory
@@ -46,7 +48,7 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
 os.makedirs("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
-download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
+extract("romfs.zip")
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
 download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
