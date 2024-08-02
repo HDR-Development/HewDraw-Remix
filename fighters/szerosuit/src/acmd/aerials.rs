@@ -139,6 +139,25 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire_02"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("szero_flip_line"), Hash40::new("top"), 1, 9.5, -15.4, 180, 0, 10, 0.98, true);
+        LAST_EFFECT_SET_RATE(agent, 1.4);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("szero_smash_fire_02"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -187,12 +206,16 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire_02"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
-        EFFECT_FOLLOW(agent, Hash40::new("szero_atk_air_hi"), Hash40::new("top"), 0, 9.5, -1.0, -5.8, 45, 92.4, 0.85, true);
-        LAST_EFFECT_SET_RATE(agent, 0.8);
+        EFFECT_FOLLOW(agent, Hash40::new("szero_atk_air_hi"), Hash40::new("top"), 0, 9.5, -1.6, -5.8, 50, 92.4, 0.81, true);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("szero_smash_fire_02"), false, false);
+    }
+    frame(lua_state, 19.5);
+    if is_excute(agent) {
+        EffectModule::kill_kind(boma, Hash40::new("szero_atk_air_hi"), true, true);
     }
 }
 
@@ -214,9 +237,8 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(agent, dive_motion_rate);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, dive_motion_rate);
-        // Air-only
         ATTACK(agent, 0, 0, Hash40::new("legl"), 12.0, 100, 45, 0, 70, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 1, 0, Hash40::new("kneel"), 12.0, 100, 45, 0, 70, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 2, 0, Hash40::new("kneel"), 12.0, 100, 45, 0, 70, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -317,6 +339,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
     agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);

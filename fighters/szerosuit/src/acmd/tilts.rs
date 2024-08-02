@@ -19,14 +19,14 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8.5, 7.2, -8.5, 17, 9.5, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 8.5, 4.7, -8.5, 17, 9.5, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.9);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -58,14 +58,14 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 11.5, 7.2, -21.5, 2.5, 13.5, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 11.5, 4.7, -21.5, 2.5, 13.5, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.9);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -97,17 +97,14 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("szero_smash_fire"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 6, 7.2, 5, -1, 11.8, 0.95, true);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 2, 6, 4.7, 5, -1, 11.8, 0.95, true);
+        LAST_EFFECT_SET_RATE(agent, 1.9);
         FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 17.0);
@@ -179,7 +176,7 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4, 7.0, -8.5, -32.5, -160.1, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 4, 3.0, -8.5, -32.5, -160.1, 0.98, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
     frame(lua_state, 9.0);

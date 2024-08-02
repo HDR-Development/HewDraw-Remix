@@ -11,7 +11,7 @@ ref = (sys.argv[1] + " ").split(":")[1].strip()
 pr_ref = (sys.argv[2] + " ").split(":")[1].strip()
 
 if pr_ref == 'stable' or (ref == 'refs/heads/dev' and pr_ref == ''):
-    print("nightly")
+    print("prerelease")
     exit()
 
 if ref == 'refs/heads/stable':

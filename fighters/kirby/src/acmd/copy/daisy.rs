@@ -55,7 +55,7 @@ unsafe extern "C" fn game_daisyspecialairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::daisy::status::SPECIAL_N_DIVE);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 315, 100, 50, 0, 4.5, 0.0, 6.5, 6.0, Some(0.0), Some(6.5), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 315, 100, 50, 0, 4.5, 0.0, 6.5, 6.0, Some(0.0), Some(6.5), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
@@ -124,6 +124,14 @@ unsafe extern "C" fn expression_daisyspecialairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -241,11 +249,12 @@ unsafe extern "C" fn expression_daisyspecialnattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 2.0);
+    frame(lua_state, 40.0);
     if is_excute(agent) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_beamss"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

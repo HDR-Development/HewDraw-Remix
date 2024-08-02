@@ -267,27 +267,27 @@ jobs:
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
-  ################  handle the creation of to-nightly.zip  ################
-  to_nightly:
+  ################  handle the creation of to-prerelease.zip  ################
+  to_prerelease:
     runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
       uses: actions/checkout@v4.1.4
 
-    # download the nightly
-    - id: latest_nightly
+    # download the prerelease
+    - id: latest_prerelease
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HDR-Development/HDR-Nightlies"
+        repository: "HDR-Development/HDR-PreReleases"
         latest: true
         fileName: "switch-package.zip"
 
-    # move the nightly to the artifacts dir
+    # move the prerelease to the artifacts dir
     - run: mkdir artifacts && mv switch-package.zip artifacts
 
-    # build the to-nightly.zip
-    - name: make to-nightly.zip artifact
+    # build the to-prerelease.zip
+    - name: make to-prerelease.zip artifact
       run: |
         python3 scripts/make_diff.py beta
 
@@ -295,9 +295,9 @@ jobs:
       run: |
         ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
-    - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
+    - run: mv upgrade_artifacts/upgrade.zip to-prerelease.zip
 
-    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
+    - run: mv upgrade_artifacts/deletions.json to_prerelease_deletions.json
 
     # get the most recent latest beta
     - id: latest_beta
@@ -305,28 +305,28 @@ jobs:
       with:
         repository: HDR-Development/HDR-Releases
 
-    # upload the to-nightly.zip to the beta for the launcher
-    - name: Upload to-nightly.zip to beta
+    # upload the to-prerelease.zip to the beta for the launcher
+    - name: Upload to-prerelease.zip to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to-nightly.zip
+        file: to-prerelease.zip
         prerelease: false
         file_glob: false
-        asset_name: to-nightly.zip
+        asset_name: to-prerelease.zip
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
 
-    # upload the to_nightly_deletions.json to the beta for the launcher
-    - name: Upload to_nightly_deletions.json to beta
+    # upload the to_prerelease_deletions.json to the beta for the launcher
+    - name: Upload to_prerelease_deletions.json to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to_nightly_deletions.json
+        file: to_prerelease_deletions.json
         prerelease: false
         file_glob: false
-        asset_name: to_nightly_deletions.json
+        asset_name: to_prerelease_deletions.json
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
