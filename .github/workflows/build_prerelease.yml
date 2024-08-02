@@ -15,9 +15,9 @@ jobs:
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
       # fail out if this is not a merge commit
-      # - name: ensure merge
-      #   if: ${{ !startsWith(github.event.head_commit.message, 'Merge') }}
-      #   run: exit 1
+      - name: ensure merge
+        if: ${{ !startsWith(github.event.head_commit.message, 'Merge') }}
+        run: exit 1
 
       - name: checkout version
         uses: actions/checkout@v4.1.4
