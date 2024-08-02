@@ -170,11 +170,21 @@ jobs:
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: HDR-Development/romfs-release
+
+    - name: Download romfs
+      id: get_romfs
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        repo: 'HDR-Development/romfs-release'
+        version: 'tags/${{ steps.romfs_version.outputs.release }}'
+        file: 'romfs.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
 
     - name: make package
       run: |
-        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_version.outputs.release }}
+        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }}
 
     # get the most recent latest full release
     - id: package_latest
