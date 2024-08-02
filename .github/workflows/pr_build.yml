@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - dev
+      - pre-release
     types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:

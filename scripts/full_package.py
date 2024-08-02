@@ -80,19 +80,10 @@ print("creating hash files")
 hash_package.hash_folder("switch-package", "content_hashes.txt")
 hash_package.hash_folder_json("switch-package", "content_hashes.json")
 
-# make a ryujinx package too
-print("making ryujinx-package.zip")
-os.remove("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/hdr-launcher.nro")
-os.mkdir("switch-package/sdcard")
-shutil.move("switch-package/atmosphere/", "switch-package/sdcard/")
-shutil.move("switch-package/ultimate/", "switch-package/sdcard/")
-shutil.make_archive("ryujinx-package", 'zip', 'switch-package')
-
 # move the stuff to artifacts folder
 if os.path.exists("artifacts"):
     shutil.rmtree("artifacts")
 os.mkdir("artifacts")
 shutil.move("switch-package.zip", "artifacts")
-shutil.move("ryujinx-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
 shutil.move("content_hashes.json", "artifacts")
