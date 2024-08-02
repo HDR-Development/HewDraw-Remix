@@ -147,26 +147,25 @@ jobs:
         token: ${{ secrets.RELEASE_TOKEN }}
         repository: HDR-Development/romfs-release
 
-    # validate that the chosen release exists
-    - name: get the specified release
-      uses: cardinalby/git-get-release-action@v1
-      if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    - name: Download romfs
+      id: get_romfs_not_latest
+      uses: dsaltares/fetch-gh-release-asset@master
       with:
-        tag: ${{ github.event.inputs.romfs_version }}   
         repo: 'HDR-Development/romfs-release'
+        version: 'tags/${{ github.event.inputs.romfs_version }}'
+        file: 'romfs.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
 
     # make package depending on version chosen
     - name: make package with chosen version
       if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
       run: |
-        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ github.event.inputs.romfs_version }} 
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} none
 
     - name: make package with latest
       if: ${{ contains(github.event.inputs.romfs_version, 'latest') }}
       run: |
-        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} none
 
     # get the most recent latest full release
     - id: package_latest
