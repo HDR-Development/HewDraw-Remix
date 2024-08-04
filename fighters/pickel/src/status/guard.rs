@@ -27,8 +27,9 @@ unsafe extern "C" fn guarddamage_end(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // FIGHTER_STATUS_KIND_GUARD_OFF 
 
+// removes steve's shield after an attempted parry
 unsafe extern "C" fn guardoff_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.motion_frame() >= 3.5 
+    if fighter.motion_frame() < 2.0 
     && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_STUFF, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }

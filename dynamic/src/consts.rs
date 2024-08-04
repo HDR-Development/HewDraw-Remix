@@ -1257,6 +1257,13 @@ pub mod vars {
             // ints 
             pub const OWNER_ID: i32 = 0x0100;
         }
+        pub mod status {
+            // ints
+            pub const REFLECT_COUNT: i32 = 0x1100;
+            
+            // floats
+            pub const PREV_LR: i32 = 0x1100;
+        }
     }
 
     pub mod pikachu {

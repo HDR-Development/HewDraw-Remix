@@ -15,6 +15,20 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         if rate < 4.0 { // max rate of 4x speed
             MotionModule::set_rate(fighter.boma(), (rate * 1.01)); // gradually speed up
         }
+        if (1.5..1.505).contains(&rate) {
+            EFFECT_FLIP(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0.0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+            PLAY_SE(fighter, Hash40::new("se_common_smashswing_04"));
+        }
+        if rate > 1.505 {
+            LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (0.35 * rate), 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.1);
+        }
+        if (2.5..2.53).contains(&rate) {
+            EFFECT_FLIP(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0.0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+            PLAY_SE(fighter, Hash40::new("se_system_amiibo_entry_2"));
+        }
     }
     
     if !is_training_mode() { 

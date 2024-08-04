@@ -13,7 +13,7 @@ unsafe extern "C" fn sound_specialn1getgold(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsride(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE(agent, 0.5);
+    FT_MOTION_RATE(agent, 0.75);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
         ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 350, 100, 30, 10, 3.0, 0.0, 8.0, 4.5, Some(0.0), Some(4.0), Some(4.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -58,10 +58,10 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::pickel::status::IS_THROW_PEARL) {
-            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 2, 9, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+            EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -4.0, 9, 3, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         } else {
-            EFFECT(agent, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, 4.5, 10, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), -3, 8, 3.5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
         }
     }
 }
