@@ -54,6 +54,11 @@ catch_attack:
 # special_air_s_start:
 #     animations:
 #       - name: c01attacks3s.nuanmb
+special_s_failed:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 48
 furafura_end:
   extra:
     cancel_frame: 34

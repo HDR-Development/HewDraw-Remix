@@ -55,6 +55,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="start_speed_x_mul_ground">0.9</float>
       <float hash="speed_y_on_jump">1.2</float>
       <float hash="reaction_threshold_to_damage">0</float>
     </struct>
@@ -64,12 +65,18 @@
   </list>
   <list hash="param_trolley">
     <struct index="0">
+      <float hash="speed_limit">1.8</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
+      <float hash="accel_on_powered_rail">0.12</float>
+      <float hash="speed_limit_on_powered_rail">2.15</float>
     </struct>
     <struct index="1">
+      <float hash="speed_limit">1.8</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
+      <float hash="accel_on_powered_rail">0.12</float>
+      <float hash="speed_limit_on_powered_rail">2.15</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
