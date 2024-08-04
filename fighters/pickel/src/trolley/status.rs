@@ -120,6 +120,17 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         return 0.into();
     }
 
+    // statuses where steve should not teleport
+    let is_blacklist_status = owner_boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH
+    ]);
+    
+    if is_blacklist_status {
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+        return 1.into();
+    }
+
     let mut ground_hit = false;
     let mut offset = 0.0;
     if trigger == "infliction" {

@@ -2,10 +2,12 @@ jump_squat:
   blend_frames: 0
   animations:
   - name: a05landingheavy.nuanmb
+run:
+  blend_frames: 0
 fall:
-  blend_frames: 5
+  blend_frames: 0
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 0
 fall_special:
   blend_frames: 5
 guard_off:
@@ -15,42 +17,43 @@ guard_off:
 throw_hi:
   extra:
     cancel_frame: 40
-attack_hi4:
-  extra:
-    cancel_frame: 53
-attack_lw4:
-  extra:
-    cancel_frame: 57
 attack_dash:
+  extra:
+    cancel_frame: 31
+attack_dash_arm:
   extra:
     cancel_frame: 31
 attack_s4_s:
   extra:
     cancel_frame: 47
-attack_air_b:
+attack_hi4:
   extra:
-    cancel_frame: 35
+    cancel_frame: 43
 attack_hi4_arm:
+  animations: []
   extra:
     cancel_frame: 53
-attack_dash_arm:
+attack_lw4:
   extra:
-    cancel_frame: 31
-attack_air_b_arm:
+    cancel_frame: 57
+attack_air_b:
   extra:
     cancel_frame: 35
 attack_air_b_upper:
   extra:
     cancel_frame: 35
+attack_air_b_arm:
+  extra:
+    cancel_frame: 35
 catch_attack:
   extra:
     cancel_frame: 0
-special_s_start:
-    animations:
-      - name: c01attacks3s.nuanmb
-special_air_s_start:
-    animations:
-      - name: c01attacks3s.nuanmb
+# special_s_start:
+#     animations:
+#       - name: c01attacks3s.nuanmb
+# special_air_s_start:
+#     animations:
+#       - name: c01attacks3s.nuanmb
 furafura_end:
   extra:
     cancel_frame: 34
@@ -79,7 +82,7 @@ air_catch:
     unk_2000: false
   blend_frames: 0
   animations:
-    - name: g04aircatchupper.nuanmb
+    - name: g04aircatch.nuanmb
       unk: 0
   scripts:
     - expression_catch

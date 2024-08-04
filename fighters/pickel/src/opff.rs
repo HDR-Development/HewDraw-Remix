@@ -245,6 +245,19 @@ unsafe fn rod_removal(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn shovel_position(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START, 
+        *FIGHTER_STATUS_KIND_ATTACK_HI4, 
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD
+    ])
+    && boma.motion_frame() < 42.0 {
+        ModelModule::set_joint_translate(boma, Hash40::new("weaponr"), &Vector3f::new(0.0, 0.0, 2.0), false, false);
+        ModelModule::set_joint_scale(boma, Hash40::new("weaponr"), &Vector3f::new(1.2, 1.2, 1.2));
+        boma.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -283,6 +296,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     build_ecb_shift(boma, status_kind);
     elytra_cancel(boma);
     rod_removal(boma);
+    shovel_position(boma);
     fastfall_specials(fighter);
 }
 

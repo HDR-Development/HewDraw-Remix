@@ -39,10 +39,10 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
             MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.5);
             if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
                 let damage = match material_kind {
+                    ( WOOD | GOLD ) => 3.0,
                     STONE => 3.5,
                     IRON => 4.0,
-                    DIAMOND => 4.5,
-                    /* WOOD/GOLD */ _  => 3.0
+                    /* DIAMOND */ _ => 4.5
                 };
                 let sfx = match material_kind {
                     ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
@@ -98,10 +98,11 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
             let damage: [f32;4] = match material_kind {
+                ( WOOD | GOLD ) => [8.0, 9.0, 10.0, 11.0],
                 STONE => [9.0, 10.5, 11.0, 12.25],
                 IRON => [10.0, 11.5, 12.0, 13.5],
-                DIAMOND => [11.0, 14.0, 12.5, 15.0],
-                /* WOOD/GOLD */ _  => [8.0, 9.0, 10.0, 11.0]
+                /* DIAMOND */ _ => [11.0, 14.0, 12.5, 15.0]
+                
             };
             if is_excute(agent) {
                 FT_MOTION_RATE(agent, 1.0);
@@ -258,10 +259,10 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
             material_kind = agent.get_int( *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
             if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
                 let damage = match material_kind {
+                    ( WOOD | GOLD ) => 3.0,
                     STONE => 3.5,
                     IRON => 4.0,
-                    DIAMOND => 4.5,
-                    /* WOOD/GOLD */ _  => 3.0
+                    /* DIAMOND */ _ => 4.5
                 };
                 let sfx = match material_kind {
                     ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
@@ -313,10 +314,10 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
             let damage: [f32;2] = match material_kind {
+                ( WOOD | GOLD ) => [9.5, 13.0],
                 STONE => [10.5, 14.0],
                 IRON => [12.0, 15.0],
-                DIAMOND => [13.5, 17.0],
-                /* WOOD/GOLD */ _  => [9.5, 13.0]
+                /* DIAMOND */ _ => [13.5, 17.0] 
             };
             if is_excute(agent) {
                 ATTACK(agent, 0, 0, Hash40::new("armr"), damage[0], 50, 85, 0, 56, 4.2, 0.0, 0.0, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -455,10 +456,10 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
             let damage = match material_kind {
+                ( WOOD | GOLD ) => 5.5,
                 STONE => 6.5,
                 IRON => 7.5,
-                DIAMOND => 8.5,
-                /* WOOD/GOLD */ _  => 5.5
+                /* DIAMOND */ _ => 8.5
             };
             agent.set_float(5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 71, 76, 0, 48, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.3, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
