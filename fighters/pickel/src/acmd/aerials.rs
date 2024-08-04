@@ -400,7 +400,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
                 STONE => ["pickel_sword_flare_stone", "pickel_atk_pick_stone"],
                 IRON => ["pickel_pick_flare_iron", "pickel_atk_pick_iron"],
                 GOLD => ["pickel_pick_flare_gold", "pickel_atk_pick_gold"],
-                /* DIAMOND */ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
+                /* DIAMOND */ _ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
             };
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1, true);
