@@ -67,8 +67,13 @@ unsafe extern "C" fn sound_specialsfailed(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_specialsfailed(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 8);
     }
 }
 
@@ -77,7 +82,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialsfailed", effect_specialsfailed, Priority::Low);
     agent.acmd("sound_specialsfailed", sound_specialsfailed, Priority::Low);
     agent.acmd("expression_specialsfailed", expression_specialsfailed, Priority::Low);
-
 
     agent.acmd("game_attackdash", acmd_stub, Priority::Low);
     agent.acmd("effect_attackdash", acmd_stub, Priority::Low);

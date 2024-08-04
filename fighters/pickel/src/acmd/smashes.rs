@@ -31,13 +31,13 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
             /* DIAMOND */ _ => 15.0 
         };
         if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 88, 0, 60, 4.5, 0.0, 4.4, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 88, 0, 60, 4.5, 0.0, 6.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             agent.set_float(7.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         }
     } else {
         // fist hitboxes
         if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("handr"), 8.0, 80, 88, 0, 60, 4.2, 0.0, 0.0, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("handr"), 8.0, 80, 88, 0, 60, 4.2, 0.0, 0.0, 2.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 19.0);
@@ -89,8 +89,8 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         }
         frame(lua_state, 14.0);
         if is_excute(agent) {
-            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 9.7, 1.5, 0, 35, 100, 1, true, *EF_FLIP_YZ);
-            LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 0.95 } else { 0.50 });
+            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 11.5, 2.5, 0, 30, 100, 1, true, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 0.95 } else { 0.55 });
         }
         frame(lua_state, 19.0);
         if is_excute(agent) {
