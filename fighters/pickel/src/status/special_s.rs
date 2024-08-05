@@ -123,7 +123,6 @@ pub unsafe extern "C" fn special_s_failed_main(fighter: &mut L2CFighterCommon) -
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        //KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
      }
     fighter.sub_change_motion_by_situation(
         Hash40::new("special_s_failed").into(), 

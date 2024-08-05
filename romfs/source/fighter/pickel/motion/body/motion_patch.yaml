@@ -48,12 +48,6 @@ attack_air_b_arm:
 catch_attack:
   extra:
     cancel_frame: 0
-# special_s_start:
-#     animations:
-#       - name: c01attacks3s.nuanmb
-# special_air_s_start:
-#     animations:
-#       - name: c01attacks3s.nuanmb
 special_s_failed:
   flags:
     move: true

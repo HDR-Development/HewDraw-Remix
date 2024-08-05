@@ -128,8 +128,6 @@ unsafe fn hitstun_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         PostureModule::set_rot(boma, &Vector3f {x: 0.0, y: 0.0, z:0.0}, 0);
         VarModule::off_flag(boma.object(), SHOULD_RESET_ROT);
     }
-
-    //println!("{}", MotionModule::motion_kind(boma));
 }
 
 extern "Rust" {
