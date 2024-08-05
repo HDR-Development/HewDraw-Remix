@@ -70,8 +70,7 @@ unsafe fn material_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 EffectModule::kill(boma, hand_effect as u32, false, false);
             }
         }
-    } else if !fighter.is_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WALK_BACK]) 
-    && (hand_effect <= 0 || !EffectModule::is_exist_effect(boma, hand_effect as u32)) {
+    } else if (hand_effect <= 0 || !EffectModule::is_exist_effect(boma, hand_effect as u32)) {
         let handle = EffectModule::req_follow(boma, Hash40::new("sys_status_all_up"), Hash40::new("haver"), &Vector3f::zero(), &Vector3f::zero(), 0.28, false, 0, 0, 0, 0, 0, false, false) as u32;
         EffectModule::set_rate(boma, handle, 0.5);
         if [49, 99].contains(&index) { // color effect blue if it will be a diamond

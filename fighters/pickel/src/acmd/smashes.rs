@@ -24,13 +24,13 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
         let damage = match material_kind {
-            ( WOOD | GOLD ) => 11.0,
-            STONE => 12.0,
-            IRON => 13.0,
+            ( WOOD | GOLD ) => 11.5,
+            STONE => 12.5,
+            IRON => 13.5,
             /* DIAMOND */ _ => 15.0 
         };
         if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 88, 0, 60, 4.5, 0.0, 6.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 95, 0, 60, 4.5, 0.0, 6.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             agent.set_float(damage * 0.8, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         }
     } else {
@@ -68,8 +68,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
             /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_pick_diamond"]
         };
         if is_excute(agent) {
-            // leaving note here to confirm placement in game
-            EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -6, 2, -2.5, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -6, 3.5, -2, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
         }
         frame(lua_state, 9.0);
         if is_excute(agent) {

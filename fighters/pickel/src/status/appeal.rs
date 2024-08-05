@@ -70,7 +70,7 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         }
         let (mut material, effect) = match direction {
             "right" => (*FIGHTER_PICKEL_MATERIAL_KIND_STONE, "pickel_craft_icon_stone"),
-            "down" => (*FIGHTER_PICKEL_MATERIAL_KIND_STONE, "pickel_craft_icon_stone"),
+            "down" => (*FIGHTER_PICKEL_MATERIAL_KIND_IRON, "pickel_craft_icon_iron"),
             "left" => (*FIGHTER_PICKEL_MATERIAL_KIND_GOLD, "pickel_craft_icon_gold"),
             "up" => (*FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND, "pickel_craft_icon_diamond"),
             /* neutral */ _ => (*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, "pickel_craft_icon_wood")

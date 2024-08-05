@@ -61,7 +61,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
-            EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -4.0, 9, 3, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -4.0, 9, 5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         } else {
             EFFECT(agent, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), -3, 8, 3.5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);

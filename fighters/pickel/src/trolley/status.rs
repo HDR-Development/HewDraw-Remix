@@ -143,6 +143,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
 
     // play effects
     PLAY_SE(weapon, Hash40::new("se_pickel_final07"));
+    ControlModule::set_rumble(owner_boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     let owner_pos = Vector2f { 
         x: PostureModule::pos_x(owner_boma), 
         y: PostureModule::pos_y(owner_boma)
