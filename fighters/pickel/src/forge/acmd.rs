@@ -1,5 +1,7 @@
 use super::*;
 
+use vars::pickel_forge::instance::*;
+
 unsafe extern "C" fn game_wait(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -27,7 +29,7 @@ unsafe extern "C" fn game_fall(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         JostleModule::set_status(boma, false);
         let pos_y = PostureModule::pos_y(boma);
-        VarModule::set_float(agent.battle_object, vars::pickel_forge::instance::START_Y_POS, pos_y);
+        VarModule::set_float(boma.object(), START_Y_POS, pos_y);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
@@ -51,7 +53,7 @@ unsafe extern "C" fn game_fallattack(agent: &mut L2CAgentBase) {
         ]) {
             wait(lua_state, 2.0);
         }
-        let fall_distance = VarModule::get_float(agent.battle_object, vars::pickel_forge::instance::START_Y_POS) - PostureModule::pos_y(boma);
+        let fall_distance = VarModule::get_float(boma.object(), START_Y_POS) - PostureModule::pos_y(boma);
         let dmg = 8.0 + (fall_distance / 5.0);
         let kbg = 100.0 - (fall_distance / 1.5);
         ATTACK(agent, 0, 0, Hash40::new("top"), dmg, 70, kbg, 0, 62, 6.4, 0.0, 4.6, 0.0, Some(0.0), Some(4.8), Some(0.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
@@ -63,7 +65,7 @@ unsafe extern "C" fn game_fallattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_fallattackride(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let fall_distance = VarModule::get_float(agent.battle_object, vars::pickel_forge::instance::START_Y_POS) - PostureModule::pos_y(boma);
+    let fall_distance = VarModule::get_float(boma.object(), START_Y_POS) - PostureModule::pos_y(boma);
     let dmg = 12.0 + (fall_distance / 5.0);
     let kbg = 100.0 - (fall_distance / 1.5);
     if is_excute(agent) {

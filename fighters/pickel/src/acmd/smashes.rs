@@ -14,11 +14,10 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
         agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
-        ModelModule::set_joint_translate(boma, Hash40::new("weaponr"), &Vector3f::new(0.0, 0.0, 2.0), false, false);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 11.0);
     FT_MOTION_RATE(agent, 0.7);
@@ -32,7 +31,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         };
         if is_excute(agent) {
             ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 88, 0, 60, 4.5, 0.0, 6.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            agent.set_float(7.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+            agent.set_float(damage * 0.8, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         }
     } else {
         // fist hitboxes
@@ -68,9 +67,9 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
             GOLD => ["pickel_sword_flare_gold", "pickel_atk_pick_gold"],
             /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_pick_diamond"]
         };
-        frame(lua_state, 6.0);
         if is_excute(agent) {
-            EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -6, 1.5, 0.8, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+            // leaving note here to confirm placement in game
+            EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -6, 2, -2.5, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
         }
         frame(lua_state, 9.0);
         if is_excute(agent) {
@@ -105,7 +104,6 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         frame(lua_state, 12.0);    
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 8.0, -1, 0, 15, 40, 0.8, true, *EF_FLIP_YZ, 0.06);
-            LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
             LAST_EFFECT_SET_RATE(agent, 0.5);
         }
         frame(lua_state, 20.0);
@@ -173,7 +171,7 @@ unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
             IRON => ("rbkind_slashll", 9),
             GOLD => ("rbkind_slashl", 12),
             DIAMOND => ("rbkind_slash_critical", 22),
-            /* NONE */ _ => ("rbkind_77_attackm", 0) 
+            /* NONE */ _ => ("rbkind_77_attacks", 0) 
         };
         RUMBLE_HIT(agent, Hash40::new(rumble), frames);
     }

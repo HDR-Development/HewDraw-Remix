@@ -1,6 +1,11 @@
 use super::*;
 
-// WEAPON_PICKEL_PLATE_STATUS_KIND_PEARL_FLY
+use vars::pickel_trolley::{
+    instance::*,
+    status::*
+};
+
+// WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY
 
 unsafe extern "C" fn pearl_fly_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -18,8 +23,6 @@ unsafe extern "C" fn pearl_fly_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
     0.into()
 }
-
-const FIGHTER_TEAM_2ND_PICKEL_TROLLEY: i32 = 0x1f;
 
 unsafe fn init_physics(weapon: &mut L2CWeaponCommon, lr: f32, reflect: bool) {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
@@ -49,7 +52,7 @@ unsafe extern "C" fn pearl_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_boma = &mut *(*owner).module_accessor;
     let owner_lr = PostureModule::lr(owner_boma);
     // stores the owner id so the correct person gets teleported, even if it switches owners mid-status
-    VarModule::set_int(weapon.battle_object, vars::pickel_trolley::instance::OWNER_ID, owner_id);
+    VarModule::set_int(weapon.battle_object, PEARL_OWNER_ID, owner_id);
 
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("pearl_fly"), 0.0, 1.0, false, 0.0, false, false);
     let offset = Vector3f {
@@ -59,43 +62,37 @@ unsafe extern "C" fn pearl_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     };
     PostureModule::set_pos(weapon.module_accessor, &offset);
 
-    VarModule::set_float(weapon.battle_object, vars::pickel_trolley::status::PREV_LR, owner_lr);
+    VarModule::set_float(weapon.battle_object, PREV_LR, owner_lr);
     init_physics(weapon, owner_lr, false);
     
     // turn off minecart model
     ModelModule::set_mesh_visibility(weapon.module_accessor, Hash40::new("trolley_1"), false);
     ModelModule::set_mesh_visibility(weapon.module_accessor, Hash40::new("trolley_2"), false);
-    
-    // // set the pearl's team so steve cannot hit it
-    // let entry_id = WorkModule::get_int(owner_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-    // let team = entry_id + FIGHTER_TEAM_2ND_PICKEL_TROLLEY;
-    // TeamModule::set_team_second(owner_boma, team);
-    // TeamModule::set_hit_team_second(owner_boma, team);
 
-    // prevent rails from spawning
+    // prevents rails from spawning
     ArticleModule::remove_exist(weapon.module_accessor, *WEAPON_PICKEL_TROLLEY_GENERATE_ARTICLE_RAIL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
     weapon.fastshift(L2CValue::Ptr(pearl_fly_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    // tracks pearl's current position
+    // tracks the pearl's current position
     let mut pos = Vector3f { 
         x: PostureModule::pos_x(weapon.module_accessor), 
         y: PostureModule::pos_y(weapon.module_accessor),
         z: 0.0  
     };
 
-    let owner_id = VarModule::get_int(weapon.battle_object, vars::pickel_trolley::instance::OWNER_ID) as u32;
+    let owner_id = VarModule::get_int(weapon.battle_object, PEARL_OWNER_ID) as u32;
     let owner = utils::util::get_battle_object_from_id(owner_id);
     let owner_boma = &mut *(*owner).module_accessor;
 
     // reset trajectory if the pearl is reflected
     let reflect_count = ReflectModule::count(weapon.module_accessor) as i32;
-    if reflect_count > VarModule::get_int(weapon.battle_object, vars::pickel_trolley::status::REFLECT_COUNT) {
-        VarModule::set_int(weapon.battle_object, vars::pickel_trolley::status::REFLECT_COUNT, reflect_count);
-        let lr = VarModule::get_float(weapon.battle_object, vars::pickel_trolley::status::PREV_LR) * -1.0;
-        VarModule::set_float(weapon.battle_object, vars::pickel_trolley::status::PREV_LR, lr);
+    if reflect_count > VarModule::get_int(weapon.battle_object, REFLECT_COUNT) {
+        VarModule::set_int(weapon.battle_object, REFLECT_COUNT, reflect_count);
+        let lr = VarModule::get_float(weapon.battle_object, PREV_LR) * -1.0;
+        VarModule::set_float(weapon.battle_object, PREV_LR, lr);
         init_physics(weapon, lr, true);
 
         return 0.into();
@@ -131,7 +128,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         return 1.into();
     }
 
-    let mut ground_hit = false;
+    let mut is_near_floor = false;
     let mut offset = 0.0;
     if trigger == "infliction" {
         // will snap steve to the ground if he is within a certain distance above the collision
@@ -139,7 +136,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         let ground_distance = GroundModule::get_distance_to_floor(weapon.module_accessor, PostureModule::pos(weapon.module_accessor), snap_distance, true);
         if ground_distance != -1.0 {
             pos.y -= ground_distance;
-            ground_hit = true;
+            is_near_floor = true;
             offset = ground_distance;
         }
     }
@@ -161,15 +158,17 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
         LAST_EFFECT_SET_RATE(weapon, 0.6);
     }
+
     // teleport and inflict damage
     PostureModule::set_pos(owner_boma, &pos);
     PostureModule::init_pos(owner_boma, &pos, true, true);
-    //println!("triggered from {}", trigger);
     DamageModule::add_damage(owner_boma, 7.0, 0);
-    if trigger == "ground" || ground_hit {
+    if trigger == "ground" || is_near_floor {
         GroundModule::correct(owner_boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    let new_status = if !ground_hit { match trigger {
+
+    // change steve into the respective status, if applicable
+    let new_status = if !is_near_floor { match trigger {
         "wall" => *FIGHTER_STATUS_KIND_FALL_SPECIAL,
         "infliction" => *FIGHTER_STATUS_KIND_FALL,
         "damaged" => *FIGHTER_STATUS_KIND_DAMAGE_FALL,

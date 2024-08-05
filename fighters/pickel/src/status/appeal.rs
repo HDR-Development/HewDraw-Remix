@@ -15,6 +15,8 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         if rate < 4.0 { // max rate of 4x speed
             MotionModule::set_rate(fighter.boma(), (rate * 1.01)); // gradually speed up
         }
+
+        // special effects triggered at certain speed thresholds
         if (1.5..1.505).contains(&rate) {
             EFFECT_FLIP(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0.0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
@@ -35,6 +37,7 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         return 0.into(); 
     }
 
+    // training mode resource functionality
     if fighter.is_button_trigger(Buttons::Guard) {
         let materials: [[i32;3];7] = [
             // material, current material supply, max material supply
@@ -55,27 +58,24 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             }
         }
 
-        let mut material = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-        let mut effect = "pickel_craft_icon_wood";
         // checks the position of the control stick to determine what upgrade to give steve, if any
+        let mut direction = "null"; 
         if (-0.25..0.25).contains(&fighter.stick_y()) { // stick is moved mostly horizontally
-            if fighter.stick_x() >= 0.5 { // holding right1
-                material = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-                effect = "pickel_craft_icon_stone";
-            } else if fighter.stick_x() <= -0.5 { // holding left
-                material = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-                effect = "pickel_craft_icon_gold";
-            }
+            if fighter.stick_x() >= 0.5 { direction = "right"; } 
+            else if fighter.stick_x() <= -0.5 { direction = "left"; }
+        } 
+        else if (-0.25..0.25).contains(&fighter.stick_x()) { // stick is moved mostly vertically
+            if fighter.stick_y() >= 0.5 { direction = "up"; } 
+            else if fighter.stick_y() <= -0.5 { direction = "down"; }
         }
-        if (-0.25..0.25).contains(&fighter.stick_x()) { // stick is moved mostly vertically
-            if fighter.stick_y() >= 0.5 { // holding up
-                material = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
-                effect = "pickel_craft_icon_diamond";
-            } else if fighter.stick_y() <= -0.5 { // holding down
-                material = *FIGHTER_PICKEL_MATERIAL_KIND_IRON; 
-                effect = "pickel_craft_icon_iron";
-            }
-        }
+        let (mut material, effect) = match direction {
+            "right" => (*FIGHTER_PICKEL_MATERIAL_KIND_STONE, "pickel_craft_icon_stone"),
+            "down" => (*FIGHTER_PICKEL_MATERIAL_KIND_STONE, "pickel_craft_icon_stone"),
+            "left" => (*FIGHTER_PICKEL_MATERIAL_KIND_GOLD, "pickel_craft_icon_gold"),
+            "up" => (*FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND, "pickel_craft_icon_diamond"),
+            /* neutral */ _ => (*FIGHTER_PICKEL_MATERIAL_KIND_WOOD, "pickel_craft_icon_wood")
+        };
+
         if !remove_resources {
             let lr = PostureModule::lr(fighter.boma()) as i32;
             EFFECT_FOLLOW(fighter, Hash40::new(effect), Hash40::new("top"), 0, 20, -5 * lr, 0, 0, 0, 1, true);

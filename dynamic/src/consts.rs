@@ -1255,7 +1255,7 @@ pub mod vars {
     pub mod pickel_trolley {
         pub mod instance {
             // ints 
-            pub const OWNER_ID: i32 = 0x0100;
+            pub const PEARL_OWNER_ID: i32 = 0x0100;
         }
         pub mod status {
             // ints

@@ -4,16 +4,8 @@ use super::*;
 
 pub unsafe extern "C" fn attack_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY) {
-        // needs more status changes to prevent ender pearls turning into minecarts. keeping disabled for now
-        // 
-        // let article = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
-        // let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
-        // let article_boma = sv_battle_object::module_accessor(article_id);
-        // // fail if there is already a minecart on the field
-        // if StatusModule::status_kind(article_boma) != WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
-            return 1.into();
-        //}
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
+        return 1.into();
     } 
 
     let pickel = fighter.global_table[0x5].get_ptr() as *mut BattleObjectModuleAccessor;
