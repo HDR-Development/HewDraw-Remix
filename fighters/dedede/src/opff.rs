@@ -207,6 +207,36 @@ unsafe fn super_jump_fail_edge_cancel(fighter: &mut L2CFighterCommon){
     }
 }
 
+unsafe fn jet_hammer_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
+    if fighter.is_motion_one_of(&[
+        Hash40::new("special_lw_start"),
+        Hash40::new("special_air_lw_start")]) {
+
+            let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
+            let charge = VarModule::get_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES) as f32;
+            let max_charge_frames = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("hold_max_f"));
+            let charge_start_frame = 4.0;
+            let charge_end_frame = 9.0;
+
+        if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames) && is_hold{
+
+            if charge % 30.0 == 0.0 && fighter.motion_frame() > 4.0{
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hammer3"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, true);
+            }
+            if charge % 10.0 == 0.0{
+                DamageModule::add_damage(fighter.module_accessor, 1.5, 0);
+            }
+            let motion_rate = (charge_end_frame - charge_start_frame)/(max_charge_frames * 2.0);
+            MotionModule::set_rate(fighter.module_accessor, motion_rate);
+            VarModule::set_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES, charge as i32 + 1);
+
+        } 
+        else{
+            MotionModule::set_rate(fighter.module_accessor, 1.0);
+        }
+    }
+}
+
 unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     // Rotation keyframes
     let start_frame = 0.0;
@@ -334,6 +364,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     super_jump_fail_edge_cancel(fighter);
     fastfall_specials(fighter);
     mask_toggle(fighter, boma, frame);
+    jet_hammer_charge(fighter, motion_kind);
 }
 
 pub extern "C" fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

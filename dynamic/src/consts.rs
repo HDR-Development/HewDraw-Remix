@@ -435,17 +435,20 @@ pub mod vars {
             //flags
             pub const CAN_WADDLE_DASH_FLAG: i32 = 0x0100;
             pub const IS_DASH_GORDO: i32 = 0x0101;
-            pub const IS_ANGLED_FLAG: i32 = 0x0102;
-            pub const IS_REMOVED_FLAG: i32 = 0x0103;
-            pub const EQUIP_MASK: i32 = 0x0106;
-            pub const CONTINUE_JET_SPIN: i32 = 0x0107;
-            pub const JET_GROUND_BONK: i32 = 0x0109;
+            pub const IS_REMOVED_FLAG: i32 = 0x0102;
+            pub const EQUIP_MASK: i32 = 0x0103;
+            pub const CONTINUE_JET_SPIN: i32 = 0x0104;
 
             //ints
-            pub const RECATCH_COUNTER: i32 = 0x0104;
+            pub const RECATCH_COUNTER: i32 = 0x0105;
+            pub const JET_CHARGE_FRAMES: i32 = 0x0106;
 
             //floats
-            pub const INHALE_STICK_Y: i32 = 0x0105;
+            pub const INHALE_STICK_Y: i32 = 0x0107;
+        }
+        pub mod status{
+            //flags
+            pub const SPECIAL_LW_CONTINUE_SPIN: i32 = 0x1100;
         }
     }
 
