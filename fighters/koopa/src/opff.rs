@@ -52,18 +52,18 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
 unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     //Ignore cooldown during respawn,death,entry and nspecial
-    if (&[
-        *FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
-        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE,
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_SPECIAL_N
-    ]).contains(&status_kind) {
+    ]) {
         return;
     }
 
-    let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
-    let charged_effect =  VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);
+    let charged_effect = VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);
     //If cooling down, remove ready effect
-    if !cooleddown {
+    if VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) > 0 {
+        VarModule::dec_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME);
         if charged_effect > 0 {
             VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID, 0);
             if EffectModule::is_exist_effect(boma, charged_effect as u32) {
@@ -73,10 +73,8 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
         return;
     }
     //Otherwise, spawn effect if effect does not exist
-    else if (charged_effect <= 0 
-    || !EffectModule::is_exist_effect(boma, charged_effect as u32))
-    {
-        if (charged_effect <= 0){
+    else if (charged_effect <= 0 || !EffectModule::is_exist_effect(boma, charged_effect as u32)) {
+        if (charged_effect <= 0) {
             gimmick_flash(boma);
         }
         let pos = &Vector3f{x: 0.0, y: 1.0, z: 0.0};
@@ -113,6 +111,20 @@ unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+pub unsafe fn initialize_fireball(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_INIT) {
+        return;
+    }
+    //Grant fireball during training mode
+    if is_training_mode() {
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+    }
+    else {
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+    }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -142,28 +154,14 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn initialize_fireball(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_INIT) {
-        return;
-    }
-    //Grant fireball during training mode
-    if is_training_mode() {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
-    }
-    else{
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
-    }
-    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
-}
-
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
     fireball_cooldown(boma,status_kind);
     koopa_ex_punch(fighter);
-    fastfall_specials(fighter);
     initialize_fireball(fighter);
+    fastfall_specials(fighter);
 }
 
 pub extern "C" fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

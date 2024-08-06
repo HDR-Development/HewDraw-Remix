@@ -92,10 +92,10 @@ unsafe extern "C" fn pikmin_attack_air_handle_pikmin(fighter: &mut L2CFighterCom
         if ret & 1 != 0 {
             let mut link_event = FighterPikminLinkEventWeaponPikminConstraint__new_l2c_table();
             link_event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("fighter_pikmin_link_event_weapon_pikmin_constraint")));
-            link_event[0xf2a5bf2beu64].assign(&L2CValue::Hash40(Hash40::new("top")));
+            link_event["owner_joint_id_"].assign(&L2CValue::Hash40(Hash40::new("top")));
             link_event["joint_id_"].assign(&L2CValue::Hash40(Hash40::new("top")));
             let object_id = fighter.global_table[OBJECT_ID].get_u32();
-            link_event[0xaa79e68a2u64].assign(&L2CValue::U32(object_id));
+            link_event["sender_id_"].assign(&L2CValue::U32(object_id));
             link_event_store_l2c_table(fighter, FIGHTER_PIKMIN_LINK_NO_PIKMIN.into(), link_event);
             LinkModule::set_attribute(fighter.module_accessor, *FIGHTER_PIKMIN_LINK_NO_PIKMIN, LinkAttribute{_address: *LINK_ATTRIBUTE_REFERENCE_PARENT_STOP as u8}, true);
             LinkModule::set_attribute(fighter.module_accessor, *FIGHTER_PIKMIN_LINK_NO_PIKMIN, LinkAttribute{_address: *LINK_ATTRIBUTE_REFERENCE_PARENT_ATTACK_STOP as u8}, true);
@@ -108,14 +108,14 @@ unsafe extern "C" fn pikmin_attack_air_handle_pikmin(fighter: &mut L2CFighterCom
             link_event["rate_"].assign(&L2CValue::F32(1.0));
             link_event["loop_"].assign(&L2CValue::Bool(false));
             let object_id = fighter.global_table[OBJECT_ID].get_u32();
-            link_event[0xaa79e68a2u64].assign(&L2CValue::U32(object_id));
+            link_event["sender_id_"].assign(&L2CValue::U32(object_id));
             link_event_store_l2c_table(fighter, FIGHTER_PIKMIN_LINK_NO_PIKMIN.into(), link_event);
 
             let mut link_event = FighterPikminLinkEventWeaponPikminChangeStatus__new_l2c_table();
             link_event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("fighter_pikmin_link_event_weapon_pikmin_change_status")));
             link_event["status_kind_"].assign(&L2CValue::I32(*WEAPON_PIKMIN_PIKMIN_STATUS_KIND_ATTACK_AIR));
             let object_id = fighter.global_table[OBJECT_ID].get_u32();
-            link_event[0xaa79e68a2u64].assign(&L2CValue::U32(object_id));
+            link_event["sender_id_"].assign(&L2CValue::U32(object_id));
             link_event_store_l2c_table(fighter, FIGHTER_PIKMIN_LINK_NO_PIKMIN.into(), link_event);
 
             let mut link_event = FighterPikminLinkEventWeaponPikminSyncLR__new_l2c_table();
@@ -123,7 +123,7 @@ unsafe extern "C" fn pikmin_attack_air_handle_pikmin(fighter: &mut L2CFighterCom
             let lr = PostureModule::lr(fighter.module_accessor);
             link_event["lr_"].assign(&L2CValue::F32(lr));
             let object_id = fighter.global_table[OBJECT_ID].get_u32();
-            link_event[0xaa79e68a2u64].assign(&L2CValue::U32(object_id));
+            link_event["sender_id_"].assign(&L2CValue::U32(object_id));
             link_event_store_l2c_table(fighter, FIGHTER_PIKMIN_LINK_NO_PIKMIN.into(), link_event);
 
             WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_INT_HAVE_PIKMIN);
