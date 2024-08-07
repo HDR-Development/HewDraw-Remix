@@ -1003,15 +1003,19 @@ pub mod vars {
     pub mod master {
         pub mod instance {
             // flags
-            pub const SPECIAL_AIR_HI_CATCH: i32 = 0x0100;
+            pub const ATTACK_S4_SPECIAL: i32 = 0x0100;
+            pub const SPECIAL_AIR_HI_CATCH: i32 = 0x0101;
         }
         pub mod status {
             // flags
-            pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
-            pub const AIR_SPECIAL_S_AUTOCANCEL: i32 = 0x1101;
+            pub const SPECIAL_LW_HOLD: i32 = 0x1100;
+        }
+    }
 
+    pub mod master_axe {
+        pub mod status {
             // ints
-            pub const AYMR_CHARGE_LEVEL: i32 = 0x1100;
+            pub const LIFE: i32 = 0x1100;
         }
     }
 
@@ -1772,6 +1776,10 @@ pub mod statuses {
     pub mod littlemac {
         pub const SPECIAL_LW_CANCEL: i32 = 0x1F4;
         pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
+    }
+
+    pub mod master_axe {
+        pub const SPECIAL_LW_YEET: i32 = 0x7;
     }
 
     pub mod mewtwo {
