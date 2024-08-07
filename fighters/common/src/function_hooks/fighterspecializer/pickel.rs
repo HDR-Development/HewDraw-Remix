@@ -44,6 +44,15 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
                     FighterSpecializer_Pickel::add_material_num(pickel_boma, *FIGHTER_PICKEL_MATERIAL_KIND_RED_STONE, gain_amount);
                 }
             }
+
+            // show a flash when steve is 5 entries away from a rare material
+            if (index + 5) == (gold | dmnd) {
+                let pickel_boma = pickel.module_accessor;
+                let lr = PostureModule::lr(pickel_boma);
+                let flash = EffectModule::req_on_joint(pickel_boma, Hash40::new("sys_smash_flash"), Hash40::new("top"), &Vector3f::new(0.0, 21.0, -7.0 * lr), &Vector3f::zero(), 0.7, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+                EffectModule::set_rate(pickel_boma, flash as u32, 1.0);
+            }
+
             if (0..99).contains(&index) { // continue the cycle
                 VarModule::inc_int(pickel, vars::pickel::instance::MATERIAL_INDEX);
             } else { // reset the cycle

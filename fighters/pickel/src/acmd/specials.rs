@@ -49,8 +49,10 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
             ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, false, -1);
             ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
-            // Side special already subtracts 1 gold by default, but the below line can make it cost more if it were ever needed
+            // side special already subtracts 1 gold by default, but the below line can make it cost more if it were ever needed
             // FighterSpecializer_Pickel::sub_material_num(boma, *FIGHTER_PICKEL_MATERIAL_KIND_GOLD, 1);
+            // re-imburse steve the 1 iron it costs to generate the trolley article
+            FighterSpecializer_Pickel::add_material_num(boma, *FIGHTER_PICKEL_MATERIAL_KIND_IRON, 1);
         }
     }
 }

@@ -7,6 +7,53 @@ const IRON: i32 = 0x3;
 const GOLD: i32 = 0x4;
 const DIAMOND: i32 = 0x6;
 
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+    if is_excute(agent) {
+        agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+    }
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE(agent, if material_kind == GOLD { 0.8 } else { 1.4 });
+    if is_excute(agent) {
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        FT_MOTION_RATE(agent, 1.0);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let damage = match material_kind {
+                ( WOOD | GOLD ) => 15.0,
+                STONE => 16.5,
+                IRON => 18.0,
+                /* DIAMOND */ _ => 20.0
+            };
+            let sfx = match material_kind {
+                ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
+                _ => *COLLISION_SOUND_ATTR_PUNCH
+            };
+            ATTACK(agent, 0, 0, Hash40::new("top"), damage, 42, 90, 0, 34, 3.8, 0.0, 8.0, 6.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, sfx, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 1, 0, Hash40::new("top"), damage, 42, 90, 0, 34, 4.4, 0.0, 8.0, 10.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, sfx, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 2, 0, Hash40::new("top"), damage, 42, 90, 0, 34, 4.6, 0.0, 8.0, 14.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, sfx, *ATTACK_REGION_SWORD);
+            agent.set_float(damage * 0.8, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+        } else {
+            // fist hitboxes
+            if is_excute(agent) {
+                ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 85, 0, 20, 3.8, 0.0, 8.0, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 361, 85, 0, 20, 4.4, 0.0, 8.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(agent) {
+            AttackModule::clear_all(boma);
+            if material_kind == GOLD { FT_MOTION_RATE(agent, 0.8); }
+        }
+    }
+}
+
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -185,6 +232,8 @@ unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4, Priority::Low);
+
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
     agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
     agent.acmd("sound_attackhi4", sound_attackhi4, Priority::Low);
