@@ -13,6 +13,7 @@ mod fire;
 mod fishingrod;
 mod forge;
 mod melt;
+mod pushobject;
 mod trolley;
 
 use smash::{
@@ -60,6 +61,7 @@ pub fn install() {
     fishingrod::install();
     forge::install();
     melt::install();
+    pushobject::install();
     trolley::install();
 
     // increases the amount of trolley articles that can be spawned at once

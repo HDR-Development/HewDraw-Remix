@@ -34,43 +34,35 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
                 IRON => 4.0,
                 /* DIAMOND */ _ => 4.5
             };
-            let hitstun: [f32;2] = match material_kind {
-                WOOD => [-7.0, -5.0],
-                STONE => [-5.0, -3.0],
-                IRON => [-3.0, -1.0],
-                GOLD => [-4.0, -2.0], 
-                /* DIAMOND */ _ => [0.0, 0.0]
+            let hitstun = match material_kind {
+                WOOD => -6.0,
+                STONE => -4.0,
+                IRON => -2.0,
+                GOLD => -3.0, 
+                /* DIAMOND */ _ => 0.0
             };
             let sfx = match material_kind {
                 ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
                 _ => *COLLISION_SOUND_ATTR_PUNCH
             };
-            // air hitboxes
-            ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 2.3, 0.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 2, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 2.3, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 3, 0, Hash40::new("top"), damage, 55, 130, 0, 30, 2.3, 0.0, 6.8, 5.4, Some(0.0), Some(6.8), Some(10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 0.25);
-            for id in 0..=3 { AttackModule::set_add_reaction_frame_revised(boma, id, hitstun[0], false); }
-            // ground hitboxes
+            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 65, 130, 0, 30, 2.3, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 2, 0, Hash40::new("haver"), damage, 65, 130, 0, 30, 2.3, 2.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 3, 0, Hash40::new("haver"), damage, 65, 130, 0, 30, 2.3, 2.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            ATTACK(agent, 4, 0, Hash40::new("top"), damage, 65, 130, 0, 30, 2.3, 0.0, 6.8, 5.4, Some(0.0), Some(6.8), Some(10.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 1, 2, 3, 4, 0.25);
+            for id in 1..=4 { AttackModule::set_add_reaction_frame_revised(boma, id, hitstun, false); }
+            /// locking hitbox on jab
             if boma.is_situation(*SITUATION_KIND_GROUND) 
             && (-0.1..0.1).contains(&agent.left_stick_x()) { // locking hitbox on jab
-                ATTACK(agent, 4, 0, Hash40::new("top"), damage, 361, 100, 20, 0, 2.5, 0.0, 3.3, 5.4, Some(0.0), Some(3.3), Some(11.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                AttackModule::set_down_only(boma, 4, false);
-            } else { // non-locking hitbox on ftilt/neutral air
-                ATTACK(agent, 4, 0, Hash40::new("top"), damage, 65, 130, 0, 25, 2.3, 0.0, 6.8, 5.4, Some(0.0), Some(6.8), Some(10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 0, 0, Hash40::new("top"), damage, 361, 100, 20, 0, 2.5, 0.0, 3.3, 5.4, Some(0.0), Some(3.3), Some(10.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                AttackModule::set_down_only(boma, 0, false);
             }
-            ATTACK(agent, 5, 0, Hash40::new("haver"), damage, 65, 130, 0, 25, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 6, 0, Hash40::new("haver"), damage, 65, 130, 0, 25, 2.3, 0.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATTACK(agent, 7, 0, Hash40::new("haver"), damage, 65, 130, 0, 25, 2.3, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-            ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 4, 5, 6, 7, 0.25);
-            for id in 4..=7 { AttackModule::set_add_reaction_frame_revised(boma, id, hitstun[1], false); }
             agent.set_float(2.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         } else {
             // fist hitboxes
             ATTACK(agent, 0, 0, Hash40::new("haver"), 2.5, 60, 50, 0, 72, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             if boma.is_situation(*SITUATION_KIND_GROUND) { // ground-only locking hitbox
-                ATTACK(agent, 7, 0, Hash40::new("top"), 2.5, 361, 100, 20, 0, 2.5, 0.0, 3.3, 5.4, Some(0.0), Some(3.3), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 7, 0, Hash40::new("top"), 2.5, 361, 100, 20, 0, 2.5, 0.0, 3.3, 3.0, Some(0.0), Some(3.3), Some(5.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             }
             AttackModule::set_add_reaction_frame_revised(boma, 0, -10.0, false);
         }
@@ -99,6 +91,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 1.5);
     if is_excute(agent) {
         agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
     }
@@ -106,10 +99,11 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 
-            if material_kind == GOLD { 1.4 } else { 1.0 }
+            if material_kind == GOLD { 1.2 } else { 1.0 }
         );
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 0.7);
     if is_excute(agent) {
         if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
             let damage = match material_kind {
@@ -118,21 +112,23 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
                 IRON => 7.5,
                 /* DIAMOND */ _ => 8.5
             };
-            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 85, 70, 0, 60, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 85, 70, 0, 60, 4.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 85, 70, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 85, 70, 0, 60, 4.5, -2.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             agent.set_float(5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         } else { // fist hitbox
             ATTACK(agent, 0, 0, Hash40::new("armr"), 4.0, 75, 60, 0, 70, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
-    wait(lua_state, 8.0);
+    wait(lua_state, 10.0);
+    FT_MOTION_RATE(agent, 0.6);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
         MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
     }
     frame(lua_state, 16.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, if material_kind == GOLD { 0.75 } else { 0.5 });
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.5);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -143,7 +139,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     let material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
         let effect: [&str;2] = match material_kind {
@@ -156,14 +152,14 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 0.9, false);
         }
-        frame(lua_state, 6.0);
+        frame(lua_state, 5.0);
         if is_excute(agent) {
-            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), -3.2, 11.5, -1.89, -80, -80, -27, 0.9, false, *EF_FLIP_YZ);
+            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), -3.2, 12.0, -1.89, -90, -90, -27, 0.9, false, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 0.4);
         }
     } else {
         // fist effect
-        frame(lua_state, 6.0);
+        frame(lua_state, 4.0);
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 11, -3, -20, -60, -70, 0.7, false, *EF_FLIP_YZ, 0.05);
         }
