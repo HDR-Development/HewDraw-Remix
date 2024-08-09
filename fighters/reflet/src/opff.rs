@@ -24,7 +24,8 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 unsafe fn elwind_cost(fighter: &mut L2CFighterCommon) {
     //cost of each elwind 1 -> 2
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2]) 
+    //if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2]) 
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
     && StatusModule::is_changing(fighter.module_accessor) {
         fighter.dec_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
         if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {

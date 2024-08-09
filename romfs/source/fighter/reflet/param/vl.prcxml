@@ -56,18 +56,9 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
-  <list hash="param_special_s">
-    <struct index="0">
-      <float hash="special_s_consume_point">1.0</float>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_next_jump_y_speed">2.8</float>
-      <int hash="special_hi_hundred_attack_point">50</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

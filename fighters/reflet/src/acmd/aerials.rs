@@ -304,7 +304,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         VarModule::set_int(agent.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY, 5);
     }
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.75);
+    FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 5.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
