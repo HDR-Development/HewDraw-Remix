@@ -66,7 +66,7 @@ unsafe extern "C" fn attack_air_lw_start_main_loop(fighter: &mut L2CFighterCommo
         if FighterSpecializer_Pickel::check_material_attack_air_lw_generate(fighter.module_accessor) {
             let attack_air_lw_interval = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_air_lw_interval"));
             WorkModule::set_int(fighter.module_accessor, attack_air_lw_interval, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_AIR_LW_FORBID_FRAME);
-            let anvil_iron_count = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), 0x188e0b0db2) + 2;
+            let anvil_iron_count = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), 0x188e0b0db2) + 1;
             FighterSpecializer_Pickel::sub_material_num(fighter.module_accessor, *FIGHTER_PICKEL_MATERIAL_KIND_IRON, anvil_iron_count);
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE, false, -1);
             if LinkModule::is_link(fighter.module_accessor, *FIGHTER_PICKEL_LINK_NO_FORGE) {

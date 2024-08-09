@@ -49,7 +49,7 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
             if [25, 45, 55, 85, 95].contains(&index) {
                 let pickel_boma = pickel.module_accessor;
                 let flash = EffectModule::req_on_joint(pickel_boma, Hash40::new("sys_smash_flash"), Hash40::new("top"), &Vector3f::new(6.5, 1.0, 0.0), &Vector3f::zero(), 0.8, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-                EffectModule::set_rate(pickel_boma, flash as u32, 1.0);
+                EffectModule::set_rate(pickel_boma, flash as u32, 0.5);
             }
 
             if (0..99).contains(&index) { // continue the cycle
