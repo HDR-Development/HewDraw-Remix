@@ -97,7 +97,7 @@
   <struct hash="param_pickelobject">
     <float hash="hp_grade_1">7</float>
     <float hash="hp_wood">10</float>
-    <float hash="hp_stone">12</float>
+    <float hash="hp_stone">13</float>
     <float hash="hp_iron">16</float>
     <float hash="fighter_landing_damage_mul">5.5</float>
   </struct>
@@ -112,28 +112,5 @@
     <int hash="repair_material_num_stone">1</int>
     <int hash="repair_material_num_iron">1</int>
     <int hash="repair_material_num_gold">1</int>
-  </struct>
-  <list hash="param_enderpearl">
-    <struct index="0">
-      <int hash="life">70</int>
-      <float hash="speed">1.4</float>
-      <float hash="gravity_accel">0.1</float>
-      <float hash="angle">-10</float>
-      <float hash="bound_ref_speed_mul">0.97</float>
-      <float hash="bounded_speed_y_min">1.4</float>
-      <float hash="bounded_speed_y_max">1.6</float>
-      <int hash="bound_count_max">7</int>
-      <float hash="wall_check_angle">60</float>
-      <int hash="is_penetration">0</int>
-      <float hash="gravity_acl_max">0</float>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-  </list>
-  <struct hash="map_collision_enderpearl">
-    <hash40 hash="shape_type">grcorrect_shape_circle</hash40>
-    <float hash="center_y">0</float>
-    <float hash="radius">1</float>
   </struct>
 </struct>

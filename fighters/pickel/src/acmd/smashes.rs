@@ -83,7 +83,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     } else {
         // fist hitboxes
         if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 8.0, 80, 88, 0, 60, 4.0, 3.0, 0.0, 3.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("haver"), 8.0, 80, 88, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 19.0);
@@ -150,12 +150,12 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         frame(lua_state, 12.0);    
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 8.0, -1, 0, 15, 40, 0.8, true, *EF_FLIP_YZ, 0.06);
+            LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
             LAST_EFFECT_SET_RATE(agent, 0.5);
         }
         frame(lua_state, 20.0);
         if is_excute(agent) {
             EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_arc_b"), true, true);
-            LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
         }
     }
 }
