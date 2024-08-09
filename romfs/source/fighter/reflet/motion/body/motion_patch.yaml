@@ -41,6 +41,9 @@ attack_s3_s:
 special_air_s:
   extra:
     cancel_frame: 52
+attack_air_f:
+  extra:
+    cancel_frame: 35
 attack_air_hi:
   extra:
     cancel_frame: 44
@@ -55,6 +58,9 @@ special_n_cancel:
 special_air_n_cancel:
   extra:
     cancel_frame: 8
+special_n_tron_end:
+  extra:
+    cancel_frame: 48
 catch_attack:
   extra:
     cancel_frame: 0
