@@ -616,13 +616,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         VarModule::set_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.0);
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
-        // ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        // ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, false, 0);
-        // if !ArticleModule::is_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_ARROW1) {
-        //     ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_ARROW1, false, 0);
-        // }
-        // ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, Hash40::new("special_lw_yeet"), false, 0.0);
-        // ArticleModule::shoot_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
@@ -630,10 +623,10 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
             VarModule::set_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD, 1);
         }
-        else{
+        else {
             VarModule::set_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD, 0);
             let motion_rate = 5.0/(42.0-14.0);
             FT_MOTION_RATE(agent, motion_rate);
@@ -642,13 +635,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 34.0);
     if is_excute(agent) {
-        // if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
-        //     VarModule::set_int(agent.battle_object, vars::master::status::AYMR_CHARGE_LEVEL, 2);
-        //     let motion_rate = 48.0/(42.0-34.0);
-        //     FT_MOTION_RATE(agent, motion_rate);
-        //     ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-        //     DamageModule::set_damage_mul(boma, 1.25);
-        // }
         if VarModule::get_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD) > 0 {
             WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR);
         }
@@ -659,8 +645,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 42.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
         ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK);
     }
@@ -672,7 +658,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
-        
     }
     frame(lua_state, 64.0);
     if is_excute(agent) {
@@ -684,7 +669,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         ArticleModule::set_flag(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, false, *WEAPON_PIERCE_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
         WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_2);
-        
     }
     frame(lua_state, 96.0);
     if is_excute(agent) {
@@ -706,7 +690,9 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
         EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
     }
     frame(lua_state, 15.0);
@@ -721,9 +707,6 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 6.0);
             EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 6.0);
-
-            //COL_PRI(agent, 200);
-            //FLASH(agent, 1.0, 0.115, 0.71, 0.75);
         }
     }
     frame(lua_state, 35.0);
@@ -738,81 +721,6 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_COLOR(agent, 0.0, 0.0, 0.0);
             EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.3);
-
-            //COL_PRI(agent, 200);
-            //FLASH(agent, 0.325, 0.157, 0.05, 0.75);
-        }
-    }
-    frame(lua_state, 40.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold"), false, true);
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold2"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 58.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 60.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash_reverb"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 1, false);
-        EffectModule::set_disable_render_offset_last(boma);
-    }
-    frame(lua_state, 64.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 7, 1, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 68.0);
-    if is_excute(agent) {
-        EFFECT_DETACH_KIND(agent, Hash40::new("master_axe_slash_reverb"), -1);
-    }
-    frame(lua_state, 70.0);
-    if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("master_axe_slash"), false, true);
-    }
-}
-
-unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD) > 0 { 
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold"), false, true);
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold_end"), false, true);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 6.0);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold2"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 6.0);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 6.0);
-
-            //COL_PRI(agent, 200);
-            //FLASH(agent, 1.0, 0.115, 0.71, 0.75);
-        }
-    }
-    frame(lua_state, 35.0);
-    if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::master::status::SPECIAL_LW_HOLD) > 1 {
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold"), false, true);
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold2"), false, true);
-            EFFECT_OFF_KIND(agent, Hash40::new("master_axe_hold_end"), false, true);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.0, 0.0, 0.0);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold2"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.0, 0.0, 0.0);
-            EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.3);
-
-            //COL_PRI(agent, 200);
-            //FLASH(agent, 0.325, 0.157, 0.05, 0.75);
         }
     }
     frame(lua_state, 40.0);
@@ -878,17 +786,6 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 0.9);
     }
-    // frame(lua_state, 1.0);
-    // if is_excute(agent) {
-    //     if VarModule::get_int(agent.battle_object, vars::master::status::AYMR_CHARGE_LEVEL) == 2 {
-    //         EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 3.0, true);
-    //         EFFECT_OFF_KIND(agent, Hash40::new("master_axe_slash_air_reverb"), true, true);
-    //     }
-    //     else{
-    //         EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 1, true);
-    //         EFFECT_OFF_KIND(agent, Hash40::new("master_axe_slash_air_reverb"), true, true);
-    //     }
-    // }
     frame(lua_state, 56.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("master_axe_rock"), Hash40::new("haver"), 0, 15, 1, 0, 0, 0, 1, true);
@@ -928,7 +825,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
-    agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
+
     agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
     agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
     agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);

@@ -17,7 +17,7 @@ special_lw_yeet:
     unk_2000: false
   blend_frames: 0
   animations:
-    - name: d03speciallwturn.nuanmb
+    - name: c04attacklw4.nuanmb
       unk: 0
   scripts:
     - sound_speciallwyeet

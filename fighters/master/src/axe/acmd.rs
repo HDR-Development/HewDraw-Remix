@@ -27,11 +27,11 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 
         }
     }
-    frame(lua_state, 64.0);
+    frame(lua_state, 63.0);
     if is_excute(agent) {
-        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 0 {
-            ATTACK(agent, 0, 0, Hash40::new("haver"), 18.0, 51, 83, 0, 60, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), 18.0, 275, 34, 0, 20, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+        if owner_module_accessor.is_situation(*SITUATION_KIND_AIR)
+        && VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 0 {
+            ATTACK(agent, 0, 0, Hash40::new("haver"), 18.0, 275, 34, 0, 20, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
             ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3.0);
         }
     }
@@ -88,23 +88,8 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_speciallwyeet(agent: &mut L2CAgentBase) {
-    
-}
-
-unsafe extern "C" fn effect_speciallwyeet(agent: &mut L2CAgentBase) {
-    
-}
-
-unsafe extern "C" fn sound_speciallwyeet(agent: &mut L2CAgentBase) {
-    
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
-    agent.acmd("game_speciallwyeet", game_speciallwyeet, Priority::Low);
-    agent.acmd("effect_speciallwyeet", effect_speciallwyeet, Priority::Low);
-    agent.acmd("sound_speciallwyeet", sound_speciallwyeet, Priority::Low);
 }

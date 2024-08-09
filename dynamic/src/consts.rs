@@ -1818,5 +1818,11 @@ pub mod statuses {
     }
 }
 
+pub mod generate {
+    pub mod master {
+        pub const AXE_THROWN: i32 = 0x9;
+    }
+}
+
 // extra lua_consts
 pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);
