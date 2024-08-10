@@ -21,6 +21,7 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             EFFECT_FLIP(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0.0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
             PLAY_SE(fighter, Hash40::new("se_common_smashswing_04"));
+            ControlModule::set_rumble(fighter.boma(), Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         if rate > 1.505 {
             LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (0.35 * rate), 0, 0, 0, 0, 0, 0, false);
@@ -30,6 +31,7 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             EFFECT_FLIP(fighter, Hash40::new("sys_ground_shockwave"), Hash40::new("sys_ground_shockwave"), Hash40::new("top"), 0.0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
             QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
             PLAY_SE(fighter, Hash40::new("se_system_amiibo_entry_2"));
+            ControlModule::set_rumble(fighter.boma(), Hash40::new("rbkind_explosionm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
     

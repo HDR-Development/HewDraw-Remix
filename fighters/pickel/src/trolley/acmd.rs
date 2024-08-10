@@ -27,7 +27,7 @@ unsafe extern "C" fn game_pearlfly(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 80, 100, 70, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 80, 100, 70, 0, 8.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
 }
 
@@ -39,7 +39,7 @@ unsafe extern "C" fn effect_pearlfly(agent: &mut L2CAgentBase) {
         let owner = utils::util::get_battle_object_from_id(owner_id as u32);
         let owner_boma = &mut *(*owner).module_accessor;
         let lr = PostureModule::lr(owner_boma) as i32;
-        EFFECT_FOLLOW(agent, Hash40::new("pickel_icon_ender_pearl"), Hash40::new("top"), 0, 0, -10 * lr, 0, 0, 0, 1.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pickel_icon_ender_pearl"), Hash40::new("top"), 0, 0, -20 * lr, 0, 0, 0, 3.5, true);
     }
 }
 

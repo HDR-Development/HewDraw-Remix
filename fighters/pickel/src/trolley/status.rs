@@ -68,6 +68,7 @@ unsafe extern "C" fn pearl_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     // turn off minecart model
     ModelModule::set_mesh_visibility(weapon.module_accessor, Hash40::new("trolley_1"), false);
     ModelModule::set_mesh_visibility(weapon.module_accessor, Hash40::new("trolley_2"), false);
+    PostureModule::set_scale(weapon.module_accessor, 0.5, false);
 
     // prevents rails from spawning
     ArticleModule::remove_exist(weapon.module_accessor, *WEAPON_PICKEL_TROLLEY_GENERATE_ARTICLE_RAIL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -82,6 +83,8 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         y: PostureModule::pos_y(weapon.module_accessor),
         z: 0.0  
     };
+
+    VarModule::inc_int(weapon.battle_object, TRAVEL_FRAMES);
 
     let owner_id = VarModule::get_int(weapon.battle_object, PEARL_OWNER_ID) as u32;
     let owner = utils::util::get_battle_object_from_id(owner_id);
@@ -151,22 +154,26 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     let lr = PostureModule::lr(weapon.module_accessor);
     for y_pos in [7.0, 13.0] {
         // new location
-        EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, y_pos - offset, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, (y_pos - offset) * 2.0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
         LAST_EFFECT_SET_RATE(weapon, 0.6);
         // old location
-        EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, y_pos + (owner_pos.y - pos.y) - offset, (owner_pos.x - pos.x) * lr, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, (y_pos + (owner_pos.y - pos.y) - offset) * 2.0, ((owner_pos.x - pos.x) * lr) * 2.0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
         LAST_EFFECT_SET_RATE(weapon, 0.6);
     }
 
-    // teleport and inflict damage
+    // initiate teleport
     PostureModule::set_pos(owner_boma, &pos);
     PostureModule::init_pos(owner_boma, &pos, true, true);
-    DamageModule::add_damage(owner_boma, 7.0, 0);
     if trigger == "ground" || is_near_floor {
         GroundModule::correct(owner_boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
+
+    // inflict damage relative to how long the pearl traveled
+    let travel_frames = VarModule::get_int(weapon.battle_object, TRAVEL_FRAMES) as f32;
+    let added_damage = if travel_frames <= 15.0 { 0.0 } else { (travel_frames - 15.0) / 3.0 };
+    DamageModule::add_damage(owner_boma, 1.0 + added_damage, 0);
 
     // change steve into the respective status, if applicable
     let new_status = if !is_near_floor { match trigger {
@@ -178,10 +185,12 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     if new_status != 0 {
         StatusModule::change_status_force(owner_boma, new_status, true); 
         if trigger == "infliction" {
+            // apply a slight vertical nudge to steve
             KineticModule::clear_speed_all(owner_boma);
+            KineticModule::add_speed(owner_boma, &Vector3f::new(0.0, 0.35, 0.0));
         }
     }
-    
+
     // remove the article
     notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
 

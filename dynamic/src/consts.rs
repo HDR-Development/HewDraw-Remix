@@ -1227,6 +1227,7 @@ pub mod vars {
             pub const MATERIAL_INDEX: i32 = 0x0100;
             pub const MATERIAL_EFFECT_HANDLER: i32 = 0x0101;
             pub const HITSTUN_TIMER: i32 = 0x0102;
+            pub const PEARL_COOLDOWN: i32 = 0x103;
 
             // floats
             pub const DAMAGE_TRACKER: i32 = 0x0100;
@@ -1260,6 +1261,7 @@ pub mod vars {
         pub mod status {
             // ints
             pub const REFLECT_COUNT: i32 = 0x1100;
+            pub const TRAVEL_FRAMES: i32 = 0x1101;
             
             // floats
             pub const PREV_LR: i32 = 0x1100;

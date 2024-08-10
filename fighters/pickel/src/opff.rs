@@ -254,6 +254,18 @@ unsafe fn shovel_position(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn pearl_cooldown(fighter: &mut L2CFighterCommon) {
+    if VarModule::get_int(fighter.object(), PEARL_COOLDOWN) > 0 {
+        VarModule::dec_int(fighter.object(), PEARL_COOLDOWN);
+
+        if VarModule::get_int(fighter.object(), PEARL_COOLDOWN) == 1 {
+            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_flash"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, false, 0.85);
+            LAST_EFFECT_SET_COLOR(fighter, 0.85, 0.1, 0.85);
+            LAST_EFFECT_SET_RATE(fighter, 0.55);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -293,6 +305,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     elytra_cancel(boma);
     rod_removal(boma);
     shovel_position(boma);
+    pearl_cooldown(fighter);
     fastfall_specials(fighter);
 }
 
