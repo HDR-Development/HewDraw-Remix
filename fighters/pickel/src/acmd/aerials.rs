@@ -158,7 +158,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
             }
             frame(lua_state, 8.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, 2.6, -15, -45, -75, 1.0, true, *EF_FLIP_YZ);
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, 3.6, -15, -45, -75, 1.0, true, *EF_FLIP_YZ);
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -353,7 +353,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
             }
             frame(lua_state, 12.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, -5.0, -165, 45, -75, 1.0, true, *EF_FLIP_YZ);
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, -4.0, -165, 45, -75, 1.0, true, *EF_FLIP_YZ);
             }
             frame(lua_state, 17.0);
             if is_excute(agent) {

@@ -80,6 +80,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         };
         if is_excute(agent) {
             ATTACK(agent, 0, 0, Hash40::new("weaponr"), damage, 105, 95, 0, 60, 5.0, 0.0, 5.5, 2.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("weaponr"), damage, 105, 95, 0, 60, 4.0, 0.0, 0.0, 2.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             agent.set_float(damage * 0.8, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
         }
     } else {
@@ -134,7 +135,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         // }
         frame(lua_state, 14.0);
         if is_excute(agent) {
-            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 11.5, 2.5, 0, 30, 100, 1, true, *EF_FLIP_YZ);
+            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 10.5, 1.5, 0, 30, 100, 1, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 0.95 } else { 0.55 });
         }
         frame(lua_state, 19.0);
