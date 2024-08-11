@@ -317,8 +317,6 @@ unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             return;
         }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        // burst of speed specifically for EX tatsu
-        KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
     }
 
     // always use heavy during EX
