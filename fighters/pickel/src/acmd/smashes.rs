@@ -136,15 +136,11 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
         frame(lua_state, 14.0);
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 10.5, 1.5, 0, 30, 100, 1, true, *EF_FLIP_YZ);
-            LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 0.95 } else { 0.55 });
+            LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.0 } else { 0.8 });
         }
         frame(lua_state, 19.0);
         if is_excute(agent) {
             EFFECT_OFF_KIND(agent, Hash40::new(effect[0]), false, true);
-        }
-        frame(lua_state, 20.0);
-        if is_excute(agent) {
-            EFFECT_OFF_KIND(agent, Hash40::new(effect[1]), true, true);
         }
     } else {
     // fist effects

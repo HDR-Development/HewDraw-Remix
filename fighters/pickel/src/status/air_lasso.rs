@@ -47,8 +47,10 @@ unsafe extern "C" fn air_lasso_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         // initiates the rod's rewind if it hits an opponent
         if AttackModule::is_infliction(rod_boma, (*COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
             AttackModule::clear_all(rod_boma);
-            if fighter.motion_frame() < 18.0 {
-                MotionModule::set_frame(fighter.module_accessor, 18.0, true);
+            if fighter.motion_frame() < 37.0 {
+                MotionModule::set_frame(fighter.module_accessor, 37.0, true);
+                ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+                MotionModule::set_rate(fighter.module_accessor, 1.0);
             }
         }
     }

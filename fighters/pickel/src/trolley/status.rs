@@ -77,13 +77,12 @@ unsafe extern "C" fn pearl_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    // tracks the pearl's current position
+    // tracks the pearl's current position and travel time
     let mut pos = Vector3f { 
         x: PostureModule::pos_x(weapon.module_accessor), 
         y: PostureModule::pos_y(weapon.module_accessor),
         z: 0.0  
     };
-
     VarModule::inc_int(weapon.battle_object, TRAVEL_FRAMES);
 
     let owner_id = VarModule::get_int(weapon.battle_object, PEARL_OWNER_ID) as u32;
@@ -187,7 +186,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         if trigger == "infliction" {
             // apply a slight vertical nudge to steve
             KineticModule::clear_speed_all(owner_boma);
-            KineticModule::add_speed(owner_boma, &Vector3f::new(0.0, 0.35, 0.0));
+            KineticModule::add_speed(owner_boma, &Vector3f::new(0.0, 0.4, 0.0));
         }
     }
 

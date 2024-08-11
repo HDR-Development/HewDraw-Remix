@@ -148,9 +148,9 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
             /* DIAMOND */ _ => ["pickel_axe_flare_diamond", "pickel_atk_axe_diamond"]
         };
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 0.9, false);
+            EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.0, false);
         }
-        frame(lua_state, 5.0);
+        frame(lua_state, 6.0);
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), -3.2, 12.0, -1.89, -90, -90, -27, 0.9, false, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 0.5);
@@ -164,7 +164,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(agent, 0.5);
         }
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 14.0);
     if is_excute(agent) {
         let effects: [&str;6] = [
             "pickel_axe_flare_wood",

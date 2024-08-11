@@ -82,7 +82,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if is_excute(agent) {
             agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-            let rate = if material_kind == GOLD { 1.0 } else { 0.9 };
+            let rate = if material_kind == GOLD { 0.7 } else { 0.6 };
             MotionModule::set_rate(boma, rate);
             MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
         }
@@ -153,6 +153,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
                 GOLD => ["pickel_sword_flare_gold", "pickel_atk_slash_gold"],
                 /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"]
             };
+            frame(lua_state, 7.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.25, true);
             }
@@ -188,13 +189,14 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
                 GOLD => ["pickel_pick_flare_gold", "pickel_atk_pick_gold"],
                 /* DIAMOND */ _ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
             };
+            frame(lua_state, 7.5);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
             frame(lua_state, 8.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1, 8.5, 4, -10, -35, -75.7, 1, true, *EF_FLIP_YZ);
-                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.1 } else { 0.6 });
+                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.0 } else { 0.8 });
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -202,10 +204,11 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
             }
         } else {
         // fist effect
-            frame(lua_state, 8.0);
+            frame(lua_state, 7.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 10.7, 2.6, -10, -20, -90, 0.6, true, *EF_FLIP_YZ, 0.06);
                 LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
+                LAST_EFFECT_SET_RATE(agent, 0.8);
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -348,12 +351,13 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
                 GOLD => ["pickel_sword_flare_gold", "pickel_atk_slash_gold"],
                 /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"]
             };
+            frame(lua_state, 11.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.25, true);
             }
             frame(lua_state, 12.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, -4.0, -165, 45, -75, 1.0, true, *EF_FLIP_YZ);
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, -4.0, -165, 50, -70, 1.0, true, *EF_FLIP_YZ);
             }
             frame(lua_state, 17.0);
             if is_excute(agent) {
@@ -384,21 +388,18 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
                 GOLD => ["pickel_pick_flare_gold", "pickel_atk_pick_gold"],
                 /* DIAMOND */ _ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
             };
+            frame(lua_state, 11.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
-            frame(lua_state, 12.0);
+            frame(lua_state, 13.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 9.7, -4, 180, 35, -100, 1, true, *EF_FLIP_YZ);
-                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 0.95 } else { 0.55 });
+                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.0 } else { 0.8 });
             }
             frame(lua_state, 16.0);
             if is_excute(agent) {
                 EFFECT_OFF_KIND(agent, Hash40::new(effect[0]), false, true);
-            }
-            frame(lua_state, 17.0);
-            if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(effect[1]), true, true);
             }
         } else {
         // fist effects
@@ -424,10 +425,10 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
         agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
     }
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if is_excute(agent) {
-        let rate = if material_kind == GOLD { 0.9 } else { 0.6 };
+        let rate = if material_kind == GOLD { 0.7 } else { 0.4 };
         MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
     }
     frame(lua_state, 3.0);
@@ -449,21 +450,17 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
             ATTACK(agent, 0, 0, Hash40::new("armr"), 3.0, 65, 60, 0, 50, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
-    wait(lua_state, 5.0);
+    wait(lua_state, 4.5);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if material_kind != GOLD {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
-        }
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY,
+            if material_kind == GOLD { 1.1 } else { 1.0 }
+        );
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
         agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_HI_ENABLE_LANDING);
-        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0)
     }
 }
 
@@ -481,7 +478,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
             /* DIAMOND */ _ => ["pickel_axe_flare_diamond", "pickel_atk_axe_diamond"]
         };
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 0.9, false);
+            EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.0, false);
         }
         frame(lua_state, 4.0);
         if is_excute(agent) {
@@ -497,7 +494,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(agent, 0.8);           
         }
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         let effects: [&str;6] = [
             "pickel_axe_flare_wood",
@@ -536,20 +533,16 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
     }
     frame(lua_state, 12.0);
-    FT_MOTION_RATE(agent, 2.35); // the higher the number, the longer the line will end up being cast
     if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.9); // the lower the number, the longer the line will end up being cast
         ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, *WEAPON_PICKEL_FISHINGROD_STATUS_KIND_SHOOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("air_catch"), false, -1.0);     
         ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, 18.0);
-    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 38.0);
     if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.0);
         ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
-    }
-    frame(lua_state, 36.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
     }
 }
 
