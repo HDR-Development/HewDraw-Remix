@@ -79,6 +79,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
+            opff::check_burnout(fighter);
             pause_meter_regen(fighter, 120);
         }
     }

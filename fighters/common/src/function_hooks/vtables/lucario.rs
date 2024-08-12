@@ -1,4 +1,5 @@
 use super::*;
+use interpolation::Lerp;
 use utils::ext::*;
 use std::arch::asm;
 
@@ -88,14 +89,13 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 
     let min_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.min_aurapower");
     let max_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.max_aurapower");
+    let meter = MeterModule::meter(object) as f32;
+    let meter_max = MeterModule::meter_cap(object) as f32 * MeterModule::meter_per_level(object);
+    let aurapower = min_aurapower.lerp(&max_aurapower, &(meter / meter_max));
 
-    let charge = MeterModule::meter(object) as f32;
-    let max_charge = MeterModule::meter_cap(object) as f32 * MeterModule::meter_per_level(object);
-
-    let diff = max_aurapower - min_aurapower;
-    let aura_power = min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge);
-    // println!("aurapower: {}", aura_power);
-    return aura_power;
+    let rounded_aurapower = (aurapower * 100.0).round() / 100.0; // 2 decimal places
+    // println!("aurapower: {}", rounded_aurapower);
+    return rounded_aurapower;
 }
 
 #[skyline::hook(offset = 0xc5ce40)]

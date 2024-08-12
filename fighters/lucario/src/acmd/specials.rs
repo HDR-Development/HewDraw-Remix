@@ -7,6 +7,7 @@ unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
         MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+        opff::check_burnout(agent);
         let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
         VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
     }
@@ -50,6 +51,7 @@ unsafe extern "C" fn game_specialairnbomb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
         MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+        opff::check_burnout(agent);
         let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
         VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
     }
