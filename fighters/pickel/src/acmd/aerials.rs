@@ -483,7 +483,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
         frame(lua_state, 4.0);
         if is_excute(agent) {
             EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), -3.2, 12.0, -1.89, -90, -90, -27, 0.9, false, *EF_FLIP_YZ);
-            LAST_EFFECT_SET_RATE(agent, 0.4);
+            LAST_EFFECT_SET_RATE(agent, 0.5);
         }
     } else {
         // fist effect
