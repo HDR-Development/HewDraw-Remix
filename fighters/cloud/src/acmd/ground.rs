@@ -27,6 +27,17 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("top"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 11.5, -1, 5, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 14, 10, 0, 0, 0, 0, 0.9, 0, 0, 0, 360, 0, 0, false, 0.7);
+    }
+}
+
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -88,7 +99,10 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11, Priority::Low);
+    agent.acmd("effect_attack11", effect_attack11, Priority::Low);
+
     agent.acmd("game_attack12", game_attack12, Priority::Low);
+
     agent.acmd("game_attack13", game_attack13, Priority::Low);
     
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
