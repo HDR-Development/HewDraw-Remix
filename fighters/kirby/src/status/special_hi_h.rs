@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::kirby::SPECIAL_HI_H
 
 unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -21,7 +22,7 @@ unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValu
         false,
         false,
         false,
-        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
@@ -32,7 +33,7 @@ unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn special_hi_h_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_h"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -67,13 +68,8 @@ unsafe extern "C" fn special_hi_h_end(fighter: &mut L2CFighterCommon) -> L2CValu
     return 0.into()
 }
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_kirby"),
-        statuses::kirby::SPECIAL_HI_H,
-        StatusInfo::new()
-            .with_pre(special_hi_h_pre)
-            .with_main(special_hi_h_main)
-            .with_end(special_hi_h_end)
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::kirby::SPECIAL_HI_H, special_hi_h_pre);
+    agent.status(Main, statuses::kirby::SPECIAL_HI_H, special_hi_h_main);
+    agent.status(End, statuses::kirby::SPECIAL_HI_H, special_hi_h_end);
 }

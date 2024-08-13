@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_lag">
+        <float hash="whiff_lag">6.0</float>
+        <float hash="dive_side_special">3.0</float>
+        <float hash="side_special">6.0</float>
+        <float hash="up_special">6.0</float>
+    </struct>
+</struct>

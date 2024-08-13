@@ -3,10 +3,9 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-pub mod status;
 
-//pub mod status;
 pub mod opff;
+pub mod status;
 
 use smash::{
     lib::{
@@ -38,9 +37,12 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("pfushigisou");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }

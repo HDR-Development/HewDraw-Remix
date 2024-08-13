@@ -2,8 +2,7 @@
 use super::*;
 use globals::*;
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon14status_pre_RunEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Run)]
 unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
@@ -21,7 +20,7 @@ unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon14status_Run_SubEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_Run_Sub)]
 unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     let value: f32 = if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DASH || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_TURN {
         WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_START_FRAME)
@@ -30,6 +29,13 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     };
     
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("run"), value, 1.0, false, 0.0, false, false);
+
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X, hip_translate.z);
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    hip_translate.z += dash_hip_offset_x - hip_translate.z;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
 
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
@@ -52,14 +58,7 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon10status_RunEv")]
-unsafe fn status_run(fighter: &mut L2CFighterCommon) -> L2CValue {
-    status_run_sub(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_run_main as *const () as _))
-}
-
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Run_MainEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_Run_Main)]
 unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let run_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_add"), 0);
     let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
@@ -115,14 +114,26 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
     ret
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_RunBrakeEv")]
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_RunBrake)]
+unsafe fn bind_address_call_status_runbrake(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_RunBrake()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_RunBrake)]
 unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_RunBrake();
+
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    
     fighter.sub_shift_status_main(L2CValue::Ptr(status_runbrake_main as *const () as _))
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon20status_RunBrake_MainEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_RunBrake_Main)]
 unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
         && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0)
@@ -140,19 +151,82 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
     }
 
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
+    }
+
 	call_original!(fighter)
 }
 
-pub fn install() {
-    install_hooks!(
-        status_run_sub,
-        status_run_main,
-        status_runbrake_main
-    );
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_TurnRunBrake)]
+unsafe fn bind_address_call_status_turnrunbrake(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_TurnRunBrake()
+}
 
-    install_status_scripts!(
-        status_pre_run,
-        status_run,
-        status_runbrake,
-    );
+#[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake)]
+unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_TurnRunBrake_Sub();
+    let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    let mut hip_translate = Vector3f::zero();
+    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+    hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    
+    fighter.main_shift(status_turnrunbrake_main)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake_Main)]
+unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
+    }
+
+    call_original!(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_TurnRun)]
+unsafe fn status_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_TurnRun_Sub(L2CValue::Hash40s("turn_run"), L2CValue::Bool(true));
+
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_RUN_BRAKE) {
+        let dash_hip_offset_x = VarModule::get_float(fighter.object(), vars::common::instance::DASH_HIP_OFFSET_X);
+        let run_hip_offset_x = VarModule::get_float(fighter.object(), vars::common::instance::RUN_HIP_OFFSET_X);
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
+    }
+    
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TurnRun_Main as *const () as _))
+}
+
+fn nro_info(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            status_run_sub,
+            status_run_main,
+            status_runbrake_main,
+            status_turnrunbrake_main,
+            status_pre_run,
+            bind_address_call_status_runbrake,
+            status_runbrake,
+            bind_address_call_status_turnrunbrake,
+            status_turnrunbrake,
+            status_turnrun,
+        );
+    }
+}
+
+pub fn install() {
+    skyline::nro::add_hook(nro_info);
+    // Agent::new("fighter")
+    //     .status(Pre, *FIGHTER_STATUS_KIND_RUN, status_pre_run)
+    //     .status(Main, *FIGHTER_STATUS_KIND_RUN_BRAKE, status_runbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_turnrunbrake)
+    //     .status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_turnrun)
+    //     .install();
 }

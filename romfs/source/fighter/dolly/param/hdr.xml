@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <int hash="dash_pass_disable_frame">10</int>
+    <int hash="dashback_pass_disable_frame">10</int>
     <struct hash="cliff_hang_data">
         <struct hash="special_hi">
             <float hash="p1_x">16</float>

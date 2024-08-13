@@ -4,8 +4,15 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod bullet;
+mod clayrocket;
+mod fishingrod;
+mod trafficsign;
 
 use smash::{
     lib::{
@@ -37,11 +44,17 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    smashline::install_agent_frame_callback!(fishingrod_callback);
+pub fn install() {
+    let agent = &mut Agent::new("shizue");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    bullet::install();
+    clayrocket::install();
+    fishingrod::install();
+    trafficsign::install();
 }

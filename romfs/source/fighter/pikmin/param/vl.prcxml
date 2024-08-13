@@ -8,10 +8,23 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="speed_y">2</float>
+      <int hash="disable_landing_frame">10</int>
       <float hash="0x13337cb1ff">0</float>
+      <float hash="0x170ed70199">0</float>
+      <float hash="fly_accel_x_stick">0.06</float>
       <float hash="fly_accel_y_stick">0.12</float>
-      <float hash="0x132407a5bc">0.01</float>
-      <float hash="0x1c53b2d25b">0.05</float>
+      <float hash="0x132407a5bc">0</float>
+      <float hash="0x1c53b2d25b">0</float>
+      <float hash="landing_frame">14</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_pikmin">
+    <struct index="0">
+      <int hash="special_s_lever_clatter_frame">0</int>
+      <int hash="special_s_damage_remove_rate">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

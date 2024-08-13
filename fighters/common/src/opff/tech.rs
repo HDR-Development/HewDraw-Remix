@@ -41,101 +41,26 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-//=================================================================
-//== NON-TUMBLE KNOCKBACK DI
-//=================================================================
-unsafe fn non_tumble_di(
-    fighter: &mut L2CFighterCommon,
-    lua_state: u64,
-    l2c_agent: &mut L2CAgent,
-    boma: &mut BattleObjectModuleAccessor,
-    status_kind: i32,
-) {
-    //let prev_status = StatusModule::prev_status_kind(boma, 0);
-    let status_kind_prev = StatusModule::prev_status_kind(boma, 0);
-
-    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR].contains(&status_kind) {
-        //let stick_x = ControlModule::get_stick_x(boma);
-        //let stick_y = ControlModule::get_stick_y(boma);
-        //let di_stick = (stick_y.abs() + 0.00001) / (stick_x.abs() + 0.00001);
-        //let di_angle = di_stick.atan();
-        if FighterStopModuleImpl::get_damage_stop_frame(boma) as i32 == 1 {
-            // println!("last frame of nontumble hitlag");
-            /*
-            if(stick_x.abs() > 0.1 || stick_y.abs() > 0.1){
-                // println!("nontumble di angle input: {}", di_angle);
-                // println!("");
-                l2c_agent.clear_lua_stack(); //clear the stack from any previous args
-                l2c_agent.push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE as u64)); //push the first arg, that being a KINETIC_ENERGY_ID const
-                l2c_agent.push_lua_stack(&mut L2CValue::new_num(di_angle)); //push the second arg, that being a float of the new speed we want to set
-                sv_kinetic_energy::set_angle(lua_state); //call the desired function with the lua state which will grab the args we previously pushed
-            }
-            */
-            smash::lua2cpp::L2CFighterCommon::FighterStatusDamage__correctDamageVector(fighter);
-        }
-        if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR].contains(&status_kind)
-            && [
-                *FIGHTER_STATUS_KIND_THROWN,
-                *FIGHTER_STATUS_KIND_CLUNG_THROWN_DIDDY,
-                *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY_THROWN,
-                *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
-                *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_THROWN,
-                *FIGHTER_STATUS_KIND_SWING_GAOGAEN_THROWN,
-            ]
-            .contains(&status_kind_prev)
-        {
-            let remaining_hitstun =
-                WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-            let total_hitstun = WorkModule::get_float(
-                boma,
-                *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST,
-            );
-            let hitstun_passed = total_hitstun - remaining_hitstun;
-            // println!("Nontumble throw");
-            // println!("total hitstun: {}", total_hitstun);
-            // println!("remaining hitstun: {}", remaining_hitstun);
-            // println!("hitstun passed: {}", hitstun_passed);
-            if total_hitstun > 0.0 && hitstun_passed == 1.0 {
-                // println!(" === Nontumble throw DI frame");
-                smash::lua2cpp::L2CFighterCommon::FighterStatusDamage__correctDamageVector(fighter);
-            }
-        }
+// This allows us to generate the blue DI line effect on non-tumble knockback
+unsafe fn non_tumble_di_gfx(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_DAMAGE_AIR) {
+        fighter.FighterStatusDamage__correctDamageVectorEffect(L2CValue::Bool(false));
     }
-    //let remaining_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-    //let total_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
-    //let hitstun_passed = total_hitstun - remaining_hitstun;
-    // println!("Status Kind: {}", status_kind);
-    // println!("total hitstun: {}", total_hitstun);
-    // println!("remaining hitstun: {}", remaining_hitstun);
-    // println!("hitstun passed: {}", hitstun_passed);
 }
 
 // plat drop if you input down during a waveland (airdodge landing lag)
 unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, status_kind: i32) {
-    let pass_thresh = ParamModule::get_float(
-        boma.object(),
-        ParamType::Common,
-        "wavedrop_stick_y_threshold",
-    );
+    let pass_thresh = boma.get_param_float("common", "pass_stick_y");
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
-    && VarModule::is_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
     && ControlModule::get_flick_y(boma) < 2
     && boma.left_stick_y() < pass_thresh
-    // && boma.prev_stick_y() > -0.3 && boma.left_stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
     ]) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
         return;
-    }
-
-    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING) && boma.left_stick_y() > pass_thresh {
-        VarModule::on_flag(
-            boma.object(),
-            vars::common::instance::ENABLE_WAVELAND_PLATDROP,
-        );
     }
 }
 
@@ -370,11 +295,11 @@ pub unsafe fn run(
     curr_frame: f32,
 ) {
     tumble_exit(boma);
-    non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
+    non_tumble_di_gfx(fighter);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
-    drift_di(fighter, boma, status_kind, situation_kind);
+    //drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);

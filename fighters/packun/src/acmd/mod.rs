@@ -1,12 +1,14 @@
 use super::*;
-mod aerials;
+
+mod ground;
 mod tilts;
-mod other;
 mod smashes;
+mod aerials;
 mod specials;
 mod throws;
-mod ground;
+mod other;
 
+#[repr(C)]
 pub struct StanceInfo {
     label: i32,
     damage_bite: f32,
@@ -20,42 +22,42 @@ impl From<i32> for StanceInfo {
         match other {
             0 => StanceInfo { // Regular
                 label: 0,
-                damage_bite: 1.0,
-                damage_head: 1.0,
-                damage_other: 1.0,
+                damage_bite: 0.9,
+                damage_head: 0.9,
+                damage_other: 0.9,
                 da_speed: 0.8
             },
             1 => StanceInfo { // Putrid
                 label: 1,
                 damage_bite: 0.85,
-                damage_head: 0.6,
-                damage_other: 0.7,
-                da_speed: (0.8 * 0.88)
+                damage_head: 0.65,
+                damage_other: 0.75,
+                da_speed: (0.8 * 0.86)
             },
             2 => StanceInfo { // Prickly
                 label: 2,
                 damage_bite: 1.05,
-                damage_head: 1.4,
-                damage_other: 1.2,
-                da_speed: (0.8 * 0.75)
+                damage_head: 1.3,
+                damage_other: 1.15,
+                da_speed: (0.8 * 0.84)
             },
             _ => StanceInfo { // same as regular
                 label: 3,
-                damage_bite: 1.0,
-                damage_head: 1.0,
-                damage_other: 1.0,
+                damage_bite: 0.9,
+                damage_head: 0.9,
+                damage_other: 0.9,
                 da_speed: 0.8
             },
         }
     }
 }
 
-pub fn install() {
-    aerials::install();
-    tilts::install();
-    other::install();
-    smashes::install();
-    specials::install();
-    throws::install();
-    ground::install();
+pub fn install(agent: &mut Agent) {
+    ground::install(agent);
+    tilts::install(agent);
+    smashes::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    other::install(agent);
 }

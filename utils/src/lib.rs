@@ -1,4 +1,6 @@
 #![feature(seek_stream_len)]
+#![feature(repr_simd)]
+#![feature(simd_ffi)]
 #[macro_use]
 extern crate lazy_static;
 

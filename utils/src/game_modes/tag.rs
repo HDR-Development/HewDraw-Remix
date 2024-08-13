@@ -1,5 +1,5 @@
 use parking_lot::RwLock;
-use smash::app::{self, BattleObject, BattleObjectModuleAccessor, lua_bind::*};
+use smash::app::{self, BattleObject, lua_bind::*};
 use smash::lib::lua_const::*;
 use smash::phx::{Hash40, Vector4f};
 use smash::hash40;
@@ -10,6 +10,7 @@ use smash::phx::Vector3f;
 use crate::util;
 
 const TAG_DURATION: usize = 60 * 30;
+#[repr(C)]
 struct TagInfo {
     pub target_die_frame: usize,
     pub target_id: u32,

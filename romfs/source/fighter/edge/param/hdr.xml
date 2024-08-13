@@ -9,9 +9,35 @@
         </struct>
         <struct hash="charged_special_hi">
             <float hash="p1_x">16</float>
-            <float hash="p1_y">16</float>
+            <float hash="p1_y">19.5</float>
             <float hash="p2_x">-9.6</float>
             <float hash="p2_y">8.5</float>
         </struct>
+    </struct>
+    <struct hash="param_fire">
+        <float hash="speed_y_s">0.01</float>
+        <float hash="accel_y_s">1.0</float>
+        <float hash="max_speed_y_s">0.6</float>
+        <float hash="speed_x_s_stick_y_sub">0.3</float>
+        <float hash="speed_y_m">0.01</float>
+        <float hash="accel_y_m">1.0</float>
+        <float hash="max_speed_y_m">0.5</float>
+        <float hash="speed_x_m_stick_y_sub">0.3</float>
+        <float hash="speed_y_l">0.01</float>
+        <float hash="accel_y_l">1.0</float>
+        <float hash="max_speed_y_l">0.5</float>
+        <float hash="speed_x_l_stick_y_sub">0.3</float>
+    </struct>
+    <struct hash="param_flash">
+        <int hash="life">600</int>
+        <float hash="hold_offset_x">23</float>
+        <float hash="burst_dist_mod_x">10.0</float>
+        <float hash="burst_dist_mod_y">18.0</float>
+        <float hash="refine_dist_mod_x">5.0</float>
+        <float hash="refine_dist_mod_y">18.0</float>
+        <int hash="refine_cooldown">40</int>
+        <float hash="refract_dist_mod_x">5.0</float>
+        <float hash="refract_dist_mod_y">10.0</float>
+        <int hash="refract_cooldown">5</int>
     </struct>
 </struct>

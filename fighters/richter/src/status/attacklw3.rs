@@ -1,10 +1,32 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_STATUS_KIND_ATTACK_LW3
+
+unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackLw3();
+    fighter.main_shift(attack_lw3_main_loop)
+}
+
+unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if fighter.global_table[PAD_FLAG].get_i32() & (*FIGHTER_PAD_FLAG_ATTACK_TRIGGER | *FIGHTER_PAD_FLAG_JUMP_TRIGGER) != 0 {
+            VarModule::on_flag(fighter.battle_object, vars::richter::status::D_TILT_JUMP_BUFFER);
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+            if VarModule::is_flag(fighter.battle_object, vars::richter::status::D_TILT_JUMP_BUFFER)
+            || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                fighter.change_status(FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32.into(), true.into());
+                return 1.into();
+            }
+        }
+    }
+    fighter.status_AttackLw3_Main();
+    return 0.into()
+}
 
 // FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING
 
-#[status_script(agent = "richter", status = FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn attack_lw32_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_lw32_landing_frame"));
     let anim_length = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("attack_lw32_landing"));
@@ -39,8 +61,7 @@ unsafe extern "C" fn attack_lw32_landing_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        attack_lw32_landing_main
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, attack_lw3_main);
+    agent.status(Main, *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING, attack_lw32_landing_main);
 }

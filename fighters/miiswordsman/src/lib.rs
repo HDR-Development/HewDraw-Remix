@@ -4,8 +4,14 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod chakram;
+mod lightshuriken;
+mod tornadoshot;
 
 use smash::{
     lib::{
@@ -39,8 +45,14 @@ use utils::{
 };
 use smashline::*;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("miiswordsman");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install(); 
+
+    chakram::install();
+    lightshuriken::install();
+    tornadoshot::install();
 }

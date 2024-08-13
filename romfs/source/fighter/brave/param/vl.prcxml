@@ -24,11 +24,24 @@
   <list hash="param_critical">
     <struct index="0">
       <float hash="rate">-1.0</float>
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
   </list>
   <list hash="param_metal_critical">
     <struct index="0">
       <float hash="rate">-1.0</float>
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
+  </list>
+  <list hash="param_deathball_critical">
+    <struct index="0">
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
   </list>
   <list hash="param_special_n">
@@ -73,7 +86,7 @@
       <float hash="start_max_speed_y_mul_air">0.8</float>
       <int hash="cure_limit_num">3</int>
       <float hash="deathball1_offset_y">15</float>
-      <int hash="speed_up_frame">480</int>
+      <int hash="speed_up_frame">600</int>
       <float hash="speed_up_walk_speed_mul">1.4</float>
       <float hash="speed_up_dash_speed_mul">1.4</float>
       <float hash="speed_up_run_speed_mul">1.4</float>

@@ -3,7 +3,8 @@ on:
   pull_request:
     branches:
       - dev
-    types: [opened, reopened, synchronize, ready_for_review, edited]
+      - pre-release
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   pr_build:
@@ -14,12 +15,12 @@ jobs:
       image: hewdrawremix/hewdraw-builder:latest
     steps:
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5.1.0
       with:
         python-version: '3.9' 
     
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     #- name: Rust Cache
     #  uses: Swatinem/rust-cache@v2.5.1
@@ -30,7 +31,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
       env:
         HOME: /root
 
@@ -41,12 +42,12 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload hdr-switch
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: hdr-switch
         path: build/hdr-switch
     - name: Upload hdr-ryujinx
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: hdr-ryujinx
         path: build/hdr-ryujinx

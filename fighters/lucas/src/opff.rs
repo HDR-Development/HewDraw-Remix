@@ -3,12 +3,11 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-
 unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if boma.status_frame() > 0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel(false);
+                boma.check_jump_cancel(false, false);
             }
         }
     }
@@ -191,16 +190,14 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
         VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
     }
-
 }
 
-// Lucas PK Fire Fast Fall
-unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
+// Lucas PK Fire drift
+unsafe fn pk_fire_drift(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
         if boma.is_situation(*SITUATION_KIND_AIR) {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -349,15 +346,17 @@ unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
         }
         // Down Tilted Side Smash
         else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
-            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 13.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 16.0, 25.0);
         }
     }
 }
@@ -375,6 +374,51 @@ unsafe fn upspecialend(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) 
+    && fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
+        fighter.set_int(*FIGHTER_STATUS_KIND_FALL, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_WORK_INT_NEXT_STATUS)
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     smash_s_angle_handler(fighter, frame);
     dashgrab_position_fix(fighter, frame);
@@ -382,15 +426,16 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
-    pk_fire_ff(boma, stick_y);
+    //pk_fire_drift(boma, stick_y);
     offense_charge(fighter, boma, situation_kind);
     offense_effct_handler(fighter);
     reset_flags(fighter, status_kind, situation_kind);
     upspecialend(fighter);
+    fastfall_specials(fighter);
+    pkt2_edgeslipoff(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_LUCAS)]
-pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		lucas_frame(fighter)
@@ -403,12 +448,6 @@ pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback]
-pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_LUCAS_PK_THUNDER {
-            return
-        }
-        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
-    }
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucas_frame_wrapper);
 }

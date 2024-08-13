@@ -6,8 +6,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod blaster_bullet;
+mod illusion;
 
 use smash::{
     lib::{
@@ -39,17 +44,15 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("wolf");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 
-    if !is_runtime || is_hdr_available() {
-        status::add_statuses();
-    }
-}
-
-pub fn delayed_install() {
-    status::add_statuses();
+    blaster_bullet::install();
+    illusion::install();
 }

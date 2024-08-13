@@ -2,7 +2,9 @@ use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 use crate::ext::*;
-use std::arch::asm;
+// use std::arch::asm;
+use smash::phx::Vector2f;
+// use crate::se;
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -166,7 +168,7 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
 pub unsafe fn get_all_active_battle_object_ids() -> Vec<u32> {
     use smash::lib::lua_const::*;
     use smash::app::lua_bind::*;
-    use super::ext::*;
+    // use super::ext::*;
     let mut vec: Vec<u32> = Vec::new();
     for entry_id in 0..8 {
         // get the active battle object id and add it to the list
@@ -232,13 +234,13 @@ pub fn get_game_state() -> *const u64 {
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
+        .add(0x52c50f0) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
 pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
+        .add(0x52c50f0) as *const u64);
     &*((base + 0x18) as *const ControllerMapping).add(player as usize)
 }
 
@@ -250,9 +252,9 @@ struct SomeControllerStruct {
 
 pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5337860) as *const u64);
-    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
-    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
+        .add(0x5339860) as *const u64);
+    let uvar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = (base + (0x8 * (uvar3 as i32)) as u64) as *mut SomeControllerStruct;
     (*controller_struct).controller
 }
 
@@ -306,9 +308,32 @@ pub unsafe fn x_motion_vec(val: f32, stick_x: f32) -> smash::phx::Vector3f {
     smash::phx::Vector3f{x: val * stick_x.signum(), y: 0.0, z: 0.0}
 }
 
-
 extern "C"{
     /// gets whether we are in training mode
     #[link_name = "\u{1}_ZN3app9smashball16is_training_modeEv"]
     pub fn is_training_mode() -> bool;
+}
+
+extern "C" {
+    #[link_name = "_ZN3app13sv_debug_draw11draw_circleERKN3phx8Vector2fEfi"]
+    pub fn debug_draw_circle(center: &Vector2f, radius: f32, num_frames: i32);
+   #[link_name = "_ZN3app13sv_debug_draw9draw_lineERKN3phx8Vector2fES4_i"]
+    pub fn debug_draw_line(a: &Vector2f, b: &Vector2f, num_frames: i32);
+    #[link_name = "_ZN3app13sv_debug_draw14set_draw_colorEffff"]
+    pub fn debug_set_draw_color(r: f32, g: f32, b: f32, a: f32);
+}
+
+pub unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+    // for some reason this function always returns true for weapons
+    for is_abs in [false, true] {
+        for id in 0..8 {
+            let attack_data = smash::app::lua_bind::AttackModule::attack_data(attacker_boma, id, is_abs);
+            let off = if is_abs { 0xd9 } else { 0xc9 };
+            if smash::app::lua_bind::AttackModule::is_attack(attacker_boma, id, is_abs)
+            && *attack_data.cast::<bool>().add(off) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

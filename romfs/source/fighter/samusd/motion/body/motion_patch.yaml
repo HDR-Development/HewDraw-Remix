@@ -1,17 +1,29 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 special:
   extra:
     cancel_frame: 40
 attack_12:
   extra:
-    cancel_frame: 27
+    cancel_frame: 30
 special_s:
   flags:
     move: false
   extra:
     cancel_frame: 51
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 16
 attack_lw3:
@@ -20,8 +32,6 @@ attack_lw3:
   extra:
     cancel_frame: 37
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 62
 attack_lw4:
@@ -31,8 +41,6 @@ special_lw:
   extra:
     cancel_frame: 47
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 41
 special_n_c:
@@ -40,21 +48,17 @@ special_n_c:
     cancel_frame: 9
 attack_dash:
   extra:
-    cancel_frame: 34
+    cancel_frame: 37
 attack_s4_s:
   extra:
     cancel_frame: 54
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
 special_air:
   extra:
     cancel_frame: 40
 attack_s3_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
 attack_s4_hi:
@@ -70,10 +74,16 @@ attack_s4_lw:
   extra:
     cancel_frame: 54
 attack_s3_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
+special_air_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_air_s:
   extra:
     cancel_frame: 51
@@ -86,6 +96,27 @@ special_n_f_max:
 special_air_n_c:
   extra:
     cancel_frame: 9
+catch:
+  extra:
+    cancel_frame: 67
+catch_dash:
+  extra:
+    cancel_frame: 75
+catch_turn:
+  extra:
+    cancel_frame: 74
+catch_attack:
+  extra:
+    cancel_frame: 0
 air_catch_landing:
   extra:
-    cancel_frame: 28
+    cancel_frame: 17
+furafura_end:
+  extra:
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

@@ -4,8 +4,16 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod rockbuster;
+mod chargeshot;
+mod airshooter;
+mod hardknuckle;
+mod leafshield;
 
 use smash::{
     lib::{
@@ -17,7 +25,8 @@ use smash::{
         self,
         sv_animcmd::{
             frame,
-            wait
+            wait,
+            execute
         },
         lua_bind::*
     },
@@ -39,8 +48,16 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("rockman");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    rockbuster::install();
+    chargeshot::install();
+    airshooter::install();
+    hardknuckle::install();
+    leafshield::install();
 }

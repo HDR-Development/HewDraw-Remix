@@ -9,7 +9,7 @@
       <float hash="hp">999</float><!--vanilla is 14-->
       <!-- force barrel to incur hitlag-->
       <hash40 hash="attack_hitstop_kind">item_attack_hitstop_kind_normal</hash40>
-      <float hash="pickup_range_sizew">10.0</float>
+      <float hash="pickup_range_sizew">7.0</float>
       <float hash="pickup_range_sizeh">12.0</float>
     </struct>
     <hash40 index="2">dummy</hash40>
@@ -99,7 +99,15 @@
     <hash40 index="82">dummy</hash40>
     <hash40 index="83">dummy</hash40>
     <hash40 index="84">dummy</hash40>
-    <hash40 index="85">dummy</hash40>
+    <struct index="85">  
+      <float hash="scale">0.7</float>
+      <float hash="throw_speed_mul">0.5</float>
+      <float hash="throw_power_speed_add">-0.4</float>
+      <float hash="throw_power_speed_mul">1.0</float>
+      <float hash="gravity_accel">0.06</float>
+      <float hash="gravity_accel_max">2.5</float>
+      <float hash="hp">8</float>
+    </struct>
     <hash40 index="86">dummy</hash40>
     <hash40 index="87">dummy</hash40>
     <hash40 index="88">dummy</hash40>
@@ -190,7 +198,21 @@
     </struct>
     <hash40 index="151">dummy</hash40>
     <hash40 index="152">dummy</hash40>
-    <hash40 index="153">dummy</hash40>
+    <struct index="153">
+      <float hash="hitsize">4</float>
+      <float hash="hp">30</float>
+      <float hash="outer_limit_speed_x">5</float>
+      <float hash="outer_limit_speed_y">5</float>
+      <float hash="stop_limit_speed_x">5</float>
+      <float hash="stop_limit_speed_y">5</float>
+      <float hash="bound_refspeed_mul_x">0.9</float>
+      <float hash="bound_refspeed_mul_y">0.8</float>
+      <float hash="pickup_range_sizew">2</float>
+      <float hash="pickup_range_sizeh">2</float>
+      <float hash="mapcoll_size_down">1.5</float>
+      <hash40 hash="hit_kind">item_hit_kind_fly</hash40>
+      <hash40 hash="shield_kind">item_shield_kind_hop</hash40>
+    </struct>
     <hash40 index="154">dummy</hash40>
     <hash40 index="155">dummy</hash40>
     <hash40 index="156">dummy</hash40>

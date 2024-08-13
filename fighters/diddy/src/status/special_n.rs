@@ -1,21 +1,19 @@
 use super::*;
-use globals::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
-#[status_script(agent = "diddy", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
 }
 
-#[status_script(agent = "diddy", status = FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
     }
-    original!(fighter)
+    smashline::original_status(Main, fighter, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE)(fighter)
 }
 
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -119,7 +117,7 @@ unsafe extern "C" fn special_n_cancel_end(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn special_n_jump_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("pre");
+    // println!("pre");
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -183,27 +181,74 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        special_n_main,
-        special_n_charge_main
-    );
+// FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT
+
+pub unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+    app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+    special_n_shoot_motion_helper(fighter);
+    fighter.main_shift(special_n_shoot_main_loop)
 }
-pub fn install_custom() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_diddy"),
-        statuses::diddy::SPECIAL_N_CANCEL,
-        StatusInfo::new()
-            .with_pre(special_n_cancel_pre)
-            .with_main(special_n_cancel_main)
-            .with_end(special_n_cancel_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_diddy"),
-        statuses::diddy::SPECIAL_N_CANCEL_JUMP,
-        StatusInfo::new()
-            .with_pre(special_n_jump_cancel_pre)
-            .with_main(special_n_jump_cancel_main)
-            .with_end(special_n_jump_cancel_end)
-    );
+
+unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            special_n_shoot_motion_helper(fighter);
+        }
+    }
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) || (!fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
+        if MotionModule::is_end(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+                return 0.into();
+            }
+            else {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+                return 0.into();
+            }
+        }
+    }
+    0.into()
+}
+
+unsafe extern "C" fn special_n_shoot_motion_helper(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {    
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_shoot"), 0.0, 1.0, false, 0.0, false, false);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_shoot"), -1.0, 1.0, 0.0, false, false);
+        }
+    }
+    else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {    
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_shoot"), 0.0, 1.0, false, 0.0, false, false);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_shoot"), -1.0, 1.0, 0.0, false, false);
+        }
+    }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT, special_n_shoot_main);
+    agent.status(Pre, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_pre);
+    agent.status(Main, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_main);
+    agent.status(End, statuses::diddy::SPECIAL_N_CANCEL, special_n_cancel_end);
+    agent.status(Pre, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_pre);
+    agent.status(Main, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_main);
+    agent.status(End, statuses::diddy::SPECIAL_N_CANCEL_JUMP, special_n_jump_cancel_end);
 }

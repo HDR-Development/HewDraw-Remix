@@ -50,13 +50,12 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
-    
+
     // added to hdr, not present in original
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
-
 
     wm_param_to_int(fighter.module_accessor, hash40("common"), hash40("turn_dash_frame"), *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
     wm_param_to_int(fighter.module_accessor, hash40("common"), hash40("retry_turn_dash_frame"), *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
@@ -96,7 +95,6 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
 }
 
-
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Sub)]
 unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
     let value: f32 = if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_LANDING || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_LANDING_LIGHT {
@@ -110,7 +108,7 @@ unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
 }
 
 macro_rules! interrupt {
-    () => { return L2CValue::I32(1); };
+    () => { return L2CValue::I32(1) };
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
@@ -126,7 +124,7 @@ macro_rules! interrupt_if {
 }
 
 macro_rules! ok {
-    () => { return L2CValue::I32(0); };
+    () => { return L2CValue::I32(0) };
 }
 
 macro_rules! ok_if {
@@ -269,11 +267,20 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     */
 
     interrupt_if!(fighter.sub_transition_group_check_ground_guard().get_bool());
-    
+
     if fighter.sub_transition_group_check_special_command().get_bool()
     || fighter.sub_transition_group_check_ground_special().get_bool()
     || fighter.sub_transition_specialflag_hoist().get_bool()
     {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
+
+    // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
+    if fighter.is_button_trigger(Buttons::TiltAttack)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
         return L2CValue::I32(1);
     }
@@ -293,7 +300,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         return L2CValue::I32(1);
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4) 
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4)
     && {
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
@@ -320,19 +327,10 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     // dash startup -> fsmash leniency window
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
-    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0  
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
     {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
-        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
-        return L2CValue::I32(1);
-    }
-
-    // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
-    if fighter.is_cat_flag(CatHdr::TiltAttack)
-    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
-    {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
         return L2CValue::I32(1);
     }
@@ -388,7 +386,17 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
-        interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+        // Param-based plat drop lockout window for Ryu, Ken, Terry, and Kazuya
+        if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_RYU || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KEN || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DOLLY || fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
+            let dash_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "dash_pass_disable_frame");
+            if fighter.global_table[CURRENT_FRAME].get_i32() >= dash_pass_disable_frame {
+                interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+            }
+        }
+        // Normal behavior for all other fighters
+        else{
+            interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+        }
     }
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {
@@ -444,7 +452,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
-    
+
     // Disables dashbacks when stick falls below threshold
     // For ease of moonwalking
     let moonwalk_disable_dashback_stick_y = ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
@@ -511,7 +519,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     // f3 perfect pivots
     if fighter.global_table[CURRENT_FRAME].get_i32() == 1  // if you are on f2 of current dash
-    && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
+    && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN
     && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // AND you are in a backdash
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
         // trigger late pivot
@@ -527,7 +535,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 #[skyline::hook(replace = L2CFighterCommon_sub_dash_uniq_process_main_internal)]
 unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !WorkModule::is_enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) {
-        let stick_x = fighter.left_stick_x();
+        let stick_x = if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_DEMON {
+            fighter.global_table[STICK_X].get_f32()
+        }
+        else {
+            fighter.left_stick_x()
+        };
         let walk_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x206138766c);
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_backdash = if param_1.get_bool() { -1.0 } else { 1.0 };
@@ -672,12 +685,16 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_RUN {
+        let mut hip_translate = Vector3f::zero();
+        MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
+        VarModule::set_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X, hip_translate.z);
+    }
+
     call_original!(fighter)
 }
 
-
 // FIGHTER_STATUS_KIND_TURN_DASH
-
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {

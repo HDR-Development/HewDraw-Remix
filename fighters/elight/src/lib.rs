@@ -4,8 +4,12 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod bunshin;
 
 use skyline::nro::NroInfo;
 use smash::{
@@ -38,17 +42,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("elight");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 
-    if !is_runtime || is_hdr_available() {
-        status::add_statuses();
-    }
-}
+    bunshin::install();
 
-pub fn delayed_install() {
-    status::add_statuses();
+    // Disables Foresight
+    skyline::patching::Patch::in_text(0xa28e78).nop();
+    skyline::patching::Patch::in_text(0xa28e84).data(0x140000ACu32);
 }

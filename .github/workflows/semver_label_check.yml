@@ -26,15 +26,33 @@ jobs:
           script: |
               core.setFailed('This PR is labeled to wait until next beta cycle for release.')
 
-      # ensure that this is not a character change waiting for backroom approval
-      - name: check_backroom_labels
+      # ensure that this is not an unfinished change
+      - name: check_draft_label
         if: >
-            contains(github.event.pull_request.labels.*.name, 'character change')
-            && !contains(github.event.pull_request.labels.*.name, 'backroom approved')
+            contains(github.event.pull_request.labels.*.name, 'draft')
         uses: actions/github-script@v3
         with:
           script: |
-              core.setFailed('This character change has not been approved by balance backroom yet.')
+              core.setFailed('This change is still under construction.')
+
+      # ensure that this change is not under active discussion
+      - name: check_discussion_label
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'discussion ongoing')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This change has not yet been agreed upon.')
+
+      # ensure that this is not a character change waiting for balance approval
+      - name: check_balance_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'character change')
+            && !contains(github.event.pull_request.labels.*.name, 'balance approved')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This character change has not been approved for balance yet.')
       
       - name: all_is_well
         run: echo "This PR is in an appropriately labeled state."

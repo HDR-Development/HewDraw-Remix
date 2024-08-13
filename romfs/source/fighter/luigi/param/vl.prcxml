@@ -32,6 +32,9 @@
       <float hash="air_pass_mul">0.95</float>
       <float hash="fall_x_mul">0.035</float>
       <float hash="fall_max_x">0.68</float>
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -7,6 +7,14 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+
+mod c4;
+mod cypher;
+mod nikita;
+mod nikitamissile;
+mod trenchmortar;
+
 use smash::{
     lib::{
         L2CValue,
@@ -37,14 +45,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    /*smashline::install_agent_frames!(
-        snake_c4_frame
-    );*/
-    smashline::install_agent_frame_callback!(c4_callback);
+pub fn install() {
+    let agent = &mut Agent::new("snake");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    c4::install();
+    cypher::install();
+    nikita::install();
+    nikitamissile::install();
+    trenchmortar::install();
 }

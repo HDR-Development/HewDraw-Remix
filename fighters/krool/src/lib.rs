@@ -4,8 +4,16 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod backpack;
+mod ironball;
+
+pub mod vtable_hook;
+pub use status::krool_belly_damage_hook_impl;
 
 use smash::{
     lib::{
@@ -37,13 +45,19 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
+pub fn install() {
+    let agent = &mut Agent::new("krool");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    backpack::install();
+    ironball::install();
+
+    // prevents shield break on belly
     use opff::*;
-    smashline::install_agent_frames!(
-        krool_backpack_frame
-    );
+    skyline::patching::Patch::in_text(0xc04f00).data(0x1400001Eu32);
 }

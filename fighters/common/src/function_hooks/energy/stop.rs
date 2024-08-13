@@ -85,7 +85,7 @@ pub enum EnergyStopResetType {
     DamageAirOrbit,
 }
 
-#[skyline::hook(offset = 0x6d6630)]
+#[skyline::hook(offset = 0x6d6650)]
 unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleObjectModuleAccessor) {
     use EnergyStopResetType::*;
 
@@ -123,7 +123,7 @@ unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleOb
     energy.speed_brake = backup_brake;
 }
 
-#[skyline::hook(offset = 0x6d8540)]
+#[skyline::hook(offset = 0x6d8560)]
 pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, reset_type: EnergyStopResetType, initial_speed: &PaddedVec2, unk: u64, boma: &mut BattleObjectModuleAccessor) {
     if ( boma.is_fighter()
     &&     (boma.kind() == *FIGHTER_KIND_MEWTWO && boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2))
@@ -131,6 +131,7 @@ pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, re
         || (boma.kind() == *FIGHTER_KIND_SHEIK && boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE))
         || (boma.kind() == *FIGHTER_KIND_ZELDA && boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2)) )
     {
+        VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X, initial_speed.x);
         VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y, initial_speed.y);
     }
     call_original!(energy, reset_type, initial_speed, unk, boma);

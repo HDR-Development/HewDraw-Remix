@@ -34,6 +34,7 @@ macro_rules! require_var_module {
     }}
 }
 
+#[repr(C)]
 pub struct VarModule {
     int: [Vec<i32>; 2],
     int64: [Vec<u64>; 2],
@@ -271,11 +272,11 @@ impl VarModule {
     /// * `false` - `what` remains greater than or equal to `min` after decrementing
     #[export_name = "VarModule__countdown_int"]
     pub extern "Rust" fn countdown_int(object: *mut BattleObject, what: i32, min: i32) -> bool {
-        if Self::get_int(object, what) < min {
-            true
-        } else {
+        if Self::get_int(object, what) > min {
             Self::dec_int(object, what);
-            Self::get_int(object, what) < min
+            Self::get_int(object, what) == min
+        } else {
+            false
         }
     }
 
@@ -457,7 +458,6 @@ impl VarModule {
             z: module.float[vec_index][index + 2]
         }
     }
-
 
     /// Gets a 4-dimensional vector
     /// # Arguments

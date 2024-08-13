@@ -1,16 +1,8 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
-pub fn install() {
-    install_status_scripts!(
-        pre_special_s, main_special_s
-    );
-}
-
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -45,8 +37,7 @@ pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_s"), L2CValue::Hash40s("special_air_s"), false.into());
     VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_START);
     MotionModule::change_motion(
@@ -72,7 +63,7 @@ pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Lets you grabl edge once it's enabled
+    // Lets you grab edge once it's enabled
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
@@ -89,22 +80,28 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     if situation == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
-        fighter.check_jump_cancel(false);
+        fighter.check_jump_cancel(false, false);
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if step != vars::sonic::SPECIAL_S_STEP_START {
-            let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                WorkModule::set_float(fighter.module_accessor, 15.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+        let mut special_momentum_handle = false;
+        if step == vars::sonic::SPECIAL_S_STEP_END {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                WorkModule::set_float(fighter.module_accessor, 8.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                return 1.into();
             }
             else {
-                FIGHTER_STATUS_KIND_FALL
-            };
-            fighter.change_status(status.into(), false.into());
-            return 1.into();
+                special_momentum_handle = true;
+            }
+        }
+        else {
+            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+                special_momentum_handle = true;
+            }
         }
         if situation == *SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
@@ -122,6 +119,10 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             0.1,
             0.0
         );
+        if special_momentum_handle {
+            sonic_special_s_ledge_cancel_helper(fighter);
+            return 0.into();
+        }
     }
     if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL) {
         sv_kinetic_energy!(
@@ -260,4 +261,52 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
 
     0.into()
+}
+
+unsafe fn sonic_special_s_ledge_cancel_helper(fighter: &mut L2CFighterCommon) {
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_boost_end"), 0.0, 24.0 / 18.0, false, 0.0, false, false);
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        air_speed_y_stable * 0.7
+    );
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        2.5,
+        0.0
+    );
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+    let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+    if speed_x.abs() > 2.5 {
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            2.5 * speed_x.signum(),
+            0.0
+        );
+    }
+    VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_END);
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }

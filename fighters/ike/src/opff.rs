@@ -3,9 +3,9 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32) {
-    if situation_kind != *SITUATION_KIND_AIR {
+    if situation_kind != *SITUATION_KIND_AIR
+    || boma.is_in_hitlag() {
         return;
     }
 
@@ -13,40 +13,6 @@ unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         if stick_x != 0.0 {
             let motion_vec = x_motion_vec(0.3, stick_x);
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
-    }
-}
-
-// Ike Quick Draw Jump, Wall Jump, and Attack Cancels
-unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32) {
-    if status_kind != *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH {
-        return;
-    }
-    
-    // Wall Jump & ECB correction
-    if situation_kind == *SITUATION_KIND_AIR {
-        //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.05));
-        if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
-            let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-            let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-            if touch_left || touch_right {
-                if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-                }
-            }
-        }
-    }
-
-    // Jump and Attack cancels
-    let pad_flag = ControlModule::get_pad_flag(boma);
-    
-    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);
-    }
-    if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            boma.check_jump_cancel(true);
         }
     }
 }
@@ -92,7 +58,6 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
         }
     }
 }
-
 
 // Need to consolidate the following bone manipulation functions later
 
@@ -395,20 +360,56 @@ unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MDL,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
-    quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
     quickdraw_instakill(fighter, boma);
     quickdraw_attack_arm_bend(boma);
     jab_lean(boma);
     grab_lean(boma);
     fair_wrist_bend(boma);
     quickdraw_attack_whiff_freefall(fighter);
+    fastfall_specials(fighter);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_IKE )]
-pub fn ike_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub extern "C" fn ike_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		ike_frame(fighter)
@@ -419,4 +420,8 @@ pub unsafe fn ike_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, ike_frame_wrapper);
 }

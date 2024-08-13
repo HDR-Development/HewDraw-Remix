@@ -9,7 +9,6 @@ pub mod tech;
 pub mod tech_cleanup;
 pub mod cancels;
 pub mod var_resets;
-pub mod gentleman;
 pub mod momentum_transfer_line;
 pub mod shotos;
 //pub mod magic;
@@ -28,7 +27,6 @@ pub fn install() {
     
 }
 */
-
 
 /*
 This function runs exactly once per every fighter loaded into a match, every frame. I.E.  5 players in a match = 5 times per frame
@@ -112,9 +110,8 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     tech::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
     tech_cleanup::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
     cancels::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    ledges::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    ledges::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     var_resets::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    gentleman::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     //magic::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     other::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     momentum_transfer_line::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
@@ -122,13 +119,15 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
     // Character Moveset Changes
     // moveset_changes::run(boma, id, cat, status_kind, situation_kind, motion_kind, fighter_kind, stick_x, stick_y, facing, frame);
-    floats::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    floats::run(fighter, info.status_kind, info.situation_kind);
 }
 
 pub fn install() {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
-    smashline::install_agent_frame_callbacks!(
-        decrease_knockdown_bounce_heights
-    );
+    Agent::new("fighter")
+        .on_line(Main, decrease_knockdown_bounce_heights)
+        .on_line(Main, left_stick_flick_counter)
+        .install();
+
 }

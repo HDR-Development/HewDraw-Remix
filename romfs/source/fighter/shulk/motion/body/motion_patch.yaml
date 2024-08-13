@@ -1,3 +1,17 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 throw_f:
   extra:
     cancel_frame: 36
@@ -14,13 +28,9 @@ attack_13:
   extra:
     cancel_frame: 37
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 17
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 31
 attack_hi4:
@@ -52,3 +62,98 @@ attack_air_n:
 attack_s4_lw:
   extra:
     cancel_frame: 72
+attack_lw4:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 55
+special_n_end:
+  extra:
+    cancel_frame: 10
+special_n_jump:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_n_speed:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_n_shield:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_n_buster:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_n_smash:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_end:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_jump:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_speed:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_shield:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_buster:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+special_air_n_smash:
+  extra:
+    cancel_frame: 10
+    xlu_start: 0
+    xlu_end: 0
+catch_attack:
+  extra:
+    cancel_frame: 0
+special_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_s:
+  extra:
+    cancel_frame: 58
+special_air_s:
+  extra:
+    cancel_frame: 58
+throw_hi:
+  extra:
+    cancel_frame: 44
+catch:
+  extra:
+    cancel_frame: 36
+furafura_end:
+  extra:
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

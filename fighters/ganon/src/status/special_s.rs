@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+unsafe extern "C" fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND] == FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH {
         return 0.into();
     }
@@ -20,8 +20,6 @@ unsafe fn special_s_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    smashline::install_status_scripts!(
-        special_s_exit,
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exit);
 }

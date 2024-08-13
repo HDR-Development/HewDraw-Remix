@@ -1,3 +1,17 @@
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
 throw_f:
   extra:
     cancel_frame: 41
@@ -7,24 +21,22 @@ throw_b:
 throw_lw:
   extra:
     cancel_frame: 40
+attack_11:
+  extra:
+    cancel_frame: 20
 attack_12:
   extra:
-    cancel_frame: 18
-special_n:
-  extra:
-    cancel_frame: 46
+    cancel_frame: 20
 attack_13:
   extra:
     cancel_frame: 30
-attack_11:
+special_n:
   extra:
-    cancel_frame: 16
+    cancel_frame: 46
 attack_lw3:
   extra:
     cancel_frame: 30
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 62
 attack_dash:
@@ -78,3 +90,24 @@ special_air_n_cancel:
 special_air_s_front_dash:
   extra:
     cancel_frame: 46
+catch:
+  extra:
+    cancel_frame: 38
+catch_dash:
+  extra:
+    cancel_frame: 46
+catch_turn:
+  extra:
+    cancel_frame: 42
+catch_attack:
+  extra:
+    cancel_frame: 0
+furafura_end:
+  extra:
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

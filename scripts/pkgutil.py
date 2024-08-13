@@ -1,4 +1,4 @@
-import pathlib, shutil, os
+import pathlib, shutil, os, sys
 
 def run_command(command: str) -> str:
   os.system(command + " > tmp")
@@ -8,9 +8,9 @@ def collect_plugin(package_name: str, package_path: str, build_type: str, plugin
   print("COLLECTING " + package_name + " plugins!")
   # get nro
   if build_subdir != None:
-    plugin_source = os.path.join("plugin/target/" + build_subdir + "/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+    plugin_source = os.path.join("target/" + build_subdir + "/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
   else:
-    plugin_source = os.path.join("plugin/target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+    plugin_source = os.path.join("target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
     
   print("plugin source: " + plugin_source)
 
@@ -26,14 +26,14 @@ def collect_plugin(package_name: str, package_path: str, build_type: str, plugin
 
 def collect_romfs(package_name: str, context_path: str, mod_name: str):
   print("COLLECTING " + package_name + " romfs!")
-  romfs_source = os.path.join("romfs/build")
+  romfs_source = os.path.join("romfs/source")
   romfs_destination = os.path.join("build", package_name, context_path, "ultimate/mods", mod_name)
   shutil.copytree(
     os.path.join(romfs_source), 
     os.path.join(romfs_destination),
     dirs_exist_ok=True)
   shutil.copyfile(os.path.join("romfs/config.json"), os.path.join(romfs_destination, "config.json"))
-  shutil.copyfile(os.path.join("plugin/hdr_version.txt"), os.path.join(romfs_destination, "ui/hdr_version.txt"))
+  shutil.copyfile(os.path.join("hdr_version.txt"), os.path.join(romfs_destination, "ui/hdr_version.txt"))
   return
 
 ## returns whether the build was successful
@@ -43,9 +43,7 @@ def build(build_type: str, dev_args: str) -> bool:
   print(build_command)
 
   # build the plugin
-  os.chdir('plugin')
   retval = os.system(build_command)
-  os.chdir('..')
 
   if retval == 0:
     return True

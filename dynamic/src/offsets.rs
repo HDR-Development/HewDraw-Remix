@@ -69,7 +69,6 @@ extern "C" {
     fn offsets_analog_trigger_r() -> usize;
 }
 
-
 pub fn exec_command() -> usize {
     unsafe {
         offsets_exec_command()

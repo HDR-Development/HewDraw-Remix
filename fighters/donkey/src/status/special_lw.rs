@@ -1,7 +1,8 @@
 use super::*;
 
-#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // if you are grounded, pick up heavy item/spawn barrel
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -16,12 +17,12 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         
         // if you still arent holding an item, try to spawn a barrel
         if !ItemModule::is_have_item(fighter.module_accessor, 0) {
-            VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
             let itemmanager = smash2::app::ItemManager::instance().unwrap();
             let barrel_count = smash2::app::ItemManager::get_num_of_ownered_item(
                 itemmanager, fighter.boma().battle_object_id, 
                 smash2::app::ItemKind::Barrel);
             if barrel_count == 0 {
+                VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
                 ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
                 EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
             }
@@ -58,11 +59,7 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
     if fighter.is_situation(*SITUATION_KIND_AIR)
     && param_1.get_bool() {
         // enable fastfall
-        if fighter.is_cat_flag(Cat2::FallJump)
-            && fighter.stick_y() < -0.66
-            && KineticModule::get_sum_speed_y(fighter.boma(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-            WorkModule::set_flag(fighter.boma(), true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
+        fighter.sub_air_check_dive();
 
         // try to pick up an item nearby
         let frame = fighter.motion_frame();
@@ -95,30 +92,35 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        let status = if situation != *SITUATION_KIND_GROUND {
-            FIGHTER_STATUS_KIND_FALL
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.status_frame() < 24 {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_landing"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                WorkModule::set_float(fighter.module_accessor, 20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                return 1.into();
+            }
         }
         else {
-            WorkModule::set_float(fighter.module_accessor, 20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
-        };
-        fighter.change_status(status.into(), false.into());
-        return 1.into();
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 1.into();
+        }
     }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = if is_air {
-            FIGHTER_STATUS_KIND_FALL
+            FIGHTER_STATUS_KIND_FALL_SPECIAL
         }
         else {
-            FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP
+            FIGHTER_STATUS_KIND_WAIT
         };
         fighter.change_status(status.into(), false.into());
     }
     1.into()
 }
 
-pub fn install() {
-    smashline::install_status_scripts!(
-        special_lw_main
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

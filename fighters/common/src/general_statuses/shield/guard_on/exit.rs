@@ -8,7 +8,7 @@ unsafe fn sub_ftStatusUniqProcessGuardOn_exitStatus_common(fighter: &mut L2CFigh
         fighter.module_accessor,
         *FIGHTER_SHIELD_KIND_GUARD,
         app::ShieldStatus(*SHIELD_STATUS_NONE),
-        0,
+        0
     );
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, 1.0);
 }

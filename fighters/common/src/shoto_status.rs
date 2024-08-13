@@ -141,12 +141,15 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 
     let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
     let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
+    let dashback_pass_disable_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "dashback_pass_disable_frame");
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
     && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
     {
-        fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-        return 1.into();
+        if fighter.global_table[CURRENT_FRAME].get_i32() >= dashback_pass_disable_frame {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+            return 1.into();
+        }
     }
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {
@@ -236,6 +239,10 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
     
+    if fighter.sub_transition_group_check_ground_jump().get_bool() {
+        return 1.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
     && is_dash_input {
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
@@ -251,51 +258,45 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             return 1.into();
         }
     }
-
-    if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
-            let stick_x = fighter.global_table[STICK_X].get_f32();
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
-            if run_stick_x <= stick_x * lr * -1.0
-            && fighter.global_table[CMD_CAT1].get_i32() & (
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 |
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 |
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
-                *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI |
-                *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
-            ) == 0 {
-                // this part *shouldn't* matter because it's all the same value constant, but just to be safe...
-                let kind;
-                if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DOLLY {
-                    kind = FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK;
-                }
-                else if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DEMON {
-                    kind = FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK;
-                }
-                else  {
-                    kind = FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK;
-                }
-                fighter.change_status(kind.into(), false.into());
-                return 1.into();
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
+        if run_stick_x <= stick_x * lr * -1.0
+        && fighter.global_table[CMD_CAT1].get_i32() & (
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
+        ) == 0 {
+            // this part *shouldn't* matter because it's all the same value constant, but just to be safe...
+            let kind;
+            if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DOLLY {
+                kind = FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK;
             }
-        }
-        if MotionModule::is_end(fighter.module_accessor) {
-            if GroundModule::get_down_friction(fighter.module_accessor) < 1.0 {
-                fighter.change_status(FIGHTER_STATUS_KIND_RUN_BRAKE.into(), false.into());
+            else if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DEMON {
+                kind = FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK;
             }
-            else {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            else  {
+                kind = FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK;
             }
+            fighter.change_status(kind.into(), false.into());
             return 1.into();
         }
-        else {
-            return 0.into();
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if GroundModule::get_down_friction(fighter.module_accessor) < 1.0 {
+            fighter.change_status(FIGHTER_STATUS_KIND_RUN_BRAKE.into(), false.into());
         }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+        return 1.into();
     }
     else {
-        return 1.into();
+        return 0.into();
     }
     // 0.into()
 }
@@ -315,6 +316,12 @@ pub unsafe fn fgc_end_dashback(fighter: &mut L2CFighterCommon) {
         fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 		app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+    }
+    // turn around if we jumped at the very start of dashback
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+    && fighter.status_frame() < 4 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
 
     if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL) {
@@ -345,7 +352,6 @@ pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCom
     0.into()
 }
 
-
 #[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommon, mot1: L2CValue, mot2: L2CValue) {
     ryu_attack_main_uniq_chk3(fighter);
@@ -353,11 +359,11 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     if !StatusModule::is_changing(fighter.module_accessor) {
         if ComboModule::count(fighter.module_accessor) == 1 {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
-                WorkModule::set_int64(fighter.module_accessor, 0x10556e6036, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_near_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK_NEAR, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
             else {
-                WorkModule::set_int64(fighter.module_accessor, 0xb4f4e6f8f, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK11, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
         }
@@ -388,13 +394,11 @@ extern "Rust" {
     fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
 }
 
-
 #[no_mangle]
 pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() == false {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
-            let count_down_int = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0);
-            if count_down_int & 1 != 0 {
+            if !WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0) {
                 WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);

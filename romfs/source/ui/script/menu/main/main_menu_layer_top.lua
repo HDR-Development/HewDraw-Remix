@@ -41,7 +41,7 @@ function value:initialize()
     }
     self.button_table[button.ONLINE] = {
         parts = "set_parts_btn_online",
-        sequence = SEQUENCE_ONLINE_MELEE_ROOM
+        state = STATE_ONLINE_IN
     }
     self.button_table[button.COLLECTION] = {
         parts = "set_parts_btn_colle",

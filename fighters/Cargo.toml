@@ -28,7 +28,6 @@ lucario      = { path = "./lucario",      optional = true }
 zelda        = { path = "./zelda",        optional = true }
 kamui        = { path = "./kamui",        optional = true }
 wolf         = { path = "./wolf",         optional = true }
-nana         = { path = "./nana",         optional = true }
 tantan       = { path = "./tantan",       optional = true }
 koopag       = { path = "./koopag",       optional = true }
 ridley       = { path = "./ridley",       optional = true }
@@ -61,7 +60,7 @@ ken          = { path = "./ken",          optional = true }
 brave        = { path = "./brave",        optional = true }
 richter      = { path = "./richter",      optional = true }
 miiswordsman = { path = "./miiswordsman", optional = true }
-robin        = { path = "./robin",        optional = true }
+reflet        = { path = "./reflet",      optional = true }
 master       = { path = "./master",       optional = true }
 robot        = { path = "./robot",        optional = true }
 szerosuit    = { path = "./szerosuit",    optional = true }
@@ -94,7 +93,7 @@ bayonetta    = { path = "./bayonetta",    optional = true }
 samus        = { path = "./samus",        optional = true }
 koopa        = { path = "./koopa",        optional = true }
 simon        = { path = "./simon",        optional = true }
-popo         = { path = "./popo",         optional = true }
+iceclimber   = { path = "./iceclimber",   optional = true }
 dedede       = { path = "./dedede",       optional = true }
 snake        = { path = "./snake",        optional = true }
 demon        = { path = "./demon",        optional = true }
@@ -123,7 +122,6 @@ include-lucario      = ["lucario"]
 include-zelda        = ["zelda"]
 include-kamui        = ["kamui"]
 include-wolf         = ["wolf"]
-include-nana         = ["nana"]
 include-tantan       = ["tantan"]
 include-koopag       = ["koopag"]
 include-ridley       = ["ridley"]
@@ -156,7 +154,7 @@ include-ken          = ["ken"]
 include-brave        = ["brave"]
 include-richter      = ["richter"]
 include-miiswordsman = ["miiswordsman"]
-include-robin        = ["robin"]
+include-reflet        = ["reflet"]
 include-master       = ["master"]
 include-robot        = ["robot"]
 include-szerosuit    = ["szerosuit"]
@@ -189,7 +187,7 @@ include-bayonetta    = ["bayonetta"]
 include-samus        = ["samus"]
 include-koopa        = ["koopa"]
 include-simon        = ["simon"]
-include-popo         = ["popo"]
+include-iceclimber   = ["iceclimber"]
 include-dedede       = ["dedede"]
 include-snake        = ["snake"]
 include-demon        = ["demon"]

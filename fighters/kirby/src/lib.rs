@@ -4,8 +4,8 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
 
 use smash::{
     lib::{
@@ -37,23 +37,16 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    if !is_runtime {
-        smashline::install_agent_frames!(
-            hammer_fastfall_landcancel
-        );
-    }
+pub const KOOPA_MAX_COOLDOWN : i32 = 900;
+pub const LUCAS_CHARGE_TIME : i32 = 120;
+static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
 
-    if !is_runtime || is_hdr_available() {
-        status::add_statuses();
-    }
-}
-
-pub fn delayed_install() {
-    status::add_statuses();
+pub fn install() {
+    let agent = &mut Agent::new("kirby");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }

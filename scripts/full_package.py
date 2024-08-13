@@ -8,7 +8,6 @@ import hashlib
 import glob
 import hash_package
 
-
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 3:
   print("provide arguments for, in order, HewDraw-Remix version and romfs version")
   exit(0)
@@ -34,6 +33,9 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
         print("getting release from url: " + url)
 
     urllib.request.urlretrieve(url, asset)
+    extract(asset, extract_directory)
+
+def extract(asset: str, extract_directory = None):
     with zipfile.ZipFile(asset, 'r') as zip_ref: 
         if extract_directory:
             extract_home = extract_directory
@@ -47,23 +49,35 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
 os.makedirs("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
-download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
+if romfs_version == "none":
+    extract("romfs.zip")
+else:
+    download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
 download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
+download_and_extract("ThatNintendoNerd", "stage_config", "latest", "release.zip")
 
 print("getting libnro_hook.nro")
 urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/latest/download/libnro_hook.nro", "libnro_hook.nro")
 shutil.move("libnro_hook.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
-print("getting libsmashline_hook.nro")
-urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/2.0.0/libsmashline_hook.nro", "libsmashline_hook.nro")
-shutil.move("libsmashline_hook.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
+print("getting libsmashline_plugin.nro")
+urllib.request.urlretrieve("https://github.com/HDR-Development/smashline/releases/latest/download/libsmashline_plugin.nro", "libsmashline_plugin.nro")
+shutil.move("libsmashline_plugin.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting hdr-launcher.nro")
 urllib.request.urlretrieve("https://github.com/techyCoder81/hdr-launcher-react/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
 shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
+print("getting libstage_alts.nro")
+urllib.request.urlretrieve("https://github.com/blu-dev/stage-alts-2/releases/latest/download/libstage_alts.nro", "libstage_alts.nro")
+shutil.move("libstage_alts.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
+os.makedirs("switch-package/ultimate/stage-alts")
+
+print("getting Hashes_all")
+urllib.request.urlretrieve("https://raw.githubusercontent.com/ultimate-research/archive-hashes/master/Hashes_all", "Hashes_all")
+shutil.move("Hashes_all", "switch-package/ultimate/stage-alts/Hashes_all")
 
 print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
@@ -72,21 +86,10 @@ print("creating hash files")
 hash_package.hash_folder("switch-package", "content_hashes.txt")
 hash_package.hash_folder_json("switch-package", "content_hashes.json")
 
-
-# make a ryujinx package too
-print("making ryujinx-package.zip")
-os.remove("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/hdr-launcher.nro")
-os.mkdir("switch-package/sdcard")
-shutil.move("switch-package/atmosphere/", "switch-package/sdcard/")
-shutil.move("switch-package/ultimate/", "switch-package/sdcard/")
-shutil.make_archive("ryujinx-package", 'zip', 'switch-package')
-
-
 # move the stuff to artifacts folder
 if os.path.exists("artifacts"):
     shutil.rmtree("artifacts")
 os.mkdir("artifacts")
 shutil.move("switch-package.zip", "artifacts")
-shutil.move("ryujinx-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
 shutil.move("content_hashes.json", "artifacts")

@@ -30,14 +30,12 @@ for line in all_lines:
     if line != "" and "Merge pull" in line and not "Merge branch 'dev'" in line:# and not "from HDR-Development/devkit" in line:
         cleaned_lines.add(line.strip())
 
-
 # show cleaned lines
 print("merge lines:\n")
 for line in cleaned_lines:
     print(line)
 
 final_lines = dict()
-
 
 for line in cleaned_lines:
     line_split = line.split(" ")
@@ -64,7 +62,5 @@ print("\nfile output is:\n" + file_output)
 
 with open('change_summary.txt', "w") as myfile:
     myfile.write(file_output)
-
-
 
 os.remove('tmp')

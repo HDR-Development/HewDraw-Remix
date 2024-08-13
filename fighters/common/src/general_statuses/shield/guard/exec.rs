@@ -28,6 +28,6 @@ pub fn install() {
         sub_ftStatusUniqProcessGuard_execStatus_common,
         sub_ftStatusUniqProcessGuard_execStop_common,
         ftStatusUniqProcessGuard_execStatus,
-        ftStatusUniqProcessGuard_execStop,
+        ftStatusUniqProcessGuard_execStop
     );
 }

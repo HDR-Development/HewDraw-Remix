@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
 
-#[status_script(agent = "fox", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_CONTINUE);
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME);
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STEP_START, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STEP);
@@ -60,6 +60,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
                 if is_end
                 && situation == *SITUATION_KIND_AIR {
                     fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), true.into());
+                    WorkModule::set_float(fighter.module_accessor,3.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
                     return 0.into();
                 }
                 if situation == *SITUATION_KIND_GROUND {
@@ -262,8 +263,7 @@ pub unsafe extern "C" fn special_s_air_mot(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[status_script(agent = "fox", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-pub unsafe fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 	let situation = fighter.global_table[SITUATION_KIND].get_i32();
     let set = if situation != *SITUATION_KIND_AIR {
         WorkModule::off_flag
@@ -562,9 +562,7 @@ pub unsafe extern "C" fn special_s_air_control(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        special_s_main,
-        special_s_exec
-    );
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec);
 }

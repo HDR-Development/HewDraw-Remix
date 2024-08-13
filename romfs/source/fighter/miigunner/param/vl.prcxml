@@ -22,6 +22,11 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list size="1" hash="param_flamepillar">
+    <struct index="0">
+      <int hash="life">25</int>
+    </struct>
+  </list>
   <list hash="param_stealthbomb">
     <struct index="0">
       <float hash="speed">4.0</float>
@@ -69,10 +74,13 @@
     <hash40 index="0">dummy</hash40>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
+      <int hash="lw3_time">20</int>
       <float hash="lw3_start_xmul">0.85</float>
-      <float hash="lw3_start_ymul">0.1</float>
-      <float hash="lw3_accel_y">0.07</float>
-      <float hash="lw3_phy_magnet_size">14.0</float>
+      <float hash="lw3_start_ymul">0.8</float>
+      <float hash="lw3_accel_y">0.05</float>
+      <hash40 hash="lw3_phy_magnet_parts">bust</hash40>
+      <float hash="lw3_phy_magnet_offset_y">0.0</float>
+      <float hash="lw3_phy_magnet_size">11.5</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

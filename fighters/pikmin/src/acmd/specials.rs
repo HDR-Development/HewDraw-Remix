@@ -1,99 +1,134 @@
-
 use super::*;
 
-use super::PikminInfo;
-
-// TODO need to check if the "air" names are necessary
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_splwrespond", "game_splwrespond_b","game_splwrespond_v","game_splwrespond_w","game_splwrespond_y",   "game_splwairrespond", "game_splwairrespond_b","game_splwairrespond_v","game_splwairrespond_w","game_splwairrespond_y"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_whistle_damage(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
-    let pikmin = PikminInfo::from(variation);
-    if is_excute(fighter) && StatusModule::prev_status_kind(boma, 0) == *WEAPON_PIKMIN_PIKMIN_STATUS_KIND_SPECIAL_S_CLING {
-        AttackModule::clear_all(boma);
-        let damage = 6.0;
-        ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * pikmin.damage, 90, 105, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, pikmin.hitlag * 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
-        
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        MotionModule::set_rate(boma, 0.5);
-    }
-    
-}
-
-
-#[acmd_script( agent = "pikmin", scripts = ["game_specials", "game_specialairs"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_s(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(agent) {
+        FT_MOTION_RATE(agent, 1.0);
     }
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_SPECIAL_S_FLAG_THROW);
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN, false, 0);
-        FT_MOTION_RATE(fighter, 10.0);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.5, 80, 85, 0, 45, 4.0, 0.0, 2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN, false, -1);
     }
     frame(lua_state, 3.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, WorkModule::get_float(boma, *FIGHTER_PIKMIN_STATUS_PULL_OUT_WORK_FLOAT_MOT_RATE));
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.0);
+    }
+}
+
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        if agent.is_situation(*SITUATION_KIND_AIR)
+        && !VarModule::is_flag(agent.battle_object, vars::common::instance::SPECIAL_STALL_USED) {
+            VarModule::on_flag(agent.battle_object, vars::common::instance::SPECIAL_STALL_USED);
+            if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0 {
+                KineticModule::mul_speed(boma, &Vector3f{x: 1.0, y: 0.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            }
+        }
+
+        WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_SPECIAL_LW_FLAG_SORT);
+        // damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 7.5, 0.0, 7.0, -8.5, 0.0, 7.0, 8.5, 1.5, 1.0, 50, false, 0.8, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        // damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+}
+
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 0.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pikmin_order"), Hash40::new("s_antenna4"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("pikmin_seiretsu"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 0.55, true);
+        LAST_EFFECT_SET_RATE(agent, 2.0);
+    }
+}
+
+unsafe extern "C" fn game_specialnfailure(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 80, 223, 0, 20, 4.0, 0.0, 2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
 }
 
-#[acmd_script( agent = "pikmin_pikmin", scripts = ["game_spntakenoutstart", "game_spntakenoutstart_y", "game_spntakenoutstart_b", "game_spntakenoutstart_w", "game_spntakenoutstart_v"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n_pikmin(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 20.0);
-    }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+unsafe extern "C" fn effect_specialnfailure(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 2.0, 3.0, 0.0, 0.0, 0.0, 1.0, true);
     }
 }
 
-#[acmd_script( agent = "pikmin", scripts = ["game_specialnfailure", "game_specialairnfailure"] , category = ACMD_GAME , low_priority)]
-unsafe fn pikmin_special_n_failure(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.5, 80, 85, 0, 45, 4.0, 0.0, 2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+unsafe extern "C" fn game_specialairnfailure(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 80, 223, 0, 20, 4.0, 0.0, 2.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikmin_whistle_damage,
-        pikmin_special_s,
-        pikmin_special_n,
-        pikmin_special_n_failure,
-        pikmin_special_n_pikmin
-    );
+unsafe extern "C" fn effect_specialairnfailure(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 2.0, 3.0, 0.0, 0.0, 0.0, 1.0, true);
+    }
 }
 
+unsafe extern "C" fn sound_specialairnfailure(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 11.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_pikmin_special_n02"));
+    }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
+    agent.acmd("game_specialnfailure", game_specialnfailure, Priority::Low);
+    agent.acmd("effect_specialnfailure", effect_specialnfailure, Priority::Low);
+    agent.acmd("game_specialairnfailure", game_specialairnfailure, Priority::Low);
+    agent.acmd("effect_specialairnfailure", effect_specialairnfailure, Priority::Low);
+    agent.acmd("sound_specialairnfailure", sound_specialairnfailure, Priority::Low);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
+}

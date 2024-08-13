@@ -4,8 +4,10 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+mod vtable_hook;
 
 use smash::{
     lib::{
@@ -37,17 +39,12 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-
-    if !is_runtime || is_hdr_available() {
-        status::add_statuses();
-    }
-}
-
-pub fn delayed_install() {
-    status::add_statuses();
+pub fn install() {
+    let agent = &mut Agent::new("littlemac");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 }

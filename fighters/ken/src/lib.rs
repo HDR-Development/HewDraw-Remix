@@ -4,8 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+//articles
+
+mod hadoken;
+mod shinryuken;
 
 use smash::{
     lib::{
@@ -37,13 +42,15 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    smashline::install_agent_frames!(
-        ken_meter
-    );
+pub fn install() {
+    let agent = &mut Agent::new("ken");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    hadoken::install();
+    shinryuken::install();
 }

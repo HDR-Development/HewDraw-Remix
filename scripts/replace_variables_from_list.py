@@ -2,7 +2,6 @@
 import shutil, os, sys, glob, characters
 from array_var_replace import replace_patterns
 
-
 def inplace_change(filename, old_string, new_string) -> bool:
     # Safely read the input filename using 'with'
     with open(filename) as f:
@@ -193,8 +192,6 @@ for const in int_consts:
 print("float consts:")
 for const in float_consts:
   print(const)
-
-
 
       
         

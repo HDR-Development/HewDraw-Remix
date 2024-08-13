@@ -24,16 +24,16 @@ def install_with_ip(ip: str, is_dev: bool):
 
   if os.name == 'nt':
     if not is_dev:
-      os.system('curl.exe -T ..\\plugin\\target\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+      os.system('curl.exe -T ..\\target\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
     else:
-      os.system('curl.exe -T ..\\plugin\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
-      os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+      os.system('curl.exe -T ..\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl.exe -T ..\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
   else:
     if not is_dev:
-      os.system('curl -T ../plugin/target/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+      os.system('curl -T ../target/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
     else:
-      os.system('curl -T ../plugin/target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
-      os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+      os.system('curl -T ../target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl -T ../target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
 
 # handle fallback exe on windows
 def handle_fallback():
@@ -99,7 +99,7 @@ for arg in sys.argv:
     version = arg.split('=')[1]
 
 # populate version file
-version_file = os.path.join('plugin', 'hdr_version.txt')
+version_file = 'hdr_version.txt'
 print("checking for version file in " + version_file + "!" )
 
 # deleting existing version file
@@ -109,7 +109,6 @@ if os.path.exists(version_file):
 # write the version file
 with open(version_file, 'x') as version_handle:
   version_handle.write(version)
-
 
 if is_publish:
   allow_dev_build = False
@@ -187,7 +186,7 @@ if (is_dev_build and not is_publish):
   plugin_args = " --no-default-features "
   if len(non_dev_characters) > 0:
     # add each non dev character
-    plugin_args += '--features="main_nro","add_status",'
+    plugin_args += '--features="main_nro",'
     no_comma = True
     for arg in iter(non_dev_characters):
       if no_comma:
@@ -218,12 +217,8 @@ if (is_dev_build and not is_publish):
   # collect ryujinx romfs
   pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
-
 else:
-  if is_publish:
-    feature_list = "--features=\"update\",\"main_nro\",\"add_status\""
-  else:
-    feature_list = "--features=\"main_nro\",\"add_status\""
+  feature_list = "--features=\"main_nro\""
 
   is_only = False
 
@@ -260,7 +255,6 @@ else:
 
   # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
-
 
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 

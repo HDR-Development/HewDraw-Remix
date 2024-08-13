@@ -4,8 +4,19 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod fire;
+mod forge;
+mod melt;
+mod trolley;
+
+// material table hook
+
+pub mod material_table;
 
 use smash::{
     lib::{
@@ -37,11 +48,19 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-pub fn install(is_runtime: bool) {
-    acmd::install();
-    status::install();
-    opff::install(is_runtime);
-    use opff::*;
-    smashline::install_agent_frames!(pickel_trolley_frame);
+pub fn install() {
+    let agent = &mut Agent::new("pickel");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    fire::install();
+    forge::install();
+    melt::install();
+    trolley::install();
+
+    material_table::install();
 }

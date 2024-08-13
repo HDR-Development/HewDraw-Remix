@@ -7,6 +7,32 @@
       <float hash="p2_x">-10.8</float>
       <float hash="p2_y">8</float>
     </struct>
+    <struct index="1">
+      <float hash="p1_x">18</float>
+      <float hash="p1_y">25</float>
+      <float hash="p2_x">-10.8</float>
+      <float hash="p2_y">8</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_n_kirby">
+    <struct index="0">
+      <int hash="critical_frame">36</int>
+	    <int hash="critical_slow_rate">8</int>
+	    <int hash="critical_zoom_in_frame">999</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
@@ -25,6 +51,14 @@
       <float hash="fall_x_mul_value">0.66</float>
       <float hash="landing_frame">25</float>
       <float hash="hi_pass_mul">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="attack_time">16</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -3,7 +3,6 @@ use crate::consts::*;
 use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
-
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[repr(u32)]
 pub enum EnergyMotionResetType {
@@ -181,10 +180,10 @@ impl FighterKineticEnergyMotion {
 }
 
 // This function references BattleObjectWorld, which is defo for the ledge positions
-#[skyline::from_offset(0x6941c0)]
+#[skyline::from_offset(0x6941e0)]
 extern "C" fn handle_cliff(boma: &mut BattleObjectModuleAccessor, vec: &Vector4f) -> energy::Vec4;
 
-#[skyline::hook(offset = 0x6d5c90)]
+#[skyline::hook(offset = 0x6d5cb0)]
 unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut BattleObjectModuleAccessor) {
     use EnergyMotionResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
@@ -259,6 +258,34 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         return;
     }
 
+    // We are here if our character movement is animation-based
+    // AKA the 'move' flag is true for this motion's entry in motion_list.bin
+
+    // Allows all grounded attacks to retain sliding momentum by default
+    if !energy.update_flag
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3])
+    {
+        let mut stop_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
+        let prev_speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let reset_speed_2f = Vector2f { x: prev_speed.x, y: prev_speed.y };
+        let reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_GROUND, &reset_speed_2f, &reset_speed_3f, boma);
+        lua_bind::KineticEnergy::enable(stop_energy);
+    }
+
     // begin block for calculating move speed based on animation
 
     let mut move_speed = FighterKineticEnergyMotion::get_translation_by_reset_type(boma, reset_type);
@@ -295,9 +322,9 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     if boma.status_frame() == 0 {
         move_speed.x = energy.prev_speed.x;
-        if reset_type.is_air() || reset_type.is_cliff() {
-            move_speed.y = energy.prev_speed.y;
-        }
+        // if reset_type.is_air() || reset_type.is_cliff() {
+        //     move_speed.y = energy.prev_speed.y;
+        // }
     }
 
     //println!("{}", move_speed.x);

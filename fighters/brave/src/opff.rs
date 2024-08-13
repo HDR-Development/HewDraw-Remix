@@ -45,7 +45,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
     }
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE) {
         if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) <= 0 {
-            EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11be25bbf2), false, false);
+            EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 18, -4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
         }
@@ -66,7 +66,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_air_b"),
             Hash40::new("attack_air_lw")
         ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
-            EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11be25bbf2), false, false);
+            EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         }
@@ -94,25 +94,65 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
 
 // Hero woosh cancel
 unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]){
+    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]) {
         if MotionModule::frame(fighter.module_accessor) >= 41.0 {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
-
 }
 
 unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
-            fighter.check_jump_cancel(false);
+            fighter.check_jump_cancel(false, false);
         }
     }
 }
 
-#[utils::macros::opff(FIGHTER_KIND_BRAVE )]
-pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK1,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK2,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK3,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK3_APPEND,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CANCEL,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_FAILURE
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+            }
+        }
+    }
+}
+
+pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     persist_rng(fighter);
     psych_up_crit(fighter);
@@ -121,7 +161,12 @@ pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     dash_cancel_frizz(fighter);
     woosh_cancel(fighter);
     kaclang_jc(fighter);
+    fastfall_specials(fighter);
 
     // Extend sword length
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, brave_frame_wrapper);
 }

@@ -1,13 +1,16 @@
 use skyline::hooks::InlineCtx;
+use smash::app;
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::app::lua_bind::*;
+use smash::app::enSEType;
+use smash::app::smashball::*;
 use smash::lib::lua_const::*;
 use smash::phx::*;
 use crate::ext::*;
 use crate::offsets;
 use crate::consts::*;
-use super::METER_MODULE_OFFSET;
-use super::{VarModule, ParamModule, ParamType};
+use super::*;
+use smash_script::macros;
 
 macro_rules! get_meter_module {
     ($object:ident) => {{
@@ -40,6 +43,7 @@ macro_rules! require_meter_module {
     }}
 }
 
+#[repr(C)]
 pub struct MeterModule {
     owner: *mut BattleObject,
     current_meter: f32,
@@ -313,6 +317,13 @@ impl MeterModule {
 
         let new_levels = if module.watch && module.has_hit {
             let difference = VarModule::get_float(module.owner, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+            // if lucario causes valid damage, reset regen pause timer
+            unsafe { 
+                let obj = &mut *module.owner ;
+                if difference > 0.0 && obj.is_fighter() && obj.kind() == *FIGHTER_KIND_LUCARIO {
+                    VarModule::set_int(module.owner, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+                }
+            }
             let current = Self::level(module.owner);
             module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;
@@ -352,7 +363,7 @@ impl MeterModule {
     }
 }
 
-#[skyline::hook(offset = 0x46ae64, inline)]
+#[skyline::hook(offset = 0x46ae84, inline)]
 unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
     let data = *ctx.registers[1].x.as_ref() as *mut u32;
     let attacker_id = *data;
@@ -371,7 +382,7 @@ unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
-#[skyline::hook(offset = 0x4c7060)]
+#[skyline::hook(offset = 0x4c7080)]
 unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u64, opp_attack_module: *mut u64, collision: *mut u8, group_index: i32, raw_power: f32, real_power: f32, pos_x: f32, lr: f32) {
     call_original!(shield_module, opp_attack_module, collision, group_index, raw_power, real_power, pos_x, lr);
     let attacker_id = *(collision.add(0x24) as *const u32);
@@ -389,45 +400,10 @@ unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
-// static mut IS_CALCULATING: Option<(u32, u32)> = None;
-
-// #[skyline::hook(offset = 0x402ee0, inline)]
-// unsafe fn calculate_knockback(ctx: &InlineCtx) {
-//     let damage_module = *ctx.registers[19].x.as_ref();
-//     let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
-//     let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
-//     let id = *(ptr.add(0x24) as *const u32);
-//     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
-// }
-
-// extern "C" {
-//     #[link_name = "calculate_finishing_hit"]
-//     fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: u64);
-// }
-
-// #[skyline::hook(offset = 0x403930, inline)]
-// unsafe fn process_knockback(ctx: &InlineCtx) {
-//     if let Some((defender, attacker)) = IS_CALCULATING {
-//         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
-//         if (*boma).battle_object_id == defender {
-//             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref());
-//         }
-//     }
-// }
-
-// #[skyline::hook(offset = 0x401e30)]
-// unsafe fn knockback_calculator(arg1: u64, arg2: u64, arg3: u64, arg4: u64, arg5: f32, arg6: f32, arg7: f32, arg8: f32) -> f32 {
-//     let knockback = call_original!(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-//     if let Some((defender, attacker, log)) = IS_CALCULATING.take() {
-//         calculate_finishing_hit(defender, attacker, log, knockback);
-//     }
-//     knockback
-// }
-
 #[skyline::hook(offset = offsets::fighter_handle_damage())]
 unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg: *const u8) {
     let module_accessor = (*fighter).module_accessor;
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let _entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
     call_original!(fighter, arg);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
@@ -447,7 +423,7 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
     }
 }
 
-#[skyline::hook(offset = 0x970fd0)]
+#[skyline::hook(offset = 0x970ff0)]
 pub unsafe extern "C" fn dolly_super_special_check(module_accessor: *mut smash::app::BattleObjectModuleAccessor, param_2: u8) {
     original!()(module_accessor, param_2)
 }
@@ -459,7 +435,7 @@ pub struct TempModule {
   // ...
 }
 
-#[skyline::hook(offset = 0x971230)]
+#[skyline::hook(offset = 0x971250)]
 pub unsafe extern "C" fn dolly_super_special_check_param(work: &mut TempModule, _damage: &mut TempModule) -> u64 {
     let module_accessor = work.owner;
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
@@ -478,7 +454,5 @@ pub fn init() {
         dolly_super_special_check_param,
         hit_module_handle_attack_event,
         shield_module_send_shield_attack_collision_event,
-        // process_knockback,
-        // calculate_knockback
     );
 }
