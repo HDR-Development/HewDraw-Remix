@@ -13,14 +13,6 @@ unsafe extern "C" fn recreate_table_main(fighter: &mut L2CFighterCommon) -> L2CV
         return 1.into();
     }
 
-    // extra assurance that the table is able to fall when spawned in, and isn't held up from the cooldown indicator effect
-    if ArticleModule::is_exist(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE) {
-        let table = ArticleModule::get_article(fighter.boma(), *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE);
-        let table_id = smash::app::lua_bind::Article::get_battle_object_id(table) as u32;
-        let table_boma = sv_battle_object::module_accessor(table_id);
-        KineticModule::resume_energy_all(table_boma);
-    }
-
     smashline::original_status(Main, fighter, *FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE)(fighter)
 }
 

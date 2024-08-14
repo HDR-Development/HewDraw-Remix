@@ -110,7 +110,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         || GroundModule::is_wall_touch_line(weapon.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32)
         || AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD)
             { "wall" }
-        else if DamageModule::damage(weapon.module_accessor, 0) > 0.0
+        else if StopModule::is_hit(weapon.module_accessor)
             { "damaged" }
         else
             { "none" };
@@ -141,6 +141,11 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
             is_near_floor = true;
             offset = ground_distance;
         }
+    }
+
+    if trigger == "damaged" {
+        // place steve more accurately to where the pearl was hit
+        pos.y -= 5.0;
     }
 
     // play effects

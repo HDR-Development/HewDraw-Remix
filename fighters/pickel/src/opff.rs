@@ -140,27 +140,6 @@ unsafe fn table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     let cooldown_frame = VarModule::get_int(boma.object(), TABLE_RESPAWN_TIMER);
     if cooldown_frame > 0 { VarModule::dec_int(boma.object(), TABLE_RESPAWN_TIMER); }
     
-    // initiate effects for the cooldown indication
-    if cooldown_frame == 25 {
-        gimmick_flash(boma);
-        LAST_EFFECT_SET_SCALE_W(fighter, 0.65, 0.65, 0.65);
-        LAST_EFFECT_SET_RATE(fighter, 0.6);
-        PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
-        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE, false, 0);
-
-        let table = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE);
-        let table_id = smash::app::lua_bind::Article::get_battle_object_id(table) as u32;
-        let table_boma = sv_battle_object::module_accessor(table_id);
-        PostureModule::set_pos_2d(table_boma, &Vector2f {
-            x: PostureModule::pos_x(boma),
-            y: PostureModule::pos_y(boma) + 17.0
-        });
-        PostureModule::set_rot(table_boma, &Vector3f {x: 0.0, y: 45.0, z:0.0}, 0);
-        PostureModule::set_scale(table_boma, 0.6, false);
-        KineticModule::suspend_energy_all(table_boma);
-        VarModule::set_int(boma.object(), TABLE_RESPAWN_TIMER, 24);
-    }
-
     if ArticleModule::is_exist(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE) {
         let table = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE);
         let table_id = smash::app::lua_bind::Article::get_battle_object_id(table) as u32;
@@ -174,26 +153,19 @@ unsafe fn table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         && cooldown_frame == 0 {
             VarModule::set_int(boma.object(), TABLE_RESPAWN_TIMER, 240);
         }
-        // handles custom table effect
-        if (2..24).contains(&cooldown_frame) {
-            let y_offset = 17.0 + ((30.0 - cooldown_frame as f32) * 0.2); // base offset + distance it will rise each frame
-            let table_rot_y = PostureModule::rot_y(table_boma, 0); 
-            PostureModule::set_pos_2d(table_boma, &Vector2f {
-                x: PostureModule::pos_x(boma),
-                y: PostureModule::pos_y(boma) + y_offset
-            });
-            PostureModule::set_rot(table_boma, &Vector3f {x: 0.0, y: (table_rot_y + 1.0), z:0.0}, 0);
-        } else if cooldown_frame == 1 { // remove effect
-            KineticModule::resume_energy_all(table_boma);
-            ArticleModule::remove_exist(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE, app::ArticleOperationTarget(0));
-            VarModule::set_int(boma.object(), TABLE_RESPAWN_TIMER, 0);
-        }
-    } else { // set the flag for table respawning when cooldown is over
+    } else { // set the flag for table respawning when cooldown is over and play effects
         if !VarModule::is_flag(boma.object(), CAN_RESPAWN_TABLE)
         && cooldown_frame == 0 {
+            gimmick_flash(boma);
+            LAST_EFFECT_SET_SCALE_W(fighter, 0.65, 0.65, 0.65);
+            LAST_EFFECT_SET_RATE(fighter, 0.6);
+            EFFECT_FOLLOW(fighter, Hash40::new("pickel_icon_table"), Hash40::new("top"), 0, 13, 0, 0, 0, 0, 1.15, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.4);
+            PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
             VarModule::on_flag(boma.object(), CAN_RESPAWN_TABLE);
         }
     }
+
     // input for respawning table
     if VarModule::is_flag(boma.object(), CAN_RESPAWN_TABLE)
     && status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT // if steve is in stationary mining status
