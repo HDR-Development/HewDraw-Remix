@@ -99,7 +99,7 @@
     <float hash="hp_wood">10</float>
     <float hash="hp_stone">13</float>
     <float hash="hp_iron">16</float>
-    <float hash="fighter_landing_damage_mul">6.0</float>
+    <float hash="fighter_landing_damage_mul">7.0</float>
     <int hash="fighter_landing_damage_mul_frame">24</int>
   </struct>
   <list hash="param_table">
