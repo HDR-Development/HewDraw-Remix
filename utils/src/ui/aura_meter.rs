@@ -27,6 +27,7 @@ pub struct AuraMeter {
     // Initial state
     pub meter_bar_bg_width_height: (f32, f32),
     pub meter_bar_lucario_width_height: (f32, f32),
+    pub meter_bar_pichu_width_height: (f32, f32),
 
     // Progress tracking
     pub actual_percentage: f32,
@@ -63,6 +64,7 @@ impl AuraMeter {
 
             meter_bar_bg_width_height: (-1.0, -1.0),
             meter_bar_lucario_width_height: (-1.0, -1.0),
+            meter_bar_pichu_width_height: (-1.0, -1.0),
 
             actual_percentage: -1.0,
             visual_percentage: -1.0,
@@ -78,10 +80,12 @@ impl AuraMeter {
         set_pane_visible(self.meter_base, true);
         set_pane_visible(self.meter_bar_bg, true);
         set_pane_visible(self.meter_bar_lucario, false);
+        set_pane_visible(self.meter_bar_pichu, false);
         set_pane_visible(self.meter_div, true);
 
         self.meter_bar_bg_width_height = get_width_height(self.meter_bar_bg);
         self.meter_bar_lucario_width_height = get_width_height(self.meter_bar_lucario);
+        self.meter_bar_pichu_width_height = get_width_height(self.meter_bar_pichu);
 
         self.actual_percentage = 0.0;
         self.visual_percentage = 0.0;
@@ -162,6 +166,7 @@ impl UiObject for AuraMeter {
         return is_pane_valid(self.meter_base)
             && is_pane_valid(self.meter_bar_bg)
             && is_pane_valid(self.meter_bar_lucario)
+            && is_pane_valid(self.meter_bar_pichu)
             && is_pane_valid(self.meter_div);
     }
 
