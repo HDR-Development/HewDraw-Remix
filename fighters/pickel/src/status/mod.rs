@@ -15,6 +15,7 @@ mod special_s;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::on_flag(fighter.battle_object, vars::pickel::instance::SHOULD_CYCLE_MATERIAL);
+    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::CAN_RESPAWN_TABLE);
     VarModule::off_flag(fighter.battle_object, vars::pickel::instance::SHOULD_RESET_ROT);
     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
