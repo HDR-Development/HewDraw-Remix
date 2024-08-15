@@ -3,6 +3,10 @@ use super::*;
 // FIGHTER_STATUS_KIND_SPECIAL_LW
 
 pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_LW);
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    }
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
         MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
         VarModule::set_flag(
