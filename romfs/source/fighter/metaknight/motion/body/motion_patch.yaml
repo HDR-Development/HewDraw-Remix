@@ -28,7 +28,7 @@ fall_aerial:
   blend_frames: 5
 attack_dash:
   extra:
-    cancel_frame: 41
+    cancel_frame: 38
 attack_s4_s:
   extra:
     cancel_frame: 46
@@ -43,6 +43,9 @@ attack_air_b:
 attack_air_f:
   extra:
     cancel_frame: 36
+attack_s3_s2:
+  extra:
+    cancel_frame: 23
 attack_s3_s3:
   extra:
     cancel_frame: 24
