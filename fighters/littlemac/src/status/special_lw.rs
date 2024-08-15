@@ -142,19 +142,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             }
             if fighter.status_frame() >= 10 {
                 if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                    if fighter.is_cat_flag(Cat2::StickEscape) {
-                        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE);
-                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
-                    }
-                    else if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F);
-                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
-                    }
-                    else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                        VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B);
-                        fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
-                    }
-                    else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
+                    if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
                         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE, vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP);
                         fighter.change_status(statuses::littlemac::SPECIAL_LW_CANCEL.into(), true.into());
                     }
