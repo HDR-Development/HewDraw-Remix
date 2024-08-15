@@ -1,5 +1,26 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+        VarModule::set_flag(
+            fighter.battle_object, 
+            vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
+            MeterModule::level(fighter.battle_object) >= 4
+        );
+    } else {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+    }
+    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
 // statuses::ryu::INSTALL
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -113,6 +134,8 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
     agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
     agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
     agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
