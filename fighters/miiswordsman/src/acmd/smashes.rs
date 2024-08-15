@@ -47,6 +47,10 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
+        (*AttackModule::attack_data(boma, 2, false)).vector = 160;
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
         (*AttackModule::attack_data(boma, 0, false)).vector = 365;
         (*AttackModule::attack_data(boma, 1, false)).vector = 365;
         (*AttackModule::attack_data(boma, 2, false)).vector = 365;
