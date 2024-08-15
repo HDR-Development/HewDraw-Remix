@@ -5,11 +5,13 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 55, 60, 0, 38, 9.5, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 55, 60, 0, 38, 3.0, 0.0, 10.0, 3.0, Some(0.0), Some(4.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 9.0, 55, 60, 0, 38, 3.0, 0.0, -2.5, 4.0, Some(0.0), Some(4.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 55, 60, 0, 38, 9.5, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        AttackModule::set_power(boma, 0, 7.0, false);
+        AttackModule::set_power(boma, 1, 7.0, false);
     }
 }
 
@@ -34,7 +36,7 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
             &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
-            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
+            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(agent, 0.3);
             FOOT_EFFECT(agent, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         }
@@ -52,7 +54,7 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
             &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
-            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
+            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(agent, 0.3);
             FOOT_EFFECT(agent, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         }
@@ -65,23 +67,23 @@ unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
             &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
             &Vector2f{ x: 0.0, y: -7.0}, true
         ) == 1 {
-            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
+            FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(agent, 0.3);
             FOOT_EFFECT(agent, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         }
     }
-    for _ in 0..i32::MAX {
+    for _ in 0..10 {
         wait(lua_state, 4.0);
         if is_excute(agent) {
-                if GroundModule::ray_check(
-                    boma, 
-                    &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
-                    &Vector2f{ x: 0.0, y: -7.0}, true
-                ) == 1 {
-                    FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 5.5, 0, 0, 0, 0, 0, 0, false);
-                    LAST_EFFECT_SET_RATE(agent, 0.3);
-                    FOOT_EFFECT(agent, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
-                }
+            if GroundModule::ray_check(
+                boma, 
+                &Vector2f{ x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma)}, 
+                &Vector2f{ x: 0.0, y: -7.0}, true
+            ) == 1 {
+                FOOT_EFFECT(agent, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 4, -0.5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, false);
+                LAST_EFFECT_SET_RATE(agent, 0.3);
+                FOOT_EFFECT(agent, Hash40::new("sys_quake"), Hash40::new("top"), 4, -4, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+            }
         }
     }
 }
