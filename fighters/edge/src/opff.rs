@@ -3,6 +3,15 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+unsafe fn special_hi_charged_rush(fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32) {
+    if status_kind != *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH {
+        return;
+    }
+    if situation_kind == *SITUATION_KIND_GROUND
+    && GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
+}
 
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH) {
@@ -75,6 +84,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
     refresh_flare(boma);
     fastfall_specials(fighter);
+    special_hi_charged_rush(fighter, status_kind, situation_kind);
 }
 
 pub extern "C" fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
