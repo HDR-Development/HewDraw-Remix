@@ -317,8 +317,6 @@ unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             return;
         }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        // burst of speed specifically for EX tatsu
-        KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
     }
 
     // always use heavy during EX
@@ -426,7 +424,8 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         }
     }
 
-    if is_nspecial_cancel || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    || (is_nspecial_cancel && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW)) {
         VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
     }
 
