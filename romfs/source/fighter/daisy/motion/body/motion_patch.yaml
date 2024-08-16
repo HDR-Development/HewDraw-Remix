@@ -62,7 +62,7 @@ attack_lw4:
     cancel_frame: 52
 attack_air_f:
   extra:
-    cancel_frame: 48
+    cancel_frame: 52
 attack_air_b:
   extra:
     cancel_frame: 32

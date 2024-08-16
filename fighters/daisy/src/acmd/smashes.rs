@@ -9,7 +9,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 15.0, 45, 75, 0, 60, 3.5, 0.0, 10.0, 7.0, Some(0.0), Some(9.5), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_TENNIS, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 15.0, 45, 75, 0, 60, 3.5, 0.0, 10.0, 7.0, Some(0.0), Some(9.5), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_TENNIS, *ATTACK_REGION_OBJECT);
         shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 6.0, 0.0, 5.5, 11.5, 0.0, 13.0, 11.5, 1.2, 1.2, 999, false, 1.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
     frame(lua_state, 17.0);
@@ -139,9 +139,10 @@ unsafe extern "C" fn effect_attacks4hi(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 0.8);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 17.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_smash_racket"), Hash40::new("daisy_smash_racket_l"), Hash40::new("top"), 4.5, 5.5, 5, 0, 0, 0, 1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
     }
 }
 
@@ -154,7 +155,7 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 22, 35, 0, 75, 3.0, 0.0, 9.0, 6.0, Some(0.0), Some(2.5), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_TENNIS, *ATTACK_REGION_OBJECT);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 22, 35, 0, 75, 3.0, 0.0, 9.0, 6.0, Some(0.0), Some(2.5), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DAISY_TENNIS, *ATTACK_REGION_OBJECT);
         shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 6.0, 0.0, 5.5, 11.5, 0.0, 13.0, 11.5, 1.2, 1.2, 999, false, 1.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
     frame(lua_state, 19.0);
