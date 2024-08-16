@@ -8,34 +8,6 @@ pub unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-unsafe extern "C" fn status_Dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return fighter.status_Dash();
-}
-
-unsafe extern "C" fn status_Dash_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return false.into();
-}
-
-unsafe extern "C" fn status_Turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return fighter.status_Turn();
-}
-
-unsafe extern "C" fn status_TurnDash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return fighter.status_TurnDash();
-}
-
-unsafe extern "C" fn status_TurnDash_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return false.into();
-}
-
-unsafe extern "C" fn status_TurnRun_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return fighter.status_TurnRun();
-}
-
-unsafe extern "C" fn status_TurnRunBrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return fighter.status_TurnRunBrake();
-}
-
 pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(), 30.0, 30.0);
     let pos = *PostureModule::pos(fighter.module_accessor);
@@ -105,24 +77,10 @@ unsafe extern "C" fn popo_status_kind_throw_nana_main_loop(fighter: &mut L2CFigh
 
 pub fn install_popo(agent: &mut Agent) {
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
-    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, status_Dash_main);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_DASH, status_Dash_exit);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN, status_Turn_main);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_TurnRun_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_TurnRunBrake_main);
 }
 
 pub fn install_nana(agent: &mut Agent) {
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
-    agent.status(Main, *FIGHTER_STATUS_KIND_DASH, status_Dash_main);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_DASH, status_Dash_exit);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN, status_Turn_main);
-    agent.status(Exit, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_DASH, status_TurnDash_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN, status_TurnRun_main);
-    agent.status(Main, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, status_TurnRunBrake_main);
     agent.status(Main, *FIGHTER_STATUS_KIND_THROW, throw_nana);
     agent.status(Pre, *FIGHTER_STATUS_KIND_CATCH_WAIT, nana_catch_wait_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, nana_catch_wait_main);
