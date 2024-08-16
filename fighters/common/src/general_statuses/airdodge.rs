@@ -119,7 +119,7 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         && [*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind))
     {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-            let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide_max"));
+            let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide_max")) + 1.0;
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             let global_speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "wavedash_speed_mul");
             let speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_speed_mul_escape_air_slide"));
@@ -135,7 +135,7 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, speed_y);
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         } else {
-            let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air")) as f32;
+            let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air")) as f32 + 1.0;
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         }
         if status_kind == FIGHTER_STATUS_KIND_LANDING {
