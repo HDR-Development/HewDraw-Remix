@@ -1604,16 +1604,13 @@ pub mod vars {
             // flags
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
-            pub const COMBO_PLUS_AIR: i32 = 0x0102;
-            pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0102;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SHOULD_PRORATE_ATTACK: i32 = 0x1100;
-
             pub const IS_LAND_CANCEL_THUNDER: i32 = 0x1100;
             pub const IS_GRAND_MAGIC: i32 = 0x1101;
             pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x1102;
@@ -1623,9 +1620,6 @@ pub mod vars {
             pub const SIDE_SPECIAL_HIT: i32 = 0x1100;
             pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1101;
             pub const STOP_SIDE_SPECIAL: i32 = 0x1102;
-            pub const UP_SPECIAL_TO_SIDE_SPECIAL: i32 = 0x1103;
-
-            pub const UP_SPECIAL_HIT: i32 = 0x1100;
 
             // ints
             pub const ATTACK_LW4_TIMER: i32 = 0x1100;
