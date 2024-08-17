@@ -1339,9 +1339,9 @@ impl BomaExt for BattleObjectModuleAccessor {
         if [
             *FIGHTER_STATUS_KIND_ATTACK, 
             *FIGHTER_STATUS_KIND_ATTACK_DASH, 
-            // *FIGHTER_STATUS_KIND_ATTACK_S3,
-            // *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            // *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
         ].contains(&status_kind) {
             if self.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
