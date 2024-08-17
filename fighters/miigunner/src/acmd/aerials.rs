@@ -317,7 +317,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 36.0);
     if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-			ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 72, 172, 0, 50, 4.0, 0.0, 58.0, 0.0, Some(0.0), Some(16.0), Some(0.0), 1.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
+			ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 72, 172, 0, 50, 4.0, 0.0, 58.0, 0.0, Some(0.0), Some(16.0), Some(0.0), 1.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
 		}
     }
     frame(lua_state, 39.0);

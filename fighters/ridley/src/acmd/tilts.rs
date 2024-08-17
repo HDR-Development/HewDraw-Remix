@@ -112,7 +112,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 78, 80, 0, 75, 4.0, 0.0, 3.8, 19.0, Some(0.0), Some(3.8), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 78, 80, 0, 75, 4.0, 0.0, 3.8, 19.0, Some(0.0), Some(3.8), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
         ATTACK(agent, 1, 0, Hash40::new("top"), 11.0, 85, 80, 0, 75, 4.5, 0.0, 3.8, 28.5, Some(0.0), Some(3.8), Some(27.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
