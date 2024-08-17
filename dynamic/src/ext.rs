@@ -527,6 +527,7 @@ pub trait BomaExt {
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
     unsafe fn check_airdash(&mut self);
+    unsafe fn check_magicseries(&mut self);
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
@@ -1304,6 +1305,79 @@ impl BomaExt for BattleObjectModuleAccessor {
         if self.is_situation(*SITUATION_KIND_AIR) {
             let fighter = crate::util::get_fighter_common_from_accessor(self);
             fighter.sub_air_check_fall_common();
+        }
+    }
+
+    unsafe fn check_magicseries(&mut self) {
+        // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+        if CancelModule::is_enable_cancel(self) 
+        || self.is_in_hitlag() 
+        || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
+            return;
+        }
+
+        let status_kind = StatusModule::status_kind(self);
+        
+        // Tilt cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackHi3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackLw3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+            }
+        }
+    
+        // Smash cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackHi4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackLw4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+            }
+        }
+    
+        // Special cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::SpecialN) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialS) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialHi) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialLw) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+            }
         }
     }
 

@@ -3,20 +3,6 @@ use super::*;
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
-            VarModule::set_flag(
-                agent.battle_object, 
-                vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(agent.battle_object) >= 4
-            );
-            MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
-        } else {
-            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
-        }
-        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
-    }
 }
 
 unsafe extern "C" fn game_speciallwinstall(agent: &mut L2CAgentBase) {
