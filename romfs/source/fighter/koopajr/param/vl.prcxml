@@ -43,6 +43,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <int hash="disable_air_escape_frame">10</int>
       <int hash="back_frame_ground">15</int>
       <float hash="back_speed_ground">0.65</float>
       <float hash="back_speed_x_air">0.65</float>
