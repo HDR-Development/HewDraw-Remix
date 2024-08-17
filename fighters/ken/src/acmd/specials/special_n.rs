@@ -41,7 +41,10 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 13.0);
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
         VarModule::on_flag(agent.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
@@ -253,9 +256,9 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             COL_NORMAL(agent);
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
-                EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 50, 0, 0, 1, true);
             } else {
-                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_shot"), Hash40::new("top"), 0, 6, 11, 50, 0, 0, 1, true);
             }
         }
         frame(lua_state, 12.0);
