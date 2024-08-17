@@ -38,7 +38,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
         let dmg = 18.2;
-        ATTACK(agent, 0, 0, Hash40::new("top"), dmg * p.dmg, 83 + p.angle, 72, 0, 50, 6.0, 0.0, 3.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(agent, 0, 0, Hash40::new("top"), dmg * p.dmg, 83 + p.angle, 72, 0, 50, 6.0, 0.0, 3.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         let dmg = 14.0;
         ATTACK(agent, 1, 0, Hash40::new("top"), dmg * p.dmg, 94 + p.angle, 64, 0, 50, 4.0, 0.0, 3.5, 9.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
     }
