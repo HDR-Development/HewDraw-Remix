@@ -13,6 +13,10 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.slip = -1.0;
     }
 
+    if data.vector >= 70 && data.vector <= 110 {
+        data.lr_check = smash_rs::app::AttackLRCheck::Forward;
+    }
+
     if (*boma).is_fighter() {
         // Reduce strength of getup attacks
         if (*boma).is_status(*FIGHTER_STATUS_KIND_DOWN_STAND_ATTACK) {
