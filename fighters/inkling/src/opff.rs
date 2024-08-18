@@ -4,68 +4,17 @@ use super::*;
 use globals::*;
 use skyline::hooks::InlineCtx;
 
-static mut INKLING_COLORS: [Vector3f; 256] = [
-    // used to tint the hitbox effects
-    Vector3f {
-        x: 0.0,
-        y: 0.0,
-        z: 0.0,
-    };256
-];
-
-#[skyline::hook(offset = 0x0767510, inline)]
-pub fn get_ink_colors(ctx: &mut InlineCtx) {
-    // assigns RGB values for the relevant slot in the effect.prc to the above vector
-    unsafe {
-      let color_address = *(ctx.registers[12].x.as_ref());
-      let red = *((color_address) as *const f32);
-      let green = *((color_address + 4) as *const f32);
-      let blue = *((color_address + 8) as *const f32);
-      let index = (*(ctx.registers[8].x.as_ref()) -1) as usize;
-      INKLING_COLORS[index].x = red;
-      INKLING_COLORS[index].y = green;
-      INKLING_COLORS[index].z = blue;
-    }
-}
-
-unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
-    if motion_kind == hash40("attack_air_lw")
+unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_air_lw"))
     && boma.motion_frame() < 17.0
-    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
-    {
-        let pos = Vector3f {
-            x: 0.,
-            y: -2.,
-            z: 0.,
-        };
-        let rot = Vector3f {
-            x: 0.,
-            y: 90.,
-            z: 0.,
-        };
-        let handle2 = EffectModule::req_on_joint(
-            boma,
-            Hash40::new("inkling_blaster_muzzle"),
-            Hash40::new("top"),
-            &pos,
-            &rot,
-            2.2,
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            false,
-            0,
-            0,
-            0,
-        ) as u32;
-        let costumenum =
-            VarModule::get_int(boma.object(), vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
-        EffectModule::set_rgb(
-            boma,
-            handle2,
-            INKLING_COLORS[costumenum].x,
-            INKLING_COLORS[costumenum].y,
-            INKLING_COLORS[costumenum].z,
-        );
+    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+        let pos = Vector3f{ x: 0.0, y: -6.5, z: 0.0 };
+        let rot = Vector3f{ x: 0.0, y: 90.0, z: 0.0 };
+        let handle = EffectModule::req_on_joint(boma, Hash40::new("inkling_blaster_muzzle"), Hash40::new("top"), &pos, &rot, 1.5, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0) as u32;
+        let r = boma.get_float(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_R);
+        let g = boma.get_float(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_G);
+        let b = boma.get_float(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_B);
+        EffectModule::set_rgb(boma, handle, r, g, b);
         EffectModule::set_rate_last(boma, 0.5);
     }
 }
@@ -140,7 +89,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, nstick_x: f32, stick_y: f32, facing: f32, frame: f32,) {
-    dair_splatter(boma, motion_kind, id);
+    dair_splatter(boma);
     roller_jump_cancel(boma);
     ink_charge_cancel(boma);
     fastfall_specials(fighter);
@@ -161,6 +110,4 @@ pub unsafe fn inkling_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, inkling_frame_wrapper);
-
-    skyline::install_hooks!(get_ink_colors);
 }
