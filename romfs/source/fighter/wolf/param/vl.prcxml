@@ -34,6 +34,8 @@
     <struct index="0">
       <int hash="fire_stop_y_frame">14</int>
       <float hash="fire_accel_y">0.0175</float>
+      <float hash="fire_rot_start_frame">25.0</float>
+      <float hash="fire_rot_end_frame">26.0</float>
       <int hash="fire_rush_frame">20</int>
       <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>

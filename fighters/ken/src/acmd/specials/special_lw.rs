@@ -77,23 +77,6 @@ unsafe extern "C" fn game_speciallwstepf(agent: &mut L2CAgentBase) {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     frame(lua_state, 2.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
-            VarModule::set_flag(
-                agent.battle_object, 
-                vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(agent.battle_object) >= 6
-            );
-            if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-                MeterModule::drain_direct(agent.battle_object, 0.5 * MeterModule::meter_per_level(agent.battle_object));
-            } else {
-                MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
-            }
-        } else {
-            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
-        }
-        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
-    }
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0 / (26.0 - 18.0));
@@ -122,23 +105,6 @@ unsafe extern "C" fn game_specialairlwstepf(agent: &mut L2CAgentBase) {
         sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
     }
     frame(lua_state, 2.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
-            VarModule::set_flag(
-                agent.battle_object, 
-                vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
-                MeterModule::level(agent.battle_object) >= 6
-            );
-            if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-                MeterModule::drain_direct(agent.battle_object, 0.5 * MeterModule::meter_per_level(agent.battle_object));
-            } else {
-                MeterModule::drain_direct(agent.battle_object, 1.0 * MeterModule::meter_per_level(agent.battle_object));
-            }
-        } else {
-            VarModule::off_flag(agent.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
-        }
-        VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
-    }
     FT_MOTION_RATE(agent, 1.0);
 }
 
