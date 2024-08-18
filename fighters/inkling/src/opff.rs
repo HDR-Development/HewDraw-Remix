@@ -30,7 +30,8 @@ pub fn get_ink_colors(ctx: &mut InlineCtx) {
 
 unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize) {
     if motion_kind == hash40("attack_air_lw")
-        && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
+    && boma.motion_frame() < 17.0
+    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
     {
         let pos = Vector3f {
             x: 0.,
