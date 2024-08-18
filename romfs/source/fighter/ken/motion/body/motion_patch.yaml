@@ -28,7 +28,7 @@ attack_air_f:
     cancel_frame: 26
 attack_air_hi:
   extra:
-    cancel_frame: 28
+    cancel_frame: 33
 attack_command4:
   game_script: game_attackcommand4
   flags:
