@@ -57,6 +57,15 @@ unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
     && boma.motion_frame() as i32 == 3 {
         MotionModule::change_motion_inherit_frame(boma, Hash40::new("appeal_s_special"), -1.0, 1.0, 0.0, false, false);
     }
+
+    // summons the flower if daisy inputs taunt at the beginning of a parry
+    if boma.is_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE)
+    && boma.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD)
+    && boma.status_frame() == 0
+    && ( ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+    || ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) ) {
+        VarModule::on_flag(boma.object(), vars::daisy::status::GUARD_OFF_YAP)
+    }
 }
 
 // unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {

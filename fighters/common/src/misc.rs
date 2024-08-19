@@ -87,6 +87,7 @@ pub fn install() {
         .on_line(Main, turbo_mode)
         .on_line(Main, hitfall_mode)
         .on_line(Main, airdash_mode)
+        .on_line(Main, magicseries_mode)
         .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();
@@ -215,6 +216,19 @@ pub extern "C" fn airdash_mode(fighter: &mut L2CFighterCommon) {
             Some(modes) => {
                 if modes.contains(&CustomMode::AirdashMode) {
                     fighter.check_airdash();
+                }
+            },
+            _ => {}
+        }
+    }
+}
+
+pub extern "C" fn magicseries_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::MagicSeriesMode) {
+                    fighter.check_magicseries();
                 }
             },
             _ => {}

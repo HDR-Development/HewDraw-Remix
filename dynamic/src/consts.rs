@@ -412,6 +412,7 @@ pub mod vars {
             pub const SPECIAL_N_AIR_START: i32 = 0x1101;
             pub const SPECIAL_N_DIVE: i32 = 0x1102;
             pub const SPECIAL_N_AUTOCANCEL: i32 = 0x1103;
+            pub const GUARD_OFF_YAP: i32 = 0x1104;
         }
     }
 
