@@ -2805,7 +2805,7 @@
       <float hash="landing_attack_air_frame_f">10</float>
       <float hash="landing_attack_air_frame_b">11</float>
       <float hash="landing_attack_air_frame_hi">8</float>
-      <float hash="scale">1.125</float>
+      <float hash="scale">1.075</float>
       <float hash="shield_radius">11.4</float>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>
@@ -2813,6 +2813,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <bool hash="air_lasso_type">true</bool>
     </struct>
     <!-- KAZUYA -->
     <struct index="75">

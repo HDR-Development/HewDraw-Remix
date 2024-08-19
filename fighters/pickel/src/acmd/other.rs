@@ -152,6 +152,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_guarddamage", game_guarddamage, Priority::Low);
 
     agent.acmd("sound_landingheavy", sound_landingheavy, Priority::Low);
+    agent.acmd("sound_landingfallspecial", sound_landingheavy, Priority::Low);
 
     agent.acmd("game_passive", game_passive, Priority::Low);
 }
