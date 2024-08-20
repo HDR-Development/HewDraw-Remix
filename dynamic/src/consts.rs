@@ -1818,6 +1818,11 @@ pub mod statuses {
     }
 }
 
+pub mod articles {
+    pub mod purin {
+        pub const DISARMING_VOICE: i32 = 0x2;
+    }
+}
+
 // extra lua_consts
 pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);
-pub const FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE: smash::lib::LuaConst = smash::lib::LuaConst::new(0x3);

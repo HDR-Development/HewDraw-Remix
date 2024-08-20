@@ -254,7 +254,7 @@ unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_i
 	let attacker_boma = &mut *smash::app::sv_battle_object::module_accessor(attacker_object_id);
 	let defender_boma = &mut *smash::app::sv_battle_object::module_accessor(defender_object_id);
 	let attacker_status_kind = StatusModule::status_kind(attacker_boma);
-    if attacker_status_kind == statuses::purin_disarming_voice::SHOOT {
+    if attacker_status_kind == articles::purin::DISARMING_VOICE {
         ItemModule::drop_item(defender_boma, 0.0, 0.0, 0);
     }
 	original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)

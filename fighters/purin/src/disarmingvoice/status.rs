@@ -104,9 +104,9 @@ unsafe extern "C" fn shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::purin_disarming_voice::SHOOT, shoot_pre);
-    agent.status(Init, statuses::purin_disarming_voice::SHOOT, shoot_init);
-    agent.status(Main, statuses::purin_disarming_voice::SHOOT, shoot_main);
-    agent.status(Exec, statuses::purin_disarming_voice::SHOOT, shoot_exec);
-    agent.status(End, statuses::purin_disarming_voice::SHOOT, shoot_end);
+    agent.status(Pre, WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT, shoot_pre);
+    agent.status(Init, WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT, shoot_init);
+    agent.status(Main, WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT, shoot_main);
+    agent.status(Exec, WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT, shoot_exec);
+    agent.status(End, WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT, shoot_end);
 }

@@ -43,6 +43,9 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
+pub const FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE: i32 = articles::purin::DISARMING_VOICE;
+pub const WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT: i32 = statuses::purin_disarming_voice::SHOOT;
+
 pub fn install() {
     let agent = &mut Agent::new("purin");
     acmd::install(agent);
@@ -51,5 +54,5 @@ pub fn install() {
     agent.install();
 
     disarmingvoice::install();
-    clone_weapon("koopajr", "cannonball", "purin", "disarmingvoice", false);
+    smashline::clone_weapon("koopajr", "cannonball", "purin", "disarmingvoice", false);
 }
