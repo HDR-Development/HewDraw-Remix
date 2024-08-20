@@ -22,7 +22,7 @@ pub unsafe extern "C" fn regular_main(weapon: &mut L2CFighterCommon) -> L2CValue
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("regular"), 0.0, 1.0, false, 0.0, false, false);
-    weapon.fastshift(L2CValue::Ptr(firebreath_regular_main_loop as *const () as _))
+    weapon.fastshift(L2CValue::Ptr(regular_main_loop as *const () as _))
 }
 
 pub unsafe extern "C" fn regular_main_loop(weapon: &mut L2CFighterCommon) -> L2CValue {
@@ -33,17 +33,19 @@ pub unsafe extern "C" fn regular_main_loop(weapon: &mut L2CFighterCommon) -> L2C
             VarModule::set_float(packun, vars::packun::instance::FIRE_POS_X, PostureModule::pos_x(weapon.module_accessor));
             VarModule::set_float(packun, vars::packun::instance::FIRE_POS_Y, PostureModule::pos_y(weapon.module_accessor));
         }
-        if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL) {
+        if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
             notify_event_msc_cmd!(weapon, Hash40::new_raw(0x18b78d41a0));
             app::lua_bind::MotionAnimcmdModule::call_script_single(weapon.module_accessor, *WEAPON_ANIMCMD_EFFECT, Hash40::new("effect_bound"), -1);
             if !weapon.pop_lua_stack(1).get_bool() {
-                notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
+                notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
             }
         }
     }
     else {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
+
+    return 0.into();
 }
 
 pub unsafe extern "C" fn regular_exec(weapon: &mut L2CFighterCommon) -> L2CValue {
@@ -52,7 +54,7 @@ pub unsafe extern "C" fn regular_exec(weapon: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::packun_firebreath::REGULAR, regular_pre);
-    agent.status(Main, statuses::packun_firebreath::REGULAR, regular_main);
-    agent.status(Exec, statuses::packun_firebreath::REGULAR, regular_exec);
+    agent.status(Pre, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_pre);
+    agent.status(Main, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_main);
+    agent.status(Exec, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_exec);
 }

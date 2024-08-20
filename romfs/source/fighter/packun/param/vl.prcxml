@@ -32,10 +32,10 @@
   </list>
   <list hash="param_firebreath">
     <struct index="0">
-      <int hash="life">70</int>
-      <float hash="speed">1.4</float>
-      <float hash="gravity_accel">0.1</float>
-      <float hash="angle">30</float>
+      <int hash="life">100</int>
+      <float hash="speed">1.3</float>
+      <float hash="gravity_accel">0.0</float>
+      <float hash="angle">0</float>
       <float hash="bound_ref_speed_mul">0.97</float>
       <float hash="bounded_speed_y_min">1.4</float>
       <float hash="bounded_speed_y_max">1.6</float>
@@ -44,45 +44,9 @@
       <int hash="is_penetration">0</int>
       <float hash="gravity_acl_max">0</float>
     </struct>
-    <struct index="1">
-      <int hash="life">0</int>
-      <float hash="speed">0</float>
-      <float hash="gravity_accel">0</float>
-      <float hash="angle">0</float>
-      <float hash="bound_ref_speed_mul">0</float>
-      <float hash="bounded_speed_y_min">0</float>
-      <float hash="bounded_speed_y_max">0</float>
-      <int hash="bound_count_max">0</int>
-      <float hash="wall_check_angle">0</float>
-      <int hash="is_penetration">0</int>
-      <float hash="gravity_acl_max">0</float>
-    </struct>
-    <struct index="2">
-      <int hash="life">0</int>
-      <float hash="speed">0</float>
-      <float hash="gravity_accel">0</float>
-      <float hash="angle">0</float>
-      <float hash="bound_ref_speed_mul">0</float>
-      <float hash="bounded_speed_y_min">0</float>
-      <float hash="bounded_speed_y_max">0</float>
-      <int hash="bound_count_max">0</int>
-      <float hash="wall_check_angle">0</float>
-      <int hash="is_penetration">0</int>
-      <float hash="gravity_acl_max">0</float>
-    </struct>
-    <struct index="3">
-      <int hash="life">0</int>
-      <float hash="speed">0</float>
-      <float hash="gravity_accel">0</float>
-      <float hash="angle">0</float>
-      <float hash="bound_ref_speed_mul">0</float>
-      <float hash="bounded_speed_y_min">0</float>
-      <float hash="bounded_speed_y_max">0</float>
-      <int hash="bound_count_max">0</int>
-      <float hash="wall_check_angle">0</float>
-      <int hash="is_penetration">0</int>
-      <float hash="gravity_acl_max">0</float>
-    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="map_collision_firebreath">
     <hash40 hash="shape_type">grcorrect_shape_circle</hash40>

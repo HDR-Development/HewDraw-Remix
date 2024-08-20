@@ -20,7 +20,7 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_regular(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if sv_animcmd::get_value_float(agent, *SO_VAR_FLOAT_LR) < 0.0 {
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("mario_fb_bullet_l"), Hash40::new("rot"), 0, 1.8, 0, 0, 0, 0, 1, true);
         }
