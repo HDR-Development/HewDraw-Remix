@@ -2,8 +2,9 @@ use super::*;
  
 // FIGHTER_PICKEL_STATUS_KIND_RECREATE_TABLE
 
-// prevent steve from spawning the crafting table through vanilla circumstances
+
 unsafe extern "C" fn recreate_table_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // prevent steve from spawning the crafting table through vanilla circumstances
     if !fighter.is_prev_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_WAIT)
     || !VarModule::is_flag(fighter.object(), vars::pickel::instance::CAN_RESPAWN_TABLE) {
         VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);

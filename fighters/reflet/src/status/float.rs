@@ -18,8 +18,6 @@ unsafe extern "C" fn float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
-
     let eff_handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("reflet_catch"), Hash40::new("top"), &Vector3f{x: 0.0, y: -6.0, z: -5.3}, &Vector3f::zero(), 0.7, true, 0, 0, 0, 0, 0, false, false);
     EffectModule::set_rgb(fighter.module_accessor, eff_handle as u32, 0.0, 1.0, 0.0);  // elwind green
     let eff_handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
@@ -146,19 +144,14 @@ unsafe extern "C" fn reflet_float_main_loop(fighter: &mut L2CFighterCommon) -> L
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
             }
 
-            VarModule::dec_int(fighter.battle_object, vars::common::status::FLOAT_FRAME);
-
             if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) % 10 == 0 {
                 WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
             }
 
+            VarModule::dec_int(fighter.battle_object, vars::common::status::FLOAT_FRAME);
+
             if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) == 0 {
                 VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_FRAME, 30);
-            }
-
-            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
-                FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
-                VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 0);
             }
         }
         if WorkModule::is_enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING) {
@@ -212,6 +205,9 @@ unsafe extern "C" fn reflet_float_main_loop(fighter: &mut L2CFighterCommon) -> L
 unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("reflet_catch"), false, true);
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_aura_light"), false, true);
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+        FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+    }
     float_end_common(fighter)
 }
 
