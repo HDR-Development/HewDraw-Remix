@@ -1288,7 +1288,10 @@ pub mod vars {
     }
 
     pub mod purin {
-
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_AIR: i32 = 0x1100;
+        }
     }
 
     pub mod pzenigame {
@@ -1788,6 +1791,10 @@ pub mod statuses {
         pub const SPECIAL_N_G: i32 = 0x1EE;
     }
 
+    pub mod purin_disarming_voice {
+        pub const SHOOT: i32 = 0x0;
+    }
+
     pub mod reflet {
         pub const FLOAT: i32 = 0x1FD;
     }
@@ -1813,3 +1820,4 @@ pub mod statuses {
 
 // extra lua_consts
 pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);
+pub const FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE: smash::lib::LuaConst = smash::lib::LuaConst::new(0x3);

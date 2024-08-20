@@ -248,6 +248,18 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+//Runs on general hits, used for Jigglypuff's Disarming Voice item removal
+#[skyline::hook(offset=0x67a7b0)]
+unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_id: u32, defender_object_id: u32, move_type: u64, arg5: u64, move_type_again: u64) -> u64 {
+	let attacker_boma = &mut *smash::app::sv_battle_object::module_accessor(attacker_object_id);
+	let defender_boma = &mut *smash::app::sv_battle_object::module_accessor(defender_object_id);
+	let attacker_status_kind = StatusModule::status_kind(attacker_boma);
+    if attacker_status_kind == statuses::purin_disarming_voice::SHOOT {
+        ItemModule::drop_item(defender_boma, 0.0, 0.0, 0);
+    }
+	original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x641d84).nop();
     skyline::install_hooks!(
@@ -260,6 +272,7 @@ pub fn install() {
         set_fighter_hitlag,
         handle_on_attack_event,
         set_parry_hitlag,
-        x03df93c
+        x03df93c,
+        notify_log_event_collision_hit
     );
 }
