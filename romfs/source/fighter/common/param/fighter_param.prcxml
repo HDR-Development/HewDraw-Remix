@@ -2014,6 +2014,7 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">1</float>
       <float hash="shield_radius">11.8</float>
+      <float hash="combo_attack_13_end">22</float>
       <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.815</float>
