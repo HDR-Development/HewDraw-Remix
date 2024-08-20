@@ -276,6 +276,12 @@ unsafe fn ryu_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 }
 
 unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    // resets DISABLE_SPECIAL_LW on hitting a move
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        VarModule::off_flag(boma.object(), vars::shotos::instance::DISABLE_SPECIAL_LW);
+    } 
+
     if !fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_LW, 
     ]) {
@@ -353,7 +359,8 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         }
     }
 
-    if is_nspecial_cancel || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    || (is_nspecial_cancel && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW)) {
         VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
     }
 
