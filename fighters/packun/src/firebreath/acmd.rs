@@ -20,12 +20,28 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_regular(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if sv_animcmd::get_value_float(agent, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("mario_fb_bullet_l"), Hash40::new("rot"), 0, 1.8, 0, 0, 0, 0, 1, true);
+        }
+    }
+    else {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("mario_fb_bullet_r"), Hash40::new("rot"), 0, 1.8, 0, 0, 0, 0, 1, true);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_bound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_fire"), Hash40::new("top"), 0, 0, 0, -90, 0, 0, 1, true);
+        EFFECT(agent, Hash40::new("mario_fb_bound"), Hash40::new("top"), 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_regular", game_regular, Priority::Low);
     agent.acmd("effect_regular", effect_regular, Priority::Low);
+    agent.acmd("effect_bound", effect_bound, Priority::Low);
 }

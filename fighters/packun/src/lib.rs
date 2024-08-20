@@ -56,5 +56,5 @@ pub fn install() {
     poisonbreath::install();
     firebreath::install();
 
-    smashline::clone_weapon("mario", "fireball", "packun", "firebreath", true);
+    smashline::clone_weapon("mario", "fireball", "packun", "firebreath", false);
 }

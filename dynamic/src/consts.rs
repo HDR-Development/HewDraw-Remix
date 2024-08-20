@@ -1136,6 +1136,8 @@ pub mod vars {
             // ints
             pub const CURRENT_STANCE: i32 = 0x01BE; // 0 = Normal, 1 = Putrid, 2 = Prickly
             pub const STANCE_STATUS: i32 = 0x0101;
+            pub const FIRE_POS_X: i32 = 0x0102;
+            pub const FIRE_POS_Y: i32 = 0x0103;
         }
         pub mod status {
             // flags
