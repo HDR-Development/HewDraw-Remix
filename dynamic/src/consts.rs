@@ -1778,6 +1778,10 @@ pub mod statuses {
         pub const FLOAT: i32 = 0x1E9;
     }
 
+    pub mod packun_firebreath {
+        pub const REGULAR: i32 = 0x0;
+    }
+
     pub mod palutena {
         pub const SPECIAL_N_R: i32 = 0x1E9;
         pub const SPECIAL_N_B: i32 = 0x1EA;
@@ -1807,6 +1811,12 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0x1EA;
         pub const SPECIAL_S_END: i32 = 0x1EB;
+    }
+}
+
+pub mod generate {
+    pub mod packun {
+        pub const FIREBREATH: i32 = 0x4;
     }
 }
 
