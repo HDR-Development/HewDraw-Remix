@@ -85,40 +85,44 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
 	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
 
-	if [hash40("walk_slow_b"), hash40("walk_middle_b"), hash40("walk_fast_b")].contains(&MotionModule::motion_kind(fighter.module_accessor)) { // for auto-turn characters
-		lr_modifier = -1.0;
-	}
+    if fighter.kind() != *FIGHTER_KIND_PICKEL { // sorry steve you don't get to walk !
 
-	fighter.clear_lua_stack();
-	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-	let mut speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        if [hash40("walk_slow_b"), hash40("walk_middle_b"), hash40("walk_fast_b")].contains(&MotionModule::motion_kind(fighter.module_accessor)) { // for auto-turn characters
+            lr_modifier = -1.0;
+        }
 
-	if prev_speed * PostureModule::lr(fighter.module_accessor) * lr_modifier < 0.0 {
-		let applied_speed = (stick_x.signum() * ((walk_accel_mul + (walk_accel_add * stick_x.abs())))) + prev_speed;
-		//println!("negative speed");
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-		app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed - speed_motion);
-		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, applied_speed);
-	}
-	else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-	}
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        let mut speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
 
-	fighter.clear_lua_stack();
-	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-	let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-	//println!("walk speed_control: {}", speed_control);
-	fighter.clear_lua_stack();
-	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-	speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-	//println!("run speed_motion: {}", speed_motion);
-	//println!("walk total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        if prev_speed * PostureModule::lr(fighter.module_accessor) * lr_modifier < 0.0 {
+            let applied_speed = (stick_x.signum() * ((walk_accel_mul + (walk_accel_add * stick_x.abs())))) + prev_speed;
+            //println!("negative speed");
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed - speed_motion);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, applied_speed);
+        }
+        else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+        }
+
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        //println!("walk speed_control: {}", speed_control);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        //println!("run speed_motion: {}", speed_motion);
+        //println!("walk total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+    
+    }
 
     call_original!(fighter, arg1, arg2, arg3, arg4)
 }

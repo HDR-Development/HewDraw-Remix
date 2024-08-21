@@ -142,12 +142,12 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 140, 88, 0, 35, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 140, 105, 0, 35, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 70, 200, 0, 10, 6.2, 0.0, 7.2, -6.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 70, 200, 0, 10, 6.2, 0.0, 7.2, -6.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     frame(lua_state, 22.0);
@@ -175,9 +175,30 @@ unsafe extern "C" fn effect_throwb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         LANDING_EFFECT_FLIP(agent, Hash40::new("sys_atk_smoke"), Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, -2, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
     }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("daisy_aire_back_atk"), Hash40::new("daisy_aire_back_atk"), Hash40::new("top"), 1, 8, -10, 0, 0, 0, 1.1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 0.45);
+        EFFECT(agent, Hash40::new("daisy_aire_back_atk_petals"), Hash40::new("top"), 1, 8, -10, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 0.65);
+    }
     frame(lua_state, 27.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+unsafe extern "C" fn sound_throwb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_throw_01"));
+    }
+    wait(lua_state, 18.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
+        PLAY_SE(agent, Hash40::new("se_daisy_attackair_b01"));
     }
 }
 
@@ -278,6 +299,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
     agent.acmd("effect_throwb", effect_throwb, Priority::Low);
+    agent.acmd("sound_throwb", sound_throwb, Priority::Low);
 
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
     agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);

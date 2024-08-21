@@ -2,82 +2,62 @@ use super::*;
 
 // Note: Neutral air is handled in tilts.rs, as it shares a script with forward tilt/jab
 
+// shorthand for referencing steve's different MATERIAL_KIND constants
+const WOOD: i32 = 0x1;
+const STONE: i32 = 0x2;
+const IRON: i32 = 0x3;
+const GOLD: i32 = 0x4;
+const DIAMOND: i32 = 0x6;
+
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-    let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-    let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-    let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
-    let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-    let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
-    if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_JUMP_MINI_FRAME) != 0 {
-        // sword hitboxes
-        frame(lua_state, 1.0);
+    if agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_JUMP_MINI_FRAME) != 0 {
+    // sword hitboxes
         if is_excute(agent) {
-            WorkModule::set_int(boma, *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+            agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
         }
-        wait(lua_state, 1.0);
-        if material_kind == gold {
-            if is_excute(agent) {
-                MotionModule::set_rate(boma, 6.0);
-                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 6.0);
-            }
-        } else {
-            if is_excute(agent) {
-                MotionModule::set_rate(boma, 3.0);
-                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 3.0);
-            }
+        frame(lua_state, 2.0);
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if is_excute(agent) {
+            let rate = if material_kind == GOLD { 6.0 } else { 3.0 };
+            MotionModule::set_rate(boma, rate);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
         }
         frame(lua_state, 3.0);
         if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
         frame(lua_state, 8.0);
         if is_excute(agent) {
-            material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+            material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
             MotionModule::set_rate(boma, 1.5);
             MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.5);
-            if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-                let mut damage = 3.4; // default damage, used for wood and gold
-                if material_kind == stone {
-                    damage = 3.74; // damage for stone
-                } else if material_kind == iron {
-                    damage = 4.0; // damage for iron
-                } else if material_kind == diamond {
-                    damage = 4.5; // damage for diamond
-                }
-                let mut sfx = *COLLISION_SOUND_ATTR_PUNCH; // collision sound
-                if [iron, gold, diamond].contains(&material_kind) {
-                    sfx = *COLLISION_SOUND_ATTR_CUTUP;
-                }
-                // air hitboxes
-                ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 45, 134, 0, 27, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 45, 134, 0, 27, 2.3, 0.0, 5.5, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 2, 0, Hash40::new("haver"),damage, 45, 134, 0, 27, 2.3, 0.0, 11.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 3, 0, Hash40::new("top"), damage, 45, 134, 0, 27, 2.3, 0.0, 6.8, 5.4, Some(0.0), Some(6.8), Some(10.2), 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                // ground hitboxes
-                ATTACK(agent, 4, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 5, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 5.5, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 6, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 11.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 7, 0, Hash40::new("top"), damage, 57, 134, 0, 20, 2.3, 0.0, 6.8, 5.4, Some(0.0), Some(6.8), Some(10.2), 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+                let damage = match material_kind {
+                    ( WOOD | GOLD ) => 3.0,
+                    STONE => 3.5,
+                    IRON => 4.0,
+                    /* DIAMOND */ _ => 4.5
+                };
+                let sfx = match material_kind {
+                    ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
+                    _ => *COLLISION_SOUND_ATTR_PUNCH
+                };
+                ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 3.0, 0.0, 0.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 3.0, 0.0, 5.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 2, 0, Hash40::new("haver"),damage, 55, 130, 0, 30, 3.0, 0.0, 10.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 3, 0, Hash40::new("top"), damage, 55, 130, 0, 30, 3.0, 0.0, 5.0, 5.4, Some(0.0), Some(5.0), Some(10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
                 ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 0.25);
-                ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 4, 5, 6, 7, 0.25);
-                AttackModule::set_add_reaction_frame_revised(boma, 0, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 1, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 2, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 3, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 4, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 5, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 6, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 7, -3.0, false);
-                WorkModule::set_float(boma, 2.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+                for id in 0..=3 { AttackModule::set_add_reaction_frame_revised(boma, id, -4.0, false); }
+                agent.set_float(2.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             } else {
                 // fist hitbox
-                ATTACK(agent, 0, 0, Hash40::new("haver"), 2.72, 60, 50, 0, 72, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 0, 0, Hash40::new("haver"), 2.5, 45, 100, 35, 0, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
                 ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 0.25);
                 AttackModule::set_add_reaction_frame_revised(boma, 0, -10.0, false);
             }
@@ -87,79 +67,68 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
             }
             frame(lua_state, 19.0);
             if is_excute(agent) {
-                if material_kind == gold {
-                    MotionModule::set_rate(boma, 3.625);
-                    MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 3.625);
-                } else {
-                    MotionModule::set_rate(boma, 3.23);
-                    MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 3.23);
-                }
+                let rate = if material_kind == GOLD { 3.625 } else { 3.23 };
+                MotionModule::set_rate(boma, rate);
+                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
             }
         }
     } else {
     //pickaxe hitboxes
-        frame(lua_state, 0.0);
-        if is_excute(agent) {
-            WorkModule::set_int(boma, *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
-        }
         frame(lua_state, 1.0);
         if is_excute(agent) {
-            FT_MOTION_RATE(agent, 8.0 / (7.0 - 1.0));
+            agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
         }
         frame(lua_state, 3.0);
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+            let rate = if material_kind == GOLD { 0.7 } else { 0.6 };
+            MotionModule::set_rate(boma, rate);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
         }
-        frame(lua_state, 7.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut damage: [f32;4] = [8.0, 9.0, 10.0, 11.0]; // default damage, used for wood and gold
-            if material_kind == stone {
-                damage = [9.0, 10.625, 11.0, 12.25]; // damage for stone
-            } else if material_kind == iron {
-                damage = [10.0, 11.875, 12.0, 13.5]; // damage for iron
-            } else if material_kind == diamond {
-                damage = [11.0, 14.0, 12.5, 15.0]; // damage for diamond
-            }
+        frame(lua_state, 8.0);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let damage: [f32;2] = match material_kind {
+                ( WOOD | GOLD ) => [9.0, 10.0],
+                STONE => [10.0, 11.0],
+                IRON => [11.0, 13.0],
+                /* DIAMOND */ _ => [13.0, 15.0]
+            };
             if is_excute(agent) {
-                FT_MOTION_RATE(agent, 1.0);
-                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), damage[0], 361, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 1, 0, Hash40::new("armr"), damage[0], 361, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 361, 69, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 361, 69, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                WorkModule::set_float(boma, 6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+                MotionModule::set_rate(boma, 1.0);
+                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
+                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), damage[0], 361, 60, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 1, 0, Hash40::new("armr"), damage[0], 361, 60, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 361, 72, 0, 56, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                agent.set_float(6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             }
-            wait(lua_state, 3.0);
+            wait(lua_state, 2.0);
             if is_excute(agent) {
-                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), damage[2], 55, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 1, 0, Hash40::new("armr"), damage[2], 55, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[3], 275, 55, 0, 25, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[3], 275, 65, 0, 80, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.25, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                WorkModule::set_float(boma, 6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+                /* Ground */
+                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 275, 60, 0, 70, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                /* Air */
+                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 275, 50, 0, 30, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                agent.set_float(6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             }
         } else {
             // fist hitboxes
             if is_excute(agent) {
-                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 8.0, 361, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.15, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-                ATTACK(agent, 1, 0, Hash40::new("armr"), 8.0, 361, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.15, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 8.0, 361, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 1, 0, Hash40::new("armr"), 8.0, 361, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             }
             wait(lua_state, 3.0);
-            if is_excute(agent) {
-                ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 9.5, 55, 63, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.15, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-                ATTACK(agent, 1, 0, Hash40::new("armr"), 9.5, 55, 63, 0, 56, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.15, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            }
         }
         wait(lua_state, 3.0);
         if is_excute(agent) {
             AttackModule::clear_all(boma);
-            if material_kind == gold {
-                FT_MOTION_RATE(agent, 0.8);
-            }
+            let rate = if material_kind == GOLD { 1.3 } else { 1.0 };
+            MotionModule::set_rate(boma, rate);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
         }
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        agent.off_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
@@ -171,33 +140,26 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-    let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-    let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-    let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
-    let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-    let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     // sword effects
-    if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND) == *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD {
+    if agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND) == *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD {
         frame(lua_state, 7.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut effect: [&str;2] = ["pickel_sword_flare_wood", "pickel_atk_slash_wood"]; // default effects for wood
-            if material_kind == stone {
-                effect = ["pickel_sword_flare_stone", "pickel_atk_slash_stone"];
-            } else if material_kind == iron {
-                effect = ["pickel_sword_flare_iron", "pickel_atk_slash_iron"];
-            } else if material_kind == gold {
-                effect = ["pickel_sword_flare_gold", "pickel_atk_slash_gold"];
-            } else if material_kind == diamond {
-                effect = ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"];
-            }
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let effect: [&str;2] = match material_kind {
+                WOOD => ["pickel_sword_flare_wood", "pickel_atk_slash_wood"],
+                STONE => ["pickel_sword_flare_stone", "pickel_atk_slash_stone"],
+                IRON => ["pickel_sword_flare_iron", "pickel_atk_slash_iron"],
+                GOLD => ["pickel_sword_flare_gold", "pickel_atk_slash_gold"],
+                /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"]
+            };
+            frame(lua_state, 7.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.25, true);
             }
             frame(lua_state, 8.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 6.5, 0.6, -13, -33, -83, 1.15, true, *EF_FLIP_YZ);
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, 3.6, -15, -45, -75, 1.0, true, *EF_FLIP_YZ);
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -218,29 +180,23 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     } else {
     // pickaxe effects
         frame(lua_state, 0.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut effect: [&str;2] = ["pickel_pick_flare_wood", "pickel_atk_pick_wood"]; // default effects for wood
-            if material_kind == stone {
-                effect = ["pickel_pick_flare_stone", "pickel_atk_pick_stone"];
-            } else if material_kind == iron {
-                effect = ["pickel_pick_flare_iron", "pickel_atk_pick_iron"];
-            } else if material_kind == gold {
-                effect = ["pickel_pick_flare_gold", "pickel_atk_pick_gold"];
-            } else if material_kind == diamond {
-                effect = ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"];
-            }
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let effect: [&str;2] = match material_kind {
+                WOOD => ["pickel_pick_flare_wood", "pickel_atk_pick_wood"],
+                STONE => ["pickel_pick_flare_stone", "pickel_atk_pick_stone"],
+                IRON => ["pickel_pick_flare_iron", "pickel_atk_pick_iron"],
+                GOLD => ["pickel_pick_flare_gold", "pickel_atk_pick_gold"],
+                /* DIAMOND */ _ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
+            };
+            frame(lua_state, 7.5);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
             frame(lua_state, 8.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1, 8.5, 4, -10, -35, -75.7, 1, true, *EF_FLIP_YZ);
-                if material_kind != gold {
-                    LAST_EFFECT_SET_RATE(agent, 1.1);
-                } else {
-                    LAST_EFFECT_SET_RATE(agent, 0.6);
-                }
+                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.0 } else { 0.8 });
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -248,10 +204,11 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
             }
         } else {
         // fist effect
-            frame(lua_state, 8.0);
+            frame(lua_state, 7.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 10.7, 2.6, -10, -20, -90, 0.6, true, *EF_FLIP_YZ, 0.06);
                 LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
+                LAST_EFFECT_SET_RATE(agent, 0.8);
             }
             frame(lua_state, 13.0);
             if is_excute(agent) {
@@ -264,79 +221,52 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-    let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-    let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-    let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
-    let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-    let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
-    if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_JUMP_MINI_FRAME) != 0 {
-        // sword hitboxes
-        frame(lua_state, 1.0);
+    if agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_JUMP_MINI_FRAME) != 0 {
+    // sword hitboxes
         if is_excute(agent) {
-            WorkModule::set_int(boma, *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+            agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
         }
-        wait(lua_state, 1.0);
-        if material_kind == gold {
-            if is_excute(agent) {
-                MotionModule::set_rate(boma, 10.0);
-                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 10.0);
-            }
-        } else {
-            if is_excute(agent) {
-                MotionModule::set_rate(boma, 5.0);
-                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 5.0);
-            }
+        frame(lua_state, 2.0);
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if is_excute(agent) {
+            let rate = if material_kind == GOLD { 10.0 } else { 5.0 };
+            MotionModule::set_rate(boma, rate);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
         }
         frame(lua_state, 5.0);
         if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
         frame(lua_state, 12.0);
         if is_excute(agent) {
             MotionModule::set_rate(boma, 1.5);
             MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.5);
-            material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-            if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-                let mut damage = 3.4; // default damage, used for wood and gold
-                if material_kind == stone {
-                    damage = 3.74; // damage for stone
-                } else if material_kind == iron {
-                    damage = 4.0; // damage for iron
-                } else if material_kind == diamond {
-                    damage = 4.5; // damage for diamond
-                }
-                let mut sfx = *COLLISION_SOUND_ATTR_PUNCH; // collision sound
-                if [iron, gold, diamond].contains(&material_kind) {
-                    sfx = *COLLISION_SOUND_ATTR_CUTUP;
-                }
-                // air hitboxes
-                ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 45, 134, 0, 27, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 45, 134, 0, 27, 2.3, 0.0, 5.5, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 2, 0, Hash40::new("haver"),damage, 45, 134, 0, 27, 2.3, 0.0, 11.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 3, 0, Hash40::new("top"), damage, 45, 134, 0, 27, 2.3, 0.0, 6.8, -5.4, Some(0.0), Some(6.8), Some(-10.2), 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                // ground hitboxes
-                ATTACK(agent, 4, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 5, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 5.5, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 6, 0, Hash40::new("haver"), damage, 57, 134, 0, 20, 2.3, 0.0, 11.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
-                ATTACK(agent, 7, 0, Hash40::new("top"), damage, 57, 134, 0, 20, 2.3, 0.0, 6.8, -5.4, Some(0.0), Some(6.8), Some(-10.2), 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+            material_kind = agent.get_int( *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+            if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+                let damage = match material_kind {
+                    ( WOOD | GOLD ) => 3.0,
+                    STONE => 3.5,
+                    IRON => 4.0,
+                    /* DIAMOND */ _ => 4.5
+                };
+                let sfx = match material_kind {
+                    ( IRON | GOLD | DIAMOND ) => *COLLISION_SOUND_ATTR_CUTUP,
+                    _ => *COLLISION_SOUND_ATTR_PUNCH
+                };
+                ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 3.0, 0.0, 0.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 55, 130, 0, 30, 3.0, 0.0, 5.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 2, 0, Hash40::new("haver"),damage, 55, 130, 0, 30, 3.0, 0.0, 10.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
+                ATTACK(agent, 3, 0, Hash40::new("top"), damage, 55, 130, 0, 30, 3.0, 0.0, 5.0, -5.4, Some(0.0), Some(5.0), Some(-10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, sfx, *ATTACK_REGION_SWORD);
                 ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 0.25);
-                ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 4, 5, 6, 7, 0.25);
-                AttackModule::set_add_reaction_frame_revised(boma, 0, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 1, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 2, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 3, -5.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 4, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 5, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 6, -3.0, false);
-                AttackModule::set_add_reaction_frame_revised(boma, 7, -3.0, false);
-                WorkModule::set_float(boma, 2.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+                for id in 0..=3 { AttackModule::set_add_reaction_frame_revised(boma, id, -4.0, false); }
+                agent.set_float(2.0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             } else {
                 // fist hitbox
-                ATTACK(agent, 0, 0, Hash40::new("haver"), 2.72, 60, 50, 0, 72, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 0, 0, Hash40::new("haver"), 2.5, 45, 100, 35, 0, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
                 ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 0.25);
                 AttackModule::set_add_reaction_frame_revised(boma, 0, -10.0, false);
             }
@@ -346,60 +276,57 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
             }
             frame(lua_state, 19.0);
             if is_excute(agent) {
-                if material_kind == gold {
-                    MotionModule::set_rate(boma, 2.15);
-                    MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 2.15);
-                } else {
-                    MotionModule::set_rate(boma, 2.0);
-                    MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 2.0);
-                }
+                let rate = if material_kind == GOLD { 2.15 } else { 2.0 };
+                MotionModule::set_rate(boma, rate);
+                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
             }
         }
     } else {
-        // pickaxe hitboxes
-        frame(lua_state, 0.0);
+    // pickaxe hitboxes
         if is_excute(agent) {
-            WorkModule::set_int(boma, *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+            agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
         }
         frame(lua_state, 5.0);
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
         if is_excute(agent) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        }   
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+            let rate = if material_kind == GOLD { 1.2 } else { 1.0 };
+            MotionModule::set_rate(boma, rate);
+            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
+        }
         frame(lua_state, 12.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut damage: [f32;2] = [9.5, 13.0]; // default damage, used for wood and gold
-            if material_kind == stone {
-                damage = [10.75, 14.0]; // damage for stone
-            } else if material_kind == iron {
-                damage = [12.0, 15.0]; // damage for iron
-            } else if material_kind == diamond {
-                damage = [13.5, 17.0]; // damage for diamond
-            }
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let damage: [f32;2] = match material_kind {
+                ( WOOD | GOLD ) => [10.0, 13.0],
+                STONE => [11.0, 14.0],
+                IRON => [12.0, 15.0],
+                /* DIAMOND */ _ => [14.0, 17.0] 
+            };
             if is_excute(agent) {
-                ATTACK(agent, 0, 0, Hash40::new("armr"), damage[0], 50, 85, 0, 56, 4.2, 0.0, 0.0, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 1, 0, Hash40::new("armr"), damage[0], 50, 85, 0, 56, 4.2, 0.0, 0.0, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 361, 85, 0, 51, 5.4, 0.0, 4.4, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 361, 85, 0, 51, 5.4, 0.0, 4.4, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                WorkModule::set_float(boma, 6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+                MotionModule::set_rate(boma, 1.0);
+                MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
+                ATTACK(agent, 0, 0, Hash40::new("haver"), damage[0], 50, 85, 0, 56, 4.2, 0.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 1, 0, Hash40::new("haver"), damage[1], 361, 85, 0, 51, 5.4, 0.0, 4.4, -0.5, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                agent.set_float(6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             }
         } else {
             // fist hitboxes
             if is_excute(agent) {
-                ATTACK(agent, 0, 0, Hash40::new("armr"), 9.7, 50, 85, 0, 56, 4.2, 0.0, 0.0, 0.0, None, None, None, 1.25, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 0, 0, Hash40::new("armr"), 9.0, 50, 80, 0, 50, 3.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 1, 0, Hash40::new("armr"), 9.0, 50, 80, 0, 50, 3.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
         wait(lua_state, 5.0);
         if is_excute(agent) {
             AttackModule::clear_all(boma);
-            if material_kind == gold {
+            if material_kind == GOLD {
                 FT_MOTION_RATE(agent, 0.8);
             }
         }
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        agent.off_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 47.0);
     if is_excute(agent) {
@@ -411,33 +338,26 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-    let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-    let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-    let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
-    let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-    let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     // sword effects
-    if WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND) == *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD {
+    if agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND) == *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD {
         frame(lua_state, 11.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut effect: [&str;2] = ["pickel_sword_flare_wood", "pickel_atk_slash_wood"]; // default effects for wood
-            if material_kind == stone {
-                effect = ["pickel_sword_flare_stone", "pickel_atk_slash_stone"];
-            } else if material_kind == iron {
-                effect = ["pickel_sword_flare_iron", "pickel_atk_slash_iron"];
-            } else if material_kind == gold {
-                effect = ["pickel_sword_flare_gold", "pickel_atk_slash_gold"];
-            } else if material_kind == diamond {
-                effect = ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"];
-            }
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let effect: [&str;2] = match material_kind {
+                WOOD => ["pickel_sword_flare_wood", "pickel_atk_slash_wood"],
+                STONE => ["pickel_sword_flare_stone", "pickel_atk_slash_stone"],
+                IRON => ["pickel_sword_flare_iron", "pickel_atk_slash_iron"],
+                GOLD => ["pickel_sword_flare_gold", "pickel_atk_slash_gold"],
+                /* DIAMOND */ _ => ["pickel_sword_flare_diamond", "pickel_atk_slash_diamond"]
+            };
+            frame(lua_state, 11.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.25, true);
             }
             frame(lua_state, 12.0);
             if is_excute(agent) {
-                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 5.9, -2.0, -140, 30, -55, 1.15, true, *EF_FLIP_YZ);
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 1.85, 7.5, -4.0, -165, 50, -70, 1.0, true, *EF_FLIP_YZ);
             }
             frame(lua_state, 17.0);
             if is_excute(agent) {
@@ -459,37 +379,27 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     } else { 
     // pickaxe effects
         frame(lua_state, 0.0);
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        let mut effect: [&str;2] = ["pickel_pick_flare_wood", "pickel_atk_pick_wood"]; // default effects for wood
-        if material_kind == stone {
-            effect = ["pickel_pick_flare_stone", "pickel_atk_pick_stone"];
-        } else if material_kind == iron {
-            effect = ["pickel_pick_flare_iron", "pickel_atk_pick_iron"];
-        } else if material_kind == gold {
-            effect = ["pickel_pick_flare_gold", "pickel_atk_pick_gold"];
-        } else if material_kind == diamond {
-            effect = ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"];
-        }
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let effect: [&str;2] = match material_kind {
+                WOOD => ["pickel_pick_flare_wood", "pickel_atk_pick_wood"],
+                STONE => ["pickel_pick_flare_stone", "pickel_atk_pick_stone"],
+                IRON => ["pickel_pick_flare_iron", "pickel_atk_pick_iron"],
+                GOLD => ["pickel_pick_flare_gold", "pickel_atk_pick_gold"],
+                /* DIAMOND */ _ => ["pickel_pick_flare_diamond", "pickel_atk_pick_diamond"]
+            };
+            frame(lua_state, 11.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
-            frame(lua_state, 12.0);
+            frame(lua_state, 13.0);
             if is_excute(agent) {
                 EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), 0, 9.7, -4, 180, 35, -100, 1, true, *EF_FLIP_YZ);
-                if material_kind != gold {
-                    LAST_EFFECT_SET_RATE(agent, 0.95);
-                } else {
-                    LAST_EFFECT_SET_RATE(agent, 0.55);
-                }
+                LAST_EFFECT_SET_RATE(agent, if material_kind == GOLD { 1.0 } else { 0.8 });
             }
             frame(lua_state, 16.0);
             if is_excute(agent) {
                 EFFECT_OFF_KIND(agent, Hash40::new(effect[0]), false, true);
-            }
-            frame(lua_state, 17.0);
-            if is_excute(agent) {
-                EFFECT_OFF_KIND(agent, Hash40::new(effect[1]), true, true);
             }
         } else {
         // fist effects
@@ -510,108 +420,130 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-    let wood = *FIGHTER_PICKEL_MATERIAL_KIND_WOOD;
-    let stone = *FIGHTER_PICKEL_MATERIAL_KIND_STONE;
-    let iron = *FIGHTER_PICKEL_MATERIAL_KIND_IRON;
-    let gold = *FIGHTER_PICKEL_MATERIAL_KIND_GOLD;
-    let diamond = *FIGHTER_PICKEL_MATERIAL_KIND_DIAMOND;
+    let mut material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        WorkModule::set_int(boma, *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
+        agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        agent.set_int(*FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND);
     }
     frame(lua_state, 2.0);
+    material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
     if is_excute(agent) {
-        if material_kind != gold {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
-        } else {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.9);
-        }
+        let rate = if material_kind == GOLD { 0.7 } else { 0.4 };
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, rate);
     }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        material_kind = WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
-        if [wood, stone, iron, gold, diamond].contains(&material_kind) {
-            let mut damage = 5.5; // default damage, used for wood and gold
-            if material_kind == stone {
-                damage = 6.8; // damage for stone
-            } else if material_kind == iron {
-                damage = 7.5; // damage for iron
-            } else if material_kind == diamond {
-                damage = 8.7; // damage for diamond
-            }
-            WorkModule::set_float(boma, 5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
-            ATTACK(agent, 0, 0, Hash40::new("armr"), damage, 71, 76, 0, 48, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.3, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 71, 76, 0, 48, 5.4, 0.0, 4.2, 0.0, None, None, None, 1.0, 1.3, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    frame(lua_state, 3.0);
+    if is_excute(agent) { // this comes out frame 4 if gold, frame 5 for all other materials
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
+        material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+        if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+            let damage = match material_kind {
+                ( WOOD | GOLD ) => 5.5,
+                STONE => 6.5,
+                IRON => 7.5,
+                /* DIAMOND */ _ => 8.5
+            };
+            agent.set_float(5.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
+            ATTACK(agent, 0, 0, Hash40::new("haver"), damage, 75, 70, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("haver"), damage, 75, 70, 0, 60, 4.5, -1.0, 4.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         } else {
             // fist hitbox
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 4.2, 71, 76, 0, 48, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.3, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), 3.0, 65, 60, 0, 50, 4.4, 0.6, 0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 4.5);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if material_kind != gold {
-            MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 0.8);
-        }
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY,
+            if material_kind == GOLD { 1.1 } else { 1.0 }
+        );
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_HI_ENABLE_LANDING);
-        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0)
+        MotionModule::set_rate_partial(boma, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, 1.0);
+        agent.off_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_HI_ENABLE_LANDING);
     }
 }
 
-unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    frame(lua_state, 3.0);
+    let material_kind = agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_MATERIAL_KIND);
+    if material_kind != *FIGHTER_PICKEL_MATERIAL_KIND_NONE {
+        let effect: [&str;2] = match material_kind {
+            WOOD => ["pickel_axe_flare_wood", "pickel_atk_axe_wood"],
+            STONE => ["pickel_axe_flare_stone", "pickel_atk_axe_stone"],
+            IRON => ["pickel_axe_flare_iron", "pickel_atk_axe_iron"],
+            GOLD => ["pickel_axe_flare_gold", "pickel_atk_axe_gold"],
+            /* DIAMOND */ _ => ["pickel_axe_flare_diamond", "pickel_atk_axe_diamond"]
+        };
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new(effect[0]), Hash40::new("weaponr"), 0, 0, 0, 0, 0, 0, 1.0, false);
+        }
+        frame(lua_state, 4.0);
+        if is_excute(agent) {
+            EFFECT_FOLLOW_FLIP(agent, Hash40::new(effect[1]), Hash40::new(effect[1]), Hash40::new("top"), -3.2, 12.0, -1.89, -90, -90, -27, 0.9, false, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(agent, 0.5);
+        }
+    } else {
+        // fist effect
+        frame(lua_state, 4.0);
+        if is_excute(agent) {
+            EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 11, -3, -20, -60, -70, 0.7, false, *EF_FLIP_YZ, 0.05);
+            LAST_EFFECT_SET_COLOR(agent, 1, 1, 1);
+            LAST_EFFECT_SET_RATE(agent, 0.8);           
+        }
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_ATTACK_FLAG_FORGE_GENERATE_ENABLE);
+        let effects: [&str;6] = [
+            "pickel_axe_flare_wood",
+            "pickel_axe_flare_stone",
+            "pickel_axe_flare_iron",
+            "pickel_axe_flare_gold",
+            "pickel_axe_flare_diamond",
+            "sys_attack_arc_b"
+        ];
+        for kind in effects {
+            EFFECT_OFF_KIND(agent, Hash40::new(kind), false, true);
+        }
     }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        let article = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE);
-        let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
-        let article_boma = sv_battle_object::module_accessor(object_id);
-        let anvil_pos_y = PostureModule::pos_y(article_boma);
-        VarModule::set_float(agent.battle_object, vars::pickel::instance::FORGE_START_Y_POS, anvil_pos_y);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(agent) {
-        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    } 
 }
 
 unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-        //WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        //WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        agent.on_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }      
+}
+
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        agent.on_flag(*FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, false, -1);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.9); // the lower the number, the longer the line will end up being cast
+        ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, *WEAPON_PICKEL_FISHINGROD_STATUS_KIND_SHOOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::change_motion(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("air_catch"), false, -1.0);     
+        ArticleModule::set_visibility(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, Hash40::new("rod"), Hash40::new("rod_cast"), smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    frame(lua_state, 38.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 1.0);
+        ArticleModule::set_flag(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FISHINGROD, true, *WEAPON_PICKEL_FISHINGROD_INSTANCE_WORK_ID_FLAG_ENABLE_REWIND);
+    }
 }
 
 pub fn install(agent: &mut Agent) {
@@ -622,8 +554,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
-
-    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
 
     agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
+
+    agent.acmd("game_aircatch", game_aircatch, Priority::Low);
 }
