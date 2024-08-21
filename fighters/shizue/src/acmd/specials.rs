@@ -171,7 +171,7 @@ unsafe extern "C" fn game_specialairsthrowb(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(-1.0, 2.75, 0.0));
+        KineticModule::add_speed(boma, &Vector3f::new(-0.5, 2.75, 0.0));
         FT_MOTION_RATE(agent, 0.65);
     }
     frame(lua_state, 14.0);
@@ -204,7 +204,7 @@ unsafe extern "C" fn game_specialairsthrowf(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(1.0, 2.75, 0.0));
+        KineticModule::add_speed(boma, &Vector3f::new(0.5, 2.75, 0.0));
         FT_MOTION_RATE(agent, 0.5);
     }
 }
