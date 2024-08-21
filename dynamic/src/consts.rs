@@ -796,9 +796,8 @@ pub mod vars {
             pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            //flags
-            pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
-            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
+            // flags
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1100;
         }
     }
 
