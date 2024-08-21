@@ -756,13 +756,10 @@ unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_fram
     // Coupled with "landing_heavy" change in change_motion hook
     // Because we start heavy landing anims on f3 rather than f1, we need to reduce the total length of the anim by 3 frames
     // when calculating motion rate for airdodge landing or hitstun landing
-    let end_frame_adjusted = end_frame.get_f32() - 3.0;
-    let end_over_landing = end_frame_adjusted / landing_frame.get_f32();
-    let end_frame_for_some_reason = end_over_landing * landing_frame.get_f32();
-    let huh = end_frame_adjusted - end_frame_for_some_reason;
-    let end_frame_plus = huh + 0.01;
-    let idk_anymore = end_frame_plus / landing_frame.get_f32();
-    (end_over_landing + idk_anymore).into()
+    let start_frame = 3.0;
+    let anim_length = end_frame.get_f32() - start_frame;
+    let ratio = (anim_length + 0.01) / landing_frame.get_f32();
+    ratio.into()
 }
 
 pub fn install() {
