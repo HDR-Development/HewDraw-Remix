@@ -12,10 +12,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
-    }
     frame(lua_state, 21.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("handr1"), 9.0, 361, 95, 0, 55, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -142,10 +138,6 @@ unsafe extern "C" fn game_specialshi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
-    }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("handr1"), 7.0, 105, 85, 0, 55, 5.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -226,10 +218,6 @@ unsafe extern "C" fn game_specialslw(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -334,16 +322,15 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME) as f32;
 
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, vars::robot::status::HELD_BUTTON);
-        let mut workingDamage = robotFrames/3.5;
-        if robotFrames <= 10.0 {
+        let mut workingDamage = charge_frame / 3.0;
+        if charge_frame <= 10.0 {
             MeterModule::drain_direct(agent.object(), 20.0);
         } else {
-            MeterModule::drain_direct(agent.object(), (robotFrames * 2.0));
+            MeterModule::drain_direct(agent.object(), charge_frame * 2.0);
         }
         if (workingDamage < 4.0) {
             workingDamage = 0.0;
@@ -382,23 +369,28 @@ unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.55, 0.55, 2.25);
     }
-    if (robotFrames/3.5) > 4.0 {
+    if charge_frame > 10 {
         frame(lua_state, 1.0);
         if is_excute(agent) {
+            let color: [f32;3] = [ // fades from red to blue as the charge increases
+                /* R */ (1.0 - (charge_frame as f32 * 0.02)).clamp(0.0, 1.0),
+                /* G */ 0.55,
+                /* B */ (0.0 + (charge_frame as f32 * 0.02)).clamp(0.0, 1.0)
+            ];
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 0.8);
-            LAST_EFFECT_SET_COLOR(agent, 0.15, 0.55, 8.55);
+            LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 1.5);
             LAST_EFFECT_SET_ALPHA(agent, 0.75);
-            LAST_EFFECT_SET_COLOR(agent, 3.15, 0.55, 0.55);
+            LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]);
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
         }
         frame(lua_state, 2.0);
@@ -428,15 +420,14 @@ unsafe extern "C" fn effect_specialhirise(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
-
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if (robotFrames/4.0) >= 12.0 {
+        if charge_frame >= 48 {
             QUAKE(agent, *CAMERA_QUAKE_KIND_L);
-        } else if (robotFrames/4.0) >= 8.0 {
+        } else if charge_frame >= 32{
             QUAKE(agent, *CAMERA_QUAKE_KIND_M);
-        } else if (robotFrames/4.0) >= 4.0 {
+        } else if charge_frame >= 16 {
             QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         }
         RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
