@@ -208,7 +208,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.0);
-        if WorkModule::is_flag(boma, vars::robot::instance::AIRTIME_BAIR) {
+        if VarModule::is_flag(boma.object(), vars::robot::instance::AIRTIME_BAIR) {
             if VarModule::get_float(agent.battle_object, vars::robot::status::CHARGE_ATTACK_LEVEL) >= 5.0 {
                 SET_SPEED_EX(agent, 1.75, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             } else {
