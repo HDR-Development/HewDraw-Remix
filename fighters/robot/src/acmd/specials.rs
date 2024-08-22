@@ -300,6 +300,18 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
     }
+    frame(lua_state, 15.0);
+    for _ in 0..20 {
+        if is_excute(agent) {
+            if agent.is_situation(*SITUATION_KIND_AIR) {
+                LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 2, 2, 0, 160, 0, 0, 1.0, 10, 0, 4, 0, 0, 0, true);
+            } else {
+                LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, 10, 0, 4, 0, 0, 0, true);
+            }
+            LAST_EFFECT_SET_RATE(agent, 0.75);
+        }
+        wait(lua_state, 15.0);
+    }
 }
 
 unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
@@ -347,19 +359,13 @@ unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 
+        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) { 0.25 }
+        else { 0.35 }
+    );
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-
-        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) {
-            FT_MOTION_RATE(agent, 9.0/(22.0-4.0));
-        }
     }
-    /*frame(lua_state, 12.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) {
-            VarModule::on_flag(agent.battle_object, vars::robot::instance::UPB_CANCEL);
-        }
-    }*/
     frame(lua_state, 22.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::robot::instance::UPB_CANCEL);
@@ -374,28 +380,29 @@ unsafe extern "C" fn effect_specialhirise(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.55, 0.55, 2.25);
     }
-    if charge_frame > 10 {
+    if charge_frame >= 10 {
         frame(lua_state, 1.0);
-        if is_excute(agent) {
-            let color: [f32;3] = [ // fades from red to blue as the charge increases
-                /* R */ (1.0 - (charge_frame as f32 * 0.02)).clamp(0.0, 1.0),
+        let color: [f32;3] = [ // fades from red to blue as the charge increases
+                /* R */ (1.0 - ((charge_frame - 10) as f32 * 0.02)).clamp(0.15, 1.0),
                 /* G */ 0.55,
-                /* B */ (0.0 + (charge_frame as f32 * 0.02)).clamp(0.0, 1.0)
+                /* B */ (0.0 + ((charge_frame - 10) as f32 * 0.25)).clamp(0.0, 10.0)
             ];
+        if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 0.8);
-            LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 1.5);
             LAST_EFFECT_SET_ALPHA(agent, 0.75);
-            LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
         }
         frame(lua_state, 2.0);
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
         }
         frame(lua_state, 11.0);
         if is_excute(agent) {
