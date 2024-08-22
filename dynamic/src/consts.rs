@@ -1288,7 +1288,10 @@ pub mod vars {
     }
 
     pub mod purin {
-
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_AIR: i32 = 0x1100;
+        }
     }
 
     pub mod pzenigame {
@@ -1788,6 +1791,10 @@ pub mod statuses {
         pub const SPECIAL_N_G: i32 = 0x1EE;
     }
 
+    pub mod purin_disarming_voice {
+        pub const SHOOT: i32 = 0x0;
+    }
+
     pub mod reflet {
         pub const FLOAT: i32 = 0x1FD;
     }
@@ -1808,6 +1815,12 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0x1EA;
         pub const SPECIAL_S_END: i32 = 0x1EB;
+    }
+}
+
+pub mod articles {
+    pub mod purin {
+        pub const DISARMING_VOICE: i32 = 0x2;
     }
 }
 
