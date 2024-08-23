@@ -7,6 +7,10 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+
+mod disarmingvoice;
+
 use smash::{
     lib::{
         L2CValue,
@@ -39,10 +43,16 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
+pub const FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE: i32 = articles::purin::DISARMING_VOICE;
+pub const WEAPON_PURIN_DISARMING_VOICE_STATUS_KIND_SHOOT: i32 = statuses::purin_disarming_voice::SHOOT;
+
 pub fn install() {
     let agent = &mut Agent::new("purin");
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    disarmingvoice::install();
+    smashline::clone_weapon("koopajr", "cannonball", "purin", "disarmingvoice", false);
 }
