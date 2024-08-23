@@ -253,9 +253,10 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_id: u32, defender_object_id: u32, move_type: u64, arg5: u64, move_type_again: u64) -> u64 {
 	let attacker_boma = &mut *smash::app::sv_battle_object::module_accessor(attacker_object_id);
 	let defender_boma = &mut *smash::app::sv_battle_object::module_accessor(defender_object_id);
-	let attacker_status_kind = StatusModule::status_kind(attacker_boma);
-    if attacker_status_kind == articles::purin::DISARMING_VOICE {
-        ItemModule::drop_item(defender_boma, 0.0, 0.0, 0);
+    if VarModule::has_var_module(attacker_boma.object())
+    && VarModule::is_flag(attacker_boma.object(), vars::common::status::HIT_EFFECT_DROP_ITEM)
+    && ItemModule::is_have_item(defender_boma, 0) {
+        ItemModule::drop_item(defender_boma, 90.0, 0.0, 0);
     }
 	original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
