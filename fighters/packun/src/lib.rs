@@ -45,7 +45,7 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-pub const FIGHTER_PACKUN_GENERATE_ARTICLE_FIREBREATH: i32 = generate::packun::FIREBREATH;
+pub const FIGHTER_PACKUN_GENERATE_ARTICLE_FIREBREATH: i32 = articles::packun::FIREBREATH;
 pub const WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR: i32 = statuses::packun_firebreath::REGULAR;
 
 pub fn install() {
