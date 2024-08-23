@@ -1127,17 +1127,16 @@ pub mod vars {
             // flags
             pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
             pub const STANCE_INIT: i32 = 0x0101;
-            pub const PTOOIE_SHOULD_EXPLODE: i32 = 0x0102;
-            pub const STANCE_REVERSE: i32 = 0x0103;
+            pub const STANCE_REVERSE: i32 = 0x0102;
 
             // floats
             pub const PTOOIE_SCALE: i32 = 0x01BF;
+            pub const FIRE_POS_X: i32 = 0x0101;
+            pub const FIRE_POS_Y: i32 = 0x0102;
 
             // ints
             pub const CURRENT_STANCE: i32 = 0x01BE; // 0 = Normal, 1 = Putrid, 2 = Prickly
             pub const STANCE_STATUS: i32 = 0x0101;
-            pub const FIRE_POS_X: i32 = 0x0102;
-            pub const FIRE_POS_Y: i32 = 0x0103;
         }
         pub mod status {
             // flags
@@ -1145,6 +1144,13 @@ pub mod vars {
             pub const CLOUD_COVER: i32 = 0x1101;
             pub const BITE_START: i32 = 0x1102;
             pub const BURST: i32 = 0x1103;
+        }
+    }
+
+    pub mod packun_spikeball {
+        pub mod instance {
+            // flags
+            pub const SHOULD_EXPLODE: i32 = 0x0100;
         }
     }
 

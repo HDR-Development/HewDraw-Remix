@@ -36,9 +36,9 @@ pub extern "C" fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
                     WorkModule::set_int(boma, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
                 }
             }
-            if ((pos_x - fire_pos_x).abs() < 8.0*scale) &&
-                ((pos_y - fire_pos_y).abs() < 8.0*scale) &&
-                pos_y != 0.0 {
+            if ((pos_x - fire_pos_x).abs() < 12.0*scale) &&
+                ((pos_y - fire_pos_y).abs() < 12.0*scale) &&
+                pos_y != 0.0 && fire_pos_y != 0.0 {
                 if motion_kind != hash40("explode") {
                     MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
                 }
