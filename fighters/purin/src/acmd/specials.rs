@@ -1,53 +1,45 @@
 use super::*;
 
-unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
-        AttackModule::clear_all(boma);
-    }
-}
-
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    let boma = agent.boma();
+    frame(lua_state, 14.0);
     if is_excute(agent) {
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
-        JostleModule::set_status(boma, false);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 30, 60, 0, 60, 2.5, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        AttackModule::set_attack_keep_rumble(boma, 0, true);
+        ArticleModule::generate_article(boma, FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE, false, -1);
     }
 }
 
-unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 16.0);
     if is_excute(agent) {
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
-        JostleModule::set_status(boma, false);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 30, 60, 0, 60, 2.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        AttackModule::set_attack_keep_rumble(boma, 0, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-unsafe extern "C" fn game_specialnturn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 14.0);
     if is_excute(agent) {
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, true);
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
+       PLAY_STATUS(agent, Hash40::new("vc_purin_003"));
     }
 }
 
-unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-        GroundModule::set_shape_flag(boma, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FIX as u16, false);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_beamm"), 0);
     }
 }
 
@@ -119,19 +111,15 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialnstartr", game_specialnstart, Priority::Low);
-    agent.acmd("game_specialairnstartr", game_specialnstart, Priority::Low);
-    agent.acmd("game_specialnhold", game_specialnstart, Priority::Low);
-    agent.acmd("game_specialairnhold", game_specialnstart, Priority::Low);
-    agent.acmd("game_specialn", game_specialn, Priority::Low);
-    agent.acmd("game_specialairn", game_specialairn, Priority::Low);
-    agent.acmd("game_specialnturn", game_specialnturn, Priority::Low);
-    agent.acmd("game_specialairnturn", game_specialnturn, Priority::Low);
-    agent.acmd("game_specialnendr", game_specialnend, Priority::Low);
-    agent.acmd("game_specialnendl", game_specialnend, Priority::Low);
-    agent.acmd("game_specialairnendl", game_specialnend, Priority::Low);
-    agent.acmd("game_specialairnendr", game_specialnend, Priority::Low);
-    
+    agent.acmd("game_specialnstartr", game_specialn, Priority::Low);
+    agent.acmd("game_specialairnstartr", game_specialn, Priority::Low);
+    agent.acmd("effect_specialnstartr", effect_specialn, Priority::Low);
+    agent.acmd("effect_specialairnstartr", effect_specialn, Priority::Low);
+    agent.acmd("sound_specialnstartr", sound_specialn, Priority::Low);
+    agent.acmd("sound_specialairnstartr", sound_specialn, Priority::Low);
+    agent.acmd("expression_specialnstartr", expression_specialn, Priority::Low);
+    agent.acmd("expression_specialairnstartr", expression_specialn, Priority::Low);
+
     agent.acmd("game_specials", game_specials, Priority::Low);
     agent.acmd("game_specialairs", game_specialairs, Priority::Low);
 

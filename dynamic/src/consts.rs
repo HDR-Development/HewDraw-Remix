@@ -1320,7 +1320,10 @@ pub mod vars {
     }
 
     pub mod purin {
-
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_AIR: i32 = 0x1100;
+        }
     }
 
     pub mod pzenigame {
@@ -1828,6 +1831,10 @@ pub mod statuses {
         pub const PEARL_FLY: i32 = 0x2;
     }
 
+    pub mod purin_disarming_voice {
+        pub const SHOOT: i32 = 0x0;
+    }
+
     pub mod reflet {
         pub const FLOAT: i32 = 0x1FD;
     }
@@ -1851,9 +1858,13 @@ pub mod statuses {
     }
 }
 
-pub mod generate {
+pub mod articles {
     pub mod packun {
         pub const FIREBREATH: i32 = 0x4;
+    }
+    
+    pub mod purin {
+        pub const DISARMING_VOICE: i32 = 0x2;
     }
 }
 
