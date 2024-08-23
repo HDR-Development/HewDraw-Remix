@@ -133,25 +133,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 4.0, 4.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 84, 50, 0, 110, 6.5, 0.0, 7.0, -2.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, -9.0, false);
-        ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
-    }
-    frame(lua_state, 1.66);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
-}
-
-unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 4.0, 4.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 84, 50, 0, 110, 6.5, 0.0, 7.0, -2.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, -9.0, false);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 84, 49, 0, 107, 6.5, 0.0, 7.0, -2.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, -3.0, false);
         ReflectorModule::set_status(boma, *FIGHTER_FALCO_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
     }
@@ -203,15 +186,6 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_item_item_get"));
-    }
-}
-
-unsafe extern "C" fn sound_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
@@ -365,13 +339,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
     agent.acmd("expression_speciallw", expression_speciallw, Priority::Low);
     agent.acmd("expression_specialairlw", expression_speciallw, Priority::Low);
     agent.acmd("sound_speciallw", sound_speciallw, Priority::Low);
-    agent.acmd("sound_specialairlw", sound_specialairlw, Priority::Low);
+    agent.acmd("sound_specialairlw", sound_speciallw, Priority::Low);
     agent.acmd("game_speciallwloop", game_speciallwloop, Priority::Low);
     agent.acmd("game_specialairlwloop", game_specialairlwloop, Priority::Low);
     agent.acmd("effect_speciallwloop", effect_speciallwloop, Priority::Low);
