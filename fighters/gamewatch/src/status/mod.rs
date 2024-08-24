@@ -7,7 +7,7 @@ mod special_hi;
 mod special_hi_open;
 
 unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE) {
         false.into()
     } else {
         true.into()
@@ -15,7 +15,7 @@ unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE) {
+    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE) {
         if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
         || fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_DAMAGE,
@@ -65,7 +65,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
             *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
             *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
         ])) {
-            VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+            VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE);
         }
     }
     true.into()
@@ -77,7 +77,9 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
     fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_callback as *const () as _));
-    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+
+    VarModule::set_int(fighter.object(), vars::gamewatch::instance::SPECIAL_S_MATH_STATE, 0);
 }
 
 pub fn install(agent: &mut Agent) {

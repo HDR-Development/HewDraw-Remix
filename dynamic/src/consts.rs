@@ -638,8 +638,12 @@ pub mod vars {
     pub mod gamewatch {
         pub mod instance {
             // flags
-            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
-            pub const UP_SPECIAL_PARACHUTE: i32 = 0x0101;
+            pub const SPECIAL_HI_FREEFALL: i32 = 0x0100;
+            pub const SPECIAL_HI_PARACHUTE: i32 = 0x0101;
+
+            // ints
+            pub const SPECIAL_S_MATH_STATE: i32 = 0x0100;
+            pub const SPECIAL_S_MATH_RESULT: i32 = 0x0101;
         }
     }
 
