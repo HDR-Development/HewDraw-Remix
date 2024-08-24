@@ -33,7 +33,9 @@
       <float hash="rslash_air_accel_x_mul">0.01</float>
       <float hash="rslash_air_max_x_mul">0.7</float>
       <float hash="rslash_end_air_accel_x_mul">0.01</float>
-      <float hash="rslash_end_air_max_x">0.7</float>
+      <float hash="rslash_end_air_max_x">0.8</float>
+      <float hash="rslash_fall_special_accel_x_mul">0.01</float>
+      <float hash="rslash_fall_special_speed_x_max_mul">0.8</float>
       <float hash="rslash_air_spd_x_mul">0.4</float>
       <float hash="rslash_air_init_spd_mul">1.0</float>
 
