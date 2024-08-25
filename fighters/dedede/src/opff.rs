@@ -210,26 +210,43 @@ unsafe fn super_jump_fail_edge_cancel(fighter: &mut L2CFighterCommon){
 unsafe fn jet_hammer_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     if fighter.is_motion_one_of(&[
         Hash40::new("special_lw_start"),
-        Hash40::new("special_air_lw_start")]) {
+        Hash40::new("special_air_lw_start"),
+        ]) {
 
             let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
             let charge = VarModule::get_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES) as f32;
             let max_charge_frames = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("hold_max_f"));
-            let charge_start_frame = 4.0;
-            let charge_end_frame = 9.0;
+            let charge_start_frame = 6.0;
+            let charge_end_frame = 11.0;
 
         if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames) && is_hold{
+            let mut rand = app::sv_math::randf(hash40("fighter"), 1.0);
+            let mut rand_waist = app::sv_math::randf(hash40("fighter"), 1.0);
 
-            if charge % 30.0 == 0.0 && fighter.motion_frame() > 4.0{
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER){
+                let article = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER);
+                let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+                let article_boma = sv_battle_object::module_accessor(object_id);
+                if MotionModule::motion_kind(article_boma) != hash40("hold"){
+                    MotionModule::change_motion(article_boma, Hash40::new("hold"), 0.0, 1.0, false, 0.0, false, false);
+                }
+            }
+
+            ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("shoulderr"), &Vector3f{x:3.0, y:rand, z:-1.0}, false, false); 
+            ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("waist"), &Vector3f{x:3.0, y:0.0, z:rand_waist}, false, false); 
+
+            if charge % 30.0 == 0.0 && fighter.motion_frame() > 6.0{
                 EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hammer3"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, true);
             }
             if charge % 10.0 == 0.0{
                 DamageModule::add_damage(fighter.module_accessor, 1.5, 0);
+                FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -11, 0, 0, 0, 0, 0, 0.9, 15, 0, 4, 0, 0, 0, false);
             }
+
             let motion_rate = (charge_end_frame - charge_start_frame)/(max_charge_frames * 2.0);
             MotionModule::set_rate(fighter.module_accessor, motion_rate);
             VarModule::set_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES, charge as i32 + 1);
-
+            
         } 
         else{
             MotionModule::set_rate(fighter.module_accessor, 1.0);
