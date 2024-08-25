@@ -7,11 +7,11 @@ pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-        if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+        if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
             VarModule::on_flag(weapon.object(), vars::packun_spikeball::instance::SHOULD_EXPLODE);
             // println!("bomb");
         }
-        else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
+        else if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
             VarModule::off_flag(weapon.object(), vars::packun_spikeball::instance::SHOULD_EXPLODE);
             // println!("not bomb");
         }
