@@ -8,6 +8,7 @@ mod special_lw;
 mod catch_pull;
 mod shoulder;
 mod super_lift;
+mod fall_special;
 
 /*unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
@@ -70,4 +71,5 @@ pub fn install(agent: &mut Agent) {
     catch_pull::install(agent);
     shoulder::install(agent);
     super_lift::install(agent);
+    fall_special::install(agent);
 }
