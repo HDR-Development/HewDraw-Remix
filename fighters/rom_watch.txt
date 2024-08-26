@@ -37,3 +37,10 @@ fighter/miigunner/param/hdr.xml
 fighter/falco/param/hdr.xml
 fighter/littlemac/param/hdr.xml
 fighter/bayonetta/param/hdr.xml
+fighter/gamewatch/param/hdr.xml
+fighter/gaogaen/param/hdr.xml
+fighter/jack/param/hdr.xml
+fighter/kirby/param/hdr.xml
+fighter/koopa/param/hdr.xml
+fighter/sonic/param/hdr.xml
+fighter/wiifit/param/hdr.xml
