@@ -132,6 +132,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             FighterStatusDamage__correctDamageVectorEffect,
             sub_fighter_pre_end_status,
             sub_is_dive,
+            sub_calc_landing_motion_rate,
         );
     }
 }
@@ -748,6 +749,17 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     
     true.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_calc_landing_motion_rate)]
+unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_frame: L2CValue, landing_frame: L2CValue) -> L2CValue {
+    // Coupled with "landing_heavy" change in change_motion hook
+    // Because we start heavy landing anims on f3 rather than f1, we need to reduce the total length of the anim by 3 frames
+    // when calculating motion rate for airdodge landing or hitstun landing
+    let start_frame = 3.0;
+    let anim_length = end_frame.get_f32() - start_frame;
+    let ratio = (anim_length + 0.01) / landing_frame.get_f32();
+    ratio.into()
 }
 
 pub fn install() {
