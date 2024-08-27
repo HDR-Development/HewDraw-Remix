@@ -99,25 +99,7 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
     }
 }
 
-// // fair 2 -> aerial cancel
-// unsafe fn fair_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-//     // Check for aerial attack inputs during fair 2
-//     if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F)
-//     && fighter.is_motion(Hash40::new("attack_air_f2"))
-//     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-//     && fighter.is_cat_flag(Cat1::AttackN
-//                          | Cat1::AttackHi3
-//                          | Cat1::AttackHi4
-//                          | Cat1::AttackLw3
-//                          | Cat1::AttackLw4)
-//     && ControlModule::get_attack_air_kind(boma) != (*FIGHTER_COMMAND_ATTACK_AIR_KIND_F | *FIGHTER_COMMAND_ATTACK_AIR_KIND_B)
-//     && !fighter.is_in_hitlag() {
-//         VarModule::on_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
-//         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-//     }
-// }
-
-unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // firaga airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) 
     && boma.is_motion(Hash40::new("special_air_n1")) 
@@ -128,10 +110,8 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
     && boma.is_situation(*SITUATION_KIND_GROUND)
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
-        let special_n_fire_cancel_frame_ground = 69.0;
-        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
-        let landing_lag = 12.0;
+        let special_n_fire_cancel_frame_ground = 69.0; // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
+        let landing_lag = 12.0; // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         if frame < (special_n_fire_cancel_frame_ground - landing_lag) {
             VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
@@ -141,29 +121,20 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if (boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
     && frame > 12.0) {
         boma.check_jump_cancel(false, false);
-        WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
-    }
-}
-
-unsafe fn blizzaga_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, facing: f32, stick_x: f32) {
-    // allow the move to be turned around
-    if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
-    && fighter.status_frame() >= 5
-    && fighter.is_button_on(Buttons::Special)
-    && stick_x * facing < 0.0 {
-        PostureModule::reverse_lr(boma);
-        PostureModule::update_rot_y_lr(boma);
     }
 
-    // cycle to the next spell if the attack is interrupted
-    if fighter.is_prev_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2) {
-        let magic_kind = fighter.get_int(*FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
-        let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
-        if magic_kind != *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER {
-            // ensure that thunder is cycled to
-            fighter.on_flag(*FIGHTER_TRAIL_STATUS_SPECIAL_N1_FLAG_CHANGE_MAGIC);
+    // handles the cooldown timer between casting spells
+    if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) > 0 {
+        VarModule::dec_int(boma.object(), vars::trail::instance::MAGIC_TIMER);
+
+        // cycles and enables magic on the last frame of the cooldown window
+        if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) == 1 {
+            WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+            let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
             FighterSpecializer_Trail::change_magic(trail);
+
+            VarModule::off_flag(boma.object(), vars::trail::instance::DISABLE_SPECIAL_N);
         }
     }
 }
@@ -367,9 +338,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_sword_scale(fighter, boma, frame);
     nair_fair_momentum_handling(fighter, boma);
     attack_lw4_rebound(fighter, boma, frame);
-    //fair_cancels(fighter, boma);
-    magic_cancels(boma, frame);
-    blizzaga_handling(fighter, boma, facing, stick_x);
+    magic_handling(fighter, boma, frame);
     flower_frame(boma, status_kind);
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);

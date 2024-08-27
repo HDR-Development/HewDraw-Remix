@@ -1627,6 +1627,10 @@ pub mod vars {
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
             pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
+            pub const DISABLE_SPECIAL_N: i32 = 0x104;
+
+            // ints
+            pub const MAGIC_TIMER: i32 = 0x100;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
