@@ -351,8 +351,15 @@ local set_alt_panel_textures = function(is_forward)
     local parts_name = get_stage_preview_name(current_selected_preview)
     local parts = root_view:get_parts(parts_name)
 
-    if count == 1 then
-        -- Special case for a single alternate
+if count == 0 then
+
+        set_alt_texture(true, nil, current_selected_preview)
+
+        set_alt_texture(false, nil, current_selected_preview)
+
+    elseif count == 1 then
+
+
         set_alt_texture(true, nil, current_selected_preview)
         local idx = preview.selected_alt_ == 0 and 1 or 0
         set_alt_texture(false, Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, idx),
