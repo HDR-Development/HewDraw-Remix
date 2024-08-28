@@ -20,9 +20,15 @@ attack_12:
     move: false
   extra:
     cancel_frame: 38
+attack_air_b:
+  flags:
+    turn: true
+attack_air_f:
+  extra:
+    cancel_frame: 26
 attack_air_hi:
   extra:
-    cancel_frame: 28
+    cancel_frame: 33
 attack_command4:
   game_script: game_attackcommand4
   flags:
@@ -97,6 +103,9 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+landing_air_f:
+  animations:
+    - name: c05landingairlw.nuanmb
 special_air_hi_command:
   extra:
     xlu_start: 0
@@ -142,6 +151,9 @@ special_air_lw_step_f:
   extra:
     cancel_frame: 14
 special_air_n:
+  extra:
+    cancel_frame: 70
+special_air_n_empty:
   extra:
     cancel_frame: 70
 special_air_s_end:
@@ -199,4 +211,10 @@ throw_lw:
     cancel_frame: 41
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

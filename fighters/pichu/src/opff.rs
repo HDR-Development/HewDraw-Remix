@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 // symbol-based call for the pikachu/pichu characters' common opff
 extern "Rust" {
@@ -106,7 +105,8 @@ unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_REBIRTH]) {
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
             if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
-                MeterModule::drain_direct(boma.object(), 999.0);
+                VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
+                MeterModule::drain_direct(boma.object(), (MeterModule::meter(boma.object())/3.0)*2.0);
             }
         }
 }
@@ -139,7 +139,9 @@ unsafe fn discharge_momentum(fighter: &mut L2CFighterCommon) {
 
 unsafe fn zippy_zap_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) 
+        && !boma.is_in_hitlag() {
             boma.check_jump_cancel(false, false);
         }
     }
@@ -216,9 +218,8 @@ pub unsafe fn pichu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("pichu")
-        .on_line(Main, pichu_frame_wrapper)
-        .on_line(Main, pichu_meter)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pichu_frame_wrapper);
+    agent.on_line(Main, pichu_meter);
 }

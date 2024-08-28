@@ -150,10 +150,10 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     } {
         interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
     }
-    if fighter.is_parry_input() {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
-        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-        return true.into()
+
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
     }
 
 	call_original!(fighter)
@@ -179,10 +179,10 @@ unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake_Main)]
 unsafe fn status_turnrunbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_parry_input() {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
-        VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-        return true.into()
+
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
     }
 
     call_original!(fighter)

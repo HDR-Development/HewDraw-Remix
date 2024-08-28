@@ -38,14 +38,14 @@ jobs:
 
     
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
       with: 
         fetch-depth: 0
 
     # github changelog
     - name: "Generate release changelog"
       id: github_changelog
-      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      uses: heinrichreimer/github-changelog-generator-action@v2.4
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         token: ${{ secrets.GITHUB_TOKEN  }}
@@ -58,7 +58,7 @@ jobs:
         simpleList: true
 
     - name: Upload changelog
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: changelog
         path: CHANGELOG.md
@@ -74,7 +74,7 @@ jobs:
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5.1.0
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
@@ -88,7 +88,7 @@ jobs:
         echo "##[set-output name=tag;]$TRIMMED";
 
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     # build the project
     - run: |
@@ -103,7 +103,7 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload version
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: version
         path: hdr_version.txt
@@ -139,33 +139,44 @@ jobs:
     needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     - id: romfs_latest
       uses: pozetroninc/github-action-get-latest-release@master
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: HDR-Development/romfs-release
 
-    # validate that the chosen release exists
-    - name: get the specified release
-      uses: cardinalby/git-get-release-action@v1
+    - name: Download romfs with chosen version
       if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      id: get_romfs_not_latest
+      uses: dsaltares/fetch-gh-release-asset@master
       with:
-        tag: ${{ github.event.inputs.romfs_version }}   
         repo: 'HDR-Development/romfs-release'
+        version: 'tags/${{ github.event.inputs.romfs_version }}'
+        file: 'romfs.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
+
+    - name: Download romfs with latest
+      if: ${{ contains(github.event.inputs.romfs_version, 'latest') }}
+      id: get_romfs_latest
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        repo: 'HDR-Development/romfs-release'
+        version: '${{ github.event.inputs.romfs_version }}'
+        file: 'romfs.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
 
     # make package depending on version chosen
     - name: make package with chosen version
       if: ${{ contains(github.event.inputs.romfs_version, 'latest') != true }}
       run: |
-        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ github.event.inputs.romfs_version }} 
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} none
 
     - name: make package with latest
       if: ${{ contains(github.event.inputs.romfs_version, 'latest') }}
       run: |
-        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} none
 
     # get the most recent latest full release
     - id: package_latest
@@ -208,14 +219,14 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: changelog
         
     - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: version
         
@@ -267,27 +278,27 @@ jobs:
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
-  ################  handle the creation of to-nightly.zip  ################
-  to_nightly:
+  ################  handle the creation of to-prerelease.zip  ################
+  to_prerelease:
     runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
-    # download the nightly
-    - id: latest_nightly
+    # download the prerelease
+    - id: latest_prerelease
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HDR-Development/HDR-Nightlies"
+        repository: "HDR-Development/HDR-PreReleases"
         latest: true
         fileName: "switch-package.zip"
 
-    # move the nightly to the artifacts dir
+    # move the prerelease to the artifacts dir
     - run: mkdir artifacts && mv switch-package.zip artifacts
 
-    # build the to-nightly.zip
-    - name: make to-nightly.zip artifact
+    # build the to-prerelease.zip
+    - name: make to-prerelease.zip artifact
       run: |
         python3 scripts/make_diff.py beta
 
@@ -295,9 +306,9 @@ jobs:
       run: |
         ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
-    - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
+    - run: mv upgrade_artifacts/upgrade.zip to-prerelease.zip
 
-    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
+    - run: mv upgrade_artifacts/deletions.json to_prerelease_deletions.json
 
     # get the most recent latest beta
     - id: latest_beta
@@ -305,28 +316,28 @@ jobs:
       with:
         repository: HDR-Development/HDR-Releases
 
-    # upload the to-nightly.zip to the beta for the launcher
-    - name: Upload to-nightly.zip to beta
+    # upload the to-prerelease.zip to the beta for the launcher
+    - name: Upload to-prerelease.zip to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to-nightly.zip
+        file: to-prerelease.zip
         prerelease: false
         file_glob: false
-        asset_name: to-nightly.zip
+        asset_name: to-prerelease.zip
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
 
-    # upload the to_nightly_deletions.json to the beta for the launcher
-    - name: Upload to_nightly_deletions.json to beta
+    # upload the to_prerelease_deletions.json to the beta for the launcher
+    - name: Upload to_prerelease_deletions.json to beta
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to_nightly_deletions.json
+        file: to_prerelease_deletions.json
         prerelease: false
         file_glob: false
-        asset_name: to_nightly_deletions.json
+        asset_name: to_prerelease_deletions.json
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true

@@ -3,8 +3,17 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-pub mod status;
+
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod bomb;
+mod cshot;
+mod gbeam;
+mod missile;
+mod supermissile;
 
 use smash::{
     lib::{
@@ -36,9 +45,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    opff::install();
+    let agent = &mut Agent::new("samusd");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    bomb::install();
+    cshot::install();
+    gbeam::install();
+    missile::install();
+    supermissile::install();
 }

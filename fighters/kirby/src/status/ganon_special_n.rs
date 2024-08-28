@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N
+
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
@@ -169,32 +171,10 @@ unsafe extern "C" fn special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(
-            Pre,
-            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
-            special_n_pre,
-        )
-        .status(
-            Main,
-            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
-            special_n_main,
-        )
-        .status(
-            End,
-            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
-            special_n_end,
-        )
-        .status(
-            Init,
-            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
-            special_n_init,
-        )
-        .status(
-            Exec,
-            *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N,
-            special_n_exec,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, special_n_end);
+    agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, special_n_init);
+    agent.status(Exec, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, special_n_exec);
 }

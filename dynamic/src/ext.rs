@@ -1,4 +1,4 @@
-use crate::consts::globals::*;
+use crate::consts::{globals::*, vars};
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
@@ -278,6 +278,7 @@ bitflags! {
         const ShieldDrop = 0x2;
         const WallJumpLeft = 0x4;
         const WallJumpRight = 0x8;
+        const Parry = 0x10;
     }
 
     #[derive(Copy, Clone)]
@@ -318,6 +319,7 @@ bitflags! {
         const Parry = 0x100000;
         const CStickOverride = 0x200000;
         const RivalsWallJump = 0x400000;
+        const ParryManual = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -399,6 +401,7 @@ impl FastShift for L2CFighterBase {
 pub trait BomaExt {
     // INPUTS
     unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T);
+    unsafe fn get_command_life<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> u8;
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -462,6 +465,7 @@ pub trait BomaExt {
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn dec_int(&mut self, what: i32);
     unsafe fn get_float(&mut self, what: i32) -> f32;
     unsafe fn get_int64(&mut self, what: i32) -> u64;
     unsafe fn is_flag(&mut self, what: i32) -> bool;
@@ -492,6 +496,11 @@ pub trait BomaExt {
         param: impl Hash40Ext,
     );
 
+    unsafe fn enable_transition_term(&mut self, arg2: i32);
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]);
+    unsafe fn unable_transition_term(&mut self, arg2: i32);
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]);
+
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity;
@@ -510,17 +519,21 @@ pub trait BomaExt {
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
     unsafe fn check_dash_cancel(&mut self) -> bool;
+    // Checks for status and enables transition to wall jump
+    unsafe fn check_wall_jump_cancel(&mut self) -> bool;
+    // Checks for parry
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
     unsafe fn check_airdash(&mut self);
+    unsafe fn check_magicseries(&mut self);
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 
-    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -535,6 +548,19 @@ impl BomaExt for BattleObjectModuleAccessor {
         };
 
         crate::modules::InputModule::clear_commands(self.object(), cat, bits);
+    }
+
+    unsafe fn get_command_life<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> u8 {
+        let cat = fighter_pad_cmd_flag.into();
+        let (cat, bits) = match cat {
+            CommandCat::Cat1(cat) => (0, cat.bits()),
+            CommandCat::Cat2(cat) => (1, cat.bits()),
+            CommandCat::Cat3(cat) => (2, cat.bits()),
+            CommandCat::Cat4(cat) => (3, cat.bits()),
+            CommandCat::CatHdr(cat) => (4, cat.bits()),
+        };
+
+        return crate::modules::InputModule::get_command_life(self.object(), cat, bits);
     }
 
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
@@ -793,6 +819,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::get_int(self, what)
     }
 
+    unsafe fn dec_int(&mut self, what: i32) {
+        WorkModule::dec_int(self, what)
+    }
+
     unsafe fn get_float(&mut self, what: i32) -> f32 {
         WorkModule::get_float(self, what)
     }
@@ -869,6 +899,23 @@ impl BomaExt for BattleObjectModuleAccessor {
         let obj = obj.into();
         let field = field.into();
         WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn enable_transition_term(&mut self, arg2: i32) {
+        WorkModule::enable_transition_term(self, arg2)
+    }
+    unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::enable_transition_term(self, *term);
+        }
+    }
+    unsafe fn unable_transition_term(&mut self, arg2: i32) {
+        WorkModule::unable_transition_term(self, arg2)
+    }
+    unsafe fn unable_transition_term_many(&mut self, arg2: &[i32]) {
+        for term in arg2.iter() {
+            WorkModule::unable_transition_term(self, *term);
+        }
     }
 
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
@@ -1051,6 +1098,31 @@ impl BomaExt for BattleObjectModuleAccessor {
         false
     }
 
+    unsafe fn check_wall_jump_cancel(&mut self) -> bool {
+        if crate::VarModule::is_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
+            return false;
+        }
+        crate::VarModule::on_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.sub_transition_group_check_air_wall_jump().get_bool() {
+            crate::VarModule::on_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+            return true;
+        }
+        crate::VarModule::off_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        false
+    }
+
+    unsafe fn sub_check_command_parry(&mut self) -> L2CValue {
+        if self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME) != 0
+        || self.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD) {
+            return false.into();
+        }
+        if self.is_cat_flag(CatHdr::Parry) {
+            return true.into();
+        }
+        return false.into();
+    }
+
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
     ///
     /// # Arguments
@@ -1163,7 +1235,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             if AttackModule::is_infliction_status(
                 self,
                 *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) {
+            )
+            && !AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
                 crate::VarModule::inc_int(
                     self.object(),
                     crate::consts::vars::common::instance::HITFALL_BUFFER,
@@ -1224,10 +1297,87 @@ impl BomaExt for BattleObjectModuleAccessor {
             );
         }
 
-        CancelModule::enable_cancel(self);
+        if self.motion_frame() >= 4.0
+        && !CancelModule::is_enable_cancel(self) {
+            CancelModule::enable_cancel(self);
+        }
+
         if self.is_situation(*SITUATION_KIND_AIR) {
             let fighter = crate::util::get_fighter_common_from_accessor(self);
             fighter.sub_air_check_fall_common();
+        }
+    }
+
+    unsafe fn check_magicseries(&mut self) {
+        // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+        if CancelModule::is_enable_cancel(self) 
+        || self.is_in_hitlag() 
+        || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
+            return;
+        }
+
+        let status_kind = StatusModule::status_kind(self);
+        
+        // Tilt cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackHi3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackLw3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+            }
+        }
+    
+        // Smash cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackHi4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackLw4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+            }
+        }
+    
+        // Special cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::SpecialN) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialS) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialHi) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialLw) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+            }
         }
     }
 
@@ -1296,10 +1446,6 @@ impl BomaExt for BattleObjectModuleAccessor {
         *((next + 0x8) as *const i32)
     }
 
-    unsafe fn is_parry_input(&mut self) -> bool {
-        let buffer = if self.is_prev_status(*FIGHTER_STATUS_KIND_GUARD_DAMAGE) { 1 } else { 5 };
-        return InputModule::get_trigger_count(self.object(), Buttons::Parry) < buffer;
-    }
 }
 
 pub trait LuaUtil {

@@ -73,7 +73,7 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
     }
 }
 
-pub fn install() {
+pub fn install(agent: &mut Agent) {
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,
     );

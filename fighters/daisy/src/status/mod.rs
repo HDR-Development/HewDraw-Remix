@@ -1,11 +1,17 @@
 use super::*;
 use globals::*;
+// status script import
 
 mod attack_air;
-mod special_s;
+mod attack_s4;
+mod special_hi;
 mod special_lw;
-mod uniq_float_start;
+mod special_n;
+mod special_s;
 mod uniq_float;
+mod catch;
+mod appeal;
+mod guard_damage;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -58,20 +64,24 @@ unsafe extern "C" fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-extern "C" fn daisy_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
-        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
-        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
-        fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
 }
 
-pub fn install() {
-    smashline::Agent::new("daisy").on_start(daisy_init).install();
-    attack_air::install();
-    special_s::install();
-    special_lw::install();
-    uniq_float_start::install();
-    uniq_float::install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
+    attack_air::install(agent);
+    attack_s4::install(agent);
+    special_hi::install(agent);
+    special_lw::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
+    uniq_float::install(agent);
+    catch::install(agent);
+    appeal::install(agent);
+    guard_damage::install(agent);
 }

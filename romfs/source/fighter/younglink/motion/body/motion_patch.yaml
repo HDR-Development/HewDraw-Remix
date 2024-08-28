@@ -32,7 +32,7 @@ attack_11:
     cancel_frame: 17
 attack_dash:
   extra:
-    cancel_frame: 25
+    cancel_frame: 32
 air_catch:
   extra:
     cancel_frame: 60
@@ -95,4 +95,10 @@ air_catch_landing:
     cancel_frame: 13
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

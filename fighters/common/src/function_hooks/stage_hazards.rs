@@ -45,7 +45,6 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x3b,  // venom
     0x3e,  // brinstar
     0x62,  // skyworld
-    0x6e,  // halberd
     0x77,  // summit
     0xcb,  // find mii (StreetPass)
     0xb9,  // reset bomb forest
@@ -128,6 +127,6 @@ pub fn install() {
         handle_movement_grav_update,
         fix_hazards_for_online,
         lylat_no_rot,
-        lylat_set_form_hazards_off
+        // lylat_set_form_hazards_off
     );
 }

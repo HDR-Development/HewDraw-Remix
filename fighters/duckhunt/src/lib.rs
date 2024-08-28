@@ -4,8 +4,15 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod can;
+mod clay;
+mod gunman;
+mod gunmanbullet;
 
 use smash::{
     lib::{
@@ -37,21 +44,17 @@ use utils::{
     consts::*,
 };
 use smashline::*;
-
-extern "C" fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() != *FIGHTER_KIND_DUCKHUNT {
-            return;
-        }
-        VarModule::set_int(fighter.battle_object, vars::duckhunt::instance::GUNMAN_TIMER, 0);
-    }
-}
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
-    smashline::Agent::new("duckhunt")
-        .on_start(duckhunt_reset)
-        .install();
+    let agent = &mut Agent::new("duckhunt");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    can::install();
+    clay::install();
+    gunman::install();
+    gunmanbullet::install();
 }

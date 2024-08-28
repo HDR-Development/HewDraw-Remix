@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N
 
 unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -55,7 +56,7 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
                     fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_loop_h").into(), Hash40::new("bayonetta_special_air_n_loop_h").into(), true.into());
                 }
                 app::FighterUtil::flash_eye_info(fighter.module_accessor);
-                PLAY_SE(fighter, Hash40::new_raw(0x189615e963));
+                PLAY_SE(fighter, Hash40::new("se_bayonetta_special_n05"));
                 fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_CHARGE_MAX);
                 fighter.set_int(1, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_STEP);
             }
@@ -105,10 +106,10 @@ unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2
     //fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter);
     fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x1d586e7454), true, true);
+    lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("bayonetta_bulletclimax_circle"), true, true);
     sv_module_access::effect(fighter.lua_state_agent);
     fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x1cabab7466), true, true);
+    lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("bayonetta_chargebullet_start"), true, true);
     sv_module_access::effect(fighter.lua_state_agent);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_cancel_main_loop as *const () as _))
 }
@@ -195,14 +196,12 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_init)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_main)
-        .status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_init)
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_main)
-        .status(Pre, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_pre)
-        .status(Main, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_main)
-        .status(End, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+        agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_init);
+        agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N, special_n_main);
+        agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_init);
+        agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE, special_n_charge_main);
+        agent.status(Pre, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_pre);
+        agent.status(Main, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_main);
+        agent.status(End, statuses::kirby::BAYONETTA_SPECIAL_N_CANCEL, special_n_cancel_end);
 }

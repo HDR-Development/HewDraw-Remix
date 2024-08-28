@@ -3,14 +3,35 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn ff_chef_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        if fighter.status_frame() == 18 {
+            let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+            let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
+            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul * 0.5);
+            sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add * 0.5);
+        }
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REQUEST_DIVE_EFFECT) {
+                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REQUEST_DIVE_EFFECT);
+            }
+            if !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+                if KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0
+                && ControlModule::get_stick_y(boma) < WorkModule::get_param_float(boma, hash40("common"), hash40("attack_lw4_stick_y")) {
+                    WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REQUEST_DIVE_EFFECT);
+                }
+            }
+        }
         if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
         if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            if boma.is_situation(*SITUATION_KIND_AIR) {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
         }
     }
 }
@@ -34,11 +55,6 @@ unsafe fn parachute(fighter: &mut L2CFighterCommon) {
                 return;
             }
             fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
-        }
-    }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
-        if fighter.is_prev_status(statuses::gamewatch::SPECIAL_HI_OPEN) && fighter.status_frame() > 10 {    // 11F landing lag
-            CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
 }
@@ -66,7 +82,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_LW_END,
@@ -106,7 +121,7 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    ff_chef_land_cancel(boma);
+    ff_chef_land_cancel(fighter, boma);
     parachute(fighter);
     once_per_airtime(fighter);
     jc_judge_four(boma);
@@ -127,34 +142,6 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
-            return
-        }
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let gnw = utils::util::get_battle_object_from_id(owner_id);
-        let gnw_boma = &mut *(*gnw).module_accessor;
-        if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
-            let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
-            if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame < 10.0 {
-                    ModelModule::set_scale(weapon.module_accessor, 0.75);
-                }
-                else {
-                    ModelModule::set_scale(weapon.module_accessor, 1.1);
-                }
-            }
-        }
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .on_line(Main, gamewatch_frame_wrapper)
-        .install();
-
-    smashline::Agent::new("gamewatch_box")
-        .on_line(Main, box_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, gamewatch_frame_wrapper);
 }

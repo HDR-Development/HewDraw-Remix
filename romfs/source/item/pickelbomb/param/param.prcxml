@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <list hash="hit_data">
+    <struct index="0">
+      <float hash="offset2_y">3.5</float>
+      <float hash="size">6.5</float>
+    </struct>
+  </list>
   <struct hash="cut_in_param">
     <int hash="performance_frame">30</int>
     <float hash="slow_rate">8</float>

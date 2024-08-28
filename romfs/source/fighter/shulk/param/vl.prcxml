@@ -7,11 +7,11 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <float hash="active_time_jump">12</float>
-      <float hash="active_time_speed">12</float>
+      <float hash="active_time_jump">9</float>
+      <float hash="active_time_speed">6</float>
       <float hash="active_time_shield">12</float>
-      <float hash="active_time_buster">12</float>
-      <float hash="active_time_smash">12</float>
+      <float hash="active_time_buster">9</float>
+      <float hash="active_time_smash">9</float>
       <float hash="unavailable_time_jump">15</float>
       <float hash="unavailable_time_speed">15</float>
       <float hash="unavailable_time_shield">15</float>
@@ -24,10 +24,10 @@
       <float hash="jump_special_hi_height_mul">1.4</float>
       <float hash="jump_damage_mul">1.22</float>
       <float hash="spd_walk_speed_mul">1.6</float>
-      <float hash="spd_dash_speed_mul">1.6</float>
-      <float hash="spd_run_speed_mul">1.6</float>
+      <float hash="spd_dash_speed_mul">1.35</float>
+      <float hash="spd_run_speed_mul">1.4</float>
       <float hash="spd_ground_brake_mul">1.3</float>
-      <float hash="spd_air_speed_x_mul">1.35</float>
+      <float hash="spd_air_speed_x_mul">1.25</float>
       <float hash="spd_air_speed_y_mul">1.25</float>
       <float hash="spd_height_mul">0.85</float>
       <float hash="shield_damage_mul">0.7</float>

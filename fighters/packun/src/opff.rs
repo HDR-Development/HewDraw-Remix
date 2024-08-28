@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
@@ -55,25 +54,6 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), true);
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), false);
         ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), false);
-    }
-}
-
-unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
-        if !VarModule::is_flag(fighter.object(), vars::packun::status::CLOUD_COVER) {
-            EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-            PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
-            if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
-            }
-            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-                EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), 0, 15.5, 0, 0, 0, 0, 1.2, false);
-            }
-            else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
-            }
-        }
-        VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
 }
 
@@ -284,13 +264,11 @@ unsafe fn monch(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
-	//spike_head_mesh_test(boma);
     sspecial_cancel(boma, status_kind, situation_kind);
     ptooie_scale(boma);
     stance_head(fighter);
     check_reset(fighter);
     check_apply_speeds(fighter);
-    stance_init_effects(fighter);
     motion_handler(fighter, boma, frame);
     fastfall_specials(fighter);
     reverse_switch(boma);
@@ -310,78 +288,6 @@ pub unsafe fn packun_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        let boma = weapon.boma();
-        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-        let owner_object = owner_module_accessor.object();
-		let status_kind = StatusModule::status_kind(boma);
-		let motion_kind = MotionModule::motion_kind(boma);
-        if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
-            let pos_x = PostureModule::pos_x(boma);
-            let pos_y = PostureModule::pos_y(boma);
-            let packun_pos_x = PostureModule::pos_x(owner_module_accessor);
-            let packun_pos_y = PostureModule::pos_y(owner_module_accessor);
-            let scale = PostureModule::scale(boma);
-            if ((pos_x - packun_pos_x).abs() < 12.0*scale) && 
-                ((pos_y - packun_pos_y).abs() < 12.0*scale) && 
-                pos_y != 0.0 {
-                if owner_module_accessor.is_status(*FIGHTER_STATUS_KIND_APPEAL){
-                    VarModule::on_flag(owner_object, vars::packun::status::CLOUD_COVER);
-                }
-                if VarModule::is_flag(owner_object, vars::packun::status::FLAME_ACTIVE) &&
-                motion_kind != hash40("explode") {
-                    //println!("Woo!");
-                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
-                }
-                if VarModule::is_flag(owner_object, vars::packun::status::BITE_START) &&
-                motion_kind != hash40("explode") {
-                    //println!("Woo!");
-                    VarModule::on_flag(owner_object, vars::packun::status::BURST);
-                    WorkModule::set_int(boma, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-                }
-            }
-		}
-    }
-}
-
-pub extern "C" fn spikeball_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        let boma = weapon.boma();
-        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-        if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            VarModule::on_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
-            // println!("bomb");
-        }
-        else if weapon.motion_frame() == 2.0 && VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
-            VarModule::off_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE);
-            // println!("not bomb");
-        }
-        let status_kind = StatusModule::status_kind(weapon.module_accessor);
-        let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
-        if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
-            if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) || weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_HOP) {
-                /* if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() == 2 {
-                    println!("will bomb");
-                } */
-                if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) && weapon.status_frame() >= 80 && motion_kind != hash40("explode") {
-                    WorkModule::off_flag(boma, *WEAPON_PACKUN_SPIKEBALL_STATUS_HOP_WORK_FLAG_CLEARED_ATTACK);
-                    MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
-                    // println!("is bomb");
-                }
-            }
-        }
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("packun")
-        .on_line(Main, packun_frame_wrapper)
-        .install();
-    smashline::Agent::new("packun_spikeball")
-        .on_line(Main, spikeball_frame)
-        .install();
-    smashline::Agent::new("packun_poisonbreath")
-        .on_line(Main, poisonbreath_frame)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, packun_frame_wrapper);
 }

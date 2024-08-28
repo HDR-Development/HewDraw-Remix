@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
     special_lw_mot_helper(fighter);
@@ -99,9 +101,7 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("kamui")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
 }

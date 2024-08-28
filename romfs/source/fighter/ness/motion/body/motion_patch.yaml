@@ -17,6 +17,8 @@ attack_13:
 special_s:
   flags:
     move: false
+  extra:
+    cancel_frame: 52
 guard_off:
   blend_frames: 4
   extra:
@@ -49,6 +51,9 @@ attack_s3_lw:
 attack_s3_hi:
   extra:
     cancel_frame: 32
+attack_air_lw:
+  extra:
+    cancel_frame: 48
 fall_aerial_f:
   blend_frames: 5
 fall_aerial_b:
@@ -67,13 +72,13 @@ special_air_lw_end:
     cancel_frame: 20
 special_n_fire:
   extra:
-    cancel_frame: 43
+    cancel_frame: 39
 special_n_end:
   extra:
     cancel_frame: 43
 special_air_n_fire:
   extra:
-    cancel_frame: 43
+    cancel_frame: 39
 special_air_n_end:
   extra:
     cancel_frame: 43
@@ -89,6 +94,15 @@ catch_turn:
 catch_attack:
   extra:
     cancel_frame: 0
+throw_lw:
+  extra:
+    cancel_frame: 52
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

@@ -66,6 +66,7 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 	let long_sword_scale = Vector3f{x: 1.0, y: 1.1, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &long_sword_scale);
 }
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -128,8 +129,6 @@ pub unsafe fn younglink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("younglink")
-        .on_line(Main, younglink_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, younglink_frame_wrapper);
 }

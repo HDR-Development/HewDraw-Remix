@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_change_motion_by_situation(Hash40::new("edge_special_n_start").into(), Hash40::new("edge_special_air_n_start").into(), false.into());
@@ -101,8 +102,6 @@ unsafe extern "C" fn special_hi_set_kinetics(fighter: &mut L2CFighterCommon, par
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .status(Main, *FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N, special_n_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N, special_n_main);
 }

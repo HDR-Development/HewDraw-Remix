@@ -18,6 +18,7 @@ mod attack;
 mod shield;
 mod turn;
 mod walk;
+mod pass;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -112,7 +113,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
-            // sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_wall_jump,
             sub_transition_group_check_ground_jump_mini_attack,
             change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
@@ -130,6 +132,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             FighterStatusDamage__correctDamageVectorEffect,
             sub_fighter_pre_end_status,
             sub_is_dive,
+            sub_calc_landing_motion_rate,
         );
     }
 }
@@ -201,27 +204,80 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_lasso)]
 unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        // Disable Airdodging if you're pressing Grab.
-        let is_guard_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Guard input was pressed within max tap buffer window
-        let is_attack_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Attack input was pressed within max tap buffer window
-        // original line
-        // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
-        // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
-        // you will never get an air tether. That's the theory, anyway.
-        // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
-        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || is_guard_buffered)
-        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || is_attack_buffered)
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
-            let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
-            if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
-            && !LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
-                fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
-                return true.into();
-            }
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+        return false.into();
+    }
+
+    // specific air_lasso validity check
+    let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
+    if air_lasso == *FIGHTER_AIR_LASSO_TYPE_NONE
+    || LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
+        return false.into();
+    }
+    
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
+
+    // actual grab button
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch);
+    if catch_trigger_count < buffer {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+
+    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard);
+    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard);
+    let is_guard_held = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+
+    // special checks for air_lasso
+    // - attack button must be in the buffer window
+    // - shield button must be in the buffer window
+    // - attack button must have been pressed while shield was pressed/held
+    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll);
+    if attack_trigger_count < buffer 
+    && guard_trigger_count < buffer
+    && attack_trigger_count <= guard_trigger_count
+    && (is_guard_held || attack_trigger_count > guard_release_count) {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+    return false.into();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_wall_jump)]
+unsafe fn sub_transition_group_check_air_wall_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[0x31].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x31].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
         }
     }
-    false.into()
+
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || fighter.is_status(*FIGHTER_STATUS_KIND_WALL_JUMP)
+    || fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_WALL_JUMP_COUNT) >= 2 {
+        return false.into();
+    }
+
+    // unused since we removed wall clings but y'know just in case
+    let attach_wall_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attach_wall_type"), 0);
+    if attach_wall_type == *FIGHTER_ATTACH_WALL_TYPE_NORMAL
+    && fighter.sub_fighter_general_term_is_can_attach_wall().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACH_WALL.into(), true.into());
+        return true.into();
+    }
+
+    let wall_jump_type = WorkModule::get_param_int(fighter.module_accessor, hash40("wall_jump_type"), 0);
+    if (wall_jump_type == *FIGHTER_WALL_JUMP_TYPE_NORMAL
+    || VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP))
+    && fighter.sub_fighter_general_term_is_can_wall_jump().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(), true.into());
+        return true.into();
+    }
+
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
@@ -310,12 +366,31 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
-    // if fighter.is_button_on(Buttons::Parry) {
-    //     VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-    //     fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-    //     return true.into()
-    // }
-    call_original!(fighter)
+    
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        return false.into();
+    }
+
+    if fighter.global_table[0x4f].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x4f].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
+        if fighter.sub_check_command_parry().get_bool() {
+            VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+            return true.into();
+        }
+        if fighter.sub_check_command_guard().get_bool() {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+            return true.into();
+        }
+    }
+
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]
@@ -676,6 +751,17 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     true.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_calc_landing_motion_rate)]
+unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_frame: L2CValue, landing_frame: L2CValue) -> L2CValue {
+    // Coupled with "landing_heavy" change in change_motion hook
+    // Because we start heavy landing anims on f3 rather than f1, we need to reduce the total length of the anim by 3 frames
+    // when calculating motion rate for airdodge landing or hitstun landing
+    let start_frame = 3.0;
+    let anim_length = end_frame.get_f32() - start_frame;
+    let ratio = (anim_length + 0.01) / landing_frame.get_f32();
+    ratio.into()
+}
+
 pub fn install() {
     airdodge::install();
     dash::install();
@@ -687,6 +773,7 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
+    pass::install();
     passive::install();
     damagefall::install();
     downdamage::install();

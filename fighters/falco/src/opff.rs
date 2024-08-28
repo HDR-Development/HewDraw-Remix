@@ -37,6 +37,13 @@ unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn check_special_lw_hit(fighter: &mut L2CFighterCommon) {
+    if fighter.is_flag(0x200000e0) // FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_REFLECTOR
+    && (!fighter.is_status(statuses::falco::SPECIAL_LW_HIT) || fighter.motion_frame() > 10.0) {
+        fighter.change_status(statuses::falco::SPECIAL_LW_HIT.into(), false.into());
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -73,6 +80,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     laser_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     firebird_startup_ledgegrab(fighter);
     aim_throw_lasers(boma);
+    check_special_lw_hit(fighter);
     fastfall_specials(fighter);
 }
 
@@ -89,8 +97,6 @@ pub unsafe fn falco_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("falco")
-        .on_line(Main, falco_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, falco_frame_wrapper);
 }

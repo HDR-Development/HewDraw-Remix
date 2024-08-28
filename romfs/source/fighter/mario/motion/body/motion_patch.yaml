@@ -90,9 +90,6 @@ landing_air_lw:
       - name: c05landingairlw.nuanmb
     extra:
       cancel_frame: 10
-attack_air_hi:
-  extra:
-    cancel_frame: 30
 special_n_fire:
   game_script: game_specialnfire
   flags:
@@ -181,6 +178,14 @@ special_air_lw_light:
       - effect_specialairlwlight
     extra:
       cancel_frame: 61
+special_air_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+special_hi:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 catch:
   extra:
     cancel_frame: 34
@@ -195,4 +200,10 @@ catch_attack:
     cancel_frame: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

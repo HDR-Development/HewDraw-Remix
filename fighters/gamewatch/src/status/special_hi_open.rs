@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::gamewatch::SPECIAL_HI_OPEN
 
 unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -40,8 +41,13 @@ unsafe extern "C" fn special_hi_open_main(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_hi_open_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING)
-            { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL } else { FIGHTER_STATUS_KIND_LANDING };
+        let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING) {
+            WorkModule::set_float(fighter.module_accessor, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+        }
+        else {
+            FIGHTER_STATUS_KIND_LANDING
+        };
         fighter.change_status(status.into(), true.into());
         return 1.into()
     }
@@ -63,10 +69,8 @@ unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre)
-        .status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main)
-        .status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre);
+    agent.status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main);
+    agent.status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit);
 }

@@ -20,14 +20,14 @@ impl From<i32> for PikminInfo {
         match other {
             0 => PikminInfo { // Red
                 dmg: 1.05,
-                shield_dmg: 0.25,
+                shield_dmg: 0.45,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_fire"),
                 attr_special: Hash40::new("collision_attr_fire"),
                 sound: *COLLISION_SOUND_ATTR_FIRE,
                 color: Vector3f{x: 1.0, y: 0.05, z: 0.0},
-                cling_frame: 5
+                cling_frame: 4
             },
             1 => PikminInfo { // yellow
                 dmg: 0.94,
@@ -49,11 +49,11 @@ impl From<i32> for PikminInfo {
                 attr_special: Hash40::new("collision_attr_water"),
                 sound: *COLLISION_SOUND_ATTR_WATER,
                 color: Vector3f{x: 0.1, y: 0.4, z: 1.0},
-                cling_frame: 5
+                cling_frame: 4
             },
             3 => PikminInfo { // White
                 dmg: 0.75,
-                shield_dmg: 0.75,
+                shield_dmg: 0.55,
                 angle: 0,
                 hitlag: 1.0,
                 attr: Hash40::new("collision_attr_purple"),
@@ -78,6 +78,8 @@ impl From<i32> for PikminInfo {
 }
 
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = &mut Agent::new("pikmin_pikmin");
+    acmd::install(agent);
+    status::install(agent);
+    agent.install();
 }

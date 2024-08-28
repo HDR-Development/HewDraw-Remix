@@ -21,12 +21,41 @@ special_n:
 attack_11:
   extra:
     cancel_frame: 19
+attack_13:
+  game_script: game_attack13
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackend.nuanmb
+  scripts:
+  - expression_attack13
+  - sound_attack13
+  - effect_attack13
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 35
+    freeze_during_hitstop: true
 attack_dash:
   extra:
-    cancel_frame: 38
+    cancel_frame: 39
 attack_lw3:
   extra:
-    cancel_frame: 37
+    cancel_frame: 34
 attack_hi4:
 attack_hi3:
   extra:
@@ -89,4 +118,10 @@ catch_attack:
     cancel_frame: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

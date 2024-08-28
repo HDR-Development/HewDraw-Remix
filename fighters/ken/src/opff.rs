@@ -46,10 +46,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     meter_module(fighter, boma, status_kind, situation_kind);
+    disable_special_cancels_on_parry(fighter);
     extra_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
     metered_cancels(fighter, boma, frame);
     target_combos(boma);
-    rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
     ken_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
     ken_ex_hado(fighter, boma, frame);
@@ -63,11 +63,9 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-pub fn install() {
-    smashline::Agent::new("ken")
-        .on_line(Main, ken_frame_wrapper)
-        .on_line(Main, ken_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, ken_frame_wrapper);
+    agent.on_line(Main, ken_meter);
 }
 
 unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -102,10 +100,20 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+unsafe fn disable_special_cancels_on_parry(fighter: &mut L2CFighterCommon) {
+    if (fighter.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) || fighter.is_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL))
+    && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)) {
+        fighter.off_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+}   
+
 unsafe fn extra_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if fighter.is_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
     && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
         // *FIGHTER_STATUS_KIND_ATTACK_S4
     ]) {
         check_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
@@ -193,7 +201,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     ].contains(&status_kind) {
         end_magic_series(fighter, boma, status_kind, situation_kind);
         let meter_amount = MeterModule::meter(fighter.battle_object);
-        MeterModule::drain_direct(fighter.battle_object, meter_amount);
+        MeterModule::drain_direct(fighter.battle_object, meter_amount * 2.0 / 3.0);
     }
 }
 
@@ -217,6 +225,15 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         hash40("special_air_hi_command")
     ].contains(&motion_kind) && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+        && fighter.is_situation(*SITUATION_KIND_GROUND)
+        && fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+            return;
+        }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 
@@ -261,7 +278,7 @@ unsafe fn ken_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     if boma.is_situation(*SITUATION_KIND_GROUND) 
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
         if frame < 70.0 { // the autocancel frame
-            WorkModule::set_float(boma, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            WorkModule::set_float(boma, 14.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
         } else {
             boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
@@ -290,9 +307,16 @@ unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && boma.is_button_on(Buttons::SpecialAll)
     && frame < 5.0
     && (MeterModule::level(boma.object()) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+        && fighter.is_situation(*SITUATION_KIND_GROUND)
+        && fighter.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+            return;
+        }
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        // burst of speed specifically for EX tatsu
-        KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
     }
 
     // always use heavy during EX
@@ -321,46 +345,6 @@ unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut Battle
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
 }
 
-/// rotates bair forward for the held version
-/// start_frame: frame to start interpolating the body rotation
-/// bend_frame: frame to interpolate to the intended angle amount until
-/// return_frame: frame to start interpolating back to regular angle
-/// straight_frame: frame the body should be at the regular angle again
-unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_rotation = 180.0;
-    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-        
-    if frame >= start_frame && frame < return_frame {
-        // this has to be called every frame, or you snap back to the normal joint angle
-        // interpolate to the respective body rotation angle
-        let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
-        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
-        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    } else if frame >= return_frame && frame < straight_frame {
-        // linear interpolate back to normal
-        let calc_body_rotate = 180.0 *((frame - return_frame) / (straight_frame - return_frame)) + 180.0;
-        let body_rotation = calc_body_rotate.clamp(180.0, 360.0);
-        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    }
-}
-
-/// logic behind rotate forward bair activation
-unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("attack_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 6.0, 8.5, 11.0, 31.0);
-        }
-    }
-    else if boma.is_motion(Hash40::new("landing_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
-        }
-    }
-}
 unsafe fn ken_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // enter EX if A+B on frame<5
     if fighter.is_status_one_of(&[
@@ -376,7 +360,8 @@ unsafe fn ken_ex_focus(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 
     // resets DISABLE_SPECIAL_LW on hitting a move
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         VarModule::off_flag(boma.object(), vars::shotos::instance::DISABLE_SPECIAL_LW);
     } 
 }
@@ -388,18 +373,22 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         return;
     }
 
-    let is_other_special_cancel = (boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
-        statuses::ken::ATTACK_COMMAND_4
-    ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD));
+    let is_other_special_cancel = (
+        boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+            *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+            *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+            statuses::ken::ATTACK_COMMAND_4
+        ]) 
+        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+    );
 
     let is_nspecial_cancel = (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
@@ -412,26 +401,31 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         return;
     }
 
-    // check final smashes
-    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
-    let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
-    if is_special
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
-        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    // check supers
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && boma.is_button_on(Buttons::SpecialAll) {
+        // shoryu super
+        if boma.is_cat_flag(Cat4::SpecialHiCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-        } else if MeterModule::level(fighter.battle_object) >= MeterModule::meter_cap(fighter.battle_object) {
+            return;
+        }
+        // tatsu super
+        if boma.is_cat_flag(Cat4::SpecialSCommand) {
             AttackModule::clear_all(fighter.module_accessor);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
             fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
             fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+            return;
         }
-        return;
     }
 
-    if is_nspecial_cancel || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    || (is_nspecial_cancel && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW)) {
         VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
     }
 
@@ -440,6 +434,14 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     && VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
     && (MeterModule::level(boma.object()) >= 1 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+        if boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        ])
+        && fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_INT_START_SITUATION) != *SITUATION_KIND_GROUND {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+        }
         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
         return;
     }
@@ -449,7 +451,8 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_in_hitlag() 
     || CancelModule::is_enable_cancel(boma)
-    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
 

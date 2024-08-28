@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// statuses::littlemac::SPECIAL_LW_CANCEL
 
 unsafe extern "C" fn special_lw_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -77,9 +78,6 @@ unsafe extern "C" fn special_lw_cancel_main_loop(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn special_lw_cancel_main_loop_electric_boogaloo(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) {
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into()),
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into()),
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP => fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), false.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
@@ -163,15 +161,12 @@ unsafe extern "C" fn special_lw_jump_cancel_end(fighter: &mut L2CFighterCommon) 
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_end)
-        .install();
-    smashline::Agent::new("littlemac")
-        .status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_pre)
-        .status(Main, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_main)
-        .status(End, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_end)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_pre);
+    agent.status(Main, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_main);
+    agent.status(End, statuses::littlemac::SPECIAL_LW_CANCEL, special_lw_cancel_end);
+
+    agent.status(Pre, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_pre);
+    agent.status(Main, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_main);
+    agent.status(End, statuses::littlemac::SPECIAL_LW_CANCEL_JUMP, special_lw_jump_cancel_end);
 }

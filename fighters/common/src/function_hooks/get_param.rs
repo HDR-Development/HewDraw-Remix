@@ -214,9 +214,9 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
 
         // Coupled with "landing_heavy" change in change_motion hook
-        // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
+        // Because we start heavy landing anims on f3 rather than f1, we need to push back the heavy landing FAF by 2 frames so it is accurate to the defined per-character param
         if x1 == hash40("landing_frame") {
-            return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+            return original!()(x0, hash40("landing_frame"), 0) + 2.0;
         }
 
         // Ken aerial hadouken modified offsets for aerial version
@@ -291,6 +291,16 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *FIGHTER_KIND_DAISY {
+            if x1 == hash40("param_special_s") {
+                if x2 == hash40("special_s_jump_dec_accel_y")
+                && VarModule::is_flag(boma_reference.object(), vars::daisy::instance::SPECIAL_S_GROUND_START) {
+                    return 0.05;
+                }
+            }
+        }
+
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
@@ -472,6 +482,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                     if x2 == hash40("max_speed") {
                         return 0.7;
                     }
+                }
+            }
+        }
+
+        else if fighter_kind == *WEAPON_KIND_RICHTER_AXE {
+            if x1 == hash40("param_axe") {
+                if (&[
+                    hash40("throw_angle"),
+                    hash40("throw_angle_stick_front"),
+                    hash40("throw_angle_stick_back")
+                ]).contains(&x2)
+                && owner_module_accessor.is_situation(*SITUATION_KIND_AIR) {
+                    return -42.0;
                 }
             }
         }

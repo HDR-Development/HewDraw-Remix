@@ -155,7 +155,7 @@ unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
                 }
                 if frame >= 6.0 && frame < 35.0 {  
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.0);
+                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 0.5);
                 }
                 if frame >= 35.0 && frame < 45.0 {
                     smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
@@ -265,8 +265,7 @@ pub unsafe fn mario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("mario")
-        .on_line(Main, mario_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, mario_frame_wrapper);
 }

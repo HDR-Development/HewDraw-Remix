@@ -139,6 +139,7 @@ pub struct InputModule {
     hold_all: bool,
     hold_all_frame_max: i32,
     trigger_count: [usize; 32],
+    release_count: [usize; 32],
 }
 
 impl InputModule {
@@ -162,7 +163,8 @@ impl InputModule {
             },
             hold_all: false,
             hold_all_frame_max: -1,
-            trigger_count: [usize::MAX; 32]
+            trigger_count: [usize::MAX; 32],
+            release_count: [usize::MAX; 32]
         }
     }
 
@@ -386,6 +388,32 @@ impl InputModule {
         let module = require_input_module!(object);
         return module.trigger_count[button.bits().trailing_zeros() as usize];
     }
+
+    #[export_name = "InputModule__get_release_count"]
+    pub fn get_release_count(object: *mut BattleObject, button: Buttons) -> usize {
+        let module = require_input_module!(object);
+        return module.release_count[button.bits().trailing_zeros() as usize];
+    }
+
+    #[export_name = "InputModule__reset_trigger"]
+    pub fn reset_trigger(object: *mut BattleObject) {
+        let module = require_input_module!(object);
+        module.trigger_count = [usize::MAX; 32];
+        module.release_count = [usize::MAX; 32];
+    }
+
+    #[export_name = "InputModule__get_command_life"]
+    pub fn get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8 {
+        if category == 4 {
+            return require_input_module!(object).hdr_cat.valid_frames[(flag.trailing_zeros() as usize)];
+        }
+
+        let cats = unsafe {
+            let control_module = *((*object).module_accessor as *const u64).add(0x48 / 8);
+            std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
+        };
+        return cats[category as usize].lifetimes_mut()[flag.trailing_zeros() as usize];
+    }
 }
 
 #[repr(C)]
@@ -457,6 +485,12 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
                 & !ControlModule::get_button_prev((*input_module.owner).module_accessor),
         )
     };
+    let released_buttons: Buttons = unsafe {
+        Buttons::from_bits_retain(
+            ControlModule::get_button_prev((*input_module.owner).module_accessor)
+                & !ControlModule::get_button((*input_module.owner).module_accessor),
+        )
+    };
 
     for trigger in input_module.trigger_count.iter_mut() {
         if *trigger < usize::MAX {
@@ -465,6 +499,15 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     }
     for button in triggered_buttons.iter() {
         input_module.trigger_count[button.bits().trailing_zeros() as usize] = 0;
+    }
+
+    for release in input_module.release_count.iter_mut() {
+        if *release < usize::MAX {
+            *release += 1;
+        }
+    }
+    for button in released_buttons.iter() {
+        input_module.release_count[button.bits().trailing_zeros() as usize] = 0;
     }
 
     let buttons: Buttons = unsafe {
@@ -571,21 +614,20 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     }
 
     // Parry cat flag
-    // let parry_offset = CatHdr::Parry.bits().trailing_zeros() as usize;
-    // let parry_input = triggered_buttons.intersects(Buttons::Parry);
-    // if parry_input {
-    //     if input_module.hdr_cat.valid_frames[parry_offset] == 0 {
-    //         input_module.hdr_cat.valid_frames[parry_offset] = unsafe {
-    //             ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
-    //                 as u8
-    //         };
-    //     }
-    // }
-    // if input_module.hdr_cat.valid_frames[parry_offset] != 0
-    //     && !(input_module.hdr_cat.valid_frames[parry_offset] == 1 && parry_input)
-    // {
-    //     input_module.hdr_cat.valid_frames[parry_offset] -= 1;
-    // }
+    let parry_input = unsafe {
+        ControlModule::check_button_on((*input_module.owner).module_accessor, 0x3) // CONTROL_PAD_BUTTON_GUARD
+        && (triggered_buttons.intersects(Buttons::Parry) || triggered_buttons.intersects(Buttons::ParryManual))
+    };
+
+    let parry_offset = CatHdr::Parry.bits().trailing_zeros() as usize;
+    if parry_input 
+    && input_module.hdr_cat.valid_frames[parry_offset] == 0 {
+        input_module.hdr_cat.valid_frames[parry_offset] = unsafe { ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8 };
+    }
+    if input_module.hdr_cat.valid_frames[parry_offset] != 0
+    && !(parry_input && input_module.hdr_cat.valid_frames[parry_offset] == 1) {
+        input_module.hdr_cat.valid_frames[parry_offset] -= 1;
+    }
 
     // ShieldDrop cat flag
     let shielddrop_offset = CatHdr::ShieldDrop.bits().trailing_zeros() as usize;

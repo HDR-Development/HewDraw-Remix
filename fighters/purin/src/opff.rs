@@ -6,14 +6,7 @@ use globals::*;
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HOLD,
-        *FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END,
-        *FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_END,
-        ]) 
+    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_LW]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
         if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
@@ -53,8 +46,6 @@ pub unsafe fn purin_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("purin")
-        .on_line(Main, purin_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, purin_frame_wrapper);
 }

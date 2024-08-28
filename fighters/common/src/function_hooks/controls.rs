@@ -868,18 +868,19 @@ unsafe fn map_controls_hook(
         (*out).buttons |= Buttons::RivalsWallJump;
     }
 
-    let (parry, hold) = if is_parry_taunt {
+    let (parry_manual, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {
         (Buttons::Special, Buttons::AppealAll)
     };
 
-    if (*out).buttons.intersects(Buttons::Guard) {
-        if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry
-        } else if (*out).buttons.intersects(hold) {
-            (*out).buttons |= Buttons::GuardHold;
-        }
+    if (*out).buttons.intersects(parry_manual) {
+        (*out).buttons |= Buttons::ParryManual;
+    }
+
+    if (*out).buttons.intersects(Buttons::Guard) 
+    && (*out).buttons.intersects(hold) {
+        (*out).buttons |= Buttons::GuardHold;
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
@@ -1135,6 +1136,12 @@ unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
     call_original!(boma);
 }
 
+#[skyline::hook(replace=ControlModule::reset_trigger)]
+unsafe fn reset_trigger_hook(boma: &mut BattleObjectModuleAccessor) {
+    InputModule::reset_trigger(boma.object());
+    call_original!(boma)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hook!(is_throw_stick);
@@ -1164,6 +1171,10 @@ pub fn install() {
     // Found in ControlModule::exec_command
     skyline::patching::Patch::in_text(0x6bd6c4).nop();
 
+    // Always have the game check for wall jump flick inputs, even
+    // if the character doesn't normally have a wall jump.
+    skyline::patching::Patch::in_text(0x6bc420).nop();
+
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,
@@ -1180,6 +1191,7 @@ pub fn install() {
         exec_command_reset_attack_air_kind_hook,
         reset_flick_x,
         reset_flick_y,
+        reset_trigger_hook
     );
     skyline::nro::add_hook(nro_hook);
 }

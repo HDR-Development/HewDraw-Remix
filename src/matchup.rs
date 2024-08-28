@@ -16,13 +16,13 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::from_offset(0x37782c0)] // 0x3777640
+#[skyline::from_offset(0x37782c0)]
 unsafe fn replace_texture(pane: u64, index: &u32);
 
-#[skyline::from_offset(0x353d6d0)] // 0x353ca50
+#[skyline::from_offset(0x353d6d0)]
 unsafe fn get_filepath_index_by_hash40(index: &mut u32, hash40: u64);
 
-#[skyline::hook(offset = 0x1ee9ebc, inline)] // 0x1ee93dc
+#[skyline::hook(offset = 0x1ee9ebc, inline)]
 unsafe fn among_us_baby(ctx: &InlineCtx) {
     let layout_view = *ctx.registers[0].x.as_ref();
 
@@ -60,7 +60,7 @@ const DLC: &[&'static str] = &[
     "xeno_alst",
 ];
 
-#[skyline::hook(offset = 0x25fdf38, inline)] // 0x25fd2b8
+#[skyline::hook(offset = 0x25fdf38, inline)]
 unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     let search = FilesystemInfo::instance().unwrap().search();
     let Ok(path) = search.get_path_list_entry_from_hash(*ctx.registers[8].x.as_ref()) else {
@@ -83,6 +83,8 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     };
     if file_name == hash40::hash40("battlefield_s") {
         STAGE_HASH = hash40::hash40(root_path).concat(hash40::hash40("battlefields")).0;
+    } else if file_name == hash40::hash40("battlefield_l") {
+        STAGE_HASH = hash40::hash40(root_path).concat(hash40::hash40("battlefieldl")).0;
     } else {
         STAGE_HASH = hash40::hash40(root_path).concat(file_name).0;
     }
@@ -90,21 +92,25 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
 
 static mut SHOULD_PLAY: bool = false;
 
-#[skyline::from_offset(0x3777730)] // 0x3776ab0
+#[skyline::from_offset(0x3777730)]
 unsafe fn play_animation(layout: u64, anim: *const u8);
 
-#[skyline::hook(offset = 0x2310b48, inline)] // 0x2310068
+#[skyline::hook(offset = 0x2310b48, inline)]
 unsafe fn play_out_anim(_: &InlineCtx) {
     SHOULD_PLAY = true;
 }
 
-#[skyline::hook(offset = 0x1343184, inline)] // 0x1343174
+#[skyline::hook(offset = 0x1343184, inline)]
 unsafe fn stop_play_anim(_: &InlineCtx) {
     SHOULD_PLAY = false;
 }
 
-#[skyline::hook(offset = 0x22d3494, inline)] // 0x22d29b4
+#[skyline::hook(offset = 0x22d3494, inline)]
 unsafe fn should_play_out_anim(ctx: &mut InlineCtx) {
+    if smash::app::smashball::is_training_mode() {
+        SHOULD_PLAY = false;
+    }
+
     if !SHOULD_PLAY {
         return;
     }

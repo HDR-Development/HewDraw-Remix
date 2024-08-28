@@ -28,7 +28,6 @@ lucario      = { path = "./lucario",      optional = true }
 zelda        = { path = "./zelda",        optional = true }
 kamui        = { path = "./kamui",        optional = true }
 wolf         = { path = "./wolf",         optional = true }
-nana         = { path = "./nana",         optional = true }
 tantan       = { path = "./tantan",       optional = true }
 koopag       = { path = "./koopag",       optional = true }
 ridley       = { path = "./ridley",       optional = true }
@@ -94,7 +93,7 @@ bayonetta    = { path = "./bayonetta",    optional = true }
 samus        = { path = "./samus",        optional = true }
 koopa        = { path = "./koopa",        optional = true }
 simon        = { path = "./simon",        optional = true }
-popo         = { path = "./popo",         optional = true }
+iceclimber   = { path = "./iceclimber",   optional = true }
 dedede       = { path = "./dedede",       optional = true }
 snake        = { path = "./snake",        optional = true }
 demon        = { path = "./demon",        optional = true }
@@ -123,7 +122,6 @@ include-lucario      = ["lucario"]
 include-zelda        = ["zelda"]
 include-kamui        = ["kamui"]
 include-wolf         = ["wolf"]
-include-nana         = ["nana"]
 include-tantan       = ["tantan"]
 include-koopag       = ["koopag"]
 include-ridley       = ["ridley"]
@@ -189,7 +187,7 @@ include-bayonetta    = ["bayonetta"]
 include-samus        = ["samus"]
 include-koopa        = ["koopa"]
 include-simon        = ["simon"]
-include-popo         = ["popo"]
+include-iceclimber   = ["iceclimber"]
 include-dedede       = ["dedede"]
 include-snake        = ["snake"]
 include-demon        = ["demon"]

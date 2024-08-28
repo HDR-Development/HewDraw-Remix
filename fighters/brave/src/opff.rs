@@ -29,12 +29,6 @@ unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
         let index = fighter.get_int(*FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
         VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, index);
     }
-    // if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-    // && fighter.status_frame() >= 10 {
-    //     MotionModule::set_frame(fighter.module_accessor, 20.0, true);
-    //     //fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START.into(), true.into());
-    // }
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
     || fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START)
     || fighter.is_status(*FIGHTER_STATUS_KIND_DEAD) {
@@ -106,7 +100,6 @@ unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
-
 }
 
 unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
@@ -174,8 +167,6 @@ pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));
 }
 
-pub fn install() {
-    smashline::Agent::new("brave")
-        .on_line(Main, brave_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, brave_frame_wrapper);
 }

@@ -107,15 +107,21 @@ special_air_n_max:
     xlu_end: 0
     cancel_frame: 65
     no_stop_intp: false
+special_s_catch:
+  extra:
+    cancel_frame: 50
+special_s_air_catch:
+  extra:
+    cancel_frame: 50
 special_s_landing:
   extra:
     cancel_frame: 25
-special_s_throwlw:
-  game_script: game_specialsthrowlw
+special_s_throwf:
+  game_script: game_specialsthrowf
   flags:
-    turn: true
+    turn: false
     loop: false
-    move: false
+    move: true
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -129,11 +135,40 @@ special_s_throwlw:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d01specialsthrowlw.nuanmb
+  - name: d01specialsthrowf.nuanmb
   scripts:
-  - expression_specialsthrowlw
-  - sound_specialsthrowlw
-  - effect_specialsthrowlw
+  - expression_specialsthrowf
+  - sound_specialsthrowf
+  - effect_specialsthrowf
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 36
+    freeze_during_hitstop: false
+special_air_s_throwf:
+  game_script: game_specialairsthrowf
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d01specialairsthrowf.nuanmb
+  scripts:
+  - expression_specialairsthrowf
+  - sound_specialairsthrowf
+  - effect_specialairsthrowf
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -166,36 +201,7 @@ special_s_throwb:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 39
-    freeze_during_hitstop: false
-special_s_throwf:
-  game_script: game_specialsthrowf
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d01specialsthrowf.nuanmb
-  scripts:
-  - expression_specialsthrowf
-  - sound_specialsthrowf
-  - effect_specialsthrowf
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 36
+    cancel_frame: 44
     freeze_during_hitstop: false
 special_air_s_throwb:
   game_script: game_specialairsthrowb
@@ -224,10 +230,39 @@ special_air_s_throwb:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 39
+    cancel_frame: 44
     freeze_during_hitstop: false
-special_air_s_throwf:
-  game_script: game_specialairsthrowf
+special_s_throwlw:
+  game_script: game_specialsthrowlw
+  flags:
+    turn: true
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d01specialsthrowlw.nuanmb
+  scripts:
+  - expression_specialsthrowlw
+  - sound_specialsthrowlw
+  - effect_specialsthrowlw
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 40
+    freeze_during_hitstop: false
+special_s_throw_lw_jump:
+  game_script: game_specialsjump
   flags:
     turn: false
     loop: false
@@ -245,15 +280,73 @@ special_air_s_throwf:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: d01specialairsthrowf.nuanmb
+  - name: d01specialsthrowlwjump.nuanmb
   scripts:
-  - expression_specialairsthrowf
-  - sound_specialairsthrowf
-  - effect_specialairsthrowf
+  - expression_specialsjump
+  - sound_specialsjump
+  - effect_specialsjump
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 36
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_s_throw_lw_fall:
+  game_script: game_specialsfall
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d01specialsthrowlwfall.nuanmb
+  scripts:
+  - expression_specialsfall
+  - sound_specialsfall
+  - effect_specialsfall
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_s_throw_lw_landing:
+  game_script: game_specialsthrowlwlanding
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d01specialsthrowlwlanding.nuanmb
+  scripts:
+  - expression_specialsthrowlwlanding
+  - sound_specialsthrowlwlanding
+  - effect_specialsthrowlwlanding
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 49
     freeze_during_hitstop: false
 catch:
   extra:
@@ -287,4 +380,10 @@ appeal_hi_r:
     cancel_frame: 70
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

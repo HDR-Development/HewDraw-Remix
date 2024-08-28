@@ -8,4 +8,31 @@
             <float hash="p2_y">9</float>
         </struct>
     </struct>
+    <struct hash="param_special_hi">
+        <bool hash="use_motion_angle">true</bool>
+        <bool hash="dive_transition_manual">true</bool>
+        <float hash="jump_speed_mul">0.9</float>
+        <float hash="rise_accel_x_mul">0.5</float>
+        <float hash="rise_speed_x_max_mul">0.8</float>
+        <float hash="rise_speed_x_mul">0.5</float>
+        <float hash="rise_angle_base">2.5</float>
+        <float hash="rise_angle_mul">5.0</float>
+        <float hash="rise_angle_min">-5.0</float>
+        <float hash="rise_angle_max">7.5</float>
+        <float hash="flip_accel_x_mul">0.375</float>
+        <float hash="flip_speed_x_max_mul">0.5</float>
+        <float hash="flip_accel_y_mul">1.1</float>
+        <float hash="flip_speed_y_max_mul">1.0</float>
+        <float hash="flip_speed_y_mul">0.5</float>
+        <float hash="flip_landing_frame">22.0</float>
+        <float hash="dive_accel_x_mul">0.375</float>
+        <float hash="dive_speed_x_max_mul">0.5</float>
+        <float hash="dive_accel_y_mul">1.375</float>
+        <float hash="dive_speed_y_max_mul">1.25</float>
+        <float hash="dive_speed_y_start">-1.5</float>
+        <float hash="dive_landing_frame">36.0</float>
+        <float hash="dive_transition_frame_min">5.0</float>
+        <float hash="dive_transition_frame_force">30.0</float>
+        <float hash="dive_hi4_max_frame">7.0</float>
+    </struct>
 </struct>

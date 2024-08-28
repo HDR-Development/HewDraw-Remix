@@ -1,14 +1,31 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub fn install() {
-    smashline::Agent::new("ryu")
-        .status(Pre, statuses::ryu::INSTALL, special_lw_install_pre)
-        .status(Main, statuses::ryu::INSTALL, special_lw_install_main)
-        .status(End, statuses::ryu::INSTALL, special_lw_install_end)
-        .install();
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_LW);
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
+        VarModule::set_flag(
+            fighter.battle_object, 
+            vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
+            MeterModule::level(fighter.battle_object) >= 4
+        );
+        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+    } else {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
+    }
+    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL);
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
+// statuses::ryu::INSTALL
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -77,7 +94,7 @@ unsafe extern "C" fn special_lw_install_main_loop(fighter: &mut L2CFighterCommon
     }
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         // TODO: replace these with actual params
-        let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+        let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
         smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.03);
         smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -1.6);
     }
@@ -118,4 +135,12 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
         );
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+    agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
+    agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
+    agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
 }

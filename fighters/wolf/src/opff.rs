@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
         return;
@@ -30,7 +29,6 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 // Wolf Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
-        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END])
     && !fighter.is_in_hitlag()
@@ -43,6 +41,18 @@ unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         // allows ledgegrab during Firefox startup
         fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
+// howl with taunt when landing a wolf flash
+unsafe fn awoo(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_s_end"), Hash40::new("special_air_s_end")]) 
+    && (2..4).contains(&(fighter.motion_frame() as u32))
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && fighter.is_button_on(Buttons::AppealAll) 
+    && !VarModule::is_flag(fighter.object(), vars::wolf::status::AWOO) {
+        PLAY_SE(fighter, Hash40::new("vc_wolf_appeal01"));
+        VarModule::on_flag(fighter.object(), vars::wolf::status::AWOO);
     }
 }
 
@@ -80,6 +90,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
     shine_jump_cancel(fighter);
     firefox_startup_ledgegrab(fighter);
+    awoo(fighter);
     fastfall_specials(fighter);
 }
 
@@ -95,8 +106,7 @@ pub unsafe fn wolf_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("wolf")
-        .on_line(Main, wolf_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, wolf_frame_wrapper);
 }

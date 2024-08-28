@@ -1,6 +1,6 @@
 use super::*;
 
-pub unsafe fn rockman_special_motion_helper(
+pub unsafe fn special_motion_helper(
     fighter: &mut L2CFighterCommon,
     mot_g: L2CValue,
     mot_a: L2CValue,

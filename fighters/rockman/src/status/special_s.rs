@@ -1,7 +1,9 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -34,7 +36,7 @@ unsafe extern "C" fn rockman_special_s_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-unsafe extern "C" fn rockman_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_METALBLADE) {
         LinkModule::send_event_nodes(
             fighter.module_accessor,
@@ -44,10 +46,10 @@ unsafe extern "C" fn rockman_special_s_main(fighter: &mut L2CFighterCommon) -> L
         );
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_N_WORK_ID_FLAG_ALREADY_EXIST_METALBLADE);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_s_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     let mut change_motion = false;
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_N_WORK_ID_FLAG_STICK_CHECK_FRAME_END) {
@@ -100,7 +102,7 @@ unsafe extern "C" fn rockman_special_s_main_loop(fighter: &mut L2CFighterCommon)
                 mot_a = hash40("special_air_n");
             }
         }
-        rockman_special_motion_helper(
+        special_motion_helper(
             fighter,
             mot_g.into(),
             mot_a.into(),
@@ -132,7 +134,7 @@ unsafe extern "C" fn rockman_special_s_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn rockman_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_N_WORK_INT_METALBLADE_ID) != 0 {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x29b79a80a1));
     }
@@ -140,7 +142,7 @@ unsafe extern "C" fn rockman_special_s_end(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
 }

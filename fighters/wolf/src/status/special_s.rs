@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 use vars::wolf::status::*;
 use consts::statuses::wolf::*;
@@ -167,7 +166,7 @@ unsafe extern "C" fn special_s_rush_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
@@ -263,7 +262,7 @@ unsafe extern "C" fn special_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
@@ -318,6 +317,7 @@ unsafe extern "C" fn special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> 
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             } else if VarModule::is_flag(fighter.object(), SPECIAL_S_RESERVE_FALL) {
+                VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             } else {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
@@ -416,33 +416,25 @@ unsafe extern "C" fn special_s_end_exec(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-extern "C" fn wolf_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if fighter.kind() != *FIGHTER_KIND_WOLF {
-            return;
-        }
-
-        let instruction = 0x7100001Fu32 | ((SPECIAL_S_RUSH as u32 & 0xFFF) << 10);
-        skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    let instruction = 0x7100001Fu32 | ((SPECIAL_S_RUSH as u32 & 0xFFF) << 10);
+    skyline::patching::Patch::in_text(0x12c29c0).data(instruction);
 }
 
-pub fn install() {
-    smashline::Agent::new("wolf")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_end)
-        .status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_init)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_exec)
-        .status(Pre, SPECIAL_S_RUSH, special_s_rush_pre)
-        .status(Main, SPECIAL_S_RUSH, special_s_rush_main)
-        .status(End, SPECIAL_S_RUSH, special_s_rush_end)
-        .status(Init, SPECIAL_S_RUSH, special_s_rush_init)
-        .status(Pre, SPECIAL_S_END, special_s_end_pre)
-        .status(Main, SPECIAL_S_END, special_s_end_main)
-        .status(End, SPECIAL_S_END, special_s_end_end)
-        .status(Init, SPECIAL_S_END, special_s_end_init)
-        .status(Exec, SPECIAL_S_END, special_s_end_exec)
-        .on_start(wolf_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_end);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_start_exec);
+    agent.status(Pre, SPECIAL_S_RUSH, special_s_rush_pre);
+    agent.status(Main, SPECIAL_S_RUSH, special_s_rush_main);
+    agent.status(End, SPECIAL_S_RUSH, special_s_rush_end);
+    agent.status(Init, SPECIAL_S_RUSH, special_s_rush_init);
+    agent.status(Pre, SPECIAL_S_END, special_s_end_pre);
+    agent.status(Main, SPECIAL_S_END, special_s_end_main);
+    agent.status(End, SPECIAL_S_END, special_s_end_end);
+    agent.status(Init, SPECIAL_S_END, special_s_end_init);
+    agent.status(Exec, SPECIAL_S_END, special_s_end_exec);
 }

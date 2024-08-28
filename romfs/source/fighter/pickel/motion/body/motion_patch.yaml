@@ -2,49 +2,120 @@ jump_squat:
   blend_frames: 0
   animations:
   - name: a05landingheavy.nuanmb
+run:
+  blend_frames: 0
 fall:
-  blend_frames: 5
+  blend_frames: 0
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 0
 fall_special:
   blend_frames: 5
 guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-throw_hi:
-  extra:
-    cancel_frame: 40
-attack_hi4:
-  extra:
-    cancel_frame: 53
-attack_lw4:
-  extra:
-    cancel_frame: 57
 attack_dash:
+  extra:
+    cancel_frame: 31
+attack_dash_arm:
   extra:
     cancel_frame: 31
 attack_s4_s:
   extra:
     cancel_frame: 47
-attack_air_b:
+attack_hi4:
   extra:
-    cancel_frame: 35
+    cancel_frame: 43
 attack_hi4_arm:
+  animations: []
   extra:
     cancel_frame: 53
-attack_dash_arm:
+attack_lw4:
   extra:
-    cancel_frame: 31
-attack_air_b_arm:
+    cancel_frame: 57
+attack_air_b:
   extra:
     cancel_frame: 35
 attack_air_b_upper:
   extra:
     cancel_frame: 35
+attack_air_b_arm:
+  extra:
+    cancel_frame: 35
 catch_attack:
+  extra:
+    cancel_frame: 0
+special_s_failed:
+  flags:
+    move: true
   extra:
     cancel_frame: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f03downspotu.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6
+air_catch:
+  game_script: game_aircatch
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: e00catch.nuanmb
+      unk: 0
+  scripts:
+    - expression_catch
+    - sound_catch
+    - effect_catch
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 53
+    no_stop_intp: false
+air_catch_landing:
+  game_script: game_landinglight
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: a05landinglight.nuanmb
+      unk: 0
+  scripts:
+    - expression_landinglight
+    - sound_landinglight
+    - effect_landinglight
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 15
+    no_stop_intp: false

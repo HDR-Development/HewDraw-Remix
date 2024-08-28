@@ -190,7 +190,6 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
         VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
     }
-
 }
 
 // Lucas PK Fire drift
@@ -449,17 +448,6 @@ pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub extern "C" fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe {
-        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
-    }
-}
-
-pub fn install() {
-    smashline::Agent::new("lucas")
-        .on_line(Main, lucas_frame_wrapper)
-        .install();
-    smashline::Agent::new("lucas_pkthunder")
-        .on_line(Main, pkthunder_callback)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucas_frame_wrapper);
 }

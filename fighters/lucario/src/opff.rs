@@ -39,7 +39,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
     nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame, motion_kind);
     meter_module(fighter, boma, status_kind, situation_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_max_meter(fighter, boma, status_kind);
@@ -82,7 +81,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
+pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
     let frames = frames.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
     VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
@@ -133,26 +132,6 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
         MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
-        pause_meter_regen(fighter, 120);
-    }
-}
-
-unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32, motion_kind: u64) {
-    if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        return;
-    }
-    // landing transition
-    if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
-    }
-    // attack canceling
-    if !CancelModule::is_enable_cancel(boma) 
-    && frame + 4.0 < FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), false)
-    && fighter.is_button_on(Buttons::Attack)
-    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
         pause_meter_regen(fighter, 120);
     }
 }
@@ -301,7 +280,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
     if CancelModule::is_enable_cancel(boma) 
     || boma.is_in_hitlag() 
-    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
         return;
     }
     
@@ -367,9 +347,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .on_line(Main, lucario_frame_wrapper)
-        .on_line(Main, lucario_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucario_frame_wrapper);
+    agent.on_line(Main, lucario_meter);
 }

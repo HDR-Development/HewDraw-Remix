@@ -238,7 +238,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     lightning_screw_uppercut(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     enable_both_recovery_specials(boma);
-    rotate_forward_bair(boma);
+    // rotate_forward_bair(boma);
     fastfall_specials(fighter);
     up_special_freefall(fighter, boma);
 }
@@ -255,8 +255,7 @@ pub unsafe fn demon_frame(fighter: &mut L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("demon")
-        .on_line(Main, demon_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, demon_frame_wrapper);
 }

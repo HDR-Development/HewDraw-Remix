@@ -1,37 +1,33 @@
 use super::*;
-use globals::*;
 
- 
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D //
-
-unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::DABK_COUNT);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     if fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 6.0, 1.0, false, 0.0, false, false);
-    } else {MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 0.0, 1.0, false, 0.0, false, false); }
-    if !StopModule::is_stop(fighter.module_accessor) {
-        if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
-            fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
-        }
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 5.0, 1.0, false, 0.0, false, false);
+    } else { //removed qc input
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 0.0, 1.0, false, 0.0, false, false);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_air_s_d_main_loop as *const () as _))
+    bounce_check(fighter);
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_air_s_d_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_d_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_air_check_fall_common().get_bool())
     || fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    if !StopModule::is_stop(fighter.module_accessor) && fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED); }
-        fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
-    }
-    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK) {wall_check(fighter); }
+    bounce_check(fighter);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        set_lag(fighter); 
         if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_LANDING_FALL_SPECIAL) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         } else {
+            let special_lag = fighter.get_float(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME); 
+            let dabk_slide_lag = special_lag.max(fighter.get_param_int("param_special_s", "ab_d_landing_frame") as f32); //solid 30f landing lag.
+            fighter.set_float(dabk_slide_lag, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME); 
             fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING.into(), false.into());
         }
     } else if MotionModule::is_end(fighter.module_accessor) {
@@ -40,17 +36,22 @@ unsafe extern "C" fn bayonetta_special_air_s_d_main_loop(fighter: &mut L2CFighte
     0.into()
 }
 
-// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U //
+unsafe extern "C" fn special_air_s_d_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {set_lag(fighter); }
+    0.into()
+}
 
-unsafe extern "C" fn bayonetta_specialairs_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U
+
+unsafe extern "C" fn special_air_s_u_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_u"), 0.0, 1.0, false, 0.0, false, false);
     fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
     fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
-    fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_special_air_s_u_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_air_s_u_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_s_u_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[CURRENT_FRAME].get_i32();
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP) {
         if fighter.get_param_int("param_special_s", "ab_u_disable_landing_frame") <= frame {
@@ -58,23 +59,48 @@ unsafe extern "C" fn bayonetta_special_air_s_u_main_loop(fighter: &mut L2CFighte
             fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
         }
     }
+    if frame < 8 {
+        cache_input(fighter);
+        if frame == 7 && fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
+            fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D.into(), false.into());
+        }//dabk
+    }    
     if (CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_air_check_fall_common().get_bool())
     || fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK) {wall_check(fighter); }
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        set_lag(fighter);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-    } else {//air
-        if MotionModule::is_end(fighter.module_accessor) { fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into()); }
+    } else {
         bullet_movement(fighter);
-        cache_input(fighter);
         angling(fighter);
-    }
-    if fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
-        if frame == 7 && !fighter.is_in_hitlag(){ //dabk
-            fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D.into(), false.into());
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
+    }
+    0.into()
+}
+
+unsafe extern "C" fn special_air_s_u_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    set_lag(fighter);
+    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP) {
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 0.into());
+        fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_FLAG_SITUATION_KEEP);
+    }
+    0.into()
+}
+
+unsafe extern "C" fn bounce_check(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) 
+        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ATTACK) {
+            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
+        }
+        fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
+    } else {
+         wall_check(fighter);
     }
     0.into()
 }
@@ -87,18 +113,24 @@ unsafe extern "C" fn wall_check(fighter: &mut L2CFighterCommon) -> L2CValue {
         touch_wall = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32);
     }
     if touch_wall {
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED); }
+        if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        && AttackModule::is_attack(fighter.module_accessor, 0, false) { //checks if hitbox cleared to prevent double dipping
+            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
+        }
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END.into(), false.into());
     }
     0.into()
 }
 
 unsafe extern "C" fn cache_input(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[CURRENT_FRAME].get_i32() <= 8 {
-        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D); }
-        VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, fighter.left_stick_y());
-    } else {
-        fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
+    if !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
+        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {
+            EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, false);
+            fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
+            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, -1.15); //angle forced down during dabk windup
+        } else {
+            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, fighter.left_stick_y());
+        } //angle if no dabk
     }
     0.into()
 }
@@ -107,11 +139,11 @@ unsafe extern "C" fn angling(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
     let facing = PostureModule::lr(fighter.module_accessor);
     let sticky = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
-    joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -14.5*sticky, y:90.0*facing, z:0.0}, 10.0, 15.0, 45.0, 55.0);
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 8 {
+    joint_rotator(fighter, frame, Hash40::new("rot"), Vector3f{x: -14.5*sticky, y:0.0, z:0.0}, 1.0, 12.0, 31.0, 40.0);
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 7 {
         let base = fighter.get_param_float("param_special_s", "ab_u_rotate");
         let speed = fighter.get_param_float("param_special_s", "ab_u_motion_speed_mul");
-        let maxrot = 12.5;
+        let maxrot = 13.0;
         let angle = if facing < 0.0 {
             -base - sticky *maxrot //l
         } else {
@@ -167,7 +199,7 @@ unsafe extern "C" fn bullet_movement(fighter: &mut L2CFighterCommon) -> L2CValue
                 y: lua_bind::KineticEnergy::get_speed_y(stop_energy)
             };
             let x_cap = fighter.get_param_float("param_special_s", "ab_u_shooting_stable_speed_x");
-            if speed.x <= x_cap {
+            if speed.x.abs() <= x_cap {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
                 fighter.set_int(*FIGHTER_BAYONETTA_SHOOTING_STEP_WAIT_END, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_U_INT_STEP);
             }
@@ -240,17 +272,35 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("bayonetta")
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
-            bayonetta_specialairs_d_main,
-        )
-        .status(
-            Main,
-            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U,
-            bayonetta_specialairs_u_main,
-        )
-        .install();
+unsafe fn set_lag(fighter: &mut L2CFighterCommon) { 
+    //vanilla: if special lag variable < lag to be set from current status, skips it to keep the higher number (the problem w whiff lag). Multiplies special lag by landing frame mul then sets it over lag variable (not sure if applicable here but idk)
+    let resources = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) as f32;
+    let dabk = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::DABK_COUNT) as f32; //lag added to base abk lag
+    let abk_total_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) as f32;
+    let witch_twist_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT) as f32;
+    let whiff_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.whiff_lag"); //6
+    let dabk_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.dive_side_special");//9
+    let abk_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.side_special");//6
+    let witch_twist_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.up_special");//6
+    let base_lag: f32 = 8.0;
+    let special_landing_frame_mul = fighter.get_param_float("special_landing_frame_mul", "");
+    //normal special lag calc 
+    //reworked from hard coded value based on move order (contrived) ->
+    //calculate all burned resources, and add a base value. 14 -> 50 range
+    let special_lag = (resources*whiff_lag)+(dabk*dabk_lag)+(abk_total_count*abk_lag)+(witch_twist_count*witch_twist_lag)+base_lag;
+    //after lag frames decided
+    let adjusted_special_lag = special_landing_frame_mul * special_lag;
+    if adjusted_special_lag < 1.0 {let adjusted_special_lag = 1.0;} //vanilla
+    //if abk_total_count + witch_twist_count > 0 && current_lag <= autocancel_lag {
+    //    let adjusted_special_lag = autocancel_lag;//if lag was cleared via vanilla tech, set it to base value and leave it
+    //} concept to keep the autocancel if you use another special after firing bullets, since it'd be really niche since she's a fastfaller. idrk
+    fighter.set_float(adjusted_special_lag, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME); 
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, special_air_s_d_main);
+    agent.status(End, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, special_air_s_d_end);
+
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, special_air_s_u_main);
+    agent.status(End, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, special_air_s_u_end);
 }

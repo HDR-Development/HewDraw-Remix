@@ -48,6 +48,9 @@ attack_12_s:
 attack_13:
   extra:
     cancel_frame: 28
+attack_air_b:
+  flags:
+    turn: true
 attack_command4:
   game_script: game_attackcommand4
   flags:
@@ -99,7 +102,7 @@ attack_s3_s_w:
     cancel_frame: 27
 attack_s4_s:
   extra:
-    cancel_frame: 41
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
@@ -141,7 +144,7 @@ fall_special:
   blend_frames: 5
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
 guard_off:
   blend_frames: 4
   extra:
@@ -253,3 +256,9 @@ special_s_end:
 throw_lw:
   extra:
     cancel_frame: 41
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6

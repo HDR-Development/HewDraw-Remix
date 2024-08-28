@@ -299,7 +299,16 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn disable_special_cancels_on_parry(fighter: &mut L2CFighterCommon) {
+    if (fighter.is_flag(*FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL) || fighter.is_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL))
+    && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)) {
+        fighter.off_flag(*FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+        fighter.off_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+}  
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    disable_special_cancels_on_parry(fighter);
     //dtilt_repeat_increment(boma, id, motion_kind); // UNUSED
     power_wave_dash_cancel_super_cancels(fighter, boma, id, status_kind, situation_kind, cat, motion_kind, frame);
     special_super_cancels_triple_geyser(fighter, boma, id, status_kind, cat[3], motion_kind);
@@ -469,7 +478,6 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
     }
-    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -741,7 +749,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(new_status, false);
         }
     }
-    
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -808,7 +815,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     
     magic_flag_reset(boma);
 
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
         return;
     }
 
@@ -836,7 +844,6 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         aerial_cancels(boma);
         return;
     }
-
 }
 
 pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -873,9 +880,7 @@ pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("dolly")
-        .on_line(Main, dolly_frame_wrapper)
-        .on_line(Main, dolly_meter)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, dolly_frame_wrapper);
+    agent.on_line(Main, dolly_meter);
 }

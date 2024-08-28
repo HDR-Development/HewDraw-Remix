@@ -1,115 +1,82 @@
-
 use super::*;
 
-unsafe extern "C" fn reflet_special_n_tron_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_specialntronstart(agent: &mut L2CAgentBase) {
+    //let lua_state = agent.lua_state_agent;
+    //let boma = agent.boma();
+    //17 -> 20
+}
+
+unsafe extern "C" fn game_specialairntronstart(agent: &mut L2CAgentBase) {
+    //let lua_state = agent.lua_state_agent;
+    //let boma = agent.boma();
+    //17 -> 20
+}
+
+unsafe extern "C" fn game_specialntronend(agent: &mut L2CAgentBase) {
+    //let lua_state = agent.lua_state_agent;
+    //let boma = agent.boma();
+    //FAF is frame 80/84
+}
+
+unsafe extern "C" fn game_specialairntronend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE_RANGE(agent, 1.0, 65.0, 47.0);  //FAF is frame 80/84
+}
+
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 15.0/(19.0-1.0));
-    frame(lua_state, 19.0);
-    FT_MOTION_RATE(fighter, 1.0);
-}
-
-unsafe extern "C" fn reflet_special_air_n_tron_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 15.0/(19.0-1.0));
-    frame(lua_state, 19.0);
-    FT_MOTION_RATE(fighter, 1.0);
-}
-
-unsafe extern "C" fn reflet_special_n_tron_end_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 0.7); //FAF is frame 61
-}
-
-unsafe extern "C" fn reflet_special_air_n_tron_end_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 0.35); //FAF is frame 63
-}
-
-unsafe extern "C" fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+    FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 8.0);
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
         WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
     }
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
     frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-            WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-        }
-        else{
-            MotionModule::set_rate(boma, 2.0);
-        }
-    }
-    wait(lua_state, 1.0);
+    MotionModule::set_rate(boma, 2.0);
     for _ in 0..30 {
-        if is_excute(fighter) {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-                WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-            }
+        if agent.is_button_trigger(Buttons::Special) {
+            agent.on_flag(*FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
-unsafe extern "C" fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
         WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
     }
     frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
     frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-            WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-        }
-        else{
-            MotionModule::set_rate(boma, 2.0);
-        }
-    }
-    wait(lua_state, 1.0);
+    MotionModule::set_rate(boma, 2.0);
     for _ in 0..30 {
-        if is_excute(fighter) {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-                WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-            }
+        if agent.is_button_on(Buttons::Special) {
+            agent.on_flag(*FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         wait(lua_state, 1.0);
     }
-    
 }
 
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .acmd("game_specialntronstart", reflet_special_n_tron_start_game)
-        .acmd(
-            "game_specialairntronstart",
-            reflet_special_air_n_tron_start_game,
-        )
-        .acmd("game_specialntronend", reflet_special_n_tron_end_game)
-        .acmd(
-            "game_specialairntronend",
-            reflet_special_air_n_tron_end_game,
-        )
-        .acmd("game_specialhi", reflet_special_hi_game)
-        .acmd("game_specialairhi", reflet_special_air_hi_game)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialntronstart", game_specialntronstart, Priority::Low);
+    agent.acmd( "game_specialairntronstart",game_specialairntronstart, Priority::Low);
+    agent.acmd("game_specialntronend", game_specialntronend, Priority::Low);
+    agent.acmd("game_specialairntronend", game_specialairntronend, Priority::Low);
+    
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 }

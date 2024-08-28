@@ -1,7 +1,7 @@
 use super::*;
 use super::helper::*;
 
-unsafe extern "C" fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -35,15 +35,15 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterC
     0.into()
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    rockman_rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
+unsafe extern "C" fn rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
     PostureModule::reverse_lr(fighter.module_accessor);
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     if step == 2 {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_SHOOT);
-    rockman_rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
+    rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_LOOP);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_L_SHOULDER_FIX);
     let ude_motion = MotionModule::motion_kind_partial(fighter.module_accessor, *FIGHTER_ROCKMAN_MOTION_PART_SET_UDE);
@@ -62,10 +62,10 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighter
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(rockman_rockbuster_shoot_turn_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(rockbuster_shoot_turn_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockbuster_shoot_turn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let helper_ret = false;
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -120,11 +120,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(
             Pre,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN,
-            rockman_rockbuster_shoot_turn_pre,
+            rockbuster_shoot_turn_pre,
         );
     agent.status(
             Main,
             *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN,
-            rockman_rockbuster_shoot_turn_main,
+            rockbuster_shoot_turn_main,
         );
 }
