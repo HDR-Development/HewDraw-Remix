@@ -184,7 +184,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
 	frame(lua_state, 11.0);
 	if is_excute(agent) {
-		EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 13, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 12, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(agent, 1.4);
 		EFFECT_FOLLOW(agent, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1.0, true);
 	}
@@ -236,7 +236,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
 	frame(lua_state, 14.0);
 	if is_excute(agent) {
 		EFFECT_FOLLOW(agent, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1.0, true);
-		EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 13.5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 12.5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(agent, 1.5);
 	}
 	frame(lua_state, 64.0);
