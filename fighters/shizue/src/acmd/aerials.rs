@@ -49,6 +49,16 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackair_n01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+}
+
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -97,6 +107,7 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_shizue_attackhard_l01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
     }
 }
 
@@ -130,6 +141,16 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackair_b01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+}
+
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -152,6 +173,16 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 39.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackair_h02"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
     }
 }
 
@@ -192,8 +223,19 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackair_l02"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
+    agent.acmd("sound_attackairn", sound_attackairn, Priority::Low);
 
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
@@ -201,8 +243,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("sound_attackairb", sound_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
+    agent.acmd("sound_attackairhi", sound_attackairhi, Priority::Low);
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("sound_attackairlw", sound_attackairlw, Priority::Low);
 }

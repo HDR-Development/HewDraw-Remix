@@ -24,6 +24,16 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackhard_s01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+}
+
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -47,6 +57,16 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 54.0);
     if is_excute(agent) {
         ArticleModule::remove(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_BROOM, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackhard_h01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
     }
 }
 
@@ -83,10 +103,23 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_attackhard_l01"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
+    agent.acmd("sound_attacks3", sound_attacks3, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
+    agent.acmd("sound_attackhi3", sound_attackhi3, Priority::Low);
 
     agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
+    agent.acmd("sound_attacklw3", sound_attacklw3, Priority::Low);
 }
