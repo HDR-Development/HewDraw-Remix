@@ -51,7 +51,8 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             return 1.into();
         }
     }
-    if StatusModule::is_situation_changed(fighter.module_accessor) {
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
         let status = if fighter.is_motion(Hash40::new("special_hi")) { FIGHTER_STATUS_KIND_LANDING.into() } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into() };
         fighter.change_status(status, false.into());
         return 1.into();
@@ -204,6 +205,11 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        return 1.into();
+    }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_WAIT.into() } else { FIGHTER_STATUS_KIND_FALL_SPECIAL.into() };
         fighter.change_status(status, false.into());
@@ -234,9 +240,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exit);
     agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exit);
 
     agent.status(Pre, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
     agent.status(Main, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
+    agent.status(End, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_exit);
     agent.status(Exit, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_exit);
 }
