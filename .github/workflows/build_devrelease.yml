@@ -152,5 +152,5 @@ jobs:
         asset_name: artifacts
         repo_name: HDR-Development/HDR-DevReleases
         release_name: ${{ github.sha }}-private
-        tag: ${{ github.sha }}
+        tag: ${{ github.sha }}-private
         overwrite: true
