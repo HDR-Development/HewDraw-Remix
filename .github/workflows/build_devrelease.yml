@@ -139,10 +139,6 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/download-artifact@v4.1.7
-      with:
-        name: version
-
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
 
