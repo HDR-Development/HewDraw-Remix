@@ -529,12 +529,17 @@ pub mod vars {
 
     pub mod duckhunt {
         pub mod instance {
+            // flag
+            pub const SPECIAL_HI2_ENABLE: i32 = 0x0100;
+
             // int
             pub const GUNMAN_TIMER: i32 = 0x0100;
         }
         pub mod status {
             // flag
             pub const CLAY_SMASH_INPUT: i32 = 0x1100;
+            pub const SPECIAL_HI_JUMP: i32 = 0x0101;
+            pub const SPECIAL_HI2_ENABLE_SHOT: i32 = 0x1101;
         }
     }
 
