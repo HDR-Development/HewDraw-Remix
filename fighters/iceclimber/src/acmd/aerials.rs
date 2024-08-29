@@ -201,7 +201,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 
     agent.acmd("game_attackairf_nana", game_attackairf, Priority::Low);
-    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
     agent.acmd("effect_attackairf_nana", effect_attackairf, Priority::Low);
     agent.acmd("expression_attackairf_nana", expression_attackairf, Priority::Low);
 
