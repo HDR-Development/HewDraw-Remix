@@ -144,6 +144,11 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon, jump
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("duckhunt_target"), false, false);
+    return 0.into();
+}
+
 unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -224,7 +229,9 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exit);
 
     agent.status(Pre, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
     agent.status(Main, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
+    agent.status(Exit, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_exit);
 }
