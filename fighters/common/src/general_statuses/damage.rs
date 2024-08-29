@@ -325,7 +325,7 @@ unsafe extern "C" fn check_damage_speed_up_by_speed(module_accessor: *mut Battle
     let log = DamageModule::damage_log(module_accessor);
     if log != 0 {
         let log = log as *mut u8;
-        !(speed <= 3.5 || *log.add(0x8f) != 0 || *log.add(0x92) != 0
+        !(speed <= 4.35 || *log.add(0x8f) != 0 || *log.add(0x92) != 0
         || *log.add(0x93) != 0 || *log.add(0x98) != 0)
     }
     else {
