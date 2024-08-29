@@ -114,7 +114,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="air_accel_x_mul">1</float>
-      <float hash="air_max_speed_x_mul">0.6</float>
+      <float hash="air_max_speed_x_mul">1</float>
       <float hash="landing_frame">33</float>
     </struct>
     <hash40 index="1">dummy</hash40>
