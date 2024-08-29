@@ -123,6 +123,9 @@
 		],
 		"fighter/bayonetta/cmn": [
 			"fighter/bayonetta/param/hdr.xml"
+		],
+		"fighter/inkling/cmn": [
+			"fighter/inkling/param/hdr.xml"
 		]
 	}
 }

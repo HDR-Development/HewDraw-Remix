@@ -796,9 +796,8 @@ pub mod vars {
             pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            //flags
-            pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
-            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
+            // flags
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1100;
         }
     }
 
@@ -1382,14 +1381,13 @@ pub mod vars {
             pub const IS_INIT_METER: i32 = 0x0102;
             pub const GROUNDED_UPB: i32 = 0x0103;
             pub const UPB_CANCEL: i32 = 0x0104;
+            pub const SPECIAL_HI_MARKER_EFF_HANDLE: i32 = 0x0105;
+
             // ints
-            pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
-            pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
+            pub const SPECIAL_HI_CHARGE_FRAME: i32 = 0x0100;
+
             // floats
-            pub const STICK_ANGLE: i32 = 0x0100;
-            pub const FRAMES_SINCE_UPB: i32 = 0x0101;
-            pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
-            pub const JOINT_ROT: i32 = 0x1103;
+            pub const SPECIAL_HI_ROT_X: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1397,7 +1395,6 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const IS_CHARGE_MAX: i32 = 0x1102;
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
-            pub const HELD_BUTTON: i32 = 0x1104;
         }
     }
 
@@ -1630,6 +1627,10 @@ pub mod vars {
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
             pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
+            pub const DISABLE_SPECIAL_N: i32 = 0x104;
+
+            // ints
+            pub const MAGIC_TIMER: i32 = 0x100;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
