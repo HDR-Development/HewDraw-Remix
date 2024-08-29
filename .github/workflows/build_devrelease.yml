@@ -68,6 +68,7 @@ jobs:
       with:
         repository: HDR-Development/HDR-DevReleases
         token: ${{ secrets.RELEASE_TOKEN }}
+        excludes: prerelease, draft
 
     - name: Download latest switch package
       id: get_old_switch_package
@@ -97,7 +98,8 @@ jobs:
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/upgrade.zip
-        prerelease: false
+        prerelease: true
+        make_latest: false
         file_glob: true
         asset_name: upgrade
         repo_name: HDR-Development/HDR-DevReleases
@@ -111,7 +113,8 @@ jobs:
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/deletions.json
-        prerelease: false
+        prerelease: true
+        make_latest: false
         file_glob: true
         asset_name: deletions
         repo_name: HDR-Development/HDR-DevReleases
@@ -127,6 +130,7 @@ jobs:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: artifacts/*
         prerelease: false
+        make_latest: true
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-DevReleases
