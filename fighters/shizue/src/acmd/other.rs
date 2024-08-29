@@ -165,14 +165,14 @@ unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_appealhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_appeal_h01"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
-    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_shizue_appeal_h01"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_appeal_h01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
