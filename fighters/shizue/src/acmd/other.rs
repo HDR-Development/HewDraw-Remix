@@ -122,6 +122,14 @@ unsafe extern "C" fn sound_passive(agent: &mut L2CAgentBase) {
         STOP_SE(agent, Hash40::new("se_common_blowaway_s"));
         STOP_SE(agent, Hash40::new("se_common_blowaway_m"));
         STOP_SE(agent, Hash40::new("se_common_blowaway_l"));
+        let damage_vc: [&str;5] = [ // damage voice lines
+            "vc_shizue_damage01",
+            "vc_shizue_damage02",
+            "vc_shizue_damage03",
+            "vc_shizue_damagefly01",
+            "vc_shizue_damagefly02"
+        ];
+        for clip in damage_vc { STOP_SE(agent, Hash40::new(clip)) };
         PLAY_LANDING_SE(agent, Hash40::new("se_shizue_landing01"));
         let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_passive"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
@@ -258,9 +266,9 @@ unsafe extern "C" fn sound_win1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE_NO_3D(agent, Hash40::new("se_shizue_appeal_h01_win01"));
     }
-    frame(lua_state, 102.0);
+    frame(lua_state, 94.0);
     if is_excute(agent) {
-        let handle = SoundModule::play_se_no3d(boma, Hash40::new("vc_shizue_win03"), true, false);
+        let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_win03"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, handle as i32, 1.2, 0);
     }
     frame(lua_state, 113.0);
@@ -281,7 +289,7 @@ unsafe extern "C" fn sound_win3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE_NO_3D(agent, Hash40::new("se_shizue_win03_cloth_swish"));
     }
-    frame(lua_state, 57.0);
+    frame(lua_state, 67.0);
     if is_excute(agent) {
         let handle = SoundModule::play_se_no3d(boma, Hash40::new("vc_shizue_win02"), true, false);
         SoundModule::set_se_vol(boma, handle as i32, 1.3, 0);
