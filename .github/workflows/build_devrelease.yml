@@ -8,11 +8,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     steps:
-      - name: checkout version
-        uses: actions/checkout@v4.1.4
-        with: 
-          fetch-depth: 0
-
       - id: latest_package
         continue-on-error: true
         uses: pozetroninc/github-action-get-latest-release@master
