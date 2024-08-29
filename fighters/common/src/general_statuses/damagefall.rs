@@ -25,6 +25,9 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        fighter.sub_air_check_dive();
+    }
     if fighter.global_table[CURRENT_FRAME].get_i32() <= 20 {
         WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
