@@ -1,0 +1,156 @@
+name: build_devrelease
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - pre-release
+
+jobs:
+  # bump the version and build the changelog
+  version_and_changelog:
+    runs-on: ubuntu-20.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    steps:
+      # fail out if this is not a merge commit
+      - name: ensure merge
+        if: ${{ !startsWith(github.event.head_commit.message, 'Merge') }}
+        run: exit 1
+
+      - name: checkout version
+        uses: actions/checkout@v4.1.4
+        with: 
+          fetch-depth: 0
+
+      - name: get last merge
+        id: last_merge
+        shell: bash
+        run: |
+          echo "short_hash=$(echo $(git log --oneline --merges -n 10 | grep -m2 "pull request" | tail -n1 | cut -d' ' -f1))" >> $GITHUB_OUTPUT
+
+      - run: |
+          echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
+
+      # wait for any previous versions to be tagged and committed
+      - uses: lewagon/wait-on-check-action@v1.3.4
+        continue-on-error: true
+        with:
+          ref: ${{ steps.last_merge.outputs.short_hash }}
+          check-name: 'version_and_changelog'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+          allowed-conclusions: success,skipped,cancelled,failure
+
+  plugin_build:
+    env:
+      PLUGIN_NAME: hdr
+    runs-on: ubuntu-20.04
+    needs: version_and_changelog
+    container: 
+      image: hewdrawremix/hewdraw-builder:latest
+    steps:
+    - name: setup python
+      uses: actions/setup-python@v5.1.0
+      with:
+        python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    
+    - name: checkout version
+      uses: actions/checkout@v4.1.4
+
+    # build the project
+    - run: |
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ github.sha }}-private name=hdr-private && cd ..
+      env:
+        HOME: /root
+
+    - id: romfs_version
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        token: ${{ secrets.RELEASE_TOKEN }}
+        repository: HDR-Development/romfs-release
+
+    - name: Download romfs
+      id: get_romfs
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        repo: 'HDR-Development/romfs-release'
+        version: 'tags/${{ steps.romfs_version.outputs.release }}'
+        file: 'romfs.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
+
+    - name: make package
+      run: |
+        python3 scripts/full_package.py devrelease none
+
+    # get the most recent latest full release
+    - id: package_latest
+      continue-on-error: true
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/HDR-DevReleases
+        token: ${{ secrets.RELEASE_TOKEN }}
+
+    - name: Download latest switch package
+      id: get_old_switch_package
+      if: steps.package_latest.outcome != 'failure'
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        repo: 'HDR-Development/HDR-DevReleases'
+        version: 'tags/${{ steps.package_latest.outputs.release }}'
+        file: 'switch-package.zip'
+        token: ${{ secrets.RELEASE_TOKEN }}
+
+    # build the upgrade.zip and deletions.json
+    - name: make upgrade artifacts
+      if: steps.package_latest.outcome != 'failure'
+      run: |
+        python3 scripts/make_diff.py devrelease
+
+    - name: show upgrade artifacts
+      if: steps.package_latest.outcome != 'failure'
+      run: |
+        ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
+
+    # upload the upgrade data to the previous release for auto updater
+    - name: Upload upgrade data to previous release
+      if: steps.package_latest.outcome != 'failure'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/upgrade.zip
+        prerelease: false
+        file_glob: true
+        asset_name: upgrade
+        repo_name: HDR-Development/HDR-DevReleases
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
+
+    # upload the upgrade deletions to the previous release for auto updater
+    - name: Upload upgrade deletions to previous release
+      if: steps.package_latest.outcome != 'failure'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/deletions.json
+        prerelease: false
+        file_glob: true
+        asset_name: deletions
+        repo_name: HDR-Development/HDR-DevReleases
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
+
+    - name: Display structure of downloaded version
+      run: ls -R && cp hdr_version.txt artifacts
+
+    - name: Upload full package to devreleases
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: artifacts/*
+        prerelease: false
+        file_glob: true
+        asset_name: artifacts
+        repo_name: HDR-Development/HDR-DevReleases
+        release_name: ${{ github.sha }}-private
+        tag: ${{ github.sha }}-private
+        overwrite: true
