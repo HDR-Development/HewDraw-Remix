@@ -201,6 +201,20 @@ unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn game_start_switch(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
+        if fighter.is_button_on(Buttons::AppealSL) {
+            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 0);
+        }
+        else if fighter.is_button_on(Buttons::AppealSR) {
+            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 2);
+        }
+        else if fighter.is_button_on(Buttons::AppealLw) {
+            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 1);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -273,6 +287,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
     reverse_switch(boma);
     monch(fighter);
+    game_start_switch(fighter);
 }
 
 pub extern "C" fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
