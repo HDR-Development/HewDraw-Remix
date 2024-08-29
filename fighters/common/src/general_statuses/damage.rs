@@ -289,10 +289,10 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-    let factor_min = 3.5;
-    let factor_max = 6.0;
+    let factor_min = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_min");
+    let factor_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_max"); 
     let speed_up_mag = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_max_mag")) as f32;
-    if !check_damage_speed_up_by_speed(fighter.module_accessor, factor.get_f32())
+    if !check_damage_speed_up_by_speed(fighter, factor.get_f32())
     && !some_bool.get_bool() {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
@@ -321,11 +321,12 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     WorkModule::set_float(fighter.module_accessor, mag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
 }
 
-unsafe extern "C" fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModuleAccessor, speed: f32) -> bool {
-    let log = DamageModule::damage_log(module_accessor);
+unsafe extern "C" fn check_damage_speed_up_by_speed(fighter: &mut L2CFighterCommon, speed: f32) -> bool {
+    let log = DamageModule::damage_log(fighter.module_accessor);
     if log != 0 {
         let log = log as *mut u8;
-        !(speed <= 4.35 || *log.add(0x8f) != 0 || *log.add(0x92) != 0
+        let factor_min = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_min");
+        !(speed <= factor_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
         || *log.add(0x93) != 0 || *log.add(0x98) != 0)
     }
     else {
