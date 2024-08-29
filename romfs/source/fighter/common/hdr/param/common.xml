@@ -45,4 +45,9 @@
     <int hash="button_walljump_leniency_frame">3</int>
     <float hash="damage_speed_up_speed_min">4.35</float>
     <float hash="damage_speed_up_speed_max">6.0</float>
+    <float hash="knocbkack_hitlag_scale_min">1.0</float>
+    <float hash="knocbkack_hitlag_scale_max">2.0</float>
+    <float hash="knocbkack_hitlag_scale_power">1.4</float>
+    <float hash="knocbkack_hitlag_scale_start">140.0</float>
+    <float hash="knocbkack_hitlag_scale_end">250.0</float>
 </struct>
