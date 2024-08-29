@@ -1,19 +1,38 @@
 use super::*;
 
+unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    0.into()
+}
+
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.set_situation(SITUATION_KIND_AIR.into());
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     let motion = if VarModule::is_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE) { Hash40::new("special_hi_2") } else { Hash40::new("special_hi") };
-    MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, motion, 1.0, 1.0, false, 0.0, false, false);
     special_hi_set_physics(fighter, false);
-
-    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_01) + -1);
-    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_01) + -1);
-
-    //ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_RETICLE, false, -1);
-    let reticle_motion = if VarModule::is_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE) { Hash40::new("special_hi2") } else { Hash40::new("special_hi") };
-    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_RETICLE, motion, true, -1.0);
-
     VarModule::on_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE);
     fighter.main_shift(special_hi_main_loop)
 }
@@ -66,10 +85,13 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon, jump: bool) -> L2CValue {
     if !jump {
+        let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let start_speed_mul_x = fighter.get_param_float("param_special_hi", "start_speed_mul_x");
-        let calc_speed_x = start_speed_mul_x * fighter.stick_x();
+        let limit_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+        let calc_speed_x = sum_speed_x * start_speed_mul_x * fighter.stick_x().abs();
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, calc_speed_x, 0.0);
+        sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, limit_speed_x * start_speed_mul_x, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -92,7 +114,13 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon, jump
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
     else {
+        let limit_speed_x = if fighter.is_motion(Hash40::new("special_hi")) {
+            ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.hi1_limit_speed_x")
+        } else {
+            ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.hi2_limit_speed_x")
+        };
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0, 0.0);
+        sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 1.0 * limit_speed_x, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         
         let speed_y = if fighter.is_motion(Hash40::new("special_hi")) {
@@ -116,9 +144,37 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon, jump
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    0.into()
+}
+
 unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_3"), 0.0, 1.0, false, 0.0, false, false);
-    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_RETICLE, Hash40::new("special_hi3"), true, -1.0);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_3"), 1.0, 1.0, false, 0.0, false, false);
     let speed_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.hi3_start_speed_y");
 
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -165,7 +221,10 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init);
+
+    agent.status(Pre, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
     agent.status(Main, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
 }
