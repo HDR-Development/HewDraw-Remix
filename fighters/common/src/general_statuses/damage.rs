@@ -164,7 +164,6 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
     {
         let hashmap = fighter.local_func__fighter_status_damage_2();
         let sdi_mul = hashmap["stop_delay_"].get_f32();
-        dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
         // get stick x/y length
         // uses cstick's value if cstick is on (for Double Stick DI)
         let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
@@ -182,7 +181,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi;
+        let asdi = sdi_mul * base_asdi * dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
@@ -290,6 +289,13 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
+
+    if !ParamModule::has_param_module(fighter.battle_object) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        return;
+    }
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("reaction"));
     sv_information::damage_log_value(fighter.lua_state_agent);

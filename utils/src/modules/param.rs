@@ -653,6 +653,14 @@ impl ParamModule {
         }
     }
 
+    /// Checks if the object has `VarModule`
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    #[export_name = "ParamModule__has_param_module"]
+    pub extern "Rust" fn has_param_module(object: *mut BattleObject) -> bool {
+        has_param_module!(object)
+    }
+
     /// Attempts to pull the agent param listing from the global agent params
     /// # Arguments
     /// * `owner` - The owning `BattleObject` instance
