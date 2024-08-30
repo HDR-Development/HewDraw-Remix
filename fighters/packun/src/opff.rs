@@ -204,13 +204,13 @@ unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn game_start_switch(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
         if fighter.is_button_on(Buttons::AppealSL) {
-            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 0);
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
         }
         else if fighter.is_button_on(Buttons::AppealSR) {
-            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 2);
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 2);
         }
         else if fighter.is_button_on(Buttons::AppealLw) {
-            VarModule::set_int(fighter, vars::packun::instance::CURRENT_STANCE, 1);
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 1);
         }
     }
 }
