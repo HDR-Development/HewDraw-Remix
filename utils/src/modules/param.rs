@@ -653,7 +653,7 @@ impl ParamModule {
         }
     }
 
-    /// Checks if the object has `VarModule`
+    /// Checks if the object has `ParamModule`
     /// # Arguments
     /// * `object` - The owning `BattleObject` instance
     #[export_name = "ParamModule__has_param_module"]

@@ -49,8 +49,8 @@
     <float hash="knocbkack_hitlag_scale_start">150.0</float>
     <float hash="knocbkack_hitlag_scale_end">250.0</float>
     <float hash="damage_speed_up_scale_min">1.0</float>
-    <float hash="damage_speed_up_scale_max">2.0</float>
-    <float hash="damage_speed_up_scale_power">1.4</float>
+    <float hash="damage_speed_up_scale_max">2.5</float>
+    <float hash="damage_speed_up_scale_power">1.9</float>
     <float hash="damage_speed_up_scale_start">150.0</float>
-    <float hash="damage_speed_up_scale_end">225.0</float>
+    <float hash="damage_speed_up_scale_end">250.0</float>
 </struct>
