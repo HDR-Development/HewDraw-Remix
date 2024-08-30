@@ -604,8 +604,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("game_specialairlwstart", game_specialairlwstart, Priority::Low);
 
-    agent.acmd("game_specialairlwstart", game_specialairlwstart, Priority::Low);
-
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
 
     agent.acmd("game_speciallwmax", game_speciallwmax, Priority::Low);

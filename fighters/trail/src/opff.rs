@@ -124,28 +124,6 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn blizzaga_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    // allow the move to be turned around
-    if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
-    && fighter.status_frame() >= 5
-    && fighter.is_button_on(Buttons::Special)
-    && fighter.stick_x() * PostureModule::lr(boma) < 0.0 {
-        PostureModule::reverse_lr(boma);
-        PostureModule::update_rot_y_lr(boma);
-    }
-
-    // cycle to the next spell if the attack is interrupted
-    if fighter.is_prev_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2) {
-        let magic_kind = fighter.get_int(*FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_SPECIAL_N_MAGIC_KIND);
-        let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
-        if magic_kind != *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER {
-            // ensure that thunder is cycled to
-            fighter.on_flag(*FIGHTER_TRAIL_STATUS_SPECIAL_N1_FLAG_CHANGE_MAGIC);
-            FighterSpecializer_Trail::change_magic(trail);
-        }
-    }
-}
-
 // handles the speed and disappearance of blizzaga effects
 unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor) {
     if ArticleModule::is_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER) {
@@ -320,7 +298,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_fair_momentum_handling(fighter, boma);
     attack_lw4_rebound(boma, frame);
     magic_cancels(boma);
-    blizzaga_handling(fighter, boma);
     flower_frame(boma);
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma);
