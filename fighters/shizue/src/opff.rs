@@ -80,18 +80,24 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
 //     }
 // }
 
-//Reel in
-unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor) {
     if StatusModule::is_changing(boma) {
         return;
     }
-    if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END {
-        if frame < 4.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-                }
-            }
+
+    if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END) 
+    && boma.motion_frame() < 4.0 
+    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) 
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
+    }
+
+    // disable the opponent's collision when reeling them in
+    if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_HIT) {
+        let caught_id = boma.get_int(*FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_INT_TARGET_OBJECT_ID);
+        if sv_battle_object::category(caught_id as u32) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+            let caught_boma = sv_battle_object::module_accessor(caught_id as u32);
+            GroundModule::set_collidable(caught_boma, false);
         }
     }
 }
@@ -197,7 +203,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
-    reel_in(boma, status_kind, situation_kind, frame);
+    reel_in(boma);
     //lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     boost_ready(boma);
     fastfall_specials(fighter);

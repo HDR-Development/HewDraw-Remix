@@ -31,7 +31,10 @@ else:
 
 print("type: " + release_type + ", getting latest from url: " + url)
 
-urllib.request.urlretrieve(url, "switch-package-previous.zip")
+if sys.argv[1] != "devrelease":
+    urllib.request.urlretrieve(url, "switch-package-previous.zip")
+else:
+    shutil.move("switch-package.zip", "switch-package-previous.zip")
 
 diff_lib.create_diff("switch-package-previous.zip", "artifacts/switch-package.zip", "upgrade")
 
