@@ -1084,9 +1084,6 @@ pub mod vars {
             // flags
             pub const CHAKRAM_STICK_ATTACK: i32 = 0x0100;
             pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x0101;
-
-            // ints
-            pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1094,6 +1091,7 @@ pub mod vars {
             pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1101;
             pub const SHOCK_SPELL_HOLD: i32 = 0x1102;
             pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1103;
+            pub const SPECIAL_S2_GROUND: i32 = 0x1104;
         }
     }
 
