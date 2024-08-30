@@ -43,7 +43,7 @@ attack_s4_s:
     cancel_frame: 62
 attack_s3_s:
   extra:
-    cancel_frame: 40
+    cancel_frame: 44
 special_n_end:
   extra:
     cancel_frame: 28

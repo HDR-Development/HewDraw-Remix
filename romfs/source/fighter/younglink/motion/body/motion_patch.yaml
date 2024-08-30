@@ -39,6 +39,9 @@ air_catch:
 special_hi:
   extra:
     cancel_frame: 74
+attack_s3_s:
+  extra:
+    cancel_frame: 33
 attack_lw3:
   extra:
     cancel_frame: 22
@@ -60,6 +63,9 @@ appeal_lw_r:
 appeal_lw_l:
   extra:
     cancel_frame: 0
+attack_s4_s:
+  extra:
+    cancel_frame: 48
 attack_s4_s2:
   extra:
     cancel_frame: 53
