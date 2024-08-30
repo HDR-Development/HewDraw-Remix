@@ -47,12 +47,23 @@ def extract(asset: str, extract_directory = None):
     os.remove(asset)
 
 os.makedirs("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
-
-download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 if romfs_version == "none":
     extract("romfs.zip")
 else:
     download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
+
+if hdr_version == "devrelease":
+    os.chdir('switch-package/ultimate/mods/')
+    os.rename('hdr-assets', 'hdr-assets-private')
+    os.rename('hdr-stages', 'hdr-stages-private')
+    # move hdr files into correct dir
+    source_dir = '../../../build/hdr-switch/ultimate/mods/hdr-private/'
+    target_dir = 'hdr-private/'
+    shutil.copytree(source_dir, target_dir)
+    os.chdir('../../..')
+else:
+    download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
+
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
 download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")

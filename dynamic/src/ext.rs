@@ -440,6 +440,7 @@ pub trait BomaExt {
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
     unsafe fn status(&mut self) -> i32;
+    unsafe fn lr(&mut self) -> f32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -1011,6 +1012,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
         return StatusModule::status_kind(self);
+    }
+
+    /// gets the current facing direction of the fighter
+    unsafe fn lr(&mut self) -> f32 {
+        return PostureModule::lr(self);
     }
 
     /// If update_lr is true, we set your facing direction based on your stick position
