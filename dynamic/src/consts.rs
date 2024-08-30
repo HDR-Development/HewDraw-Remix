@@ -412,6 +412,7 @@ pub mod vars {
             pub const SPECIAL_N_AIR_START: i32 = 0x1101;
             pub const SPECIAL_N_DIVE: i32 = 0x1102;
             pub const SPECIAL_N_AUTOCANCEL: i32 = 0x1103;
+            pub const GUARD_OFF_YAP: i32 = 0x1104;
         }
     }
 
@@ -795,9 +796,8 @@ pub mod vars {
             pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            //flags
-            pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
-            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
+            // flags
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1100;
         }
     }
 
@@ -1217,21 +1217,19 @@ pub mod vars {
     pub mod pickel {
         pub mod instance {
             // flags
-            pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S: i32 = 0x0103;
-            pub const CAN_RESPAWN_TABLE: i32 = 0x0104;
-            pub const SHOULD_CYCLE_MATERIAL: i32 = 0x0105;
-            pub const SHOULD_RESET_ROT: i32 = 0x0106;
+            pub const CAN_RESPAWN_TABLE: i32 = 0x0100;
+            pub const SHOULD_CYCLE_MATERIAL: i32 = 0x0101;
+            pub const SHOULD_RESET_ROT: i32 = 0x0102;
 
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x0100;
             pub const MATERIAL_EFFECT_HANDLER: i32 = 0x0101;
             pub const HITSTUN_TIMER: i32 = 0x0102;
+            pub const PEARL_COOLDOWN: i32 = 0x103;
 
-            //floats
-            pub const FORGE_START_Y_POS: i32 = 0x0106;
-            pub const DAMAGE_TRACKER: i32 = 0x0107;
-            pub const TABLE_HP_TRACKER: i32 = 0x0108;
+            // floats
+            pub const DAMAGE_TRACKER: i32 = 0x0100;
+            pub const TABLE_HP_TRACKER: i32 = 0x0101;
         }
         pub mod status {
             // ints
@@ -1239,6 +1237,32 @@ pub mod vars {
             
             // floats
             pub const GLIDE_TIMER: i32 = 0x1100;
+
+            // flags
+            pub const IS_SOUL_FIRE: i32 = 0x1100;
+            pub const IS_THROW_PEARL: i32 = 0x1101;
+        }
+    }
+
+    pub mod pickel_forge {
+        pub mod instance {
+            // floats 
+            pub const START_Y_POS: i32 = 0x0100;
+        }
+    }
+
+    pub mod pickel_trolley {
+        pub mod instance {
+            // ints 
+            pub const PEARL_OWNER_ID: i32 = 0x0100;
+        }
+        pub mod status {
+            // ints
+            pub const REFLECT_COUNT: i32 = 0x1100;
+            pub const TRAVEL_FRAMES: i32 = 0x1101;
+            
+            // floats
+            pub const PREV_LR: i32 = 0x1100;
         }
     }
 
@@ -1285,7 +1309,10 @@ pub mod vars {
     }
 
     pub mod purin {
-
+        pub mod status {
+            // flags
+            pub const SPECIAL_N_AIR: i32 = 0x1100;
+        }
     }
 
     pub mod pzenigame {
@@ -1352,14 +1379,13 @@ pub mod vars {
             pub const IS_INIT_METER: i32 = 0x0102;
             pub const GROUNDED_UPB: i32 = 0x0103;
             pub const UPB_CANCEL: i32 = 0x0104;
+            pub const SPECIAL_HI_MARKER_EFF_HANDLE: i32 = 0x0105;
+
             // ints
-            pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
-            pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
+            pub const SPECIAL_HI_CHARGE_FRAME: i32 = 0x0100;
+
             // floats
-            pub const STICK_ANGLE: i32 = 0x0100;
-            pub const FRAMES_SINCE_UPB: i32 = 0x0101;
-            pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
-            pub const JOINT_ROT: i32 = 0x1103;
+            pub const SPECIAL_HI_ROT_X: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1367,7 +1393,6 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const IS_CHARGE_MAX: i32 = 0x1102;
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
-            pub const HELD_BUTTON: i32 = 0x1104;
         }
     }
 
@@ -1600,6 +1625,10 @@ pub mod vars {
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
             pub const COMBO_PLUS_AIR: i32 = 0x0102;
             pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
+            pub const DISABLE_SPECIAL_N: i32 = 0x104;
+
+            // ints
+            pub const MAGIC_TIMER: i32 = 0x100;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
@@ -1785,6 +1814,14 @@ pub mod statuses {
         pub const SPECIAL_N_G: i32 = 0x1EE;
     }
 
+    pub mod pickel_trolley {
+        pub const PEARL_FLY: i32 = 0x2;
+    }
+
+    pub mod purin_disarming_voice {
+        pub const SHOOT: i32 = 0x0;
+    }
+
     pub mod reflet {
         pub const FLOAT: i32 = 0x1FD;
     }
@@ -1805,6 +1842,12 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0x1EA;
         pub const SPECIAL_S_END: i32 = 0x1EB;
+    }
+}
+
+pub mod articles {
+    pub mod purin {
+        pub const DISARMING_VOICE: i32 = 0x2;
     }
 }
 

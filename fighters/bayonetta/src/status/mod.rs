@@ -10,6 +10,7 @@ mod specialn;
 mod specials;
 mod specialhi;
 mod jumpaerial;
+mod wait;
 
 pub fn install(agent: &mut Agent) {
     attack::install(agent);
@@ -21,4 +22,5 @@ pub fn install(agent: &mut Agent) {
     specials::install(agent);
     specialhi::install(agent);
     jumpaerial::install(agent);
+    wait::install(agent);
 }
