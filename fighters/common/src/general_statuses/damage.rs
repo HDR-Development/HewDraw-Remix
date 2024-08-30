@@ -164,6 +164,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
     {
         let hashmap = fighter.local_func__fighter_status_damage_2();
         let sdi_mul = hashmap["stop_delay_"].get_f32();
+        dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
         // get stick x/y length
         // uses cstick's value if cstick is on (for Double Stick DI)
         let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
@@ -289,57 +290,41 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-    let factor_min = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_min");
-    let factor_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_max"); 
-    let speed_up_mag = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_max_mag")) as f32;
-    if !check_damage_speed_up_by_speed(fighter, factor.get_f32())
-    && !some_bool.get_bool() {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("reaction"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let kb = fighter.pop_lua_stack(1).get_f32();
+    dbg!(kb);
+    dbg!(factor.get_f32());
+
+    // let speed = factor.get_f32();
+    // let max_speed = fighter.get_param_float("battle_object", "damage_speed_limit");
+    let min_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_min");
+    let max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_max");
+    let power = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_power");
+    let kb_start = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_start");
+    let kb_end = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_end");
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    let speed_up_mul = if ratio <= 0.0 {
+        min_mul
+    } else if ratio >= 1.0 {
+        max_mul
+    } else {
+        let scalar = max_mul - min_mul;
+        let mul = ratio.powf(power) * scalar + min_mul;
+        mul.clamp(min_mul, max_mul)
+    };
+    dbg!(speed_up_mul);
+    dbg!(factor.get_f32() * speed_up_mul);
+    if (speed_up_mul <= 1.0) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         return;
     }
-    // println!("speeding up!");
-    let speed_diff = factor.get_f32() - factor_min;
-    let speed_max = factor_max - factor_min;
-    let ratio = (speed_diff / speed_max).clamp(0.0, 1.0);
-    let mut mag = fighter.lerp((1.0).into(), speed_up_mag.into(), ratio.into()).get_f32();
-    // The logic below is actually vanilla, but this is trying to lineraly interpolate 1.0... to 1.0, so it doesn't *do* anything.
-    let angle_base = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_angle_base"));
-    let angle_min_max = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_min_max_angle"));
-    let angle_min = angle_base - angle_min_max;
-    let angle_max = angle_base + angle_min_max;
-    if angle_min < angle.get_f32() && angle.get_f32() <= angle_base {
-        // println!("Angle Min {} < Angle {} <= Angle Base {}", angle_min, angle.get_f32(), angle_base);
-        mag *= init_damage_speed_up_inner(fighter, angle.get_f32(), angle_min, angle_base);
-    }
-    else if angle_base < angle.get_f32() && angle.get_f32() <= angle_min {
-        // println!("Angle Min {} < Angle {} <= Angle Base {}", angle_base, angle.get_f32(), angle_max);
-        mag *= init_damage_speed_up_inner(fighter, angle.get_f32(), angle_base, angle_max);
-    }
-    // println!("Speed Up Magnitude: {}", mag);
+
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
-    WorkModule::set_float(fighter.module_accessor, mag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
-}
-
-unsafe extern "C" fn check_damage_speed_up_by_speed(fighter: &mut L2CFighterCommon, speed: f32) -> bool {
-    let log = DamageModule::damage_log(fighter.module_accessor);
-    if log != 0 {
-        let log = log as *mut u8;
-        let factor_min = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_speed_min");
-        !(speed <= factor_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
-        || *log.add(0x93) != 0 || *log.add(0x98) != 0)
-    }
-    else {
-        false
-    }
-}
-
-unsafe extern "C" fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32, lower: f32, upper: f32) -> f32 {
-    let diff = angle - lower;
-    let range = upper - lower;
-    let ratio = (diff / range).clamp(0.0, 1.0);
-    let angle_rate = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_angle_rate"));
-    fighter.lerp((1.0).into(), (angle_rate * 0.01).into(), ratio.into()).get_f32()
+    WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
@@ -593,9 +578,8 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__is_enable_damage_fly_effect)]
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
-    let hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
-    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
-        return L2CValue::Bool(false);
+    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 63.0 {
+        return false.into();
     }
     ret
 }

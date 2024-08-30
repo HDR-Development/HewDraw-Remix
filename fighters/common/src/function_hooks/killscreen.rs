@@ -36,6 +36,7 @@ struct KnockbackCalcContext {
     pub y_pos_prev: f32,
     pub decay_x: f32,
     pub decay_y: f32,
+    pub speed_up_mul: f32,
 }
 
 impl KnockbackCalcContext {
@@ -316,6 +317,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
         y_pos_prev: ecb_bottom.y,
         decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
         decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
+        speed_up_mul: defender_boma.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG),
     };
     //println!("{:#x}: {:?}", defender, context);
 

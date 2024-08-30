@@ -7,7 +7,11 @@
   <float hash="damage_speed_mul">0.03</float>
   <float hash="damage_angle_ground_max">44</float>
   <float hash="damage_fly_quake_l">90</float>
-  <int hash="damage_fly_speed_up_max_mag">2</int>
+  <int hash="damage_fly_speed_up_reaction_frame_min">58</int>
+  <int hash="damage_fly_speed_up_reaction_frame_max">105</int>
+  <int hash="damage_fly_speed_up_end_rate">70</int>
+  <int hash="damage_fly_speed_up_max_mag">3</int>
+  <float hash="damage_fly_speed_up_angle_rate">100</float>
   <float hash="hitstop_frame_max">24</float>
   <float hash="hitstop_frame_add">4</float>
   <float hash="hitstop_frame_mul">0.45</float>
