@@ -1,5 +1,7 @@
 use super::*;
 
+mod special_hi;
+
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state: u64 = agent.lua_state_agent;
     let boma = agent.boma();
@@ -32,15 +34,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_REQUEST_SPECIAL_HI_CANCEL);
-    }
-}
-
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state: u64 = agent.lua_state_agent;
     let boma = agent.boma();
@@ -61,7 +54,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
     agent.acmd("game_specialairs", game_specials, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    special_hi::install(agent);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
