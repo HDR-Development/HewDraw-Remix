@@ -181,7 +181,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi * dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
+        let asdi = sdi_mul * base_asdi * fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
@@ -289,27 +289,15 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-
-    if !ParamModule::has_param_module(fighter.battle_object) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
-        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
-        return;
-    }
-
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("reaction"));
     sv_information::damage_log_value(fighter.lua_state_agent);
     let kb = fighter.pop_lua_stack(1).get_f32();
-    dbg!(kb);
-    dbg!(factor.get_f32());
-
-    // let speed = factor.get_f32();
-    // let max_speed = fighter.get_param_float("battle_object", "damage_speed_limit");
-    let min_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_min");
-    let max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_max");
-    let power = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_power");
-    let kb_start = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_start");
-    let kb_end = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_end");
+    let min_mul = 1.0;
+    let max_mul = 2.5;
+    let power = 1.9;
+    let kb_start = 150.0;
+    let kb_end = 250.0;
 
     let ratio = ((kb - kb_start) / (kb_end - kb_start));
     let speed_up_mul = if ratio <= 0.0 {
@@ -321,8 +309,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
         let mul = ratio.powf(power) * scalar + min_mul;
         mul.clamp(min_mul, max_mul)
     };
-    dbg!(speed_up_mul);
-    dbg!(factor.get_f32() * speed_up_mul);
+
     if (speed_up_mul <= 1.0) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
