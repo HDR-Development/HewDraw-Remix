@@ -40,17 +40,21 @@ unsafe extern "C" fn game_specialsshoot(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 10.0, 3.0);
     }
     if stance == 0 {
+        frame(lua_state, 1.0);
+        if is_excute(agent) {
+            if !charged {
+                ArticleModule::generate_article(boma, FIGHTER_PACKUN_GENERATE_ARTICLE_FIREBREATH, false, -1);
+                VarModule::on_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
+            }
+        }
         FT_DESIRED_RATE(agent, 5.0, 6.0);
         frame(lua_state, 5.0);
         FT_MOTION_RATE(agent, 1.0);
         if is_excute(agent) {
             if charged {
                 ATTACK(agent, 0, 0, Hash40::new("mouth"), 14.0, 30, 66, 0, 60, 9.0, 2.0, 0.0, 0.0, Some(8.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
+                VarModule::on_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
             }
-            else {
-                ArticleModule::generate_article(boma, FIGHTER_PACKUN_GENERATE_ARTICLE_FIREBREATH, false, -1);
-            }
-            VarModule::on_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
         }
         wait(lua_state, 5.0);
         FT_DESIRED_RATE(agent, 40.0, 30.0);
