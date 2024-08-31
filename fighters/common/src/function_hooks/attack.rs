@@ -130,8 +130,23 @@ static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
 unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
-    let mul = (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0);
-    return mul;
+    let min = 1.0;
+    let max = 2.0;
+    let power = 1.4;
+    let kb_start = 150.0;
+    let kb_end = 250.0;
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    if ratio <= 0.0 {
+        return min;
+    }
+    if ratio >= 1.0 {
+        return max;
+    }
+
+    let scalar = max - min;
+    let hitlag_mul = ratio.powf(power) * scalar + min;
+    return hitlag_mul.clamp(min, max);
 }
 
 // This runs directly after knockback is calculated

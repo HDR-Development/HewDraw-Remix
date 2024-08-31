@@ -54,13 +54,13 @@ attack_air_n:
     cancel_frame: 45
 attack_air_f:
   extra:
-    cancel_frame: 34
+    cancel_frame: 33
 attack_air_b:
   extra:
     cancel_frame: 42
 attack_air_hi:
   extra:
-    cancel_frame: 35
+    cancel_frame: 33
 attack_air_lw:
   extra:
     cancel_frame: 60
@@ -69,22 +69,22 @@ landing_air_lw:
     - name: a04landingfallspecial.nuanmb
 special_n_shoot:
   extra:
-    cancel_frame: 40
-special_s_return:
+    cancel_frame: 42
+special_air_n_shoot:
   extra:
-    cancel_frame: 40
+    cancel_frame: 42
 special_n_cancel:
   extra:
     cancel_frame: 7
-special_air_n_shoot:
+special_air_n_cancel:
+  extra:
+    cancel_frame: 7
+special_s_return:
   extra:
     cancel_frame: 40
 special_air_s_return:
   extra:
     cancel_frame: 40
-special_air_n_cancel:
-  extra:
-    cancel_frame: 7
 special_lw:
   extra:
     cancel_frame: 37
