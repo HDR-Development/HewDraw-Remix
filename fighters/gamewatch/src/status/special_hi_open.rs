@@ -32,7 +32,7 @@ unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_hi_open_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+    VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE);
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, false, -1);
     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_RESCUE, Hash40::new("special_hi_open"), false, -1.0);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_open"), 0.0, 1.0, false, 0.0, false, false);
