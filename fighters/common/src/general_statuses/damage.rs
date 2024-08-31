@@ -181,7 +181,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi;
+        let asdi = sdi_mul * base_asdi * dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
@@ -250,12 +250,10 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     && degrees <= meteor_vector_max as f32 {
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SPIKE);
     }
-    // println!("degrees: {}", degrees);
-    // let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+    let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
     // println!("speed vector: {}", speed_vector);
-    // if speed_vector >= 3.5 {
-    //fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
-    // }
+    // fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
+    fighterstatusdamage_init_damage_speed_up_by_speed(fighter, speed_vector.into(), degrees.into(), false.into());
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
     let cursor_fly_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cursor_fly_speed"));
@@ -283,6 +281,56 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         let invalid_paralyze_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_paralyze_frame"));
         WorkModule::set_float(fighter.module_accessor, invalid_paralyze_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_PARALYZE_FRAME);
     }
+}
+
+unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
+    fighter: &mut L2CFighterCommon,
+    factor: L2CValue, // Labeled this way because if shot out of a tornado, the game will pass in your hitstun frames instead of speed.
+    angle: L2CValue,
+    some_bool: L2CValue
+) {
+
+    if !ParamModule::has_param_module(fighter.battle_object) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        return;
+    }
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("reaction"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let kb = fighter.pop_lua_stack(1).get_f32();
+    dbg!(kb);
+    dbg!(factor.get_f32());
+
+    // let speed = factor.get_f32();
+    // let max_speed = fighter.get_param_float("battle_object", "damage_speed_limit");
+    let min_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_min");
+    let max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_max");
+    let power = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_power");
+    let kb_start = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_start");
+    let kb_end = ParamModule::get_float(fighter.battle_object, ParamType::Common, "damage_speed_up_scale_end");
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    let speed_up_mul = if ratio <= 0.0 {
+        min_mul
+    } else if ratio >= 1.0 {
+        max_mul
+    } else {
+        let scalar = max_mul - min_mul;
+        let mul = ratio.powf(power) * scalar + min_mul;
+        mul.clamp(min_mul, max_mul)
+    };
+    dbg!(speed_up_mul);
+    dbg!(factor.get_f32() * speed_up_mul);
+    if (speed_up_mul <= 1.0) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        return;
+    }
+
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+    WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
@@ -536,9 +584,8 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__is_enable_damage_fly_effect)]
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
-    let hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
-    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
-        return L2CValue::Bool(false);
+    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 52.0 {
+        return false.into();
     }
     ret
 }
