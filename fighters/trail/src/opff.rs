@@ -95,7 +95,7 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
     }
 }
 
-unsafe fn magic_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // firaga airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) 
     && boma.is_motion(Hash40::new("special_air_n1")) 
@@ -106,10 +106,8 @@ unsafe fn magic_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
     && boma.is_situation(*SITUATION_KIND_GROUND)
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
-        let special_n_fire_cancel_frame_ground = 69.0;
-        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
-        let landing_lag = 12.0;
+        let special_n_fire_cancel_frame_ground = 69.0; // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
+        let landing_lag = 12.0; // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         if boma.motion_frame() < (special_n_fire_cancel_frame_ground - landing_lag) {
             VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
@@ -310,7 +308,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_sword_scale(fighter);
     nair_fair_momentum_handling(fighter, boma);
     attack_lw4_rebound(boma, frame);
-    magic_cancels(fighter, boma);
+    magic_handling(fighter, boma, frame);
     flower_frame(boma);
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma);
