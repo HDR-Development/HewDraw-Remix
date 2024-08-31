@@ -36,7 +36,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
             data.power = 8.0;
             data.vector = 361;
             data.r_eff = 50;
-            data.r_add = 45;
+            data.r_add = 70;
             data.sub_shield = 0;
             data.lr_check = smash_rs::app::AttackLRCheck::Pos;
         }
@@ -130,8 +130,24 @@ static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
 unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
-    let mul = (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0);
-    return mul;
+    let min = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_min");
+    let max = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_max");
+    let power = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_power");
+    let kb_start = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_start");
+    let kb_end = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_end");
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    if ratio <= 0.0 {
+        return min;
+    }
+    if ratio >= 1.0 {
+        return max;
+    }
+
+    let scalar = max - min;
+    let hitlag_mul = ratio.powf(power) * scalar + min;
+    dbg!(hitlag_mul);
+    return hitlag_mul.clamp(min, max);
 }
 
 // This runs directly after knockback is calculated
@@ -209,7 +225,8 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
         if [hash40("collision_attr_elec"),].contains(&attr) {
             max_hitlag *= WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_elec_mul"));
         }
-        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
+        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr)
+        && !boma.is_weapon() {
             // Set hitlag for defender
             *ctx.registers[0].w.as_mut() = (hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32;
         }

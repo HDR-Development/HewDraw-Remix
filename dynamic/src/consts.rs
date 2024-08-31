@@ -643,8 +643,12 @@ pub mod vars {
     pub mod gamewatch {
         pub mod instance {
             // flags
-            pub const UP_SPECIAL_FREEFALL: i32 = 0x0100;
-            pub const UP_SPECIAL_PARACHUTE: i32 = 0x0101;
+            pub const SPECIAL_HI_FREEFALL: i32 = 0x0100;
+            pub const SPECIAL_HI_PARACHUTE: i32 = 0x0101;
+
+            // ints
+            pub const SPECIAL_S_MATH_STATE: i32 = 0x0100;
+            pub const SPECIAL_S_MATH_RESULT: i32 = 0x0101;
         }
     }
 
@@ -801,9 +805,8 @@ pub mod vars {
             pub const SPECIAL_S_THROW_TYPE: i32 = 0x0103;
         }
         pub mod status {
-            //flags
-            pub const PUNCH_CAN_ZOOM: i32 = 0x1101; // flag for controlling the zoom opff so it only runs once on impact
-            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1102;
+            // flags
+            pub const SPECIAL_S_ABOVE_BLASTZONE: i32 = 0x1100;
         }
     }
 
@@ -1009,15 +1012,19 @@ pub mod vars {
     pub mod master {
         pub mod instance {
             // flags
-            pub const SPECIAL_AIR_HI_CATCH: i32 = 0x0100;
+            pub const ATTACK_S4_SPECIAL: i32 = 0x0100;
+            pub const SPECIAL_AIR_HI_CATCH: i32 = 0x0101;
         }
         pub mod status {
             // flags
-            pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
-            pub const AIR_SPECIAL_S_AUTOCANCEL: i32 = 0x1101;
+            pub const SPECIAL_LW_HOLD: i32 = 0x1100;
+        }
+    }
 
+    pub mod master_axe {
+        pub mod status {
             // ints
-            pub const AYMR_CHARGE_LEVEL: i32 = 0x1100;
+            pub const LIFE: i32 = 0x1100;
         }
     }
 
@@ -1086,9 +1093,6 @@ pub mod vars {
             // flags
             pub const CHAKRAM_STICK_ATTACK: i32 = 0x0100;
             pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x0101;
-
-            // ints
-            pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1096,6 +1100,7 @@ pub mod vars {
             pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1101;
             pub const SHOCK_SPELL_HOLD: i32 = 0x1102;
             pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1103;
+            pub const SPECIAL_S2_GROUND: i32 = 0x1104;
         }
     }
 
@@ -1387,14 +1392,13 @@ pub mod vars {
             pub const IS_INIT_METER: i32 = 0x0102;
             pub const GROUNDED_UPB: i32 = 0x0103;
             pub const UPB_CANCEL: i32 = 0x0104;
+            pub const SPECIAL_HI_MARKER_EFF_HANDLE: i32 = 0x0105;
+
             // ints
-            pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x0100;
-            pub const PREV_FUEL_THRESHOLD: i32 = 0x0101;
+            pub const SPECIAL_HI_CHARGE_FRAME: i32 = 0x0100;
+
             // floats
-            pub const STICK_ANGLE: i32 = 0x0100;
-            pub const FRAMES_SINCE_UPB: i32 = 0x0101;
-            pub const FRAMES_SINCE_UPB_RISE: i32 = 0x0102;
-            pub const JOINT_ROT: i32 = 0x1103;
+            pub const SPECIAL_HI_ROT_X: i32 = 0x0100;
         }
         pub mod status {
             // flags
@@ -1402,7 +1406,6 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const IS_CHARGE_MAX: i32 = 0x1102;
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
-            pub const HELD_BUTTON: i32 = 0x1104;
         }
     }
 
@@ -1633,16 +1636,17 @@ pub mod vars {
             // flags
             pub const ATTACK_12_INTO_S3: i32 = 0x0100;
             pub const COMBO_PLUS_GROUND: i32 = 0x0101;
-            pub const COMBO_PLUS_AIR: i32 = 0x0102;
-            pub const ATTACK_LW4_REBOUND: i32 = 0x0103;
+            pub const ATTACK_LW4_REBOUND: i32 = 0x0102;
+            pub const DISABLE_SPECIAL_N: i32 = 0x103;
+
+            // ints
+            pub const MAGIC_TIMER: i32 = 0x100;
 
             // floats
             pub const JUMP_CANCEL_MOMENTUM_HANDLER: i32 = 0x0100;
         }
         pub mod status {
             // flags
-            pub const SHOULD_PRORATE_ATTACK: i32 = 0x1100;
-
             pub const IS_LAND_CANCEL_THUNDER: i32 = 0x1100;
             pub const IS_GRAND_MAGIC: i32 = 0x1101;
             pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x1102;
@@ -1652,9 +1656,6 @@ pub mod vars {
             pub const SIDE_SPECIAL_HIT: i32 = 0x1100;
             pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1101;
             pub const STOP_SIDE_SPECIAL: i32 = 0x1102;
-            pub const UP_SPECIAL_TO_SIDE_SPECIAL: i32 = 0x1103;
-
-            pub const UP_SPECIAL_HIT: i32 = 0x1100;
 
             // ints
             pub const ATTACK_LW4_TIMER: i32 = 0x1100;
@@ -1805,6 +1806,10 @@ pub mod statuses {
     pub mod littlemac {
         pub const SPECIAL_LW_CANCEL: i32 = 0x1F4;
         pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
+    }
+
+    pub mod master_axe {
+        pub const SPECIAL_LW_YEET: i32 = 0x7;
     }
 
     pub mod mewtwo {

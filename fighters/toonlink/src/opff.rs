@@ -35,11 +35,6 @@ unsafe fn triple_jump_lockout(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// symbol-based call for the links' common opff
-extern "Rust" {
-    fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -101,7 +96,6 @@ pub extern "C" fn toonlink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighte
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		toonlink_frame(fighter);
-        links_common(fighter);
     }
 }
 

@@ -1,6 +1,34 @@
 use super::*;
  
-// FIGHTER_STATUS_KIND_SPECIAL_N
+pub unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_status_pre_SpecialNCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_FALL,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        0,
+        0,
+        0,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        0
+    );
+
+    0.into()
+}
 
 pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
@@ -55,32 +83,27 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
     if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
         if !StatusModule::is_changing(fighter.module_accessor) {
-            if !MotionModule::is_end(fighter.module_accessor) || (MotionModule::is_end(fighter.module_accessor) && fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND) {
-                if MotionModule::is_end(fighter.module_accessor) {
-                    if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
-                        fighter.change_status(
-                            L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
-                            L2CValue::Bool(false)
-                        );
-                        return 1.into()
-                    }
+            if MotionModule::is_end(fighter.module_accessor) {
+                if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                    return 1.into();
                 }
-                else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL) {
-                    if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
-                        fighter.change_status(
-                            L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
-                            L2CValue::Bool(false)
-                        );
-                        return 1.into()
+                else {
+                    fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+                    return 1.into();
+                }
+            }
+            else {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL) {
+                    if fighter.is_situation(*SITUATION_KIND_AIR) {
+                        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                        return 1.into();
                     }
                 }
                 else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
-                    if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND {
-                        fighter.change_status(
-                            L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
-                            L2CValue::Bool(false)
-                        );
-                        return 1.into()
+                    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+                        return 1.into();
                     }
                 }
                 //goto
@@ -100,15 +123,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 }
                 sub_special_n_Main_uniq(fighter);
                 return 0.into()
-            }
-            else {
-                if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND {
-                    fighter.change_status(
-                        L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
-                        L2CValue::Bool(false)
-                    );
-                    return 1.into()
-                }
             }
         }
         else {
@@ -148,7 +162,6 @@ unsafe extern "C" fn sub_special_air_n_Main(fighter: &mut L2CFighterCommon) -> L
         return L2CValue::I32(1)
     }
     if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if bow_step != *FIGHTER_LINK_STATUS_BOW_STEP_START {
             if bow_step != *FIGHTER_LINK_STATUS_BOW_STEP_HOLD {
@@ -607,5 +620,6 @@ unsafe extern "C" fn special_n_helper(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
 }
