@@ -130,12 +130,6 @@ static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
 unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
-    let fighter = get_fighter_common_from_accessor(boma);
-    let object = sv_system::battle_object(fighter.lua_state_agent);
-    if !ParamModule::has_param_module(object) {
-        return 1.0;
-    }
-
     let min = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_min");
     let max = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_max");
     let power = ParamModule::get_float(boma.object(), ParamType::Common, "knocbkack_hitlag_scale_power");
@@ -231,7 +225,8 @@ unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
         if [hash40("collision_attr_elec"),].contains(&attr) {
             max_hitlag *= WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_elec_mul"));
         }
-        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
+        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr)
+        && !boma.is_weapon() {
             // Set hitlag for defender
             *ctx.registers[0].w.as_mut() = (hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32;
         }
