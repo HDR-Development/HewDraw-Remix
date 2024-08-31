@@ -95,7 +95,7 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
     }
 }
 
-unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn magic_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // firaga airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) 
     && boma.is_motion(Hash40::new("special_air_n1")) 
@@ -119,8 +119,21 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     if (boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
     && boma.motion_frame() > 12.0) {
         boma.check_jump_cancel(false, false);
-        WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+    }
+
+    // handles the cooldown timer between casting spells
+    if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) > 0 {
+        VarModule::dec_int(boma.object(), vars::trail::instance::MAGIC_TIMER);
+
+        // cycles and enables magic on the last frame of the cooldown window
+        if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) == 1 {
+            WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+            let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
+            FighterSpecializer_Trail::change_magic(trail);
+
+            VarModule::off_flag(boma.object(), vars::trail::instance::DISABLE_SPECIAL_N);
+        }
     }
 }
 
@@ -297,7 +310,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_sword_scale(fighter);
     nair_fair_momentum_handling(fighter, boma);
     attack_lw4_rebound(boma, frame);
-    magic_cancels(boma);
+    magic_cancels(fighter, boma);
     flower_frame(boma);
     side_special_actionability(boma);
     side_special_hit_check(fighter, boma);
