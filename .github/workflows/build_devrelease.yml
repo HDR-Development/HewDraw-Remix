@@ -48,7 +48,7 @@ jobs:
       id: bump-semver
       with:
         current_version: ${{ steps.package_latest.outputs.release }}
-        level: minor
+        level: patch
 
     # build the project
     - run: |
