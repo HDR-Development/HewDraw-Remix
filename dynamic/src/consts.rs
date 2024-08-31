@@ -539,7 +539,7 @@ pub mod vars {
             // flag
             pub const CLAY_SMASH_INPUT: i32 = 0x1100;
             pub const SPECIAL_HI_JUMP: i32 = 0x0101;
-            pub const SPECIAL_HI2_ENABLE_SHOT: i32 = 0x1101;
+            pub const SPECIAL_HI_ENABLE_SHOT: i32 = 0x1102;
         }
     }
 
