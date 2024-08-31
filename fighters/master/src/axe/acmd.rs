@@ -6,13 +6,14 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     frame(lua_state, 61.0);
     if is_excute(agent) {
-        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::AYMR_CHARGE_LEVEL) > 0 {
+        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) > 0 {
             WorkModule::set_int(boma, 0, *WEAPON_MASTER_AXE_INSTANCE_WORK_ID_INT_CRITICAL_ATTACK_ID);
         }
-        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::AYMR_CHARGE_LEVEL) == 0 {
+        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 0 {
             ATTACK(agent, 0, 0, Hash40::new("haver"), 18.0, 51, 83, 0, 60, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+            ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3.0);
         }
-        else if VarModule::get_int(owner_module_accessor.object(), vars::master::status::AYMR_CHARGE_LEVEL) == 1 {
+        else if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 1 {
             // Ground-only
             ATTACK(agent, 0, 0, Hash40::new("haver"), 30.0, 51, 83, 0, 60, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 58, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
             // Air-only
@@ -26,6 +27,14 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 
         }
     }
+    frame(lua_state, 63.0);
+    if is_excute(agent) {
+        if owner_module_accessor.is_situation(*SITUATION_KIND_AIR)
+        && VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 0 {
+            ATTACK(agent, 0, 0, Hash40::new("haver"), 18.0, 275, 34, 0, 20, 5.7, 0.0, 14.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
+            ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3.0);
+        }
+    }
     frame(lua_state, 67.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
@@ -37,7 +46,7 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent) {
-        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::AYMR_CHARGE_LEVEL) == 2 {
+        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 2 {
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp1"), Hash40::new("blade1"), 0, 0, 0, 0, 0, 0, 1.0, true);
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp2"), Hash40::new("blade2"), 0, 0, 0, 0, 0, 0, 1.0, true);
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp3"), Hash40::new("axe"), 0, 0, 0, 0, 0, 0, 1.0, true);
@@ -56,7 +65,7 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::AYMR_CHARGE_LEVEL) == 2 {
+        if VarModule::get_int(owner_module_accessor.object(), vars::master::status::SPECIAL_LW_HOLD) == 2 {
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp1_end"), Hash40::new("blade1"), 0, 0, 0, 0, 0, 0, 1.0, true);
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp2_end"), Hash40::new("blade2"), 0, 0, 0, 0, 0, 0, 1.0, true);
             EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp3_end"), Hash40::new("axe"), 0, 0, 0, 0, 0, 0, 1.0, true);
