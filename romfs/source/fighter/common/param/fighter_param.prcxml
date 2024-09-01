@@ -1407,6 +1407,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">1.8</float>
+      <float hash="common_effect_0_g">1.8</float>
+      <float hash="common_effect_0_b">0.5</float>
     </struct>
     <!-- SONIC -->
     <struct index="38">

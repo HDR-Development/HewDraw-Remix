@@ -29,7 +29,7 @@ unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 5.5, 3.5, -12, -35, 20, 0.9, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
+        //LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -63,7 +63,7 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 6.0, 8.0, -28, -45, 30, 1.0, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
+        //LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
