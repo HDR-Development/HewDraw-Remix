@@ -321,7 +321,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon) {
         let mut fall_stable_spd_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_stable_spd_x");
         fall_stable_spd_x *= PostureModule::lr(fighter.module_accessor);
         let mut fall_limit_speed_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_limit_spd_x");
-        fall_limit_speed_x *= PostureModule::lr(fighter.module_accessor);
+        //fall_limit_speed_x *= PostureModule::lr(fighter.module_accessor);
         if !fighter.is_prev_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START) {
             if speed_y >= max_sum_spd_y { speed_y = max_sum_spd_y; }
         }
