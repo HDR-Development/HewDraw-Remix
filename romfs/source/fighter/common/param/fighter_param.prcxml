@@ -3317,6 +3317,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">0.8</float>
+      <float hash="common_effect_0_g">1.6</float>
+      <float hash="common_effect_0_b">2.5</float>
     </struct>
     <!-- KEN -->
     <struct index="88">
