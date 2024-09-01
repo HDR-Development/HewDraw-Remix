@@ -1264,6 +1264,9 @@
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
       <bool hash="attach_wall_type">false</bool>
+      <float hash="common_effect_0_r">0.3</float>
+      <float hash="common_effect_0_g">0.9</float>
+      <float hash="common_effect_0_b">2.3</float>
     </struct>
     <!-- IVYSAUR -->
     <struct index="34">
@@ -1336,6 +1339,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">3</float>
+      <float hash="common_effect_0_g">0.7</float>
+      <float hash="common_effect_0_b">0.2</float>
     </struct>
     <!-- DIDDY KONG -->
     <struct index="36">
