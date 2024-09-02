@@ -10,6 +10,7 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_AirChkDown,
             status_pre_Down,
             status_Down_Main,
             status_end_DownStandFb,
@@ -47,6 +48,26 @@ unsafe fn status_pre_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
         0
     );
     0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_AirChkDown)]
+unsafe fn sub_AirChkDown(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!()(fighter);
+    if ret.get_bool() {
+        // ignore speed mul for damage_speed_up when transitioning to down
+        if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+            dbg!(KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE));
+            let mag = dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
+            let damage_speed_x = dbg!(fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE));
+            let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            fighter.set_speed(
+                Vector2f::new(dbg!(damage_speed_x / mag), damage_speed_y),
+                *FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
+            );
+            dbg!(fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE));
+        }
+    }
+    ret
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Down_Main)]
