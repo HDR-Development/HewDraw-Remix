@@ -54,5 +54,5 @@ pub fn install() {
     agent.install();
 
     disarmingvoice::install();
-    smashline::clone_weapon("koopajr", "cannonball", "purin", "disarmingvoice", false);
+    smashline::clone_weapon("koopajr", *WEAPON_KIND_KOOPAJR_CANNONBALL, "purin", "disarmingvoice", false);
 }
