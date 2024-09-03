@@ -54,17 +54,11 @@ unsafe fn status_pre_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn sub_AirChkDown(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!()(fighter);
     if ret.get_bool() {
-        // ignore speed mul for damage_speed_up when transitioning to down
+        // reset speed mul for damage_speed_up when transitioning to down
+        // without this, there be crazy momentum shenanigans
         if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
-            dbg!(KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE));
-            let mag = dbg!(fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG));
-            let damage_speed_x = dbg!(fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE));
-            let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-            fighter.set_speed(
-                Vector2f::new(dbg!(damage_speed_x / mag), damage_speed_y),
-                *FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
-            );
-            dbg!(fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE));
+            fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+            fighter.set_float(0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         }
     }
     ret
