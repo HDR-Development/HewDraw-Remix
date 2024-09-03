@@ -289,17 +289,21 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-    fighter.clear_lua_stack();
-    lua_args!(fighter, hash40("reaction"));
-    sv_information::damage_log_value(fighter.lua_state_agent);
-    let kb = fighter.pop_lua_stack(1).get_f32();
     let min_mul = 1.0;
-    let max_mul = 2.5;
+    let max_mul = 2.3;
     let power = 1.9;
-    let kb_start = 150.0;
-    let kb_end = 250.0;
+    let speed_start = 4.5;
+    let speed_end = 7.29;
+    let speed = factor.get_f32();
+    dbg!(speed);
 
-    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    if check_damage_speed_up_fail(fighter) || speed <= speed_start {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        return;
+    }
+
+    let ratio = ((speed - speed_start) / (speed_end - speed_start));
     let speed_up_mul = if ratio <= 0.0 {
         min_mul
     } else if ratio >= 1.0 {
@@ -310,14 +314,20 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
         mul.clamp(min_mul, max_mul)
     };
 
-    if (speed_up_mul <= 1.0) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
-        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
-        return;
-    }
-
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
     WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+}
+
+unsafe extern "C" fn check_damage_speed_up_fail(fighter: &mut L2CFighterCommon) -> bool {
+    let log = DamageModule::damage_log(fighter.module_accessor);
+    if log == 0 {
+        return true;
+    }
+    let log = log as *mut u8;
+    return *log.add(0x8f) != 0 
+        || *log.add(0x92) != 0
+        || *log.add(0x93) != 0 
+        || *log.add(0x98) != 0;
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
@@ -571,8 +581,13 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__is_enable_damage_fly_effect)]
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
-    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 52.0 {
-        return false.into();
+
+    if ret.get_bool() {
+        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 
+        || fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 52.0 {
+            return false.into();
+        }
     }
+
     ret
 }
