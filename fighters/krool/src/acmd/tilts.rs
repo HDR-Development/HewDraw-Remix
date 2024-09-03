@@ -12,14 +12,20 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.15 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let sound = if charge >= 10 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 5.0, 0.0, 11.0, 15.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 6.5, 0.0, 11.0, 8.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 2, 0, Hash40::new("havel"), 13.0 + damage, 42, 75, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let sound = if charge >= 10.0 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
+        ATTACK(agent, 0, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 5.0, 0.0, 11.0, 15.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 6.5, 0.0, 11.0, 8.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 2, 0, Hash40::new("havel"), 13.0 + damage, 42, 75, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg4(agent, 0, 1, 2, shieldstun);
     }
     wait(lua_state, 3.0);
@@ -58,14 +64,20 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.15 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let sound = if charge >= 10 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 5.0, 0.0, 14.0, 15.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 6.5, 0.0, 11.0, 8.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 2, 0, Hash40::new("havel"), 13.0 + damage, 42, 75, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let sound = if charge >= 10.0 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
+        ATTACK(agent, 0, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 5.0, 0.0, 14.0, 15.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 6.5, 0.0, 11.0, 8.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 2, 0, Hash40::new("havel"), 13.0 + damage, 42, 75, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg4(agent, 0, 1, 2, shieldstun);
     }
     wait(lua_state, 3.0);
@@ -104,11 +116,17 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.15 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let sound = if charge >= 10 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let sound = if charge >= 10.0 { *COLLISION_SOUND_ATTR_HEAVY } else { *COLLISION_SOUND_ATTR_PUNCH };
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
         ATTACK(agent, 0, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 5.0, 0.0, 7.0, 14.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(agent, 1, 0, Hash40::new("top"), 11.0 + damage, 361, 75, 0, 63, 6.5, 0.0, 11.0, 8.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(agent, 2, 0, Hash40::new("havel"), 13.0 + damage, 42, 75, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
@@ -177,27 +195,39 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
         HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.15 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
-        ATTACK(agent, 0, 0, Hash40::new("arml"), 12.0 + damage, 84, 63, 0, 76, 4.0, 2.2, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("shoulderl"), 12.0 + damage, 84, 63, 0, 76, 4.0, -1.0, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 2, 0, Hash40::new("arml"), 12.0 + damage, 84, 63, 0, 76, 5.0, 7.5, 2.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("arml"), 12.0 + damage, 84, 63, 0, 76, 4.0, 2.2, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("shoulderl"), 12.0 + damage, 84, 63, 0, 76, 4.0, -1.0, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 2, 0, Hash40::new("arml"), 12.0 + damage, 84, 63, 0, 76, 5.0, 7.5, 2.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg4(agent, 0, 1, 2, shieldstun);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.05 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
-        ATTACK(agent, 0, 0, Hash40::new("arml"), 7.0 + damage, 84, 49, 0, 60, 4.0, 2.2, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("arml"), 7.0 + damage, 84, 49, 0, 60, 4.0, -1.0, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 2, 0, Hash40::new("arml"), 9.0 + damage, 84, 49, 0, 60, 5.0, 7.0, 2.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
+        ATTACK(agent, 0, 0, Hash40::new("arml"), 7.0 + damage, 84, 49, 0, 60, 4.0, 2.2, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("arml"), 7.0 + damage, 84, 49, 0, 60, 4.0, -1.0, 0.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 2, 0, Hash40::new("arml"), 9.0 + damage, 84, 49, 0, 60, 5.0, 7.0, 2.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg4(agent, 0, 1, 2, shieldstun);
     }
     frame(lua_state, 14.0);
@@ -208,6 +238,19 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 38.0);
     FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 5, 22.5, 4, -18, 9, 95, 1.65, true, *EF_FLIP_YZ, 1);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+    }
 }
 
 unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
@@ -234,11 +277,13 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 5.0, 10.0, 4.0);
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("footl"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 10.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         if WorkModule::get_float(boma, 0x4d) >= 1.0 {
             WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
@@ -246,29 +291,41 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.15 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = shield_damage_mul * charge;
+
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         // ground-only
-        ATTACK(agent, 0, 0, Hash40::new("kneel"), 13.0 + damage, 270, 35, 0, 100, 5.0, 2.5, -1.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneel"), 13.0 + damage, 270, 50, 0, 100, 5.0, 2.5, -1.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         // air-only
-        ATTACK(agent, 1, 0, Hash40::new("kneel"), 13.0 + damage, 361, 85, 0, 40, 5.0, 2.5, -1.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("kneel"), 13.0 + damage, 361, 85, 0, 40, 5.0, 2.5, -1.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATK_SET_SHIELD_SETOFF_MUL(agent, 0, shieldstun);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE);
-        let damage = 0.05 * (charge as f32);
-        let hitlag = 1.0 + 0.025 * (charge as f32);
-        let shieldstun = 1.0 + 0.02 * (charge as f32);
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
+        let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
+        let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
+        let shield_damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_damage_mul");
+        let damage = damage_mul * charge;
+        let hitlag = 1.0 + hitlag_mul * charge;
+        let shieldstun = 1.0 + shieldstun_mul * charge;
+        let shield_damage = 7.0 + shield_damage_mul * charge;
+
         // ground-only
-        ATTACK(agent, 0, 0, Hash40::new("top"), 13.0 + damage, 270, 35, 0, 100, 5.0, 0.0, 3.5, 16.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(agent, 2, 0, Hash40::new("top"), 7.0 + damage, 85, 25, 0, 100, 5.0, 0.0, 3.5, 10.0, Some(0.0), Some(3.5), Some(23.0), hitlag * 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 13.0 + damage, 270, 50, 0, 100, 5.0, 0.0, 3.5, 16.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 2, 0, Hash40::new("top"), 7.0 + damage, 85, 30, 0, 100, 5.0, 0.0, 3.5, 10.0, Some(0.0), Some(3.5), Some(23.0), hitlag * 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         // air-only
-        ATTACK(agent, 1, 0, Hash40::new("top"), 13.0 + damage, 270, 35, 0, 30, 5.0, 0.0, 3.5, 16.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 13.0 + damage, 270, 50, 0, 30, 5.0, 0.0, 3.5, 16.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 2, shieldstun);
     }
@@ -327,6 +384,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attacks3lw", sound_attacks3, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
+    agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
     agent.acmd("sound_attackhi3", sound_attackhi3, Priority::Low);
 
     agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);

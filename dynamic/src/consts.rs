@@ -1796,6 +1796,7 @@ pub mod statuses {
 
     pub mod krool {
         pub const SPECIAL_LW_GUT: i32 = 0x1F9;
+        pub const SPECIAL_N_FIRE_HI: i32 = 0x1FA;
     }
 
     pub mod littlemac {

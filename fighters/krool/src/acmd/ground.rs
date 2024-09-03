@@ -60,8 +60,8 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-    FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    EFFECT_FLIP_ALPHA(agent, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLIP_ALPHA(agent, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
     }
 }
 

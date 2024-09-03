@@ -27,6 +27,12 @@ attack_s3_hi:
 attack_s3_lw:
   flags:
     move: false
+attack_hi3:
+  extra:
+    cancel_frame: 35
+attack_lw3:
+  extra:
+    cancel_frame: 41
 attack_s4_s:
   flags:
     move: false
@@ -53,7 +59,67 @@ special_s_get:
     cancel_frame: 1
 attack_air_hi:
   extra:
-    cancel_frame: 54
+    cancel_frame: 45
+special_n_fire_hi:
+  game_script: game_specialnfirehi
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d00specialnspitf.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialnfirehi
+    - sound_specialnfirehi
+    - effect_specialnfirehi
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 45
+    no_stop_intp: false
+special_air_n_fire_hi:
+  game_script: game_specialairnfirehi
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d00specialairnspitf.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairnfirehi
+    - sound_specialairnfirehi
+    - effect_specialairnfirehi
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 70
+    no_stop_intp: false
 special_s_throw:
   extra:
     cancel_frame: 44
