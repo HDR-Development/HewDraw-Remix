@@ -290,6 +290,8 @@ pub mod vars {
 
             pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x1050;
 
+            pub const SHOULD_HITFALL: i32 = 0x1006;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
