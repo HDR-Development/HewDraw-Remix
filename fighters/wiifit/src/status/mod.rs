@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 
 mod special_s;
+mod fall_special;
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Reset sideB stall flag on landing or ledgegrab
@@ -21,4 +22,5 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_s::install(agent);
+    fall_special::install(agent);
 }
