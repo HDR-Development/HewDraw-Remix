@@ -290,6 +290,8 @@ pub mod vars {
 
             pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x1050;
 
+            pub const HIT_EFFECT_DROP_ITEM: i32 = 0x1051;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -1318,13 +1320,6 @@ pub mod vars {
     pub mod ptrainer {
         pub mod instance {
             pub const IS_SWITCH_BACKWARDS: i32 = 0x0100;
-        }
-    }
-
-    pub mod purin {
-        pub mod status {
-            // flags
-            pub const SPECIAL_N_AIR: i32 = 0x1100;
         }
     }
 

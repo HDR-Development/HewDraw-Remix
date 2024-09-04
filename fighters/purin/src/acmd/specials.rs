@@ -5,7 +5,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, FIGHTER_PURIN_GENERATE_ARTICLE_DISARMING_VOICE, false, -1);
+        ArticleModule::generate_article(boma, articles::purin::DISARMING_VOICE, false, -1);
     }
 }
 
