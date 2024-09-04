@@ -125,8 +125,10 @@ pub unsafe fn open_modes_session() {
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check the current match mode
-    // 1 is regular smash, 45 is online arena match
-    if utils_dyn::util::get_match_mode().0 != 1 && utils_dyn::util::get_match_mode().0 != 45 {
+    // 1 is regular smash, 45 is online arena match, 58 is local wireless
+    if utils_dyn::util::get_match_mode().0 != 1 
+    && utils_dyn::util::get_match_mode().0 != 45
+    && utils_dyn::util::get_match_mode().0 != 58 {
         //println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
@@ -163,9 +165,19 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
     call_original!(game_state_ptr)
 }
 
+// Press dpad down at local wireless room select to open custom modes
+// (intended for non-hosts - hosts must hold R when opening the room)
+#[skyline::hook(offset = 0x1bd7a68, inline)]
+unsafe fn local_wireless_pane(_: &skyline::hooks::InlineCtx) {
+    if ninput::any::is_down(ninput::Buttons::DOWN) {
+        open_modes_session();
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         on_rule_select_hook,
-        once_per_game_frame
+        once_per_game_frame,
+        local_wireless_pane
     );
 }
