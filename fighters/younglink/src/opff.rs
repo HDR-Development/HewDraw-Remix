@@ -110,16 +110,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
-// symbol-based call for the links' common opff
-extern "Rust" {
-    fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
-}
-
 pub extern "C" fn younglink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		younglink_frame(fighter);
-        links_common(fighter);
     }
 }
 

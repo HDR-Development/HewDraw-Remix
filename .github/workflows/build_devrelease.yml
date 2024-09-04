@@ -17,7 +17,7 @@ jobs:
     
       # fail out if there's already a release for this commit
       - name: ensure one build per sha
-        if: ${{ contains(steps.latest_package.outputs.release, github.sha) }}
+        if: ${{ contains(steps.latest_package.outputs.description, github.sha) }}
         run: exit 1
 
   plugin_build:
@@ -36,9 +36,23 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v4.1.4
 
+    # get the most recent latest full release
+    - id: package_latest
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/HDR-DevReleases
+        token: ${{ secrets.RELEASE_TOKEN }}
+        excludes: prerelease, draft
+
+    - uses: actions-ecosystem/action-bump-semver@v1
+      id: bump-semver
+      with:
+        current_version: ${{ steps.package_latest.outputs.release }}
+        level: patch
+
     # build the project
     - run: |
-        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ github.sha }}-private name=hdr-private && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }} name=hdr-private && cd ..
       env:
         HOME: /root
 
@@ -60,15 +74,6 @@ jobs:
     - name: make package
       run: |
         python3 scripts/full_package.py devrelease none
-
-    # get the most recent latest full release
-    - id: package_latest
-      continue-on-error: true
-      uses: pozetroninc/github-action-get-latest-release@master
-      with:
-        repository: HDR-Development/HDR-DevReleases
-        token: ${{ secrets.RELEASE_TOKEN }}
-        excludes: prerelease, draft
 
     - name: Download latest switch package
       id: get_old_switch_package
@@ -134,6 +139,7 @@ jobs:
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-DevReleases
-        release_name: ${{ github.sha }}-private
-        tag: ${{ github.sha }}-private
+        release_name: ${{ steps.bump-semver.outputs.new_version }}
+        tag: ${{ steps.bump-semver.outputs.new_version }}
+        body: Built from commit ${{ github.sha }}
         overwrite: true

@@ -527,10 +527,6 @@ unsafe extern "C" fn effect_specialsstart2(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
-    }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(agent, 2.0);
     frame(lua_state, 6.0);
@@ -674,29 +670,18 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 48.0);
+    FT_MOTION_RATE(agent, 0.5);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-        if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
-            WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_HI_FLAG_COMMAND_ACCEPT);
-        }
-        FT_MOTION_RATE(agent, 0.5);
     }
     frame(lua_state, 70.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_HI_FLAG_COMMAND_ACCEPT);
     }
     frame(lua_state, 75.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
-            FT_MOTION_RATE(agent, 2.0);
-        }
-    }
+    FT_MOTION_RATE(agent, 2.0);
     frame(lua_state, 79.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
-            FT_MOTION_RATE(agent, 1.0);
-        }
-    }
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 pub fn install(agent: &mut Agent) {

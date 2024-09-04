@@ -12,6 +12,9 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+attack_11:
+  extra:
+    cancel_frame: 19
 attack_12:
   extra:
     cancel_frame: 22
@@ -23,16 +26,13 @@ special_s:
     move: false
   extra:
     cancel_frame: 52
-attack_11:
-  extra:
-    cancel_frame: 19
 attack_lw3:
 attack_lw4:
   flags:
     move: false
 attack_hi3:
   extra:
-    cancel_frame: 32
+    cancel_frame: 31
 attack_s3_s:
   flags:
     move: false

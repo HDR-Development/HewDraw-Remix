@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 
 mod jump_aerial;
+mod attack_s3;
 mod attack_lw4;
 mod attack_air;
 mod special_s;
@@ -24,6 +25,7 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     
     jump_aerial::install(agent);
+    attack_s3::install(agent);
     attack_lw4::install(agent);
     attack_air::install(agent);
     special_s::install(agent);
