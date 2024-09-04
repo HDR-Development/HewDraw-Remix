@@ -26,6 +26,9 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3); 
     }
 
+    // disables use of neutral special until the following cooldown timer runs its course
+    VarModule::on_flag(fighter.battle_object, vars::trail::instance::DISABLE_SPECIAL_N);
+
     return 1.into();
 }
 
@@ -58,53 +61,6 @@ unsafe extern "C" fn special_n2_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         0,
     );
     return 0.into();
-}
-
-unsafe extern "C" fn special_n2_main_loop_function(fighter: &mut L2CFighterCommon, flag_shooted: i32, work_id_n2_hop: i32) {
-    if WorkModule::is_flag(fighter.module_accessor, flag_shooted) {
-        WorkModule::off_flag(fighter.module_accessor, flag_shooted);
-        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
-        if situation_kind == *SITUATION_KIND_AIR
-        && WorkModule::is_flag(fighter.module_accessor, work_id_n2_hop) {
-            WorkModule::on_flag(fighter.module_accessor, work_id_n2_hop);
-            let x_param_float = WorkModule::get_param_float(fighter.module_accessor, smash::hash40("param_special_n"), smash::hash40("hop_add_speed_x"));
-            let posture_module_lr = app::lua_bind::PostureModule::lr(fighter.module_accessor);
-            let inertia = x_param_float * posture_module_lr;
-            let y_param_float = WorkModule::get_param_float(fighter.module_accessor, smash::hash40("param_special_n"), smash::hash40("hop_add_speed_y"));
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, *ENERGY_STOP_RESET_TYPE_AIR, inertia, 0.0, 0.0, 0.0, 0.0);
-            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_param_float);
-        }
-    }
-    return;
-}
-
-unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !(CancelModule::is_enable_cancel(fighter.module_accessor)
-        && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool()) {
-        if !(app::lua_bind::MotionModule::is_end(fighter.module_accessor)) {
-            fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), true.into());
-            fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_n"));
-            fighter.sub_set_ground_correct_by_situation(true.into());
-            special_n2_main_loop_function(fighter, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_SHOOTED, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP);
-            return 0.into();
-        }
-        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
-        if situation_kind == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-        }
-        else {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        }
-    }
-
-    return 0.into()
 }
 
 unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -163,8 +119,97 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
     return fighter.main_shift(special_n2_main_loop);
 }
 
+unsafe extern "C" fn special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !(CancelModule::is_enable_cancel(fighter.module_accessor)
+        && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool()) {
+        if !(app::lua_bind::MotionModule::is_end(fighter.module_accessor)) {
+            fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n2"), L2CValue::Hash40s("special_air_n2"), true.into());
+            fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_n"));
+            fighter.sub_set_ground_correct_by_situation(true.into());
+            special_n2_main_loop_function(fighter, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_SHOOTED, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_SPECIAL_N2_HOP);
+            return 0.into();
+        }
+        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
+        if situation_kind == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+    }
+
+    return 0.into()
+}
+
+unsafe extern "C" fn special_n2_main_loop_function(fighter: &mut L2CFighterCommon, flag_shooted: i32, work_id_n2_hop: i32) {
+    if WorkModule::is_flag(fighter.module_accessor, flag_shooted) {
+        WorkModule::off_flag(fighter.module_accessor, flag_shooted);
+        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
+        if situation_kind == *SITUATION_KIND_AIR
+        && WorkModule::is_flag(fighter.module_accessor, work_id_n2_hop) {
+            WorkModule::on_flag(fighter.module_accessor, work_id_n2_hop);
+            let x_param_float = WorkModule::get_param_float(fighter.module_accessor, smash::hash40("param_special_n"), smash::hash40("hop_add_speed_x"));
+            let posture_module_lr = app::lua_bind::PostureModule::lr(fighter.module_accessor);
+            let inertia = x_param_float * posture_module_lr;
+            let y_param_float = WorkModule::get_param_float(fighter.module_accessor, smash::hash40("param_special_n"), smash::hash40("hop_add_speed_y"));
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, *ENERGY_STOP_RESET_TYPE_AIR, inertia, 0.0, 0.0, 0.0, 0.0);
+            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, y_param_float);
+        }
+    }
+
+    // allow the move to be turned around
+    if fighter.is_status (*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
+    && fighter.status_frame() >= 5
+    && fighter.is_button_on(Buttons::Special)
+    && fighter.stick_x() * fighter.lr() < 0.0 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+
+    return;
+}
+
+// reimplemented end statuses to remove the native magic switching. this is now tied to a timer in opff
+
+unsafe extern "C" fn special_n1_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+    WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+
+    return 0.into()
+}
+
+unsafe extern "C" fn special_n2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+    WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+
+    return 0.into()
+}
+
+unsafe extern "C" fn special_n3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, ArticleOperationTarget(0));
+    WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+    WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+
+    return 0.into()
+}
+
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
     agent.status(Pre, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_pre);
     agent.status(Main, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_main);
+
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT, special_n1_shoot_end);
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_end);
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3, special_n3_end);
 }

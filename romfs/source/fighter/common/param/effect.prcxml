@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <float hash="fly_effect_smoke_speed">4</float>
+  <float hash="fly_effect_smoke_speed">2.75</float>
   <float hash="fly_effect_aura_speed">999</float>
   <int hash="vector_adjust_effect_remove_frame">1</int>
+  <list hash="damage_level">
+    <struct index="0">
+      <hash40 hash="effect_kind">invalid</hash40>
+    </struct>
+    <struct index="1">
+      <hash40 hash="effect_kind">invalid</hash40>
+    </struct>
+    <struct index="2">
+      <hash40 hash="effect_kind">invalid</hash40>
+    </struct>
+  </list>
 </struct>

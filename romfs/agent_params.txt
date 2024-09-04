@@ -38,3 +38,4 @@ ryu: fighter/ryu/param/hdr.xml
 ken: fighter/ken/param/hdr.xml
 littlemac: fighter/littlemac/param/hdr.xml
 bayonetta: fighter/bayonetta/param/hdr.xml
+inkling: fighter/inkling/param/hdr.xml

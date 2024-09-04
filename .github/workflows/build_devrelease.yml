@@ -1,51 +1,30 @@
 name: build_devrelease
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - pre-release
 
 jobs:
-  # bump the version and build the changelog
-  version_and_changelog:
+  version_check:
     runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     steps:
-      # fail out if this is not a merge commit
-      - name: ensure merge
-        if: ${{ !startsWith(github.event.head_commit.message, 'Merge') }}
-        run: exit 1
-
-      - name: checkout version
-        uses: actions/checkout@v4.1.4
-        with: 
-          fetch-depth: 0
-
-      - name: get last merge
-        id: last_merge
-        shell: bash
-        run: |
-          echo "short_hash=$(echo $(git log --oneline --merges -n 10 | grep -m2 "pull request" | tail -n1 | cut -d' ' -f1))" >> $GITHUB_OUTPUT
-
-      - run: |
-          echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
-
-      # wait for any previous versions to be tagged and committed
-      - uses: lewagon/wait-on-check-action@v1.3.4
+      - id: latest_package
         continue-on-error: true
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          ref: ${{ steps.last_merge.outputs.short_hash }}
-          check-name: 'version_and_changelog'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-          allowed-conclusions: success,skipped,cancelled,failure
+          repository: HDR-Development/HDR-DevReleases
+          token: ${{ secrets.RELEASE_TOKEN }}
+    
+      # fail out if there's already a release for this commit
+      - name: ensure one build per sha
+        if: ${{ contains(steps.latest_package.outputs.description, github.sha) }}
+        run: exit 1
 
   plugin_build:
     env:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-20.04
-    needs: version_and_changelog
+    needs: version_check
     container: 
       image: hewdrawremix/hewdraw-builder:latest
     steps:
@@ -57,9 +36,23 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v4.1.4
 
+    # get the most recent latest full release
+    - id: package_latest
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/HDR-DevReleases
+        token: ${{ secrets.RELEASE_TOKEN }}
+        excludes: prerelease, draft
+
+    - uses: actions-ecosystem/action-bump-semver@v1
+      id: bump-semver
+      with:
+        current_version: ${{ steps.package_latest.outputs.release }}
+        level: patch
+
     # build the project
     - run: |
-        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ github.sha }}-private name=hdr-private && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }} name=hdr-private && cd ..
       env:
         HOME: /root
 
@@ -81,14 +74,6 @@ jobs:
     - name: make package
       run: |
         python3 scripts/full_package.py devrelease none
-
-    # get the most recent latest full release
-    - id: package_latest
-      continue-on-error: true
-      uses: pozetroninc/github-action-get-latest-release@master
-      with:
-        repository: HDR-Development/HDR-DevReleases
-        token: ${{ secrets.RELEASE_TOKEN }}
 
     - name: Download latest switch package
       id: get_old_switch_package
@@ -118,7 +103,8 @@ jobs:
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/upgrade.zip
-        prerelease: false
+        prerelease: true
+        make_latest: false
         file_glob: true
         asset_name: upgrade
         repo_name: HDR-Development/HDR-DevReleases
@@ -132,7 +118,8 @@ jobs:
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/deletions.json
-        prerelease: false
+        prerelease: true
+        make_latest: false
         file_glob: true
         asset_name: deletions
         repo_name: HDR-Development/HDR-DevReleases
@@ -148,9 +135,11 @@ jobs:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: artifacts/*
         prerelease: false
+        make_latest: true
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-DevReleases
-        release_name: ${{ github.sha }}-private
-        tag: ${{ github.sha }}-private
+        release_name: ${{ steps.bump-semver.outputs.new_version }}
+        tag: ${{ steps.bump-semver.outputs.new_version }}
+        body: Built from commit ${{ github.sha }}
         overwrite: true
