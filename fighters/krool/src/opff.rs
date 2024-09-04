@@ -102,6 +102,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     armored_charge(fighter, motion_kind);
     var_reset(fighter);
     fastfall_specials(fighter);
+    fighter.check_hitfall();
 }
 
 pub extern "C" fn krool_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
