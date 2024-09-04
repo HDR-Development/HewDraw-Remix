@@ -12,10 +12,6 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
-    }
     frame(lua_state, 21.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("handr1"), 9.0, 361, 95, 0, 55, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -63,7 +59,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
             FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
         }
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 11.5, 3, 0, -15, 0, 1.5, true, *EF_FLIP_YZ);
         let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -141,10 +137,6 @@ unsafe extern "C" fn game_specialshi(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
@@ -227,10 +219,6 @@ unsafe extern "C" fn game_specialslw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        VarModule::set_float(agent.battle_object, vars::robot::instance::STICK_ANGLE, ControlModule::get_stick_y(boma));
-    }
     frame(lua_state, 21.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("handr1"), 5.0, 25, 35, 0, 55, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -312,6 +300,18 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
     }
+    frame(lua_state, 15.0);
+    for _ in 0..20 {
+        if is_excute(agent) {
+            if agent.is_situation(*SITUATION_KIND_AIR) {
+                LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 2, 2, 0, 160, 0, 0, 1.0, 10, 0, 4, 0, 0, 0, true);
+            } else {
+                LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, 10, 0, 4, 0, 0, 0, true);
+            }
+            LAST_EFFECT_SET_RATE(agent, 0.75);
+        }
+        wait(lua_state, 15.0);
+    }
 }
 
 unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
@@ -334,45 +334,38 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME) as f32;
 
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, vars::robot::status::HELD_BUTTON);
-        let mut workingDamage = robotFrames/3.5;
-        if robotFrames <= 10.0 {
+        let mut damage = charge_frame / 3.0;
+        if charge_frame <= 10.0 {
             MeterModule::drain_direct(agent.object(), 20.0);
         } else {
-            MeterModule::drain_direct(agent.object(), (robotFrames * 2.0));
+            MeterModule::drain_direct(agent.object(), charge_frame * 2.0);
         }
-        if (workingDamage < 4.0) {
-            workingDamage = 0.0;
-        }
-        if workingDamage != 0.0 {
+        if charge_frame >= 10.0 {
+            let rot = VarModule::get_float(boma.object(), vars::robot::instance::SPECIAL_HI_ROT_X);
+            let angle = (270.0 - (rot * agent.lr() * 0.5)) as u64;
+            //println!("{}", angle);
             /* Ground-only */
-            ATTACK(agent, 0, 0, Hash40::new("knee"), workingDamage, 280, 80, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(agent, 1, 0, Hash40::new("knee"), workingDamage, 280, 80, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(agent, 2, 0, Hash40::new("knee"), workingDamage, 280, 80, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 0, 0, Hash40::new("knee"), damage, angle, 80, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 1, 0, Hash40::new("knee"), damage, angle, 80, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 2, 0, Hash40::new("knee"), damage, angle, 80, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             /* Air-only */
-            ATTACK(agent, 3, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(agent, 4, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-            ATTACK(agent, 5, 0, Hash40::new("knee"), workingDamage, 280, 50, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 3, 0, Hash40::new("knee"), damage, angle, 50, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 4, 0, Hash40::new("knee"), damage, angle, 50, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 5, 0, Hash40::new("knee"), damage, angle, 50, 0, 15, 5.0, 12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 
+        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) { 0.25 }
+        else { 0.35 }
+    );
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-
-        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) {
-            FT_MOTION_RATE(agent, 9.0/(22.0-4.0));
-        }
     }
-    /*frame(lua_state, 12.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::robot::instance::GROUNDED_UPB) {
-            VarModule::on_flag(agent.battle_object, vars::robot::instance::UPB_CANCEL);
-        }
-    }*/
     frame(lua_state, 22.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::robot::instance::UPB_CANCEL);
@@ -382,28 +375,34 @@ unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.55, 0.55, 2.25);
     }
-    if (robotFrames/3.5) > 4.0 {
+    if charge_frame >= 10 {
         frame(lua_state, 1.0);
+        let color: [f32;3] = [ // fades from red to blue as the charge increases
+                /* R */ (1.0 - ((charge_frame - 10) as f32 * 0.02)).clamp(0.15, 1.0),
+                /* G */ 0.55,
+                /* B */ (0.0 + ((charge_frame - 10) as f32 * 0.25)).clamp(0.0, 10.0)
+            ];
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 0.8);
-            LAST_EFFECT_SET_COLOR(agent, 0.15, 0.55, 8.55);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
             
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
             LAST_EFFECT_SET_RATE(agent, 1.5);
             LAST_EFFECT_SET_ALPHA(agent, 0.75);
-            LAST_EFFECT_SET_COLOR(agent, 3.15, 0.55, 0.55);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
             EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
         }
         frame(lua_state, 2.0);
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("robot_nozzle_flare"), Hash40::new("knee1"), 1.5, 0, 0, 90, -90, 0, 1, true);
+            if charge_frame >= 30 { LAST_EFFECT_SET_COLOR(agent, color[0], color[1], color[2]); }
         }
         frame(lua_state, 11.0);
         if is_excute(agent) {
@@ -428,15 +427,14 @@ unsafe extern "C" fn effect_specialhirise(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_specialhirise(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let robotFrames = VarModule::get_float(agent.battle_object, vars::robot::instance::FRAMES_SINCE_UPB);
-
+    let charge_frame = VarModule::get_int(agent.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if (robotFrames/4.0) >= 12.0 {
+        if charge_frame >= 48 {
             QUAKE(agent, *CAMERA_QUAKE_KIND_L);
-        } else if (robotFrames/4.0) >= 8.0 {
+        } else if charge_frame >= 32{
             QUAKE(agent, *CAMERA_QUAKE_KIND_M);
-        } else if (robotFrames/4.0) >= 4.0 {
+        } else if charge_frame >= 16 {
             QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         }
         RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);

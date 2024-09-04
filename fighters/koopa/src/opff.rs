@@ -3,6 +3,11 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+use vars::koopa::{
+    instance::*,
+    status::*
+};
+
 // symbol-based call for the pikachu/pichu characters' common opff
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
@@ -86,28 +91,27 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
 }
 
 // opff for handling the "excellent" punch 
-unsafe fn koopa_ex_punch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn ex_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
         if fighter.status_frame() == 51 { // indicates start of "excellent" frame window
-            VarModule::on_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+            VarModule::on_flag(boma.object(), IS_EXCELLENT_PUNCH);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_RATE(fighter, 3.0);
         } else if fighter.status_frame() == 58 { // window ends
-            VarModule::off_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH);
+            VarModule::off_flag(boma.object(), IS_EXCELLENT_PUNCH);
         }
     }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) {
-        if VarModule::is_flag(fighter.battle_object, vars::koopa::instance::IS_EXCELLENT_PUNCH) {
-            if VarModule::is_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                SlowModule::set_whole(fighter.module_accessor, 8, 40);
-                CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.8, 0.0, 0.0);
-                QUAKE(fighter, *CAMERA_QUAKE_KIND_XL);
-                EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
-                PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
-                PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
-                VarModule::off_flag(fighter.battle_object, vars::koopa::status::PUNCH_CAN_ZOOM);
-            }
-        }
+
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) 
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && VarModule::is_flag(boma.object(), IS_EXCELLENT_PUNCH) {
+        SlowModule::set_whole(boma, 8, 25);
+        PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+        PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
+        EffectModule::req_screen(boma, Hash40::new("bg_criticalhit"), false, true, true);
+
+        VarModule::off_flag(boma.object(), IS_EXCELLENT_PUNCH);
     }
 }
 
@@ -158,8 +162,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
-    fireball_cooldown(boma,status_kind);
-    koopa_ex_punch(fighter);
+    fireball_cooldown(boma, status_kind);
+    ex_punch(fighter, boma);
     initialize_fireball(fighter);
     fastfall_specials(fighter);
 }

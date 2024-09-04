@@ -99,6 +99,20 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_fallspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if agent.is_prev_status(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END) {
+        for _ in 0..10 {
+            if is_excute(agent) {
+                EFFECT_FOLLOW(agent, Hash40::new("duckhunt_trick_smoke"), Hash40::new("top"), 0, 7, -3, 0, 0, 0, 0.6, true);
+                LAST_EFFECT_SET_RATE(agent, 0.5);
+            }
+            wait(lua_state, 30.0); 
+        }
+    }
+}
+
 unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -140,6 +154,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("effect_fallspecial", effect_fallspecial, Priority::Low);
 
     agent.acmd("effect_appealsl", acmd_stub, Priority::Low);
     agent.acmd("effect_appealsr", acmd_stub, Priority::Low);

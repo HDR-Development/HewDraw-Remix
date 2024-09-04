@@ -144,6 +144,9 @@
 		],
 		"fighter/wiifit/cmn": [
 			"fighter/wiifit/param/hdr.xml"
+		],
+		"fighter/inkling/cmn": [
+			"fighter/inkling/param/hdr.xml"
 		]
 	}
 }

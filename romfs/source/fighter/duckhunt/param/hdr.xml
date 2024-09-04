@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
     <struct hash="param_special_hi">
-        <int hash="fuel_max">600</int>
-        <int hash="fuel_burn_rate">3</int>
-        <int hash="fuel_recharge_rate">1</int>
+        <int hash="hi3_stall_end_frame">30</int>
+        <int hash="hi3_control_frame">40</int>
+        <float hash="hi1_limit_speed_x">0.8</float>
+        <float hash="hi1_start_speed_y">0.25</float>
+        <float hash="hi1_start_accel_y">0.044</float>
+        <float hash="hi1_jump_speed_y">1.75</float>
+        <float hash="hi1_jump_accel_y">0.088</float>
+        <float hash="hi2_limit_speed_x">0.9</float>
+        <float hash="hi2_start_speed_y">0.25</float>
+        <float hash="hi2_start_accel_y">0.044</float>
+        <float hash="hi2_jump_speed_y">2.75</float>
+        <float hash="hi2_jump_accel_y">0.088</float>
+        <float hash="hi2_end_speed_x_mul">0.9</float>
+        <float hash="hi2_end_accel_x_mul">0.9</float>
+        <float hash="hi3_start_speed_y">0.15</float>
+        <float hash="hi3_end_speed_x_mul">0.8</float>
+        <float hash="hi3_end_accel_x_mul">0.8</float>
     </struct>
 </struct>
