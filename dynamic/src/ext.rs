@@ -1223,7 +1223,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             let dive_flick_frame_value = self.get_param_int("common", "dive_flick_frame_value");
             if self.left_stick_y() <= dive_cont_value
             && VarModule::get_int(self.object(), vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
-            && AttackModule::is_infliction_status(self, *COLLISION_KIND_HIT) {
+            && AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(self.object(), vars::common::status::SHOULD_HITFALL);
             }
         } else if VarModule::is_flag(self.object(), vars::common::status::SHOULD_HITFALL) {
