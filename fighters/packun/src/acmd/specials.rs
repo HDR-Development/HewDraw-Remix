@@ -43,7 +43,7 @@ unsafe extern "C" fn game_specialsshoot(agent: &mut L2CAgentBase) {
         frame(lua_state, 1.0);
         if is_excute(agent) {
             if !charged {
-                ArticleModule::generate_article(boma, FIGHTER_PACKUN_GENERATE_ARTICLE_FIREBREATH, false, -1);
+                ArticleModule::generate_article(boma, articles::packun::FIREBREATH, false, -1);
                 VarModule::on_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
             }
         }

@@ -70,8 +70,8 @@ pub unsafe extern "C" fn regular_end(weapon: &mut L2CFighterCommon) -> L2CValue 
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_pre);
-    agent.status(Main, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_main);
-    agent.status(Exec, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_exec);
-    agent.status(End, WEAPON_PACKUN_FIREBREATH_STATUS_KIND_REGULAR, regular_end);
+    agent.status(Pre, statuses::packun_firebreath::REGULAR, regular_pre);
+    agent.status(Main, statuses::packun_firebreath::REGULAR, regular_main);
+    agent.status(Exec, statuses::packun_firebreath::REGULAR, regular_exec);
+    agent.status(End, statuses::packun_firebreath::REGULAR, regular_end);
 }
