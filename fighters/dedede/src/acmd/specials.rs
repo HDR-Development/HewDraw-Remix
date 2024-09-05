@@ -100,9 +100,6 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent){
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
     }
     frame(lua_state, 18.0);
@@ -110,7 +107,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
     frame(lua_state, 25.0);
-    FT_MOTION_RATE(agent, 31.0 / (65.0-26.0));    
+    FT_MOTION_RATE_RANGE(agent, 26.0, 65.0, 31.0);
 }
 
 unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
@@ -188,9 +185,6 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(agent){
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
     }
     frame(lua_state, 18.0);
@@ -198,7 +192,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
     frame(lua_state, 25.0);
-    FT_MOTION_RATE(agent, 31.0 / (65.0-26.0));    
+    FT_MOTION_RATE_RANGE(agent, 26.0, 65.0, 31.0)
 
 }
 
@@ -252,14 +246,15 @@ unsafe extern "C" fn game_specialairsmiss(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
+    }
     frame(lua_state, 18.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 32.0 / (65.0 - 26.0));
-    }
+    FT_MOTION_RATE_RANGE(agent, 26.0, 65.0, 23.0);
 }
 
 unsafe extern "C" fn effect_specialsget(agent: &mut L2CAgentBase) {
@@ -271,9 +266,7 @@ unsafe extern "C" fn effect_specialsget(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent){
-        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-           FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-        }   
+        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -293,14 +286,16 @@ unsafe extern "C" fn expression_specialsget(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairsget(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_PUTOUT);
+    }
     frame(lua_state, 18.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_THROW);
     }
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 32.0 / (65.0 - 26.0));
-    }
+    FT_MOTION_RATE_RANGE(agent, 26.0, 65.0, 23.0); //TEST
+
 }
 
 unsafe extern "C" fn effect_specialairsget(agent: &mut L2CAgentBase) {
@@ -312,9 +307,7 @@ unsafe extern "C" fn effect_specialairsget(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent){
-        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::IS_DASH_GORDO){
-            FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-        }
+        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -360,7 +353,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 9.0);
-    FT_MOTION_RATE(agent, 7.0 / (27.0-10.0));
+    FT_MOTION_RATE_RANGE(agent, 10.0, 27.0, 7.0)
 
 }
 
@@ -431,7 +424,7 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 9.0);
-    FT_MOTION_RATE(agent, 7.0 / (27.0-10.0));
+    FT_MOTION_RATE_RANGE(agent, 10.0, 27.0, 7.0)
 
 }
 
@@ -477,10 +470,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let charge_frames = VarModule::get_int(agent.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES);
     let charge_level = charge_frames as f32 / 30.0;
+    FT_MOTION_RATE(agent, 45.0/(23.0));
 
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 45.0/(23.0));
-    }
     frame(lua_state, 1.0);
     if is_excute(agent) {
         if !VarModule::is_flag(agent.battle_object, vars::dedede::instance::CONTINUE_JET_SPIN){
@@ -524,15 +515,13 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         VarModule::set_flag(agent.battle_object, vars::dedede::status::SPECIAL_LW_CONTINUE_SPIN, true);
     }
     frame(lua_state, 19.0);
-    if is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 1.0);
-    }
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 23.0);
+    FT_MOTION_RATE_RANGE(agent, 22.0, 31.0, 7.0);
     if is_excute(agent) {
         KineticModule::clear_speed_all(boma);
         KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         AttackModule::clear_all(agent.module_accessor);
-        FT_MOTION_RATE(agent, 7.0/(31.0 - 22.0));
     }
 }
 
@@ -625,8 +614,8 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     let charge_frames = VarModule::get_int(agent.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES);
     let charge_level = charge_frames as f32 / 30.0;
 
+    FT_MOTION_RATE(agent, 45.0/(23.0));
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 45.0/(23.0));
         KineticModule::clear_speed_all(boma);
     }
     frame(lua_state, 1.0);
@@ -678,9 +667,9 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(agent) {
         KineticModule::clear_speed_all(boma);
-        FT_MOTION_RATE(agent, 7.0/(31.0 - 22.0));
         AttackModule::clear_all(boma);
     }
+    FT_MOTION_RATE_RANGE(agent, 22.0, 31.0, 7.0);
 }
 
 unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {

@@ -123,7 +123,7 @@ special_air_s_get:
     cancel_frame: 53
 special_hi_failure:
   extra:
-    cancel_frame: 98
+    cancel_frame: 41
 special_air_s_miss:
   extra:
     cancel_frame: 57
