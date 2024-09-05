@@ -180,8 +180,14 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         };
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
+        let speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+            fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG)
+        }
+        else {
+            1.0
+        };
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi * fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        let asdi = sdi_mul * base_asdi * speed_up_mul;
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;

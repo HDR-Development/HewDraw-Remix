@@ -37,3 +37,4 @@ fighter/miigunner/param/hdr.xml
 fighter/falco/param/hdr.xml
 fighter/littlemac/param/hdr.xml
 fighter/bayonetta/param/hdr.xml
+fighter/inkling/param/hdr.xml
