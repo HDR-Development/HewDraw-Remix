@@ -125,10 +125,12 @@ pub unsafe fn open_modes_session() {
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check the current match mode
+    let match_mode = utils_dyn::util::get_match_mode().0;
+
     // 1 is regular smash, 45 is online arena match, 58 is local wireless
-    if utils_dyn::util::get_match_mode().0 != 1 
-    && utils_dyn::util::get_match_mode().0 != 45
-    && utils_dyn::util::get_match_mode().0 != 58 {
+    if match_mode != 1 
+    && match_mode != 45
+    && match_mode != 58 {
         //println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
@@ -147,7 +149,19 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
     match get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::SmashballTag) {
-                tag::update();
+                // Smash tag doesn't work on local wireless (Switch or emulator)
+                if match_mode == 58 {
+                    let mut modes_enabled = HashSet::new();
+                    for mode in modes {
+                        if mode != CustomMode::SmashballTag {
+                            modes_enabled.insert(mode);
+                        }
+                    }
+                    CURRENT_CUSTOM_MODES = Some(modes_enabled);
+                }
+                else {
+                    tag::update();
+                }
             }
             // if modes.contains(&CustomMode::TurboMode) {
             //     turbo::update();
