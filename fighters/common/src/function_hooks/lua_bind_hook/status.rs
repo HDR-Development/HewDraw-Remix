@@ -247,10 +247,11 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             }
         }
         // Clears buffer when sliding off an edge in a damaged state, to prevent accidental buffered aerials/airdodges (common on missed techs)
-        else if [*FIGHTER_STATUS_KIND_DOWN,
+        else if ( [*FIGHTER_STATUS_KIND_DOWN,
             *FIGHTER_STATUS_KIND_DOWN_WAIT,
             *FIGHTER_STATUS_KIND_SLIP_WAIT,
             *FIGHTER_STATUS_KIND_DAMAGE].contains(&StatusModule::status_kind(boma))
+            || (boma.is_prev_status(*FIGHTER_STATUS_KIND_DAMAGE_AIR) && boma.is_status(*FIGHTER_STATUS_KIND_LANDING)) )
         && next_status == *FIGHTER_STATUS_KIND_FALL {
             clear_buffer = true;
         }

@@ -133,6 +133,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_fighter_pre_end_status,
             sub_is_dive,
             sub_calc_landing_motion_rate,
+            sub_landing_cancel_damage_face,
         );
     }
 }
@@ -144,10 +145,8 @@ pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValu
         // halve hitstun on non-tumble landing if CC'd
         // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-        let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
-        WorkModule::set_float(fighter.module_accessor, (hitstun * 0.5).max(landing_frame), *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+        WorkModule::set_float(fighter.module_accessor, hitstun * 0.5, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     }
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
     original!()(fighter)
 }
 
@@ -190,6 +189,16 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_B);
     }
+
+
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR {
+        let cancel_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_LANDING_WORK_FLOAT_STIFFNESS_FRAME);
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE)
+        && MotionModule::frame(fighter.module_accessor) >= cancel_frame - 1.0 {
+            ControlModule::clear_command(fighter.module_accessor, false);
+        }
+    }
+
     original!()(fighter)
 }
 
@@ -760,6 +769,13 @@ unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_fram
     let anim_length = end_frame.get_f32() - start_frame;
     let ratio = (anim_length + 0.01) / landing_frame.get_f32();
     ratio.into()
+}
+
+// This runs within FIGHTER_STATUS_KIND_LANDING's end status
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_cancel_damage_face)]
+pub unsafe fn sub_landing_cancel_damage_face(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    original!()(fighter)
 }
 
 pub fn install() {
