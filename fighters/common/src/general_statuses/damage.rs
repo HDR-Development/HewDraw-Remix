@@ -17,7 +17,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             calc_damage_motion_rate_hook,
             sub_DamageFlyCommon_hook,
             exec_damage_elec_hit_stop_hook,
-            FighterStatusDamage__is_enable_damage_fly_effect_hook
+            FighterStatusDamage__is_enable_damage_fly_effect_hook,
+            status_Damage_Main,
+            status_DamageAir_Main
         );
     }
 }
@@ -180,8 +182,14 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         };
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
+        let speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+            fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG)
+        }
+        else {
+            1.0
+        };
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi * fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        let asdi = sdi_mul * base_asdi * speed_up_mul;
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
@@ -453,7 +461,7 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
         if fighter.sub_transition_group_check_air_special().get_bool()
         || fighter.sub_transition_group_check_air_item_throw().get_bool()
         || fighter.sub_transition_group_check_air_lasso().get_bool()
-        || fighter.sub_transition_group_check_air_escape().get_bool()
+//      || fighter.sub_transition_group_check_air_escape().get_bool()
         || fighter.sub_transition_group_check_air_attack().get_bool()
         || fighter.sub_transition_group_check_air_tread_jump().get_bool()
         || fighter.sub_transition_group_check_air_wall_jump().get_bool()
@@ -590,4 +598,32 @@ pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mu
     }
 
     ret
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_Damage_Main)]
+unsafe fn status_Damage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true);
+
+    if MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
+    && MotionModule::prev_frame(fighter.module_accessor) + 0.0001 < cancel_frame - 1.0 {
+        // Prevent buffering out of non-tumble kb
+        ControlModule::clear_command(fighter.module_accessor, false);
+    }
+
+    original!()(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_DamageAir_Main)]
+unsafe fn status_DamageAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true);
+
+    if MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
+    && MotionModule::prev_frame(fighter.module_accessor) + 0.0001 < cancel_frame - 1.0 {
+        // Prevent buffering out of non-tumble kb
+        ControlModule::clear_command(fighter.module_accessor, false);
+    }
+
+    original!()(fighter)
 }
