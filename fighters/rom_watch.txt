@@ -44,3 +44,4 @@ fighter/kirby/param/hdr.xml
 fighter/koopa/param/hdr.xml
 fighter/sonic/param/hdr.xml
 fighter/wiifit/param/hdr.xml
+fighter/inkling/param/hdr.xml
