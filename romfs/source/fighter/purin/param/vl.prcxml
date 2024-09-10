@@ -28,8 +28,8 @@
   <list hash="param_disarmingvoice">
     <struct index="0">
       <float hash="brake_x">0.0</float>
-      <float hash="speed_min">0.85</float>
-      <float hash="speed_max">0.85</float>
+      <float hash="speed_min">0.9</float>
+      <float hash="speed_max">0.9</float>
       <float hash="attack_mul_min">0.0</float>
       <float hash="attack_mul_max">0.0</float>
       <float hash="gravity_start_frame_min">0.0</float>
@@ -40,7 +40,7 @@
       <float hash="floor_bound_y_mul">0.0</float>
       <float hash="hop_speed_x_mul">0.0</float>
       <float hash="hop_speed_y_mul">0.0</float>
-      <int hash="life">120</int>
+      <int hash="life">64</int>
     </struct>
     <struct index="1">
       <float hash="brake_x">0.0</float>
