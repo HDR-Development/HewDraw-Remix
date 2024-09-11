@@ -42,9 +42,9 @@
       <float hash="scale">0.95</float>
       <float hash="walk_speed_max">1.265</float>
       <float hash="ground_brake">0.08</float>
-      <float hash="dash_speed">1.8</float>
+      <float hash="dash_speed">1.71</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.8</float>
+      <float hash="run_speed_max">1.71</float>
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x">1</float>
       <float hash="jump_speed_x_max">1.8</float>
@@ -64,7 +64,7 @@
       <float hash="landing_attack_air_frame_f">13</float>
       <float hash="landing_attack_air_frame_b">9</float>
       <float hash="landing_attack_air_frame_hi">13</float>
-      <bool hash="wall_jump_type">true</bool>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.775</float>
       <float hash="tread_mini_jump_speed_y_mul">0.775</float>
       <float hash="passive_wall_jump_x_speed">1.1</float>
