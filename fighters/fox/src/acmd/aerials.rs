@@ -213,20 +213,18 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 2.0, 8.0, -3.5, 23, 120, 220, 0.9, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 2.0, 8.0, -3.5, 35, 130, 220, 0.9, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6.5, -12.0, 0, 0, 0, 1.35, 0, 0, 0, 0, 0, 0, true, 0.65);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 9, -9, 0, 0, 0, 1.35, true, 0.65);
     }
 }
 
 unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_fox_rnd_attack"));
         PLAY_SE(agent, Hash40::new("se_fox_swing_m"));
@@ -236,7 +234,7 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

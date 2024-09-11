@@ -37,6 +37,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_attack"));
         PLAY_SE(agent, Hash40::new("se_falco_attackhard_l01"));
     }
 }
@@ -201,15 +202,6 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_falco_attackhard_l01"));
-    }
-}
-
 unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -244,7 +236,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), -2, 2.5, 2.5, 215, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 2.0, 8.0, -3.5, 35, 130, 220, 0.9, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -252,10 +244,20 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_falco_rnd_attack"));
+        PLAY_SE(agent, Hash40::new("se_falco_attackhard_l01"));
+    }
+}
+
 unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
