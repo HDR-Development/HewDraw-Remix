@@ -590,11 +590,8 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
 
-    if ret.get_bool() {
-        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 
-        || fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 52.0 {
-            return false.into();
-        }
+    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
+        return L2CValue::Bool(false);
     }
 
     ret

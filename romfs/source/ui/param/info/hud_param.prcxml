@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <struct hash="hud_loupe_param">
+    <float hash="loupe_min_scale">1</float>
+    <float hash="loupe_max_scale">1</float>
+  </struct>
+</struct>
