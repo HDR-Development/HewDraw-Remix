@@ -298,10 +298,10 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     some_bool: L2CValue
 ) {
     let min_mul = 1.0;
-    let max_mul = 2.3;
+    let max_mul = 2.0;
     let power = 1.9;
-    let speed_start = 4.5;
-    let speed_end = 7.29;
+    let speed_start = 5.1;
+    let speed_end = 7.5;
     let speed = factor.get_f32();
     dbg!(speed);
 
@@ -322,9 +322,40 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
         mul.clamp(min_mul, max_mul)
     };
 
+    dbg!(speed_up_mul);
+    // let angle_adjusted_mul = (speed_up_mul * damage_speed_up_angle_mul(fighter, angle)).clamp(min_mul, max_mul);
+    // dbg!(angle_adjusted_mul);
+
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
     WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
 }
+
+// unsafe extern "C" fn damage_speed_up_angle_mul(
+//     fighter: &mut L2CFighterCommon,
+//     angle: L2CValue,
+// ) -> f32 {
+//     let angle = angle.get_f32();
+//     let angle_from_horizontal = 90.0 - ((angle % 180.0).abs() - 90.0).abs();  // value of 0-90
+//     dbg!(angle);
+//     dbg!(angle_from_horizontal);
+
+//     let angle_mul_threshold = 29.358_f32.to_radians();  // angle from horizontal at which angle-based speedup mul begins applying
+//     let min_angle_mul = 0.85;  // applied at straight-vertical angles
+//     let max_angle_mul = 1.0;  // applied at and below angle_mul_threshold
+
+//     let angle_mul = if angle_from_horizontal >= angle_mul_threshold {
+//         let angle_rad = angle_from_horizontal.to_radians();
+//         let angle_factor =  ((angle_mul_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_mul_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
+//             / ((angle_rad.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_rad.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt();
+//         let ratio = (1.0 - angle_factor) / (1.0 - 0.693);
+//         interpolation::Lerp::lerp(&max_angle_mul, &min_angle_mul, &ratio)
+//     } else {
+//         1.0
+//     };
+
+//     dbg!(angle_mul);
+//     return angle_mul;
+// }
 
 unsafe extern "C" fn check_damage_speed_up_fail(fighter: &mut L2CFighterCommon) -> bool {
     let log = DamageModule::damage_log(fighter.module_accessor);
