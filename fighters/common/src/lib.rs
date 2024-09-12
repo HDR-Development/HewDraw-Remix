@@ -1,6 +1,7 @@
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
+#![allow(improper_ctypes)]
 #![feature(repr_simd)]
 #![feature(simd_ffi)]
 use smash::app::lua_bind::*;
@@ -28,6 +29,9 @@ pub mod general_statuses;
 pub mod function_hooks;
 pub mod shoto_status;
 // pub mod tag;
+
+// for storing what team color the last attacker had. used in a couple different common files
+pub static mut LAST_ATTACK_TEAM_COLOR: i32 = 0;
 
 extern "C" fn common_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
