@@ -18,8 +18,8 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
     WorkModule::set_int(boma, 0x1e, 0x100000c1);        // *FIGHTER_KROOL_INSTANCE_WORK_ID_INT_WAIST_HIT_FLASH_COUNT
 
     // store incoming damage
-    let stored_damage = VarModule::get_float(battle_object, vars::krool::instance::STORED_DAMAGE);
-    VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, f32::min(stored_damage + damage, 45.0));
+    let stored_damage = VarModule::get_float(battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE);
+    VarModule::set_float(battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE, f32::min(stored_damage + damage, 45.0));
 
     if damage > ParamModule::get_float(battle_object, ParamType::Agent, "param_waist.deplete_damage_min") {
         // decrease belly health

@@ -272,7 +272,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi");
-        VarModule::off_flag(agent.object(), vars::mariod::instance::UP_SPECIAL_CANCEL);
+        VarModule::off_flag(agent.object(), vars::mariod::instance::SPECIAL_HI_GROUND_INTERRUPT);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -287,7 +287,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
         if boma.is_stick_backward() {
-            VarModule::on_flag(agent.object(), vars::mariod::instance::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(agent.object(), vars::mariod::instance::SPECIAL_HI_GROUND_INTERRUPT);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         }
         else {
@@ -439,7 +439,7 @@ unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if VarModule::is_flag(agent.object(), vars::mariod::instance::UP_SPECIAL_CANCEL) {
+    if VarModule::is_flag(agent.object(), vars::mariod::instance::SPECIAL_HI_GROUND_INTERRUPT) {
         FT_MOTION_RATE_RANGE(agent, 1.0, 29.0, 24.0);
     }
     frame(lua_state, 29.0);

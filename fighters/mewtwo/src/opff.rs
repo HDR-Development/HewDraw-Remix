@@ -7,29 +7,29 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if fighter.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2) {
         if StatusModule::is_changing(boma) {
             if boma.get_num_used_jumps() >= boma.get_jump_count_max() {
-                VarModule::off_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL);
+                VarModule::off_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL);
             } else {
-                if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL) { 
-                    VarModule::on_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL);
+                if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_FREEFALL) { 
+                    VarModule::on_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL);
                 }
                 if !fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
                     fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOAT);
                 } //Burns jump, enables flag if started without using DJ
             }
-        } else if MotionModule::is_end(boma) && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL) {
+        } else if MotionModule::is_end(boma) && VarModule::is_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL) {
             PostureModule::set_stick_lr(boma, 0.0);
             PostureModule::update_rot_y_lr(boma);
         } // Allows M2 to turnaround based on stick position when reappearing
     }
     if fighter.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_FREEFALL);
         }
     }
     // Actionability when double jump isn't burned
     if fighter.is_motion(Hash40::new("special_air_hi"))
-    && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL)
+    && VarModule::is_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL)
     && fighter.motion_frame() > 9.0 {
         VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         CancelModule::enable_cancel(boma);

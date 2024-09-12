@@ -39,7 +39,7 @@ unsafe extern "C" fn ike_special_s_dash_main(fighter: &mut L2CFighterCommon) -> 
     if !StopModule::is_stop(fighter.module_accessor) {
         ike_special_s_dash_substatus(fighter, false.into());
     }
-    VarModule::set_flag(fighter.battle_object, vars::ike::status::IS_QUICK_DRAW_GROUND, fighter.is_situation(*SITUATION_KIND_GROUND));
+    VarModule::set_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_GROUND_START, fighter.is_situation(*SITUATION_KIND_GROUND));
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ike_special_s_dash_substatus as *const () as _));
     ike_special_s_dash_mot_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(ike_special_s_dash_main_loop as *const () as _))
@@ -76,7 +76,7 @@ unsafe extern "C" fn ike_special_s_dash_mot_helper(fighter: &mut L2CFighterCommo
         Hash40::new("special_air_s_dash")
     }
     else {
-        if VarModule::is_flag(fighter.battle_object, vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_INSTAKILL) {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         } else {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
@@ -110,8 +110,8 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
     
     // jump cancels
     fighter.check_wall_jump_cancel();
-    if !VarModule::is_flag(fighter.battle_object, vars::ike::status::IS_QUICK_DRAW_INSTAKILL) 
-    && VarModule::is_flag(fighter.battle_object, vars::ike::status::IS_QUICK_DRAW_GROUND) {
+    if !VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_INSTAKILL) 
+    && VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_GROUND_START) {
         VarModule::set_float(fighter.battle_object, vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw
         fighter.check_jump_cancel(true, false);
     }

@@ -120,8 +120,8 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
                 KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
             // If you haven't touched a wall yet, set the wall touch flag to true and store the frame you touched the wall
-            if !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL){
-                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
+            if !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL){
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL);
                 VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, MotionModule::frame(boma));
             }
             
@@ -130,22 +130,22 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         else {
             // If the horizontal momentum you have after touching the wall is opposite your initial up b momentum, multiply the horizontal momentum by -1.0 to get back in the right direction
             
-            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL)
-               && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH)
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL)
+               && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_REVERSE_MOMENTUM)
                && x_momentum * VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM) < 0.0{
                 KineticModule::mul_speed(boma, &wall_leave, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_REVERSE_MOMENTUM);
             }
             
             
             // Get the x momentum while not touching the wall so we can grab it later for if we touch then leave the wall
             VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_MOMENTUM, x_momentum);
             // If you've touched a wall and are no longer touching a wall...
-            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL){
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPESPECIAL_HI_ATTACK_LEAVE_WALL
                 // No longer touching a wall, set the wall touch flag to off
-                VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
+                VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL);
                 // Notify us that we've left the wall, set the wall leave flag to on
-                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_LEAVE_WALL);
                 // Grab the frame we left the wall so we can calculate our deceleration
                 VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, MotionModule::frame(boma));  
             }
@@ -185,10 +185,10 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM, 10001.0);
         VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, 10001.0);
         VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, 10001.0);
-        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
-        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
-        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
-        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_LEAVE_WALL);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_REVERSE_MOMENTUM);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_SET_WALL_LEAVE_MOMENTUM);
     }
 }
 

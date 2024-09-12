@@ -22,12 +22,12 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
                 itemmanager, fighter.boma().battle_object_id, 
                 smash2::app::ItemKind::Barrel);
             if barrel_count == 0 {
-                VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
+                VarModule::on_flag(fighter.object(), vars::donkey::instance::SPECIAL_LW_BARREL_GENERATED);
                 ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
                 EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
             }
         } else {
-            VarModule::off_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
+            VarModule::off_flag(fighter.object(), vars::donkey::instance::SPECIAL_LW_BARREL_GENERATED);
         }
         
         // change into the heavy item pickup status either way

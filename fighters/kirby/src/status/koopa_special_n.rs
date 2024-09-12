@@ -3,7 +3,7 @@ use super::*;
 // FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
+    let can_fireball = VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN) <= 0;
     if !can_fireball {
         return smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N)(fighter);
     }
@@ -57,13 +57,13 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
+    let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN) <= 0;
     if (!can_fireball){
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_START)
         && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_END)
         {
-            if VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) < KOOPA_MAX_COOLDOWN {
-                VarModule::inc_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME);
+            if VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN) < KOOPA_MAX_COOLDOWN {
+                VarModule::inc_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN);
             }
         }
         return smashline::original_status(Exec, fighter, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N)(fighter);
@@ -74,7 +74,7 @@ unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn special_n_execstop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) <= 0;
+    let can_fireball =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN) <= 0;
     if (!can_fireball){
         return smashline::original_status(ExecStop, fighter, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N)(fighter);
     }

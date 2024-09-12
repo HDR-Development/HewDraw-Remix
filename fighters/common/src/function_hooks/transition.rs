@@ -125,7 +125,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         //Disable Duck Hunt Down Special on a timer
         if boma.kind() == *FIGHTER_KIND_DUCKHUNT  {
-            if VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) != 0 
+            if VarModule::get_int(boma.object(), vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER) != 0 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false
             }

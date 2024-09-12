@@ -227,7 +227,7 @@ unsafe extern "C" fn game_specialhi2fall(agent: &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
         FT_MOTION_RATE(agent, 0.8);
     }
-    if VarModule::is_flag(agent.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) {
+    if VarModule::is_flag(agent.battle_object, vars::miiswordsman::instance::SPECIAL_HI2_DASH_HIT) {
         FT_MOTION_RATE(agent, 0.5);
     }
 }

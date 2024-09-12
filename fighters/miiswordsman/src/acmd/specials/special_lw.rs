@@ -208,14 +208,14 @@ unsafe extern "C" fn game_speciallw2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 6.0, 12.0, 16.0);
     if is_excute(agent) {
         if boma.is_button_on(Buttons::Special) {
-            VarModule::on_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD);
+            VarModule::on_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD);
         }
     }
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_REVERSE_SLASH_FLAG_SPECIAL_FALL);
-        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 15.0 } else { 0.0 };
+        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD) { 15.0 } else { 0.0 };
         ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 60, 55, 0, 40, 5.0, 0.0, 9.0, 15.0 + hold, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 30, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 60, 55, 0, 40, 2.0, 0.0, 2.0, 15.0 + hold, Some(0.0), Some(27.0), Some(15.0 + hold), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 2, 0, Hash40::new("top"), 12.0, 60, 55, 0, 40, 3.0, 0.0, 30.0, 12.0 + hold, Some(0.0), Some(30.0), Some(18.0 + hold), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 24, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_OBJECT);
@@ -248,13 +248,13 @@ unsafe extern "C" fn effect_speciallw2(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_thunder"), Hash40::new("arml"), 4, 0, 0, 0, 0, 0, 0.4, true);
-        if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) {
+        if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD) {
             EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15.0, 8.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 13 } else { 0 };
+        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD) { 13 } else { 0 };
         EFFECT_FOLLOW(agent, Hash40::new("sys_smokescreen"), Hash40::new("top"), 0, 25, 13 + hold, 0, 0.0, 0, 0.4, true);
         LAST_EFFECT_SET_SCALE_W(agent, 0.4, 0.25, 0.4);
         LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
@@ -262,7 +262,7 @@ unsafe extern "C" fn effect_speciallw2(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.5);
     if is_excute(agent) {
-        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 13 } else { 0 };
+        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD) { 13 } else { 0 };
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0.5, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
         }
@@ -271,7 +271,7 @@ unsafe extern "C" fn effect_speciallw2(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SHOCK_SPELL_HOLD) { 13 } else { 0 };
+        let hold = if VarModule::is_flag(agent.object(), vars::miiswordsman::status::SPECIAL_LW2_SHOCK_SPELL_HOLD) { 13 } else { 0 };
         EFFECT_FOLLOW(agent, Hash40::new("sys_damage_paralysis"), Hash40::new("arml"), 4, 0, 0, 0, 0, 0, 0.35, true);
         EFFECT_FOLLOW(agent, Hash40::new("sys_hit_elec"), Hash40::new("top"), 0, 8, 13 + hold, 0, 0, 0, 0.4, true);
         LAST_EFFECT_SET_COLOR(agent, 1.0, 0.84, 0.17);

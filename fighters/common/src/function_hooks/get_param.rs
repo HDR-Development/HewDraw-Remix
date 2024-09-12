@@ -251,12 +251,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
             else if x1 == hash40("param_private") {
                 if x2 == hash40("final_wave_speed") {
-                    if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
+                    if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::SPECIAL_N1_WAVE) {
                         return 2.0;
                     }
                 }
                 else if x2 == hash40("final_wave_scale_max") {
-                    if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
+                    if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::SPECIAL_N1_WAVE) {
                         return 0.5;
                     }
                 }
@@ -273,7 +273,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         
         else if fighter_kind == *FIGHTER_KIND_MIIGUNNER {
             if x1 == hash40("param_special_hi") && x2 == hash40("hi1_first_jump_y_speed") {
-                return 3.5 + (2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CURRENT_CHARGE)) / 29.0;
+                return 3.5 + (2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::ATTACK_CHARGE)) / 29.0;
             }
         }
 
@@ -429,7 +429,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         else if fighter_kind == *WEAPON_KIND_MIIGUNNER_GRENADELAUNCHER {
             if x1 == hash40("param_grenadelauncher") {
                 if x2 == hash40("angle") {
-                    let charge = VarModule::get_float(owner_module_accessor.object(), vars::miigunner::instance::GRENADE_CHARGE);
+                    let charge = VarModule::get_float(owner_module_accessor.object(), vars::miigunner::instance::SPECIAL_N3_CHARGE);
                     return 34.0 + charge;
                 }
             }

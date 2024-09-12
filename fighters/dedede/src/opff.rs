@@ -31,11 +31,11 @@ unsafe fn bust_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let chest_y: f32 = VarModule::get_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y);
+    let chest_y: f32 = VarModule::get_float(boma.object(), vars::dedede::instance::SPECIAL_N_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma.object(), vars::dedede::instance::INHALE_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), vars::dedede::instance::SPECIAL_N_STICK_Y, stick_y);
         rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame
@@ -69,15 +69,15 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         if ((gordo_pos.x - (char_pos.x + offset.x)).abs() < 19.0 && (gordo_pos.y - (char_pos.y + offset.y)).abs() < 15.0){
             if ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR) 
             || ((StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LANDING) && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR)) 
-            && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG){
+            && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE){
                 if fighter.status_frame() > 1 
                 && fighter.status_frame() < 4 { //We don't want to go into recatch if we are in the middle of airdodge/landing
                     if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD{
-                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
-                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, true);
-                        VarModule::inc_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER);
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, false);
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS, true);
+                        VarModule::inc_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT);
 
-                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, true);
+                        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_REMOVED, true);
                         ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
 
                         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
@@ -111,21 +111,21 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
         || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_LANDING 
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
         || WorkModule::is_flag(boma, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD){
-            VarModule::set_flag(fighter.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, true);
+            VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, true);
         }
         //Prevents B reversing when we are in the dash
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S 
-        && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO){
+        && VarModule::is_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS){
             if fighter.status_frame() > 1 && fighter.status_frame() < 4{
                 ControlModule::reset_main_stick(boma);
             }
         }
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG, false);
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_REMOVED, false);
     }
     //checking if gordo does not exist, but is not removed by this function
-    else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::IS_REMOVED_FLAG){
-        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::IS_DASH_GORDO, false);
-        VarModule::set_int(fighter.battle_object, vars::dedede::instance::RECATCH_COUNTER, 0); 
+    else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_REMOVED){
+        VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS, false);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT, 0); 
     }
 }
 

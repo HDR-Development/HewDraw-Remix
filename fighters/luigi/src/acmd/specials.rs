@@ -151,7 +151,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 2, 15, 5, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-        if VarModule::get_int(agent.object(), vars::luigi::instance::REMAINING_SPECIAL_S_UNTIL_MISFIRE) <= 0 {
+        if VarModule::get_int(agent.object(), vars::luigi::instance::SPECIAL_S_REMAINING_COUNT) <= 0 {
             LAST_EFFECT_SET_SCALE_W(agent, 0.8, 0.8, 0.8);
             LAST_EFFECT_SET_COLOR(agent, 0.0, 1.0, 0.0);
         }
@@ -165,7 +165,7 @@ unsafe extern "C" fn effect_specialshold(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(boma) as u32;
-        VarModule::set_int(agent.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(agent, 0.0, 0.8, 0.0);
         }
@@ -174,7 +174,7 @@ unsafe extern "C" fn effect_specialshold(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 00, 4, 0, 0, 0, false);
             let handle = EffectModule::get_last_handle(boma) as u32;
-            VarModule::set_int(agent.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
+            VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_SMOKE_EFFECT_HANDLE, handle as i32);
             if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
                 LAST_EFFECT_SET_COLOR(agent, 0.0, 0.7, 0.3);
             }
@@ -190,7 +190,7 @@ unsafe extern "C" fn effect_specialairshold(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(boma) as u32;
-        VarModule::set_int(agent.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(agent, 0.0, 0.8, 0.0);
         }
@@ -238,8 +238,8 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsdischarge(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let misfire_multiplier = VarModule::get_float(agent.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER);
-    VarModule::set_float(agent.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
+    let misfire_multiplier = VarModule::get_float(agent.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_DAMAGE_MUL);
+    VarModule::set_float(agent.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_DAMAGE_MUL, 1.0);
     frame(lua_state, 4.0);
     if is_excute(agent) {
         SA_SET(agent, *SITUATION_KIND_AIR);

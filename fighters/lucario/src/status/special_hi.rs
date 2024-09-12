@@ -221,7 +221,7 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
 }
 
 unsafe extern "C" fn lucario_special_hi_metered_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
+    if VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT) {
         return false.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -236,7 +236,7 @@ unsafe extern "C" fn lucario_special_hi_metered_cancel(fighter: &mut L2CFighterC
         MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
         let frames = 120.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
         VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
-        VarModule::on_flag(fighter.object(), vars::lucario::instance::IS_USPECIAL_ATTACK_CANCEL);
+        VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
         return true.into();
     }
     return false.into();

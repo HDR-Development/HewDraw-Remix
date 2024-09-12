@@ -74,16 +74,16 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
 
         return material;
     } else { // alternative logic for kirby
-        let index = VarModule::get_int(pickel, vars::kirby::instance::MATERIAL_INDEX) as i32;
+        let index = VarModule::get_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX) as i32;
         let material = material_table[index as usize] as u32; // stores current table index to return
-        if VarModule::is_flag(pickel, vars::kirby::instance::SHOULD_CYCLE_MATERIAL) {
+        if VarModule::is_flag(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL) {
             if (0..99).contains(&index) { // continue the cycle
-                VarModule::inc_int(pickel, vars::kirby::instance::MATERIAL_INDEX);
+                VarModule::inc_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX);
             } else { // reset the cycle
-                VarModule::set_int(pickel, vars::kirby::instance::MATERIAL_INDEX, 0);
+                VarModule::set_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX, 0);
             }
-            VarModule::off_flag(pickel, vars::kirby::instance::SHOULD_CYCLE_MATERIAL);
-            VarModule::set_int(pickel, vars::kirby::status::MINING_TIMER, 2);
+            VarModule::off_flag(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL);
+            VarModule::set_int(pickel, vars::kirby::status::SPECIAL_N_PICKEL_MINING_TIMER, 2);
             // logging for debug purposes
             // let mut mat_name = "nothing lol";
             // if material == 0 { mat_name = "dirt"; }

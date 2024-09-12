@@ -478,16 +478,16 @@ unsafe fn trail_magic_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 // handles kirby's mining behavior when copying steve
 unsafe fn pickel_mining(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) { 
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_PICKEL {
-        if VarModule::get_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX) as i32 > 99 {
-            VarModule::set_int(boma.object(), vars::kirby::instance::MATERIAL_INDEX, 0);
+        if VarModule::get_int(boma.object(), vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX) as i32 > 99 {
+            VarModule::set_int(boma.object(), vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX, 0);
         }
         
         // wait 2 frames before letting the material table advance, preventing any jumps in entries
-        if !VarModule::is_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL) {
-            if VarModule::get_int(boma.object(), vars::kirby::status::MINING_TIMER) == 0 {
-                VarModule::on_flag(boma.object(), vars::kirby::instance::SHOULD_CYCLE_MATERIAL);
+        if !VarModule::is_flag(boma.object(), vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL) {
+            if VarModule::get_int(boma.object(), vars::kirby::status::SPECIAL_N_PICKEL_MINING_TIMER) == 0 {
+                VarModule::on_flag(boma.object(), vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL);
             } else {
-                VarModule::dec_int(boma.object(), vars::kirby::status::MINING_TIMER);
+                VarModule::dec_int(boma.object(), vars::kirby::status::SPECIAL_N_PICKEL_MINING_TIMER);
             }
         }
     }
@@ -683,7 +683,7 @@ unsafe fn koopa_flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind:
         return;
     }
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N {
-        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
+        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, 0);
         if frame < 23.0 && !cooleddown {
             if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 MotionModule::set_frame(boma, 22.0, true);
@@ -703,12 +703,12 @@ unsafe fn koopa_fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_
     } */
 
     if (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_KOOPA) {
-        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
-        let charged_effect =  VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);
+        let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, 0);
+        let charged_effect =  VarModule::get_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID);
         //If cooling down, remove ready effect
         if !cooleddown {
             if charged_effect > 0 {
-                VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,0);
+                VarModule::set_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID,0);
                 if EffectModule::is_exist_effect(boma, charged_effect as u32) {
                     EffectModule::kill(boma, charged_effect as u32, false,false);
                 }
@@ -725,7 +725,7 @@ unsafe fn koopa_fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_
             let pos = &Vector3f{x: 0.0, y: 5.0, z: 0.0};
             let rot = &Vector3f{x: 180.0, y: 0.0, z: 50.0};
             let handle = EffectModule::req_follow(boma, Hash40::new("koopa_breath_m_fire"), Hash40::new("body"), pos, rot, 1.0, true, 0, 0, 0, 0, 0, false, false) as u32;
-            VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID,handle as i32);
+            VarModule::set_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID,handle as i32);
         }
     }
 }
@@ -1173,7 +1173,7 @@ unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Ba
 // No Copy Ability
 unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_KOOPA {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,KOOPA_MAX_COOLDOWN);
     }
     if ( WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_LUCAS || [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind)  || !sv_information::is_ready_go() ) {
         //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");

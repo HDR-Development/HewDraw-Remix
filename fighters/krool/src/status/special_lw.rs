@@ -67,20 +67,20 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     if (6..29).contains(&fighter.status_frame()) // gut charge logic
     && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-    && VarModule::is_flag(fighter.object(), vars::krool::status::GUT_CHECK_CHARGED) {
-        VarModule::off_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
+    && VarModule::is_flag(fighter.object(), vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
+        VarModule::off_flag(fighter.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED);
         MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 30.0, true, true, false);
     }
     if fighter.status_frame() > 8  // Allows for jump cancel on frame 10 (35 in animation) if not charged
-    && !VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
+    && !VarModule::is_flag(fighter.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED)
     && !fighter.is_in_hitlag() {
         fighter.check_jump_cancel(false, false);
     }
-    if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)    // restore armor on full charge hit
+    if VarModule::is_flag(fighter.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED)    // restore armor on full charge hit
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         WorkModule::set_float(fighter.module_accessor, 4.0, 0x4d);
-        VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
+        VarModule::set_float(fighter.battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE, 0.0);
     }
 
     return 0.into()

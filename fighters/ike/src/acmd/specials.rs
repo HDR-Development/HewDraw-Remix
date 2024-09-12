@@ -100,7 +100,7 @@ unsafe extern "C" fn game_specialsdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 0, 0, 0, 4.0, 0.0, 4.1, -1.0, Some(0.0), Some(4.1), Some(-15.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 10, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         }
     }
@@ -113,7 +113,7 @@ unsafe extern "C" fn effect_specialsdash(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 13, 4, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
     }
@@ -125,7 +125,7 @@ unsafe extern "C" fn effect_specialsdash(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     for _ in 0..3{
         if is_excute(agent) {
-            if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+            if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
                 EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
             }
             FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
@@ -138,7 +138,7 @@ unsafe extern "C" fn sound_specialsdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             PLAY_SE(agent, Hash40::new("vc_ike_appeal02"));
         }
         else{
@@ -161,7 +161,7 @@ unsafe extern "C" fn game_specialsattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     // Instakill
-    if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+    if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
         frame(lua_state, 1.0);
         if is_excute(agent) {
             agent.select_cliff_hangdata_from_name("special_s");
@@ -233,7 +233,7 @@ unsafe extern "C" fn effect_specialsattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, false);
@@ -244,7 +244,7 @@ unsafe extern "C" fn effect_specialsattack(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 4);
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
             /* 
             let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
@@ -256,20 +256,20 @@ unsafe extern "C" fn effect_specialsattack(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("ike_sword"), true, true);
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT_OFF_KIND(agent, Hash40::new("ike_volcano_hold"), false, false);
             EFFECT(agent, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             ColorBlendModule::cancel_main_color(boma, 0);
         }
     }
@@ -344,13 +344,13 @@ unsafe extern "C" fn expression_specialsattack(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             RUMBLE_HIT(agent, Hash40::new("rbkind_slash_critical"), 0);
         }
     }
     frame(lua_state, 1.3);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if !VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
         }
     }
@@ -365,7 +365,7 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
             let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.0}; // Diffuse vector
             ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.0, 0.0, /*Fadein time*/ 15, /* Display Color */ true);
@@ -380,7 +380,7 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
         wait(lua_state, 4.0);
     }
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT_OFF_KIND(agent, Hash40::new("ike_volcano_hold"), false, false);
             ColorBlendModule::cancel_main_color(boma, 0);
         }

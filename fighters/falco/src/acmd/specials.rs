@@ -212,11 +212,11 @@ unsafe extern "C" fn effect_speciallwloop(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if !VarModule::is_flag(agent.battle_object, vars::falco::status::SET_EFFECT) {
+    if !VarModule::is_flag(agent.battle_object, vars::falco::status::SPECIAL_LW_SET_EFFECT) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2, 0, 0, 0, 0.8, true);
             EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.2, 0, -0.5, 0, 0, 0, 1, true);
-            VarModule::on_flag(agent.battle_object, vars::falco::status::SET_EFFECT);
+            VarModule::on_flag(agent.battle_object, vars::falco::status::SPECIAL_LW_SET_EFFECT);
         }
     }
     if is_excute(agent) {
@@ -300,11 +300,11 @@ unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if !VarModule::is_flag(agent.battle_object, vars::falco::status::SET_EFFECT) {
+    if !VarModule::is_flag(agent.battle_object, vars::falco::status::SPECIAL_LW_SET_EFFECT) {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, -2, 0, 0, 0, 0.8, true);
             EFFECT_FOLLOW(agent, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.2, 0, -0.5, 0, 0, 0, 1, true);
-            VarModule::on_flag(agent.battle_object, vars::falco::status::SET_EFFECT);
+            VarModule::on_flag(agent.battle_object, vars::falco::status::SPECIAL_LW_SET_EFFECT);
         }
     }
 }

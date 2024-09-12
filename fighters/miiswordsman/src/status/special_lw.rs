@@ -28,7 +28,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw1") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw1") {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             //println!("Kinesis activation");
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
+            //VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT),
                 L2CValue::Bool(false)

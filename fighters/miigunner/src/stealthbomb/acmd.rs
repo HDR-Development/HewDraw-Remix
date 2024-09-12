@@ -21,7 +21,7 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.15, 10.0);
             EffectModule::set_rgb(boma, flash_handle as u32, 0.15, 0.15, 10.0);
             EffectModule::set_rate(boma, flash_handle as u32, 0.3);
-            VarModule::set_int64(gunner, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER, flash_handle);
+            VarModule::set_int64(gunner, vars::miigunner::instance::SPECIAL_S2_STEALTHBOMB_EFFECT_HANDLE, flash_handle);
         }
 	}
     for h in 101..=120 {
@@ -29,7 +29,7 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 			let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_MIIGUNNER {
         		let gunner = utils::util::get_battle_object_from_id(owner_id);
-				let flash_handle = VarModule::get_int64(gunner, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER);
+				let flash_handle = VarModule::get_int64(gunner, vars::miigunner::instance::SPECIAL_S2_STEALTHBOMB_EFFECT_HANDLE);
 				let start_color = Vector3f { x: 0.15, y: 0.15, z: 10.0 };
                 let end_color = Vector3f { x: 10.0, y: 0.15, z: 0.15 };
                 // Smoothly interpolate from starting to ending color

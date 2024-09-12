@@ -56,7 +56,7 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("littlemac_special_n") } else { Hash40::new("littlemac_special_air_n") };
     MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-    if !VarModule::is_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY_END) {
+    if !VarModule::is_flag(fighter.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_END) {
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -107,7 +107,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed_x, 0.0);
-            if VarModule::is_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY_END) {
+            if VarModule::is_flag(fighter.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_END) {
                 sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
@@ -116,9 +116,9 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             }
         }
     }
-    if VarModule::is_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY) {
-        VarModule::on_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY_END);
-        VarModule::off_flag(fighter.object(), vars::kirby::status::KO_PUNCH_GRAVITY);
+    if VarModule::is_flag(fighter.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE) {
+        VarModule::on_flag(fighter.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_END);
+        VarModule::off_flag(fighter.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE);
         if !fighter.is_situation(*SITUATION_KIND_GROUND) {
             let sum_spd_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);

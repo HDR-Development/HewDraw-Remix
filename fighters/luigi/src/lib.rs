@@ -53,7 +53,7 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
         let remaining = app::sv_math::rand(hash40("fighter"), range).clamp(min + 1, max);
         VarModule::set_int(
             fighter.battle_object,
-            vars::luigi::instance::REMAINING_SPECIAL_S_UNTIL_MISFIRE,
+            vars::luigi::instance::SPECIAL_S_REMAINING_COUNT,
             remaining
         );
     }

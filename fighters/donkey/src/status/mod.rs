@@ -46,10 +46,10 @@ unsafe extern "C" fn status_change(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
         || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
     {
-        VarModule::off_flag(
-            fighter.battle_object,
-            vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL,
-        );
+        // VarModule::off_flag(
+        //     fighter.battle_object,
+        //     vars::donkey::instance::SPECIAL_LW_AIR_USED,
+        // );
     }
     0.into()
 }
@@ -62,7 +62,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_start(on_start);
+    //agent.on_start(on_start);
 
     item_throw_heavy::install(agent);
     special_hi::install(agent);

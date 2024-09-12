@@ -7,8 +7,8 @@ unsafe extern "C" fn special_lw3_catch_main(fighter: &mut L2CFighterCommon) -> L
     let throw_speed_max_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("lw3_throw_speed_max_y"));
     let motion;
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        if !VarModule::is_flag(fighter.object(), vars::miifighter::instance::WILD_THROW_STALL) {
-            VarModule::on_flag(fighter.object(), vars::miifighter::instance::WILD_THROW_STALL);
+        if !VarModule::is_flag(fighter.object(), vars::miifighter::instance::SPECIAL_LW3_STALL) {
+            VarModule::on_flag(fighter.object(), vars::miifighter::instance::SPECIAL_LW3_STALL);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
             sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -start_accel_y);
