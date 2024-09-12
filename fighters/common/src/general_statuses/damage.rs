@@ -629,13 +629,15 @@ pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mu
     // dont disable smoke during sped-up knockback
     let is_speed_up = WorkModule::is_flag(fighter.boma(), *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
 
-    if ret.get_bool() && !is_air_spike && !is_speed_up {
+    if ret.get_bool()  {
         if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 10.0 {
             //println!("disabling smoke - low fly distance");
             return false.into();
         }
 
-        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 51.0 {
+        if !is_air_spike 
+        && !is_speed_up 
+        && fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 51.0 {
             //println!("disabling smoke - low reaction frame");
             return false.into();
         }
