@@ -421,7 +421,6 @@ unsafe fn module_access_effect_hook(lua_state: u64) {
     for i in 0..17 { params[i as usize] = agent.pop_lua_stack(i + 1) };
 
     agent.clear_lua_stack();
-    let mut pls_wait = false;
     for i in 0..17 {
         if i == 1 { // effect hash index
             let mut effect_name = params[i as usize].get_hash();
