@@ -981,17 +981,13 @@ pub mod vars {
     pub mod mario {
         pub mod instance {
             // flags
-            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0100;
             pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0101;
         }
-
         pub mod status {
             // flags
-            pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x1100;
-            pub const AERIAL_COMMAND_RISING: i32 = 0x1101;
-            pub const AERIAL_COMMAND_RISEN: i32 = 0x1102;
-
             pub const FIREBRAND: i32 = 0x1100;
+            pub const SPECIAL_LW_GROUND_START: i32 = 0x0101;
         }
     }
 
@@ -1699,9 +1695,7 @@ pub mod vars {
 
     pub mod yoshi {
         pub mod status {
-            pub use super::super::mario::status::{
-                AERIAL_COMMAND_MOMENTUM_RESET, AERIAL_COMMAND_RISEN, AERIAL_COMMAND_RISING,
-            };
+            
         }
     }
 
