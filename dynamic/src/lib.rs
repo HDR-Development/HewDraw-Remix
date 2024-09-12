@@ -1,4 +1,5 @@
 #![allow(non_upper_case_globals)]
+#![allow(unused)]
 pub mod offsets;
 pub mod util;
 pub mod singletons;
