@@ -621,9 +621,22 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
 
-    if ret.get_bool() {
-        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 
-        || fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 52.0 {
+    // dont disable smoke when a fighter is getting spiked
+    let is_air_spike = 
+        VarModule::is_flag(fighter.object(), vars::common::status::IS_SPIKE)
+        && KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0;
+
+    // dont disable smoke during sped-up knockback
+    let is_speed_up = WorkModule::is_flag(fighter.boma(), *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+
+    if ret.get_bool() && !is_air_spike && !is_speed_up {
+        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 10.0 {
+            //println!("disabling smoke - low fly distance");
+            return false.into();
+        }
+
+        if fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) < 51.0 {
+            //println!("disabling smoke - low reaction frame");
             return false.into();
         }
     }
