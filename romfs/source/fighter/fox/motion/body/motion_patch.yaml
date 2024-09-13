@@ -39,7 +39,6 @@ attack_air_b:
 attack_dash:
   extra:
     cancel_frame: 36
-attack_hi3: null
 attack_lw3:
   extra:
     cancel_frame: 27
