@@ -11,6 +11,7 @@ mod guard;
 mod jump;
 mod rebirth;
 mod recreate_table;
+mod special_hi;
 mod special_s;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
@@ -36,5 +37,6 @@ pub fn install(agent: &mut Agent) {
     jump::install(agent);
     rebirth::install(agent);
     recreate_table::install(agent);
+    special_hi::install(agent);
     special_s::install(agent);
 }

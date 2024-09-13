@@ -29,16 +29,8 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     return 0.into();
 }
 
-unsafe extern "C" fn special_hi_detach_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let boost = VarModule::is_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
-    let ret = smashline::original_status(Pre, fighter, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH)(fighter);
-    VarModule::set_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE, boost);
-    ret
-}
-
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT, special_hi_pre);
     agent.status(Pre, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, special_hi_pre);
     agent.status(Pre, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, special_hi_pre);
-    agent.status(Pre, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, special_hi_detach_pre);
 }

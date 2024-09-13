@@ -1,24 +1,17 @@
 use super::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_HI
-
-pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    KineticModule::mul_speed(fighter.module_accessor, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter)
-}
-
-unsafe extern "C" fn special_hi_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_move_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_KOOPAJR_SPECIAL_HI_SHOOT,
+        *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
-        true,
+        false,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0
+        (*FS_SUCCEEDS_KEEP_HIT | *FS_SUCCEEDS_KEEP_ATTACK) as i32
     );
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
@@ -28,7 +21,7 @@ unsafe extern "C" fn special_hi_shoot_pre(fighter: &mut L2CFighterCommon) -> L2C
         false,
         false,
         (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
-        0,
+        (*FIGHTER_STATUS_ATTR_DISABLE_DISSOLVE_CURSOR | *FIGHTER_STATUS_ATTR_HIDE_NAME_CURSOR) as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
@@ -37,6 +30,5 @@ unsafe extern "C" fn special_hi_shoot_pre(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
-    agent.status(Pre, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_SHOOT, special_hi_shoot_pre);
+    agent.status(Pre, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE, special_hi_move_pre);
 }

@@ -761,11 +761,9 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
-        //FT_MOTION_RATE(fighter, 6.0/(6.0-4.0));
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        //FT_MOTION_RATE(fighter, 1.0);
         SA_SET(agent, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 7.0);
@@ -790,11 +788,10 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
         AttackModule::set_force_reaction(boma, 4, true, false);
     }
     frame(lua_state, 13.0);
+    FT_MOTION_RATE(agent, 0.9);
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
-        FT_MOTION_RATE(agent, 0.9);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         AttackModule::clear(boma, 2, false);
         AttackModule::clear(boma, 3, false);
         AttackModule::clear(boma, 4, false);
@@ -819,10 +816,8 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
         ATTACK(agent, 1, 0, Hash40::new("arml"), 2.5, 5, 5, 0, 30, 3.0, 1.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.7, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
-            FT_MOTION_RATE(agent, 1.5);
-        }
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
+        FT_MOTION_RATE(agent, 1.5);
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -838,13 +833,13 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
         VarModule::on_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE_RANGE(agent, 4.0, 6.0, 4.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
-        FT_MOTION_RATE(agent, 4.0/(6.0-4.0));
     }
     frame(lua_state, 6.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.0);
         SA_SET(agent, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 7.0);
@@ -865,7 +860,6 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         FT_MOTION_RATE(agent, 0.9);
@@ -893,10 +887,8 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
         ATTACK(agent, 1, 0, Hash40::new("arml"), 2.5, 5, 5, 0, 30, 3.0, 1.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.7, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 25.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
-            FT_MOTION_RATE(agent, 1.25);
-        }
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
+        FT_MOTION_RATE(agent, 1.25);
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -924,19 +916,19 @@ unsafe extern "C" fn effect_specialairhistart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhiturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
     frame(lua_state, 1.0);
-    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
-        FT_MOTION_RATE(agent, 5.0/(3.0 - 1.0));
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END) {
+        FT_MOTION_RATE_RANGE(agent, 1.0, 3.0, 5.0);
     }
     else {
         FT_MOTION_RATE(agent, 1.0);
     }
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
-    }
     frame(lua_state, 3.0);
-    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END){
-        FT_MOTION_RATE(agent, 6.0/(6.0 - 3.0));
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END) {
+        FT_MOTION_RATE_RANGE(agent, 3.0, 6.0, 6.0);
     }
     else {
         FT_MOTION_RATE(agent, 1.0);
@@ -971,7 +963,6 @@ unsafe extern "C" fn game_specialairhifall(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 70, 100, 0, 50, 7.0, 0.0, 12.0, 1.0, Some(0.0), Some(7.0), Some(3.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 3.0);

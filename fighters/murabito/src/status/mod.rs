@@ -4,6 +4,7 @@ use globals::*;
 
 mod attack_air;
 mod jump;
+mod special_hi;
 mod special_s;
  
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -35,5 +36,6 @@ pub fn install(agent: &mut Agent) {
 
     attack_air::install(agent);
     jump::install(agent);
+    special_hi::install(agent);
     special_s::install(agent);
 }

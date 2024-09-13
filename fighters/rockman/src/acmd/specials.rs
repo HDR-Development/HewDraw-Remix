@@ -236,6 +236,15 @@ unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -280,6 +289,9 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialairs", game_specialairs, Priority::Low);
     agent.acmd("effect_specialairs", effect_specialairs, Priority::Low);
+
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
 
