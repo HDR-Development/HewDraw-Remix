@@ -30,7 +30,7 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     // Actionability when double jump isn't burned
     if fighter.is_motion(Hash40::new("special_air_hi"))
     && VarModule::is_flag(boma.object(), vars::mewtwo::instance::TELEPORT_CANCEL)
-    && fighter.motion_frame() > 7.0 {
+    && fighter.motion_frame() > 9.0 {
         VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         CancelModule::enable_cancel(boma);
     }
