@@ -3,8 +3,6 @@ use super::*;
 #[skyline::from_offset(0xb96770)]
 fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
 
-// FIGHTER_KIRBY_STATUS_KIND_LITTLEMAC_SPECIAL_N_START
-
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(fighter.module_accessor,

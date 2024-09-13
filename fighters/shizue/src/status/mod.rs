@@ -4,6 +4,7 @@ use globals::*;
 
 mod dead;
 mod special_hi;
+mod special_lw;
 mod special_s;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
@@ -16,5 +17,6 @@ pub fn install(agent: &mut Agent) {
 
     dead::install(agent);
     special_hi::install(agent);
+    special_lw::install(agent);
     special_s::install(agent);
 }

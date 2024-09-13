@@ -7,6 +7,7 @@ mod attack_air;
 mod float;
 mod fall;
 mod special_hi;
+mod special_lw;
 mod special_n;
 
 extern "Rust" {
@@ -51,5 +52,6 @@ pub fn install(agent: &mut Agent) {
     float::install(agent);
     fall::install(agent);
     special_hi::install(agent);
+    special_lw::install(agent);
     special_n::install(agent);
 }
