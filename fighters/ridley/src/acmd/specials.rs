@@ -278,7 +278,7 @@ unsafe extern "C" fn game_speciallwstab(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SPECIAL_LW_STICK_Y);
         let mut z_mod = -1.0 * grab_y;
         // no angle (normal Skewer)
         if grab_y == 0.0 {
@@ -324,7 +324,7 @@ unsafe extern "C" fn effect_speciallwstab(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SPECIAL_LW_STICK_Y);
         let mut rot = 0 - ((grab_y * 25.0) as i32);
         let mut y_mod = if grab_y == 0.0 {0.0} else if grab_y > 0.0 {6.0} else {-3.0};
         if grab_y < 0.0 {

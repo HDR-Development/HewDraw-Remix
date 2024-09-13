@@ -43,7 +43,7 @@ unsafe extern "C" fn reset_mythra_up_special_freefall(fighter: &mut L2CFighterCo
             let object = unsafe { &mut *object };
             let kind = object.kind as i32;
             if kind == *FIGHTER_KIND_ELIGHT {
-                VarModule::off_flag(object, vars::elight::instance::SPECIAL_HI_FREEFALL);
+                VarModule::off_flag(object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
                 return;
             }
         }
@@ -55,7 +55,7 @@ unsafe extern "C" fn reset_mythra_up_special_freefall(fighter: &mut L2CFighterCo
             let object = unsafe { &mut *object };
             let kind = object.kind as i32;
             if kind == *FIGHTER_KIND_ELIGHT {
-                VarModule::off_flag(object, vars::elight::instance::SPECIAL_HI_FREEFALL);
+                VarModule::off_flag(object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
                 return;
             }
         }

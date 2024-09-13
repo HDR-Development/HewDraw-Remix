@@ -769,12 +769,12 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
 // Palutena Cyan Energy
 // This Energy is unique to Kirby and allows Auto Reticle to be used. Colorless Attack gives 3 energy instead of 1.
 unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f32, boma: &mut BattleObjectModuleAccessor) {
-    let current_energy = VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+    let current_energy = VarModule::get_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT);
     if fighter.motion_frame() < 2.0 {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        if VarModule::is_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR) {
+        if VarModule::is_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT) {
             if fighter.is_motion(Hash40::new("attack_s3_hi"))
             || fighter.is_motion(Hash40::new("attack_s3_s"))
             || fighter.is_motion(Hash40::new("attack_s3_lw"))
@@ -787,15 +787,15 @@ unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f
             || fighter.is_motion(Hash40::new("attack_air_lw"))
             || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 {
                 //println!("Hit detected! Increasing energy NOW!");
-                VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-                VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+                VarModule::off_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
+                VarModule::inc_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT);
                 MeterModule::add(boma.object(), 1.0);
             }
         }
         if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PALUTENA_SPECIAL_N {
             //println!("Hit detected! Increasing energy NOW!");
-            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-            VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, current_energy + 3);
+            VarModule::off_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT, current_energy + 3);
             MeterModule::add(boma.object(), 3.0);
         }
         if fighter.is_motion(Hash40::new("attack_s4_hi"))
@@ -804,8 +804,8 @@ unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f
         || fighter.is_motion(Hash40::new("attack_hi4"))
         || fighter.is_motion(Hash40::new("attack_lw4")) { // Seperate check for S4 attacks because the previous method does not work.
             //println!("Seperate check for Smash Attacks passed. Increasing energy NOW!");
-            VarModule::off_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
-            VarModule::inc_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY);
+            VarModule::off_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
+            VarModule::inc_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT);
             MeterModule::add(boma.object(), 1.0);
         }
     }
@@ -815,8 +815,8 @@ unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f
 unsafe fn cyan_charge_limiter(fighter: &mut L2CFighterCommon) {
     // Limits storeable energy to 6. Colorless Attack can increase it even more if the attacks connects, but if not consumed, it is reset to 6.
     if !fighter.is_motion_one_of(&[Hash40::new("palutena_special_n"), Hash40::new("palutena_special_air_n")])
-    && VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) > 6 {
-        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 6);
+    && VarModule::get_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT) > 6 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT, 6);
     }
 }
     
@@ -1151,7 +1151,7 @@ unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Ba
     if frame == 12.0 && fighter.is_motion_one_of(&[
         Hash40::new("ken_special_air_n"),
     ]) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_N_HADOKEN_AIR);
     }
     // after frame 13, disallow changing from aerial to grounded hadoken
     // instead, we enter a landing animation
@@ -1191,8 +1191,8 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, -1);
     }
-    if VarModule::get_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY) != 0 {
-        VarModule::set_int(fighter.object(), vars::palutena::instance::CYAN_ENERGY, 0);
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT) != 0 {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT, 0);
         MeterModule::drain_direct(boma.object(), 6.0);
     }
 }
@@ -1263,10 +1263,10 @@ unsafe fn packun_ptooie_stance(fighter: &mut smash::lua2cpp::L2CFighterCommon, b
 
 unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.3);
+        VarModule::set_float(boma.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.3);
     }
     else {
-        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.0);
+        VarModule::set_float(boma.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.0);
     }
 }
 

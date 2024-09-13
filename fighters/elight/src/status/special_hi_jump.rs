@@ -140,7 +140,7 @@ unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CV
     }
 
     if fighter.global_table[globals::STATUS_KIND].get_i32() != statuses::elight::SPECIAL_HI_FINISH2 {
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_FREEFALL);
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
     
     //Disable up special

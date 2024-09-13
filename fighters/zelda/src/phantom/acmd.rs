@@ -70,7 +70,7 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
 			let handle = EffectModule::req_follow(boma, Hash40::new("zelda_entry"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::new(0.0, 150.0, 0.0), 0.75, false, 0, 0, 0, 0, 0, false, false);
-			VarModule::set_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER, handle);
+			VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE, handle);
 		}
 		LAST_EFFECT_SET_COLOR(agent, 0.4, 0.0, 1.0);
 	}
@@ -138,7 +138,7 @@ unsafe extern "C" fn effect_attackkick(agent: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
-			let handle = VarModule::get_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER);
+			let handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE);
 			EffectModule::set_scale(boma, handle as u32, &Vector3f::zero());
 		}
 	}
@@ -206,7 +206,7 @@ unsafe extern "C" fn effect_attackpunch(agent: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
-			let handle = VarModule::get_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER);
+			let handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE);
 			EffectModule::set_scale(boma, handle as u32, &Vector3f::zero());
 		}
 	}
@@ -276,7 +276,7 @@ unsafe extern "C" fn effect_attacks(agent: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
-			let handle = VarModule::get_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER);
+			let handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE);
 			EffectModule::set_scale(boma, handle as u32, &Vector3f::zero());
 		}
 		if PostureModule::lr(boma) > 0.0 {
@@ -403,7 +403,7 @@ unsafe extern "C" fn effect_attackl(agent: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
-			let handle = VarModule::get_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER);
+			let handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE);
 			EffectModule::set_scale(boma, handle as u32, &Vector3f::zero());
 		}
 	}
@@ -556,13 +556,13 @@ unsafe extern "C" fn game_cancel(agent: &mut L2CAgentBase) {
 	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
 	frame(lua_state, 1.0);
-	if VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED) {
+	if VarModule::is_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM) {
 		FT_MOTION_RATE_RANGE(agent, 1.0, 34.0, 99.0);
 	}
 	frame(lua_state, 30.0);//100
-	if VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED) {
+	if VarModule::is_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM) {
 		FT_MOTION_RATE_RANGE(agent, 30.0, 90.0, 320.0); //8 seconds
-		VarModule::off_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED);
+		VarModule::off_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM);
 	}
 }
 

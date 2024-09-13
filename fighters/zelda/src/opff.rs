@@ -54,7 +54,7 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
         if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
-                VarModule::on_flag(fighter.battle_object, vars::zelda::instance::FORWARD_PHANTOM);
+                VarModule::on_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_FORWARD_PHANTOM);
             }//cancel if phantom is off cd
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
@@ -106,28 +106,28 @@ pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCom
             GroundModule::pass_floor(boma);
         }//platdrop
     }
-    let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER);
+    let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE);
     //disables effects on winscreen (one of them spawns a phantom)
     if (fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go())  && handle >= 1 {
         EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
-        VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -2);
+        VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -2);
     } else {
         if ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !EffectModule::is_exist_effect(boma, handle as u32) && handle > -1 {
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -1);
             } //resets effect
             if handle == -1 {
                 let handle = EffectModule::req_follow(boma, Hash40::new("zelda_phantom_aura"), Hash40::new("havel"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 1.05, true, 0, 0, 0, 0, 0, true, true) as u32;
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, handle as i32);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, handle as i32);
             }//if phantom spawned and effects are enabled
         } else {
             if handle >= 0 { //when phantom dies play effect then shift to clear flags
                 EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.8, true);
                 app::FighterUtil::flash_eye_info(fighter.module_accessor);
                 EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
-                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_DISABLED);
-                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_HIT);
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
+                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM);
+                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -1);
             }//-1 allows effects to be spawned
         }
     }

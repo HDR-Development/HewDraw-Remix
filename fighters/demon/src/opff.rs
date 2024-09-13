@@ -196,19 +196,19 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         || fighter.is_situation(*SITUATION_KIND_CLIFF)
         || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
     {
-        VarModule::off_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
 
     if fighter.is_prev_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
 
     if fighter.is_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
         if fighter.is_situation(*SITUATION_KIND_AIR)
         && !StatusModule::is_changing(fighter.module_accessor)
-        && VarModule::is_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_FREEFALL) {
+        && VarModule::is_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
                 let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;

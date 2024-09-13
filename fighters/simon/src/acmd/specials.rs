@@ -33,7 +33,7 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(agent) {
         if agent.is_situation(*SITUATION_KIND_AIR) {
-           VarModule::on_flag(agent.battle_object, vars::simon::status::CROSS_LAND);
+           VarModule::on_flag(agent.battle_object, vars::simon::status::SPECIAL_S_LAND_CANCEL);
         }
     }
     frame(lua_state, 26.0);

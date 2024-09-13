@@ -66,7 +66,7 @@ unsafe extern "C" fn game_busterchargeshot(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CHARGESHOT, false, -1);
-        VarModule::off_flag(agent.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
+        VarModule::off_flag(agent.battle_object, vars::rockman::status::SPECIAL_N_CHARGE_SHOT_KEEP_CHARGE);
     }
 }
 

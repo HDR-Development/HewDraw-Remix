@@ -4,8 +4,8 @@ use super::*;
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-    || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB) {
-        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB);
+    || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_GROUND_START) {
+        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_GROUND_START);
         smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
     }
     else {
@@ -24,35 +24,18 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_TO_FINISH);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_LANDING);
-        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_pogo"), 0.0, 1.0, false, 0.0, false, false);
         fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
     }
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING) {
-        if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-            return true.into()
-        }
-        else if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            return true.into()
-        }
-        else if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-                return true.into()
-            }
-        }
-    }
-    else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         if VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_LANDING) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
             fighter.set_situation(SITUATION_KIND_GROUND.into());
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_pogo_landing"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING);
         }
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
@@ -60,11 +43,13 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     else if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_WAIT.into() } else { FIGHTER_STATUS_KIND_FALL.into() };
+        fighter.change_status(status, false.into());
         return true.into()
     }
     else if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_air_check_fall_common().get_bool() {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
             return true.into()
         }
     }

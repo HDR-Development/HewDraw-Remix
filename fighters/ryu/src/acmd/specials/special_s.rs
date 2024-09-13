@@ -26,7 +26,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_GROUND {
             shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 11.0, 0.0, 11.0, 7.0, 0.0, 11.0, -7.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         }
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_INVINCIBLE);
@@ -35,7 +35,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 1.0);
-    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::EX_SPECIAL_USED) {
         FT_MOTION_RATE(agent, 0.5);
         agent.set_int(*FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     } else {
@@ -46,7 +46,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT) > 2 {
             agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         }
-        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::EX_SPECIAL_USED) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 2.4, 366, 100, 70, 0, 3.5, 0.0, 12.5, -11.0, Some(0.0), Some(12.5), Some(12.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(agent, 1, 0, Hash40::new("top"), 2.4, 366, 100, 70, 0, 3.5, 0.0, 5.5, -5.5, Some(0.0), Some(5.5), Some(6.25), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
         } else {
@@ -69,7 +69,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::EX_SPECIAL_USED) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 2.4, 366, 100, 70, 0, 3.5, 0.0, 12.5, -11.0, Some(0.0), Some(12.5), Some(12.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(agent, 1, 0, Hash40::new("top"), 2.4, 366, 100, 70, 0, 3.5, 0.0, 5.5, -5.5, Some(0.0), Some(5.5), Some(6.25), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
         } else {
@@ -100,7 +100,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
         if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_GROUND {
             shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         }
-        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::EX_SPECIAL_USED) {
             AttackModule::clear_all(boma);
             ATTACK(agent, 0, 0, Hash40::new("top"), 13.1, 75, 70, 0, 85, 3.5, 0.0, 12.5, -11.0, Some(0.0), Some(12.5), Some(12.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(agent, 1, 0, Hash40::new("top"), 13.1, 75, 70, 0, 85, 3.5, 0.0, 5.5, -5.5, Some(0.0), Some(5.5), Some(6.25), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
@@ -125,7 +125,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
             EFFECT_FOLLOW_FLIP(agent, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
@@ -147,33 +147,33 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
             }
         }
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("ryu_tatsumaki_smoke_r"), Hash40::new("ryu_tatsumaki_smoke_l"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_NORMAL(agent);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }
@@ -184,7 +184,7 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -195,7 +195,7 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             EFFECT(agent, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 14, 10.5, 3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -212,7 +212,7 @@ unsafe extern "C" fn effect_specialairsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -223,7 +223,7 @@ unsafe extern "C" fn effect_specialairsend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             EFFECT(agent, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 14, 10.5, 3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -234,7 +234,7 @@ unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
             EFFECT_FOLLOW_FLIP(agent, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
@@ -249,33 +249,33 @@ unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_NORMAL(agent);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             COL_PRI(agent, 200);
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 0.7);
         }
     }

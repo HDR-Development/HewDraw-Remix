@@ -1176,7 +1176,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if(fighter_kind == *FIGHTER_KIND_PICKEL){
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
-            if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
+            if VarModule::get_float(boma.object(), vars::pickel::status::SPECIAL_HI_GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
             }
         }

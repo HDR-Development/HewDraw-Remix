@@ -249,7 +249,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -268,7 +268,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         //WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
-        VarModule::on_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+        VarModule::on_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL);
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {
@@ -277,7 +277,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 39.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
-        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL);
     }
 }
 
@@ -285,7 +285,7 @@ unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {

@@ -14,14 +14,14 @@ mod recreate_table;
 mod special_s;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::SHOULD_CYCLE_MATERIAL);
-    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::CAN_RESPAWN_TABLE);
-    VarModule::off_flag(fighter.battle_object, vars::pickel::instance::SHOULD_RESET_ROT);
+    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::CYCLE_MATERIAL);
+    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::TABLE_ENABLE_RESPAWN);
+    VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_RESET_ROT);
     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-    VarModule::set_int(fighter.battle_object, vars::pickel::instance::HITSTUN_TIMER, 0);
-    VarModule::set_float(fighter.battle_object, vars::pickel::instance::DAMAGE_TRACKER, 0.0);
-    VarModule::set_float(fighter.battle_object, vars::pickel::instance::TABLE_HP_TRACKER, 20.0);
+    VarModule::set_int(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_HITSTUN_TIMER, 0);
+    VarModule::set_float(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_STORED_DAMAGE, 0.0);
+    VarModule::set_float(fighter.battle_object, vars::pickel::instance::TABLE_CURRENT_LIFE, 20.0);
 }
 
 pub fn install(agent: &mut Agent) {

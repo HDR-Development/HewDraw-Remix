@@ -64,7 +64,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
         }
     
         if fighter_kind == *FIGHTER_KIND_RYU {
-            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) && x1 == hash40("param_special_s") && (x2 == hash40("loop_num_w") || x2 == hash40("loop_num_m") || x2 == hash40("loop_num_s") || x2 == hash40("loop_num_w") || x2 == hash40("air_loop_num_m") || x2 == hash40("air_air_loop_num_s")) {
+            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::EX_SPECIAL_USED) && x1 == hash40("param_special_s") && (x2 == hash40("loop_num_w") || x2 == hash40("loop_num_m") || x2 == hash40("loop_num_s") || x2 == hash40("loop_num_w") || x2 == hash40("air_loop_num_m") || x2 == hash40("air_air_loop_num_s")) {
                 return 3;
             }
         }
@@ -86,7 +86,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
         if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
-            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) {
+            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_ENABLE_EXPLODE) {
                 if x1 == hash40("param_spikeball") { 
                     if x2 == hash40("hop_life") {
                         return 105;
@@ -221,7 +221,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
         // Ken aerial hadouken modified offsets for aerial version
         else if fighter_kind == *FIGHTER_KIND_KEN {
-            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR) {
+            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR) {
                 if x1 == hash40("param_special_n") {
                     if x2 == hash40("shoot_x") {
                         return 11.0;
@@ -436,7 +436,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
 
         else if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
-            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SHOULD_EXPLODE) {
+            if VarModule::is_flag(owner_module_accessor.object(), vars::packun::instance::PTOOIE_ENABLE_EXPLODE) {
                 if x1 == hash40("param_spikeball") {
                     if x2 == hash40("hop_speed_x") {
                         return 0.0;

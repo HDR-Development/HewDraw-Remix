@@ -45,39 +45,39 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
         || WorkModule::is_flag(module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD) {
             rockman_kill_charge(module_accessor, object);
         }
-        else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
+        else if !VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_CHARGING) {
             if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
-                VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING);
+                VarModule::on_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_CHARGING);
             }
         }
         else {
             if ControlModule::get_button(module_accessor) >> 1 & 1 == 0 {
-                if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
+                if !VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX) {
                     rockman_kill_charge(module_accessor, object);
                 }
-                else if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE) {
-                    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME, CHARGE_SHOT_RELEASE_FRAME);
-                    VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE);
+                else if !VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE) {
+                    VarModule::set_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE_FRAME, CHARGE_SHOT_RELEASE_FRAME);
+                    VarModule::on_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE);
                 }
             }
 
-            if VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME) >= 0 {
-                VarModule::dec_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME);
+            if VarModule::get_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE_FRAME) >= 0 {
+                VarModule::dec_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE_FRAME);
             }
-            if VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX)
+            if VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX)
             && (
-                VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE)
-                && VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME) == 0
+                VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE)
+                && VarModule::get_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE_FRAME) == 0
             ) {
                 rockman_kill_charge(module_accessor, object);
             }
         }
-        if VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING) {
-            let charge_frame = VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
+        if VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_CHARGING) {
+            let charge_frame = VarModule::get_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_FRAME);
             if charge_frame < CHARGE_SHOT_MAX_FRAME + 1 {
-                VarModule::inc_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
+                VarModule::inc_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_FRAME);
             }
-            let charge_frame = VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME);
+            let charge_frame = VarModule::get_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_FRAME);
             if charge_frame == CHARGE_SHOT_MAX_FRAME {
                 FighterUtil::flash_eye_info(module_accessor);
                 EffectModule::req_follow(
@@ -101,7 +101,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                 ControlModule::clear_command_one(module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_N);
             }
             if charge_frame > CHARGE_SHOT_DELAY_CHARGE_FRAME {
-                if !VarModule::is_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
+                if !VarModule::is_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX) {
                     SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0));
                     EffectModule::req_follow(
                         module_accessor,
@@ -120,8 +120,8 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                         false
                     );
                     let eff_handle = EffectModule::get_last_handle(module_accessor) as u32;
-                    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_EFF_HANDLE, eff_handle as i32);
-                    VarModule::on_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX);
+                    VarModule::set_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_EFFECT_HANDLE, eff_handle as i32);
+                    VarModule::on_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX);
                 }
             }
         }
@@ -188,13 +188,13 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
 }
 
 unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor, object: *mut BattleObject) {
-    VarModule::off_flag(object, vars::rockman::instance::CHARGE_SHOT_CHARGING);
-    VarModule::off_flag(object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX);
-    VarModule::off_flag(object, vars::rockman::instance::CHARGE_SHOT_RELEASE);
-    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_RELEASE_FRAME, 0);
+    VarModule::off_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_CHARGING);
+    VarModule::off_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX);
+    VarModule::off_flag(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE);
+    VarModule::set_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE_FRAME, 0);
     SoundModule::stop_se(module_accessor, Hash40::new("se_rockman_smash_s02"), 0);
-    VarModule::set_int(object, vars::rockman::instance::CHARGE_SHOT_FRAME, 0);
-    let eff_handle = VarModule::get_int(object, vars::rockman::instance::CHARGE_SHOT_EFF_HANDLE) as u32;
+    VarModule::set_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_FRAME, 0);
+    let eff_handle = VarModule::get_int(object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_EFFECT_HANDLE) as u32;
     if EffectModule::is_exist_effect(module_accessor, eff_handle) {
         EffectModule::kill(module_accessor, eff_handle, true, true);
     }

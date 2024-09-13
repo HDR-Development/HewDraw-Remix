@@ -8,15 +8,15 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let is_teleport = (
-        !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
+        !VarModule::is_flag(boma.object(), SPECIAL_LW_TICO_UNAVAILABLE) 
         && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0
     );
     if is_teleport {
         frame(lua_state, 17.0);
-        if !VarModule::is_flag(boma.object(), IS_INVALID_TELEPORT) {
+        if !VarModule::is_flag(boma.object(), SPECIAL_LW_INVALID_WARP) {
             if is_excute(agent) {
                 if boma.is_situation(*SITUATION_KIND_GROUND) { 
-                    VarModule::on_flag(boma.object(), GROUNDED_TELEPORT); 
+                    VarModule::on_flag(boma.object(), SPECIAL_LW_WARP_GROUND_START); 
                 }
                 // disappear in preparation for the teleport
                 HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
@@ -86,7 +86,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             }
             frame(lua_state, 38.0);
             if is_excute(agent) {
-                if VarModule::is_flag(boma.object(), GROUNDED_TELEPORT) {
+                if VarModule::is_flag(boma.object(), SPECIAL_LW_WARP_GROUND_START) {
                     CancelModule::enable_cancel(boma);
                 }
             }
@@ -115,7 +115,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let is_teleport = (
-        !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
+        !VarModule::is_flag(boma.object(), SPECIAL_LW_TICO_UNAVAILABLE) 
         && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0
     );
     if is_teleport {
@@ -132,7 +132,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
         }
         frame(lua_state, 26.0);
         if is_excute(agent) {
-            if !VarModule::is_flag(boma.object(), IS_INVALID_TELEPORT) {
+            if !VarModule::is_flag(boma.object(), SPECIAL_LW_INVALID_WARP) {
                 EFFECT(agent, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
                 if ArticleModule::is_exist(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO) {
                     let tico = ArticleModule::get_article(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO);
@@ -150,7 +150,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     let is_teleport = (
-        !VarModule::is_flag(boma.object(), IS_TICO_UNAVAILABLE) 
+        !VarModule::is_flag(boma.object(), SPECIAL_LW_TICO_UNAVAILABLE) 
         && VarModule::get_int(boma.object(), GIMMICK_TIMER) == 0
     ); 
     if is_teleport {

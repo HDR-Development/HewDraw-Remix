@@ -9,7 +9,7 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             if boma.get_num_used_jumps() >= boma.get_jump_count_max() {
                 VarModule::off_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL);
             } else {
-                if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_FREEFALL) { 
+                if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_ENABLE_FREEFALL) { 
                     VarModule::on_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL);
                 }
                 if !fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
@@ -24,7 +24,7 @@ unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
     if fighter.is_prev_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
     // Actionability when double jump isn't burned

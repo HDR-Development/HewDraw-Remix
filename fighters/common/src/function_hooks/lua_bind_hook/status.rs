@@ -283,9 +283,9 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         else if boma.kind() == *FIGHTER_KIND_TRAIL {
             if StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
             && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
-            && ((!VarModule::is_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT)
+            && ((!VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_INPUT_CHECK)
             && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
-                || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
+                || VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP)) { 
                 next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
             }
             // prevent sora from immediately acting out of the down smash bounce 
@@ -304,21 +304,21 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         else if boma.kind() == *FIGHTER_KIND_REFLET
         && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && !VarModule::is_flag(boma.object(), vars::reflet::instance::UP_SPECIAL_FREEFALL) {
+        && !VarModule::is_flag(boma.object(), vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_MEWTWO 
         && StatusModule::status_kind(boma) == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL)
-        && !VarModule::is_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_FREEFALL) {
+        && !VarModule::is_flag(boma.object(), vars::mewtwo::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_PALUTENA 
         && StatusModule::status_kind(boma) == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL)
-        && !VarModule::is_flag(boma.object(), vars::palutena::instance::UP_SPECIAL_FREEFALL) {
+        && !VarModule::is_flag(boma.object(), vars::palutena::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
         else if boma.kind() == *FIGHTER_KIND_KOOPAJR {

@@ -45,12 +45,12 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
         if !pearl_active
         && agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD) >=1
         && VarModule::get_int(boma.object(), PEARL_COOLDOWN) == 0 {
-            VarModule::on_flag(boma.object(), IS_THROW_PEARL);
+            VarModule::on_flag(boma.object(), SPECIAL_S_THROW_PEARL);
         }
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, false, -1);
             ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
             // re-imburse steve the 1 iron it costs to generate the trolley article
@@ -66,7 +66,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -4.0, 9, 5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         } else {
@@ -84,7 +84,7 @@ unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if !VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             PLAY_SE(agent, Hash40::new("se_pickel_special_s11"));
         }
     }
@@ -95,7 +95,7 @@ unsafe extern "C" fn expression_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if !VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
     }
