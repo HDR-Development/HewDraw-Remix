@@ -611,20 +611,6 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         }
     }
 
-    if fighter_kind == *FIGHTER_KIND_GANON {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame < 39.0 {
-                return 0;
-            }
-        }
-
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
-            //if frame < 42.0 {
-                return 1;
-            //}
-        }
-    }
-
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
         if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 {
             return 1;
