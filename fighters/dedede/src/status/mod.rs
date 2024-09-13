@@ -6,7 +6,7 @@ mod special_hi;
 mod special_lw;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon){
-    VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT, 0);
+    VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT, 0);
 }
 
 pub fn install(agent: &mut Agent) {

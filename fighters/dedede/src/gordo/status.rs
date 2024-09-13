@@ -6,7 +6,7 @@ unsafe extern "C" fn dead_end(weapon: &mut L2CWeaponCommon) -> L2CValue{
     if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_DEDEDE{
         let dedede = utils::util::get_battle_object_from_id(owner_id);
         VarModule::set_flag(dedede, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, true); 
-        VarModule::set_int(dedede, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT, 0); 
+        VarModule::set_int(dedede, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT, 0); 
         VarModule::set_flag(dedede, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS, false);
     }
     return smashline::original_status(End, weapon, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD)(weapon)

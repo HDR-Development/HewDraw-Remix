@@ -27,7 +27,7 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
                     ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.7);
                     
                     //Reduces the max amount of bounces by 1 per recatch on the same gordo
-                    if (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT)) < 0{
+                    if (WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT) - VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::SPECIAL_S_RECATCH_COUNT)) < 0{
                         StatusModule::change_status_request(boma, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, true);
                     }
                 }

@@ -75,7 +75,7 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
                     if StatusModule::status_kind(article_boma) != *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD{
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, false);
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS, true);
-                        VarModule::inc_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT);
+                        VarModule::inc_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT);
 
                         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_REMOVED, true);
                         ArticleModule::remove(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)); 
@@ -125,7 +125,7 @@ unsafe fn gordo_recatch(boma: &mut BattleObjectModuleAccessor, frame: f32, fight
     //checking if gordo does not exist, but is not removed by this function
     else if !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO) && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_REMOVED){
         VarModule::set_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS, false);
-        VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT_RECATCH_COUNT, 0); 
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_S_RECATCH_COUNT, 0); 
     }
 }
 

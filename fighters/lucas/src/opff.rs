@@ -141,7 +141,7 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
             // Get the x momentum while not touching the wall so we can grab it later for if we touch then leave the wall
             VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_MOMENTUM, x_momentum);
             // If you've touched a wall and are no longer touching a wall...
-            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPESPECIAL_HI_ATTACK_LEAVE_WALL
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_LEAVE_WALL) {
                 // No longer touching a wall, set the wall touch flag to off
                 VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_TOUCH_WALL);
                 // Notify us that we've left the wall, set the wall leave flag to on

@@ -362,7 +362,7 @@ unsafe extern "C" fn game_speciallwfinish(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let capture_id = LinkModule::get_node_object_id(boma, *LINK_NO_CAPTURE) as u32;
         VarModule::set_int(agent.battle_object, vars::ridley::instance::SPECIAL_LW_CATCH_ID, capture_id as i32);
-        VarModule::on_flag(agent.battle_object, vars::ridley::instance::SPECIAL_LW_IS_THROW);
+        //VarModule::on_flag(agent.battle_object, vars::ridley::instance::SPECIAL_LW_IS_THROW);
         WorkModule::on_flag(boma, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_THROW);
         JostleModule::set_status(boma, true);
         WHOLE_HIT(agent, *HIT_STATUS_NORMAL);

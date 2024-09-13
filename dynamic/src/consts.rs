@@ -1328,8 +1328,9 @@ pub mod vars {
             // flags
             pub const SPECIAL_LW_GROUND_START: i32 = 0x0100;
             pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0101;
-            pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0102;
-            pub const SPECIAL_N_EXPLODE: i32 = 0x0103;
+            pub const SPECIAL_LW_LANDING: i32 = 0x0102;
+            pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0103;
+            pub const SPECIAL_N_EXPLODE: i32 = 0x0104;
 
             // floats
             pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100; //vector, requires two indexes
