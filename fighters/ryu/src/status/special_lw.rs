@@ -8,12 +8,12 @@ pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CV
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
     }
     if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_SPECIAL_LW_INSTALL) {
-        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
         VarModule::set_flag(
             fighter.battle_object, 
             vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL, 
             MeterModule::level(fighter.battle_object) >= 4
         );
+        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
     } else {
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL);
     }
