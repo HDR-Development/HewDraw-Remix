@@ -9,13 +9,11 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::purin::status::SPECIAL_N_AIR);
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
     else {
-        VarModule::off_flag(fighter.battle_object, vars::purin::status::SPECIAL_N_AIR);
         fighter.set_situation(SITUATION_KIND_GROUND.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
