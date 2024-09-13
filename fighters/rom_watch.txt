@@ -33,8 +33,11 @@ fighter/krool/param/hdr.xml
 fighter/ganon/param/hdr.xml
 fighter/miifighter/param/hdr.xml
 fighter/sheik/param/hdr.xml
+fighter/ness/param/hdr.xml
 fighter/miigunner/param/hdr.xml
 fighter/falco/param/hdr.xml
+fighter/ryu/param/hdr.xml
+fighter/ken/param/hdr.xml
 fighter/littlemac/param/hdr.xml
 fighter/bayonetta/param/hdr.xml
 fighter/gamewatch/param/hdr.xml
