@@ -51,6 +51,15 @@ attack_dash:
 attack_lw3:
   extra:
     cancel_frame: 27
+attack_s3_hi:
+  extra:
+    cancel_frame: 27
+attack_s3_s:
+  extra:
+    cancel_frame: 27
+attack_s3_lw:
+  extra:
+    cancel_frame: 27
 attack_s4_s:
   extra:
     cancel_frame: 51
