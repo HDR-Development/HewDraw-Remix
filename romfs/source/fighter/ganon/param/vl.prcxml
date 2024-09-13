@@ -17,7 +17,12 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_speed_coef">0.9</float>
+      <float hash="special_hi_speed_max_x_mul">0.5</float>
+      <float hash="special_hi_accel_y">0.66</float>
+      <float hash="special_hi_fall_x_mul">1</float>
+      <float hash="special_hi_landing_frame">26</float>
+      <float hash="special_hi_speed_x_mul">0.33</float>
+      <float hash="special_hi_speed_coef">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
