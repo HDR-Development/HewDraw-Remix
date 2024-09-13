@@ -31,9 +31,9 @@ krool: fighter/krool/param/hdr.xml
 ganon: fighter/ganon/param/hdr.xml
 miifighter: fighter/miifighter/param/hdr.xml
 sheik: fighter/sheik/param/hdr.xml
+ness: fighter/ness/param/hdr.xml
 miigunner: fighter/miigunner/param/hdr.xml
 falco: fighter/falco/param/hdr.xml
-ness: fighter/ness/param/hdr.xml
 ryu: fighter/ryu/param/hdr.xml
 ken: fighter/ken/param/hdr.xml
 littlemac: fighter/littlemac/param/hdr.xml
