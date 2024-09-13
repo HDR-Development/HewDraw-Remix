@@ -36,6 +36,15 @@ attack_13:
 attack_air_b:
   extra:
     cancel_frame: 38
+attack_air_hi:
+  extra:
+    cancel_frame: 36
+attack_air_lw:
+  extra:
+    cancel_frame: 51
+attack_air_n:
+  extra:
+    cancel_frame: 42
 attack_dash:
   extra:
     cancel_frame: 36
