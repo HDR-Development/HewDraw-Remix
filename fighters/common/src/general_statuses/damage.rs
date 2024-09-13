@@ -300,8 +300,8 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let min_mul = 1.0;
     let max_mul = 1.75;
     let power = 1.4;
-    let speed_start = 4.75;
-    let speed_end = 8.0;
+    let speed_start = 4.65;
+    let speed_end = 7.5;
     let speed = factor.get_f32();
     dbg!(speed);
 
