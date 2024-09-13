@@ -1,12 +1,15 @@
 attack_11:
   extra:
-    cancel_frame: 17
+    cancel_frame: 20
 attack_12:
   extra:
     cancel_frame: 20
 attack_13:
   extra:
     cancel_frame: 34
+attack_13_hit:
+  extra:
+    cancel_frame: 15
 attack_air_b:
   extra:
     cancel_frame: 37
@@ -34,9 +37,6 @@ attack_lw4:
 attack_lw4_hit:
   extra:
     cancel_frame: 36
-attack_s3_hi: null
-attack_s3_lw: null
-attack_s3_s: null
 attack_s4_s:
   extra:
     cancel_frame: 60
