@@ -20,8 +20,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_RESET_ROT);
     VarModule::set_int(fighter.battle_object, vars::pickel::instance::MATERIAL_INDEX, 0);
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-    VarModule::set_int(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_HITSTUN_TIMER, 0);
-    VarModule::set_float(fighter.battle_object, vars::pickel::instance::DAMAGE_FLY_STORED_DAMAGE, 0.0);
+    VarModule::set_int(fighter.battle_object, vars::pickel::instance::DAMAGE_RED_EFFECT_TIMER, 0);
+    VarModule::set_float(fighter.battle_object, vars::pickel::instance::DAMAGE_RED_STORED_DAMAGE, 0.0);
     VarModule::set_float(fighter.battle_object, vars::pickel::instance::TABLE_CURRENT_LIFE, 20.0);
 }
 

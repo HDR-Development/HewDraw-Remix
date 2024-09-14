@@ -1206,11 +1206,11 @@ pub mod vars {
             // ints 
             pub const MATERIAL_INDEX: i32 = 0x0100;
             pub const MATERIAL_EFFECT_HANDLE: i32 = 0x0101;
-            pub const DAMAGE_FLY_HITSTUN_TIMER: i32 = 0x0102;
+            pub const DAMAGE_RED_EFFECT_TIMER: i32 = 0x0102;
             pub const PEARL_COOLDOWN: i32 = 0x103;
 
             // floats
-            pub const DAMAGE_FLY_STORED_DAMAGE: i32 = 0x0100;
+            pub const DAMAGE_RED_STORED_DAMAGE: i32 = 0x0100;
             pub const TABLE_CURRENT_LIFE: i32 = 0x0101;
         }
         pub mod status {

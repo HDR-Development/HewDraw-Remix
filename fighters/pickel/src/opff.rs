@@ -82,22 +82,22 @@ unsafe fn material_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
 // hitstun-related effects
 unsafe fn hitstun_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    let timer = VarModule::get_int(boma.object(), DAMAGE_FLY_HITSTUN_TIMER);
-    if timer > 0 { VarModule::dec_int(boma.object(), DAMAGE_FLY_HITSTUN_TIMER); }
+    let timer = VarModule::get_int(boma.object(), DAMAGE_RED_EFFECT_TIMER);
+    if timer > 0 { VarModule::dec_int(boma.object(), DAMAGE_RED_EFFECT_TIMER); }
     let current_damage = DamageModule::damage(boma, 0);
-    let prev_damage = VarModule::get_float(boma.object(), DAMAGE_FLY_STORED_DAMAGE);
+    let prev_damage = VarModule::get_float(boma.object(), DAMAGE_RED_STORED_DAMAGE);
     if current_damage > prev_damage { // steve will glow red when taking damage
         if current_damage > (prev_damage + 10.0) // 10.0% threshold for sfx to play
         && timer == 0 { // sound will play if it has been 55 frames since last damaged
             PLAY_SE(fighter, Hash40::new("se_pickel_landing_high_place"));
         }
-        VarModule::set_float(boma.object(), DAMAGE_FLY_STORED_DAMAGE, current_damage);
+        VarModule::set_float(boma.object(), DAMAGE_RED_STORED_DAMAGE, current_damage);
         let vec1 = Vector4f{ x: 0.85, y: 0.85, z: 0.85, w: 0.2};
         let vec2 = Vector4f{ x: 0.9907, y: 0.02, z: 0.0251, w: 0.8};
         ColorBlendModule::set_main_color(boma, &vec1, &vec2, 0.21, 2.2, 5, true);
-        VarModule::set_int(boma.object(), DAMAGE_FLY_HITSTUN_TIMER, 55);
+        VarModule::set_int(boma.object(), DAMAGE_RED_EFFECT_TIMER, 55);
     } else if current_damage < prev_damage { // in the case steve is healed, or respawns
-        VarModule::set_float(boma.object(), DAMAGE_FLY_STORED_DAMAGE, current_damage);
+        VarModule::set_float(boma.object(), DAMAGE_RED_STORED_DAMAGE, current_damage);
     }
     if timer == 30 { // red tint clears after 25 frames
         ColorBlendModule::cancel_main_color(boma, 0);
