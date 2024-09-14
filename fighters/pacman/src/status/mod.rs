@@ -49,7 +49,7 @@ pub fn install(agent: &mut Agent) {
 
     attack_air::install(agent);
     special_hi::install(agent);
-    //special_lw::install(agent);
+    special_lw::install(agent);
     special_n::install(agent);
     special_s::install(agent);
 }

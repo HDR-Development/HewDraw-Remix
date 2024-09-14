@@ -5,7 +5,7 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_MOTION_AIR,
-        *GROUND_CORRECT_KIND_KEEP as u32,
+        *GROUND_CORRECT_KIND_AIR as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
@@ -148,5 +148,5 @@ pub unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    //agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }
