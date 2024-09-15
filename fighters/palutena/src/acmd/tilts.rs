@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 11.0/(16.0-0.0));
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -147,7 +147,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -284,7 +284,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 14.0, 9.0);

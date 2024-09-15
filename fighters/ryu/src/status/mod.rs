@@ -65,8 +65,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
     ]) {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_FADC);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_ENABLE_FADC);
     }
     
     // Re-enables the ability to use sideB when connecting to ground or cliff

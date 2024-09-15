@@ -12,7 +12,7 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let mut z_mod = -1.0 * grab_y;
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
@@ -37,7 +37,7 @@ unsafe extern "C" fn effect_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let rot_right = 0 - ((grab_y * 50.0) as i32);
         let rot_left = 180 + ((grab_y * 50.0) as i32);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, 5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
@@ -57,7 +57,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let mut z_mod = 0.0;
         if grab_y > 0.0 {
             z_mod = 4.0 * grab_y;
@@ -82,7 +82,7 @@ unsafe extern "C" fn effect_catchdash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let rot_right = 0 - ((grab_y * 50.0) as i32);
         let rot_left = 180 + ((grab_y * 50.0) as i32);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 9.0, 3.5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
@@ -102,7 +102,7 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let mut z_mod = 0.0;
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
@@ -127,7 +127,7 @@ unsafe extern "C" fn effect_catchturn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::gaogaen::status::GRAB_STICK_Y);
         let rot_right = 0 - ((grab_y * 50.0) as i32);
         let rot_left = 180 + ((grab_y * 50.0) as i32);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, -7, rot_right, 135, 0, 1.2, true, *EF_FLIP_YZ);

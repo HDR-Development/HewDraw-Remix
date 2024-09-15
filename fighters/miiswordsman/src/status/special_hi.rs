@@ -1,7 +1,6 @@
 use super::*;
 
 unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("pre!");
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),

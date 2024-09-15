@@ -81,7 +81,7 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
 
 pub unsafe extern "C" fn special_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
-    let mot = if VarModule::is_flag(fighter.battle_object, vars::roy::status::SIDE_B_REVERSE) {
+    let mot = if VarModule::is_flag(fighter.battle_object, vars::roy::status::SPECIAL_S4_REVERSE) {
         (hash40("special_s4_back") as i64, hash40("special_air_s4_back") as i64)
     }
     else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
@@ -95,7 +95,7 @@ pub unsafe extern "C" fn special_s4_main(fighter: &mut L2CFighterCommon) -> L2CV
     };
     WorkModule::set_int64(fighter.module_accessor, mot.0, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, mot.1, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
-    VarModule::off_flag(fighter.battle_object, vars::roy::status::SIDE_B_REVERSE);
+    VarModule::off_flag(fighter.battle_object, vars::roy::status::SPECIAL_S4_REVERSE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s4_main_loop as *const () as _))

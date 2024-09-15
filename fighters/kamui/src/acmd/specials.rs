@@ -323,10 +323,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 		ATTACK(agent, 4, 1, Hash40::new("rot"), 1.2, 55, 100, 155, 0, 5.0, 0.0, -1.0, -5.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
 		AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
 	}
-	frame(lua_state, 23.0);
-	if is_excute(agent) {
-		notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-	}
 	frame(lua_state, 29.0);
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
@@ -337,13 +333,16 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 	frame(lua_state, 34.0);
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
-		notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
 	}
 	frame(lua_state, 36.0);
 	if is_excute(agent) {
 		WorkModule::off_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
         WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
 	}
+    frame(lua_state, 45.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
 	frame(lua_state, 49.0);
 	FT_MOTION_RATE(agent, 0.8);
 }

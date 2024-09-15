@@ -6,7 +6,7 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         MeterModule::drain(boma.object(), 2);
-        VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
+        VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
         PostureModule::set_lr(boma, PostureModule::lr(boma));
         PostureModule::update_rot_y_lr(boma);
     }

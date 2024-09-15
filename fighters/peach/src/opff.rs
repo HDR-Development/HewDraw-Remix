@@ -24,16 +24,16 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
             touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
         };
         if touch_wall && (1..25).contains(&frame){
-                VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
+                VarModule::on_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
     }
     else if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END {
-        if VarModule::is_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE) {
+        if VarModule::is_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE) {
             MotionModule::set_rate(boma, 0.6);
         }
     } else {
-        VarModule::off_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
+        VarModule::off_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE);
     }
 }
 

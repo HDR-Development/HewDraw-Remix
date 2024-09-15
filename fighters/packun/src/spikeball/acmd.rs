@@ -5,7 +5,7 @@ unsafe extern "C" fn game_start(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     frame(lua_state, 1.0);
     if is_excute(agent) {
         ModelModule::set_scale(boma, scale);
@@ -26,7 +26,7 @@ unsafe extern "C" fn game_startair(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     frame(lua_state, 1.0);
     if is_excute(agent) {
         ModelModule::set_scale(boma, scale);
@@ -47,7 +47,7 @@ unsafe extern "C" fn game_loop(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     if is_excute(agent) {
         if stance == 1 {
             ATTACK(agent, 0, 0, Hash40::new("trans"), 12.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -78,7 +78,7 @@ unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     if WorkModule::is_flag(boma, *WEAPON_PACKUN_SPIKEBALL_INSTANCE_WORK_ID_FLAG_REACTIVE) {
         if is_excute(agent) {
             if stance == 1 {
@@ -138,7 +138,7 @@ unsafe extern "C" fn game_fall(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     if is_excute(agent) {
         if stance == 1 {
             ATTACK(agent, 0, 0, Hash40::new("trans"), 12.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -169,7 +169,7 @@ unsafe extern "C" fn game_wait(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let stance = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)} else {0};
-    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)} else {1.0};
+    let scale = if (owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN) || (owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY) {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE)} else {1.0};
     if is_excute(agent) {
         if stance == 1 {
             ATTACK(agent, 0, 0, Hash40::new("trans"), 12.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);

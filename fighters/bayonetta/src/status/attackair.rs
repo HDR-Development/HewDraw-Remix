@@ -74,7 +74,7 @@ unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let fair = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::FAIR_STATE);
+    let fair = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::ATTACK_AIR_F_COUNT);
     if fair == 1 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_f2"), 0.0, 1.0, false, 0.0, false, false);
         //notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F2); makes each fair stale separately

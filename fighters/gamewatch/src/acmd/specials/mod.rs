@@ -65,15 +65,15 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_FLAG_LANDING_ENABLE);
     }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
     frame(lua_state, 20.0);
     if is_excute(agent) {
         if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             ATTACK(agent, 0, 0, Hash40::new("waist"), 4.0, 80, 80, 0, 60, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {

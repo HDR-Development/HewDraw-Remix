@@ -110,7 +110,7 @@ unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 // FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
 
 pub unsafe extern "C" fn special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::trail::status::STOP_SIDE_SPECIAL);
+    VarModule::off_flag(fighter.battle_object, vars::trail::status::SPECIAL_S_STOP);
     0.into()
 }
 

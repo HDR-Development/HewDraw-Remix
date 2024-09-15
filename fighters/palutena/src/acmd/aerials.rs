@@ -50,7 +50,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.714);
@@ -110,7 +110,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 12.0);
@@ -166,7 +166,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -229,7 +229,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::status::CAN_INCREASE_COLOR);
+        VarModule::on_flag(boma.object(), vars::palutena::status::ENABLE_COLOR_INCREMENT);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
