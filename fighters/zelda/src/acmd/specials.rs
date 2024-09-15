@@ -294,6 +294,9 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
+}
+
 unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -322,5 +325,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
     
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+
     agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
 }

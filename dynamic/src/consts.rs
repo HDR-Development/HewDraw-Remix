@@ -1698,6 +1698,12 @@ pub mod vars {
             pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0103;
             pub const PHANTOM_EFF_HANDLER: i32 = 0x0104;
             pub const EFF_COOLDOWN_HANDLER: i32 = 0x0105;
+            pub const PHANTOM_OBJECT_ID: i32 = 0x0106;
+        }
+        pub mod status {
+            // flags
+            pub const PHANTOM_NO_BUILD: i32 = 0x1100;
+            pub const PHANTOM_CANCEL_FRAME: i32 = 0x1101;
         }
     }
 }

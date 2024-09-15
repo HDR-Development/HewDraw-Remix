@@ -43,15 +43,7 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
     && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag()
-    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
+    && VarModule::is_flag(fighter.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME) {
         if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
                 VarModule::on_flag(fighter.battle_object, vars::zelda::instance::FORWARD_PHANTOM);
@@ -96,16 +88,7 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     }
 }
 
-pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    let pass_thresh = boma.get_param_float("common", "pass_stick_y");
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if StatusModule::is_changing(boma) {ControlModule::reset_flick_y(boma); }
-        else if GroundModule::is_passable_ground(boma)
-        && fighter.left_stick_y() <= pass_thresh
-        && ControlModule::get_flick_y(boma) < 4 {
-            GroundModule::pass_floor(boma);
-        }//platdrop
-    }
+pub unsafe fn phantom_usability_effects(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER);
     //disables effects on winscreen (one of them spawns a phantom)
     if (fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go())  && handle >= 1 {
@@ -173,7 +156,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dins_fire_cancels(boma);
     nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     phantom_special_cancel(fighter, boma);
-    phantom_platdrop_effect(fighter, boma);
+    phantom_usability_effects(fighter, boma);
     fastfall_specials(fighter);
 }
 

@@ -43,6 +43,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 36.0);
@@ -68,6 +69,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("toel"), 18.0, 361, 111, 0, 30, 1.8, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         ATTACK(agent, 3, 0, Hash40::new("toel"), 8.0, 361, 95, 0, 10, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_optional_hit_effect(boma, 0, Hash40::new_raw(0x148397b09f));
+        VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
@@ -120,6 +122,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         ATTACK(agent, 1, 0, Hash40::new("kneer"), 8.0, 361, 95, 0, 10, 4.0, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 2, 0, Hash40::new("toer"), 15.0, 361, 103, 0, 24, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         AttackModule::set_optional_hit_effect(boma, 2, Hash40::new_raw(0x1484fa7486));
+        VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
@@ -212,6 +215,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         ATTACK(agent, 0, 0, Hash40::new("top"), 17.0, 90, 70, 0, 55, 5.0, 0.0, 23.5, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
         ATTACK(agent, 1, 0, Hash40::new("top"), 13.5, 90, 68, 0, 55, 9.0, 0.0, 26.5, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
@@ -238,6 +242,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         /* Air-only */
         ATTACK(agent, 2, 0, Hash40::new("kneel"), 16.0, 270, 42, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
         ATTACK(agent, 3, 0, Hash40::new("footl"), 16.0, 270, 42, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
