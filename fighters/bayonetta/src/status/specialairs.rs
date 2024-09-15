@@ -3,7 +3,7 @@ use super::*;
 // FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D
 
 unsafe extern "C" fn special_air_s_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::DABK_COUNT);
+    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_DABK_COUNT);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     if fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_d"), 5.0, 1.0, false, 0.0, false, false);
@@ -96,7 +96,7 @@ unsafe extern "C" fn bounce_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) 
         && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ATTACK) {
-            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
+            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT);
         }
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
     } else {
@@ -115,7 +115,7 @@ unsafe extern "C" fn wall_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if touch_wall {
         if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && AttackModule::is_attack(fighter.module_accessor, 0, false) { //checks if hitbox cleared to prevent double dipping
-            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
+            VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT);
         }
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END.into(), false.into());
     }
@@ -127,9 +127,9 @@ unsafe extern "C" fn cache_input(fighter: &mut L2CFighterCommon) -> L2CValue {
         if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {
             EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, false);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
-            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, -1.15); //angle forced down during dabk windup
+            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::SPECIAL_S_ABK_ANGLE, -1.15); //angle forced down during dabk windup
         } else {
-            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, fighter.left_stick_y());
+            VarModule::set_float(fighter.battle_object, vars::bayonetta::status::SPECIAL_S_ABK_ANGLE, fighter.left_stick_y());
         } //angle if no dabk
     }
     0.into()
@@ -138,7 +138,7 @@ unsafe extern "C" fn cache_input(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn angling(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
     let facing = PostureModule::lr(fighter.module_accessor);
-    let sticky = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
+    let sticky = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::SPECIAL_S_ABK_ANGLE);
     joint_rotator(fighter, frame, Hash40::new("rot"), Vector3f{x: -14.5*sticky, y:0.0, z:0.0}, 1.0, 12.0, 31.0, 40.0);
     if fighter.global_table[CURRENT_FRAME].get_i32() == 7 {
         let base = fighter.get_param_float("param_special_s", "ab_u_rotate");
@@ -274,8 +274,8 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
 
 unsafe fn set_lag(fighter: &mut L2CFighterCommon) { 
     //vanilla: if special lag variable < lag to be set from current status, skips it to keep the higher number (the problem w whiff lag). Multiplies special lag by landing frame mul then sets it over lag variable (not sure if applicable here but idk)
-    let resources = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) as f32;
-    let dabk = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::DABK_COUNT) as f32; //lag added to base abk lag
+    let resources = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT) as f32;
+    let dabk = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_DABK_COUNT) as f32; //lag added to base abk lag
     let abk_total_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) as f32;
     let witch_twist_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT) as f32;
     let whiff_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.whiff_lag"); //6

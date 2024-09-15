@@ -18,7 +18,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     VarModule::off_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE);
-    VarModule::set_int(fighter.battle_object, vars::duckhunt::instance::GUNMAN_TIMER, 0);
+    VarModule::set_int(fighter.battle_object, vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER, 0);
 }
 
 pub fn install(agent: &mut Agent) {

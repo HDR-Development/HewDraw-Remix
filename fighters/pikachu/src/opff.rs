@@ -11,23 +11,23 @@ unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP) {
         // only allow QAC from QA1
         if WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT) > 1 {
-            VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+            VarModule::on_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL);
         }
     }
     if boma.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END) {
         // only allow QAC from QA into ground
         if boma.is_situation(*SITUATION_KIND_AIR) && boma.status_frame() > 2 {
-            VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+            VarModule::on_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL);
         }
     }
 }
 
 // Reset JC disable flag
 unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)
+    if VarModule::is_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL)
     && boma.is_situation(*SITUATION_KIND_GROUND)
     && ![*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&boma.status()) {
-        VarModule::off_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+        VarModule::off_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL);
         VarModule::off_flag(boma.object(), vars::common::instance::PERFECT_WAVEDASH);
     }
 }
@@ -35,20 +35,20 @@ unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor) {
 // This is held together with the finest Elmer's, I apologize
 unsafe fn quick_attack_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)
-    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
+    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL) {
         GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         PostureModule::add_pos(boma, &Vector3f::new(0.0, 2.5, 0.0));
-        VarModule::on_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+        VarModule::on_flag(fighter.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL);
     }
-    if VarModule::is_flag(boma.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL) {
         if fighter.is_cat_flag(Cat1::AirEscape) {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), false.into());
             VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
             PostureModule::add_pos(boma, &Vector3f::new(0.0, -2.5, 0.0));
         }
         if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, *FIGHTER_STATUS_KIND_LANDING_LIGHT]) {
-            VarModule::off_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+            VarModule::off_flag(fighter.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
         }
     }

@@ -4,11 +4,12 @@ use globals::*;
 
 mod dead;
 mod special_hi;
+mod special_lw;
 mod special_s;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    VarModule::off_flag(fighter.object(), vars::shizue::instance::LLOID_ASYNC);
-    VarModule::set_int(fighter.object(), vars::shizue::instance::LLOID_TIMER, 0);
+    VarModule::off_flag(fighter.object(), vars::shizue::instance::SPECIAL_LW_LLOID_ASYNC);
+    VarModule::set_int(fighter.object(), vars::shizue::instance::SPECIAL_LW_LLOID_TIMER, 0);
 }
 
 pub fn install(agent: &mut Agent) {
@@ -16,5 +17,6 @@ pub fn install(agent: &mut Agent) {
 
     dead::install(agent);
     special_hi::install(agent);
+    special_lw::install(agent);
     special_s::install(agent);
 }

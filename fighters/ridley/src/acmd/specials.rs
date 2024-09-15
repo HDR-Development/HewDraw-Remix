@@ -278,7 +278,7 @@ unsafe extern "C" fn game_speciallwstab(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SPECIAL_LW_STICK_Y);
         let mut z_mod = -1.0 * grab_y;
         // no angle (normal Skewer)
         if grab_y == 0.0 {
@@ -324,7 +324,7 @@ unsafe extern "C" fn effect_speciallwstab(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {
-        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let grab_y = VarModule::get_float(agent.battle_object, vars::ridley::status::SPECIAL_LW_STICK_Y);
         let mut rot = 0 - ((grab_y * 25.0) as i32);
         let mut y_mod = if grab_y == 0.0 {0.0} else if grab_y > 0.0 {6.0} else {-3.0};
         if grab_y < 0.0 {
@@ -362,7 +362,7 @@ unsafe extern "C" fn game_speciallwfinish(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let capture_id = LinkModule::get_node_object_id(boma, *LINK_NO_CAPTURE) as u32;
         VarModule::set_int(agent.battle_object, vars::ridley::instance::SPECIAL_LW_CATCH_ID, capture_id as i32);
-        VarModule::on_flag(agent.battle_object, vars::ridley::instance::SPECIAL_LW_IS_THROW);
+        //VarModule::on_flag(agent.battle_object, vars::ridley::instance::SPECIAL_LW_IS_THROW);
         WorkModule::on_flag(boma, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_THROW);
         JostleModule::set_status(boma, true);
         WHOLE_HIT(agent, *HIT_STATUS_NORMAL);

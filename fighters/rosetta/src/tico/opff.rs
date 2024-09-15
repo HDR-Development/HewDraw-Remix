@@ -11,7 +11,7 @@ unsafe extern "C" fn tico_frame(weapon: &mut L2CWeaponCommon) {
 	let rosetta_boma = &mut *(*rosetta).module_accessor;
 
 	if StatusModule::is_changing(weapon.module_accessor) || weapon.is_status(*WEAPON_ROSETTA_TICO_STATUS_KIND_REBIRTH) {
-		VarModule::off_flag(rosetta, IS_TICO_UNAVAILABLE);
+		VarModule::off_flag(rosetta, SPECIAL_LW_TICO_UNAVAILABLE);
 	}
 
 	if weapon.is_status_one_of(&[
@@ -25,7 +25,7 @@ unsafe extern "C" fn tico_frame(weapon: &mut L2CWeaponCommon) {
 		*WEAPON_ROSETTA_TICO_STATUS_KIND_DAMAGE_FLY,
 		*WEAPON_ROSETTA_TICO_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
 		*WEAPON_ROSETTA_TICO_STATUS_KIND_DAMAGE_FLY_REFLECT_U]) {
-		VarModule::on_flag(rosetta, IS_TICO_UNAVAILABLE);
+		VarModule::on_flag(rosetta, SPECIAL_LW_TICO_UNAVAILABLE);
 	}
 }
 

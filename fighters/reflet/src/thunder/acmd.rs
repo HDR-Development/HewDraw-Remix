@@ -39,8 +39,8 @@ unsafe extern "C" fn game_tron0(agent: &mut L2CAgentBase) {
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(agent.boma(), *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent) {
         let damage = match owner_module_accessor.kind() {
-            0x38 => 1.0 + VarModule::get_float(owner_module_accessor.object(), vars::reflet::instance::THUNDER_CHARGE) / 2.0,
-            0x6 => 1.0 + VarModule::get_float(owner_module_accessor.object(), vars::kirby::instance::THUNDER_CHARGE) / 2.0,
+            0x38 => 1.0 + VarModule::get_float(owner_module_accessor.object(), vars::reflet::instance::SPECIAL_N_CHARGE) / 2.0,
+            0x6 => 1.0 + VarModule::get_float(owner_module_accessor.object(), vars::kirby::instance::SPECIAL_N_CHARGE) / 2.0,
             _ => 3.5
         };
         ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 145, 0, 75, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -0.5, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);

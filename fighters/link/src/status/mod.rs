@@ -4,6 +4,7 @@ use globals::*;
 
 mod special_n;
 mod special_hi;
+mod special_lw;
 
 pub unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
@@ -23,4 +24,5 @@ pub unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -
 pub fn install(agent: &mut Agent) {
     special_n::install(agent);
     special_hi::install(agent);
+    special_lw::install(agent);
 }

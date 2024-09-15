@@ -42,7 +42,7 @@ pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     // <HDR>
     if fighter.global_table[CMD_CAT3].get_i32() & *FIGHTER_PAD_CMD_CAT3_FLAG_SPECIAL_S_SMASH_DASH != 0 {
-        VarModule::on_flag(fighter.battle_object, vars::duckhunt::status::CLAY_SMASH_INPUT);
+        VarModule::on_flag(fighter.battle_object, vars::duckhunt::status::SPECIAL_S_SMASH_INPUT);
     }
     // </HDR>
     fighter.main_shift(special_s_main_loop)

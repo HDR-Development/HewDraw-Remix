@@ -76,7 +76,7 @@ pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_pre);
-    agent.status(Main, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_main);
-    agent.status(End, statuses::buddy::BUDDY_BAYONET_END, bayonet_end_end);
+    agent.status(Pre, statuses::buddy::SPECIAL_N_BAYONET_END, bayonet_end_pre);
+    agent.status(Main, statuses::buddy::SPECIAL_N_BAYONET_END, bayonet_end_main);
+    agent.status(End, statuses::buddy::SPECIAL_N_BAYONET_END, bayonet_end_end);
 }

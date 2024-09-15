@@ -8,7 +8,7 @@ pub unsafe extern "C" fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon)
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_MOTION_FALL,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_PIT_SPECIAL_HI_RUSH_END_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_PIT_SPECIAL_HI_RUSH_END_INT,

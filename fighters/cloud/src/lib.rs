@@ -5,7 +5,7 @@
 pub mod acmd;
 
 pub mod opff;
-//pub mod status;
+pub mod status;
 
 use smash::{
     lib::{
@@ -42,5 +42,6 @@ pub fn install() {
     let agent = &mut Agent::new("cloud");
     acmd::install(agent);
     opff::install(agent);
+    status::install(agent);
     agent.install();
 }

@@ -76,8 +76,8 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
     };
     MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-    if !VarModule::is_flag(fighter.battle_object, vars::littlemac::instance::KO_MOTION_AIRTIME) {
-        VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::KO_MOTION_AIRTIME);
+    if !VarModule::is_flag(fighter.battle_object, vars::littlemac::instance::SPECIAL_N_MOTION_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::SPECIAL_N_MOTION_AIR);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY_END) {
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
         }

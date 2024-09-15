@@ -647,7 +647,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
         MotionModule::set_rate(boma, 1.7);
         JostleModule::set_status(boma, false);
-        VarModule::off_flag(agent.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY);
+        VarModule::off_flag(agent.battle_object, vars::elight::instance::SPECIAL_S_ENABLE_ACTION);
 	}
 	if is_excute(agent) {
 		HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);

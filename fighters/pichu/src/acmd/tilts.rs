@@ -3,9 +3,9 @@ use super::*;
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
-    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_RECOIL_MUL);
+    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_DAMAGE_MUL);
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     if is_excute(agent){
         if !charged {
             MeterModule::watch_damage(agent.battle_object, true);
@@ -52,7 +52,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     frame(lua_state, 6.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("tail1"), 6.0, 120, 70, 0, 65, 3.5, 0.0, -0.4, -0.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);

@@ -88,6 +88,9 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         GroundModule::select_cliff_hangdata(boma, *FIGHTER_MEWTWO_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 15.0);

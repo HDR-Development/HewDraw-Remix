@@ -65,12 +65,12 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
         return;
     }
 
-    let charged_effect = VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);
+    let charged_effect = VarModule::get_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID);
     //If cooling down, remove ready effect
-    if VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME) > 0 {
-        VarModule::dec_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME);
+    if VarModule::get_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN) > 0 {
+        VarModule::dec_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN);
         if charged_effect > 0 {
-            VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID, 0);
+            VarModule::set_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID, 0);
             if EffectModule::is_exist_effect(boma, charged_effect as u32) {
                 EffectModule::kill(boma, charged_effect as u32, false,false);
             }
@@ -86,7 +86,7 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
         let rot = &Vector3f{x: 180.0, y: 0.0, z: 50.0};
         let handle = EffectModule::req_follow(boma, Hash40::new("koopa_breath_m_fire"), Hash40::new("jaw"), pos, rot, 1.0, true, 0, 0, 0, 0, 0, false, false) as u32;
         EffectModule::set_scale(boma, handle, &Vector3f::new(1.1, 1.3, 1.1));
-        VarModule::set_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID, handle as i32);
+        VarModule::set_int(boma.object(), vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID, handle as i32);
     }
 }
 
@@ -94,24 +94,24 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
 unsafe fn ex_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4_HOLD) {
         if fighter.status_frame() == 51 { // indicates start of "excellent" frame window
-            VarModule::on_flag(boma.object(), IS_EXCELLENT_PUNCH);
+            VarModule::on_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_RATE(fighter, 3.0);
         } else if fighter.status_frame() == 58 { // window ends
-            VarModule::off_flag(boma.object(), IS_EXCELLENT_PUNCH);
+            VarModule::off_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
         }
     }
 
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) 
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && VarModule::is_flag(boma.object(), IS_EXCELLENT_PUNCH) {
+    && VarModule::is_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH) {
         SlowModule::set_whole(boma, 8, 25);
         PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
         PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
         EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
         EffectModule::req_screen(boma, Hash40::new("bg_criticalhit"), false, true, true);
 
-        VarModule::off_flag(boma.object(), IS_EXCELLENT_PUNCH);
+        VarModule::off_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
     }
 }
 
@@ -121,10 +121,10 @@ pub unsafe fn initialize_fireball(fighter: &mut L2CFighterCommon) {
     }
     //Grant fireball during training mode
     if is_training_mode() {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,0);
     }
     else {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,MAX_COOLDOWN);
     }
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
 }

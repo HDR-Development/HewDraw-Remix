@@ -44,7 +44,7 @@ pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
             let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
             let lr = PostureModule::lr(fighter.module_accessor);
             if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3) && stick_x * lr < squat_stick_y {
-                VarModule::on_flag(fighter.battle_object, vars::roy::status::SIDE_B_REVERSE);
+                VarModule::on_flag(fighter.battle_object, vars::roy::status::SPECIAL_S4_REVERSE);
             }
             else if stick_y > -squat_stick_y {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);

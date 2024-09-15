@@ -15,8 +15,8 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 			// Generate and store effects
 			let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.35 + 0.005 * tame_size, false, 0, 0, 0, 0, 0, false, false);
 			let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), 0.8 + 0.024 * tame_size, false, 0, 0, 0, 0, 0, false, false);
-			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH, flash_handle);
-			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle);
+			VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FLASH_EFFECT_HANDLE, flash_handle);
+			VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FIRE_EFFECT_HANDLE, fire_handle);
 		}
 	}
 	for h in 21..=146 {
@@ -33,8 +33,8 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 			let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
         		let zelda = utils::util::get_battle_object_from_id(owner_id);
-				let flash_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH);
-				let fire_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE);
+				let flash_handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FLASH_EFFECT_HANDLE);
+				let fire_handle = VarModule::get_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FIRE_EFFECT_HANDLE);
 				// Spawn (and store) new effects at certain frame intervals
 				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
@@ -46,8 +46,8 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 					// Apply color blend
 					EffectModule::set_rgb(boma, flash_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
 					EffectModule::set_rgb(boma, fire_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
-					VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH, flash_handle as u64);
-					VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle as u64);
+					VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FLASH_EFFECT_HANDLE, flash_handle as u64);
+					VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_S_DEIN_FIRE_EFFECT_HANDLE, fire_handle as u64);
 				}
 				else {
 					// Apply color blend

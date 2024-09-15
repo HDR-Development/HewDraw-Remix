@@ -49,25 +49,17 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 8.0);
+    frame(lua_state, 17.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, -1);
         WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 27.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-    }
-    frame(lua_state, 12.0);
-    MotionModule::set_rate(boma, 2.0);
-    for _ in 0..30 {
-        if agent.is_button_on(Buttons::Special) {
-            agent.on_flag(*FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-        }
-        wait(lua_state, 1.0);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
@@ -78,5 +70,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairntronend", game_specialairntronend, Priority::Low);
     
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
-    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
+
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("game_specialairhi2", game_specialhi2, Priority::Low);
 }
