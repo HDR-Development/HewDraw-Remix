@@ -6,9 +6,9 @@ use globals::*;
 unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH)
     && boma.status_frame() == 1 {
-        VarModule::off_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START);
+        VarModule::off_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH);
         if boma.is_prev_situation(*SITUATION_KIND_GROUND) {
-            VarModule::on_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START);
+            VarModule::on_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH);
         }
     }
     if boma.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH) {
@@ -17,7 +17,7 @@ unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, statu
         }
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             if boma.get_aerial() != None {
-                if !VarModule::is_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START) {
+                if !VarModule::is_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH) {
                     WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                 }
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -77,17 +77,6 @@ unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon, boma: &mut 
     if motion_kind == hash40("attack_lw3")
     && !fighter.is_flag(*FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_lw3_ex"), 1.0, 1.0, false, 0.0, false, false);
-    }
-}
-
-unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
 
@@ -153,7 +142,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     damage_to_meter(fighter);
     arsene_dtilt_motion_change(fighter, boma, motion_kind, frame);
     jack_training_tools(fighter);
-    up_special_freefall(fighter);
 }
 
 pub extern "C" fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

@@ -5,7 +5,7 @@ use globals::*;
 
 unsafe fn specialhi_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
-        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_HI_CATCH_USED);
+        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH);
     }
 }
 
@@ -29,17 +29,6 @@ unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 11.0 {
             SlowModule::set_whole(boma, 7, 100);
         }
-    }
-}
-
-unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
 
@@ -89,7 +78,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(boma, status_kind, situation_kind);
     aymr_slowdown(boma);
     specialhi_reset(fighter);
-    up_special_freefall(fighter);
     fastfall_specials(fighter);
 }
 
