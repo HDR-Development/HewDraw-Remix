@@ -299,7 +299,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
 ) {
     let min_mul = 1.0;
     let max_mul = 1.75;
-    let power = 1.4;
+    let power = 1.2;
     let speed_start = 4.65;
     let speed_end = 7.5;
     let speed = factor.get_f32();
@@ -308,7 +308,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let angle = angle.get_f32();
     let angle_from_horizontal = 90.0 - ((angle % 180.0).abs() - 90.0).abs();  // value of 0-90
     let angle_mul_threshold = 29.358_f32.to_radians();  // angle from horizontal at which angle-based speedup mul begins applying
-    let min_angle_mul = 0.8;  // applied at straight-vertical angles
+    let min_angle_mul = 0.825;  // applied at straight-vertical angles
     let max_angle_mul = 1.0;  // applied at and below angle_mul_threshold
     let angle_mul = if angle_from_horizontal >= angle_mul_threshold {
         let angle_rad = angle_from_horizontal.to_radians();
