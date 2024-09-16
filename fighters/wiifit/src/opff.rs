@@ -36,25 +36,25 @@ unsafe fn deep_breathing_respawn_cooldown(boma: &mut BattleObjectModuleAccessor)
     else if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 1 {
         //println!("cooldown over");
         VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
-        VarModule::off_flag(boma.object(), vars::wiifit::instance::DEEP_BREATHING_COOLDOWN);
+        VarModule::off_flag(boma.object(), vars::wiifit::instance::SPECIAL_LW_RESPAWN_COOLDOWN);
     }
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
         //println!("starting cooldown");
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 180);
-        VarModule::off_flag(boma.object(), vars::wiifit::instance::DEEP_BREATHING_COOLDOWN);
+        VarModule::off_flag(boma.object(), vars::wiifit::instance::SPECIAL_LW_RESPAWN_COOLDOWN);
     }
 }
 
 /// Starts ring effect for hitboxes
 pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_size: f32, end_size: f32, bone: Hash40, mut offset: Vector3f, mut color: Vector3f, mut color2: Vector3f, follow: bool) {
-    VarModule::on_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+    VarModule::on_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_END_FRAME, duration);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_CURRENT_FRAME, 0.0);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_START_SIZE, start_size);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_END_SIZE, end_size);
-    VarModule::set_int64(fighter.object(), vars::wiifit::instance::SHOW_RING_MOTION, MotionModule::motion_kind(fighter.module_accessor));
+    VarModule::set_int64(fighter.object(), vars::wiifit::instance::RING_SHOW_MOTION, MotionModule::motion_kind(fighter.module_accessor));
     
     // Make sure that no color alpha is zero
     color.x = if color.x == 0.0 { 0.1 } else { color.x };
@@ -89,16 +89,16 @@ pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_si
     EffectModule::set_rgb(fighter.module_accessor, handle as u32, color.x, color.y, color.z);
     EffectModule::set_rgb(fighter.module_accessor, dark_handle as u32, color.x, color.y, color.z);
     EffectModule::set_rgb(fighter.module_accessor, light_handle as u32, color.x, color.y, color.z);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE, handle as i32);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE, dark_handle as i32);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE, light_handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE, handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE, dark_handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE, light_handle as i32);
 }
 
 /// Updates ring color to second defined color
 unsafe fn set_ring_color(fighter: &mut L2CFighterCommon, mut color: Vector3f) {
-    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE);
-    let dark_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE);
-    let light_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE);
+    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE);
+    let dark_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE);
+    let light_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE);
 
     // Make sure no color alpha is 0.0
     color.x = if color.x == 0.0 { 0.1 } else { color.x };
@@ -117,11 +117,11 @@ unsafe fn set_ring_color(fighter: &mut L2CFighterCommon, mut color: Vector3f) {
 
 /// Updates size and color of ring
 pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
-    if !VarModule::is_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE) { return; }
-    let motion_kind = VarModule::get_int64(fighter.object(), vars::wiifit::instance::SHOW_RING_MOTION);
+    if !VarModule::is_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE) { return; }
+    let motion_kind = VarModule::get_int64(fighter.object(), vars::wiifit::instance::RING_SHOW_MOTION);
     if !fighter.is_motion(Hash40::new_raw(motion_kind)) {
         EFFECT_OFF_KIND(fighter, Hash40::new("wiifit_fukushiki_ring"), false, true);
-        VarModule::off_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+        VarModule::off_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
         return;
     }
 
@@ -132,7 +132,7 @@ pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
     // Kill effect if beyond end frame
     if current_frame > end_frame {
         EFFECT_OFF_KIND(fighter, Hash40::new("wiifit_fukushiki_ring"), false, true);
-        VarModule::off_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+        VarModule::off_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
         return;
     }
 
@@ -142,9 +142,9 @@ pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
         set_ring_color(fighter, color);
     }
     
-    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE);
-    let handle2 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE);
-    let handle3 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE);
+    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE);
+    let handle2 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE);
+    let handle3 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE);
     let start_size = VarModule::get_float(fighter.object(), vars::wiifit::instance::RING_START_SIZE);
     let end_size = VarModule::get_float(fighter.object(), vars::wiifit::instance::RING_END_SIZE);
     let lerp = (current_frame as f32/end_frame as f32);

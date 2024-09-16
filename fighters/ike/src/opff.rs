@@ -27,8 +27,8 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
 
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD) && fighter.is_situation(*SITUATION_KIND_GROUND){
         if WorkModule::get_int(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_CHARGE_COUNT) > 160 {
-            if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-                VarModule::on_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL);
+            if !VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
+                VarModule::on_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL);
                 EFFECT_FOLLOW(fighter, Hash40::new("ike_volcano_hold"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1.0, false);
                 ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, /*Fadein time*/ 30, /* Display Color */ true);
                 //FLASH(fighter, 0.125, 0.4, 1, 0.45);
@@ -37,7 +37,7 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
         }
     }
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) && fighter.is_situation(*SITUATION_KIND_GROUND){
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 if PostureModule::lr(boma) > 0.0{
                     StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
@@ -51,10 +51,10 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
         }
     }
     if !fighter.is_status_one_of(&[*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END, *FIGHTER_STATUS_KIND_APPEAL]){
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL){
             EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
             ColorBlendModule::cancel_main_color(boma, 0);
-            VarModule::off_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL);
+            VarModule::off_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL);
         }
     }
 }
@@ -74,7 +74,7 @@ unsafe fn quickdraw_attack_arm_bend(boma: &mut BattleObjectModuleAccessor) {
     let max_z_rotation = 75.0;
     let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
         
-    if boma.is_motion_one_of(&[Hash40::new("special_s_attack"), Hash40::new("special_air_s_attack")]) && !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && frame <= straight_frame {
+    if boma.is_motion_one_of(&[Hash40::new("special_s_attack"), Hash40::new("special_air_s_attack")]) && !VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) && frame <= straight_frame {
         // linear interpolate back to normal
         let calc_x_rotate = max_x_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
         let x_rotation = calc_x_rotate.clamp(0.0, max_x_rotation);

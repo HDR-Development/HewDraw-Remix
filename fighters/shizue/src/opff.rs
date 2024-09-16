@@ -29,7 +29,7 @@ unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 //Determine if fuel is past threshold
 unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
     if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) >= 100.0 {
-        VarModule::on_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST);
+        VarModule::on_flag(boma.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
     }
 }
 
@@ -61,7 +61,7 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
     && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag() 
-    && VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST) {
+    && VarModule::is_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE) {
         if fighter.is_cat_flag(Cat1::SpecialHi) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
         }
@@ -121,19 +121,12 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
         if fighter.is_button_on(Buttons::Guard) || fighter.is_button_on(Buttons::Catch) || fighter.is_button_on(Buttons::AttackAll) {
             // Check if the user canceled before the initial swing, punishing them by setting their fuel to 0, else set their fuel to 80% of what they had
             if !fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi")]) {
-                if WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) > 100.0 {
-                    VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) - 100.0);
-                }
-                else {
-                    VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, 1.0);
-                }
-                VarModule::on_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
+                VarModule::on_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_putaway_catch"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
-                VarModule::off_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST);
+                VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
             } 
             else {
-                VarModule::off_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
-                VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, 1.0);
+                VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_erase_smoke"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
                 LAST_EFFECT_SET_ALPHA(fighter, 0.75);
             }
@@ -144,7 +137,7 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
 
 //Add directional boost if they hit fuel threshold when cancelled
 unsafe fn balloon_dash(fighter: &mut L2CFighterBase) {
-    if VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST)
+    if VarModule::is_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE)
     && fighter.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH) {
         let lr = PostureModule::lr(fighter.boma());
         let mut x_component = fighter.stick_x() * lr * 3.5;
@@ -161,7 +154,7 @@ unsafe fn balloon_dash(fighter: &mut L2CFighterBase) {
             flip = *EFFECT_AXIS_Y;
         } 
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("shizue_clayrocket_jet"), Hash40::new("shizue_clayrocket_jet"), Hash40::new("top"), 0, 6.0, 0, rot + 90.0, 0, 180, 1.5, true, flip);
-        VarModule::off_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST);
+        VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
     }
 }
 

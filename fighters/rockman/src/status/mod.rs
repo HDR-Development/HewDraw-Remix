@@ -20,8 +20,8 @@ mod special_s;
 mod special_lw;
 
 unsafe extern "C" fn check_special_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_RELEASE)
-    && VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
+    if VarModule::is_flag(fighter.battle_object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_RELEASE)
+    && VarModule::is_flag(fighter.battle_object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX) {
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N));
     }
     false.into()

@@ -112,15 +112,15 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind:
 
 // lets lucina toggle her mask on/off with down taunt
 unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+    let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
     let mask_is_exist = ArticleModule::is_exist(boma, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK);
     
     if fighter.is_motion_one_of(&[Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r")])
     && frame as i32 == 12 {
         if mask_is_equipped { // take off mask
-            VarModule::off_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+            VarModule::off_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
         } else { // put on mask
-            VarModule::on_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+            VarModule::on_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
         }
     } else {
         if mask_is_equipped && !mask_is_exist {
@@ -142,7 +142,7 @@ unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // remove mask on entry and death
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD])
     && mask_is_equipped {
-        VarModule::off_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+        VarModule::off_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
     }
 }
 

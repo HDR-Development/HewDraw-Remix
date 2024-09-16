@@ -41,7 +41,7 @@ unsafe extern "C" fn special_s_throw_main_side(fighter: &mut L2CFighterCommon, s
 
 unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = MotionModule::frame(fighter.module_accessor);
-    let rot = VarModule::get_int(fighter.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE) as f32;
+    let rot = VarModule::get_int(fighter.battle_object, vars::lucario::status::SPECIAL_S_ROT_ANGLE) as f32;
     let rot_start_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_start_frame");
     let rot_start_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_end_frame");
     let rot_end_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_start_frame");

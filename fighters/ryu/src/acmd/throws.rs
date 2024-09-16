@@ -120,7 +120,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
         Hash40::new("collision_attr_elec")
     } else {
         Hash40::new("collision_attr_normal")

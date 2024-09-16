@@ -181,7 +181,7 @@ unsafe extern "C" fn special_n2_main_loop_function(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn special_n1_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
-    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
 
     return 0.into()
 }
@@ -189,7 +189,7 @@ unsafe extern "C" fn special_n1_shoot_end(fighter: &mut L2CFighterCommon) -> L2C
 unsafe extern "C" fn special_n2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
-    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
 
     return 0.into()
 }
@@ -198,7 +198,7 @@ unsafe extern "C" fn special_n3_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, ArticleOperationTarget(0));
     WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
-    VarModule::set_int(fighter.battle_object, vars::trail::instance::MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+    VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
 
     return 0.into()
 }

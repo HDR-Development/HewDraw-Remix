@@ -34,7 +34,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     
     // clear mechakoopa cooldown on reset
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-    VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+    VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::MECHAKOOPA_COOLDOWN_ACTIVE);
     VarModule::off_flag(fighter.battle_object, vars::koopajr::instance::DISABLE_MECHAKOOPA);
 }
 

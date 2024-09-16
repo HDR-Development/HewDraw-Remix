@@ -42,8 +42,8 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw"),
     ])
-    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0 {
-        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY);
+    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY) > 0 {
+        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY);
         if !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
         && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard)
         && !StatusModule::is_changing(boma) {
@@ -81,11 +81,11 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
         || fighter.is_situation(*SITUATION_KIND_CLIFF)
         || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
     {
-        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
     if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
 }

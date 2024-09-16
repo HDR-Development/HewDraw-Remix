@@ -60,7 +60,7 @@ unsafe extern "C" fn game_specialsshoot(agent: &mut L2CAgentBase) {
         FT_DESIRED_RATE(agent, 40.0, 30.0);
         if is_excute(agent) {
             AttackModule::clear_all(boma);
-            VarModule::off_flag(boma.object(), vars::packun::status::FLAME_ACTIVE);
+            VarModule::off_flag(boma.object(), vars::packun::status::POSION_BREATH_ENABLE_STANDARD_FLAME);
         }
     }
     else if stance == 1 {
@@ -102,15 +102,15 @@ unsafe extern "C" fn game_specialsshoots(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::packun::status::BITE_START);
+        VarModule::on_flag(boma.object(), vars::packun::status::POISON_BREATH_ENABLE_PRICKLY_BITE);
     }
     FT_DESIRED_RATE(agent, 11.0, 4.0);
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::packun::status::BITE_START);
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST){
+        VarModule::off_flag(boma.object(), vars::packun::status::POISON_BREATH_ENABLE_PRICKLY_BITE);
+        if VarModule::is_flag(boma.object(), vars::packun::status::POISON_BREATH_BURST){
             if charged {
                 ATTACK(agent, 2, 0, Hash40::new("mouth"), 17.0, 90, 100, 80, 0, 9.0, 4.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BITE);
                 AttackModule::set_add_reaction_frame(boma, 0, 8.0, false);
@@ -159,7 +159,7 @@ unsafe extern "C" fn game_specialsshoots(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        VarModule::off_flag(boma.object(), vars::packun::status::BURST);
+        VarModule::off_flag(boma.object(), vars::packun::status::POISON_BREATH_BURST);
     }
     wait(lua_state, 30.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -248,7 +248,7 @@ unsafe extern "C" fn effect_specialsshoots(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite_line2"), Hash40::new("packun_bite_line2"), Hash40::new("top"), -12, 9, 20, 10, 50, 10, 0.8, true, *EF_FLIP_YZ);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite"), Hash40::new("packun_bite"), Hash40::new("top"), -9, 11, 18, 0, -120, 20, 1, true, *EF_FLIP_YZ);
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+        if VarModule::is_flag(boma.object(), vars::packun::status::POISON_BREATH_BURST) {
             EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
 		    LAST_EFFECT_SET_RATE(agent, 0.7);
@@ -369,7 +369,7 @@ unsafe extern "C" fn effect_specialairsshoots(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite_line2"), Hash40::new("packun_bite_line2"), Hash40::new("top"), -12, 9, 20, 10, 50, 10, 0.8, true, *EF_FLIP_YZ);
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("packun_bite"), Hash40::new("packun_bite"), Hash40::new("top"), -9, 11, 18, 0, -120, 20, 1, true, *EF_FLIP_YZ);
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+        if VarModule::is_flag(boma.object(), vars::packun::status::POISON_BREATH_BURST) {
             EFFECT(agent, Hash40::new("sys_flame"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.01, 0.6);
 		    LAST_EFFECT_SET_RATE(agent, 0.7);
@@ -418,7 +418,7 @@ unsafe extern "C" fn sound_specialsshoots(agent: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_packun_attackhard_s04"));
-        if VarModule::is_flag(boma.object(), vars::packun::status::BURST) {
+        if VarModule::is_flag(boma.object(), vars::packun::status::POISON_BREATH_BURST) {
             PLAY_SE(agent, Hash40::new("se_common_bomb_s"));
         }
     }

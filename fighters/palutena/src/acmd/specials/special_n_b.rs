@@ -3,7 +3,7 @@ use super::*;
 unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
     let power = if powered {5.0} else {0.0};
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -13,7 +13,7 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
         else {
             MeterModule::drain(boma.object(), 2);
         }
-        VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
+        VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
     }
     frame(lua_state, 4.0);
     FT_DESIRED_RATE(agent, 14.0, 10.0);
@@ -41,7 +41,7 @@ unsafe extern "C" fn game_specialnb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
     let length = if powered { 2.7 } else { 1.8 };
     let length2 = if powered { 0.69 } else { 0.5 };
     let y_pos = if powered {25} else {16};
@@ -85,7 +85,7 @@ unsafe extern "C" fn effect_specialnb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
     let sound_lvl = if power {Hash40::new("se_common_frieze_l")} else {Hash40::new("se_common_frieze_m")};
     frame(lua_state, 17.0);
     if is_excute(agent) {
@@ -100,7 +100,7 @@ unsafe extern "C" fn sound_specialnb(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_specialnb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let powered = VarModule::is_flag(agent.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
 
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);

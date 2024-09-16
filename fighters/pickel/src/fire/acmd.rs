@@ -10,7 +10,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let pickel_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let pickel = pickel_boma.object();
-    let is_soul_fire = VarModule::is_flag(pickel, vars::pickel::status::IS_SOUL_FIRE);
+    let is_soul_fire = VarModule::is_flag(pickel, vars::pickel::status::ATTACK_LW3_SOUL_FIRE);
     if is_excute(agent) {
         AttackModule::disable_tip(boma);
         FT_MOTION_RATE(agent, 0.6);
@@ -46,7 +46,7 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let pickel_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let pickel = pickel_boma.object();
-    let is_soul_fire = VarModule::is_flag(pickel, vars::pickel::status::IS_SOUL_FIRE);
+    let is_soul_fire = VarModule::is_flag(pickel, vars::pickel::status::ATTACK_LW3_SOUL_FIRE);
     if is_excute(agent) {
         if is_soul_fire {
             EFFECT_FOLLOW(agent, Hash40::new("pickel_soul_fire_soot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
