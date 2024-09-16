@@ -61,27 +61,15 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
     }
 }
 
-unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
-                //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
-                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
-                WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
-                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
-            }
-        }
-        else if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 31.0 {
-                if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-                }
-            }
-        }
+unsafe fn nayru_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("special_n")) 
+    && StatusModule::is_situation_changed(boma)
+    && MotionModule::frame(boma) < 55.0 {
+        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
+        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
+        MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_n"), 56.0, 1.0, 1.0);
+        AttackModule::clear_all(boma);
+        boma.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
     }
 }
 
@@ -171,7 +159,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma, frame);
     dins_fire_cancels(boma);
-    nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
+    nayru_land_cancel(boma);
     phantom_special_cancel(fighter, boma);
     phantom_platdrop_effect(fighter, boma);
     fastfall_specials(fighter);
