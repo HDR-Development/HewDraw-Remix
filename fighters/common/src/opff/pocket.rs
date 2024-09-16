@@ -38,12 +38,5 @@ unsafe fn ac_update(fighter: &mut L2CFighterCommon) {
 
 #[no_mangle]
 pub unsafe extern "Rust" fn ac_common(fighter: &mut L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        ac_moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
-}
-
-pub unsafe fn ac_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let fighter_kind = boma.kind();
     ac_update(fighter);
 }

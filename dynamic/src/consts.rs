@@ -1136,13 +1136,6 @@ pub mod vars {
         }
     }
 
-    pub mod packun_spikeball {
-        pub mod instance {
-            // flags
-            pub const SHOULD_EXPLODE: i32 = 0x0100;
-        }
-    }
-
     pub mod pacman {
         pub mod instance {
             // flags
