@@ -85,10 +85,10 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Meta Knight - Disable use of specials midair again after hitting them during the current airtime
         if fighter_kind == FIGHTER_KIND_METAKNIGHT {
-            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
+            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_N_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_S_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_HI_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_LW_HIT)) {
                 return false;
             }
         }
@@ -117,7 +117,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if fighter_kind == *FIGHTER_KIND_TRAIL {
             if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
                 if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
-                || VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT) {
+                || VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_S_HIT) {
                     return false;
                 }
             }
@@ -125,7 +125,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         //Disable Duck Hunt Down Special on a timer
         if boma.kind() == *FIGHTER_KIND_DUCKHUNT  {
-            if VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) != 0 
+            if VarModule::get_int(boma.object(), vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER) != 0 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false
             }

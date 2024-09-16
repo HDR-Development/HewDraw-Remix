@@ -77,25 +77,6 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-// Down Special Cancels
-unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if AttackModule::is_infliction(boma, 2) {
-            VarModule::on_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
-        }
-        if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 6.0 {
-            boma.check_jump_cancel(false, false);
-        }
-    } else {
-        VarModule::off_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
-    }
-}
-
 /// this sets the ledgegrab box for the backside of up special, which 
 /// enables DK to more consistently grab ledge with slipoff uspecial
 pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {

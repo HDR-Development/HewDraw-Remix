@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attackcommand1(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
-    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
         dmg = 1.05;
     }
@@ -50,7 +50,7 @@ unsafe extern "C" fn game_attackcommand2(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
-    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
         dmg = 1.05;
     }
@@ -86,7 +86,7 @@ unsafe extern "C" fn game_attackcommand3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
-    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
         dmg = 1.05;
     }
@@ -124,7 +124,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let mut attr = Hash40::new("collision_attr_normal");
     let mut dmg = 1.0;
-    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+    if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
         attr = Hash40::new("collision_attr_fire");
         dmg = 1.05;
     }

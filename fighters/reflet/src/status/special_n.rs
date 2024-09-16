@@ -3,7 +3,7 @@ use super::*;
 // FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_TRON_START
 
 pub unsafe extern "C" fn special_n_tron_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_float(fighter.battle_object, vars::reflet::instance::THUNDER_CHARGE, fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_N_CURRENT_POINT) as f32);
+    VarModule::set_float(fighter.battle_object, vars::reflet::instance::SPECIAL_N_CHARGE, fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_N_CURRENT_POINT) as f32);
     let ret = smashline::original_status(Main, fighter, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_TRON_START)(fighter);
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);

@@ -5,7 +5,7 @@ unsafe extern "C" fn game_specialn3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        VarModule::off_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
+        VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -15,14 +15,14 @@ unsafe extern "C" fn game_specialn3(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 14.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER) {
+        if !VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL) {
             WorkModule::set_int(boma, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
             ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
         }
     }
     wait(lua_state, 14.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER) {
+        if !VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL) {
             WorkModule::set_int(boma, 2, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
             ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
         }
@@ -38,7 +38,7 @@ unsafe extern "C" fn game_specialairn3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        VarModule::off_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
+        VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {

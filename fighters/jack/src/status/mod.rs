@@ -30,6 +30,9 @@ unsafe fn get_original_customizer(fighter: &mut L2CFighterCommon) -> Option<unsa
 
 unsafe extern "C" fn move_customizer(fighter: &mut L2CFighterCommon) -> L2CValue {
     let customize_to = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO);
+    if let Some(original) = get_original_customizer(fighter) {
+        original(fighter);
+    }
     if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1 {
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
@@ -41,19 +44,14 @@ unsafe extern "C" fn move_customizer(fighter: &mut L2CFighterCommon) -> L2CValue
             LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(),
             std::mem::transmute(special_lw::special_lw_main as *const ())
         );
-        0.into()
     } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2 {
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
             std::mem::transmute(special_lw::special_lw2_pre as *const ())
         );
-        0.into()
-    } else if let Some(original) = get_original_customizer(fighter) {
-        original(fighter)
-    } else {
-        0.into()
     }
+    0.into()
 }
 
 unsafe extern "C" fn special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -41,10 +41,10 @@ unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue
     VarModule::set_float(fighter.battle_object, SPECIAL_HI_ROT_X, 0.0);
 
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::off_flag(fighter.battle_object, GROUNDED_UPB);
+        VarModule::off_flag(fighter.battle_object, SPECIAL_HI_GROUND_START);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
     } else {
-        VarModule::on_flag(fighter.battle_object, GROUNDED_UPB);
+        VarModule::on_flag(fighter.battle_object, SPECIAL_HI_GROUND_START);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
 
@@ -193,10 +193,10 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     KineticModule::resume_energy_all(fighter.module_accessor);
 
-    let eff_handle = VarModule::get_int(fighter.battle_object, SPECIAL_HI_MARKER_EFF_HANDLE) as u32;
+    let eff_handle = VarModule::get_int(fighter.battle_object, SPECIAL_HI_MARKER_EFFECT_HANDLE) as u32;
     if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
         EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
-        VarModule::set_int(fighter.battle_object, SPECIAL_HI_MARKER_EFF_HANDLE, 0);
+        VarModule::set_int(fighter.battle_object, SPECIAL_HI_MARKER_EFFECT_HANDLE, 0);
     }
 
     return 0.into();
@@ -219,7 +219,7 @@ pub unsafe fn special_hi_guide_handler(fighter: &mut L2CFighterCommon) { // than
     let mut angle = (VarModule::get_float(fighter.battle_object, SPECIAL_HI_ROT_X) - 90.0) * -1.0;
     //println!("angle: {}", angle);
 
-    let mut eff_handle = VarModule::get_int(fighter.battle_object, SPECIAL_HI_MARKER_EFF_HANDLE) as u32;
+    let mut eff_handle = VarModule::get_int(fighter.battle_object, SPECIAL_HI_MARKER_EFFECT_HANDLE) as u32;
     let guide_pos = arrow_guide_pos(fighter, angle.into());
     if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
         eff_handle = EffectModule::req(
@@ -233,7 +233,7 @@ pub unsafe fn special_hi_guide_handler(fighter: &mut L2CFighterCommon) { // than
             false,
             0
         ) as u32;
-        VarModule::set_int(fighter.battle_object, SPECIAL_HI_MARKER_EFF_HANDLE, eff_handle as i32);
+        VarModule::set_int(fighter.battle_object, SPECIAL_HI_MARKER_EFFECT_HANDLE, eff_handle as i32);
     } else {
         EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0});
     }
@@ -268,9 +268,7 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
         return 1.into();
     }
 
-    //if VarModule::is_flag(fighter.battle_object, UPB_CANCEL)
     if MotionModule::is_end(fighter.module_accessor) {
-        //VarModule::off_flag(fighter.battle_object, UPB_CANCEL);
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
 
         return 1.into();

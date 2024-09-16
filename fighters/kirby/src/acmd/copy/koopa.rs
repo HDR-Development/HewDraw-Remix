@@ -40,7 +40,7 @@ unsafe extern "C" fn game_koopaspecialnmax(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VarModule::set_int(agent.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        VarModule::set_int(agent.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,KOOPA_MAX_COOLDOWN);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {

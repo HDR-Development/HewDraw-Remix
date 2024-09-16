@@ -7,7 +7,7 @@ mod special_hi;
 mod special_hi_open;
 
 unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE) {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE) {
         false.into()
     } else {
         true.into()
@@ -15,7 +15,7 @@ unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE) {
+    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE) {
         if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
         || fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_DAMAGE,
@@ -65,7 +65,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
             *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
             *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
         ])) {
-            VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_PARACHUTE);
+            VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE);
         }
     }
     true.into()

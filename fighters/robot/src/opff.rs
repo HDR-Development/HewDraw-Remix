@@ -16,8 +16,8 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
 
 // resets the once-per-airtime bounce for sideb/bair when landing/respawning
 unsafe fn boost_reset(boma: &mut BattleObjectModuleAccessor) {
-    if !VarModule::is_flag(boma.object(), vars::robot::instance::AIRTIME_BAIR)
-    || !VarModule::is_flag(boma.object(), vars::robot::instance::AIRTIME_SIDEB) {
+    if !VarModule::is_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED)
+    || !VarModule::is_flag(boma.object(), vars::robot::instance::SPECIAL_S_AIR_USED) {
         if boma.is_situation(*SITUATION_KIND_GROUND)
         || boma.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_DEAD,
@@ -26,8 +26,8 @@ unsafe fn boost_reset(boma: &mut BattleObjectModuleAccessor) {
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY
         ]) {
-            VarModule::on_flag(boma.object(), vars::robot::instance::AIRTIME_BAIR);
-            VarModule::on_flag(boma.object(), vars::robot::instance::AIRTIME_SIDEB);
+            VarModule::on_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED);
+            VarModule::on_flag(boma.object(), vars::robot::instance::SPECIAL_S_AIR_USED);
         }
     }
 }
@@ -39,7 +39,6 @@ unsafe fn special_hi_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
 
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP {
         VarModule::set_int(fighter.battle_object, vars::robot::instance::SPECIAL_HI_CHARGE_FRAME, 0);
-        VarModule::off_flag(fighter.battle_object, vars::robot::instance::UPB_CANCEL);
     }
 
     if StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_SPECIAL_HI {

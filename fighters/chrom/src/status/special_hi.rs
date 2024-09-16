@@ -306,14 +306,14 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
             return 1.into();
         }
     }
-    if VarModule::is_flag(fighter.battle_object, vars::chrom::status::AETHER_DIVE_READY)
+    if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_3_start"), 0.0, 1.0, false, 0.0, false, false);
-        VarModule::off_flag(fighter.battle_object, vars::chrom::status::AETHER_DIVE_READY);
-        VarModule::on_flag(fighter.battle_object, vars::chrom::status::AETHER_DIVE_START);
+        VarModule::off_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE);
+        VarModule::on_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_START);
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::AETHER_DIVE_START) {
+        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_START) {
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
