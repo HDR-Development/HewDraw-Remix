@@ -298,9 +298,9 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     some_bool: L2CValue
 ) {
     let min_mul = 1.0;
-    let max_mul = 2.0;
-    let power = 1.9;
-    let speed_start = 5.1;
+    let max_mul = 2.15;
+    let power = 1.2;
+    let speed_start = 5.0;
     let speed_end = 7.5;
     let speed = factor.get_f32();
     dbg!(speed);
