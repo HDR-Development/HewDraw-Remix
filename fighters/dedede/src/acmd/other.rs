@@ -96,7 +96,7 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VarModule::set_flag(agent.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
+        VarModule::set_flag(agent.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, false);
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {
@@ -113,7 +113,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VarModule::set_flag(agent.battle_object, vars::dedede::instance::CAN_WADDLE_DASH_FLAG, false);
+        VarModule::set_flag(agent.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_ENABLE, false);
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {

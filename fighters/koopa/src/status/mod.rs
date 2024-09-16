@@ -13,8 +13,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH,
     *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
         EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"), false, false);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID, 0);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID, 0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, MAX_COOLDOWN);
     }
     true.into()
 }

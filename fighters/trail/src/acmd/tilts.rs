@@ -6,14 +6,14 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 6.0);
-    if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_INTO_S3) {
+    if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO) {
         FT_MOTION_RATE(agent, 0.3);
     } else {
         FT_MOTION_RATE(agent, 1.0);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_INTO_S3) {
+        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO) {
             // Jab 2 -> Ftilt cancel
             ATTACK(agent, 0, 0, Hash40::new("haver"), 3.0, 75, 30, 0, 40, 3.5, 0.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(agent, 1, 0, Hash40::new("haver"), 3.0, 75, 30, 0, 40, 3.5, 0.0, 4.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
@@ -30,7 +30,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_INTO_S3) {
+        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO) {
             ATTACK(agent, 2, 0, Hash40::new("haver"), 3.0, 80, 20, 0, 40, 3.5, 0.0, 8.25, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             AttackModule::set_add_reaction_frame_revised(boma, 2, 8.0, false);
         }
@@ -42,12 +42,12 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_INTO_S3) {
+        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         }
     }
     frame(lua_state, 27.0);
-    if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_INTO_S3) {
+    if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO) {
         FT_MOTION_RATE(agent, 1.4);
     }
 }

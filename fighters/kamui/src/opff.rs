@@ -16,21 +16,21 @@ unsafe fn pin_drop_waveland(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn bair_charge(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")) {
         let is_hold = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK);
-        let charge = VarModule::get_float(boma.object(), vars::kamui::status::CURRENT_CHARGE);
+        let charge = VarModule::get_float(boma.object(), vars::kamui::status::ATTACK_AIR_B_CHARGE);
         let mut charge_start_frame = 6.0;
         let mut charge_end_frame = 11.0;
 
         if (charge_start_frame..charge_end_frame).contains(&boma.motion_frame()) {
             if is_hold {
                 MotionModule::set_rate(boma, 0.2);
-                VarModule::set_float(boma.object(), vars::kamui::status::CURRENT_CHARGE, charge + 1.0);
+                VarModule::set_float(boma.object(), vars::kamui::status::ATTACK_AIR_B_CHARGE, charge + 1.0);
             }
             else {
                 MotionModule::set_rate(boma, 1.0);
             }
         }
         else if boma.motion_frame() > charge_end_frame {
-            VarModule::set_float(boma.object(), vars::kamui::status::CURRENT_CHARGE, (charge/13.0) * 10.0);
+            VarModule::set_float(boma.object(), vars::kamui::status::ATTACK_AIR_B_CHARGE, (charge/13.0) * 10.0);
             MotionModule::set_rate(boma, 1.0);
         }
     }

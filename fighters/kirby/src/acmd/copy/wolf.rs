@@ -73,13 +73,13 @@ unsafe extern "C" fn effect_wolfspecialairn(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_wolfspecialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_wolf_special_n03"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_wolf_special_n03"));
     }
     wait(agent.lua_state_agent, 6.0);
     wait(agent.lua_state_agent, 25.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_wolf_special_n02"));
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_wolf_special_n02"));
     }
 }
 

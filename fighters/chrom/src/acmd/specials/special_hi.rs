@@ -118,11 +118,11 @@ pub unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::chrom::status::AETHER_DIVE_READY);
+        VarModule::on_flag(agent.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::chrom::status::AETHER_DIVE_READY);
+        VarModule::off_flag(agent.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE);
     }
 }
 

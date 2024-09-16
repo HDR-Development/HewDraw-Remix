@@ -9,7 +9,7 @@ mod bayonet_end;
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)){ 
-        VarModule::on_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
+        VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_FAIL_ENABLE);
     }
     return true.into();
 }
@@ -18,17 +18,17 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 unsafe fn on_rebirth(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor) {
     let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    VarModule::off_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
-    VarModule::off_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+    VarModule::off_flag(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
+    VarModule::off_flag(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
     
     VarModule::set_int(boma.object(), vars::buddy::instance::HUD_DISPLAY_TIME,60);
-    VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,0);
-    VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE,0);
-    VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,0);
+    VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME,0);
+    VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE,0);
+    VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_EGGS_FIRED,0);
     BAYONET_EGGS[entry]=0;
 
-    VarModule::set_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN,0.0);
-    VarModule::set_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE,0.0);
+    VarModule::set_float(boma.object(), vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN,0.0);
+    VarModule::set_float(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_ANGLE,0.0);
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {

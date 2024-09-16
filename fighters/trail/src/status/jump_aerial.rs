@@ -4,7 +4,7 @@ use super::*;
 
 // preserve momentum if double jumping out of sonic blade
 unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let x_speed = VarModule::get_float(fighter.battle_object, vars::trail::instance::JUMP_CANCEL_MOMENTUM_HANDLER);
+    let x_speed = VarModule::get_float(fighter.battle_object, vars::trail::instance::SPECIAL_S_JUMP_SPEED_X);
 
     let original = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_JUMP_AERIAL);
 

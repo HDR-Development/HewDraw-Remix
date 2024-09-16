@@ -131,7 +131,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 3, -2.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 4, 2.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 0, -3.0, false);
-        VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 1);
+        VarModule::set_int(boma.object(), vars::bayonetta::instance::ATTACK_AIR_F_COUNT, 1);
     }
     frame(lua_state, 11.0);//7
     FT_MOTION_RATE_RANGE(agent, 11.0, 30.0, 18.0); //25 faf
@@ -175,7 +175,7 @@ unsafe extern "C" fn game_attackairf2(agent: &mut L2CAgentBase) {
         ATTACK(agent, 3, 0, Hash40::new("top"), 3.0, 78, 10, 0, 56, 6.0, 0.0, 12.0, 10.0, Some(0.0), Some(12.0), Some(15.0), 1.1, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame_revised(boma, 2, -2.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 3, 2.0, false);
-        VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 2);
+        VarModule::set_int(boma.object(), vars::bayonetta::instance::ATTACK_AIR_F_COUNT, 2);
     }
     frame(lua_state, 9.0);//10
     FT_MOTION_RATE(agent, 1.0);
@@ -223,7 +223,7 @@ unsafe extern "C" fn game_attackairf3(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("kneer"), 7.0, 55, 70, 0, 60, 3.6, -4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 1, 0, Hash40::new("kneer"), 7.0, 55, 70, 0, 60, 4.1, 1.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 2, 0, Hash40::new("kneer"), 7.0, 55, 70, 0, 60, 4.6, 6.95, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 0);
+        VarModule::set_int(boma.object(), vars::bayonetta::instance::ATTACK_AIR_F_COUNT, 0);
     }
     frame(lua_state, 16.0);
     FT_MOTION_RATE(agent, 1.0);

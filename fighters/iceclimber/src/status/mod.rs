@@ -8,6 +8,35 @@ pub unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+unsafe extern "C" fn special_hi_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_NONE) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    return 0.into();
+}
+
 pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(), 30.0, 30.0);
     let pos = *PostureModule::pos(fighter.module_accessor);
@@ -81,6 +110,7 @@ pub fn install_popo(agent: &mut Agent) {
 
 pub fn install_nana(agent: &mut Agent) {
     agent.status(Exit, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
+    agent.status(Pre, *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_FAIL, special_hi_fail_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_THROW, throw_nana);
     agent.status(Pre, *FIGHTER_STATUS_KIND_CATCH_WAIT, nana_catch_wait_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_CATCH_WAIT, nana_catch_wait_main);

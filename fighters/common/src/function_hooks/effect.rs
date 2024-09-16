@@ -325,6 +325,46 @@ unsafe fn DOWN_EFFECT_hook(lua_state: u64) {
     l2c_agent.clear_lua_stack();
 }
 
+#[skyline::hook(replace=smash::app::sv_animcmd::EFFECT_GLOBAL_BACK_GROUND_CUT_IN_CENTER_POS)]
+unsafe fn CUT_IN_CENTER_hook(lua_state: u64) {
+    let mut agent: L2CAgent = L2CAgent::new(lua_state);
+    let mut params: [L2CValue ; 16] = [
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()
+    ];
+    for i in 0..16 { params[i as usize] = agent.pop_lua_stack(i + 1) };
+
+    agent.clear_lua_stack();
+    for i in 0..16 {
+        if i == 0 { // effect name index
+            let mut effect_name = params[i as usize].get_hash();
+            let mut hash = effect_name.hash;
+            if effect_name.hash == hash40("sys_bg_finishhit") {
+                // determines which effect will play based on the team color of the last attack
+                // println!("effect being set to team color {}", LAST_ATTACK_TEAM_COLOR);
+                hash = match LAST_ATTACK_TEAM_COLOR {
+                    0 => hash40("sys_bg_finishhit_r"),
+                    1 => hash40("sys_bg_finishhit_b"),
+                    2 => hash40("sys_bg_finishhit_y"),
+                    3 => hash40("sys_bg_finishhit_g"),
+                    4 => hash40("sys_bg_finishhit_o"),
+                    5 => hash40("sys_bg_finishhit_c"),
+                    6 => hash40("sys_bg_finishhit_m"),
+                    7 => hash40("sys_bg_finishhit_p"),
+                    _ => hash40("sys_bg_finishhit")
+                };
+            }
+            agent.push_lua_stack(&mut L2CValue::new_hash(hash));
+        } else {
+            agent.push_lua_stack(&mut params[i as usize]);
+        }
+    }
+
+    original!()(lua_state);
+}
+
 #[skyline::hook(replace=EffectModule::req_on_joint)]
 unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: &Vector3f, arg8: &Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
     let mut eff_size = size;
@@ -338,10 +378,28 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
 unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
     let mut eff_size = size;
     // Shrink knockback smoke effect by 25%
+    let mut is_flyroll = false;
     if effHash.hash == hash40("sys_flyroll_smoke") as u64 {  // hash for kb smoke
-        eff_size = size * 0.75;
+        eff_size = size * 0.7;
+        is_flyroll  = true;
     }
-    original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+
+    let ret = original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+    if is_flyroll {
+        let fighter = util::get_fighter_common_from_accessor(boma);
+        let reaction_frame = fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
+
+        let min_alpha = 0.25;
+        let max_alpha = 1.0;
+
+        let alpha = (min_alpha + ((reaction_frame - 51.0) / 30.0)).clamp(min_alpha, max_alpha);
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_num(alpha));
+        sv_animcmd::LAST_EFFECT_SET_ALPHA(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+    }
+
+    ret
 }
 
 #[skyline::hook(replace=EffectModule::preset_lifetime_rate_partial)]
@@ -368,6 +426,47 @@ unsafe fn get_dead_effect_scale_hook(boma: &mut BattleObjectModuleAccessor, arg1
     original!()(boma, arg1, arg2, arg3) * 0.75
 }
 
+#[skyline::hook(replace=smash::app::sv_module_access::effect)]
+unsafe fn module_access_effect_hook(lua_state: u64) {
+    let mut agent: L2CAgent = L2CAgent::new(lua_state);
+    let mut params: [L2CValue ; 17] = [
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), 
+        L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(),
+        L2CValue::new_void()
+    ];
+    for i in 0..17 { params[i as usize] = agent.pop_lua_stack(i + 1) };
+
+    agent.clear_lua_stack();
+    for i in 0..17 {
+        if i == 1 { // effect hash index
+            let mut effect_name = params[i as usize].get_hash();
+            let mut hash = effect_name.hash;
+            if effect_name.hash == hash40("sys_hit_dead") {
+                // determines which effect will play based on the team color of the last attack
+                // println!("effect being set to team color {}", LAST_ATTACK_TEAM_COLOR);
+                hash = match LAST_ATTACK_TEAM_COLOR {
+                    0 => hash40("sys_hit_dead_r"),
+                    1 => hash40("sys_hit_dead_b"),
+                    2 => hash40("sys_hit_dead_y"),
+                    3 => hash40("sys_hit_dead_g"),
+                    4 => hash40("sys_hit_dead_o"),
+                    5 => hash40("sys_hit_dead_c"),
+                    6 => hash40("sys_hit_dead_m"),
+                    7 => hash40("sys_hit_dead_p"),
+                    _ => hash40("sys_hit_dead")
+                };
+            }
+            agent.push_lua_stack(&mut L2CValue::new_hash(hash));
+        } else {
+            agent.push_lua_stack(&mut params[i as usize]);
+        }
+    }
+
+    original!()(lua_state);
+}
+
 pub fn install() {
     skyline::install_hooks!(
         EFFECT_hook,
@@ -378,9 +477,11 @@ pub fn install() {
         LANDING_EFFECT_hook,
         LANDING_EFFECT_FLIP_hook,
         DOWN_EFFECT_hook,
+        CUT_IN_CENTER_hook,
         req_on_joint_hook,
         req_follow,
         preset_lifetime_rate_partial_hook,
-        get_dead_effect_scale_hook
+        get_dead_effect_scale_hook,
+        module_access_effect_hook
     );
 }

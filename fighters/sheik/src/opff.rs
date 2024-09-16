@@ -7,14 +7,14 @@ unsafe fn bouncing_fish_transitions(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK) {
         if MotionModule::is_end(fighter.module_accessor)
         && fighter.is_situation(*SITUATION_KIND_AIR) {
-            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT) {
+            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::SPECIAL_LW_HIT) {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
             }
         }
     }
     if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN)
     && fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT);
+        VarModule::on_flag(fighter.object(), vars::sheik::instance::SPECIAL_LW_HIT);
         if fighter.status_frame() > 14 {
             fighter.check_jump_cancel(false, false);
             fighter.check_airdodge_cancel();

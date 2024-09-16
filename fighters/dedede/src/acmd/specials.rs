@@ -271,7 +271,7 @@ unsafe extern "C" fn effect_specialsget(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent){
-        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::IS_DASH_GORDO){
+        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS){
            FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         }   
     }
@@ -312,7 +312,7 @@ unsafe extern "C" fn effect_specialairsget(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent){
-        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::IS_DASH_GORDO){
+        if VarModule::is_flag(agent.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_SUCCESS){
             FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         }
     }

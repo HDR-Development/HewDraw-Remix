@@ -3,9 +3,9 @@ use super::*;
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
-    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_RECOIL_MUL);
+    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_DAMAGE_MUL);
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     if is_excute(agent){
         if !charged {
             MeterModule::watch_damage(agent.battle_object, true);
@@ -56,8 +56,8 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_DAMAGE_MUL);
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pichu_cheek2"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1.0 * damage_mul, true);
@@ -103,7 +103,7 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -132,7 +132,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         if charged {
@@ -187,9 +187,9 @@ unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
-    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_RECOIL_MUL);
+    let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_DAMAGE_MUL);
+    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

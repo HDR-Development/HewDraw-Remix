@@ -236,7 +236,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
             return 0.into();
         }
     }
-    if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SET_ATTACK) {
+    if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_SET_ATTACK) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     else {
@@ -247,7 +247,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
             app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
             fighter.pop_lua_stack(0);
 
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::SET_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_SET_ATTACK);
         }
     }
     if !StatusModule::is_changing(fighter.module_accessor)
@@ -562,9 +562,9 @@ unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE) {
+        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION);
         }
         else {
             MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_hit"), -1.0, 1.0, 0.0, false, false);
@@ -573,9 +573,9 @@ unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE) {    
+        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION) {    
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION);
         }
         else {
             MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_hit"), -1.0, 1.0, 0.0, false, false);
