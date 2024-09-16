@@ -22,25 +22,25 @@ unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize
     if [*FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::snake::instance::TRANQ_NEED_RELEOAD);
+        VarModule::off_flag(boma.object(), vars::snake::instance::SPECIAL_S_FORCE_RELOAD);
     }
 }
 
 // handles fsmash transitioning into the second/third hits (reimpl of AParticularUser's snake_frame)
 unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_ATTACK_S4].contains(&status_kind) {
-        if !VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED) {
+        if !VarModule::is_flag(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_BUFFER) {
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SMASH) {
-                VarModule::on_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED);
+                VarModule::on_flag(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_BUFFER);
             }
         }
-        if VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_ENABLE)
-        && VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED) {
-            VarModule::off_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
-            VarModule::off_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED);
-            if VarModule::get_int(boma.object(), vars::snake::instance::KNIFE_COMBO_COUNT) == 0 {
-                VarModule::set_int(boma.object(), vars::snake::instance::KNIFE_COMBO_COUNT, 1);
+        if VarModule::is_flag(boma.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO)
+        && VarModule::is_flag(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_BUFFER) {
+            VarModule::off_flag(boma.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO);
+            VarModule::off_flag(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_BUFFER);
+            if VarModule::get_int(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_COUNT) == 0 {
+                VarModule::set_int(boma.object(), vars::snake::instance::ATTACK_S4_COMBO_COUNT, 1);
                 ControlModule::reset_trigger(boma);
                 MotionModule::change_motion(boma, Hash40::new("attack_s4_s2"), 0.0, 1.0, false, 0.0, false, false);
             }

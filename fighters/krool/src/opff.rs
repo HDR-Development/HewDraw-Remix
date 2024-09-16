@@ -10,8 +10,8 @@ unsafe fn var_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
-        VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
-        VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
+        VarModule::set_float(fighter.battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::krool::instance::SPECIAL_N_GRAB);
     }
 }
 
@@ -23,7 +23,7 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
         Hash40::new("attack_hi3"),
         Hash40::new("attack_lw3") ]) {
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK);
-        let charge = VarModule::get_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE);
+        let charge = VarModule::get_int(fighter.battle_object, vars::krool::status::ATTACK_CHARGE);
         let mut charge_start_frame = 0.0;
         let mut charge_end_frame = 0.0;
         // due to what I presume is internal rounding error, the current amount of 20.0 equates to 18 frames
@@ -53,7 +53,7 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
             }
             let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
             MotionModule::set_rate(fighter.module_accessor, motion_rate);
-            VarModule::set_int(fighter.battle_object, vars::krool::status::CURRENT_CHARGE, charge + 1);
+            VarModule::set_int(fighter.battle_object, vars::krool::status::ATTACK_CHARGE, charge + 1);
         } else {
             MotionModule::set_rate(fighter.module_accessor, 1.0);
         }

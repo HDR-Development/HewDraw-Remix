@@ -328,7 +328,7 @@ unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackss"), 5);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackss"), 5);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
@@ -340,7 +340,7 @@ unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {

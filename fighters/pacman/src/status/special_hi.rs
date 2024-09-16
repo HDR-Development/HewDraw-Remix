@@ -49,6 +49,35 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_loop_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        true,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_FLAG,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_INT,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    return 0.into();
+}
+
 pub unsafe extern "C" fn special_hi_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_loop"), 0.0, 1.0, false, 0.0, false, false);
     let mut start_height_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("start_height_y")) * 10.0;
@@ -152,6 +181,35 @@ pub unsafe extern "C" fn special_hi_loop_main_loop(fighter: &mut L2CFighterCommo
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        true,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_FLAG,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_INT,
+        *FIGHTER_PACMAN_STATUS_WORK_KEEP_SPECIAL_HI_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+
+    return 0.into();
+}
+
 pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_rot(fighter.module_accessor, &Vector3f::zero(), 0);
     let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("special_hi_end") } else { Hash40::new("special_air_hi_end") };
@@ -213,6 +271,10 @@ pub unsafe extern "C" fn special_hi_check_aerial(fighter: &mut L2CFighterCommon)
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+
+    agent.status(Pre, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_LOOP, special_hi_loop_pre);
     agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_LOOP, special_hi_loop_main);
+
+    agent.status(Pre, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
     agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
 }

@@ -21,7 +21,7 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
 // FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
 
 pub unsafe extern "C" fn special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
     }
     smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP)(fighter)

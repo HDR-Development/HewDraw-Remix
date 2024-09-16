@@ -13,15 +13,15 @@ pub extern "C" fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighte
             let gunner_boma = &mut *(*gunner).module_accessor;
             if StatusModule::status_kind(boma) == *WEAPON_MIIGUNNER_SUPERMISSILE_STATUS_KIND_STRAIGHT
             && gunner_boma.is_cat_flag(Cat1::SpecialS)
-            && VarModule::is_flag(gunner, vars::miigunner::instance::DETONATE_READY) {
+            && VarModule::is_flag(gunner, vars::miigunner::instance::SPECIAL_S3_DETONATE_READY) {
                 if WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP) {
                     StatusModule::change_status_request_from_script(boma, *WEAPON_MIIGUNNER_SUPERMISSILE_STATUS_KIND_S_BURST, false);
-                    VarModule::on_flag(gunner, vars::miigunner::status::MISSILE_DETONATE);
-                    VarModule::off_flag(gunner, vars::miigunner::instance::DETONATE_READY);
+                    VarModule::on_flag(gunner, vars::miigunner::status::SPECIAL_S3_MISSILE_DETONATE);
+                    VarModule::off_flag(gunner, vars::miigunner::instance::SPECIAL_S3_DETONATE_READY);
                     gunner_boma.clear_commands(Cat1::SpecialS); // Clear command so Gunner doesn't immediately fire another missile
                 }
             }

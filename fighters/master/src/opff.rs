@@ -5,7 +5,7 @@ use globals::*;
 
 unsafe fn specialhi_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
-        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH);
+        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_HI_CATCH_USED);
     }
 }
 

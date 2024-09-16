@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 6.0);
     let strength = agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    let add_startup = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    let add_startup = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         6.0
     } else if strength == *FIGHTER_RYU_STRENGTH_W {
         3.0
@@ -16,14 +16,14 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     };
     FT_MOTION_RATE_RANGE(agent, 6.0, 9.0, add_startup);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             MeterModule::drain_direct(agent.battle_object, 2.0 * MeterModule::meter_per_level(agent.battle_object));
         }
     }
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 14.0);
-    let speed = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    let speed = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         2.0
     } else if strength == *FIGHTER_RYU_STRENGTH_W {
         1.0
@@ -44,10 +44,10 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::watch_damage(agent.battle_object, true);
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             MeterModule::watch_damage(agent.battle_object, false);
         }
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED)
         || strength == FIGHTER_RYU_STRENGTH_S { 
             ATTACK(agent, 0, 0, Hash40::new("kneel"), 16.0, 361, 98, 0, 26, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(agent, 1, 0, Hash40::new("kneel"), 16.0, 361, 98, 0, 26, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
@@ -59,7 +59,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 20.0);
-    let recovery = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    let recovery = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         33.0
     } else if strength == *FIGHTER_RYU_STRENGTH_W {
         22.0
@@ -91,17 +91,17 @@ unsafe extern "C" fn effect_attackcommand4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         FLASH(agent, 0.95, 0.522, 0.051, 1.7);
     }
     frame(lua_state, 12.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         FLASH(agent, 0.95, 0.522, 0.051, 0.7);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -115,22 +115,22 @@ unsafe extern "C" fn effect_attackcommand4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         FLASH(agent, 0.95, 0.522, 0.051, 0.7);
     }
     frame(lua_state, 21.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         FLASH(agent, 0.95, 0.522, 0.051, 1.7);
     }
     frame(lua_state, 25.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         FLASH(agent, 0.95, 0.522, 0.051, 0.7);
     }
     frame(lua_state, 29.0);
     if is_excute(agent)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), true, true);
         COL_NORMAL(agent);
     }

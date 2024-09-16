@@ -67,6 +67,9 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 9.0);
 	FT_MOTION_RATE(agent, 1.0);
+	if is_excute(agent) {
+		AttackModule::clear_all(boma);
+	}
 }
 
 pub fn install(agent: &mut Agent) {

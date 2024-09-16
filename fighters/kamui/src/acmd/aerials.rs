@@ -154,7 +154,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
 	if is_excute(agent) {
-		let charge = VarModule::get_float(agent.battle_object, vars::kamui::status::CURRENT_CHARGE);
+		let charge = VarModule::get_float(agent.battle_object, vars::kamui::status::ATTACK_AIR_B_CHARGE);
         if (1.0..4.0).contains(&charge) {
             SET_SPEED_EX(agent, 0.3 + (0.2 * charge), 0.1 + (0.03 * charge), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
@@ -164,7 +164,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 	}
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        let charge = VarModule::get_float(agent.battle_object, vars::kamui::status::CURRENT_CHARGE);
+        let charge = VarModule::get_float(agent.battle_object, vars::kamui::status::ATTACK_AIR_B_CHARGE);
         let damage = 13.0 + (charge * 0.5);
         let kbg = 98 - (charge * 1.6) as i32;
         let sound_level = if charge > 0.0 { *ATTACK_SOUND_LEVEL_L } else { *ATTACK_SOUND_LEVEL_M };
@@ -193,7 +193,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.1);
     if is_excute(agent) {
-        if VarModule::get_float(agent.battle_object, vars::kamui::status::CURRENT_CHARGE) > 0.0 {
+        if VarModule::get_float(agent.battle_object, vars::kamui::status::ATTACK_AIR_B_CHARGE) > 0.0 {
             EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 1.6, 17.0, -8.0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_RATE(agent, 0.75);
             LAST_EFFECT_SET_COLOR(agent, 0.5, 0.5, 1.0);
@@ -202,7 +202,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         EFFECT_FLW_POS(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.3, -21, 0, 0, 0, 1.1, true);
-        if VarModule::get_float(agent.battle_object, vars::kamui::status::CURRENT_CHARGE) > 0.0 {
+        if VarModule::get_float(agent.battle_object, vars::kamui::status::ATTACK_AIR_B_CHARGE) > 0.0 {
             EFFECT(agent, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 11.0, -10.0, 270, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
         }
     }

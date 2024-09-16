@@ -123,7 +123,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     for _ in 0..10 {
         if is_excute(agent) {
@@ -139,6 +138,10 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 51.0);
     if is_excute(agent) {

@@ -36,13 +36,13 @@ unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         CORRECT(agent, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
-        if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE) {
-            VarModule::off_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE);
-            VarModule::on_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+        if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_RELOAD_VULNERABLE) {
+            VarModule::off_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_RELOAD_VULNERABLE);
+            VarModule::on_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD);
         }
     }
     frame(lua_state, 1.0);
-    if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+    if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
         FT_MOTION_RATE_RANGE(agent, 1.0, 16.0, 12.0);
     }
     if is_excute(agent) {
@@ -55,39 +55,39 @@ unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         if boma.is_button_on(Buttons::Guard) {
-            VarModule::on_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+            VarModule::on_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD);
         }
     }
     frame(lua_state, 16.0);
-    if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+    if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
         FT_MOTION_RATE_RANGE(agent, 16.0, 38.0, 1.0);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
-            VarModule::inc_int(agent.battle_object, vars::snake::instance::TRANQ_AMMO_COUNT);
+        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
+            VarModule::inc_int(agent.battle_object, vars::snake::instance::SPECIAL_S_AMMO_COUNT);
             ArticleModule::set_flag(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
-            if VarModule::get_int(agent.battle_object, vars::snake::instance::TRANQ_AMMO_COUNT) == 3 {
-                VarModule::on_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE);
+            if VarModule::get_int(agent.battle_object, vars::snake::instance::SPECIAL_S_AMMO_COUNT) == 3 {
+                VarModule::on_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_RELOAD_VULNERABLE);
             }
         }
     }
     frame(lua_state, 38.0);
-    if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+    if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
         FT_MOTION_RATE(agent, 1.0);
     }
     else {
         FT_MOTION_RATE_RANGE(agent, 38.0, 64.0, 1.0);
     }
     frame(lua_state, 64.0);
-    if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+    if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
         FT_MOTION_RATE(agent, 1.0);
     }
     frame(lua_state, 79.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
-            VarModule::set_int(agent.battle_object, vars::snake::instance::TRANQ_AMMO_COUNT, 0);
-            VarModule::off_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+        if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
+            VarModule::set_int(agent.battle_object, vars::snake::instance::SPECIAL_S_AMMO_COUNT, 0);
+            VarModule::off_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD);
         }
     }
     frame(lua_state, 83.0);
@@ -105,26 +105,26 @@ unsafe extern "C" fn effect_specialsstart(agent : &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -1, 10, 10, 0, 0, 0, 0.6, true);
         }
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
             EFFECT_FOLLOW(agent, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             EFFECT_FOLLOW(agent, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
         }
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE) {
+        if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_RELOAD_VULNERABLE) {
             EFFECT_FOLLOW(agent, Hash40::new("sys_piyo"), Hash40::new("head"), 2.5, 0, 2, 0, 80, 0, 1.0, true);
         }
     }
@@ -139,13 +139,13 @@ unsafe extern "C" fn sound_specialsstart(agent : &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             PLAY_SE(agent, Hash40::new("se_snake_special_s01"));
         }
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE) {
+        if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_RELOAD_VULNERABLE) {
             let sfx_handle = SoundModule::play_se(boma, smash::phx::Hash40::new("vc_snake_heavyget"), true, false, false, false, app::enSEType(0));
             SoundModule::set_se_vol(boma, sfx_handle as i32, 3.0, 0);
         }
@@ -173,7 +173,7 @@ unsafe extern "C" fn expression_specialsstart(agent : &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
         }
     }

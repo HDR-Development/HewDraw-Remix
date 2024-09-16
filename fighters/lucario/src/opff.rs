@@ -17,7 +17,7 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
             (MeterModule::meter(fighter.object())),
             (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             (MeterModule::meter_per_level(fighter.object())),
-            (VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT))
+            (VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT))
         );
     }
 }
@@ -104,7 +104,7 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     && frame == 8.0
     && fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX)
     && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
         if situation_kind == *SITUATION_KIND_GROUND {
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_n_bomb"), -1.0, 1.0, 0.0, false, false);
         } else {
@@ -128,7 +128,7 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 21.0)
     || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 26.0))
     && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
         let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
         MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
@@ -224,13 +224,13 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
     let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
     if (meter <= 0.0) {
-        if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
             PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
         }
     } else if (meter >= meter_per_level) { // exit burnout at 1 half bar
-        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
+            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
             PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
         }
     }
@@ -242,7 +242,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     // determine if we should use the burnout regen rate
     let meter_regen_type = {
-        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
             "aura.regen_rate_burnout"
         } else {
             "aura.regen_rate"

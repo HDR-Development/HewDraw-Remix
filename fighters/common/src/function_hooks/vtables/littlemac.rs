@@ -68,7 +68,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
             ]) { 0.2 } else { 0.5 };
         }
         if boma.is_motion(Hash40::new("attack_13"))
-        && VarModule::is_flag(boma.object(), vars::littlemac::instance::IS_DREAMLAND_EXPRESS) {
+        && VarModule::is_flag(boma.object(), vars::littlemac::instance::ATTACK_13_DREAMLAND_EXPRESS) {
             EffectModule::req_on_joint(boma, Hash40::new("sys_hit_magic"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
             meter_gain += 10.0;
         }

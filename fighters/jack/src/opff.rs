@@ -6,9 +6,9 @@ use globals::*;
 unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH)
     && boma.status_frame() == 1 {
-        VarModule::off_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH);
+        VarModule::off_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START);
         if boma.is_prev_situation(*SITUATION_KIND_GROUND) {
-            VarModule::on_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH);
+            VarModule::on_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START);
         }
     }
     if boma.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH) {
@@ -17,7 +17,7 @@ unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, statu
         }
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             if boma.get_aerial() != None {
-                if !VarModule::is_flag(boma.object(), vars::jack::instance::GROUNDED_DOYLE_DASH) {
+                if !VarModule::is_flag(boma.object(), vars::jack::instance::SPECIAL_HI_GROUND_START) {
                     WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                 }
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);

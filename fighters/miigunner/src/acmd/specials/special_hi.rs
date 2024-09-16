@@ -27,13 +27,13 @@ unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
 	frame(lua_state, 2.0);
 	if is_excute(agent) {
 		let handle = EffectModule::req_follow(boma, Hash40::new("miigunner_bottom_shot"), Hash40::new("armr"), &Vector3f::new(6.5, 0.0, 0.0), &Vector3f::zero(), 1.0, false, 0, 0, 0, 0, 0, false, false);
-		VarModule::set_int64(agent.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER, handle);
+		VarModule::set_int64(agent.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE, handle);
 	}
 	frame(lua_state, 9.0);
 	if is_excute(agent) {
-		let handle = VarModule::get_int64(agent.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+		let handle = VarModule::get_int64(agent.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE);
 		EffectModule::set_rate(boma, handle as u32, 1.0);
-		if VarModule::get_float(agent.battle_object, vars::miigunner::status::CURRENT_CHARGE) <= 10.0 && !VarModule::is_flag(agent.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
+		if VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE) <= 10.0 && !VarModule::is_flag(agent.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_AIR_USED) {
 			EffectModule::set_rgb(boma, handle as u32, 0.15, 0.55, 10.0);
 		}
 	}
