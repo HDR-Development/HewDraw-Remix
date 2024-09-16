@@ -27,9 +27,9 @@ special_n:
     intangible_end_frame: 13
     cancel_frame: 64
 attack_hi3:
-  cancel_frame: 30
+  cancel_frame: 31
 attack_lw3:
-  cancel_frame: 22
+  cancel_frame: 24
 attack_hi4:
   extra:
     cancel_frame: 65
