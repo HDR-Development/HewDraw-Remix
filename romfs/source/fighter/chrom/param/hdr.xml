@@ -34,5 +34,7 @@
         <float hash="dive_transition_frame_min">5.0</float>
         <float hash="dive_transition_frame_force">30.0</float>
         <float hash="dive_hi4_max_frame">7.0</float>
+        <float hash="fall_special_accel_x_mul">0.375</float>
+        <float hash="fall_special_speed_x_max_mul">0.5</float>
     </struct>
 </struct>
