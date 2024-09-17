@@ -195,7 +195,7 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     }
     // let elapsed = std::time::Instant::now().duration_since(before);
     // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
-    call_finishing_hit_effects(defender_boma, attacker_boma);
+    call_finishing_hit_effects(defender_boma);
 }
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
@@ -492,26 +492,14 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 
-pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) {    
-    if is_final_killing_hit(defender_boma, attacker_boma) {
-        let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
-        EffectModule::set_billboard(defender_boma, handle as u32, true);
-        EffectModule::set_disable_render_offset_last(defender_boma);
-        VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
-        VarModule::set_int(defender_boma.object(), COUNTER, 20);
-        SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
-        SlowModule::set_whole(defender_boma, 8, 25);
-        let common = util::get_fighter_common_from_accessor(defender_boma);
-        EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
-    } else {
-        let mut pos = Vector3f::new(
-            PostureModule::pos_x(defender_boma),
-            PostureModule::pos_y(defender_boma) + 10.0,     
-            PostureModule::pos_z(defender_boma) + 10.0
-        );
-        let handle = EffectModule::req(defender_boma, Hash40::new("sys_dead_ripple"), &pos, &Vector3f::new(0.0, 0.0, 0.0), 0.75, 0, 0, false, 0);
-        EffectModule::set_billboard(defender_boma, handle as u32, true);
-        EffectModule::set_disable_render_offset_last(defender_boma);
-        EffectModule::set_rate_last(defender_boma, 2.5);
-    }
+pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) {    
+    let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
+    EffectModule::set_billboard(defender_boma, handle as u32, true);
+    EffectModule::set_disable_render_offset_last(defender_boma);
+    VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
+    VarModule::set_int(defender_boma.object(), COUNTER, 20);
+    SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
+    SlowModule::set_whole(defender_boma, 8, 25);
+    let common = util::get_fighter_common_from_accessor(defender_boma);
+    EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
 }
