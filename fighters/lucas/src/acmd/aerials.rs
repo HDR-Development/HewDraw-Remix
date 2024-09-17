@@ -253,6 +253,9 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 6.0, -0.2, 0, 155, 90, 0.95, true);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
         EFFECT_FOLLOW(agent, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 6.7, -2.0, 0, 0, 90, 0, 0.4, true);
         LAST_EFFECT_SET_RATE(agent, 2.0);
     }

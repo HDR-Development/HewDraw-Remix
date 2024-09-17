@@ -99,6 +99,9 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 13.5, 2.0, 0, 45, 90, 0.85, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
+        LAST_EFFECT_SET_RATE(agent, 1.0);
         EFFECT_FOLLOW(agent, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 4.5, 0.2, 0, 0, 0, 0, 0.5, true);
         LAST_EFFECT_SET_RATE(agent, 2.0);
     }
@@ -135,6 +138,9 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 2.0, 2.7, 0, 20, 0, 0.85, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
         FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         if PostureModule::lr(boma) > 0.0{
             EFFECT_FOLLOW(agent, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 3.8, -1.0, -0.7, 0, 0, 0, 0.3, false);
