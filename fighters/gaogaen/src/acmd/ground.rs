@@ -17,7 +17,11 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        } else {
+            ComboModule::reset(boma);
+        }
     }
 }
 
@@ -43,7 +47,11 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        } else {
+            ComboModule::reset(boma);
+        }
     }
 }
 
