@@ -159,7 +159,7 @@ unsafe extern "C" fn game_specialn3start(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 	frame(lua_state, 1.0);
 	if is_excute(agent) {
-		VarModule::set_float(agent.battle_object, vars::miigunner::instance::GRENADE_CHARGE, 0.0);
+		VarModule::set_float(agent.battle_object, vars::miigunner::instance::SPECIAL_N3_CHARGE, 0.0);
 	}
 	frame(lua_state, 16.0);
 	FT_MOTION_RATE_RANGE(agent, 16.0, 30.0, 6.0);

@@ -54,34 +54,22 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
         if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
-                VarModule::on_flag(fighter.battle_object, vars::zelda::instance::FORWARD_PHANTOM);
+                VarModule::on_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_FORWARD_PHANTOM);
             }//cancel if phantom is off cd
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
     }
 }
 
-unsafe fn nayru_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
-                //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
-                EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
-                WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
-                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
-            }
-        }
-        else if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 31.0 {
-                if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-                }
-            }
-        }
+unsafe fn nayru_land_cancel(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("special_n")) 
+    && StatusModule::is_situation_changed(boma)
+    && MotionModule::frame(boma) < 55.0 {
+        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
+        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
+        MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_n"), 56.0, 1.0, 1.0);
+        AttackModule::clear_all(boma);
+        boma.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
     }
 }
 
@@ -106,28 +94,28 @@ pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCom
             GroundModule::pass_floor(boma);
         }//platdrop
     }
-    let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER);
+    let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE);
     //disables effects on winscreen (one of them spawns a phantom)
     if (fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go())  && handle >= 1 {
         EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
-        VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -2);
+        VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -2);
     } else {
         if ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !EffectModule::is_exist_effect(boma, handle as u32) && handle > -1 {
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -1);
             } //resets effect
             if handle == -1 {
                 let handle = EffectModule::req_follow(boma, Hash40::new("zelda_phantom_aura"), Hash40::new("havel"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 1.05, true, 0, 0, 0, 0, 0, true, true) as u32;
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, handle as i32);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, handle as i32);
             }//if phantom spawned and effects are enabled
         } else {
             if handle >= 0 { //when phantom dies play effect then shift to clear flags
                 EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.8, true);
                 app::FighterUtil::flash_eye_info(fighter.module_accessor);
                 EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
-                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_DISABLED);
-                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_HIT);
-                VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
+                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM);
+                VarModule::off_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT);
+                VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -1);
             }//-1 allows effects to be spawned
         }
     }
@@ -171,7 +159,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma, frame);
     dins_fire_cancels(boma);
-    nayru_drift_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
+    nayru_land_cancel(boma);
     phantom_special_cancel(fighter, boma);
     phantom_platdrop_effect(fighter, boma);
     fastfall_specials(fighter);

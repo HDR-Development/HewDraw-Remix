@@ -3,7 +3,7 @@ use super::*;
 unsafe extern "C" fn effect_palutenaspecialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if VarModule::get_int(boma.object(), vars::palutena::instance::CYAN_ENERGY) >= 3 {
+    if VarModule::get_int(boma.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT) >= 3 {
         frame(lua_state, 7.0);
         if is_excute(agent) {
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -80,7 +80,7 @@ unsafe extern "C" fn sound_palutenaspecialn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        if VarModule::get_int(boma.object(), vars::palutena::instance::CYAN_ENERGY) >= 3 {
+        if VarModule::get_int(boma.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT) >= 3 {
             PLAY_SE(agent, Hash40::new("vc_kirby_copy_palutena_03"));
         }
     }

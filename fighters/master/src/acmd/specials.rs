@@ -549,7 +549,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH) {
+        if VarModule::is_flag(agent.battle_object, vars::master::instance::SPECIAL_HI_CATCH_USED) {
             ATTACK(agent, 0, 0, Hash40::new("throw"), 10.0, 75, 100, 0, 40, 4.5, 2.0, -1.0, -1.0, Some(2.0), Some(-1.0), Some(-1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);    
         }
         else {
@@ -581,7 +581,7 @@ unsafe extern "C" fn game_specialairhiovertake(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH);
+        VarModule::on_flag(agent.battle_object, vars::master::instance::SPECIAL_HI_CATCH_USED);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, smash::phx::Hash40::new("special_air_hi_overtake"), false, 0.0);

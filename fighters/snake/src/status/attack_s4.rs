@@ -11,9 +11,9 @@ unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn attack_s4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
-    VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED); 
-    VarModule::set_int(fighter.object(), vars::snake::instance::KNIFE_COMBO_COUNT, 0); 
+    VarModule::off_flag(fighter.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO); 
+    VarModule::off_flag(fighter.object(), vars::snake::instance::ATTACK_S4_COMBO_BUFFER); 
+    VarModule::set_int(fighter.object(), vars::snake::instance::ATTACK_S4_COMBO_COUNT, 0); 
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_S4)(fighter)
 }
 

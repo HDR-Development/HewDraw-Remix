@@ -53,9 +53,16 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     && fighter.check_jump_cancel(false, false) {
         return 0.into();
     }
+
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status_req(*FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP, false);
     }
+
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        special_lw_motion_helper(fighter);
+    }
+
     0.into()
 }
 
@@ -80,6 +87,7 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_start"), -1.0, 1.0, 0.0, false, false);
             }
         }
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
@@ -101,6 +109,7 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_start"), -1.0, 1.0, 0.0, false, false);
             }
         }
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_GROUND), 1.into());
     }
 }
 

@@ -258,7 +258,7 @@ unsafe extern "C" fn game_attackstep2l(agent: &mut L2CAgentBase) {
         JostleModule::set_team(boma, 1);
     }
     frame(lua_state, 7.0);
-    if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
+    if VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT){
         FT_MOTION_RATE_RANGE(agent, 7.0, 19.0, 10.0);
     }
     if is_excute(agent) {

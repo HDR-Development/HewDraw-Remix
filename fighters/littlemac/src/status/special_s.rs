@@ -42,6 +42,35 @@ unsafe extern "C" fn special_s_jump_end_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
+pub unsafe extern "C" fn special_s_blow_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    
+    return 0.into();
+}
+
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END
 
 unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -57,7 +86,6 @@ unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
         0
     );
-
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
         false,
@@ -71,7 +99,7 @@ unsafe extern "C" fn special_s_blow_end_pre(fighter: &mut L2CFighterCommon) -> L
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_s_blow_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -81,50 +109,14 @@ unsafe extern "C" fn special_s_blow_end_main(fighter: &mut L2CFighterCommon) -> 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_MTRANS_SMPL_EX1);
 
     let prev_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        ENERGY_STOP_RESET_TYPE_GROUND,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    );
-    sv_kinetic_energy!(
-        set_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        prev_speed_x,
-        0.0
-    );
+    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, 0.0, 0.0, 0.0, 0.0, 0.0);
+    sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, prev_speed_x, 0.0);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
 
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    );
+    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    );
+    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
 
     let mut prev_motion_frame = MotionModule::frame(fighter.module_accessor);
@@ -162,6 +154,9 @@ unsafe extern "C" fn special_s_blow_end_main_loop(fighter: &mut L2CFighterCommon
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END, special_s_jump_end_main);
+
+    agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW, special_s_blow_pre);
+
     agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, special_s_blow_end_pre);
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END, special_s_blow_end_main);
 }

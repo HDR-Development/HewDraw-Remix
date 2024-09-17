@@ -45,12 +45,12 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
         if !pearl_active
         && agent.get_int(*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_GOLD) >=1
         && VarModule::get_int(boma.object(), PEARL_COOLDOWN) == 0 {
-            VarModule::on_flag(boma.object(), IS_THROW_PEARL);
+            VarModule::on_flag(boma.object(), SPECIAL_S_THROW_PEARL);
         }
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, false, -1);
             ArticleModule::change_status(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
             // re-imburse steve the 1 iron it costs to generate the trolley article
@@ -66,7 +66,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             EFFECT_FLIP(agent, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -4.0, 9, 5, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(agent, 1.2);
         } else {
@@ -84,7 +84,7 @@ unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if !VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             PLAY_SE(agent, Hash40::new("se_pickel_special_s11"));
         }
     }
@@ -95,9 +95,38 @@ unsafe extern "C" fn expression_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), IS_THROW_PEARL) {
+        if !VarModule::is_flag(boma.object(), SPECIAL_S_THROW_PEARL) {
             ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
+    }
+}
+
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        JostleModule::set_status(boma, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("head"), 5.0, 70, 100, 0, 30, 2.6, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("head"), 3.0, 70, 100, 0, 30, 1.7, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_SPECIAL_HI_FLAG_ENABLE_CANCEL);
     }
 }
 
@@ -114,4 +143,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairsstart", sound_specialsstart, Priority::Low);
     agent.acmd("expression_specialsstart", expression_specialsstart, Priority::Low);
     agent.acmd("expression_specialairsstart", expression_specialsstart, Priority::Low);
+
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 }

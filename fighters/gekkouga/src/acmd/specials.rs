@@ -1,17 +1,5 @@
 use super::*;
 
-// unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-//     let lua_state = agent.lua_state_agent;
-//     frame(lua_state, 1.0);
-//     if is_excute(agent) {
-//         SEARCH(agent, 0, 0, Hash40::new("top"), 60.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_ALL, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-//     }
-//     wait(lua_state, 1.0);
-//     if is_excute(agent) {
-//         search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
-//     }
-// }
-
 unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 14.0);

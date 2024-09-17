@@ -358,9 +358,8 @@ unsafe extern "C" fn game_specialairhidetach(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-        if VarModule::is_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE) {
-            VarModule::off_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
-            WorkModule::set_float(boma, VarModule::get_float(agent.object(), vars::shizue::instance::STORED_BALLOON_POWER), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
+        if VarModule::is_flag(agent.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE) {
+            VarModule::off_flag(agent.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
         }
     }
 }

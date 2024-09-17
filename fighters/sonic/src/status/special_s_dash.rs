@@ -38,7 +38,7 @@ pub unsafe extern "C" fn special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L
         0
     );
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
     }
     0.into()
 }

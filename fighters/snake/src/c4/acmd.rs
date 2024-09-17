@@ -5,7 +5,7 @@ unsafe extern "C" fn game_establishtarget(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        if VarModule::is_flag(agent.object(), vars::snake::instance::SELF_STICK) {
+        if VarModule::is_flag(agent.object(), vars::snake::instance::SPECIAL_LW_SELF_STICK) {
             SEARCH(agent, 0, 0, Hash40::new("rot"), 0.1, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, true);
         }
         else {
