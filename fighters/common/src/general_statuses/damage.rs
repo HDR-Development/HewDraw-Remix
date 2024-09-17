@@ -31,6 +31,12 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
     if !arg3.get_bool() {
         return 0.into();
     }
+    // <HDR>
+    let control_module = *(fighter.module_accessor as *const u64).offset(0x48 / 8) as *const u64;
+    let vtable = *control_module;
+    let control_module__update: extern "C" fn(*const u64, bool) = std::mem::transmute(*(((vtable as u64) + 0x148) as *const u64));
+    // </HDR>
+    control_module__update(control_module, false);
     // Disable hitlag shake (not SDI) once hitlag is over
     // Prevents "smoke farts" from kb smoke
     ShakeModule::stop(fighter.module_accessor);
