@@ -8,7 +8,7 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     if (fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi_start")]) && MotionModule::frame(fighter.module_accessor) > 21.0)
     || (fighter.is_motion(Hash40::new("special_air_hi_turn"))) {
         if fighter.is_button_on(Buttons::Special) {
-            VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
+            VarModule::off_flag(fighter.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
         }
     }
     // Uncomment for Cross Chop descent to refresh double jump
@@ -53,11 +53,11 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let grab_y = VarModule::get_float(boma.object(), vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+    let grab_y = VarModule::get_float(boma.object(), vars::gaogaen::status::GRAB_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma.object(), vars::gaogaen::status::ANGLE_GRAB_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), vars::gaogaen::status::GRAB_STICK_Y, stick_y);
         rotate_bust(boma, max_angle, min_angle, stick_y * ((frame as f32) / 7.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame
@@ -122,13 +122,13 @@ unsafe fn command_grab_joint_rotate(boma: &mut BattleObjectModuleAccessor, rotat
 
 unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("special_s_start")){
-        if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_ALTERNATE_GRAB) {
+        if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_ALTERNATE_GRAB) {
             // OTG Grab
-            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB){
+            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_LOW_GRAB){
                 command_grab_joint_rotate(fighter.boma(), 20.0, 14.0, 19.0, 31.0, 46.0);
             }
             // Anti-air grab
-            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB){
+            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_HIGH_GRAB){
                 command_grab_joint_rotate(fighter.boma(), -50.0, 14.0, 19.0, 31.0, 46.0);
             }
         }

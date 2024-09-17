@@ -7,6 +7,7 @@ mod attack_s3;
 mod attack_lw4;
 mod attack_air;
 mod special_s;
+mod special_lw;
 mod special_n;
 
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -29,5 +30,6 @@ pub fn install(agent: &mut Agent) {
     attack_lw4::install(agent);
     attack_air::install(agent);
     special_s::install(agent);
+    special_lw::install(agent);
     special_n::install(agent);
 }

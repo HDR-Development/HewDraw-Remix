@@ -13,7 +13,7 @@ pub unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> 
     MotionAnimcmdModule::flush(fighter.module_accessor, false);
 
 	EffectModule::kill_kind(fighter.module_accessor, Hash40::new("ryu_syoryuken_line"), false, true);
-    let id = VarModule::get_int(fighter.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFF_ID) as u32;
+    let id = VarModule::get_int(fighter.battle_object, vars::shotos::instance::SPECIAL_HI_FIRE_EFFECT_HANDLE) as u32;
     EffectModule::kill(fighter.module_accessor, id, true, true);
 	EffectModule::kill_kind(fighter.module_accessor, Hash40::new("ken_syoryuken_firearc"), false, true);
 	EffectModule::kill_kind(fighter.module_accessor, Hash40::new("ken_syoryuken_firearc2"), false, true);

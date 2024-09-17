@@ -4,28 +4,10 @@ use super::*;
 
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_air_hi"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_hi"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_PACKUN_CLIFF_HANG_DATA_SPECIAL_HI as u32);
 	fighter.main_shift(special_hi_main_loop)

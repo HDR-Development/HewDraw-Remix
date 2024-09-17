@@ -56,7 +56,7 @@ unsafe fn mechakoopa_cooldown(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     let cooldown_timer = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
     let item_exists = ArticleModule::is_exist(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA);
     let koopa_is_disabled = VarModule::is_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
-    let in_cooldown = VarModule::is_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+    let in_cooldown = VarModule::is_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_COOLDOWN_ACTIVE);
 
     // make sure disable flag is set if the koopa exists
     if item_exists && !koopa_is_disabled {
@@ -64,7 +64,7 @@ unsafe fn mechakoopa_cooldown(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     }
     // initiate cooldown once the koopa stops existing
     if !item_exists && !in_cooldown && koopa_is_disabled {
-        VarModule::on_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::on_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_COOLDOWN_ACTIVE);
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 120);
     }
     // decrement cooldown timer when active
@@ -73,7 +73,7 @@ unsafe fn mechakoopa_cooldown(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     }
     // enable the koopa once the timer is over
     if cooldown_timer <= 0 && in_cooldown {
-        VarModule::off_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_IS_COOLDOWN);
+        VarModule::off_flag(boma.object(), vars::koopajr::instance::MECHAKOOPA_COOLDOWN_ACTIVE);
         VarModule::off_flag(boma.object(), vars::koopajr::instance::DISABLE_MECHAKOOPA);
         gimmick_flash(boma);
     }

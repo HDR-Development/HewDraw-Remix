@@ -31,7 +31,7 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
     if kind != *FIGHTER_KIND_KIRBY {
         let index = VarModule::get_int(pickel, vars::pickel::instance::MATERIAL_INDEX) as i32;
         let material = material_table[index as usize] as u32; // stores current table index to return
-        if VarModule::is_flag(pickel, vars::pickel::instance::SHOULD_CYCLE_MATERIAL) {
+        if VarModule::is_flag(pickel, vars::pickel::instance::CYCLE_MATERIAL) {
             if material == (gold as u32) { // add redstone to gold entries
                 let pickel_boma = pickel.module_accessor;
                 let current_redstone = WorkModule::get_int(pickel_boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_RED_STONE);
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
             } else { // reset the cycle
                 VarModule::set_int(pickel, vars::pickel::instance::MATERIAL_INDEX, 0);
             }
-            VarModule::off_flag(pickel, vars::pickel::instance::SHOULD_CYCLE_MATERIAL);
+            VarModule::off_flag(pickel, vars::pickel::instance::CYCLE_MATERIAL);
             VarModule::set_int(pickel, vars::pickel::status::MINING_TIMER, 2);
             // logging for debug purposes
             // let mut mat_name = "nothing lol";
@@ -74,16 +74,16 @@ pub unsafe extern "C" fn material_table_hook(fighter: &mut Fighter, arg2: u64, a
 
         return material;
     } else { // alternative logic for kirby
-        let index = VarModule::get_int(pickel, vars::kirby::instance::MATERIAL_INDEX) as i32;
+        let index = VarModule::get_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX) as i32;
         let material = material_table[index as usize] as u32; // stores current table index to return
-        if VarModule::is_flag(pickel, vars::kirby::instance::SHOULD_CYCLE_MATERIAL) {
+        if VarModule::is_flag(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL) {
             if (0..99).contains(&index) { // continue the cycle
-                VarModule::inc_int(pickel, vars::kirby::instance::MATERIAL_INDEX);
+                VarModule::inc_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX);
             } else { // reset the cycle
-                VarModule::set_int(pickel, vars::kirby::instance::MATERIAL_INDEX, 0);
+                VarModule::set_int(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_MATERIAL_INDEX, 0);
             }
-            VarModule::off_flag(pickel, vars::kirby::instance::SHOULD_CYCLE_MATERIAL);
-            VarModule::set_int(pickel, vars::kirby::status::MINING_TIMER, 2);
+            VarModule::off_flag(pickel, vars::kirby::instance::SPECIAL_N_PICKEL_CYCLE_MATERIAL);
+            VarModule::set_int(pickel, vars::kirby::status::SPECIAL_N_PICKEL_MINING_TIMER, 2);
             // logging for debug purposes
             // let mut mat_name = "nothing lol";
             // if material == 0 { mat_name = "dirt"; }

@@ -22,7 +22,7 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
 
 pub unsafe extern "C" fn special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Init, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP)(fighter);
-    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         let lr = PostureModule::lr(fighter.module_accessor);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.clear_lua_stack();

@@ -9,7 +9,7 @@ unsafe extern "C" fn game_floatstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_DECIDE_ANGLE);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -17,8 +17,8 @@ unsafe extern "C" fn game_floatstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_KINETIC_GROUND);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -70,7 +70,7 @@ unsafe extern "C" fn game_floatairstart(agent: &mut L2CAgentBase) {
     KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 20.0);
@@ -113,11 +113,11 @@ unsafe extern "C" fn game_float(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_FALL_SPEED);
     }
     frame(lua_state, 60.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::off_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
@@ -334,10 +334,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR, 1);
         CATCH(agent, 0, Hash40::new("bust"), 5.25, 0.0, 0.0, 2.25, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
     }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
     frame(lua_state, 29.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
@@ -351,7 +347,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 41.0);
     if is_excute(agent) {
@@ -395,7 +394,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 46.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_GANON_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
+        WorkModule::on_flag(boma, *FIGHTER_GANON_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
     }
 }
 

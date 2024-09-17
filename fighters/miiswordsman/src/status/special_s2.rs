@@ -38,7 +38,7 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     if !StopModule::is_stop(fighter.module_accessor) {
         special_s2_dash_substatus(fighter, false.into());
     }
-    VarModule::set_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_GROUND, fighter.is_situation(*SITUATION_KIND_GROUND));
+    VarModule::set_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_GROUND_START, fighter.is_situation(*SITUATION_KIND_GROUND));
     special_s2_dash_change_motion(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_s2_dash_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s2_dash_main_loop as *const () as _))
@@ -99,7 +99,7 @@ unsafe extern "C" fn special_s2_dash_main_loop(fighter: &mut L2CFighterCommon) -
         return 0.into();
     }
     fighter.check_wall_jump_cancel();
-    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_GROUND) {
+    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_GROUND_START) {
         VarModule::set_float(fighter.battle_object, vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw (copied from Ike)
         fighter.check_jump_cancel(true, false);
     }
@@ -212,7 +212,7 @@ unsafe extern "C" fn special_s2_attack_main_helper(fighter: &mut L2CFighterCommo
 // FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END
 
 unsafe extern "C" fn special_s2_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL);
+    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_EDGE_CANCEL);
     smashline::original_status(Pre, fighter, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END)(fighter)
 }
 
@@ -246,7 +246,7 @@ unsafe extern "C" fn special_s2_end_main_loop(fighter: &mut L2CFighterCommon) ->
                 }
                 else {
                     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL);
+                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_EDGE_CANCEL);
                         special_s2_end_helper(fighter);
                         sub_special_s2_end(fighter);
                         return 0.into()
@@ -257,7 +257,7 @@ unsafe extern "C" fn special_s2_end_main_loop(fighter: &mut L2CFighterCommon) ->
                 // custom [
                 if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR {
                     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL);
+                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_EDGE_CANCEL);
                     }
                 }
                 if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -317,7 +317,7 @@ unsafe extern "C" fn special_s2_end_helper(fighter: &mut L2CFighterCommon) {
     else {
         // OG [ GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP)); ]
         // custom [
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::GALE_STAB_EDGE_CANCEL) {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_S2_EDGE_CANCEL) {
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         else {
