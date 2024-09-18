@@ -1690,6 +1690,7 @@ pub mod vars {
             pub const PHANTOM_HIT: i32 = 0x0100;
             pub const FORWARD_PHANTOM: i32 = 0x0101;
             pub const PHANTOM_DISABLED: i32 = 0x0102;
+            pub const GROUNDED_TELEPORT: i32 = 0x0103;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
@@ -1704,6 +1705,7 @@ pub mod vars {
             // flags
             pub const PHANTOM_NO_BUILD: i32 = 0x1100;
             pub const PHANTOM_CANCEL_FRAME: i32 = 0x1101;
+            pub const DINS_REFRESH: i32 = 0x1102;
         }
     }
 }

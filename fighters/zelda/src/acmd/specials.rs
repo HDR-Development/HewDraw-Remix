@@ -95,11 +95,11 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
     FT_MOTION_RATE_RANGE(agent, 1.0, 6.0, 8.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::on_flag(agent.battle_object, vars::zelda::instance::GROUNDED_TELEPORT);
     }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -119,6 +119,7 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 6.0, 8.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(agent.battle_object, vars::zelda::instance::GROUNDED_TELEPORT);
     }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -185,11 +186,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_hi_cancel"), 0.0, 1.0, 1.0);
+        }
         JostleModule::set_status(boma, true);
-    }
-    frame(lua_state, 1.0);
-    if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-        FT_MOTION_RATE_RANGE(agent, 1.0, 35.0, 13.0);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -298,6 +298,58 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialhicancel(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    frame(lua_state, 1.0);
+    if VarModule::is_flag(agent.battle_object, vars::zelda::instance::GROUNDED_TELEPORT) {
+        MotionModule::set_rate(boma, (18.0-1.0)/13.0);
+    }
+    if is_excute(agent) {
+        JostleModule::set_status(boma, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialhicancel(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
+    let lr = sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR);
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.62, 0.94, 0.9, 0.6);
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 7.5 * lr, 9.0, -4.0, 0, 0, 0, 1.15, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.95, 3.0, 0.6);
+        LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        LAST_EFFECT_SET_RATE(agent, 1.15);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.33, 0.83, 0.9, 0.2);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            if lr < 0.0 {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, -1, 0, 0, 0, 0.75, false);
+            }
+            else {
+                EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, -1, 0, 0, 0, 0.75, false);
+            }
+            LAST_EFFECT_SET_SCALE_W(agent, 0.55, 0.8, 0.55);
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.6, 1, 1, 0.5);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        FLASH(agent, 0.33, 0.83, 0.9, 0.2);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+        
+    }
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 }
 
@@ -329,6 +381,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
     
+    agent.acmd("game_specialhicancel", game_specialhicancel, Priority::Low);
+    agent.acmd("effect_specialhicancel", effect_specialhicancel, Priority::Low);
+
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
 
