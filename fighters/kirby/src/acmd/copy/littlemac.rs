@@ -37,7 +37,7 @@ unsafe extern "C" fn game_littlemacspecialn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.object(), vars::kirby::status::KO_PUNCH_GRAVITY);
+        VarModule::on_flag(agent.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE);
     }
 }
 

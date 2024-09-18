@@ -17,8 +17,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // set the callbacks on fighter init
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-    VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
-    VarModule::off_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
+    VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::SPECIAL_LW_TICO_UNAVAILABLE);
+    VarModule::off_flag(fighter.battle_object, vars::rosetta::status::SPECIAL_LW_INVALID_WARP);
 }
 
 pub fn install(agent: &mut Agent) {

@@ -20,11 +20,11 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     //remove double dragon effect
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
-        let dragonEffect = VarModule::get_int(fighter.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE) as u32;
+        let dragonEffect = VarModule::get_int(fighter.object(),vars::tantan::instance::ARMR_DRAGONIZE_EFFECT_HANDLE) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, dragonEffect){
             EffectModule::kill(fighter.module_accessor, dragonEffect, false,false);
         }
-        VarModule::set_int(fighter.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE,0);
+        VarModule::set_int(fighter.object(),vars::tantan::instance::ARMR_DRAGONIZE_EFFECT_HANDLE,0);
     }
     true.into()
 }

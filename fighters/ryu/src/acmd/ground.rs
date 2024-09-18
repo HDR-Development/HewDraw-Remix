@@ -10,7 +10,7 @@ unsafe extern "C" fn game_attack11w(agent: &mut L2CAgentBase) {
         agent.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::watch_damage(agent.battle_object, true);
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
@@ -179,7 +179,7 @@ unsafe extern "C" fn game_attack11s(agent: &mut L2CAgentBase) {
         agent.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::watch_damage(agent.battle_object, true);
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")

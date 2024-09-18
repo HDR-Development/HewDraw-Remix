@@ -2,25 +2,9 @@ use super::*;
 use globals::*;
 // status script import
 
+mod copy;
 mod special_hi_h;
-mod gaogaen_special_n;
-mod luigi_special_n;
-mod mario_special_n;
-mod mariod_special_n;
-mod ridley_special_n;
-mod ganon_special_n;
-mod ganon_special_n_float;
-mod koopa_special_n;
-mod littlemac_special_n;
-mod diddy_special_n_cancel;
-mod lucas_special_n;
-mod sonic_special_n;
-mod edge_special_n;
-mod bayonetta_special_n_cancel;
-mod reflet_special_n;
-mod palutena_special_n;
-mod daisy_special_n;
-// mod buddy_bayonet_end;
+mod special_s;
 
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::kirby::instance::DISABLE_SPECIAL_HI) {
@@ -55,8 +39,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
         EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"),false,false);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID,0);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID,0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,KOOPA_MAX_COOLDOWN);
     }
 
     return true.into();
@@ -237,10 +221,10 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(shoto_check_special_command as *const () as _));
 
     if is_training_mode() {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,0);
     }
     else {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,KOOPA_MAX_COOLDOWN);
     }
 
     //let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
@@ -257,23 +241,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(MapCorrection, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_map_correction);
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
 
+    copy::install(agent);
+    special_s::install(agent);
     special_hi_h::install(agent);
-    gaogaen_special_n::install(agent);
-    luigi_special_n::install(agent);
-    mario_special_n::install(agent);
-    mariod_special_n::install(agent);
-    ridley_special_n::install(agent);
-    ganon_special_n::install(agent);
-    ganon_special_n_float::install(agent);
-    koopa_special_n::install(agent);
-    littlemac_special_n::install(agent);
-    diddy_special_n_cancel::install(agent);
-    lucas_special_n::install(agent);
-    sonic_special_n::install(agent);
-    edge_special_n::install(agent);
-    bayonetta_special_n_cancel::install(agent);
-    reflet_special_n::install(agent);
-    palutena_special_n::install(agent);
-    daisy_special_n::install(agent);
-    // buddy_bayonet_end::install(agent);
 }

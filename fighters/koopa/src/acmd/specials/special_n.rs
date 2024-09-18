@@ -55,7 +55,7 @@ unsafe extern "C" fn game_specialnmax(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VarModule::set_int(agent.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+        VarModule::set_int(agent.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,MAX_COOLDOWN);
     }
     frame(lua_state, 24.0);
     FT_MOTION_RATE_RANGE(agent, 24.0, 42.0, 10.0);

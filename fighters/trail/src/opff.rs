@@ -9,7 +9,7 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor) {
             if boma.is_cat_flag(Cat1::AttackS3)
                && (WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) || WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO)) {
                 if !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::trail::instance::ATTACK_12_INTO_S3);
+                    VarModule::on_flag(boma.object(), vars::trail::instance::ATTACK_12_ENABLE_S3_COMBO);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
                 }
             }
@@ -109,7 +109,7 @@ unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         let special_n_fire_cancel_frame_ground = 69.0; // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
         let landing_lag = 12.0; // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         if boma.motion_frame() < (special_n_fire_cancel_frame_ground - landing_lag) {
-            VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
+            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
         }
     }
@@ -120,11 +120,11 @@ unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 
     // handles the cooldown timer between casting spells
-    if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) > 0 {
-        VarModule::dec_int(boma.object(), vars::trail::instance::MAGIC_TIMER);
+    if VarModule::get_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER) > 0 {
+        VarModule::dec_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER);
 
         // cycles and enables magic on the last frame of the cooldown window
-        if VarModule::get_int(boma.object(), vars::trail::instance::MAGIC_TIMER) == 1 {
+        if VarModule::get_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER) == 1 {
             WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
             WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
             let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
@@ -182,31 +182,31 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
             VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
         }
         if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            VarModule::off_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
-            VarModule::off_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
+            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT);
+            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         && !fighter.is_in_hitlag()
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
-            VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT);
             if fighter.check_jump_cancel(false, false) {
                 let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                VarModule::set_float(boma.object(), vars::trail::instance::JUMP_CANCEL_MOMENTUM_HANDLER, x_speed);
+                VarModule::set_float(boma.object(), vars::trail::instance::SPECIAL_S_JUMP_SPEED_X, x_speed);
                 return;
             }
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::on_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
+            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
         }
     }
     if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH) {
         if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            VarModule::off_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT);
+            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_INPUT_CHECK);
         }
         if compare_mask(ControlModule::get_command_flag_cat(boma, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY) {
-            VarModule::on_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT);
+            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_INPUT_CHECK);
         }
-        if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
+        if VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if fighter.check_jump_cancel(false, false) {
                 return;
@@ -215,17 +215,17 @@ unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut Batt
     }
     if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END) {
         // allow jump cancel if sora hit during the attack portion
-        if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
+        if VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT)
         && fighter.check_jump_cancel(false, false) {
             let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            VarModule::set_float(boma.object(), vars::trail::instance::JUMP_CANCEL_MOMENTUM_HANDLER, x_speed);
+            VarModule::set_float(boma.object(), vars::trail::instance::SPECIAL_S_JUMP_SPEED_X, x_speed);
             return;
         }
 
-        if !VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)
+        if !VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT)
         && fighter.global_table[CURRENT_FRAME].get_i32() == 15 {
-            VarModule::off_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
+            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
             }

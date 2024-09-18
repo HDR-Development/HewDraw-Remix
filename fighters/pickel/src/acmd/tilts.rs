@@ -218,7 +218,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
             is_soul_fire = true;
-            VarModule::on_flag(agent.battle_object, vars::pickel::status::IS_SOUL_FIRE);
+            VarModule::on_flag(agent.battle_object, vars::pickel::status::ATTACK_LW3_SOUL_FIRE);
         }
         FT_MOTION_RATE(agent, if is_soul_fire { 4.0 } else { 1.0 } );
     }
@@ -245,7 +245,7 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let mut is_soul_fire = false;
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::pickel::status::IS_SOUL_FIRE) {
+        if VarModule::is_flag(agent.battle_object, vars::pickel::status::ATTACK_LW3_SOUL_FIRE) {
             is_soul_fire = true;
         }
         if is_soul_fire {

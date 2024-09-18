@@ -8,22 +8,22 @@ pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CV
     if [hash40("attack_air_hi")].contains(&motion) {
         // Usually there's code in here to check for the random turnip pulls. However... we don't want that.
         // Instead, we want to force the turnip count to go in a rotation of 1 > 2 > 3 > 1 > 2 > 3 ...
-        let mut turnip_num_hi = VarModule::get_int(fighter.battle_object, vars::murabito::instance::TURNIP_NUM_HI);
+        let mut turnip_num_hi = VarModule::get_int(fighter.battle_object, vars::murabito::instance::ATTACK_AIR_HI_TURNIP_COUNT);
         // Adds 1 to the turnip count. If the new turnip count is not 1, 2, or 3, reset it back to 1.
         turnip_num_hi += 1;
         if !(1..=3).contains(&turnip_num_hi) {
             turnip_num_hi = 1;
         }
-        VarModule::set_int(fighter.battle_object, vars::murabito::instance::TURNIP_NUM_HI, turnip_num_hi);
+        VarModule::set_int(fighter.battle_object, vars::murabito::instance::ATTACK_AIR_HI_TURNIP_COUNT, turnip_num_hi);
         WorkModule::set_int(fighter.module_accessor, turnip_num_hi, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
 
     } else if [hash40("attack_air_lw")].contains(&motion) {
-        let mut turnip_num_lw = VarModule::get_int(fighter.battle_object, vars::murabito::instance::TURNIP_NUM_LW);
+        let mut turnip_num_lw = VarModule::get_int(fighter.battle_object, vars::murabito::instance::ATTACK_AIR_LW_TURNIP_COUNT);
         turnip_num_lw += 1;
         if !(1..=3).contains(&turnip_num_lw) {
             turnip_num_lw = 1;
         }
-        VarModule::set_int(fighter.battle_object, vars::murabito::instance::TURNIP_NUM_LW, turnip_num_lw);
+        VarModule::set_int(fighter.battle_object, vars::murabito::instance::ATTACK_AIR_LW_TURNIP_COUNT, turnip_num_lw);
         WorkModule::set_int(fighter.module_accessor, turnip_num_lw, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
 
     } else if [

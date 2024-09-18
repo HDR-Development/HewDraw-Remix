@@ -61,7 +61,7 @@ fn detect_new_game(game_state_ptr: u64) -> bool {
 unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
     unsafe { // Ryujinx handle separately
         let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8504000 || text_addr == 0x80004000 {
+        if text_addr == 0x8504000 {
             if ninput::any::is_down(ninput::Buttons::R) && ninput::any::is_down(ninput::Buttons::L) {
                 let mut modes = HashSet::new();
                 modes.insert(CustomMode::SmashballTag);
@@ -125,8 +125,12 @@ pub unsafe fn open_modes_session() {
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check the current match mode
-    // 1 is regular smash, 45 is online arena match
-    if utils_dyn::util::get_match_mode().0 != 1 && utils_dyn::util::get_match_mode().0 != 45 {
+    let match_mode = utils_dyn::util::get_match_mode().0;
+
+    // 1 is regular smash, 45 is online arena match, 58 is local wireless
+    if match_mode != 1 
+    && match_mode != 45
+    && match_mode != 58 {
         //println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
@@ -145,7 +149,19 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
     match get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::SmashballTag) {
-                tag::update();
+                // Smash tag doesn't work on local wireless (Switch or emulator)
+                if match_mode == 58 {
+                    let mut modes_enabled = HashSet::new();
+                    for mode in modes {
+                        if mode != CustomMode::SmashballTag {
+                            modes_enabled.insert(mode);
+                        }
+                    }
+                    CURRENT_CUSTOM_MODES = Some(modes_enabled);
+                }
+                else {
+                    tag::update();
+                }
             }
             // if modes.contains(&CustomMode::TurboMode) {
             //     turbo::update();
@@ -163,9 +179,19 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
     call_original!(game_state_ptr)
 }
 
+// Press dpad down at local wireless room select to open custom modes
+// (intended for non-hosts - hosts must hold R when opening the room)
+#[skyline::hook(offset = 0x1bd7a68, inline)]
+unsafe fn local_wireless_pane(_: &skyline::hooks::InlineCtx) {
+    if ninput::any::is_down(ninput::Buttons::DOWN) {
+        open_modes_session();
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         on_rule_select_hook,
-        once_per_game_frame
+        once_per_game_frame,
+        local_wireless_pane
     );
 }
