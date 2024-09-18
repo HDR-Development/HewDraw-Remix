@@ -141,12 +141,12 @@ unsafe fn init_css_player(
     let Some(controller) = ACTIVE_CONTROLLER else {
         // println!("port {} active", port);
         PORT_ACTIVE[(port - 1) as usize] = true;
-        ACTIVE_CONTROLLER = None;
         return original!()(arg1, port, arg3, arg4);
     };
     
     // bypass controller initialization if its a disconnect
     if ACTION == "out" {
+        ACTIVE_CONTROLLER = None;
         ACTION = "right"; 
         return;
     }
