@@ -3,11 +3,11 @@ use smash::app::smashball;
 
 // some of the following static variables are in arrays of 8, so that we can handle each controller id separately
 static mut ACTIVE_CONTROLLER: Option<u32> = None;
-static mut PORT_ACTIVE: [bool;8] = [true, false, false, false, false, false, false, false];
-static mut NEXT_PORT: [i32;8] = [1;8];
+static mut PORT_ACTIVE: [bool; 8] = [true, false, false, false, false, false, false, false];
+static mut NEXT_PORT: [i32; 8] = [1; 8];
 
 // used for storing raw argument data to pass around different functions
-static mut PLAYER_DATA: [Option<u64>;8] = [None;8];
+static mut PLAYER_DATA: [Option<u64>; 8] = [None; 8];
 
 static mut X_PRESSED: bool = false; // makes sure we only run related code once per button press
 
@@ -23,11 +23,13 @@ unsafe fn disable_port_swapping() -> bool {
 // returns true/false depending on if the specified controller is performing the defined button macro
 unsafe fn check_swap_macro(controller_id: u32) -> bool {
     if let Some(controller) = Controller::get_from_id(controller_id) {
-        if controller.buttons.contains(Buttons::L)
-        && controller.buttons.contains(Buttons::R)
-        && controller.pressed_buttons.contains(Buttons::X) {
+        if
+            controller.buttons.contains(Buttons::L) &&
+            controller.buttons.contains(Buttons::R) &&
+            controller.pressed_buttons.contains(Buttons::X)
+        {
             return true;
-        } 
+        }
     }
 
     return false;
@@ -37,7 +39,7 @@ unsafe fn check_swap_macro(controller_id: u32) -> bool {
 #[skyline::hook(offset = 0x1a26ea0, inline)]
 unsafe fn init_css(ctx: &mut skyline::hooks::InlineCtx) {
     //println!("refreshing port data");
-    PLAYER_DATA = [None;8];
+    PLAYER_DATA = [None; 8];
     ACTIVE_CONTROLLER = None;
 }
 
@@ -63,8 +65,8 @@ unsafe fn reset_css_session(pane: u64, arg2: u64) {
     if pane == back_button {
         //println!("resetting for next css session");
         PORT_ACTIVE = [true, false, false, false, false, false, false, false];
-        PLAYER_DATA = [None;8];
-        NEXT_PORT = [1;8];
+        PLAYER_DATA = [None; 8];
+        NEXT_PORT = [1; 8];
     }
 
     original!()(pane, arg2)
@@ -79,9 +81,8 @@ unsafe fn init_css_player(
     arg4: u64 // assigns the port of the character card that gets loaded for the UI. will always be arg3 + 0x80
 ) {
     // see if we have an active controller for swapping ports. if not, return the original behavior
-    let Some(controller) = ACTIVE_CONTROLLER
-    else {
-        //println!("port {} active", port);  
+    let Some(controller) = ACTIVE_CONTROLLER else {
+        //println!("port {} active", port);
         PORT_ACTIVE[(port - 1) as usize] = true;
         ACTIVE_CONTROLLER = None;
         original!()(arg1, port, arg3, arg4);
@@ -94,7 +95,9 @@ unsafe fn init_css_player(
     // find the next available port to be loaded into
     for i in 0..8 {
         NEXT_PORT[id] += 1;
-        if NEXT_PORT[id] >= 9 { NEXT_PORT[id] = 1 };
+        if NEXT_PORT[id] >= 9 {
+            NEXT_PORT[id] = 1;
+        }
         if !PORT_ACTIVE[(NEXT_PORT[id] - 1) as usize] {
             break;
         }
@@ -113,7 +116,7 @@ unsafe fn init_css_player(
     //println!("changing controller {}'s port from {} to {}, diff: {}", id, port, new_port, port_diff);
     PORT_ACTIVE[(new_port - 1) as usize] = true;
     ACTIVE_CONTROLLER = None; // clear the stored controller id now that the operation has performed
-    
+
     original!()(arg1, new_port, new3, new4);
 }
 
@@ -131,10 +134,8 @@ unsafe fn controller_token_off(arg1: u64, port: u64);
 
 // this function loops while the css is active, so we can use it for running any real-time operations we need
 #[skyline::hook(offset = 0x1a2b550)]
-unsafe fn update_css(arg: u64){
-    if ACTIVE_CONTROLLER == None 
-    && PLAYER_DATA[0] != None
-    && !X_PRESSED {
+unsafe fn update_css(arg: u64) {
+    if ACTIVE_CONTROLLER == None && PLAYER_DATA[0] != None && !X_PRESSED {
         // check each controller to see if they are performing the macro, and set it to "active" if so
         for controller in 0..8 {
             if check_swap_macro(controller) {
@@ -143,10 +144,7 @@ unsafe fn update_css(arg: u64){
                 ACTIVE_CONTROLLER = Some(controller);
                 let slot = NEXT_PORT[controller as usize];
                 if let Some(port) = PLAYER_DATA[(slot - 1) as usize] {
-                    controller_input_off(
-                        *(arg as *const u64),
-                        *((port + 8) as *const u64)
-                    );
+                    controller_input_off(*(arg as *const u64), *((port + 8) as *const u64));
                     controller_something_off(0, port);
                     controller_card_off(port, 1);
                     controller_token_off(*(arg as *const u64), port);
@@ -159,8 +157,7 @@ unsafe fn update_css(arg: u64){
         }
     }
 
-    if !ninput::any::is_press(ninput::Buttons::X)
-    && X_PRESSED {
+    if !ninput::any::is_press(ninput::Buttons::X) && X_PRESSED {
         X_PRESSED = false;
     }
 
