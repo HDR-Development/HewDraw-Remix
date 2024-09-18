@@ -2,6 +2,8 @@ use ninput::*;
 
 pub const CONTROLLER_ID: [u32; 9] = [0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x20]; // 0x20 is the id for handheld
 
+static mut ENABLE_SWAPPING: bool = false;
+
 static mut ACTIVE_CONTROLLER: Option<u32> = None;
 static mut PORT_ACTIVE: [bool; 8] = [true, false, false, false, false, false, false, false];
 static mut NEXT_PORT: [i32; 9] = [1; 9];
@@ -12,13 +14,6 @@ static mut PORT_DATA: [Option<u64>; 8] = [None; 8];
 static mut X_PRESSED: bool = false; // makes sure we only run related code once per button press
 static mut ACTION: &str = "right";
 
-// conditions in which we should prevent port swapping from happening
-unsafe fn disable_port_swapping() -> bool {
-    // note: this fn will have to be reimplemented as an inline hook that checks the # of panes on init
-    // that way we can "whitelist" instances of the css that use all 8 panes selectively allow port swapping
-
-    return false;
-}
 
 // returns true/false depending on if the specified controller is performing the defined button macro
 unsafe fn check_swap_macro(controller_id: u32) -> bool {
@@ -40,6 +35,20 @@ unsafe fn check_swap_macro(controller_id: u32) -> bool {
     }
 
     return false;
+}
+
+// this hook runs when initializing player cards. used to prevent being able to swap in certain modes
+#[skyline::hook(offset = 0x1a2663c, inline)]
+unsafe fn set_enable_swap(ctx: &mut skyline::hooks::InlineCtx) {
+    // by observing the first and last ids of the slots, we can determine how many are present
+    let first_card = *ctx.registers[20].x.as_ref();
+    let last_card = *ctx.registers[26].x.as_ref();
+    // if the difference is 0x80, 8 slots are active and we can safely enable the feature
+    if last_card == first_card + 0x80
+    && !ENABLE_SWAPPING {
+        ENABLE_SWAPPING = true;
+        // println!("enabling port swapping!");
+    }
 }
 
 // this address runs whenever the css is initialized. we can use this to clear neccesary data
@@ -67,14 +76,15 @@ unsafe fn set_port_data(ctx: &mut skyline::hooks::InlineCtx) {
 pub const BACK_BUTTON: u64 = 0x1010f00e00;
 
 // resets data when leaving the local battle session
-// this function runs whenever a ui pane is interacted with, so we specifically check for the id of the "back" button on rule select
+// this function runs whenever a ui pane is  selected, so we look for the data for the "back" button on rule select
 #[skyline::hook(offset = 0x2407260)]
 unsafe fn reset_css_session(pane: u64, arg2: u64) {
     if pane == BACK_BUTTON {
-        // println!("resetting for next css session");
+        // println!("resetting for next css session, disabling swap");
         PORT_ACTIVE = [true, false, false, false, false, false, false, false];
         PORT_DATA = [None; 8];
         NEXT_PORT = [1; 9];
+        ENABLE_SWAPPING = false;
     }
 
     original!()(pane, arg2)
@@ -96,7 +106,7 @@ unsafe fn controller_token_off(arg1: u64, port: u64);
 // more importantly, this runs BEFORE controller initialization, which allows for instant reconnects
 #[skyline::hook(offset = 0x1a2b550)]
 unsafe fn css_main_loop(arg: u64) {
-    if disable_port_swapping() {
+    if !ENABLE_SWAPPING {
         return original!()(arg);
     }
 
@@ -116,6 +126,15 @@ unsafe fn css_main_loop(arg: u64) {
                 }
                 // println!("disconnecting controller {} from slot {}", controller, slot);
                 PORT_ACTIVE[(slot - 1) as usize] = false;
+
+                if ACTION == "out" {
+                    for i in 0..8 {
+                        if !PORT_ACTIVE[i] { 
+                            NEXT_PORT[controller as usize] = (i + 1) as i32;
+                            break;
+                         }
+                    }
+                }
 
                 X_PRESSED = true;
             }
@@ -189,6 +208,7 @@ unsafe fn init_css_player(
 
 pub fn install() {
     skyline::install_hooks!(
+        set_enable_swap,
         init_css,
         set_port_data,
         reset_css_session,

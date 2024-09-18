@@ -1806,5 +1806,26 @@ pub mod articles {
     }
 }
 
+pub mod melee_mode {
+    pub const SMASH: i32 = 0x0;
+
+    pub const CUSTOM_SMASH: i32 = 0x3;
+    pub const SUPER_SUDDEN_DEATH: i32 = 0x4;
+    pub const SMASHDOWN: i32 = 0x5;
+    pub const SPIRIT_BOARD: i32 = 0x6;
+    pub const ADVENTURE: i32 = 0x7;
+
+    pub const CLASSIC: i32 = 0x9;
+    pub const MOB_SMASH: i32 = 0xa;
+    pub const TRAINING: i32 = 0xb;
+
+    pub const HOMERUN_SOLO: i32 = 0xd;
+    pub const HOMERUN_CO_OP: i32 = 0xe;
+    pub const HOMERUN_VERSUS: i32 = 0xf;
+    pub const STAGE_BUILDER: i32 = 0x10;
+
+    pub const TIPS: i32 = 0x1b;
+}
+
 // extra lua_consts
 pub const COLLISION_KIND_MASK_PARRY: smash::lib::LuaConst = smash::lib::LuaConst::new(0x80);
