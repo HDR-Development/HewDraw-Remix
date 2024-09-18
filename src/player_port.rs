@@ -23,11 +23,8 @@ unsafe fn disable_port_swapping() -> bool {
 // returns true/false depending on if the specified controller is performing the defined button macro
 unsafe fn check_swap_macro(controller_id: u32) -> bool {
     if let Some(controller) = Controller::get_from_id(controller_id) {
-        if
-            controller.buttons.contains(Buttons::L) &&
-            controller.buttons.contains(Buttons::R) &&
-            controller.pressed_buttons.contains(Buttons::X)
-        {
+        if controller.buttons.contains(Buttons::R) 
+        && controller.pressed_buttons.contains(Buttons::X) {
             return true;
         }
     }
