@@ -135,6 +135,10 @@ unsafe fn controller_token_off(arg1: u64, port: u64);
 // this function loops while the css is active, so we can use it for running any real-time operations we need
 #[skyline::hook(offset = 0x1a2b550)]
 unsafe fn update_css(arg: u64) {
+    if disable_port_swapping() {
+        return original!()(arg);
+    }
+
     if ACTIVE_CONTROLLER == None && PLAYER_DATA[0] != None && !X_PRESSED {
         // check each controller to see if they are performing the macro, and set it to "active" if so
         for controller in 0..8 {
