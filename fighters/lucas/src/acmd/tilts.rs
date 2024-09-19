@@ -138,7 +138,7 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 2.0, 5.0, 0, 20, 0, 0.85, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 2.0, 2.7, 0, 20, 0, 0.85, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(agent, 1.5);
         LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
         FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
