@@ -147,6 +147,15 @@
 		],
 		"fighter/inkling/cmn": [
 			"fighter/inkling/param/hdr.xml"
+		],
+		"fighter/master/cmn": [
+			"fighter/master/param/hdr.xml"
+		],
+		"fighter/pfushigisou/cmn": [
+			"fighter/pfushigisou/param/hdr.xml"
+		],
+		"fighter/tantan/cmn": [
+			"fighter/tantan/param/hdr.xml"
 		]
 	}
 }

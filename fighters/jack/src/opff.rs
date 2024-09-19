@@ -85,6 +85,8 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && !StatusModule::is_changing(fighter.module_accessor)
     && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
+        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
