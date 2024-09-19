@@ -350,6 +350,15 @@ unsafe extern "C" fn effect_specialhicancel(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_specialhicancel(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_zelda_landing02"));
+    }
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 }
 
@@ -383,6 +392,7 @@ pub fn install(agent: &mut Agent) {
     
     agent.acmd("game_specialhicancel", game_specialhicancel, Priority::Low);
     agent.acmd("effect_specialhicancel", effect_specialhicancel, Priority::Low);
+    agent.acmd("sound_specialhicancel", sound_specialhicancel, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);

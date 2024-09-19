@@ -40,7 +40,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
     && ControlModule::get_flick_y(fighter.module_accessor) < 4 {
         GroundModule::pass_floor(fighter.module_accessor);
     }//platdrop
-    if fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw) { //filter non d-special inputs??
+    if fighter.is_button_trigger(Buttons::Special) { //&& fighter.is_cat_flag(Cat1::SpecialLw) { //filter non d-special inputs??
         fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
     }
     //checks if phantom is alive and hers, also frame gate
@@ -59,7 +59,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
             } else {
                 //cancel handling
                 if !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD)
-                && MotionModule::frame(fighter.module_accessor) < 40.0
+                && MotionModule::frame(fighter.module_accessor) < 58.0 //before full build
                 && (fighter.is_button_on(Buttons::Guard) || fighter.is_button_trigger(Buttons::Attack)) {//cancel input 
                     LinkModule::send_event_nodes(fighter.module_accessor, *LINK_NO_ARTICLE, Hash40::new_raw(0x1f65e2f2b2), 0); //disconnects phantom from her?
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
@@ -69,7 +69,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
             }
         } else if !phantom_boma.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK) 
         && !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD) 
-        && frame < 40.0 {
+        && frame < 58.0 {
             //if phantom is not building or attacking
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
             VarModule::on_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD);

@@ -7,9 +7,10 @@ unsafe extern "C" fn tame_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 		let zelda = utils::util::get_battle_object_from_id(owner_id);
 		let dein = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID);
         let dein2 = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2);
+        let dein3 = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3);
 		//if !VarModule::is_flag(weapon.battle_object, vars::zelda::instance::DEIN_EXPLODE) {
             //run normal checks if dein isn't set to detonate
-            dein_remove(weapon, dein, dein2);
+            dein_remove(weapon, dein, dein2, dein3);
         //} else {
             //notify_event_msc_cmd!(weapon, Hash40::new_raw(0x27936db96d));
         //}
@@ -25,32 +26,15 @@ unsafe extern "C" fn tame_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let zelda = utils::util::get_battle_object_from_id(owner_id);
     let dein = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID);
     let dein2 = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2);
+    let dein3 = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3);
     let thisdins: i32 = weapon.battle_object_id as i32;
-    //if status is changing when not due to explode
-    //if weapon.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_LIFE) <= 0.0 {
-    //    //if dins1 slot not overwritten
-    //    if dein == thisdins {
-    //        if dein2 == 0 { //if second slot is not taken
-    //            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, 0); 
-    //        } else {
-    //            //if second slot is taken, refresh
-//
-    //        }
-    //    } else {//if dins overwritten, explode
-    //        //set power to uncharged?
-    //        //weapon.set_float(0.0, *WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
-    //    }
-    //} else {
-    //    //if dins explodes naturally
-        if dein == thisdins {VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, 0); }
-        if dein2 == thisdins {VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, 0); }
-    //}
-
-    //if WorkModule::get_float(weapon.module_accessor, *WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_LIFE) > 0.0 {dein_remove(weapon, dins1, dins2, 0, true); } //if killed before prime run clear func
+    if dein == thisdins {VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, 0); }
+    if dein2 == thisdins {VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, 0); }
+    if dein3 == thisdins {VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3, 0); }
     0.into()
 }
 
-pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase, dein: i32, dein2: i32) {
+pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase, dein: i32, dein2: i32, dein3: i32) {
     let article_boma = sv_battle_object::module_accessor(dein as u32);
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let zelda = utils::util::get_battle_object_from_id(owner_id);
@@ -73,35 +57,65 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
     let dein_boma = &mut *(*dein_battle_object).module_accessor;
     let dein2_battle_object = utils::util::get_battle_object_from_id(dein2 as u32);
     let dein2_boma = &mut *(*dein2_battle_object).module_accessor;
+    let dein3_battle_object = utils::util::get_battle_object_from_id(dein2 as u32);
+    let dein3_boma = &mut *(*dein2_battle_object).module_accessor;
     if sv_battle_object::is_active(dein as u32) {
         
         if sv_battle_object::is_active(dein2 as u32) { 
-            //if both dins slots are full, shuffle slots and explode first dins
-            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein2);
-            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, thisdins);
-            sv_battle_object::end_inhaled(dein as u32, true);
-            if dein2 != thisdins {
+            if sv_battle_object::is_active(dein3 as u32) {
+                //if both dins slots are full, shuffle slots and explode first dins
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein2);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, dein3);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3, thisdins);
+                sv_battle_object::end_inhaled(dein as u32, true);
                 VarModule::on_flag(dein2_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::on_flag(dein3_battle_object, vars::zelda::status::DINS_REFRESH);
+            } else {
+                //if first 2 slots full but third empty
+                //assign dins to empty slot, refresh first two dins
+                VarModule::on_flag(dein_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::on_flag(dein2_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3, thisdins);
             }
         } else {
-            //if first slot full but second empty
-            //assign dins to empty slot, refresh first dins
-            VarModule::on_flag(dein_battle_object, vars::zelda::status::DINS_REFRESH);
-            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, thisdins);
+            //if 2nd empty, but 3rd and 1st full
+            if sv_battle_object::is_active(dein3 as u32) {
+                //shift and refresh
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, dein3);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3, thisdins);
+                VarModule::on_flag(dein_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::on_flag(dein3_battle_object, vars::zelda::status::DINS_REFRESH);
+            } else {
+                //if first slot full but second and third empty
+                //assign dins to empty slot, refresh first dins
+                VarModule::on_flag(dein_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, thisdins);
+            }
         }
     } else {
         //if 1st slot empty and second full
         if sv_battle_object::is_active(dein2 as u32) {
-            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein2);
-            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, 0);
-            if dein2 != thisdins {
-                //if 2nd slot isnt this dins, refresh 2nd dins
+            //if 1st slot empty but 2/3 full
+            if sv_battle_object::is_active(dein3 as u32) {
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein2);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, dein3);
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_3, thisdins);
                 VarModule::on_flag(dein2_battle_object, vars::zelda::status::DINS_REFRESH);
+                VarModule::on_flag(dein3_battle_object, vars::zelda::status::DINS_REFRESH);
+            } else {
+                //if 1st and 3rd empty
+                VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein2);
                 VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, thisdins);
+                VarModule::on_flag(dein2_battle_object, vars::zelda::status::DINS_REFRESH);
             }
+        } else if sv_battle_object::is_active(dein3 as u32) {
+            //if 1/2 empty and 3rd full
+            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, dein3);
+            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID_2, thisdins);
+            VarModule::on_flag(dein3_battle_object, vars::zelda::status::DINS_REFRESH);
         } else {
-        //if both dins empty
-        VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, thisdins);
+            //if all dins empty
+            VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, thisdins);
         }
     }
 }
@@ -111,7 +125,7 @@ unsafe extern "C" fn dins_refresh(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let zelda = utils::util::get_battle_object_from_id(owner_id);
     let zelda_boma = &mut *(*zelda).module_accessor;
     let life = zelda_boma.get_param_float("param_dein", "bang_time");
-    if VarModule::is_flag(weapon.battle_object, vars::zelda::status::DINS_REFRESH) {
+    if VarModule::is_flag(weapon.battle_object, vars::zelda::status::DINS_REFRESH) && zelda_boma.is_button_off(Buttons::Special) {
         EFFECT_OFF_KIND(weapon, Hash40::new("sys_flash"), true, true);
         MotionModule::change_motion_force_inherit_frame(weapon.module_accessor, Hash40::new("tame"), 0.0, 1.0, 1.0);
         weapon.set_float(160.0, *WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_LIFE);

@@ -1695,11 +1695,12 @@ pub mod vars {
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
             pub const DEIN_OBJECT_ID_2: i32 = 0x0101;
-            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0102;
-            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0103;
-            pub const PHANTOM_EFF_HANDLER: i32 = 0x0104;
-            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0105;
-            pub const PHANTOM_OBJECT_ID: i32 = 0x0106;
+            pub const DEIN_OBJECT_ID_3: i32 = 0x0102;
+            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0103;
+            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0104;
+            pub const PHANTOM_EFF_HANDLER: i32 = 0x0105;
+            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0106;
+            pub const PHANTOM_OBJECT_ID: i32 = 0x0107;
         }
         pub mod status {
             // flags

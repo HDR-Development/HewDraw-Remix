@@ -25,13 +25,7 @@ unsafe extern "C" fn game_build(agent: &mut L2CAgentBase) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 14.0);
-	if is_excute(agent) {
-		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
-			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
-		}
-	}
-	frame(lua_state, 17.0);
+	frame(lua_state, 15.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
@@ -43,13 +37,7 @@ unsafe extern "C" fn game_build(agent: &mut L2CAgentBase) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 27.0);
-	if is_excute(agent) {
-		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
-			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
-		}
-	}
-	frame(lua_state, 29.0);
+	frame(lua_state, 22.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
@@ -61,25 +49,37 @@ unsafe extern "C" fn game_build(agent: &mut L2CAgentBase) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 37.0);
+	frame(lua_state, 34.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 44.0);
+	frame(lua_state, 36.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 49.0);
+	frame(lua_state, 43.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 		}
 	}
-	frame(lua_state, 180.0);
+	frame(lua_state, 51.0);
+	if is_excute(agent) {
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
+	}
+	frame(lua_state, 57.0);
+	if is_excute(agent) {
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
+	}
+	frame(lua_state, 210.0);
 	if is_excute(agent) {
 		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::PHANTOM_NO_BUILD) {
 			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);

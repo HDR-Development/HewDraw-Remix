@@ -107,7 +107,7 @@ special_hi_cancel:
   - name: d02specialhicancel.nuanmb
   scripts:
   - expression_specialhi
-  - sound_specialhi
+  - sound_specialhicancel
   - effect_specialhicancel
   extra:
     intangible_start_frame: 0
