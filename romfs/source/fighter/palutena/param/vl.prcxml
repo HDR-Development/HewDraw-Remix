@@ -40,6 +40,7 @@
     <struct index="0">
       <float hash="special_hi_wrap_speed_multi">3.25</float>
       <float hash="special_hi_wrap_x_max">0.75</float>
+      <float hash="special_hi_fall_x_mull_value">0.8</float>
       <float hash="special_hi_landing_frame">28</float>
     </struct>
     <hash40 index="1">dummy</hash40>

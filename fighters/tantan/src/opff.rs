@@ -87,25 +87,13 @@ unsafe fn fsmash_effect_translation(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
-unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR_END)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
-    }
-}
-
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     recoil_cancel(boma,status_kind,situation_kind);
     arms_switch_during_normals(boma, cat[0], status_kind, situation_kind, motion_kind);
     double_dragon(boma);
     fsmash_effect_translation(boma,status_kind);
     //Prevent B Jab
     WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
-    up_special_freefall(fighter);
 }
 
 pub extern "C" fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -117,7 +105,7 @@ pub extern "C" fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterC
 
 pub unsafe fn tantan_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 

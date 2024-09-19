@@ -66,8 +66,8 @@
       <float hash="shoot_limit_x_mul">1.1</float>
       <int hash="shoot_gravity_frame">1</int>
       <float hash="shoot_gravity">0.111</float>
-      <float hash="fall_limit_x_mul">1.1</float>
-      <float hash="fall_brake_mul">1.0</float>
+      <float hash="fall_limit_x_mul">0.85</float>
+      <float hash="fall_brake_mul">0.8</float>
       <float hash="fall_air_accel_y_mul">1.0</float>
       <float hash="fall_air_speed_y_stable_mul">1.0</float>
       <float hash="fall_air_brake_y_mul">1.0</float>

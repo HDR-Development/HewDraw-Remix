@@ -22,6 +22,7 @@
     <struct index="0">
       <int hash="stick_down_hold_frame">16</int>
       <float hash="stick_x_speed_mul_max">6</float>
+      <float hash="air_speed_x_stable_mul">0.6</float>
       <float hash="command_landing_frame_mul">1</float>
       <float hash="speed_y_mul">0.29</float>
       <float hash="speed_y_mul_command">0.405</float>
@@ -30,6 +31,7 @@
     </struct>
     <struct index="1">
       <float hash="stick_x_speed_mul_max">6</float>
+      <float hash="air_speed_x_stable_mul">0.6</float>
       <float hash="speed_y_mul">0.45</float>
       <float hash="air_speed_y_mul">0.67</float>
       <float hash="speed_y_mul_command">0.71</float>
