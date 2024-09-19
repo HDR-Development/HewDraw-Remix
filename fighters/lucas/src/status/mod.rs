@@ -7,6 +7,7 @@ mod attack_air;
 mod attack_lw4;
 mod special_n;
 mod special_hi;
+mod fall_special;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
@@ -23,4 +24,5 @@ pub fn install(agent: &mut Agent) {
     attack_lw4::install(agent);
     special_n::install(agent);
     special_hi::install(agent);
+    fall_special::install(agent);
 }
