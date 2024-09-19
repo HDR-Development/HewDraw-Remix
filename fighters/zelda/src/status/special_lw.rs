@@ -40,7 +40,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
     && ControlModule::get_flick_y(fighter.module_accessor) < 4 {
         GroundModule::pass_floor(fighter.module_accessor);
     }//platdrop
-    if fighter.is_button_trigger(Buttons::Special) { //&& fighter.is_cat_flag(Cat1::SpecialLw) { //filter non d-special inputs??
+    if fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw) { //filter non d-special inputs??
         fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
     }
     //checks if phantom is alive and hers, also frame gate
@@ -55,13 +55,12 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
                 fighter.sub_change_motion_by_situation(Hash40::new("special_lw_attack").into(), Hash40::new("special_air_lw_attack").into(), false.into());
                 ArticleModule::shoot_exist(fighter.module_accessor, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
                 notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), FIGHTER_LOG_DATA_INT_SHOOT_NUM);
-                //fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into())
             } else {
                 //cancel handling
                 if !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD)
                 && MotionModule::frame(fighter.module_accessor) < 58.0 //before full build
-                && (fighter.is_button_on(Buttons::Guard) || fighter.is_button_trigger(Buttons::Attack)) {//cancel input 
-                    LinkModule::send_event_nodes(fighter.module_accessor, *LINK_NO_ARTICLE, Hash40::new_raw(0x1f65e2f2b2), 0); //disconnects phantom from her?
+                && (fighter.is_button_on(Buttons::Guard) || fighter.is_button_trigger(Buttons::Special)) {//cancel input 
+                    LinkModule::send_event_nodes(fighter.module_accessor, *LINK_NO_ARTICLE, Hash40::new("fighter_zelda_remove_constraint"), 0); //disconnects phantom from her?
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
                     VarModule::on_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD); //should pause building
                     //shield cancel to stop building phantom, 30f of lag

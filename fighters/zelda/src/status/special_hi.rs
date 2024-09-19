@@ -18,6 +18,8 @@ unsafe extern "C" fn special_hi_2_end(fighter: &mut L2CFighterCommon) -> L2CValu
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3 {
         //clear buffer
         ControlModule::reset_trigger(fighter.module_accessor);
+        ControlModule::clear_command(fighter.module_accessor, true);
+        ControlModule::reset_special_command(fighter.module_accessor, true);
         //re-uses waveland window logic
         let init_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_Y); //teleport direction
         let pos = *PostureModule::pos(fighter.module_accessor); //top bone (bottom of ecb w/o shifting)

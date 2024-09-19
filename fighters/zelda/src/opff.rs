@@ -77,7 +77,11 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
 }
 
 pub unsafe fn phantom_usability_effects(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let phantom_object_id = VarModule::get_int(fighter.battle_object, vars::zelda::instance::PHANTOM_OBJECT_ID) as u32;
+    let phantom_battle_object = utils::util::get_battle_object_from_id(phantom_object_id);
+    let phantom_boma = &mut *(*phantom_battle_object).module_accessor;
     let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER);
+    let arrow = VarModule::get_int(phantom_battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER);
     //disables effects on winscreen (one of them spawns a phantom)
     if (fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go())  && handle >= 1 {
         EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
@@ -100,6 +104,9 @@ pub unsafe fn phantom_usability_effects(fighter:&mut smash::lua2cpp::L2CFighterC
                 VarModule::off_flag(fighter.battle_object, vars::zelda::instance::PHANTOM_HIT);
                 VarModule::set_int(fighter.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, -1);
             }//-1 allows effects to be spawned
+            if EffectModule::is_exist_effect(phantom_boma, arrow as u32) {
+                EffectModule::kill(phantom_boma, arrow as u32, true, true);
+            }//kill check for player arrow
         }
     }
 }

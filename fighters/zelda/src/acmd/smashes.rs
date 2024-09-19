@@ -74,7 +74,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("top"), 5.0, 88, 220, 0, 24, 6.5, 0.0, 18.5, 6.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
         ATTACK(agent, 3, 0, Hash40::new("top"), 5.0, 88, 220, 0, 24, 8.0, 0.0, 15.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
     }
-    wait(lua_state, 1.0);
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::zelda::status::PHANTOM_CANCEL_FRAME);
         AttackModule::clear_all(boma);
@@ -109,10 +109,11 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("zelda_smash_hi_flash"), Hash40::new("havel"), 0, 0, 0, -0.0, 0.0, 0.0, 1, true);
     }
-    frame(lua_state, 31.0);
+    frame(lua_state, 28.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 19.5, -2.5, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(agent, 1.5);
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_smash_spark"), Hash40::new("top"), 0, 22.5, -3.7, 0, 0, 0, 0.9, true);
+        //EFFECT(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 19.5, -2.5, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.7);
     }
 }
 

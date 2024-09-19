@@ -11,6 +11,9 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
     //check if phantom landed a hit
     if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
+    } else if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_REFLECTOR) {
+        AttackModule::clear_inflict_kind_status(weapon.module_accessor);
+        StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
     }
     //apply death timer to destroyed phantom if it didn't land a clean hit
     if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {

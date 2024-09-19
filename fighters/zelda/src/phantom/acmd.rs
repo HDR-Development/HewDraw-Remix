@@ -101,6 +101,13 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
 			VarModule::set_int64(zelda, vars::zelda::instance::PHANTOM_EFF_HANDLER, handle);
 		}
 		LAST_EFFECT_SET_COLOR(agent, 0.4, 0.0, 1.0);
+		//player arrow
+		let effect = EffectModule::req_follow(boma, Hash40::new("sys_direction"), Hash40::new("top"), &Vector3f::new(0.0, 22.5, 1.6), &Vector3f::new(0.0, 90.0, 180.0), 0.67, true, 0, 0, 0, 0, 0, false, false);
+    	VarModule::set_int(agent.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, effect as i32);
+    	LAST_EFFECT_SET_SCALE_W(agent, 0.75, 0.45, 0.75);
+    	let team_color = FighterUtil::get_team_color(boma);
+    	let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+    	EffectModule::set_rgb_partial_last(boma, effect_team_color.x, effect_team_color.y, effect_team_color.z);
 	}
 	frame(lua_state, 5.0);
 	if is_excute(agent) {
