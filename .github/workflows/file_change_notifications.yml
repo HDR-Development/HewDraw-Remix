@@ -1,0 +1,179 @@
+name: Notify on File Change
+
+on:
+  push:
+    branches:
+      - pre-release
+  pull_request:
+    branches:
+      - pre-release
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Check for changed files
+      id: changes
+      run: |
+        FILES_TO_WATCH=(
+          "fighters/common/src/"
+          "romfs/source/fighter/common/"
+          "romfs/source/param/"
+          "fighters/fox/src/opff.rs"
+          "fighters/plizardon/src/acmd/specials.rs:48-54"
+          "romfs/source/fighter/captain/param/hdr.xml:4-9"
+          "romfs/source/fighter/captain/param/vl.prcxml:3-10"
+        )
+        
+        > $GITHUB_WORKSPACE/matched_files.txt
+        
+        CHANGED_FILES=$(git diff --unified=0 --name-only HEAD^ HEAD)
+
+        for file in "${FILES_TO_WATCH[@]}"; do
+          IFS=':' read -r filepath ranges <<< "$file"
+
+          # Remove trailing slash for directories
+
+          if [[ "$filepath" == */ ]]; then
+            filepath=${filepath%/}
+          fi
+          
+          # Check if the file path is a directory
+          if [ -d "$filepath" ]; then
+            echo "Checking directory: $filepath"
+            # Find all files within the directory and compare with changed files
+            DIRECTORY_FILES=$(find "$filepath" -type f)
+            for dir_file in $DIRECTORY_FILES; do
+              if echo "$CHANGED_FILES" | grep -q "^$dir_file$"; then
+                echo "$dir_file" >> $GITHUB_WORKSPACE/matched_files.txt
+              fi
+            done
+          else
+            # Individual file or file with ranges
+            if [ -n "$ranges" ]; then
+              echo "Checking file $filepath with line ranges $ranges"
+
+              IFS=',' read -r -a range_array <<< "$ranges"
+
+              git diff --unified=0 HEAD^ HEAD -- "$filepath" > diff_output.txt
+
+              # Parse the diff output to extract the changed lines
+              for range in "${range_array[@]}"; do
+                IFS='-' read -r start end <<< "$range"
+                awk -v start="$start" -v end="$end" -v file="$filepath" '
+                /^@@/ {
+                  # Parse line numbers from diff hunk header
+                  match($0, /\+([0-9]+)/, arr)
+                  hunk_start = arr[1]
+                }
+                /^[+-]/ && !/^@@/ {
+                  # Check if the current line is in the specified range
+                  if ($0 ~ /^\+/) {
+                    if (hunk_start >= start && (end == "" || hunk_start <= end)) {
+                      print file ":" hunk_start
+                    }
+                    hunk_start++
+                  }
+                }
+                ' diff_output.txt >> $GITHUB_WORKSPACE/matched_files.txt
+              done
+
+              # Check if any lines were detected
+              if grep -q "$filepath" $GITHUB_WORKSPACE/matched_files.txt; then
+                echo "Changes detected in $filepath within line ranges."
+              else
+                echo "No changes in specified line ranges for $filepath."
+              fi
+              
+            else
+              # Check the entire file
+              if echo "$CHANGED_FILES" | grep -q "^$filepath$"; then
+                echo "File $filepath has changed."
+                echo "$filepath" >> $GITHUB_WORKSPACE/matched_files.txt
+              else
+                echo "No changes detected in file: $filepath"
+              fi
+            fi
+          fi
+        done
+
+        if [ ! -s $GITHUB_WORKSPACE/matched_files.txt ]; then
+          echo "SEND_NOTIFICATION=false" >> $GITHUB_ENV
+        else
+          echo "SEND_NOTIFICATION=true" >> $GITHUB_ENV
+          echo "CHANGED_FILES_FILE=$GITHUB_WORKSPACE/matched_files.txt" >> $GITHUB_ENV
+
+          # Determine the email subject and link based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "EMAIL_SUBJECT=File Changes PRd in pre-release Branch" >> $GITHUB_ENV
+            echo "LINK=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+            echo "LINK_TYPE=Pull Request" >> $GITHUB_ENV
+          else
+            echo "EMAIL_SUBJECT=Files Changed in pre-release Branch" >> $GITHUB_ENV
+            COMMIT_SHA=${{ github.sha }}
+            COMMIT_URL=https://github.com/${{ github.repository }}/commit/${COMMIT_SHA}
+            echo "LINK=$COMMIT_URL" >> $GITHUB_ENV
+            echo "LINK_TYPE=Commit" >> $GITHUB_ENV
+          fi
+        fi
+
+    - name: Send email notification if files are changed
+      if: env.SEND_NOTIFICATION == 'true'
+      run: |
+        python -m pip install yagmail
+        python -c "
+        import os
+        import yagmail
+        
+        # Set up Gmail SMTP
+        yag = yagmail.SMTP(
+            user=os.getenv('GMAIL_USER'),
+            password=os.getenv('GMAIL_PASSWORD')
+        )
+        
+        # Prepare the email
+        subject = os.getenv('EMAIL_SUBJECT')
+        body = 'The following files were changed:\\n\\n'
+
+        base_url = 'https://github.com/${{ github.repository }}/tree/pre-release/'
+
+        # Read the changed files from the file
+        with open(os.getenv('CHANGED_FILES_FILE'), 'r') as f:
+          for line in f:
+              line = line.strip()
+              if ':' in line:  # File with a line number
+                  filepath, lineno = line.split(':')
+                  body += f'{base_url}{filepath}#L{lineno}\\n'
+              else:  # File without a specific line number
+                  body += f'{base_url}{line}\\n'
+
+        link = os.getenv('LINK')
+        link_type = os.getenv('LINK_TYPE')
+        if link_type == 'Pull Request':
+            body += f'\\nLink to Pull Request: {link}\\n'
+        else:
+            body += f'\\nLink to Commit: {link}\\n'
+        
+        recipient = os.getenv('EMAIL_RECIPIENT')
+        
+        # Send the email
+        yag.send(to=recipient, subject=subject, contents=body)
+        "
+      env:
+        GMAIL_USER: ${{ secrets.GMAIL_USER }}
+        GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+        CHANGED_FILES: ${{ env.CHANGED_FILES_FILE }}
+        LINK: ${{ env.LINK }}
+        LINK_TYPE: ${{ env.LINK_TYPE }}
