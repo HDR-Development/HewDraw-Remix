@@ -1,4 +1,5 @@
 use ninput::*;
+use dynamic::{consts::*, *};
 
 pub const CONTROLLER_ID: [u32; 9] = [0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x20]; // 0x20 is the id for handheld
 
@@ -107,6 +108,12 @@ unsafe fn controller_token_off(arg1: u64, port: u64);
 #[skyline::hook(offset = 0x1a2b550)]
 unsafe fn css_main_loop(arg: u64) {
     if !ENABLE_SWAPPING {
+        return original!()(arg);
+    }
+
+    // online arenas pass the usual check, so disable it if we are there
+    if game_modes::get_melee_mode() == melee_mode::ARENA {
+        ENABLE_SWAPPING = false;
         return original!()(arg);
     }
 

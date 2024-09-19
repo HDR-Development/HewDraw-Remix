@@ -1824,6 +1824,8 @@ pub mod melee_mode {
     pub const HOMERUN_VERSUS: i32 = 0xf;
     pub const STAGE_BUILDER: i32 = 0x10;
 
+    pub const ARENA: i32 = 0x13;
+
     pub const TIPS: i32 = 0x1b;
 }
 
