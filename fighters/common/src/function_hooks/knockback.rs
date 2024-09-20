@@ -195,7 +195,7 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     }
     // let elapsed = std::time::Instant::now().duration_since(before);
     // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
-    call_finishing_hit_effects(defender_boma);
+    call_finishing_hit_effects(defender_boma, attacker_boma);
 }
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
@@ -492,7 +492,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 
-pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) { 
+pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) {
     if is_final_killing_hit(defender_boma, attacker_boma) {   
         let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
         EffectModule::set_billboard(defender_boma, handle as u32, true);
