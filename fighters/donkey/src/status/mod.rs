@@ -9,6 +9,7 @@ mod special_n;
 mod catch_pull;
 mod shoulder;
 mod super_lift;
+mod fall_special;
 
 pub fn install(agent: &mut Agent) {
     item_throw_heavy::install(agent);
@@ -18,4 +19,5 @@ pub fn install(agent: &mut Agent) {
     catch_pull::install(agent);
     shoulder::install(agent);
     super_lift::install(agent);
+    fall_special::install(agent);
 }

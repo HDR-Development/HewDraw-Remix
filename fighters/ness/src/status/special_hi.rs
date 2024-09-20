@@ -60,7 +60,7 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && fighter.status_frame() >= 38 {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-            let fall_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "fall_max_x_mul");
+            let fall_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
             sv_kinetic_energy!(
                 set_stable_speed,
                 fighter,
@@ -77,7 +77,24 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
     }
 }
 
+unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Pre, fighter, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END)(fighter);
+
+    let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+    let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        air_speed_x_stable * speed_x_max_mul,
+        0.0
+    );
+
+    ret
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(End, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_end);
     agent.status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, special_hi_attack_main);
+    agent.status(Pre, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
 }

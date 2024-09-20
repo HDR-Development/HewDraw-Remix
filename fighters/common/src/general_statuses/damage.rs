@@ -31,6 +31,12 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
     if !arg3.get_bool() {
         return 0.into();
     }
+    // <HDR>
+    let control_module = *(fighter.module_accessor as *const u64).offset(0x48 / 8) as *const u64;
+    let vtable = *control_module;
+    let control_module__update: extern "C" fn(*const u64, bool) = std::mem::transmute(*(((vtable as u64) + 0x148) as *const u64));
+    // </HDR>
+    control_module__update(control_module, false);
     // Disable hitlag shake (not SDI) once hitlag is over
     // Prevents "smoke farts" from kb smoke
     ShakeModule::stop(fighter.module_accessor);
@@ -182,14 +188,14 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         };
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
-        let asdi_speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+        let speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
             fighter.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG)
         }
         else {
             1.0
         };
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
-        let asdi = sdi_mul * base_asdi * asdi_speed_up_mul;
+        let asdi = sdi_mul * base_asdi * speed_up_mul;
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
@@ -305,30 +311,13 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let speed = factor.get_f32();
     dbg!(speed);
 
-    let angle = angle.get_f32();
-    let angle_from_horizontal = 90.0 - ((angle % 180.0).abs() - 90.0).abs();  // value of 0-90
-    let angle_mul_threshold = 29.358_f32.to_radians();  // angle from horizontal at which angle-based speedup mul begins applying
-    let min_angle_mul = 0.825;  // applied at straight-vertical angles
-    let max_angle_mul = 1.0;  // applied at and below angle_mul_threshold
-    let angle_mul = if angle_from_horizontal >= angle_mul_threshold {
-        let angle_rad = angle_from_horizontal.to_radians();
-        let angle_factor =  ((angle_mul_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_mul_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
-            / ((angle_rad.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_rad.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt();
-        let ratio = (1.0 - angle_factor) / (1.0 - 0.693);
-        interpolation::Lerp::lerp(&max_angle_mul, &min_angle_mul, &ratio)
-    } else {
-        1.0
-    };
-    
-    let adjusted_speed = speed * angle_mul;
-
-    if check_damage_speed_up_fail(fighter) || adjusted_speed <= speed_start {
+    if check_damage_speed_up_fail(fighter) || speed <= speed_start {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         return;
     }
 
-    let ratio = ((adjusted_speed - speed_start) / (speed_end - speed_start));
+    let ratio = ((speed - speed_start) / (speed_end - speed_start));
     let speed_up_mul = if ratio <= 0.0 {
         min_mul
     } else if ratio >= 1.0 {
