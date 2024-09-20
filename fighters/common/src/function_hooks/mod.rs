@@ -13,7 +13,7 @@ pub mod iceclimber;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
-pub mod killscreen;
+pub mod knockback;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
@@ -747,7 +747,7 @@ pub fn install() {
     momentum_transfer::install();
     misc::install();
     jumps::install();
-    killscreen::install();
+    knockback::install();
     stage_hazards::install();
     //set_fighter_status_data::install();
     attack::install();
