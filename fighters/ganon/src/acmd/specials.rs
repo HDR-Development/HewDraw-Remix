@@ -417,8 +417,8 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 31.0);
     for _ in 0..4 {
-        if macros::is_excute(agent) {
-            macros::EFFECT(agent, Hash40::new("ganon_attack_elec"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("ganon_attack_elec"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         }
     }
     wait(agent.lua_state_agent, 2.0);
