@@ -52,7 +52,7 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            speed_y.clamp(-0.05, 0.5)
+            speed_y.clamp(-0.05, 0.55)
         );
         sv_kinetic_energy!(
             set_accel,

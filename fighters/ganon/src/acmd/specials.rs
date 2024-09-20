@@ -67,7 +67,7 @@ unsafe extern "C" fn game_floatairstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0 / 10.0);
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
-    KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    // KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     frame(lua_state, 14.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
