@@ -96,10 +96,14 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 4, 1, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_air_flash"), Hash40::new("toel"), 0, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("sys_status_defense_up"), Hash40::new("toel"), 0, 0, 0, 0, 0, 0, 0.25, true);
         LAST_EFFECT_SET_RATE(agent, 1.7);
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_flash_s"), Hash40::new("toel"), 0, 0, -2.0, 0, 0, 0, 0.1, true);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 4, 1, 0, 0, 0, 1, true);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
@@ -145,13 +149,14 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     //let mut handle: u32 = 0;
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_flash_s"), Hash40::new("toer"), 0, 0, -2.0, 0, 0, 0, 0.1, true);
+    }
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("zelda_atk"), Hash40::new("toer"), 0.0, 0.0, -2.0, 0, 0, 0, 1.15, true);
-        LAST_EFFECT_SET_RATE(agent, 1.3);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(agent) {
+        LAST_EFFECT_SET_RATE(agent, 1.1);
         EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 5.7, -1, 0, 180, 180, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("zelda_atk_air_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, true);
     }

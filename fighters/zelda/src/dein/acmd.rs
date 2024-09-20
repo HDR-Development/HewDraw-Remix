@@ -21,9 +21,15 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 	}
 	for h in 21..=146 {
 		if is_excute(agent) {
-			let start_color = Vector3f { x: 1.0, y: 1.0, z: 1.0 };
-			let end_color = Vector3f { x: 0.885, y: 0.051, z: 0.051 };
+			let start_color = Vector3f { x: 1.0, y: 1.05, z: 1.11 };
+			let start_color_flame = Vector3f { x: 1.0, y: 3.0, z: 4.5 };
+			let end_color = Vector3f { x: 0.88, y: 0.045, z: 0.03 };
 			// Smoothly interpolate from starting to ending color
+			let flame_blend_vector = Vector3f {
+				x: end_color.x + (start_color_flame.x * ((h as f32) / 146.0)),
+				y: end_color.y + (start_color_flame.y * ((h as f32) / 146.0)),
+				z: end_color.z + (start_color_flame.z * ((h as f32) / 146.0))
+			};
 			let blend_vector = Vector3f {
 				x: start_color.x + ((end_color.x - start_color.x) * ((h as f32) / 146.0)),
 				y: start_color.y + ((end_color.y - start_color.y) * ((h as f32) / 146.0)),
@@ -45,14 +51,14 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
 					// Apply color blend
 					EffectModule::set_rgb(boma, flash_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
-					EffectModule::set_rgb(boma, fire_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
+					EffectModule::set_rgb(boma, fire_handle as u32, flame_blend_vector.x, flame_blend_vector.y, flame_blend_vector.z);
 					VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH, flash_handle as u64);
 					VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle as u64);
 				}
 				else {
 					// Apply color blend
 					EffectModule::set_rgb(boma, flash_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
-					EffectModule::set_rgb(boma, fire_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
+					EffectModule::set_rgb(boma, fire_handle as u32, flame_blend_vector.x, flame_blend_vector.y, flame_blend_vector.z);
 				}
 			}
 		}
@@ -63,9 +69,30 @@ unsafe extern "C" fn effect_tame(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_tame(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+	frame(lua_state, 20.0);
+    if is_excute(agent) {
+		let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_magic01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 0.1, 0);
+	}
+	frame(lua_state, 50.0);
+    if is_excute(agent) {
+		let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_magic01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 0.1, 0);
+	}
+	frame(lua_state, 80.0);
+    if is_excute(agent) {
+		let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_magic01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 0.1, 0);
+	}
+	frame(lua_state, 112.0);
+    if is_excute(agent) {
+		let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_magic01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 0.1, 0);
+	}
     frame(lua_state, 141.0);//20 before hitbox
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_zelda_appeal_s01"));
+		let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_appeal_s01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 1.1, 0);
 	}
 }
 

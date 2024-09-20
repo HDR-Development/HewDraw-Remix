@@ -95,6 +95,8 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		EFFECT(agent, Hash40::new("zelda_phantom_build"), Hash40::new("trans"), 0, 3, 0, 0, -90, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+		let zelda = utils::util::get_battle_object_from_id(owner_id);
+		let zelda_boma: &mut BattleObjectModuleAccessor = &mut *(*zelda).module_accessor;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
 			let handle = EffectModule::req_follow(boma, Hash40::new("zelda_entry"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::new(0.0, 150.0, 0.0), 0.75, false, 0, 0, 0, 0, 0, false, false);
@@ -102,10 +104,10 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
 		}
 		LAST_EFFECT_SET_COLOR(agent, 0.4, 0.0, 1.0);
 		//player arrow
-		let effect = EffectModule::req_follow(boma, Hash40::new("sys_direction"), Hash40::new("top"), &Vector3f::new(0.0, 22.5, 1.6), &Vector3f::new(0.0, 90.0, 180.0), 0.67, true, 0, 0, 0, 0, 0, false, false);
+		let effect = EffectModule::req_follow(boma, Hash40::new("sys_direction"), Hash40::new("top"), &Vector3f::new(0.0, 22.5, 1.4), &Vector3f::new(0.0, 90.0, 180.0), 0.67, true, 0, 0, 0, 0, 0, false, false);
     	VarModule::set_int(agent.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER, effect as i32);
     	LAST_EFFECT_SET_SCALE_W(agent, 0.75, 0.45, 0.75);
-    	let team_color = FighterUtil::get_team_color(boma);
+    	let team_color = FighterUtil::get_team_color(zelda_boma);
     	let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
     	EffectModule::set_rgb_partial_last(boma, effect_team_color.x, effect_team_color.y, effect_team_color.z);
 	}
@@ -607,6 +609,12 @@ unsafe extern "C" fn effect_cancel(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
 		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_end2"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.3, false);
     }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+		let effect = VarModule::get_int(agent.battle_object, vars::zelda::instance::EFF_COOLDOWN_HANDLER) as u32;
+		let pos = *PostureModule::pos(boma);
+		EffectModule::set_pos(boma, effect, &Vector3f{x: pos.x, y: pos.y - 10.0, z: pos.z + 0.0});
+	}
     frame(lua_state, 89.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("zelda_phantom_end"), Hash40::new("trans"), 0, 2, 0, 0, 0, 0, 1.18, 0, 0, 0, 0, 0, 0, true);

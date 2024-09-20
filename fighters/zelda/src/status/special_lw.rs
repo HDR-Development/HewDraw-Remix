@@ -40,7 +40,8 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
     && ControlModule::get_flick_y(fighter.module_accessor) < 4 {
         GroundModule::pass_floor(fighter.module_accessor);
     }//platdrop
-    if fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw) { //filter non d-special inputs??
+    if (fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw))
+    || fighter.is_button_trigger(Buttons::Attack) { //filter non d-special inputs??
         fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
     }
     //checks if phantom is alive and hers, also frame gate

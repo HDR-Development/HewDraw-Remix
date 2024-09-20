@@ -1701,6 +1701,9 @@ pub mod vars {
             pub const PHANTOM_EFF_HANDLER: i32 = 0x0105;
             pub const EFF_COOLDOWN_HANDLER: i32 = 0x0106;
             pub const PHANTOM_OBJECT_ID: i32 = 0x0107;
+
+            // floats
+            pub const TELEPORT_END_SPEED_X: i32 = 0x0108;
         }
         pub mod status {
             // flags

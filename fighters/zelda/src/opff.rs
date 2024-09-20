@@ -4,6 +4,11 @@ use super::*;
 use globals::*;
  
 unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && !VarModule::is_flag(fighter.battle_object, vars::zelda::instance::GROUNDED_TELEPORT) {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            VarModule::on_flag(fighter.battle_object, vars::zelda::instance::GROUNDED_TELEPORT)
+        } //touching ground at any point counts as G2G for cancels
+    }
     // Wall Ride momentum fixes
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         let init_speed_x = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X);
@@ -70,7 +75,8 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+                WorkModule::set_float(boma, 7.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
             }
         }
     }

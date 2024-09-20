@@ -111,9 +111,9 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("zelda_smash_spark"), Hash40::new("top"), 0, 22.5, -3.7, 0, 0, 0, 0.9, true);
+        EFFECT_FOLLOW(agent, Hash40::new("zelda_smash_spark"), Hash40::new("top"), 0, 22.7, -3.4, 0, 0, 0, 0.9, true);
         //EFFECT(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 19.5, -2.5, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(agent, 1.7);
+        LAST_EFFECT_SET_RATE(agent, 1.65);
     }
 }
 
