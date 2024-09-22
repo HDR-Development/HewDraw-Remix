@@ -188,10 +188,27 @@ unsafe fn local_wireless_pane(_: &skyline::hooks::InlineCtx) {
     }
 }
 
+#[export_name = "hdr__game_modes__get_melee_mode"]
+pub extern "Rust" fn get_melee_mode() -> i32 {
+    unsafe {
+        return CURRENT_MELEE_MODE;
+    }
+}
+
+static mut CURRENT_MELEE_MODE: i32 = 0x0;
+
+// updates when initiating the CSS of any game mode
+#[skyline::hook(offset = 0x1a2623c, inline)]
+unsafe fn read_melee_mode(ctx: &mut skyline::hooks::InlineCtx) {
+    let mode = *ctx.registers[8].x.as_ref();
+    CURRENT_MELEE_MODE = mode as i32;
+}
+
 pub fn install() {
     skyline::install_hooks!(
         on_rule_select_hook,
         once_per_game_frame,
-        local_wireless_pane
+        local_wireless_pane,
+        read_melee_mode
     );
 }
