@@ -15,6 +15,7 @@ mod mario;
 mod mariod;
 mod miigunner;
 mod palutena;
+mod purin;
 mod richter;
 mod ridley;
 mod roy;
@@ -38,6 +39,7 @@ pub fn install(agent: &mut Agent) {
     mariod::install(agent);
     miigunner::install(agent);
     palutena::install(agent);
+    purin::install(agent);
     richter::install(agent);
     ridley::install(agent);
     roy::install(agent);
