@@ -292,6 +292,8 @@ pub mod vars {
 
             pub const HIT_EFFECT_DROP_ITEM: i32 = 0x1051;
 
+            pub const SHOULD_HITFALL: i32 = 0x1006;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
