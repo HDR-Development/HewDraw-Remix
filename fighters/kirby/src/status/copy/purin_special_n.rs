@@ -83,8 +83,17 @@ pub unsafe extern "C" fn purin_special_n_main_loop(fighter: &mut L2CFighterCommo
     return false.into();
 }
 
+#[skyline::from_offset(0xb96770)]
+fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
+
 pub unsafe extern "C" fn purin_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    return false.into();
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
+    let kirb = fighter.battle_object.cast::<Fighter>();
+    copy_ability_reset(kirb, false);
+    EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("kirby_star"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+    PLAY_SE(fighter, Hash40::new("se_kirby_special_n05"));
+    return 0.into()
 }
 
 unsafe extern "C" fn situation_helper(fighter: &mut L2CFighterCommon) {
