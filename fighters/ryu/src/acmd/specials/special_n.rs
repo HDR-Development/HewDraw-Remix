@@ -10,28 +10,39 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 12.0);
-    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        if boma.is_button_on(Buttons::Guard | Buttons::GuardHold)
-        && !VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED)
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+            agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
+            MeterModule::drain_direct(agent.battle_object, 2.0 * MeterModule::meter_per_level(agent.battle_object));
+        } else if boma.is_button_on(Buttons::Guard | Buttons::GuardHold)
         && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN) {
             agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED);
         } else {
             agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
-            if agent.kind() != *FIGHTER_KIND_KIRBY 
-            && !VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+            if agent.kind() != *FIGHTER_KIND_KIRBY {
                 MeterModule::add(agent.battle_object, 2.0 * MeterModule::damage_gain_mul(agent.battle_object));
             }
         }
     }
-    frame(lua_state, 14.0);
-    if agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
-        FT_MOTION_RATE_RANGE(agent, 14.0, 58.0, 18.0);
-    } else if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
-        FT_MOTION_RATE_RANGE(agent, 14.0, 58.0, 26.0);
+    if !agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED)
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+        FT_MOTION_RATE(agent, 3.0);
+        frame(lua_state, 14.0);
+        if is_excute(agent) {
+            ArticleModule::generate_article(agent.module_accessor, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN, false, 0);
+        }
     } else {
-        FT_MOTION_RATE_RANGE(agent, 14.0, 58.0, 31.0);
+        FT_MOTION_RATE(agent, 1.0);
     }
+    frame(lua_state, 15.0);
+    let endlag = if agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        17.0
+    } else if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+        12.0
+    } else {
+        30.0
+    };
+    FT_MOTION_RATE_RANGE(agent, 15.0, 58.0, endlag);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
