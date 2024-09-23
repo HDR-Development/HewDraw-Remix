@@ -7,8 +7,9 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 5.0);
     if is_excute(agent) {
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 1.0, 3.5, 8.5, 8.5);
         JostleModule::set_team(boma, 1);
-        JostleModule::set_overlap_rate_mul(boma, 5.0);
+        // JostleModule::set_overlap_rate_mul(boma, 2.0);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -22,8 +23,9 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 5.5, 3.0, 9.0, 3.0);
         JostleModule::set_team(boma, 1);
-        JostleModule::set_overlap_rate_mul(boma, 5.0);
+        // JostleModule::set_overlap_rate_mul(boma, 2.0);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_GROUND {
             shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 11.0, 0.0, 11.0, 4.0, 0.0, 11.0, -4.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
@@ -99,7 +101,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         JostleModule::set_team(boma, 1);
-        JostleModule::set_overlap_rate_mul(boma, 5.0);
+        // JostleModule::set_overlap_rate_mul(boma, 2.0);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_GROUND {
             shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
