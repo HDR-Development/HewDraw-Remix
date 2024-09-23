@@ -5,7 +5,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
