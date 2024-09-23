@@ -58,9 +58,9 @@ jobs:
           "fighters/mewtwo/src/acmd/specials.rs:86-100"
           "fighters/richter/src/acmd/specials.rs:249-257"
           "fighters/simon/src/acmd/specials.rs:80-84"
-
-          "fighters/**/status/**"
-
+          
+          "**/status/**"
+          
           "fighters/lucas/src/acmd/aerials.rs"
           "fighters/mewtwo/src/acmd/aerials.rs"
           "fighters/ness/src/acmd/aerials.rs"
@@ -83,7 +83,7 @@ jobs:
           "fighters/wolf/src/acmd/aerials.rs"
           "fighters/wolf/src/acmd/smashes.rs"
 
-          "fighters/captain/src/acmd/specials.rs:166-192,235-251,301-304,339,342"
+          "fighters/captain/src/acmd/specials.rs:166-192,235-251,301-304,339-342"
           "fighters/cloud/src/acmd/specials.rs:293-563"
           "fighters/dedede/src/acmd/specials.rs:567-570"
           "fighters/demon/src/acmd/specials.rs:369-375,481-486,579-582,636-639,697-700"
@@ -115,7 +115,6 @@ jobs:
           "fighters/shulk/src/opff.rs:7-19"
           "fighters/sonic/src/opff.rs:14-38"
           "fighters/zelda/src/opff.rs:6-40"
-          "fighters/char/src/opff.rs:"
 
           "fighters/brave/src/opff.rs:5-25"
           "fighters/donkey/src/opff.rs:18-27"
