@@ -1,18 +1,78 @@
 use super::*;
 
-//pub unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-//    create_arrow_eff(fighter);
-//    0.into()
-//}
-//
-//unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-//    let effect = VarModule::get_int(fighter.battle_object, vars::common::status::WARP_EFF_HANDLER) as u32;
-//    if effect != 0 {
-//        EffectModule::kill(fighter.module_accessor, effect, true, true);
-//        VarModule::set_int(fighter.battle_object, vars::common::status::WARP_EFF_HANDLER, 0);
-//    }
-//    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter)
-//}
+unsafe extern "C" fn special_hi_2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    HitModule::set_whole(fighter.module_accessor, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+    VisibilityModule::set_whole(fighter.module_accessor, false);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f20a9d549), false);
+    fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
+    GroundModule::set_passable_check(fighter.module_accessor, true);
+    let cliff_check = fighter.get_int(*FIGHTER_ZELDA_STATUS_SPECIAL_HI_WORK_INT_CLIFF_CHECK);
+    fighter.sub_fighter_cliff_check(cliff_check.into());
+    fighter.set_int(0, *FIGHTER_ZELDA_STATUS_SPECIAL_HI_WORK_INT_FRAME);
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_2_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into()
+    }
+    let move_time = fighter.get_param_int("param_special_hi", "move_time"); //time spent moving
+    if move_time <= fighter.get_int(*FIGHTER_ZELDA_STATUS_SPECIAL_HI_WORK_INT_FRAME) {
+        fighter.change_status(FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3.into(), true.into())
+    } else {
+        if fighter.is_cat_flag(Cat1::SpecialAny) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            fighter.change_status(FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3.into(), true.into())
+        }
+        if StatusModule::is_changing(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            } else {
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            }
+        } else {
+            weirdness(fighter);
+            if StatusModule::is_situation_changed(fighter.module_accessor) {
+                if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                } else {
+                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                }
+            }
+        }
+    }
+    //subsatus
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ZELDA_STATUS_SPECIAL_HI_WORK_INT_FRAME);
+        let frame: i32 = fighter.get_int(*FIGHTER_ZELDA_STATUS_SPECIAL_HI_WORK_INT_FRAME);
+        let move_xlu: i32 = fighter.get_param_int("param_special_hi", "move_xlu"); //time ignoring platforms
+        let cliff_check_frame = fighter.get_param_int("param_special_hi", "move_cliff_check");
+        if frame == move_xlu {
+            GroundModule::set_passable_check(fighter.module_accessor, false);
+        }
+        if frame == cliff_check_frame {
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
+        }
+        if frame < 2 {fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_HI_FLAG_CHECK_GROUND);}
+    }
+    0.into()
+}
+
+//excludes a lot of vanilla stuff that adds wall bounce, forced straight when angled down and landing... etc makes wallride opff unnecessary
+unsafe extern "C" fn weirdness(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !fighter.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_HI_FLAG_CHECK_GROUND) {
+        return 0.into()
+    }
+    if GroundModule::is_attach_cliff(fighter.module_accessor) {
+        return 0.into()
+    }
+    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+        if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+            GroundModule::set_attach_ground(fighter.module_accessor, true);
+        }
+    }
+    0.into()
+}
 
 unsafe extern "C" fn special_hi_2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3 {
@@ -131,6 +191,7 @@ unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2, special_hi_2_main);
     agent.status(End, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2, special_hi_2_end);
     agent.status(Main, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, special_hi_3_main);
 }

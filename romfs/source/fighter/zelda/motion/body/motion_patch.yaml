@@ -9,7 +9,6 @@ fall_aerial:
 fall_special:
   blend_frames: 5
 landing_fall_special:
-  blend_frames: 2
   extra:
     cancel_frame: 21
 guard_off:

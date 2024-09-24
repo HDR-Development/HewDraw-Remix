@@ -84,7 +84,7 @@ unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
         let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_win01_01"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, sound as i32, 1.2, 0);
         let sound = SoundModule::play_se(boma, Hash40::new("vc_zelda_special_s01"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(boma, sound as i32, 1.1, 0);
+        SoundModule::set_se_vol(boma, sound as i32, 0.9, 0);
     }
 }
 
@@ -322,7 +322,47 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            PLAY_SE(agent, Hash40::new("se_zelda_appear02"));
+        } else {
+            PLAY_SE(agent, Hash40::new("se_zelda_special_h02"));
+        }
+    }
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
+}
+
+unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        if !agent.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_FAIL) {
+            ArticleModule::shoot_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+            notify_event_msc_cmd!(agent, Hash40::new_raw(0x20cbc92683), FIGHTER_LOG_DATA_INT_SHOOT_NUM);
+            agent.off_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
+        }
+    }
+}
+
+unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        if agent.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_FAIL) {
+            SoundModule::play_se(boma, Hash40::new("se_system_beep"), true, false, false, false, app::enSEType(0));
+        } else {
+            let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_special_l09"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, sound as i32, 1.6, 0);
+        }
+    }
 }
 
 unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
@@ -425,9 +465,15 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
+    agent.acmd("sound_specialhi", sound_specialhi, Priority::Low);
+    agent.acmd("sound_specialairhi", sound_specialhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("sound_speciallwattack", sound_speciallwattack, Priority::Low);
+    agent.acmd("sound_specialairlwattack", sound_speciallwattack, Priority::Low);
 
     agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
     agent.acmd("effect_landingfallspecial", effect_landingfallspecial, Priority::Low);

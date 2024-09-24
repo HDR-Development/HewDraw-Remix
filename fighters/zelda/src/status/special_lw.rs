@@ -15,10 +15,7 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
         fighter.sub_change_motion_by_situation(Hash40::new("special_lw_attack").into(), Hash40::new("special_air_lw_attack").into(), false.into());
         if !phantom_boma.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
             fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_FAIL);
-        } else {
-            ArticleModule::shoot_exist(fighter.module_accessor, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), FIGHTER_LOG_DATA_INT_SHOOT_NUM);
-        }
+        }//fail if attack disabled
     } else {
         fighter.sub_change_motion_by_situation(Hash40::new("special_lw").into(), Hash40::new("special_air_lw").into(), false.into());
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM, false, -1);
@@ -54,26 +51,25 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
             //attack input
             if fighter.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE) {
                 fighter.sub_change_motion_by_situation(Hash40::new("special_lw_attack").into(), Hash40::new("special_air_lw_attack").into(), false.into());
-                ArticleModule::shoot_exist(fighter.module_accessor, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
-                notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), FIGHTER_LOG_DATA_INT_SHOOT_NUM);
-            } else {
+            } else if frame >= 20.0{
                 //cancel handling
                 if !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD)
                 && MotionModule::frame(fighter.module_accessor) < 58.0 //before full build
-                && (fighter.is_button_on(Buttons::Guard) || fighter.is_button_trigger(Buttons::Special)) {//cancel input 
+                && (fighter.is_button_on(Buttons::Guard)) {//cancel input 
                     LinkModule::send_event_nodes(fighter.module_accessor, *LINK_NO_ARTICLE, Hash40::new("fighter_zelda_remove_constraint"), 0); //disconnects phantom from her?
-                    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
+                    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
                     VarModule::on_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD); //should pause building
-                    //shield cancel to stop building phantom, 30f of lag
+                    //shield cancel to stop building phantom, 25f of lag
                 }
             }
         } else if !phantom_boma.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK) 
         && !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD) 
-        && frame < 58.0 {
+        && frame < 58.0 
+        && frame >= 20.0{
             //if phantom is not building or attacking
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 40.0, true, true, false);
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
             VarModule::on_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD);
-            //if phantom dies before full charge put her in consistent 30f of lag + frames until you can attack
+            //if phantom dies before full charge put her in consistent 25f of lag + frames until 20
         }
     }
     0.into()
