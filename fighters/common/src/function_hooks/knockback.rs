@@ -1,4 +1,5 @@
 use super::*;
+use energy::Vec3;
 use utils::ext::*;
 use std::arch::asm;
 
@@ -110,6 +111,12 @@ unsafe fn calculate_knockback(ctx: &skyline::hooks::InlineCtx) {
     let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
     let id = *(ptr.add(0x24) as *const u32);
     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
+
+    if let Some((defender, attacker)) = IS_CALCULATING {
+        // stores the attacker's team color here, since this runs before the spark effects are called
+        // process_knockback occurs after the sparks, so we can't put it there
+        set_attacker_team_color(attacker);
+    }
 }
 
 #[skyline::hook(offset = 0x403950, inline)]
@@ -121,6 +128,33 @@ unsafe fn process_knockback(ctx: &skyline::hooks::InlineCtx) {
             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref() as *const f32);
         }
     }
+}
+
+pub unsafe extern "C" fn set_attacker_team_color(attacker:u32) {
+    let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
+    if attacker_boma.is_fighter() {
+        LAST_ATTACK_TEAM_COLOR = FighterUtil::get_team_color(attacker_boma) as i32;
+        // println!("team_color set to {} for team {}", LAST_ATTACK_TEAM_COLOR, FighterUtil::get_team_color(attacker_boma) as i32);
+    }
+    else if attacker_boma.is_weapon() {
+        let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let owner = util::get_battle_object_from_id(owner_id);
+        let mut owner_boma = &mut *(*owner).module_accessor;
+        // weapons can sometimes be owned by another weapon, so we make an additional check
+        if owner_boma.is_weapon() {
+            let owner_id = WorkModule::get_int(owner_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let owner = util::get_battle_object_from_id(owner_id);
+            owner_boma = &mut *(*owner).module_accessor;
+        }
+        // ensure that we 100% have a fighter now, since if we dont the fn below will cause a crash
+        if !owner_boma.is_fighter(){ return };
+        LAST_ATTACK_TEAM_COLOR = FighterUtil::get_team_color(owner_boma) as i32;
+        // println!("team_color set to {} for team {}", LAST_ATTACK_TEAM_COLOR, FighterUtil::get_team_color(owner_boma) as i32);
+    }
+
+    // optional replacement logic for cycling teams, good for testing colors
+    // LAST_ATTACK_TEAM_COLOR += 1;
+    // if LAST_ATTACK_TEAM_COLOR == 9 { LAST_ATTACK_TEAM_COLOR = 0 };
 }
 
 pub unsafe extern "C" fn process_daisydaikon_knockback(defender: u32, attacker: u32) {
@@ -150,17 +184,18 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
         // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
+
     // let elapsed = std::time::Instant::now().duration_since(before);
     // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
     // let before = std::time::Instant::now();
-    if !is_valid_finishing_hit(knockback_info, defender_boma) { 
+    if !is_valid_finishing_hit(knockback_info, defender_boma, attacker_boma) { 
         // let elapsed = std::time::Instant::now().duration_since(before);
         // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
     // let elapsed = std::time::Instant::now().duration_since(before);
     // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
-    call_finishing_hit_effects(defender_boma);
+    call_finishing_hit_effects(defender_boma, attacker_boma);
 }
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
@@ -180,43 +215,6 @@ unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObject
 
     if attacker_boma.is_fighter() && util::is_no_finishing_hit(attacker_boma) { 
         // println!("kill screen incoming attack is_no_finishing_hit"); 
-        return false; 
-    }
-
-    // special case for training mode
-    if util::is_training_mode() {
-        if VarModule::is_flag(defender_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
-        }
-
-        let mut is_training_toggle = false;
-        if attacker_boma.is_weapon() {
-            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let owner = util::get_battle_object_from_id(owner_id);
-            let owner_boma = &mut *(*owner).module_accessor;
-            if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-                return true;
-            }
-        } else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
-        }
-        // println!("kill screen training mode is not enabled"); 
-        return false;
-    }
-
-    if is_teammate_alive(defender_boma) { 
-        // println!("kill screen teammate stock exists"); 
-        return false; 
-    }
-
-    // ensure kill calculations only occur when the defender is on their last stock
-    let defender_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-    let fighter_info = app::lua_bind::FighterManager::get_fighter_information(
-        crate::singletons::FighterManager(), 
-        app::FighterEntryID(defender_entry_id)
-    );
-    if app::lua_bind::FighterInformation::stock_count(fighter_info) != 1 { 
-        // println!("kill screen defender has more stocks"); 
         return false; 
     }
 
@@ -250,10 +248,50 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
     return false;
 }
 
-const NUM_ANGLE_CHECK: i32 = 10;
+pub unsafe extern "C" fn is_final_killing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
+    // special case for training mode
+    if util::is_training_mode() {
+        if VarModule::is_flag(defender_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+            return true;
+        }
+
+        let mut is_training_toggle = false;
+        if attacker_boma.is_weapon() {
+            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let owner = util::get_battle_object_from_id(owner_id);
+            let owner_boma = &mut *(*owner).module_accessor;
+            if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+                return true;
+            }
+        } else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+            return true;
+        }
+        // println!("kill screen training mode is not enabled"); 
+        return false;
+    }
+
+    if is_teammate_alive(defender_boma) { 
+        // println!("kill screen teammate stock exists"); 
+        return false; 
+    }
+
+    // check if the defender is on their last stock
+    let defender_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let fighter_info = app::lua_bind::FighterManager::get_fighter_information(
+        crate::singletons::FighterManager(), 
+        app::FighterEntryID(defender_entry_id)
+    );
+    if app::lua_bind::FighterInformation::stock_count(fighter_info) != 1 {
+        return false;
+    }
+
+    return true;
+}
+
+const NUM_ANGLE_CHECK: i32 = 12;
 const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
 
-unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender_boma: &mut BattleObjectModuleAccessor) -> bool {
+unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     let knockback = *knockback_info;
     let initial_speed_x = *knockback_info.add(4);
     let initial_speed_y = *knockback_info.add(5);
@@ -440,8 +478,9 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
             x += 1;
         }
         context = context_ref;
+        let false_allowed_num = if is_final_killing_hit(defender_boma, attacker_boma) { NUM_FALSE_ANGLES_ALLOWED }  else { 0 };
         if idx != -1 && idx != NUM_ANGLE_CHECK && !does_angle_kill {false_angle_num += 1;}
-        if false_angle_num > NUM_FALSE_ANGLES_ALLOWED { 
+        if false_angle_num > false_allowed_num { 
             // println!("false angles: at least {}", false_angle_num);
             return false; 
         }
@@ -453,15 +492,26 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 
-pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor) {
-    let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
-    EffectModule::set_billboard(defender_boma, handle as u32, true);
-    EffectModule::set_disable_render_offset_last(defender_boma);
-    VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
-    VarModule::set_int(defender_boma.object(), COUNTER, 20);
-    SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
-    VarModule::set_int(defender_boma.object(), COUNTER, 20);
-    SlowModule::set_whole(defender_boma, 8, 25);
-    let common = util::get_fighter_common_from_accessor(defender_boma);
-    EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
+pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) {    
+    if is_final_killing_hit(defender_boma, attacker_boma) {
+        let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
+        EffectModule::set_billboard(defender_boma, handle as u32, true);
+        EffectModule::set_disable_render_offset_last(defender_boma);
+        VarModule::set_int(defender_boma.object(), HANDLE, handle as i32);
+        VarModule::set_int(defender_boma.object(), COUNTER, 20);
+        SoundModule::play_se(defender_boma, Hash40::new("se_common_boss_down"), false, false, false, false, enSEType(0));
+        SlowModule::set_whole(defender_boma, 8, 25);
+        let common = util::get_fighter_common_from_accessor(defender_boma);
+        EFFECT_GLOBAL_BACK_GROUND(common.lua_state_agent);
+    } else {
+        let mut pos = Vector3f::new(
+            PostureModule::pos_x(defender_boma),
+            PostureModule::pos_y(defender_boma) + 10.0,     
+            PostureModule::pos_z(defender_boma) + 10.0
+        );
+        let handle = EffectModule::req(defender_boma, Hash40::new("sys_dead_ripple"), &pos, &Vector3f::new(0.0, 0.0, 0.0), 0.75, 0, 0, false, 0);
+        EffectModule::set_billboard(defender_boma, handle as u32, true);
+        EffectModule::set_disable_render_offset_last(defender_boma);
+        EffectModule::set_rate_last(defender_boma, 2.5);
+    }
 }

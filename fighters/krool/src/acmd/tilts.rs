@@ -12,7 +12,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -64,7 +64,7 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -116,7 +116,7 @@ unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -166,7 +166,7 @@ unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_krool_attackhard_s02"));
-        if VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) == 0 {
+        if VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) == 0 {
             PLAY_SEQUENCE(agent, Hash40::new("seq_krool_rnd_attack"));
         }
     }
@@ -195,7 +195,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -215,7 +215,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -262,7 +262,7 @@ unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) == 0 {
+        if VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) == 0 {
             PLAY_SEQUENCE(agent, Hash40::new("seq_krool_rnd_attack"));
         }
     }
@@ -292,7 +292,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -311,7 +311,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) as f32;
+        let charge = VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) as f32;
         let damage_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_damage_mul");
         let hitlag_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_hitlag_mul");
         let shieldstun_mul = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_charge.charge_shield_stun_mul");
@@ -362,7 +362,7 @@ unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, vars::krool::status::CURRENT_CHARGE) == 0 {
+        if VarModule::get_int(agent.battle_object, vars::krool::status::ATTACK_CHARGE) == 0 {
             PLAY_SEQUENCE(agent, Hash40::new("seq_krool_rnd_attack"));
         }
     }

@@ -6,11 +6,28 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 20.0/25.0);
 }
 
-unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.2);
+        JostleModule::set_status(boma, false);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_FOX_GENERATE_ARTICLE_ILLUSION, false, -1);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_FOX_GENERATE_ARTICLE_ILLUSION, false, -1);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
+}
+
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 1.2);
+    if is_excute(agent) {
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
@@ -18,11 +35,7 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
-    frame(lua_state, 16.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -72,12 +85,10 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 4.0, 4.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 360, 100, 80, 0, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 24, 24, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 360, 100, 80, 0, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 24, 24, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         AttackModule::set_add_reaction_frame_revised(boma, 0, -5.0, false);
-        // AttackModule::set_add_reaction_frame_revised(boma, 1, 2.0, false);
         ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
     }
     frame(lua_state, 1.66);
@@ -106,29 +117,12 @@ unsafe extern "C" fn sound_speciallwstart(agent: &mut L2CAgentBase) {
 	}
 }
 
-unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 4.0, 4.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 10, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 24, 45, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        // AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
-        ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        // Reflection begins on same frame shine hitbox is active
-        ATK_SET_SHIELD_SETOFF_MUL_arg3(agent, 0, 1, 0.54);
-    }
-    frame(lua_state, 1.66);
-    if is_excute(agent){
-        AttackModule::clear_all(boma);
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
     agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);
 
+    agent.acmd("gamespecials", game_specials, Priority::Low);
+    agent.acmd("gamespecialairs", game_specials, Priority::Low);
     agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
     agent.acmd("game_specialhihold", game_specialhihold, Priority::Low);
@@ -140,7 +134,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
     agent.acmd("sound_speciallwstart", sound_speciallwstart, Priority::Low);
-    agent.acmd("game_specialairlwstart", game_specialairlwstart, Priority::Low);
+    agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
     agent.acmd("effect_specialairlwstart", effect_speciallwstart, Priority::Low);
     agent.acmd("sound_specialairlwstart", sound_speciallwstart, Priority::Low);
 }

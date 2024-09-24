@@ -70,10 +70,10 @@ pub unsafe extern "C" fn attack_command_4_main_loop(fighter: &mut L2CFighterComm
         fighter.set_int(button_strength, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     }
     if motion_frame < 5.0 && fighter.is_button_on(Buttons::SpecialAll | Buttons::Catch | Buttons::AppealAll)
-    && (MeterModule::level(fighter.battle_object) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL)) {
+    && (MeterModule::level(fighter.battle_object) >= 2 || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL)) {
         fighter.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
         fighter.set_int(*FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED)
     }
 
     0.into()

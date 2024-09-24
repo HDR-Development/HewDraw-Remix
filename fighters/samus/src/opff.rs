@@ -25,8 +25,8 @@ unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, st
         return;
     }
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 31.0 {
-        if !VarModule::is_flag(boma.object(), vars::samus::instance::SHINESPARK_READY) {
-            VarModule::on_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
+        if !VarModule::is_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK) {
+            VarModule::on_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK);
             gimmick_flash(boma);
         }
     }
@@ -41,8 +41,8 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
-            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK);
+            VarModule::off_flag(boma.object(), vars::samus::instance::ATTACK_DASH_SHINESPARK);
     }
 }
 

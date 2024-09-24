@@ -7,7 +7,7 @@ pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
 // FIGHTER_STATUS_KIND_SPECIAL_N
 
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_PLAYED_FX) {
+    if !VarModule::is_flag(fighter.battle_object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_PLAYED_SFX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             let prev_escape = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE;
             WorkModule::set_flag(fighter.module_accessor, prev_escape, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_PREV_ESCAPE);
@@ -52,8 +52,8 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, vars::rockman::status::CHARGE_SHOT_KEEP_CHARGE);
-    let charge_frame = VarModule::get_int(fighter.battle_object, vars::rockman::instance::CHARGE_SHOT_FRAME);
+    VarModule::on_flag(fighter.battle_object, vars::rockman::status::SPECIAL_N_CHARGE_SHOT_KEEP_CHARGE);
+    let charge_frame = VarModule::get_int(fighter.battle_object, vars::rockman::instance::SPECIAL_N_CHARGE_SHOT_FRAME);
     let top = charge_frame as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let bottom = CHARGE_SHOT_MAX_FRAME as f32 - CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let ratio = top / bottom;

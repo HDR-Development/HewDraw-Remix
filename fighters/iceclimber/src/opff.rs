@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+// unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     // if fighter.kind() != *FIGHTER_KIND_NANA 
     // || [*FIGHTER_STATUS_KIND_DEMO, 
     //     *FIGHTER_STATUS_KIND_ENTRY, 
@@ -51,7 +51,7 @@ unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut Battl
     //     EffectModule::set_rgb(boma, effect, 1.0, 0.85, 0.85);
     //     VarModule::set_int(boma.object(), vars::iceclimbers::instance::SEPARATED_EFFECT, effect as i32);
     // }
-}
+// }
 
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
@@ -205,7 +205,6 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     nana_death_effect(fighter, boma, id, status_kind, frame);
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
-    nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
     attacklw4_lr(fighter, boma, id);
     fastfall_specials(fighter);
 }

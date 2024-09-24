@@ -253,8 +253,8 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8.0, -0.2, 0, 155, 90, 0.95, true);
-        LAST_EFFECT_SET_RATE(agent, 0.95);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 6.0, -0.2, 0, 155, 90, 0.95, true);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
         LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
         EFFECT_FOLLOW(agent, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 6.7, -2.0, 0, 0, 90, 0, 0.4, true);
         LAST_EFFECT_SET_RATE(agent, 2.0);
@@ -308,12 +308,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1.3, 7.6, 0.0, -55, -120, -62, 0.86, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(agent, 2.4);
-        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.8, 0.1);
-    }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 1.1, 13.7, 2.0, 0, 0, 0, 1.31, 0, 0, 0, 0, 0, 0, true, 0.7);

@@ -46,7 +46,7 @@ unsafe extern "C" fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2
     MeterModule::reset(fighter.battle_object);
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
-    VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY)(fighter)
 }
@@ -59,7 +59,7 @@ unsafe extern "C" fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
     MeterModule::add(fighter.battle_object, (MeterModule::meter_per_level(fighter.battle_object)));
-    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_DEAD)(fighter)
 }
 
@@ -71,7 +71,7 @@ unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
     MeterModule::add(fighter.battle_object, (MeterModule::meter_per_level(fighter.battle_object)));
-    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
 
@@ -100,7 +100,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     MeterModule::set_meter_cap(fighter.object(), 2);
     MeterModule::set_meter_per_level(fighter.object(), 100.0);
     MeterModule::add(fighter.battle_object, (MeterModule::meter_per_level(fighter.battle_object)));
-    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
 }
 
 pub fn install(agent: &mut Agent) {

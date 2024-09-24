@@ -42,7 +42,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
+        VarModule::on_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -62,8 +62,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        if VarModule::is_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
-            let damage = VarModule::get_float(agent.battle_object, vars::krool::instance::STORED_DAMAGE) / 5.0;
+        if VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
+            let damage = VarModule::get_float(agent.battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE) / 5.0;
             ATTACK(agent, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 105, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
         }
         else {
@@ -72,13 +72,13 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
+        if !VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
             AttackModule::clear_all(boma);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
+        if VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
             AttackModule::clear_all(boma);
         }
     }
@@ -100,7 +100,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        let charged = VarModule::is_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
+        let charged = VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED);
         if charged {
             EFFECT_FOLLOW(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 12, 6, 0, 0, 0, 0.9, false);
         }
@@ -140,7 +140,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_krool_smash_h01"));
-        if VarModule::is_flag(agent.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
+        if VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
             PLAY_SE(agent, Hash40::new("se_krool_special_l02"));
             PLAY_SE(agent, Hash40::new("se_krool_special_l05"));
         }

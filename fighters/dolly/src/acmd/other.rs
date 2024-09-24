@@ -137,8 +137,8 @@ unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
-            VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::ENABLE_TARGET_COMBO_1) {
+            VarModule::off_flag(agent.battle_object, vars::shotos::instance::ENABLE_TARGET_COMBO_1);
             FT_MOTION_RATE(agent, 0.35);
         }
     }

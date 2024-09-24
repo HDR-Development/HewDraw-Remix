@@ -1,0 +1,295 @@
+name: Notify on File Change
+
+on:
+  push:
+    branches:
+      - pre-release
+  pull_request:
+    branches:
+      - pre-release
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Check for changed files
+      id: changes
+      run: |
+        # Example FILES_TO_WATCH
+
+        # FILES_TO_WATCH=(
+        #   "README.md"
+        #   "fighters/fox/src/opff.rs"
+        #   "fighters/plizardon/src/acmd/specials.rs:48-54"
+        #   "fighters/captain/src/acmd/specials.rs:5-10,45-53"
+        #   "fighters/common/src/"
+        #   "**/hdr.xml"
+        #   "**/vl.prcxml:4-10"
+        #   "**/falco/**"
+        #   "fighters/**/acmd/**"
+        #   "**.webp"
+        # )
+
+        FILES_TO_WATCH=(
+          "fighters/common/src/"
+          "romfs/source/fighter/"
+          "romfs/source/param/"
+
+          "fighters/fox/src/opff.rs"
+          "fighters/falco/src/opff.rs"
+          "fighters/wolf/src/opff.rs"
+
+          "fighters/plizardon/src/acmd/specials.rs:48-54"
+          "fighters/ganon/src/acmd/specials.rs:358-394"
+          "fighters/metaknight/src/acmd/specials.rs:189-214,265-290"
+          "fighters/wario/src/acmd/specials.rs:92-95"
+          "fighters/littlemac/src/acmd/specials.rs:360-365"
+          "fighters/mewtwo/src/acmd/specials.rs:86-100"
+          "fighters/richter/src/acmd/specials.rs:249-257"
+          "fighters/simon/src/acmd/specials.rs:80-84"
+          
+          "**/status/**"
+          
+          "fighters/lucas/src/acmd/aerials.rs"
+          "fighters/mewtwo/src/acmd/aerials.rs"
+          "fighters/ness/src/acmd/aerials.rs"
+          "fighters/peach/src/acmd/aerials.rs"
+          "fighters/trail/src/acmd/aerials.rs"
+
+          "utils/src/modules/input.rs"
+
+          "fighters/kirby/src/acmd/throws.rs"
+          "fighters/kirby/src/opff.rs"
+
+          "dynamic/src/se.rs"
+          "fighters/**/acmd/ground.rs"
+          "fighters/**/acmd/other.rs"
+
+          "fighters/marth/src/acmd/aerials.rs"
+          "fighters/marth/src/acmd/smashes.rs"
+          "fighters/lucina/src/acmd/aerials.rs"
+          "fighters/lucina/src/acmd/smashes.rs"
+          "fighters/wolf/src/acmd/aerials.rs"
+          "fighters/wolf/src/acmd/smashes.rs"
+
+          "fighters/captain/src/acmd/specials.rs:166-192,235-251,301-304,339-342"
+          "fighters/cloud/src/acmd/specials.rs:293-563"
+          "fighters/dedede/src/acmd/specials.rs:567-570"
+          "fighters/demon/src/acmd/specials.rs:369-375,481-486,579-582,636-639,697-700"
+
+          "fighters/buddy/src/opff.rs:447-471"
+          "fighters/cloud/src/opff.rs:17-24"
+          "fighters/demon/src/opff.rs:102-115,193-219"
+          "fighters/diddy/src/opff.rs"
+          "fighters/donkey/src/opff.rs:82-87"
+          "fighters/gamewatch/src/opff.rs:39-70"
+          "fighters/ike/src/opff.rs:6-18"
+          "fighters/kamui/src/opff.rs:39-46"
+          "fighters/koopajr/src/opff.rs:41-49"
+          "fighters/littemac/src/opff.rs:65-72"
+          "fighters/lucas/src/opff.rs"
+          "fighters/lucina/src/opff.rs:87-94"
+          "fighters/luigi/src/opff.rs:43-49"
+          "fighters/marth/src/opff.rs:55-62"
+          "fighters/metaknight/src/opff.rs:100-107"
+          "fighters/mewtwo/src/opff.rs:6-78"
+          "fighters/ness/src/opff.rs"
+          "fighters/packun/src/opff.rs:6-32"
+          "fighters/pacman/src/opff.rs:29-34"
+          "fighters/palutena/src/opff.rs:36-142"
+          "fighters/reflet/src/opff.rs"
+          "fighters/ridley/src/opff.rs:25-46"
+          "fighters/roy/src/opff.rs:60-67"
+          "fighters/sheik/src/opff.rs:38-45,65-93"
+          "fighters/shulk/src/opff.rs:7-19"
+          "fighters/sonic/src/opff.rs:14-38"
+          "fighters/zelda/src/opff.rs:6-40"
+
+          "fighters/brave/src/opff.rs:5-25"
+          "fighters/donkey/src/opff.rs:18-27"
+          "fighters/edge/src/opff.rs:20-30"
+          "fighters/master/src/opff.rs:12-22"
+          "fighters/packun/src/opff.rs:150-160"
+          "fighters/pzenigame/src/opff.rs:6-23"
+          "fighters/robot/src/opff.rs:50-58"
+          "fighters/samus/src/opff.rs:65-73"
+          "fighters/samusd/src/opff.rs:20-28"
+          "fighters/wiifit/src/opff.rs:22-30"
+        )
+        
+        > $GITHUB_WORKSPACE/matched_files.txt
+        
+        CHANGED_FILES=$(git diff --unified=0 --name-only --diff-filter=ACMDR HEAD^ HEAD)
+
+        for file in "${FILES_TO_WATCH[@]}"; do
+          IFS=':' read -r filepath ranges <<< "$file"
+
+          # Check if the file path contains a wildcard pattern
+          if [[ "$filepath" == *"*"* ]]; then
+            echo "Checking wildcard pattern: $filepath"
+            MATCHING_FILES=$(find . -path "$filepath")
+            for match in $MATCHING_FILES; do
+              if echo "$CHANGED_FILES" | grep -q "^${match#./}$"; then
+                # If line ranges are specified, process the file accordingly
+                if [ -n "$ranges" ]; then
+                  echo "Checking file $match with line ranges $ranges"
+
+                  IFS=',' read -r -a range_array <<< "$ranges"
+                  git diff --unified=0 HEAD^ HEAD -- "$match" > diff_output.txt
+
+                  for range in "${range_array[@]}"; do
+                    IFS='-' read -r start end <<< "$range"
+                    awk -v start="$start" -v end="$end" -v file="$match" '
+                    /^@@/ { match($0, /\+([0-9]+)/, arr); hunk_start = arr[1]; }
+                    /^[+-]/ && !/^@@/ {
+                      if ($0 ~ /^\+/) {
+                        if (hunk_start >= start && (end == "" || hunk_start <= end)) {
+                          print file ":" hunk_start
+                        }
+                        hunk_start++
+                      }
+                    }
+                    ' diff_output.txt >> $GITHUB_WORKSPACE/matched_files.txt
+                  done
+
+                  if grep -q "$match" $GITHUB_WORKSPACE/matched_files.txt; then
+                    echo "Changes detected in $match within line ranges."
+                  else
+                    echo "No changes in specified line ranges for $match."
+                  fi
+
+                else
+                  # No ranges, watch the entire file
+                  echo "File $match has changed."
+                  echo "$match" >> $GITHUB_WORKSPACE/matched_files.txt
+                fi
+              fi
+            done
+          else
+            # Check if the file path is a directory
+            if [[ "$filepath" == */ ]]; then
+              filepath=${filepath%/}
+              echo "Checking directory: $filepath"
+              DIRECTORY_FILES=$(find "$filepath" -type f)
+              for dir_file in $DIRECTORY_FILES; do
+                if echo "$CHANGED_FILES" | grep -q "^$dir_file$"; then
+                  echo "$dir_file" >> $GITHUB_WORKSPACE/matched_files.txt
+                fi
+              done
+            else
+              # Individual file or file with ranges
+              if [ -n "$ranges" ]; then
+                echo "Checking file $filepath with line ranges $ranges"
+                IFS=',' read -r -a range_array <<< "$ranges"
+                git diff --unified=0 HEAD^ HEAD -- "$filepath" > diff_output.txt
+                for range in "${range_array[@]}"; do
+                  IFS='-' read -r start end <<< "$range"
+                  awk -v start="$start" -v end="$end" -v file="$filepath" '
+                  /^@@/ { match($0, /\+([0-9]+)/, arr); hunk_start = arr[1]; }
+                  /^[+-]/ && !/^@@/ {
+                    if ($0 ~ /^\+/) {
+                      if (hunk_start >= start && (end == "" || hunk_start <= end)) {
+                        print file ":" hunk_start
+                      }
+                      hunk_start++
+                    }
+                  }
+                  ' diff_output.txt >> $GITHUB_WORKSPACE/matched_files.txt
+                done
+                if grep -q "$filepath" $GITHUB_WORKSPACE/matched_files.txt; then
+                  echo "Changes detected in $filepath within line ranges."
+                else
+                  echo "No changes in specified line ranges for $filepath."
+                fi
+              else
+                # Check the entire file
+                if echo "$CHANGED_FILES" | grep -q "^$filepath$"; then
+                  echo "File $filepath has changed."
+                  echo "$filepath" >> $GITHUB_WORKSPACE/matched_files.txt
+                else
+                  echo "No changes detected in file: $filepath"
+                fi
+              fi
+            fi
+          fi
+        done
+
+        if [ ! -s $GITHUB_WORKSPACE/matched_files.txt ]; then
+          echo "SEND_NOTIFICATION=false" >> $GITHUB_ENV
+        else
+          echo "SEND_NOTIFICATION=true" >> $GITHUB_ENV
+          echo "CHANGED_FILES_FILE=$GITHUB_WORKSPACE/matched_files.txt" >> $GITHUB_ENV
+
+          # Determine the email subject and link based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "EMAIL_SUBJECT=File Changes PRd in pre-release Branch" >> $GITHUB_ENV
+            echo "LINK=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+            echo "LINK_TYPE=Pull Request" >> $GITHUB_ENV
+          else
+            echo "EMAIL_SUBJECT=Files Changed in pre-release Branch" >> $GITHUB_ENV
+            COMMIT_SHA=${{ github.sha }}
+            COMMIT_URL=https://github.com/${{ github.repository }}/commit/${COMMIT_SHA}
+            echo "LINK=$COMMIT_URL" >> $GITHUB_ENV
+            echo "LINK_TYPE=Commit" >> $GITHUB_ENV
+          fi
+        fi
+
+    - name: Send email notification if files are changed
+      if: env.SEND_NOTIFICATION == 'true'
+      run: |
+        python -m pip install yagmail
+        python -c "
+        import os
+        import yagmail
+        
+        # Set up Gmail SMTP
+        yag = yagmail.SMTP(
+            user=os.getenv('GMAIL_USER'),
+            password=os.getenv('GMAIL_PASSWORD')
+        )
+        
+        # Prepare the email
+        subject = os.getenv('EMAIL_SUBJECT')
+        body = 'The following files were changed:\\n\\n'
+
+        base_url = 'https://github.com/${{ github.repository }}/tree/pre-release/'
+
+        # Read the changed files from the file
+        with open(os.getenv('CHANGED_FILES_FILE'), 'r') as f:
+          for line in f:
+              line = line.strip()
+              if ':' in line:  # File with a line number
+                  filepath, lineno = line.split(':')
+                  body += f'{base_url}{filepath}#L{lineno}\\n'
+              else:  # File without a specific line number
+                  body += f'{base_url}{line}\\n'
+
+        link = os.getenv('LINK')
+        link_type = os.getenv('LINK_TYPE')
+        if link_type == 'Pull Request':
+            body += f'\\nLink to Pull Request: {link}\\n'
+        else:
+            body += f'\\nLink to Commit: {link}\\n'
+        
+        recipient = 'jamesdobrien97@gmail.com'
+        
+        # Send the email
+        yag.send(to=recipient, subject=subject, contents=body)
+        "
+      env:
+        GMAIL_USER: ${{ secrets.GMAIL_USER }}
+        GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        CHANGED_FILES: ${{ env.CHANGED_FILES_FILE }}
+        LINK: ${{ env.LINK }}
+        LINK_TYPE: ${{ env.LINK_TYPE }}

@@ -75,7 +75,7 @@ unsafe fn dreamland_express(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_12"))
     && (17.0..19.0).contains(&fighter.motion_frame())
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-        VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::IS_DREAMLAND_EXPRESS);
+        VarModule::on_flag(fighter.battle_object, vars::littlemac::instance::ATTACK_13_DREAMLAND_EXPRESS);
     }
 }
 

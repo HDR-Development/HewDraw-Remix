@@ -124,6 +124,27 @@
 		"fighter/bayonetta/cmn": [
 			"fighter/bayonetta/param/hdr.xml"
 		],
+		"fighter/gamewatch/cmn": [
+			"fighter/gamewatch/param/hdr.xml"
+		],
+		"fighter/gaogaen/cmn": [
+			"fighter/gaogaen/param/hdr.xml"
+		],
+		"fighter/jack/cmn": [
+			"fighter/jack/param/hdr.xml"
+		],
+		"fighter/kirby/cmn": [
+			"fighter/kirby/param/hdr.xml"
+		],
+		"fighter/koopa/cmn": [
+			"fighter/koopa/param/hdr.xml"
+		],
+		"fighter/sonic/cmn": [
+			"fighter/sonic/param/hdr.xml"
+		],
+		"fighter/wiifit/cmn": [
+			"fighter/wiifit/param/hdr.xml"
+		],
 		"fighter/inkling/cmn": [
 			"fighter/inkling/param/hdr.xml"
 		]

@@ -31,7 +31,7 @@ unsafe extern "C" fn effect_speciallw1(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let eff_handle = EffectModule::req_follow(boma, Hash40::new("sys_windwave"), Hash40::new("top"), &Vector3f::new(0.0, 0.0, 10.0), &Vector3f::zero(), 0.4, false, 0, 0, 0, 0, 0, false, false);
         EffectModule::set_rate(boma, eff_handle as u32, 0.4);
-        VarModule::set_int64(agent.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER, eff_handle as u64);
+        VarModule::set_int64(agent.battle_object, vars::miifighter::instance::SPECIAL_LW1_QUAKE_EFFECT_HANDLE, eff_handle as u64);
         EFFECT_FOLLOW(agent, Hash40::new("miifighter_sidekick_flash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.6, true);
         EFFECT_FOLLOW(agent, Hash40::new("miifighter_sidekick_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, true);
         LAST_EFFECT_SET_RATE(agent, 0.4);
