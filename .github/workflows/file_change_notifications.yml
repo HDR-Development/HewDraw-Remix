@@ -73,8 +73,8 @@ jobs:
           "fighters/kirby/src/opff.rs"
 
           "dynamic/src/se.rs"
-          "fighters/**/acmd/ground.rs"
-          "fighters/**/acmd/other.rs"
+          "**/acmd/ground.rs"
+          "**/acmd/other.rs"
 
           "fighters/marth/src/acmd/aerials.rs"
           "fighters/marth/src/acmd/smashes.rs"
