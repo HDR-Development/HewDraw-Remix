@@ -14,7 +14,7 @@ guard_off:
     cancel_frame: 12
 attack_11:
   extra:
-    cancel_frame: 22
+    cancel_frame: 24
 attack_12:
   extra:
     cancel_frame: 26
