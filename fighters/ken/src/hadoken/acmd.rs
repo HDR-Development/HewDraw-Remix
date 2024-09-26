@@ -23,6 +23,7 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             KineticModule::mul_speed(boma, &Vector3f{x: 2.3 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(35, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
             agent.set_int(35, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR)) {
@@ -30,6 +31,7 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
             GroundModule::set_rhombus_offset(boma, &Vector2f{x: -4.0 * lr, y: 3.0}); // fix the hado falling through the stage
             KineticModule::reflect_speed(boma, &Vector3f{x: 0.42262, y: lr * 0.90631, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL); // send the hado at a -45degree angle
             let life = agent.get_int(*WEAPON_INSTANCE_WORK_ID_INT_LIFE) * 3/4; // reduce hado lifetime
+            agent.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
             agent.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR);
         }
@@ -95,14 +97,16 @@ unsafe extern "C" fn game_movespwms(agent: &mut L2CAgentBase) {
         AttackModule::set_no_finish_camera(boma, 1, true, false);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(boma, &Vector3f{x: 0.533 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            agent.set_int(150, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            KineticModule::mul_speed(boma, &Vector3f{x: 0.5 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(160, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
+            agent.set_int(160, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR)) {
             let lr = PostureModule::lr(owner_module_accessor);
             GroundModule::set_rhombus_offset(boma, &Vector2f{x: -4.0 * lr, y: 3.0}); // fix the hado falling through the stage
             KineticModule::reflect_speed(boma, &Vector3f{x: 0.42262, y: lr * 0.90631, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL); // send the hado at a -45degree angle
             let life = agent.get_int(*WEAPON_INSTANCE_WORK_ID_INT_LIFE) * 3/4; // reduce hado lifetime
+            agent.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
             agent.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR);
         }

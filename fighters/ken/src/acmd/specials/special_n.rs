@@ -15,7 +15,8 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
         }
     }
     if !agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED)
+    && agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
         FT_MOTION_RATE(agent, 3.0);
         frame(lua_state, 14.0);
         if is_excute(agent) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
@@ -67,7 +68,8 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
         }
     }
     if !agent.is_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED)
-    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
+    && VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) 
+    && agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
         FT_MOTION_RATE(agent, 3.0);
         frame(lua_state, 14.0);
         if is_excute(agent) {
