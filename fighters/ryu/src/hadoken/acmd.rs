@@ -28,8 +28,8 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
         GroundModule::set_rhombus_offset(boma, &Vector2f{x: 0.0, y: 0.0});
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(boma, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            agent.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            KineticModule::mul_speed(boma, &Vector3f{x: 2.3 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(35, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
     }
 
@@ -95,8 +95,8 @@ unsafe extern "C" fn game_movespwms(agent: &mut L2CAgentBase) {
         GroundModule::set_rhombus_offset(boma, &Vector2f{x: 0.0, y: 0.0});
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(boma, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            agent.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            KineticModule::mul_speed(boma, &Vector3f{x: 0.533 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(150, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
     }
 
