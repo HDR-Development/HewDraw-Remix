@@ -22,8 +22,8 @@ unsafe extern "C" fn game_movewms(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("top"), 9.0, 60, 16, 0, 38, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(boma, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            agent.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            KineticModule::mul_speed(boma, &Vector3f{x: 2.3 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(35, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR)) {
             let lr = PostureModule::lr(owner_module_accessor);
@@ -95,8 +95,8 @@ unsafe extern "C" fn game_movespwms(agent: &mut L2CAgentBase) {
         AttackModule::set_no_finish_camera(boma, 1, true, false);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             let speed = KineticModule::get_sum_speed3f(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            KineticModule::mul_speed(boma, &Vector3f{x: 2.016 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            agent.set_int(41, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            KineticModule::mul_speed(boma, &Vector3f{x: 0.533 / speed.x.abs(), y: 0.0, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            agent.set_int(150, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::SPECIAL_N_HADOKEN_AIR)) {
             let lr = PostureModule::lr(owner_module_accessor);
