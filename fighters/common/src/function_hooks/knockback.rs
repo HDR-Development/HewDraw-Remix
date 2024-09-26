@@ -124,7 +124,7 @@ unsafe fn process_knockback(ctx: &skyline::hooks::InlineCtx) {
     if let Some((defender, attacker)) = IS_CALCULATING {
         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
         if (*boma).battle_object_id == defender {
-            process_daisydaikon_knockback(defender, attacker);
+            process_item_on_collision(defender, attacker);
             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref() as *const f32);
         }
     }
@@ -157,18 +157,55 @@ pub unsafe extern "C" fn set_attacker_team_color(attacker:u32) {
     // if LAST_ATTACK_TEAM_COLOR == 9 { LAST_ATTACK_TEAM_COLOR = 0 };
 }
 
-pub unsafe extern "C" fn process_daisydaikon_knockback(defender: u32, attacker: u32) {
+pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32) {
     let defender_boma = &mut *(*util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
     if defender_boma.is_item() {
-        if (defender_boma.kind() == *ITEM_KIND_DAISYDAIKON) {
+        if defender_boma.kind() == *ITEM_KIND_DAISYDAIKON {
             if attacker_boma.is_fighter() {
-                let attacker_team_no = (TeamModule::hit_team_no(attacker_boma) as i32);
+                let attacker_team_no = TeamModule::hit_team_no(attacker_boma) as i32;
                 TeamModule::set_team(defender_boma, attacker_team_no, false);
             } else {
                 HitModule::set_xlu_frame_global(defender_boma, 15, 0);
             }
             StatusModule::change_status_force(defender_boma, *ITEM_STATUS_KIND_THROW, true);
+        }
+        if defender_boma.kind() == *ITEM_KIND_BARREL {
+            if attacker_boma.is_fighter() {
+                let attacker_team_no = TeamModule::hit_team_no(attacker_boma) as i32;
+                let owner_id = attacker_boma.battle_object_id;
+                //println!("swapping barrel team to {} and owner id to {}", attacker_team_no, owner_id);
+                TeamModule::set_team_owner_id(defender_boma, owner_id);
+                TeamModule::set_hit_team(defender_boma, attacker_team_no);
+            }
+            else if attacker_boma.is_weapon() {
+                let mut owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let owner = util::get_battle_object_from_id(owner_id);
+                let mut owner_boma = &mut *(*owner).module_accessor;
+                if owner_boma.is_weapon() {
+                    owner_id = WorkModule::get_int(owner_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                    let owner = util::get_battle_object_from_id(owner_id);
+                    owner_boma = &mut *(*owner).module_accessor;
+                }
+                // failsafe in case this somehow isn't a fighter
+                if !owner_boma.is_fighter(){ return };
+                let attacker_team_no = TeamModule::hit_team_no(owner_boma) as i32;
+                //println!("swapping barrel team to {} and owner id to {}", attacker_team_no, owner_id);
+                TeamModule::set_team_owner_id(defender_boma, owner_id);
+                TeamModule::set_hit_team(defender_boma, attacker_team_no);
+            }
+            else if attacker_boma.is_item() {
+                let owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32;
+                //println!("owner id: {}", owner_id);
+                let owner_boma = &mut *(*utils::util::get_battle_object_from_id(owner_id));
+                // failsafe in case this somehow isn't a fighter
+                if !owner_boma.is_fighter(){ return };
+                let attacker_team_no = TeamModule::hit_team_no(owner_boma) as i32;
+                //println!("swapping barrel team to {} and owner id to {}", attacker_team_no, owner_id);
+                TeamModule::set_team_owner_id(defender_boma, owner_id);
+                TeamModule::set_hit_team(defender_boma, attacker_team_no);
+            }
+            println!();
         }
     }
 }
