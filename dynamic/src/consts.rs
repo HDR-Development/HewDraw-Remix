@@ -756,6 +756,7 @@ pub mod vars {
             pub const SPECIAL_N_PICKEL_MINING_TIMER: i32 = 0x11F4;
             pub const SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE: i32 = 0x11F5;
             pub const SPECIAL_N_LITTLEMAC_GRAVITY_END: i32 = 0x11F6;
+            pub const SPECIAL_N_LITTLEMAC_CLEAR_CRIT: i32 = 0x11F7;
             pub use super::super::mario::status::FIREBRAND;
             pub use super::super::luigi::status::SPECIAL_N_THUNDERHAND;
             pub use super::super::mariod::status::SPECIAL_N_CHILL_PILL;
