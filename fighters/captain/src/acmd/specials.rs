@@ -262,8 +262,13 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        AttackModule::clear_all(boma);
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            KineticModule::add_speed(boma, &Vector3f::new(-1.5, 2.5, 0.0));
+            KineticModule::add_speed(boma, &Vector3f::new(-0.75, 2.5, 0.0));
+            let air_accel_x_mul = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0);
+            let air_accel_x_add = WorkModule::get_param_float(boma, hash40("air_accel_x_add"), 0);
+            sv_kinetic_energy!(controller_set_accel_x_mul, agent, air_accel_x_mul * 0.75);
+            sv_kinetic_energy!(controller_set_accel_x_add, agent, air_accel_x_add * 0.75);
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
         }
         else {
@@ -273,7 +278,6 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
             sv_kinetic_energy!(controller_set_accel_x_mul, agent, air_accel_x_mul * 0.5);
             sv_kinetic_energy!(controller_set_accel_x_add, agent, air_accel_x_add * 0.5);
         }
-        AttackModule::clear_all(boma);
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
