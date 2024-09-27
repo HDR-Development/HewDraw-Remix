@@ -26,7 +26,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_warp_spd_add_">9</float>
+      <float hash="special_hi_warp_spd_add_">11</float>
       <float hash="special_hi_warp_xmax_">0.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
