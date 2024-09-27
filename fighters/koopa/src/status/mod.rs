@@ -5,7 +5,7 @@ use globals::*;
 mod special_n;
 mod special_s;
 mod special_hi;
-mod attack_s4_hold;
+mod attack_s4;
 mod fall_special;
  
 // AGENT INIT AND CALLBACKS
@@ -30,6 +30,6 @@ pub fn install(agent: &mut Agent) {
     special_n::install(agent);
     special_s::install(agent);
     special_hi::install(agent);
-    attack_s4_hold::install(agent);
+    attack_s4::install(agent);
     fall_special::install(agent);
 }
