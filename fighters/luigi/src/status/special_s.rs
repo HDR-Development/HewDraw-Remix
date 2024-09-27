@@ -4,6 +4,9 @@ use super::*;
 
 unsafe extern "C" fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CHARGE_MELEE_NO_RANDOM) {
+        println!("special_s");
+        println!("remaining: {}", VarModule::get_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_REMAINING_COUNT));
+        println!();
         let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED) {
             VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
             true
