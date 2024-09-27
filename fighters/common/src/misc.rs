@@ -149,7 +149,6 @@ unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: 
         if arg2 != -1 {
             original!()(boma, arg2, arg3);
         }
-        println!();
     } else {
         original!()(boma, arg2, arg3);
     }

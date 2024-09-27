@@ -87,7 +87,7 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
     if !fighter.is_pad_flag(PadFlag::SpecialTrigger) {
         if !fighter.is_pad_flag(PadFlag::AttackTrigger) {
             if *PACMAN_SPECIAL_N_RANK_MAX <= charge_rank {
-                let max_hold_count = dbg!(WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT));
+                let max_hold_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);
                 if max_hold_count == 1 {
                     effect!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, Hash40::new("pacman_fruit_max"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true, EFFECT_SUB_ATTRIBUTE_NONE, 0, 0);
                     app::FighterUtil::flash_eye_info(fighter.module_accessor);

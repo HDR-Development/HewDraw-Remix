@@ -205,7 +205,6 @@ pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32)
                 TeamModule::set_team_owner_id(defender_boma, owner_id);
                 TeamModule::set_hit_team(defender_boma, attacker_team_no);
             }
-            println!();
         }
     }
 }
