@@ -22,6 +22,11 @@ unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_Run_Sub)]
 unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
+    let mut turn_run_hip_offset = Vector3f::zero();
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_TURN_RUN {
+        ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut turn_run_hip_offset);
+    }
+
     let value: f32 = if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DASH || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_TURN {
         WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_START_FRAME)
     } else {
@@ -30,11 +35,23 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("run"), value, 1.0, false, 0.0, false, false);
 
+    let mut hip_offset = Vector3f::zero();
+    ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
     let mut hip_translate = Vector3f::zero();
     MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
     VarModule::set_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X, hip_translate.z);
     let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
-    hip_translate.z += dash_hip_offset_x - hip_translate.z;
+
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_TURN_RUN
+    && turn_run_hip_offset.x.signum() == hip_offset.x.signum() {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::WEIRD_ASS_TURN_RUN_ANIMATION);
+        hip_translate.z -= dash_hip_offset_x - hip_translate.z;
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::WEIRD_ASS_TURN_RUN_ANIMATION);
+        hip_translate.z += dash_hip_offset_x - hip_translate.z;
+    }
+    
     ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
 
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
@@ -127,9 +144,16 @@ unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
     let mut hip_translate = Vector3f::zero();
     MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
-    hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::WEIRD_ASS_TURN_RUN_ANIMATION) {
+        hip_translate.z -= (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    }
+    else {
+        hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    }
+
     ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
-    
+
     fighter.sub_shift_status_main(L2CValue::Ptr(status_runbrake_main as *const () as _))
 }
 
@@ -166,12 +190,25 @@ unsafe fn bind_address_call_status_turnrunbrake(fighter: &mut L2CFighterCommon, 
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnRunBrake)]
 unsafe fn status_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut turn_run_hip_offset = Vector3f::zero();
+    ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut turn_run_hip_offset);
+
     fighter.status_TurnRunBrake_Sub();
+
     let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
     let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
     let mut hip_translate = Vector3f::zero();
     MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
-    hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    let mut hip_offset = Vector3f::zero();
+    ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
+
+    if turn_run_hip_offset.x.signum() != hip_offset.x.signum() {
+        hip_translate.z += (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    }
+    else {
+        hip_translate.z -= (dash_hip_offset_x - run_hip_offset_x) * 0.5;
+    }
+
     ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
     
     fighter.main_shift(status_turnrunbrake_main)

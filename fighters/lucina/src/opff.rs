@@ -95,9 +95,6 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
 
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     //Lucina frame 6
     let mut target_frame = 6.0;
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {

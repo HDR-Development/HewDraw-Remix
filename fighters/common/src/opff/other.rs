@@ -275,12 +275,20 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
         let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
-        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::WEIRD_ASS_TURN_RUN_ANIMATION) {
+            hip_translate.z -= dash_hip_offset_x - run_hip_offset_x;
+        }
+        else {
+            hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        }
+        
         ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
     }
     else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_RUN)
     && StatusModule::is_changing(fighter.module_accessor)
-    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) {
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN_BRAKE) {
         ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
     }
     
@@ -294,7 +302,8 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     }
     else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_TURN_RUN)
     && StatusModule::is_changing(fighter.module_accessor)
-    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN_BRAKE) {
         ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
     }
 }

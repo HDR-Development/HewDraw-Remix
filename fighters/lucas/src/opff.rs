@@ -340,9 +340,6 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
 }
 
 unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
