@@ -208,7 +208,7 @@
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">0.98</float>
       <float hash="shield_radius">8.4</float>
-      <int hash="attack_combo_max">4</int>
+      <int hash="attack_combo_max">3</int>
       <float hash="combo_attack_13_end">25</float>
       <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.85</float>
