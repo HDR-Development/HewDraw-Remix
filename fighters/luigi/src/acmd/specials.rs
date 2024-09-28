@@ -151,7 +151,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 2, 15, 5, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-        if VarModule::get_int(agent.object(), vars::luigi::instance::SPECIAL_S_REMAINING_COUNT) <= 0 {
+        if VarModule::get_int(agent.object(), vars::luigi::instance::SPECIAL_S_REMAINING_COUNT) <= 1 {
             LAST_EFFECT_SET_SCALE_W(agent, 0.8, 0.8, 0.8);
             LAST_EFFECT_SET_COLOR(agent, 0.0, 1.0, 0.0);
         }
