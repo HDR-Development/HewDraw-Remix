@@ -154,6 +154,7 @@ unsafe extern "C" fn effect_appealhi2(agent: &mut L2CAgentBase) {
                 EFFECT(agent, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
                 EFFECT_FOLLOW(agent, Hash40::new("sys_grass_landing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
             }
+            EFFECT_FOLLOW(agent, Hash40::new("packun_appeal_left"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, false);
         }
     }
 }
