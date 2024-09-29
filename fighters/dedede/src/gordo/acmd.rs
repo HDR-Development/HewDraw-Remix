@@ -15,7 +15,7 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
         /* Reduces number of bounces by 1 per recatch */
         if WorkModule::is_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_GORDO_GET){
             let bound_count = WorkModule::get_int(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT);
-            let recatch_num = VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::RECATCH_COUNTER);
+            let recatch_num = VarModule::get_int(owner_module_accessor.object(), vars::dedede::instance::SPECIAL_S_RECATCH_COUNT);
             WorkModule::set_int(boma, bound_count - recatch_num, *WEAPON_DEDEDE_GORDO_STATUS_WORK_INT_BOUND_COUNT);
         }
     }

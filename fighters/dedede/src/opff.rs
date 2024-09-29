@@ -164,7 +164,7 @@ unsafe fn jet_hammer_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
         ]) {
 
             let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
-            let charge = VarModule::get_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES) as f32;
+            let charge = VarModule::get_int(fighter.battle_object, vars::dedede::instance::SPECIAL_LW_CHARGE_FRAME) as f32;
             let max_charge_frames = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("hold_max_f"));
             let charge_start_frame = 6.0;
             let charge_end_frame = 11.0;
@@ -195,7 +195,7 @@ unsafe fn jet_hammer_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
 
             let motion_rate = (charge_end_frame - charge_start_frame)/(max_charge_frames * 2.0);
             MotionModule::set_rate(fighter.module_accessor, motion_rate);
-            VarModule::set_int(fighter.battle_object, vars::dedede::instance::JET_CHARGE_FRAMES, charge as i32 + 1);
+            VarModule::set_int(fighter.battle_object, vars::dedede::instance::SPECIAL_LW_CHARGE_FRAME, charge as i32 + 1);
             
         } 
         else{

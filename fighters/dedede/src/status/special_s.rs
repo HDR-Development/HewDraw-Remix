@@ -126,7 +126,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
         //Prevents Turnarounds/B-reversing while in the recatch
         if MotionModule::frame(fighter.module_accessor) < 4.0{
             ControlModule::reset_main_stick(fighter.module_accessor); 
-            let old_char_lr = VarModule::get_float(fighter.battle_object, vars::dedede::instance::PRE_GORDOTOSS_LR);
+            let old_char_lr = VarModule::get_float(fighter.battle_object, vars::dedede::instance::SPECIAL_S_TOSS_LR);
             let new_char_lr = PostureModule::lr(fighter.module_accessor);
 
             if old_char_lr != new_char_lr{
@@ -161,7 +161,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::dedede::instance::DISABLE_WADDLE_DASH);
+    VarModule::off_flag(fighter.battle_object, vars::dedede::instance::SPECIAL_S_GORDO_DASH_DISABLE);
 
     return 0.into()
 }

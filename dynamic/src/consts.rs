@@ -432,7 +432,7 @@ pub mod vars {
         }
     }
 
-    pub mod dedede{
+    pub mod dedede {
         pub mod instance{
             //flags
             pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
