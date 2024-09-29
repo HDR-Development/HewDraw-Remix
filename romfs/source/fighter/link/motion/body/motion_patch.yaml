@@ -66,6 +66,9 @@ attack_s3_s:
 appeal_hi_r:
   extra:
     cancel_frame: 90
+attack_air_n:
+  extra:
+    cancel_frame: 38
 attack_air_b:
   extra:
     cancel_frame: 30

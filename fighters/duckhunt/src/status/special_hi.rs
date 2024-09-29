@@ -51,6 +51,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             return 1.into();
         }
     }
+    fighter.sub_air_check_dive();
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         let status = if fighter.is_motion(Hash40::new("special_hi")) { FIGHTER_STATUS_KIND_LANDING.into() } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into() };
@@ -215,6 +216,7 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    fighter.sub_air_check_dive();
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
