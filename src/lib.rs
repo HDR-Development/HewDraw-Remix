@@ -16,6 +16,7 @@ extern crate skyline;
 extern crate skyline_web;
 extern crate smash;
 extern crate smash_arc;
+extern crate ninput;
 
 mod fighters;
 
@@ -33,6 +34,9 @@ mod online;
 
 #[cfg(feature = "main_nro")]
 mod matchup;
+
+#[cfg(feature = "main_nro")]
+mod player_port;
 
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
@@ -385,6 +389,7 @@ pub extern "C" fn main() {
         lua::install();
         online::install();
         matchup::install();
+        player_port::install();
         skyline::patching::Patch::in_text(0x14f99cc).nop().unwrap();
         skyline::patching::Patch::in_text(0x1509fd4).nop().unwrap();
         skyline::install_hooks!(

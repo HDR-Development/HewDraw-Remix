@@ -118,17 +118,17 @@ fn key(entry: u64) -> u64 {
 unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
     let obj = *ctx.registers[23].x.as_ref() as *mut u64;
     let obj = *(obj as *mut *mut u64).add(1);
-    println!("Entering change_random_early");
+    // println!("Entering change_random_early");
     let ignore_random = ninput::any::is_down_any(ninput::Buttons::ZL | ninput::Buttons::ZR);
     if ignore_random {
-        println!("Ignoring the melee random selection!");
+        // println!("Ignoring the melee random selection!");
     }
 
     let main_chara = *obj.add(0x200 / 0x8);
     let sub_chara = *obj.add(0x208 / 0x8);
 
     if !ignore_random && (is_random(main_chara) || is_random(sub_chara)) {
-        println!("The random pane was selected");
+        // println!("The random pane was selected");
 
         let chara_hash = REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(smash::hash40("ui_chara_random"));
 
@@ -139,10 +139,10 @@ unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
             chara_hash | key(sub_chara)
         };
 
-        println!("Main character: {:#x}", LAST_FIGHTER_FOUND);
-        println!("Sub character: {:#x}", LAST_FIGHTER2_FOUND);
+        // println!("Main character: {:#x}", LAST_FIGHTER_FOUND);
+        // println!("Sub character: {:#x}", LAST_FIGHTER2_FOUND);
         
-        println!("Setting x24 to {:#x}", *obj.add(0x200 / 0x8));
+        // println!("Setting x24 to {:#x}", *obj.add(0x200 / 0x8));
         *ctx.registers[24].x.as_mut() = LAST_FIGHTER_FOUND;
         WAS_RANDOM_SELECTION = true;
     } else {
@@ -154,9 +154,9 @@ unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
 // only runs on random pane selected
 #[skyline::hook(offset = 0x1A0D520)]
 unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
-    println!("Entering decide_fighter");
+    // println!("Entering decide_fighter");
     if !WAS_RANDOM_SELECTION {
-        println!("decide_fighter called when the selection was not random");
+        // println!("decide_fighter called when the selection was not random");
     }
 
     let p_main_chara = (arg1 as *mut u64).add(2);
@@ -166,10 +166,10 @@ unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
         *p_main_chara = LAST_FIGHTER_FOUND;
         *p_sub_chara = LAST_FIGHTER2_FOUND;
     }
-    println!("Decided on fighter: {:#x}", *p_main_chara);
+    // println!("Decided on fighter: {:#x}", *p_main_chara);
 
     WAS_RANDOM_SELECTION = false;
-    println!("Cleared random selection flag");
+    // println!("Cleared random selection flag");
 
     call_original!(arg1, arg2, arg3, arg4)
 }
@@ -178,12 +178,11 @@ unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
 unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     let src_obj = *(src as *mut *mut u64).add(1);
     let src_obj = src_obj.add(0x1F0 / 8);
-    println!("Entering copy_fighter_info2");
-
+    // println!("Entering copy_fighter_info2")
     if WAS_RANDOM_SELECTION {
         *(src_obj as *mut u32).add(8) = rand::thread_rng().gen::<u32>() % 8;
 
-        println!("Randomly selected slot to be {}", *(src_obj as *mut u32).add(8));
+        // println!("Randomly selected slot to be {}", *(src_obj as *mut u32).add(8));
     }
     call_original!(dest, src);
 }
