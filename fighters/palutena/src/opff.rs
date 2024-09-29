@@ -113,10 +113,12 @@ pub unsafe fn palutena_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFight
     if boma.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2) {
         let init_speed_x = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X);
         let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
+        if !GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_ID_NONE as u32) {
             if !VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
                 VarModule::on_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE);
             }
+        }
+        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
             if init_speed_y > 0.0 {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);

@@ -1031,6 +1031,7 @@ pub mod vars {
             // flags
             pub const TELEPORT_CANCEL: i32 = 0x0100;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+            pub const GROUNDED_TELEPORT: i32 = 0x0102;
         }
     }
 
