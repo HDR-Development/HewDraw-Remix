@@ -55,7 +55,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
                 //cancel handling
                 if !VarModule::is_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD)
                 && MotionModule::frame(fighter.module_accessor) < 58.0 //before full build
-                && (fighter.is_button_on(Buttons::Guard)) {//cancel input 
+                && (fighter.is_button_on(Buttons::Guard | Buttons::Special)) {//cancel input 
                     LinkModule::send_event_nodes(fighter.module_accessor, *LINK_NO_ARTICLE, Hash40::new("fighter_zelda_remove_constraint"), 0); //disconnects phantom from her?
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
                     VarModule::on_flag(phantom_battle_object, vars::zelda::status::PHANTOM_NO_BUILD); //should pause building

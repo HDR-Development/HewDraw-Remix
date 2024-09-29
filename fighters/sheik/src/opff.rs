@@ -71,6 +71,7 @@ pub unsafe fn vanish_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
                 VarModule::on_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE);
             }
+        }
         if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
             if init_speed_y > 0.0 {
                 fighter.clear_lua_stack();

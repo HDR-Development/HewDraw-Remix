@@ -357,7 +357,8 @@ unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         if agent.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_FAIL) {
-            SoundModule::play_se(boma, Hash40::new("se_system_beep"), true, false, false, false, app::enSEType(0));
+            let sound = SoundModule::play_se(boma, Hash40::new("se_system_beep"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, sound as i32, 0.8, 0);
         } else {
             let sound = SoundModule::play_se(boma, Hash40::new("se_zelda_special_l09"), true, false, false, false, app::enSEType(0));
             SoundModule::set_se_vol(boma, sound as i32, 1.6, 0);
