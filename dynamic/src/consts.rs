@@ -435,16 +435,21 @@ pub mod vars {
     pub mod dedede{
         pub mod instance{
             //flags
-            pub const SPECIAL_S_GORDO_DASH_ENABLE: i32 = 0x0100;
-            pub const SPECIAL_S_GORDO_DASH_SUCCESS: i32 = 0x0101;
-            pub const SPECIAL_S_ANGLED: i32 = 0x0102;
-            pub const SPECIAL_S_GORDO_REMOVED: i32 = 0x0103;
+            pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
+            pub const SPECIAL_LW_CONTINUE_JET_SPIN: i32 = 0x0101;
+            pub const SPECIAL_S_GORDO_DASH_DISABLE: i32 = 0x0102;
 
             //ints
-            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0104;
+            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0103;
+            pub const SPECIAL_LW_CHARGE_FRAME: i32 = 0x0104;
 
             //floats
             pub const SPECIAL_N_STICK_Y: i32 = 0x0105;
+            pub const SPECIAL_S_TOSS_LR: i32 = 0x0106;
+        }
+        pub mod status{
+            //flags
+            pub const SPECIAL_LW_CONTINUE_SPIN: i32 = 0x1100;
         }
     }
 
