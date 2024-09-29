@@ -342,7 +342,6 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 pub fn install() {
     skyline::install_hooks!(
         correct_hook,
-        get_ground_correct_kind_air_trans_hook,
-        can_entry_cliff_hook
+        get_ground_correct_kind_air_trans_hook
     );
 }
