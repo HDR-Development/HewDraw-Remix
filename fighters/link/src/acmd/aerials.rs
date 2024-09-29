@@ -7,7 +7,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 7.0, 4.0);
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        DamageModule::add_damage(boma, 1.0, 0);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 7.0);
@@ -29,7 +28,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 36.0);
     if is_excute(agent) {
-        DamageModule::add_damage(boma, 1.0, 0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
