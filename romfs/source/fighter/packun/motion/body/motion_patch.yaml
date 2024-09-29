@@ -31,6 +31,18 @@ attack_lw3:
   extra:
     cancel_frame: 29
 attack_hi4:
+special_lw_end:
+  extra:
+    cancel_frame: 19
+special_lw_fall_end:
+  extra:
+    cancel_frame: 24
+special_air_lw_end:
+  extra:
+    cancel_frame: 19
+special_air_lw_fall_end:
+  extra:
+    cancel_frame: 24
 appeal_s_l:
   extra:
     cancel_frame: 17
