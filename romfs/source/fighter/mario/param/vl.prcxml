@@ -23,7 +23,7 @@
       <float hash="special_s_attack_spd_y">0.8</float>
       <float hash="special_s_attack_acl_y">0.029</float>
       <float hash="special_s_attack_max_y">0.9</float>
-      <float hash="special_s_start_mul_spd_x">1.5</float>
+      <float hash="special_s_start_mul_spd_x">3.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
