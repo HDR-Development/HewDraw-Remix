@@ -23,6 +23,7 @@
     <struct index="0">
       <float hash="min_stick_y">0.3</float>
       <float hash="max_rush_degree">10</float>
+      <int hash="illusion_end_air_stop_y_frame">10</int>
       <float hash="illusion_end_speed_x">2.3</float>
       <float hash="illusion_end_air_speed_x">2.2</float>
     </struct>
@@ -32,6 +33,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="fire_start_x_mul">0.5</float>
       <int hash="fire_stop_y_frame">14</int>
       <float hash="fire_accel_y">0.0175</float>
       <float hash="fire_rot_start_frame">25.0</float>
