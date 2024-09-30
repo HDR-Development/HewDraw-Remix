@@ -11,6 +11,7 @@ pub mod status;
 
 mod spikeball;
 mod poisonbreath;
+mod firebreath;
 
 use smash::{
     lib::{
@@ -53,4 +54,7 @@ pub fn install() {
 
     spikeball::install();
     poisonbreath::install();
+    firebreath::install();
+
+    smashline::clone_weapon("mario", *WEAPON_KIND_MARIO_FIREBALL, "packun", "firebreath", false);
 }

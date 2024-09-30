@@ -211,7 +211,8 @@ unsafe fn check_fighter_edge_slipoffs(boma: &mut BattleObjectModuleAccessor) -> 
     if fighter_kind == *FIGHTER_KIND_DEDEDE 
     && [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK
     ].contains(&status_kind){
             return true.into();
     }
@@ -342,7 +343,6 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 pub fn install() {
     skyline::install_hooks!(
         correct_hook,
-        get_ground_correct_kind_air_trans_hook,
-        can_entry_cliff_hook
+        get_ground_correct_kind_air_trans_hook
     );
 }

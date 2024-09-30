@@ -294,6 +294,8 @@ pub mod vars {
 
             pub const SHOULD_HITFALL: i32 = 0x1006;
 
+            pub const NO_POCKET: i32 = 0x1052;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -430,19 +432,24 @@ pub mod vars {
         }
     }
 
-    pub mod dedede{
+    pub mod dedede {
         pub mod instance{
             //flags
-            pub const SPECIAL_S_GORDO_DASH_ENABLE: i32 = 0x0100;
-            pub const SPECIAL_S_GORDO_DASH_SUCCESS: i32 = 0x0101;
-            pub const SPECIAL_S_ANGLED: i32 = 0x0102;
-            pub const SPECIAL_S_GORDO_REMOVED: i32 = 0x0103;
+            pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
+            pub const SPECIAL_LW_CONTINUE_JET_SPIN: i32 = 0x0101;
+            pub const SPECIAL_S_GORDO_DASH_DISABLE: i32 = 0x0102;
 
             //ints
-            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0104;
+            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0103;
+            pub const SPECIAL_LW_CHARGE_FRAME: i32 = 0x0104;
 
             //floats
             pub const SPECIAL_N_STICK_Y: i32 = 0x0105;
+            pub const SPECIAL_S_TOSS_LR: i32 = 0x0106;
+        }
+        pub mod status{
+            //flags
+            pub const SPECIAL_LW_CONTINUE_SPIN: i32 = 0x1100;
         }
     }
 
@@ -1109,11 +1116,12 @@ pub mod vars {
             // flags
             pub const STANCE_ENABLE_CHANGE_SPEED: i32 = 0x0100;
             pub const APPEAL_STANCE_INIT: i32 = 0x0101;
-            pub const PTOOIE_ENABLE_EXPLODE: i32 = 0x0102;
-            pub const APPEAL_STANCE_REVERSE: i32 = 0x0103;
+            pub const APPEAL_STANCE_REVERSE: i32 = 0x0102;
 
             // floats
             pub const SPECIAL_N_PTOOIE_SCALE: i32 = 0x01BF;
+            pub const FIRE_POS_X: i32 = 0x0101;
+            pub const FIRE_POS_Y: i32 = 0x0102;
 
             // ints
             pub const CURRENT_STANCE: i32 = 0x01BE; // 0 = Normal, 1 = Putrid, 2 = Prickly
@@ -1125,6 +1133,13 @@ pub mod vars {
             pub const APPEAL_CLOUD_COVER: i32 = 0x1101;
             pub const POISON_BREATH_ENABLE_PRICKLY_BITE: i32 = 0x1102;
             pub const POISON_BREATH_BURST: i32 = 0x1103;
+        }
+    }
+
+    pub mod packun_spikeball {
+        pub mod instance {
+            // flags
+            pub const ENABLE_EXPLODE: i32 = 0x0100;
         }
     }
 
@@ -1762,6 +1777,10 @@ pub mod statuses {
         pub const FLOAT: i32 = 0x1E9;
     }
 
+    pub mod packun_firebreath {
+        pub const REGULAR: i32 = 0x0;
+    }
+
     pub mod palutena {
         pub const SPECIAL_N_R: i32 = 0x1E9;
         pub const SPECIAL_N_B: i32 = 0x1EA;
@@ -1803,6 +1822,10 @@ pub mod statuses {
 }
 
 pub mod articles {
+    pub mod packun {
+        pub const FIREBREATH: i32 = 0x4;
+    }
+    
     pub mod purin {
         pub const DISARMING_VOICE: i32 = 0x2;
     }
