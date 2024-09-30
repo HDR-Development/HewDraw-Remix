@@ -60,7 +60,7 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
             set_accel,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -0.015 // hardcoded value for now
+            -0.008 // hardcoded value for now
         );
         sv_kinetic_energy!(
             set_stable_speed,
@@ -117,7 +117,20 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
                 false,
                 false
             );
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                0.0,
+                speed_y,
+                0.0,
+                0.0,
+                0.0
+            );
             return 0.into();
         }
     }

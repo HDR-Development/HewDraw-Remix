@@ -201,6 +201,27 @@ unsafe fn cross_chop_flip_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn jab_tilt_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() {
+        return;
+    }
+
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK 
+    && fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        if boma.is_cat_flag(Cat1::AttackS3) && !boma.is_cat_flag(Cat1::AttackS4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackHi3) && !boma.is_cat_flag(Cat1::AttackHi4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackLw3) && !boma.is_cat_flag(Cat1::AttackLw4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+        }
+    }
+
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -259,6 +280,7 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         lariat_ledge_slipoff(fighter);
         rotate_revenge_uthrow(boma);
         fighter.check_hitfall();
+        jab_tilt_cancels(fighter, boma);
         fastfall_specials(fighter);
     }
 }
