@@ -54,6 +54,9 @@ extern "Rust" {
 
     #[link_name = "hdr__game_modes__signal_new_game"]
     fn _signal_new_game();
+
+    #[link_name = "hdr__game_modes__get_melee_mode"]
+    fn _get_melee_mode() -> i32;
 }
 
 pub fn is_custom_mode() -> bool {
@@ -71,5 +74,11 @@ pub fn get_custom_mode() -> Option<HashSet<CustomMode>> {
 pub fn signal_new_game() {
     unsafe {
         _signal_new_game()
+    }
+}
+
+pub fn get_melee_mode() -> i32 {
+    unsafe {
+        _get_melee_mode()
     }
 }

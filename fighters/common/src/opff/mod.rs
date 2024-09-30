@@ -16,6 +16,7 @@ pub mod gimmick;
 pub mod floats;
 pub mod other;
 pub mod fe;
+pub mod pocket;
 
 use other::*;
 

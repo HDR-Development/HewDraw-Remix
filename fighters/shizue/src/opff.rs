@@ -207,10 +207,16 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fair_scale(fighter);
 }
 
+// symbol-based call for villager/isabelle's common pocket opff
+extern "Rust" {
+    fn ac_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
+        ac_common(fighter);
     }
 }
 

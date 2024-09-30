@@ -168,6 +168,13 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn fire_pos_reset(boma: &mut BattleObjectModuleAccessor) {
+    if !ArticleModule::is_exist(boma, articles::packun::FIREBREATH) {
+        VarModule::set_float(boma.object(), vars::packun::instance::FIRE_POS_X, 0.0);
+        VarModule::set_float(boma.object(), vars::packun::instance::FIRE_POS_Y, 0.0);
+    }
+}
+
 // Allows hold input to transition to rapid jab if in Putrid stance, and handles changed animations per stance
 unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion(Hash40::new("attack_13")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
@@ -198,6 +205,20 @@ unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
             !boma.is_button_on(Buttons::AppealHi) {
                 VarModule::off_flag(boma.object(), vars::packun::instance::APPEAL_STANCE_REVERSE);
             }
+    }
+}
+
+unsafe fn game_start_switch(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
+        if fighter.is_button_on(Buttons::AppealSL) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
+        }
+        else if fighter.is_button_on(Buttons::AppealSR) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 2);
+        }
+        else if fighter.is_button_on(Buttons::AppealLw) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 1);
+        }
     }
 }
 
@@ -266,6 +287,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
     sspecial_cancel(boma, status_kind, situation_kind);
     ptooie_scale(boma);
+    fire_pos_reset(boma);
     stance_head(fighter);
     check_reset(fighter);
     check_apply_speeds(fighter);
@@ -273,6 +295,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
     reverse_switch(boma);
     monch(fighter);
+    game_start_switch(fighter);
 }
 
 pub extern "C" fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

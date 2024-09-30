@@ -5,6 +5,7 @@ utils::import!(common::djc::attack_air_main_status);
 
 mod attack_air;
 mod special_hi;
+mod fall_special;
 
 // Re-enables the ability to use upB when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -23,4 +24,5 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     special_hi::install(agent);
+    fall_special::install(agent);
 }
