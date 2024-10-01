@@ -482,14 +482,6 @@ chrom_special_air_n_end2:
 chrom_special_air_n_end_max:
   extra:
     cancel_frame: 38
-daisy_special_n:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-daisy_special_air_n:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
 diddy_special_n_cancel:
   game_script: game_diddyspecialncancel
   flags:
@@ -961,6 +953,13 @@ pit_special_n_fire_hi:
 pit_special_air_n_fire_hi:
   extra:
     cancel_frame: 30
+purin_special_n:
+  flags:
+    turn: false
+  extra:
+    xlu_start: 1
+    xlu_end: 28
+    cancel_frame: 210
 reflet_special_n_start:
   flags:
     move: false
