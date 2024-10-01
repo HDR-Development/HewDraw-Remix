@@ -10,21 +10,11 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
         CHECK_VALID_FINAL_START_CAMERA(agent, 0, 0, 20, 0, 0, 0);
         SLOW_OPPONENT(agent, 10.0, 70.0);
     }
-    if !boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
-        frame(lua_state, 5.0);
-        if is_excute(agent) {
-            FT_SET_FINAL_FEAR_FACE(agent, 40);
-            REQ_FINAL_START_CAMERA(agent, Hash40::new("d04final.nuanmb"), true);
-            FT_START_CUTIN(agent);
-        }
-    } else {
-        if is_excute(agent) {
-            FT_START_CUTIN(agent);
-        }
-        if is_excute(agent) {
-            camera!(agent, *MA_MSC_CMD_CAMERA_CAM_OFFSET, 0, 0);
-            CAM_ZOOM_IN_arg5(agent, 1.8, 0.0, PostureModule::scale(boma) * 3.0, 0.0, 0.0);
-        }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        // FT_SET_FINAL_FEAR_FACE(agent, 40);
+        // REQ_FINAL_START_CAMERA(agent, Hash40::new("d04final.nuanmb"), true);
+        FT_START_CUTIN(agent);
     }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 15.0);
@@ -407,27 +397,12 @@ unsafe extern "C" fn game_final2(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     FT_MOTION_RATE(agent, 8.0 / (36.0 - 13.0));
     if is_excute(agent) {
-        CHECK_VALID_FINAL_START_CAMERA(agent, 0, 0, 20, 0, 0, 0);
+        // CHECK_VALID_FINAL_START_CAMERA(agent, 0, 0, 20, 0, 0, 0);
         SLOW_OPPONENT(agent, 10.0, 70.0);
     }
-    if !boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
-        frame(lua_state, 10.0);
-        if is_excute(agent) {
-            FT_START_CUTIN(agent);
-            FT_SET_FINAL_FEAR_FACE(agent, 40);
-            REQ_FINAL_START_CAMERA(agent, Hash40::new("d04final2.nuanmb"), true);
-        }
-    } else {
-        if is_excute(agent) {
-            // PostureModule::scale(boma, 3, 0);
-            // 0x16e550(1760657085, 1.8);
-            CAM_ZOOM_IN_arg5(agent, 1.8, 0.0, PostureModule::scale(boma) * 3.0, 0.0, 0.0);
-            FT_START_CUTIN(agent);
-        }
-        frame(lua_state, 40.0);
-        if is_excute(agent) {
-            CAM_ZOOM_OUT(agent);
-        }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        FT_START_CUTIN(agent);
     }
     frame(lua_state, 36.0);
     FT_MOTION_RATE(agent, 11.0);
@@ -465,7 +440,7 @@ unsafe extern "C" fn game_final2(agent: &mut L2CAgentBase) {
     frame(lua_state, 52.0);
     if is_excute(agent) {
         SA_SET(agent, *SITUATION_KIND_AIR);
-        camera!(agent, *MA_MSC_CMD_CAMERA_CAM_RECT, 40, -40, 20, 0);
+        // camera!(agent, *MA_MSC_CMD_CAMERA_CAM_RECT, 40, -40, 20, 0);
         boma.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_ADJUST_SHINRYUKEN_POS);
     }
     frame(lua_state, 90.0);
