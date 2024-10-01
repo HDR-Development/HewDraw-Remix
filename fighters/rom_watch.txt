@@ -48,3 +48,6 @@ fighter/koopa/param/hdr.xml
 fighter/sonic/param/hdr.xml
 fighter/wiifit/param/hdr.xml
 fighter/inkling/param/hdr.xml
+fighter/master/param/hdr.xml
+fighter/pfushigisou/param/hdr.xml
+fighter/tantan/param/hdr.xml
