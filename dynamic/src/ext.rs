@@ -1275,7 +1275,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             );
         }
 
-        if self.motion_frame() >= 4.0
+        if self.motion_frame() >= 6.0
         && !CancelModule::is_enable_cancel(self) {
             CancelModule::enable_cancel(self);
         }

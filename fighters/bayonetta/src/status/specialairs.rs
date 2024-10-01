@@ -124,7 +124,9 @@ unsafe extern "C" fn wall_check(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn cache_input(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D) {
-        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {
+        if fighter.is_button_on(Buttons::Attack | Buttons::Catch) 
+        && !fighter.is_button_on(Buttons::CStickOn) 
+        && !fighter.is_cat_flag(Cat1::AttackHi3 | Cat1::SpecialHi) {
             EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, false);
             fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
             VarModule::set_float(fighter.battle_object, vars::bayonetta::status::SPECIAL_S_ABK_ANGLE, -1.15); //angle forced down during dabk windup

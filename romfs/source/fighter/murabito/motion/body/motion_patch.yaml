@@ -53,6 +53,39 @@ throw_hi:
 throw_lw:
   extra:
     cancel_frame: 31
+special_lw_plant_failure:
+  extra:
+    cancel_frame: 32
+special_air_lw_plant_failure:
+  game_script: game_specialairlw1failure
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d03specialairlw1failure.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairlw1failure
+    - sound_specialairlw1failure
+    - effect_specialairlw1failure
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 70
+    no_stop_intp: false
 shield_break_fly:
   animations:
     - name: f03downspotu.nuanmb
