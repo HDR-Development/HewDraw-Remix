@@ -31,17 +31,17 @@ jobs:
     - name: Check disk space
       run: |
         df . -h
-        sudo du /usr/ -hx -d 4 --threshold=1G | sort -hr | head
+        du /usr/ -hx -d 4 --threshold=1G | sort -hr | head
     - name: Free disk space
       run: |
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        rm -rf /usr/share/dotnet
+        rm -rf /opt/ghc
+        rm -rf "/usr/local/share/boost"
+        rm -rf "$AGENT_TOOLSDIRECTORY"
     - name: Check disk space again
       run: |
         df . -h
-        sudo du /usr/ -hx -d 4 --threshold=1G | sort -hr | head
+        du /usr/ -hx -d 4 --threshold=1G | sort -hr | head
     - name: setup python
       uses: actions/setup-python@v5.1.0
       with:
