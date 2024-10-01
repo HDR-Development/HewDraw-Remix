@@ -379,7 +379,7 @@ unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx:
     let mut eff_size = size;
     // Shrink knockback smoke effect by 25%
     if effHash.hash == hash40("sys_flyroll_smoke") as u64 {  // hash for kb smoke
-        eff_size = size * 0.75;
+        eff_size = size * 0.7;
     }
     original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 }
