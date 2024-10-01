@@ -21,6 +21,7 @@ mod mariod_special_n;
 mod miigunner_special_n;
 mod pacman_special_n;
 mod palutena_special_n;
+mod purin_special_n;
 mod reflet_special_n;
 mod ridley_special_n;
 mod sonic_special_n;
@@ -45,6 +46,7 @@ pub fn install(agent: &mut Agent) {
     miigunner_special_n::install(agent);
     pacman_special_n::install(agent);
     palutena_special_n::install(agent);
+    purin_special_n::install(agent);
     reflet_special_n::install(agent);
     ridley_special_n::install(agent);
     sonic_special_n::install(agent);

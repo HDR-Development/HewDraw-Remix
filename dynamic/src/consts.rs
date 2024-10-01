@@ -759,6 +759,9 @@ pub mod vars {
             pub use super::super::reflet::instance::SPECIAL_N_CHARGE;
         }
         pub mod status {
+            // ints
+            pub const PURIN_SPECIAL_N_ENABLE_HIT_CANCEL_FRAME: i32 = 0x11F9;
+
             // flags
             pub const SPECIAL_N_PICKEL_MINING_TIMER: i32 = 0x11F4;
             pub const SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE: i32 = 0x11F5;
@@ -771,6 +774,8 @@ pub mod vars {
             pub use super::super::daisy::status::SPECIAL_N_AIR_START;
             pub use super::super::daisy::status::SPECIAL_N_DIVE;
             pub use super::super::daisy::status::SPECIAL_N_AUTOCANCEL;
+            pub const PURIN_SPECIAL_N_HIT: i32 = 0x11F7;
+            pub const PURIN_SPECIAL_N_HIT_CANCEL_OK: i32 = 0x11F8;
         }
     }
 
