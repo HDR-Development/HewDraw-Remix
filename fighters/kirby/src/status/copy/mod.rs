@@ -22,6 +22,7 @@ mod reflet_special_n;
 mod palutena_special_n;
 mod daisy_special_n;
 // mod buddy_bayonet_end;
+mod purin_special_n;
 
 pub fn install(agent: &mut Agent) {
     captain_special_n::install(agent);
@@ -44,4 +45,5 @@ pub fn install(agent: &mut Agent) {
     palutena_special_n::install(agent);
     daisy_special_n::install(agent);
     // buddy_bayonet_end::install(agent);
+    purin_special_n::install(agent);
 }
