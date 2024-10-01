@@ -88,7 +88,7 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::duckhunt::status::SPECIAL_HI_ENABLE_SHOT);
     }
-    frame(lua_state, 33.0);
+    frame(lua_state, 39.0);
     if is_excute(agent) {
         VarModule::off_flag(boma.object(), vars::duckhunt::status::SPECIAL_HI_ENABLE_SHOT);
     }

@@ -151,7 +151,7 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 2, 15, 5, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-        if VarModule::get_int(agent.object(), vars::luigi::instance::SPECIAL_S_REMAINING_COUNT) <= 1 {
+        if VarModule::is_flag(boma.object(), vars::luigi::instance::SPECIAL_S_MISFIRE_INIT) {
             LAST_EFFECT_SET_SCALE_W(agent, 0.8, 0.8, 0.8);
             LAST_EFFECT_SET_COLOR(agent, 0.0, 1.0, 0.0);
         }
@@ -229,7 +229,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_RAM_FLAG_BRAKE);
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 34.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
@@ -268,7 +268,7 @@ unsafe extern "C" fn game_specialsdischarge(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_RAM_FLAG_BRAKE);
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 34.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

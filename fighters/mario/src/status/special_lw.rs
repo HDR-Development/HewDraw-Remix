@@ -61,15 +61,18 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     if fighter.status_frame() == 30 {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
             let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
-            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * 0.2, 0.0);
-            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.2);
-            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.2);
-        }
-        else {
+            let air_accel_x_add = fighter.get_param_float("air_accel_x_add", "");
+            let air_accel_x_mul = fighter.get_param_float("air_accel_x_mul", "");
+            let air_speed_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_end_speed_x_stable_mul");
+            let air_control_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_end_control_x_mul");
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * air_speed_x_mul, 0.0);
+            sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add * air_control_x_mul);
+            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul * air_control_x_mul);
             let air_accel_y = fighter.get_param_float("air_accel_y", "");
-            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y * 0.5);
+            let air_accel_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_end_accel_y_mul");
+            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y * air_accel_y_mul);
         }
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -100,7 +103,7 @@ unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon, edge
         } else {
             ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_start_speed_y")
         };
-        let air_accel_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_accel_y_mul");
+        let air_accel_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_start_accel_y_mul");
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, start_speed_y);
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_speed_y_stable);
@@ -111,11 +114,15 @@ unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon, edge
     let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
     let air_accel_x_add = fighter.get_param_float("air_accel_x_add", "");
     let air_accel_x_mul = fighter.get_param_float("air_accel_x_mul", "");
-    let speed_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.speed_x_mul");
-    let accel_x_mul = if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.ground_accel_x_mul")
+    let speed_x_mul = if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.ground_start_speed_x_mul")
     } else {
-        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_accel_x_mul")
+        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_start_speed_x_mul")
+    };
+    let accel_x_mul = if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.ground_start_accel_x_mul")
+    } else {
+        ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.air_start_accel_x_mul")
     };
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FREE, 0.0, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, speed_x * speed_x_mul, 0.0);

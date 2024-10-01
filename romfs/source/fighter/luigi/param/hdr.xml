@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
   <struct hash="misfire">
-    <int hash="remaining_missile_min">6</int>
-    <int hash="remaining_missile_max">12</int>
-    <float hash="remaining_scale_damage_min">20.0</float>
-    <float hash="remaining_scale_damage_max">120.0</float>
+    <int hash="divisor_scale_min">6</int>
+    <int hash="divisor_scale_max">12</int>
+    <float hash="damage_scale_min">0.0</float>
+    <float hash="damage_scale_max">120.0</float>
     <float hash="storage_diminish_mul">0.95</float>
     <float hash="storage_diminish_min">0.8</float>
   </struct>

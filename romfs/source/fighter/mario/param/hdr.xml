@@ -9,11 +9,15 @@
     </struct>
   </struct>
   <struct hash="param_special_lw">
-    <float hash="speed_x_mul">0.5</float>
-    <float hash="ground_accel_x_mul">1.0</float>
-    <float hash="air_accel_x_mul">0.8</float>
-    <float hash="air_accel_y_mul">0.5</float>
+    <float hash="ground_start_speed_x_mul">0.5</float>
+    <float hash="ground_start_accel_x_mul">1.0</float>
+    <float hash="air_start_speed_x_mul">0.5</float>
+    <float hash="air_start_accel_x_mul">0.8</float>
+    <float hash="air_start_accel_y_mul">0.5</float>
     <float hash="air_start_speed_y">1.25</float>
+    <float hash="air_end_speed_x_stable_mul">0.5</float>
+    <float hash="air_end_control_x_mul">0.3</float>
+    <float hash="air_end_accel_y_mul">0.5</float>
     <float hash="edge_early_start_speed_y">0.8</float>
     <float hash="edge_late_start_speed_y">0.2</float>
   </struct>

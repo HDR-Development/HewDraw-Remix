@@ -389,8 +389,8 @@ unsafe extern "C" fn game_speciallwlight(agent: &mut L2CAgentBase) {
             VarModule::on_flag(agent.battle_object, vars::mario::instance::SPECIAL_LW_DISABLE_STALL);
         }
         let kbg = if agent.is_situation(*SITUATION_KIND_GROUND) { 40 } else { 30 };
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 74, kbg, 0, 78, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 8.0, 74, kbg, 0, 78, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 79, kbg, 0, 78, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 8.0, 79, kbg, 0, 78, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 40.0);
     FT_MOTION_RATE_RANGE(agent, 40.0, 45.0, 7.0);
@@ -405,7 +405,7 @@ unsafe extern "C" fn game_speciallwlight(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 52.0);
-    FT_MOTION_RATE_RANGE(agent, 52.0, 95.0, 35.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_speciallwlight(agent: &mut L2CAgentBase) {
