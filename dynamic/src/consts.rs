@@ -1013,10 +1013,7 @@ pub mod vars {
     pub mod metaknight {
         pub mod instance {
             // flags
-            pub const SPECIAL_N_HIT: i32 = 0x0103;
-            pub const SPECIAL_S_HIT: i32 = 0x0104;
-            pub const SPECIAL_HI_HIT: i32 = 0x0105;
-            pub const SPECIAL_LW_HIT: i32 = 0x0106;
+            pub const SPECIAL_S_HIT: i32 = 0x0100;
         }
     }
 
