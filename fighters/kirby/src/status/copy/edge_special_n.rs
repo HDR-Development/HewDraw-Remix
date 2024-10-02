@@ -65,7 +65,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             if fighter.is_situation(*SITUATION_KIND_AIR) {
                 if fighter.sub_check_jump_in_charging().get_bool() {
                     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CANCEL_STATUS);
-                    fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_CANCEL.into(), true.into());
+                    fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_JUMP_CANCEL.into(), true.into());
                 }
             }
             else {
@@ -73,16 +73,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CANCEL_STATUS);
                     fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_CANCEL.into(), true.into());
                 }
-                else {
-                    if fighter.is_cat_flag(Cat2::StickEscapeF) {
-                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CANCEL_STATUS);
-                        fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_CANCEL.into(), true.into());
-                    }
-                    else if fighter.is_cat_flag(Cat2::StickEscapeB) {
-                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_EDGE_STATUS_SPECIAL_N_WORK_INT_CANCEL_STATUS);
-                        fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_EDGE_SPECIAL_N_CANCEL.into(), true.into());
-                    }
-                }
+                // roll transitions removed
             }
         }
     }

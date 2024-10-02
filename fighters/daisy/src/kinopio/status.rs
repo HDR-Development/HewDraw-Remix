@@ -115,10 +115,7 @@ unsafe extern "C" fn yap_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if yap_timer <= 0 {
         let exit_effect = EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::new(0.2, 4.5, 0.0), &Vector3f::zero(), 0.6, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
         EffectModule::set_rate(weapon.module_accessor, exit_effect as u32, 1.0);
-        weapon.clear_lua_stack();
-        weapon.push_lua_stack(&mut L2CValue::new_int(0x199c462b5d));
-        app::sv_battle_object::notify_event_msc_cmd(weapon.lua_state_agent);
-        weapon.pop_lua_stack(1).get_bool();
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
         return 1.into();
     }
 

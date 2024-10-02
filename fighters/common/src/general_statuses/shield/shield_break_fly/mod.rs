@@ -100,7 +100,7 @@ unsafe fn status_ShieldBreakFly_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         return true.into();
     }
 
-    if dbg!(fighter.status_frame()) == 8 {
+    if fighter.status_frame() == 8 {
         EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
     }
 

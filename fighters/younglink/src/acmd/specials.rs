@@ -56,16 +56,15 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 70, 85, 0, 90, 4.0, 0.0, 7.0, -11.0, Some(0.0), Some(4.5), Some(8.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 45.0);
+    FT_MOTION_RATE_RANGE(agent, 45.0, 66.0, 26.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 66.0);
-    FT_MOTION_RATE_RANGE(agent, 66.0, 7.0, 9.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
     }
-    frame(lua_state, 70.0);
-    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {

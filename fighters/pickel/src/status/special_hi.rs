@@ -6,7 +6,7 @@ pub unsafe extern "C" fn special_hi_gliding_pre(fighter: &mut L2CFighterCommon) 
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_GLIDE_START,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
         true,
         *FIGHTER_PICKEL_STATUS_WORK_KEEP_FLAG_SPECIAL_HI_FLAG,
         *FIGHTER_PICKEL_STATUS_WORK_KEEP_FLAG_SPECIAL_HI_INT,

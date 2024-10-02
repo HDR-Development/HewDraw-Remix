@@ -1,25 +1,32 @@
 use super::*;
 
-// FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
+    if is_training_mode() {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE) {
+            VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
+            VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
+        }
+        return 0.into();
+    }
+    if super::calculate_misfire(fighter) == 0 {
+        VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
+    }
+
+    return 0.into();
+}
 
 unsafe extern "C" fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CHARGE_MELEE_NO_RANDOM) {
-        let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED) {
-            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
-            true
-        } else if VarModule::countdown_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_REMAINING_COUNT, 0) {
-            super::calculate_misfire_number(fighter);
-            true
-        } else {
-            false
-        };
-        if should_do_effect {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT) {
+            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
             EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0) as u32;
         }
     }
-    0.into()
+
+    return 0.into();
 }
 
 unsafe extern "C" fn special_s_charge_uniq_process(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -102,7 +109,7 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_SMOKE_EFFECT_HANDLE, -1); 
+    VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_SMOKE_EFFECT_HANDLE, -1);
     VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, -1);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_BONUS) {
         WorkModule::set_float(fighter.module_accessor, WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_bonus")), *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
@@ -129,6 +136,8 @@ unsafe extern "C" fn special_s_charge_exit(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
+
     agent.status(Init, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_init);
     agent.status(Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_main);
     agent.status(End, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_end);

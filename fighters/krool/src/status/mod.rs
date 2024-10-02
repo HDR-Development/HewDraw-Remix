@@ -2,9 +2,10 @@ use super::*;
 use globals::*;
 // status script import
 
-mod special_hi;
-mod special_lw; 
 mod attack_lw4;
+mod special_hi;
+mod special_lw;
+mod special_n;
 
 // handle damage to belly
 #[no_mangle]
@@ -52,7 +53,8 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
 // }
 
 pub fn install(agent: &mut Agent) {
+    attack_lw4::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);
-    attack_lw4::install(agent);
+    special_n::install(agent);
 }
