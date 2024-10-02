@@ -59,7 +59,7 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
             set_accel,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -0.0105 // hardcoded value for now
+            -0.015 // hardcoded value for now
         );
         sv_kinetic_energy!(
             set_stable_speed,
