@@ -75,6 +75,13 @@ unsafe extern "C" fn effect_littlemacspecialn(agent: &mut L2CAgentBase) {
         let facing = PostureModule::lr(boma);
         EffectModule::set_rot(boma, handle as u32, &Vector3f::new(45.0 * facing, 135.0, 45.0 * facing));
     }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        if VarModule::is_flag(boma.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+            SlowModule::clear_whole(boma);
+            EffectModule::remove_screen(boma, Hash40::new("bg_criticalhit"), 0);
+        }
+    }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("littlemac_ko_uppercut"), false, false);

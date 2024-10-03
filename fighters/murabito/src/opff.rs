@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+unsafe fn can_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
@@ -84,15 +84,21 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    dspecial_cancels(boma, situation_kind, frame);
+    can_cancels(boma, situation_kind, frame);
     uspecial_cancels(boma, situation_kind, frame);
     fastfall_specials(fighter);
+}
+
+// symbol-based call for villager/isabelle's common pocket opff
+extern "Rust" {
+    fn ac_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
 pub extern "C" fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		murabito_frame(fighter);
+        ac_common(fighter);
     }
 }
 

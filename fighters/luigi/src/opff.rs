@@ -14,10 +14,6 @@ unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn training_mode_misfire(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ENTRY) && fighter.status_frame() <= 10 {
-        super::calculate_misfire_number(fighter);
-    }
-
     if !is_training_mode() { return };
 
     if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) 
@@ -30,13 +26,6 @@ unsafe fn training_mode_misfire(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE);
             VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
         }
-    }
-
-    if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE) {
-        VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
-        VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_REMAINING_COUNT, 0);
-    } else {
-        VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_REMAINING_COUNT, 2);
     }
 }
 

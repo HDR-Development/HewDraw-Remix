@@ -5,7 +5,7 @@
   <float hash="ground_speed_limit">4</float>
   <float hash="stop_over_speed_brake_mul">1</float>
   <float hash="turn_stick_x">-0.2</float>
-  <float hash="dash_stick_x">0.7957</float>
+  <float hash="dash_stick_x">0.716</float>
   <float hash="dash_s4_frame">4</float>
   <float hash="dash_s4_frame_easy">6</float>
   <float hash="dash_s4_frame_hard">2</float>  

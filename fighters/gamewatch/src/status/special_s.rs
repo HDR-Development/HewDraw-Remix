@@ -15,46 +15,31 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     // Calculate MATH
     let math_state = VarModule::get_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_STATE);
-
-    //println!();
-    //println!("Current math state: {}", math_state);
-
     match math_state {
         0 => {
             // start math if rolling a 9
             if rng == 8 {
-                //println!("Rolled a 9, start math!");
                 VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_STATE, 1);
             }
-            // else {
-            //     println!("Rolled a {}", rng + 1);
-            // }
         },
         1 => {
             // take the next two rolls...
-            //println!("Rolled a {}", rng + 1);
-            //println!("Incrementing math state");
             VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_STATE, 2);
         },
         2 => {
             // ...and perform math!
-            //println!("Math time!");
-            //println!("Rolled a {}", rng + 1);
             let result = (rng + 1) + (kind + 1);
             if result < 9 {
                 // if the two rolls add up to less than 9, use the result
-                //println!("Less than 9, incoming roll: {}", rng + kind + 2);
                 VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_RESULT, rng + kind + 1);
             }
             else if result > 9 {
                 // if not, subtract the two and use that instead
                 let num = rng.max(kind) - rng.min(kind) - 1;
-                //println!("Greater than 9, incoming roll: {}", num);
                 VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_RESULT, num);
             }
             else {
                 // for balancing reasons add another 50% chance to actually be a guaranteed 9
-                //println!("Result is a 9, one more rng check");
                 let rand = sv_math::rand(hash40("fighter"), 2);
                 if rand == 1 {
                     VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_RESULT, (rng - kind - 1).abs());
@@ -67,7 +52,6 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
         },
         3 => {
             // use the result for the next roll
-            //println!("Resetting math state");
             rng = VarModule::get_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_RESULT);
             VarModule::set_int(fighter.battle_object, vars::gamewatch::instance::SPECIAL_S_MATH_STATE, 0);
         }

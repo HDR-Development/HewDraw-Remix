@@ -64,15 +64,15 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
 pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("knockback units: {}", DamageModule::reaction(fighter.module_accessor, 0));
-    
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("angle"));
     sv_information::damage_log_value(fighter.lua_state_agent);
     let angle = fighter.pop_lua_stack(1).get_f32();
     let degrees = angle.to_degrees();
     let meteor_vector_min = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_min")) as f32;
-    let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max")) as f32; 
-    
+    let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max")) as f32;
+
     if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW)
     || (degrees >= meteor_vector_min && degrees <= meteor_vector_max && DamageModule::reaction(fighter.module_accessor, 0) >= 65.0) {
         //println!("forced tumble");
@@ -104,8 +104,8 @@ pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_wait_common_Main, 
-            damage_fly_common_init, 
+            sub_wait_common_Main,
+            damage_fly_common_init,
             status_pre_DamageAir,
             status_Landing_MainSub,
             status_LandingStiffness,
@@ -225,7 +225,7 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
     || LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
         return false.into();
     }
-    
+
     let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
 
     // actual grab button
@@ -244,7 +244,7 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
     // - shield button must be in the buffer window
     // - attack button must have been pressed while shield was pressed/held
     let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll);
-    if attack_trigger_count < buffer 
+    if attack_trigger_count < buffer
     && guard_trigger_count < buffer
     && attack_trigger_count <= guard_trigger_count
     && (is_guard_held || attack_trigger_count > guard_release_count) {
@@ -375,7 +375,7 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
-    
+
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         return false.into();
     }
@@ -669,7 +669,7 @@ pub unsafe fn FighterStatusDamage__correctDamageVector(fighter: &mut L2CFighterC
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
-pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::Smash64Mode) {
@@ -679,14 +679,14 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
         _ => {}
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
-        return call_original!(fighter);
+        return call_original!(fighter, param_1);
     }
     // This allows us to call the blue DI line effect on non-tumble knockback
     // Currently not able to be done by reimplementing this function
     // because an inner function returns multiple L2CValues
     // which is not currently supported by skyline-smash
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_FLY));
-    let ret = call_original!(fighter);
+    let ret = call_original!(fighter, param_1);
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
     ret
 }
@@ -726,7 +726,7 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if cliff_count > cliff_dive_count_max {
         return false.into();
     }
-    
+
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL)
     || KineticModule::is_suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         return false.into();
@@ -756,7 +756,7 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if speed_y < -dive_speed_y {
         return false.into();
     }
-    
+
     true.into()
 }
 

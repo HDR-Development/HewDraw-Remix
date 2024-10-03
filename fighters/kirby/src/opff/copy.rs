@@ -751,18 +751,6 @@ unsafe fn bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
     }
 }
 
-// Bonus Fruit Airdodge Cancel
-unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_SHOOT {
-        if frame > 11.0 {
-            boma.check_airdodge_cancel();
-        }
-    }
-}
-
 // Palutena Cyan Energy
 // This Energy is unique to Kirby and allows Auto Reticle to be used. Colorless Attack gives 3 energy instead of 1.
 unsafe fn cyan_charge(fighter: &mut L2CFighterCommon, status_kind: i32, frame: f32, boma: &mut BattleObjectModuleAccessor) {
@@ -1073,18 +1061,6 @@ unsafe fn wiifit_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_
     }
 }
 
-// Pac-Man
-unsafe fn pacman_nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_PACMAN_SPECIAL_N_CANCEL {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if WorkModule::get_int(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_NEXT_STATUS);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }
-        }
-    }
-}
-
 // Hero
 unsafe fn brave_nspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_CANCEL)
@@ -1366,11 +1342,6 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x3A => clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame),
         // Link
         0x2 => bow_drift(boma, status_kind, situation_kind, cat[1], stick_y),
-        // Pac Man
-        0x37 => {
-            bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
-            pacman_nspecial_cancels(boma, status_kind, situation_kind);
-        },
         // Palutena
         0x36 => {
             cyan_charge(fighter, status_kind, frame, boma);

@@ -10,6 +10,7 @@ pub mod status;
 // articles
 
 mod boomerang;
+mod bowarrow;
 
 use smash::{
     lib::{
@@ -50,5 +51,6 @@ pub fn install() {
     status::install(agent);
     agent.install();
 
+    bowarrow::install();
     boomerang::install();
 }

@@ -51,6 +51,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="start_speed_y_air_dec">0</float>
       <int hash="wall_hit_max">1</int>
       <float hash="jump_speed_y">2.1</float>
     </struct>

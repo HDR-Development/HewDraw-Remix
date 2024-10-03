@@ -416,6 +416,15 @@ unsafe extern "C" fn sound_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specialairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 unsafe extern "C" fn game_specialairlwlanding(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -459,6 +468,15 @@ unsafe extern "C" fn sound_specialairlwlanding(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specialairlwlanding(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("game_specialairn", game_specialn, Priority::Low);
@@ -483,12 +501,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
     agent.acmd("sound_specialairlw", sound_specialairlw, Priority::Low);
-    // todo add expression
+    agent.acmd("expression_specialairlw", expression_specialairlw, Priority::Low);
 
     agent.acmd("game_specialairlwlanding", game_specialairlwlanding, Priority::Low);
     agent.acmd("effect_specialairlwlanding", effect_specialairlwlanding, Priority::Low);
     agent.acmd("sound_specialairlwlanding", sound_specialairlwlanding, Priority::Low);
-    // todo add expression
+    agent.acmd("sound_specialairlwlanding", sound_specialairlwlanding, Priority::Low);
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
 }
