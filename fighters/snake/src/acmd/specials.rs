@@ -74,7 +74,7 @@ unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
     }
     frame(lua_state, 38.0);
     if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
-        FT_MOTION_RATE(agent, 1.0);
+        FT_MOTION_RATE_RANGE(agent, 38.0, 64.0, 36.0);
     }
     else {
         FT_MOTION_RATE_RANGE(agent, 38.0, 64.0, 1.0);
@@ -83,13 +83,18 @@ unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
         FT_MOTION_RATE(agent, 1.0);
     }
+    else {
+        FT_MOTION_RATE_RANGE(agent, 64.0, 80.0, 25.0);
+    }
     frame(lua_state, 79.0);
-    if is_excute(agent) {
+    if is_excute(agent) { 
         if VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
             VarModule::set_int(agent.battle_object, vars::snake::instance::SPECIAL_S_AMMO_COUNT, 0);
             VarModule::off_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD);
         }
     }
+    frame(lua_state, 80.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 83.0);
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, ArticleOperationTarget(0));
