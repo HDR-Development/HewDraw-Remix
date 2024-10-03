@@ -21,7 +21,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
@@ -29,7 +29,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -53,7 +52,6 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        // EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.5, 3, 3, 3, 0, 0, 0, false);
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
 }

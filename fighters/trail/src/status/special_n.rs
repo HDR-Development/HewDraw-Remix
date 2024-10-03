@@ -178,7 +178,27 @@ unsafe extern "C" fn special_n2_main_loop_function(fighter: &mut L2CFighterCommo
 
 // reimplemented end statuses to remove the native magic switching. this is now tied to a timer in opff
 
+unsafe extern "C" fn special_n1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND] != *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT {
+        WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+        WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+        VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+    }
+
+    return 0.into()
+}
+
 unsafe extern "C" fn special_n1_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND] != *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_END {
+        WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+        WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+        VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
+    }
+
+    return 0.into()
+}
+
+unsafe extern "C" fn special_n1_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     WorkModule::off_flag(fighter.module_accessor,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
     VarModule::set_int(fighter.battle_object, vars::trail::instance::SPECIAL_N_MAGIC_TIMER, MAGIC_COOLDOWN_FRAME);
@@ -209,7 +229,9 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_pre);
     agent.status(Main, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_main);
 
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1, special_n1_end);
     agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT, special_n1_shoot_end);
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_END, special_n1_end_end);
     agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2, special_n2_end);
     agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3, special_n3_end);
 }

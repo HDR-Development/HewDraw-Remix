@@ -70,13 +70,15 @@ attack_s3_s:
 fall_special:
   blend_frames: 5
 attack_s3_lw:
-attack_air_f:
-  extra:
-    cancel_frame: 43
 attack_air_n:
   extra:
     cancel_frame: 43
-attack_s3_hi:
+attack_air_f:
+  extra:
+    cancel_frame: 43
+attack_air_b:
+  extra:
+    cancel_frame: 37
 special_n_end:
   extra:
     cancel_frame: 19

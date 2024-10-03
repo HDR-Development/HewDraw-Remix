@@ -98,7 +98,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     }
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0 * dmg, 39, 73, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0 * dmg, 42, 73, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, attr, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 40.0);

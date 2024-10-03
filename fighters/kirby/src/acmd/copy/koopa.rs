@@ -131,22 +131,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_koopaspecialnstart", effect_koopaspecialnstart, Priority::Low);
     agent.acmd("effect_koopaspecialairnstart", effect_koopaspecialnstart, Priority::Low);
     agent.acmd("sound_koopaspecialnstart", sound_koopaspecialnstart, Priority::Low);
+
     agent.acmd("game_koopaspecialnend", game_koopaspecialnend, Priority::Low);
     agent.acmd("game_koopaspecialairnend", game_koopaspecialnend, Priority::Low);
+    
     agent.acmd("game_koopaspecialnmax", game_koopaspecialnmax, Priority::Low);
     agent.acmd("game_koopaspecialairnmax", game_koopaspecialnmax, Priority::Low);
     agent.acmd("effect_koopaspecialnmax", effect_koopaspecialnmax, Priority::Low);
     agent.acmd("effect_koopaspecialairnmax", effect_koopaspecialnmax, Priority::Low);
     agent.acmd("sound_koopaspecialnmax", sound_koopaspecialnmax, Priority::Low);
     agent.acmd("sound_koopaspecialairnmax", sound_koopaspecialnmax, Priority::Low);
-    agent.acmd(
-        "expression_koopaspecialnmax",
-        expression_koopaspecialnmax,
-        Priority::Low
-    );
-    agent.acmd(
-        "expression_koopaspecialairnmax",
-        expression_koopaspecialnmax,
-        Priority::Low
-    );
+    agent.acmd("expression_koopaspecialnmax", expression_koopaspecialnmax, Priority::Low);
+    agent.acmd("expression_koopaspecialairnmax", expression_koopaspecialnmax, Priority::Low);
 }

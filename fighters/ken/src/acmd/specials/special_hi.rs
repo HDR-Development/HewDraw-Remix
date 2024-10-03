@@ -5,7 +5,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
-        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
@@ -45,7 +44,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         || boma.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
             ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 80, 109, 0, 77, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         } else {
-            ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 80, 107, 0, 76, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 80, 103, 0, 75, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.4, 0.25, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 15.0);

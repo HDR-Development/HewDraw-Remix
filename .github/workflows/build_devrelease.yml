@@ -28,6 +28,9 @@ jobs:
     container: 
       image: hewdrawremix/hewdraw-builder:latest
     steps:
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@v1.3.1
+
     - name: setup python
       uses: actions/setup-python@v5.1.0
       with:

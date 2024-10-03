@@ -294,6 +294,8 @@ pub mod vars {
 
             pub const SHOULD_HITFALL: i32 = 0x1006;
 
+            pub const NO_POCKET: i32 = 0x1052;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -430,19 +432,24 @@ pub mod vars {
         }
     }
 
-    pub mod dedede{
+    pub mod dedede {
         pub mod instance{
             //flags
-            pub const SPECIAL_S_GORDO_DASH_ENABLE: i32 = 0x0100;
-            pub const SPECIAL_S_GORDO_DASH_SUCCESS: i32 = 0x0101;
-            pub const SPECIAL_S_ANGLED: i32 = 0x0102;
-            pub const SPECIAL_S_GORDO_REMOVED: i32 = 0x0103;
+            pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
+            pub const SPECIAL_LW_CONTINUE_JET_SPIN: i32 = 0x0101;
+            pub const SPECIAL_S_GORDO_DASH_DISABLE: i32 = 0x0102;
 
             //ints
-            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0104;
+            pub const SPECIAL_S_RECATCH_COUNT: i32 = 0x0103;
+            pub const SPECIAL_LW_CHARGE_FRAME: i32 = 0x0104;
 
             //floats
             pub const SPECIAL_N_STICK_Y: i32 = 0x0105;
+            pub const SPECIAL_S_TOSS_LR: i32 = 0x0106;
+        }
+        pub mod status{
+            //flags
+            pub const SPECIAL_LW_CONTINUE_SPIN: i32 = 0x1100;
         }
     }
 
@@ -532,6 +539,7 @@ pub mod vars {
             pub const SPECIAL_S_SMASH_INPUT: i32 = 0x1100;
             pub const SPECIAL_HI_JUMP: i32 = 0x0101;
             pub const SPECIAL_HI_ENABLE_SHOT: i32 = 0x1102;
+            pub const SPECIAL_HI2_KILLSHOT_BUFFERED: i32 = 0x1103;
         }
     }
 
@@ -752,11 +760,18 @@ pub mod vars {
             pub use super::super::reflet::instance::SPECIAL_N_CHARGE;
         }
         pub mod status {
+            // ints
+            pub const PURIN_SPECIAL_N_ENABLE_HIT_CANCEL_FRAME: i32 = 0x11F9;
+
             // flags
             pub const SPECIAL_N_PICKEL_MINING_TIMER: i32 = 0x11F4;
             pub const SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE: i32 = 0x11F5;
             pub const SPECIAL_N_LITTLEMAC_GRAVITY_END: i32 = 0x11F6;
-            pub use super::super::mario::status::FIREBRAND;
+            pub const SPECIAL_N_LITTLEMAC_CLEAR_CRIT: i32 = 0x11F7;
+            pub const PURIN_SPECIAL_N_HIT: i32 = 0x11F8;
+            pub const PURIN_SPECIAL_N_HIT_CANCEL_OK: i32 = 0x11F9;
+
+            pub use super::super::mario::status::SPECIAL_N_FIREBRAND;
             pub use super::super::luigi::status::SPECIAL_N_THUNDERHAND;
             pub use super::super::mariod::status::SPECIAL_N_CHILL_PILL;
             pub use super::super::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE;
@@ -928,12 +943,10 @@ pub mod vars {
     pub mod luigi {
         pub mod instance {
             // flag
-            /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const SPECIAL_S_MISFIRE_STORED: i32 = 0x0100;
             pub const SPECIAL_S_TRAINING_MISFIRE: i32 = 0x0101;
+            pub const SPECIAL_S_MISFIRE_INIT: i32 = 0x0102;
             // int
-            /// This int stores the number of remaining green missile's luigi must do before getting a misfire
-            pub const SPECIAL_S_REMAINING_COUNT: i32 = 0x0100;
             /// This int stores the handle of the charge smoke effect for killing it if we store misfire
             pub const SPECIAL_S_SMOKE_EFFECT_HANDLE: i32 = 0x0101;
             /// This int stores the handle of the pulsing effect for killing it if we store misfire
@@ -952,17 +965,13 @@ pub mod vars {
     pub mod mario {
         pub mod instance {
             // flags
-            pub const DISABLE_DSPECIAL_STALL: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0100;
             pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0101;
         }
-
         pub mod status {
             // flags
-            pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x1100;
-            pub const AERIAL_COMMAND_RISING: i32 = 0x1101;
-            pub const AERIAL_COMMAND_RISEN: i32 = 0x1102;
-
-            pub const FIREBRAND: i32 = 0x1100;
+            pub const SPECIAL_N_FIREBRAND: i32 = 0x1100;
+            pub const SPECIAL_LW_GROUND_START: i32 = 0x0101;
         }
     }
 
@@ -1109,11 +1118,12 @@ pub mod vars {
             // flags
             pub const STANCE_ENABLE_CHANGE_SPEED: i32 = 0x0100;
             pub const APPEAL_STANCE_INIT: i32 = 0x0101;
-            pub const PTOOIE_ENABLE_EXPLODE: i32 = 0x0102;
-            pub const APPEAL_STANCE_REVERSE: i32 = 0x0103;
+            pub const APPEAL_STANCE_REVERSE: i32 = 0x0102;
 
             // floats
             pub const SPECIAL_N_PTOOIE_SCALE: i32 = 0x01BF;
+            pub const FIRE_POS_X: i32 = 0x0101;
+            pub const FIRE_POS_Y: i32 = 0x0102;
 
             // ints
             pub const CURRENT_STANCE: i32 = 0x01BE; // 0 = Normal, 1 = Putrid, 2 = Prickly
@@ -1125,6 +1135,13 @@ pub mod vars {
             pub const APPEAL_CLOUD_COVER: i32 = 0x1101;
             pub const POISON_BREATH_ENABLE_PRICKLY_BITE: i32 = 0x1102;
             pub const POISON_BREATH_BURST: i32 = 0x1103;
+        }
+    }
+
+    pub mod packun_spikeball {
+        pub mod instance {
+            // flags
+            pub const ENABLE_EXPLODE: i32 = 0x0100;
         }
     }
 
@@ -1650,9 +1667,7 @@ pub mod vars {
 
     pub mod yoshi {
         pub mod status {
-            pub use super::super::mario::status::{
-                AERIAL_COMMAND_MOMENTUM_RESET, AERIAL_COMMAND_RISEN, AERIAL_COMMAND_RISING,
-            };
+            
         }
     }
 
@@ -1747,6 +1762,7 @@ pub mod statuses {
 
     pub mod krool {
         pub const SPECIAL_LW_GUT: i32 = 0x1F9;
+        pub const SPECIAL_N_FIRE_HI: i32 = 0x1FA;
     }
 
     pub mod littlemac {
@@ -1760,6 +1776,10 @@ pub mod statuses {
 
     pub mod mewtwo {
         pub const FLOAT: i32 = 0x1E9;
+    }
+
+    pub mod packun_firebreath {
+        pub const REGULAR: i32 = 0x0;
     }
 
     pub mod palutena {
@@ -1803,6 +1823,10 @@ pub mod statuses {
 }
 
 pub mod articles {
+    pub mod packun {
+        pub const FIREBREATH: i32 = 0x4;
+    }
+    
     pub mod purin {
         pub const DISARMING_VOICE: i32 = 0x2;
     }

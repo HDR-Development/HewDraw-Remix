@@ -45,8 +45,6 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 26.0, 40.0, 8.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        SlowModule::clear_whole(boma);
-        EffectModule::remove_screen(boma, Hash40::new("bg_criticalhit"), 0);
     }
     frame(lua_state, 40.0);
     FT_MOTION_RATE_RANGE(agent, 40.0, 85.0, 36.0);
@@ -85,9 +83,10 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_line"), true, true);
         SlowModule::clear_whole(boma);
         CameraModule::reset_all(boma);
-        EFFECT_OFF_KIND(agent, Hash40::new("sys_attack_line"), true, true);
+        EffectModule::remove_screen(boma, Hash40::new("bg_criticalhit"), 0);
     }
 }	
 

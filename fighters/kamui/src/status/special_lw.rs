@@ -98,7 +98,7 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 // So fun thing, check_damage doesn't run if the fighter does not receive knockback (in other words, super armor)! What a wonderfully useless caveat!!!
 unsafe extern "C" fn special_lw_check_damage(fighter: &mut L2CFighterCommon, param_1: &L2CValue) -> L2CValue {
     let power = param_1[0xc238ce5fd_u64]["power_"].get_f32();
-    println!("{}", power);
+    //println!("{}", power);
     false.into() // Believe this determines if you actually take knockback or not after checking damage, used in like throws for throw armor
 }
 

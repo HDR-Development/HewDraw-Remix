@@ -7,13 +7,9 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if stance != 2 {
         FT_MOTION_RATE(agent, 0.7);
-        if stance != 1 {
-            VarModule::off_flag(boma.object(), vars::packun::instance::PTOOIE_ENABLE_EXPLODE);
-        }
     }
     else {
         FT_MOTION_RATE(agent, 9.0/(9.0 - 1.0));
-        VarModule::off_flag(boma.object(), vars::packun::instance::PTOOIE_ENABLE_EXPLODE);
     }
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -44,17 +40,21 @@ unsafe extern "C" fn game_specialsshoot(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 10.0, 3.0);
     }
     if stance == 0 {
+        frame(lua_state, 1.0);
+        if is_excute(agent) {
+            if !charged {
+                ArticleModule::generate_article(boma, articles::packun::FIREBREATH, false, -1);
+                VarModule::on_flag(boma.object(), vars::packun::status::POSION_BREATH_ENABLE_STANDARD_FLAME);
+            }
+        }
         FT_DESIRED_RATE(agent, 5.0, 6.0);
         frame(lua_state, 5.0);
         FT_MOTION_RATE(agent, 1.0);
         if is_excute(agent) {
             if charged {
                 ATTACK(agent, 0, 0, Hash40::new("mouth"), 14.0, 30, 66, 0, 60, 9.0, 2.0, 0.0, 0.0, Some(8.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
+                VarModule::on_flag(boma.object(), vars::packun::status::POSION_BREATH_ENABLE_STANDARD_FLAME);
             }
-            else {
-                ATTACK(agent, 0, 0, Hash40::new("mouth"), 10.0, 30, 66, 0, 60, 9.0, 2.0, 0.0, 0.0, Some(8.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
-            }
-            VarModule::on_flag(boma.object(), vars::packun::status::POSION_BREATH_ENABLE_STANDARD_FLAME);
         }
         wait(lua_state, 5.0);
         FT_DESIRED_RATE(agent, 40.0, 30.0);

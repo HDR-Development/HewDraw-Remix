@@ -44,13 +44,13 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
-    }
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
 }
 

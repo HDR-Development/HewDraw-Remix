@@ -196,6 +196,46 @@ unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhihold(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("wolf_shoot_hold"), Hash40::new("top"), 0, 5.5, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, true);
+            LAST_EFFECT_SET_RATE(agent, 1.2);
+            LAST_EFFECT_SET_ALPHA(agent, 0.8);
+        }
+    }
+    for _ in 0..4 {
+        if is_excute(agent) {
+            FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 5, 0, 5, 0, 0, 0, false);
+            FLASH(agent, 0.5, 0.4, 1, 0.7);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(agent) {
+            FLASH_FRM(agent, 2, 0.3, 0, 1, 0);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(agent) {
+            COL_NORMAL(agent);
+        }
+        wait(lua_state, 1.0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_shield_smoke"), false, false);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
 unsafe extern "C" fn sound_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -354,8 +394,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairsend", expression_specialsend, Priority::Low);
     
     agent.acmd("game_specialhihold", game_specialhihold, Priority::Low);
+    agent.acmd("effect_specialhihold", game_specialhihold, Priority::Low);
     agent.acmd("sound_specialhihold", sound_specialhihold, Priority::Low);
     agent.acmd("game_specialhiholdair", game_specialhihold, Priority::Low);
+    agent.acmd("effect_specialhiholdair", effect_specialhihold, Priority::Low);
     agent.acmd("sound_specialhiholdair", sound_specialhihold, Priority::Low);
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("game_specialhifall", game_specialhifall, Priority::Low);

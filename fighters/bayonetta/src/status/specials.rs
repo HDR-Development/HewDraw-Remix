@@ -25,7 +25,8 @@ unsafe extern "C" fn ground_checks(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         if fighter.is_in_hitlag() {special_s_slow_hit(fighter); }
         else if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT) {
-            if fighter.is_cat_flag(Cat1::SpecialAny | Cat1::AttackN) 
+            if fighter.is_cat_flag(Cat1::SpecialS | Cat1::AttackS3) 
+            && !fighter.is_button_trigger(Buttons::CStickOn)
             && frame >= 20 && frame <= 35 {
                 GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                 fighter.change_status(statuses::bayonetta::SPECIAL_S_KICK.into(), true.into());
