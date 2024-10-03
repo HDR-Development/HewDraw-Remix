@@ -1359,8 +1359,14 @@ pub mod vars {
             pub const SPECIAL_LW_CATCH_ID: i32 = 0x0100;
         }
         pub mod status {
+            // flags
+            pub const SPECIAL_HI_HOVER_DECIDE_STICK: i32 = 0x1100;
+
             // floats
             pub const SPECIAL_LW_STICK_Y: i32 = 0x1100;
+            pub const SPECIAL_HI_HOVER_DECIDE_STICK_X: i32 = 0x1101;
+            pub const SPECIAL_HI_HOVER_DECIDE_STICK_Y: i32 = 0x1102;
+            pub const SPECIAL_HI_CHARGE_DIR: i32 = 0x1104;
         }
     }
 
