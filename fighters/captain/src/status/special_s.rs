@@ -23,7 +23,8 @@ unsafe extern "C" fn special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into()
     }
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();

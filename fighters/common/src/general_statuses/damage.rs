@@ -309,7 +309,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let speed_start = 4.65;
     let speed_end = 7.5;
     let speed = factor.get_f32();
-    dbg!(speed);
+    //dbg!(speed);
 
     let angle = angle.get_f32();
     let angle_from_horizontal = 90.0 - ((angle % 180.0).abs() - 90.0).abs();  // value of 0-90
@@ -345,7 +345,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
         mul.clamp(min_mul, max_mul)
     };
 
-    dbg!(speed_up_mul);
+    //dbg!(speed_up_mul);
 
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
     WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);

@@ -70,6 +70,13 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             return 1.into();
         }
     }
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+        VarModule::on_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT);
+        SlowModule::set_whole(fighter.module_accessor, 8, 25);
+        PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+        EffectModule::req_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), false, true, true);
+    }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = if fighter.is_situation(*SITUATION_KIND_GROUND) {
             FIGHTER_STATUS_KIND_WAIT
@@ -131,6 +138,10 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
+    if VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+        SlowModule::clear_whole(fighter.module_accessor);
+        EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
+    }
     let kirb = fighter.battle_object.cast::<Fighter>();
     copy_ability_reset(kirb, false);
     EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("kirby_star"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);

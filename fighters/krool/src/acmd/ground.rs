@@ -20,8 +20,6 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    frame(lua_state, 16.0)
-    //WorkModule::on_flag(FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART)
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
@@ -47,11 +45,11 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-    AttackModule::clear_all(boma);
+        AttackModule::clear_all(boma);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-    WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
 
@@ -60,8 +58,8 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-    FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    EFFECT_FLIP_ALPHA(agent, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLIP_ALPHA(agent, Hash40::new("krool_scratch"), Hash40::new("krool_scratch"), Hash40::new("top"), 0, 13, 13, -8, 60, -127, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.3);
     }
 }
 

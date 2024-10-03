@@ -93,67 +93,91 @@ pub fn install() {
     // skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
         steve_parry_stuff_fix,
-        set_hit_team_hook,
-        set_hit_team_second_hook,
-        set_team_second_hook,
+        //set_hit_team_hook,
+        //set_hit_team_second_hook,
+        //set_team_second_hook,
         set_team_hook,
-        set_team_owner_id_hook,
+        //set_team_owner_id_hook,
         // shield_damage_analog,
         // shield_pushback_analog
     );
 }
 
-#[skyline::hook(replace=TeamModule::set_hit_team)]
-unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set hit team called for barrel: {:x}", arg2);
-        return;
-    }
-}
+// #[skyline::hook(replace=TeamModule::set_hit_team)]
+// unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set hit team called for barrel: {:x}", arg2);
+//         //println!("set hit team called");
+//         //println!("barrel status: {:x}", boma.status());
+//         let current_team = TeamModule::hit_team_no(boma);
+//         //println!("setting hit team from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
 
-#[skyline::hook(replace=TeamModule::set_hit_team_second)]
-unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.is_item()
-    && boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set hit team second called for barrel: {:x}", arg2);
-        return;
-    }
-}
-/// used to ignore setting the team for barrel. This resolves an issue
-/// where, when someone throws barrel upwards or forwards, they are
-/// able to be hit by their own barrel for 1 frame. This is here
-/// because editing item statuses is not possible
+// #[skyline::hook(replace=TeamModule::set_hit_team_second)]
+// unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.is_item()
+//     && boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set hit team second called for barrel: {:x}", arg2);
+//         //println!("set team second called");
+//         //println!("barrel status: {:x}", boma.status());
+//         let current_team = TeamModule::hit_team_second_no(boma);
+//         //println!("setting hit team second from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
+
+/// This resolves an issue where when someone moves into a barrel
+/// after throwing it upwards, they are able to be hit by their
+/// own barrel for 1 frame. This can also happen when throwing the
+/// barrel forward and then moving into it while it is traveling along
+/// the ground. This is here because editing item statuses is not possible
 #[skyline::hook(replace=TeamModule::set_team)]
 unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
     if (boma.is_item()
       && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team ignored for barrel: {:x}", arg2);
+        //println!("set team called");
+        //println!("barrel status: {:x}", boma.status());
+        let current_team = TeamModule::team_no(boma);
+        //println!("setting team from {} to {}", current_team, arg2);
+        if arg2 != -1 {
+            original!()(boma, arg2, arg3);
+        }
     } else {
         original!()(boma, arg2, arg3);
     }
 }
 
-#[skyline::hook(replace=TeamModule::set_team_second)]
-unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    // if (boma.is_item()
-    // && boma.kind() == *ITEM_KIND_BARREL) {
-    //     //println!("set team second called for barrel: {:x}", arg2);
-    //     return;
-    // }
-}
+// #[skyline::hook(replace=TeamModule::set_team_second)]
+// unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     // if (boma.is_item()
+//     // && boma.kind() == *ITEM_KIND_BARREL) {
+//     //     //println!("set team second called for barrel: {:x}", arg2);
+//     //     return;
+//     // }
+// }
 
-#[skyline::hook(replace=TeamModule::set_team_owner_id)]
-unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.is_item()
-    && boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set team owner id called for barrel: {:x}", arg2);
-        return;
-    }
-}
+// #[skyline::hook(replace=TeamModule::set_team_owner_id)]
+// unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.is_item()
+//     && boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set team owner id called for barrel: {:x}", arg2);
+//         println!("set team owner id called");
+//         //println!("barrel status: {:x}", boma.status());
+//         //let current_team = TeamModule::team_owner_id(boma);
+//         //println!("setting team owner id from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
 
 pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {

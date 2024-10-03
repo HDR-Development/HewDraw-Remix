@@ -10,9 +10,10 @@ pub mod status;
 // articles
 
 mod backpack;
+mod crown;
 mod ironball;
 
-pub mod vtable_hook;
+//pub mod vtable_hook;
 pub use status::krool_belly_damage_hook_impl;
 
 use smash::{
@@ -55,6 +56,7 @@ pub fn install() {
     agent.install();
 
     backpack::install();
+    crown::install();
     ironball::install();
 
     // prevents shield break on belly

@@ -30,8 +30,15 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion = if VarModule::is_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE) { Hash40::new("special_hi_2") } else { Hash40::new("special_hi") };
-    MotionModule::change_motion(fighter.module_accessor, motion, 1.0, 1.0, false, 0.0, false, false);
+    if !VarModule::is_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE) {
+        // shot 1
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 1.0, 1.0, false, 0.0, false, false);
+    }
+    else {
+        // shot 2
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_2"), 1.0, 1.0, false, 0.0, false, false);
+        ControlModule::clear_command_one(fighter.module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_HI);
+    }
     special_hi_set_physics(fighter, false);
     VarModule::on_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE);
     fighter.main_shift(special_hi_main_loop)
@@ -51,11 +58,18 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             return 1.into();
         }
     }
-    if !StatusModule::is_changing(fighter.module_accessor)
-    && StatusModule::is_situation_changed(fighter.module_accessor) {
-        let status = if fighter.is_motion(Hash40::new("special_hi")) { FIGHTER_STATUS_KIND_LANDING.into() } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into() };
-        fighter.change_status(status, false.into());
-        return 1.into();
+    fighter.sub_air_check_dive();
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            let status = if fighter.is_motion(Hash40::new("special_hi")) { FIGHTER_STATUS_KIND_LANDING.into() } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into() };
+            fighter.change_status(status, false.into());
+            return 1.into();
+        }
+        // shot 3 buffer
+        if fighter.is_motion(Hash40::new("special_hi_2"))
+        && !VarModule::is_flag(fighter.object(), vars::duckhunt::status::SPECIAL_HI_ENABLE_SHOT) && fighter.is_cat_flag(Cat1::SpecialHi) {
+            VarModule::on_flag(fighter.battle_object, vars::duckhunt::status::SPECIAL_HI2_KILLSHOT_BUFFERED);
+        }
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_motion(Hash40::new("special_hi")) {
@@ -80,16 +94,18 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         VarModule::off_flag(fighter.object(), vars::duckhunt::status::SPECIAL_HI_JUMP);
         special_hi_set_physics(fighter, true);
     }
-    if VarModule::is_flag(fighter.object(), vars::duckhunt::status::SPECIAL_HI_ENABLE_SHOT)
-    && fighter.is_cat_flag(Cat1::SpecialHi) {
-        if fighter.is_motion(Hash40::new("special_hi")) {
-            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), false.into());
-            return 1.into();
-        }
-        else {
-            // shot 3
-            fighter.change_status(FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
-            return 1.into();
+    if VarModule::is_flag(fighter.object(), vars::duckhunt::status::SPECIAL_HI_ENABLE_SHOT) {
+        if VarModule::is_flag(fighter.battle_object, vars::duckhunt::status::SPECIAL_HI2_KILLSHOT_BUFFERED)
+        || fighter.is_cat_flag(Cat1::SpecialHi) {
+            if fighter.is_motion(Hash40::new("special_hi")) {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), false.into());
+                return 1.into();
+            }
+            else {
+                // shot 3
+                fighter.change_status(FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
+                return 1.into();
+            }
         }
     }
 
@@ -215,6 +231,7 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    fighter.sub_air_check_dive();
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
