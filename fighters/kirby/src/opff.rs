@@ -32,9 +32,6 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn dash_attack_jump_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     && boma.is_situation(*SITUATION_KIND_AIR) {
         if MotionModule::frame(boma) >= 43.0 {

@@ -147,9 +147,6 @@ unsafe fn missile_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn arm_rocket_airdash(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if fighter.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH) && fighter.status_frame() > 16 {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
     }

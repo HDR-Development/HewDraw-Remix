@@ -4,9 +4,6 @@ use super::*;
 use globals::*;
 
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE) {
         if boma.is_pad_flag(PadFlag::SpecialTrigger) {
             boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
@@ -40,9 +37,6 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn dash_attack_air_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     && boma.is_situation(*SITUATION_KIND_AIR)
     && MotionModule::frame(boma) >= 30.0 {

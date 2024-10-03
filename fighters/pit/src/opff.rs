@@ -20,9 +20,6 @@ unsafe fn power_of_flight_cancel(boma: &mut BattleObjectModuleAccessor, status_k
 }
  
 unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) || (boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END) && boma.status_frame() > 6) {
         if (boma.is_situation(*SITUATION_KIND_GROUND) || WorkModule::is_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF))
         && boma.status_frame() > 28 {
@@ -40,7 +37,6 @@ unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAcce
 unsafe fn upperdash_arm_whiff_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END])
     && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
     && MotionModule::frame(fighter.module_accessor) >= MotionModule::end_frame(fighter.module_accessor) - 1.0
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);

@@ -2,10 +2,6 @@ use super::*;
 use smash::app::BattleObjectModuleAccessor;
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-
     // Marth/Lucina frame 6
     // Roy frame 10
     let mut target_frame = 6.0;

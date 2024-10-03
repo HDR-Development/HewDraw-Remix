@@ -26,7 +26,6 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     }
     if fighter.is_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP) {
         if fighter.is_situation(*SITUATION_KIND_AIR)
-        && !StatusModule::is_changing(fighter.module_accessor)
         && VarModule::is_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
                 let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");

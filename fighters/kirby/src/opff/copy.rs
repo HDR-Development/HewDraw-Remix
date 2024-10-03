@@ -495,9 +495,6 @@ unsafe fn pickel_mining(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 
 // Bite Early Throw and Turnaround
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             boma.change_status_req(*FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE_END, false);
