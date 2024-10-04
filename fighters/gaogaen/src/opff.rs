@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- // Handles double jump reset, cancel at the apex, and early activation of the dive
+// Handles double jump reset, cancel at the apex, and early activation of the dive
 unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     if (fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi_start")]) && MotionModule::frame(fighter.module_accessor) > 21.0)
     || (fighter.is_motion(Hash40::new("special_air_hi_turn"))) {
@@ -11,12 +11,6 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
         }
     }
-    // Uncomment for Cross Chop descent to refresh double jump
-    // if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
-    //     if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-    //         WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-    //     }
-    // }
 }
 
 // Incineroar Fthrow Movement
@@ -25,11 +19,9 @@ unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
      && fighter.is_motion(smash::phx::Hash40::new("throw_f"))
      && fighter.is_situation(*SITUATION_KIND_GROUND) 
      && fighter.stick_x() != 0.0 {
-
         let motion_mul = if WorkModule::is_flag(fighter.boma(), *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) {1.0} else {0.5};
         let motion_vec = x_motion_vec(motion_mul, fighter.stick_x());
         KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        
     }
 }
 
@@ -121,32 +113,24 @@ unsafe fn command_grab_joint_rotate(boma: &mut BattleObjectModuleAccessor, rotat
 }
 
 unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_s_start")){
+    if fighter.is_motion(Hash40::new("special_s_start")) {
         if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_ALTERNATE_GRAB) {
             // OTG Grab
-            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_LOW_GRAB){
+            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_LOW_GRAB) {
                 command_grab_joint_rotate(fighter.boma(), 20.0, 14.0, 19.0, 31.0, 46.0);
             }
             // Anti-air grab
-            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_HIGH_GRAB){
+            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_HIGH_GRAB) {
                 command_grab_joint_rotate(fighter.boma(), -50.0, 14.0, 19.0, 31.0, 46.0);
             }
         }
     }
 }
 
-unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_KEEP));
-        fighter.sub_transition_group_check_air_cliff();
-    }
-}
-
 unsafe fn rotate_revenge_uthrow(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("throw_hi")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            revenge_uthrow_rotation(boma, 11.0, 16.0, 17.0, 23.0);
-        }
+    if boma.is_motion(Hash40::new("throw_hi"))
+    && VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
+        revenge_uthrow_rotation(boma, 11.0, 16.0, 17.0, 23.0);
     }
 }
 
@@ -277,7 +261,6 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
-        lariat_ledge_slipoff(fighter);
         rotate_revenge_uthrow(boma);
         fighter.check_hitfall();
         jab_tilt_cancels(fighter, boma);
