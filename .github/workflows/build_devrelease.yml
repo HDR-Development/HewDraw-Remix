@@ -56,11 +56,11 @@ jobs:
     # build the project
     - run: |
         cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }} name=hdr-private && cd ..
+        du -sh *
+        rm -rf target
+        du -sh *
       env:
         HOME: /root
-
-    - run: |
-        du -sh *
 
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
