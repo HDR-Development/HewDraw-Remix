@@ -34,16 +34,12 @@ unsafe extern "C" fn special_lw_yeet_main_loop(weapon: &mut L2CWeaponCommon) -> 
     weapon.clear_lua_stack();
     lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL);
     let speed_x = sv_kinetic_energy::get_speed_x(weapon.lua_state_agent);
-    println!("speed: {}", speed_x);
     weapon.clear_lua_stack();
     lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL);
     let stspeed_x = sv_kinetic_energy::get_stable_speed_x(weapon.lua_state_agent);
     weapon.clear_lua_stack();
-    println!("stable speed: {}", stspeed_x);
     lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL);
     let lmspeed_x = sv_kinetic_energy::get_limit_speed_x(weapon.lua_state_agent);
-    println!("limit speed: {}", lmspeed_x);
-    println!();
     let life = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     if life <= 0 || GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));

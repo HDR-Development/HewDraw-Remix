@@ -5,9 +5,6 @@ use globals::*;
 
 // Mii Swordfighter Airborne Assault Aerial FAF Frame 75
 unsafe fn airborne_assault_lag(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if fighter.is_status(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END) {
         if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 76.0 {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

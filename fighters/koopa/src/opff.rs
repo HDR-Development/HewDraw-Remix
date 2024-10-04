@@ -14,9 +14,6 @@ extern "Rust" {
 }
  
 unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_LW_G].contains(&status_kind) {
         if frame > 20.0 && frame < 31.0 {
             if situation_kind == *SITUATION_KIND_AIR {
@@ -28,9 +25,6 @@ unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32
 
 // Ground Bowser Bomb jump drift
 unsafe fn ground_bowser_bomb_jump_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_LW_G].contains(&status_kind) {
         if frame > 14.0 && frame < 31.0 {
             if stick_x != 0.0 {
@@ -101,17 +95,15 @@ unsafe fn ex_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
             VarModule::off_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
         }
     }
-
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) 
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     && VarModule::is_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH) {
+        VarModule::off_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
         SlowModule::set_whole(boma, 8, 25);
         PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
         PLAY_SE(fighter, Hash40::new("se_koopa_final06")); // excellent sfx
         EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_fire"), Hash40::new("handr"), 3, 0, 0, 0, 0, 0, 1.0, true);
         EffectModule::req_screen(boma, Hash40::new("bg_criticalhit"), false, true, true);
-
-        VarModule::off_flag(boma.object(), ATTACK_S4_EXCELLENT_PUNCH);
     }
 }
 
@@ -121,10 +113,10 @@ pub unsafe fn initialize_fireball(fighter: &mut L2CFighterCommon) {
     }
     //Grant fireball during training mode
     if is_training_mode() {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, 0);
     }
     else {
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, MAX_COOLDOWN);
     }
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_INIT);
 }

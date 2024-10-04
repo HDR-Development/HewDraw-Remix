@@ -110,6 +110,17 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_passivestand(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 24.0, 20.0);
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 41.0, 20.0);
+    frame(lua_state, 41.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -124,4 +135,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_passivestandf", game_passivestand, Priority::Low);
+    agent.acmd("game_passivestandb", game_passivestand, Priority::Low);
 }

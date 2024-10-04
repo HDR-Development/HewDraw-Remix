@@ -4,6 +4,7 @@ use globals::*;
 
 mod copy;
 mod special_hi_h;
+mod special_lw;
 mod special_s;
 
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -242,6 +243,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
 
     copy::install(agent);
-    special_s::install(agent);
     special_hi_h::install(agent);
+    special_lw::install(agent);
+    special_s::install(agent);
 }

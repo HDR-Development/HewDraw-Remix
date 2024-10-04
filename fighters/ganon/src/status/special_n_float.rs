@@ -15,7 +15,6 @@ unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CV
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
         0
     );
-
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
         false,
@@ -29,7 +28,7 @@ unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CV
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -60,7 +59,7 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
             set_accel,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -0.008 // hardcoded value for now
+            -0.015 // hardcoded value for now
         );
         sv_kinetic_energy!(
             set_stable_speed,

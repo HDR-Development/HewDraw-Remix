@@ -5,11 +5,31 @@ use globals::*;
 
 // Ivysaur Razor Leaf Airdodge Cancel
 unsafe fn razorleaf_adc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 24.0 {
         boma.check_airdodge_cancel();
+    }
+}
+
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
+        let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+        WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
+        WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
+        let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
+        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+    }
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && StatusModule::is_changing(fighter.module_accessor) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PFUSHIGISOU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_HI_HOP);
     }
 }
 
@@ -54,6 +74,7 @@ unsafe fn special_lw_track(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     razorleaf_adc(boma, status_kind, situation_kind, cat[0], frame);
+    up_special_freefall(fighter);
     fastfall_specials(fighter);
     special_lw_track(boma);
 }
