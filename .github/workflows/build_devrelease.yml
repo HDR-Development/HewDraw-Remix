@@ -28,8 +28,8 @@ jobs:
     container: 
       image: hewdrawremix/hewdraw-builder:latest
     steps:
-    - name: Free Disk Space (Ubuntu)
-      uses: jlumbroso/free-disk-space@v1.3.1
+    # - name: Free Disk Space (Ubuntu)
+    #   uses: jlumbroso/free-disk-space@v1.3.1
 
     - name: setup python
       uses: actions/setup-python@v5.1.0
@@ -58,6 +58,9 @@ jobs:
         cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }} name=hdr-private && cd ..
       env:
         HOME: /root
+
+    - run: |
+        du -sh *
 
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
