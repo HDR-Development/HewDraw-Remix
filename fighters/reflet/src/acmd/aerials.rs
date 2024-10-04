@@ -429,9 +429,17 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
             AttackModule::clear(boma, 2, false);
         }
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 21.0);
     if is_excute(agent) {
-        AttackModule::clear_all(boma);
+        if !WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+            AttackModule::clear_all(boma);
+        }
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        if WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+            AttackModule::clear_all(boma);
+        }
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {
@@ -483,7 +491,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 2);
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 21.0);
     if is_excute(agent) {
         if WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
             EFFECT_OFF_KIND(agent, Hash40::new("reflet_thunderswoed"), false, false);
