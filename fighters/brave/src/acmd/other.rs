@@ -103,57 +103,112 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_speciallw8(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
-    }
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
-        LAST_EFFECT_SET_RATE(agent, 0.6);
-        FLASH(agent, 0.8, 0.8, 2, 0.1);
-        BURN_COLOR(agent, 4, 1.6, 8, 0.8);
-    }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 32.0);
-    if is_excute(agent) {
-        FLASH_FRM(agent, 4, 1, 1, 1, 0);
-        BURN_COLOR_FRAME(agent, 4, 1, 1, 1, 0);
-    }
-    frame(lua_state, 36.0);
-    if is_excute(agent) {
-        COL_NORMAL(agent);
-        BURN_COLOR_NORMAL(agent);
+        if app::smashball::is_training_mode()
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+            let mut brave_fighter = app::Fighter{battle_object: *(agent.battle_object)};
+            FighterSpecializer_Brave::add_sp(&mut brave_fighter, 100.0);
+        }
     }
 }
 
-unsafe extern "C" fn effect_specialairlw8(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
+        if app::smashball::is_training_mode() {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                let index = VarModule::get_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                if index < 20 {
+                    if index + 1 == 15 {    // account for removed Zoom
+                        VarModule::inc_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                    }
+                    VarModule::inc_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                }
+                else {
+                    VarModule::set_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX, 0);
+                }
+            }
+            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                let index = VarModule::get_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                if index > 0 {
+                    if index - 1 == 15 {    // account for removed Zoom
+                        VarModule::dec_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                    }
+                    VarModule::dec_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+                }
+                else {
+                    VarModule::set_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX, 20);
+                }
+            }
+        }
     }
-    frame(lua_state, 3.0);
+}
+
+unsafe extern "C" fn effect_appeals(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
-        LAST_EFFECT_SET_RATE(agent, 0.6);
-        FLASH(agent, 0.8, 0.8, 2, 0.1);
-        BURN_COLOR(agent, 4, 1.6, 8, 0.8);
+        if app::smashball::is_training_mode() {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 10, 5, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+            }
+            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 10, -5, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+            }
+        }
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 52.0);
     if is_excute(agent) {
-        FLASH_FRM(agent, 4, 1, 1, 1, 0);
-        BURN_COLOR_FRAME(agent, 4, 1, 1, 1, 0);
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 36.0);
+}
+
+unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        COL_NORMAL(agent);
-        BURN_COLOR_NORMAL(agent);
+        if app::smashball::is_training_mode()
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+            if !VarModule::is_flag(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_LOCK) {
+                VarModule::on_flag(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_LOCK);
+                VarModule::set_int(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX, 0);
+            } else {
+                VarModule::off_flag(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_LOCK);
+            }
+        }
+    }
+}
+
+unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        if app::smashball::is_training_mode()
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+            if !VarModule::is_flag(agent.battle_object, vars::brave::instance::MENU_TRAINING_MODE_LOCK) {
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 15, 0, 0, 0, 0, 1.0, true, *EF_FLIP_YZ);
+            }
+            else {
+                EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 15, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+            }
+        }
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 43.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -171,6 +226,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("effect_speciallw8", effect_speciallw8, Priority::Low);
-    agent.acmd("effect_specialairlw8", effect_specialairlw8, Priority::Low);
+    agent.acmd("game_appealhil", game_appealhi, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhi, Priority::Low);
+
+    agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    agent.acmd("game_appealsr", game_appeals, Priority::Low);
+    agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
+    agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
+
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwl", effect_appeallw, Priority::Low);
+    agent.acmd("effect_appeallwr", effect_appeallw, Priority::Low);
 }
