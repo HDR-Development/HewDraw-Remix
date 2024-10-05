@@ -44,11 +44,11 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         let motion = fighter.get_int64(*FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
+        FighterMotionModuleImpl::change_motion_kirby_copy(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
         let motion = fighter.get_int64(*FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
+        FighterMotionModuleImpl::change_motion_kirby_copy(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
     }
 
     fighter.main_shift(special_n_main_loop)
@@ -83,7 +83,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             let motion = fighter.get_int64(*FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
+            FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
         }
     }
 
@@ -91,6 +91,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, special_n_main);
 }

@@ -1333,7 +1333,6 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0100;
-            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0101;
         }
         pub mod status {
             // flags

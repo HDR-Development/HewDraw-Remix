@@ -860,36 +860,6 @@ unsafe fn axe_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
     }
 }
 
-// Richter's Knife Drift
-unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-        }
-    }
-}
-
-// Richter's Knife land cancel
-unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N)
-    && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
-    && boma.is_situation(*SITUATION_KIND_GROUND) {
-        // remove the unthrown knife from richter's hand
-        if (2.0..13.0).contains(&boma.motion_frame())
-        && ArticleModule::is_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE){
-            ArticleModule::remove_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        }
-
-        let landing_lag = 10.0; // amount of frames until richter can act when landing
-        let rate = 27.0 / landing_lag;
-        MotionModule::change_motion(boma, Hash40::new("landing_heavy"), 0.0, rate, false, 0.0, false, false);
-        VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
-        EffectModule::kill_kind(boma, Hash40::new("sys_sp_flash"), true, true);
-    }
-}
-
 // Toon Link's Bow Drift
 unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TOONLINK_SPECIAL_N {
@@ -1358,11 +1328,6 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x31 => blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame),
         // Simon
         0x43 => axe_drift(boma, status_kind, situation_kind, cat[1], stick_y),
-        // Richter
-        0x44 => {
-            knife_drift(boma, status_kind, situation_kind, cat[1], stick_y);
-            knife_lc(boma);
-        },
         // Toon Link
         0x2E => heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y),
         // Young Link
