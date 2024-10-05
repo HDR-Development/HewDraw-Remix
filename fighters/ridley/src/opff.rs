@@ -22,28 +22,28 @@ unsafe fn space_pirate_rush_flight(boma: &mut BattleObjectModuleAccessor, status
 }
 
 // Ridley Wing Blitz Drift
-unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32) {
-    let motion_value1 = 0.7;
-    let motion_value2 = 0.7;
-    if situation_kind == *SITUATION_KIND_AIR
-    && !boma.is_in_hitlag() {
-        if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW].contains(&status_kind) {
-            if stick_x != 0.0 {
-                let motion_vec = x_motion_vec(motion_value1, stick_x);
-                KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-
-        if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B].contains(&status_kind) {
-            if stick_y != 0.0 {
-                let motion_vec = Vector3f{x: 0.0, y: motion_value2 * stick_y.signum(), z: 0.0};
-                KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-    }
-}
+// unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32) {
+//     let motion_value1 = 0.7;
+//     let motion_value2 = 0.7;
+//     if situation_kind == *SITUATION_KIND_AIR
+//     && !boma.is_in_hitlag() {
+//         if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI,
+//             *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW].contains(&status_kind) {
+//             if stick_x != 0.0 {
+//                 let motion_vec = x_motion_vec(motion_value1, stick_x);
+//                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+//             }
+//         }
+//
+//         if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F,
+//             *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B].contains(&status_kind) {
+//             if stick_y != 0.0 {
+//                 let motion_vec = Vector3f{x: 0.0, y: motion_value2 * stick_y.signum(), z: 0.0};
+//                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+//             }
+//         }
+//     }
+// }
 
 // Puts stabbed opponents into footstool state
 // unsafe fn stab_footstool(fighter: &mut L2CFighterCommon) {
@@ -144,7 +144,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //space_pirate_rush_flight(boma, status_kind, situation_kind, stick_x);
-    wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
+    //wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
     //stab_footstool(fighter);
     angled_skewer(fighter);
     fastfall_specials(fighter);
