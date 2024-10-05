@@ -13,6 +13,7 @@ mod can;
 mod clay;
 mod gunman;
 mod gunmanbullet;
+mod reticle;
 
 use smash::{
     lib::{
@@ -57,4 +58,5 @@ pub fn install() {
     clay::install();
     gunman::install();
     gunmanbullet::install();
+    reticle::install();
 }
