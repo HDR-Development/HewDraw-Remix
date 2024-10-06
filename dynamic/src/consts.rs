@@ -1051,13 +1051,11 @@ pub mod vars {
 
             // floats
             pub const ATTACK_CHARGE: i32 = 0x1100;
-            pub const SPECIAL_S3_MISSILE_DETONATE: i32 = 0x1101;
         }
         pub mod instance {
             // flags
             pub const SPECIAL_HI1_LAUNCH_AIR_USED: i32 = 0x0100;
-            pub const SPECIAL_S3_DETONATE_READY: i32 = 0x0101;
-            pub const BOOSTED_ATTACK_AIR_LW_AIRTIME: i32 = 0x0102;
+            pub const BOOSTED_ATTACK_AIR_LW_AIRTIME: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_HI1_LAUNCH_EFFECT_HANDLE: i32 = 0x0100;
@@ -1066,6 +1064,13 @@ pub mod vars {
 
             // floats
             pub const SPECIAL_N3_CHARGE: i32 = 0x0102;
+        }
+    }
+
+    pub mod miigunner_supermissile {
+        pub mod instance {
+            // flags
+            pub const PULSE_DETONATE: i32 = 0x0100;
         }
     }
 

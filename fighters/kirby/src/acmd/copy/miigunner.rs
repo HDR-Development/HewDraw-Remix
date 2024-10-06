@@ -7,10 +7,7 @@ unsafe extern "C" fn game_miigunnerspecialn1firemax(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		ArticleModule::shoot_exist(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
 		WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_SHOOT);
-	} 
-	if is_excute(agent) {
-		AttackModule::clear_all(boma);
-	} 
+	}
 }
 
 unsafe extern "C" fn effect_miigunnerspecialn1firemax(agent: &mut L2CAgentBase) {
@@ -114,12 +111,9 @@ unsafe extern "C" fn sound_miigunnerspecialn1neon(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_miigunnerspecialn1neon(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 2.0);
-    if is_excute(agent) {
-        QUAKE(agent, *CAMERA_QUAKE_KIND_S);
-    }
     frame(lua_state, 3.0);
     if is_excute(agent) {
+		QUAKE(agent, *CAMERA_QUAKE_KIND_L);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

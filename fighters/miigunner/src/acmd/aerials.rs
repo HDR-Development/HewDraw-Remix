@@ -507,7 +507,8 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 43.0);
 	if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		FT_MOTION_RATE_RANGE(agent, 43.0, 50.0, 9.0 + 2.0 * VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE));
+		let charge_mul = if VarModule::is_flag(agent.battle_object, vars::miigunner::instance::BOOSTED_ATTACK_AIR_LW_AIRTIME) { 1.0 } else { 2.0 };
+		FT_MOTION_RATE_RANGE(agent, 43.0, 50.0, 9.0 + charge_mul * VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE));
 	}
 	if is_excute(agent) {
 		if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {

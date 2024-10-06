@@ -10,23 +10,23 @@ pub unsafe extern "C" fn special_n1_fire_main(fighter: &mut L2CFighterCommon) ->
         else {
             Hash40::new("special_air_n1_fire")
         };
-        FighterMotionModuleImpl::change_motion_kirby_copy(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     }
     else {
         let motion = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                Hash40::new("miigunner_special_n1_neon")
+                Hash40::new("special_n1_neon")
             }
             else {
-                Hash40::new("miigunner_special_air_n1_neon")
+                Hash40::new("special_air_n1_neon")
             }
         }
         else {
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                Hash40::new("miigunner_special_n1_fire_max")
+                Hash40::new("special_n1_fire_max")
             }
             else {
-                Hash40::new("miigunner_special_air_n1_fire_max")
+                Hash40::new("special_air_n1_fire_max")
             }
         };
         MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
@@ -54,23 +54,23 @@ pub unsafe extern "C" fn special_n1_fire_main_loop(fighter: &mut L2CFighterCommo
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_WAIT.into() } else { FIGHTER_STATUS_KIND_FALL.into() };
+        let status = fighter.get_status_by_situation(FIGHTER_STATUS_KIND_WAIT, FIGHTER_STATUS_KIND_FALL);
         fighter.change_status(status, false.into());
         return 0.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK, *GROUND_CORRECT_KIND_AIR);
-        if fighter.is_motion(Hash40::new("miigunner_special_n1_fire")) && fighter.is_motion(Hash40::new("miigunner_special_air_n1_fire")) {
-            let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("miigunner_special_n1_fire") } else { Hash40::new("miigunner_special_air_n1_fire") };
+        if fighter.is_motion(Hash40::new("special_n1_fire")) && fighter.is_motion(Hash40::new("special_air_n1_fire")) {
+            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_fire"), Hash40::new("special_air_n1_fire"));
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
         }
-        else if fighter.is_motion(Hash40::new("miigunner_special_n1_fire_max")) && fighter.is_motion(Hash40::new("miigunner_special_air_n1_fire_max")) {
-            let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("miigunner_special_n1_fire_max") } else { Hash40::new("miigunner_special_air_n1_fire_max") };
+        else if fighter.is_motion(Hash40::new("special_n1_fire_max")) && fighter.is_motion(Hash40::new("special_air_n1_fire_max")) {
+            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_fire_max"), Hash40::new("special_air_n1_fire_max"));
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
         }
         else {
-            let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("miigunner_special_n1_neon") } else { Hash40::new("miigunner_special_air_n1_neon") };
+            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_neon"), Hash40::new("special_air_n1_neon"));
             MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
         }
     }
@@ -79,5 +79,5 @@ pub unsafe extern "C" fn special_n1_fire_main_loop(fighter: &mut L2CFighterCommo
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_MIIGUNNER_SPECIAL_N1_FIRE, special_n1_fire_main);
+    agent.status(Main, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_FIRE, special_n1_fire_main);
 }
