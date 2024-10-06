@@ -34,8 +34,7 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
-    if boma.is_motion(Hash40::new("special_air_s_jump_end"))
-    && !StatusModule::is_changing(boma) {
+    if boma.is_motion(Hash40::new("special_air_s_jump_end")) {
         if MotionModule::frame(boma) > 6.0 {
             CancelModule::enable_cancel(boma);
         }

@@ -399,7 +399,6 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK)
     && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
     && CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;

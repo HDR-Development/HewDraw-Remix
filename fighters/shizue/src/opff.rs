@@ -32,10 +32,6 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-
     if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END) 
     && boma.motion_frame() < 4.0 
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) 
@@ -64,9 +60,6 @@ unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind:
 
 //Balloon Trip Cancel
 unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if (MotionModule::frame(fighter.module_accessor) > 6.0 && fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi")])) || fighter.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP]) {
         // Cancel balloon trip early if character is holding shield, allowing for movement
         if fighter.is_button_on(Buttons::Guard) || fighter.is_button_on(Buttons::Catch) || fighter.is_button_on(Buttons::AttackAll) {

@@ -16,6 +16,17 @@ unsafe fn ac_update(fighter: &mut L2CFighterCommon) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_FAILURE,false);
             WorkModule::set_int(fighter.module_accessor, 0x50000000, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TARGET_OBJECT_ID);
 
+            //fighter-specific code
+            let owner_id = WorkModule::get_int(object_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+            if sv_battle_object::is_active(owner_id) {
+                let owner = get_battle_object_from_id(owner_id);
+                // packun
+                if (&mut *(*owner).module_accessor).kind() == *FIGHTER_KIND_PACKUN {
+                    VarModule::set_float(owner, vars::packun::instance::FIRE_POS_X, 0.0);
+                    VarModule::set_float(owner, vars::packun::instance::FIRE_POS_Y, 0.0);
+                }
+            }
+
             //Remove article
             let weapon = get_fighter_common_from_accessor(&mut *(object_boma));
             smash_script::notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));

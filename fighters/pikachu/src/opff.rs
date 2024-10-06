@@ -5,9 +5,6 @@ use globals::*;
 
 // Disable QA jump cancels if not directly QA into the ground
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP) {
         // only allow QAC from QA1
         if WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT) > 1 {

@@ -70,9 +70,20 @@ pub unsafe extern "C" fn regular_end(weapon: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
+pub unsafe extern "C" fn regular_exit(weapon: &mut L2CFighterCommon) -> L2CValue {
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let packun = utils::util::get_battle_object_from_id(owner_id);
+    if (&mut *(*packun).module_accessor).kind() == *FIGHTER_KIND_PACKUN {
+        VarModule::set_float(packun, vars::packun::instance::FIRE_POS_X, 0.0);
+        VarModule::set_float(packun, vars::packun::instance::FIRE_POS_Y, 0.0);
+    }
+    0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, statuses::packun_firebreath::REGULAR, regular_pre);
     agent.status(Main, statuses::packun_firebreath::REGULAR, regular_main);
     agent.status(Exec, statuses::packun_firebreath::REGULAR, regular_exec);
     agent.status(End, statuses::packun_firebreath::REGULAR, regular_end);
+    agent.status(Exit, statuses::packun_firebreath::REGULAR, regular_exit);
 }
