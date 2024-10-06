@@ -9,9 +9,15 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
         }
         return 0.into();
     }
-    if super::calculate_misfire(fighter) == 0 {
+    if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED) {
+        VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
         VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
     }
+    else {
+        if super::calculate_misfire(fighter) == 0 {
+            VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_INIT);
+        }
+    } 
 
     return 0.into();
 }
