@@ -454,6 +454,12 @@ pub trait BomaExt {
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
 
+    // BY SITUATION
+    unsafe fn get_status_by_situation(&mut self, ground_status: LuaConst, air_status: LuaConst) -> L2CValue;
+    unsafe fn get_hash_by_situation(&mut self, ground_hash: Hash40, air_hash: Hash40) -> Hash40;
+    unsafe fn change_kinetic_by_situation(&mut self, ground_kinetic_type: i32, air_kinetic_type: i32) -> i32;
+    unsafe fn ground_correct_by_situation(&mut self, ground_correct_type: i32, air_correct_type: i32) -> i32;
+
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
@@ -778,6 +784,24 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
         return StatusModule::change_status_request_from_script(self, kind, repeat) as i32;
+    }
+
+    unsafe fn get_status_by_situation(&mut self, ground_status: LuaConst, air_status: LuaConst) -> L2CValue {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { ground_status.into() } else { air_status.into() };
+    }
+
+    unsafe fn get_hash_by_situation(&mut self, ground_hash: Hash40, air_hash: Hash40) -> Hash40 {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { ground_hash } else { air_hash };
+    }
+
+    unsafe fn change_kinetic_by_situation(&mut self, ground_kinetic_type: i32, air_kinetic_type: i32) -> i32 {
+        let kinetic = if self.is_situation(*SITUATION_KIND_GROUND) { ground_kinetic_type } else { air_kinetic_type };
+        return KineticModule::change_kinetic(self, kinetic);
+    }
+
+    unsafe fn ground_correct_by_situation(&mut self, ground_correct_type: i32, air_correct_type: i32) -> i32 {
+        let ground_correct = if self.is_situation(*SITUATION_KIND_GROUND) { GroundCorrectKind(ground_correct_type) } else { GroundCorrectKind(ground_correct_type) };
+        return GroundModule::correct(self, ground_correct) as i32;
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
