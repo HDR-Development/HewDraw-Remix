@@ -2468,8 +2468,10 @@
       <float hash="dive_speed_y">2.37</float>
       <float hash="weight">82</float>
       <float hash="landing_attack_air_frame_n">7</float>
-      <float hash="landing_attack_air_frame_f">10</float>
+      <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_b">12</float>
+      <float hash="landing_attack_air_frame_hi">10</float>
+      <float hash="landing_attack_air_frame_lw">11</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.04</float>
       <float hash="shield_radius">9.6</float>
