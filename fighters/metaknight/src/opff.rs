@@ -4,9 +4,6 @@ use super::*;
 use globals::*;
  
 unsafe fn dim_cape_early_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if frame > 11.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {

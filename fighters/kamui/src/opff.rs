@@ -4,9 +4,6 @@ use super::*;
 use globals::*;
 
 unsafe fn pin_drop_waveland(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_END)
     && !boma.is_in_hitlag() && boma.status_frame() >= 13 {
         boma.check_airdodge_cancel();

@@ -159,11 +159,7 @@ unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn side_special_actionability(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END)
-    && !StatusModule::is_changing(boma) {
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END) {
         if MotionModule::frame(boma) > MotionModule::end_frame(boma) - 1.0 {
             boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }

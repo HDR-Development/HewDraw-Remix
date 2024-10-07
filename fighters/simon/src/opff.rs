@@ -5,9 +5,6 @@ use globals::*;
 
  
 unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if frame > 20.0 {
             boma.check_airdodge_cancel();

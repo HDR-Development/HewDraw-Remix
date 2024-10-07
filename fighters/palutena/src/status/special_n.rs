@@ -382,6 +382,11 @@ unsafe extern "C" fn special_n_g_end(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into()
 }
 
+unsafe extern "C" fn special_n_g_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    STOP_SE(fighter, Hash40::new("se_item_club_wind"));
+    return 0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, palutena_special_n_init_common);
@@ -415,4 +420,5 @@ pub fn install(agent: &mut Agent) {
     agent.status(Init, statuses::palutena::SPECIAL_N_G, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_G, special_n_g_main);
     agent.status(End, statuses::palutena::SPECIAL_N_G, special_n_g_end);
+    agent.status(Exit, statuses::palutena::SPECIAL_N_G, special_n_g_exit);
 }

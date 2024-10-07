@@ -42,6 +42,7 @@
       <float hash="charge_speed_f">4.1</float>
       <float hash="charge_speed_b">3.6</float>
       <float hash="charge_speed_hi">3.65</float>
+      <float hash="charge_degree_lw">45</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

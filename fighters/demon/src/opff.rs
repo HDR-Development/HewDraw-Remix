@@ -57,9 +57,6 @@ unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: 
 }
 
 unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if motion_kind == hash40("attack_step_2s") {
         if frame > 16.0 && frame < 18.0{
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -207,7 +204,6 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 
     if fighter.is_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
         if fighter.is_situation(*SITUATION_KIND_AIR)
-        && !StatusModule::is_changing(fighter.module_accessor)
         && VarModule::is_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
                 let speed_x_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_speed_x_mul"));

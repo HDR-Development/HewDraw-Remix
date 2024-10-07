@@ -6,7 +6,6 @@ use globals::*;
 unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
     && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
-    && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && CancelModule::is_enable_cancel(fighter.module_accessor)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_S_WORK_FLAG_EAT_POWER_ESA)
