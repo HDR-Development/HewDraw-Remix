@@ -43,6 +43,8 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
+      <float hash="special_air_lw_feint_x_speed_">0.8</float>
+      <float hash="special_air_lw_move_after_accel_y">0.06</float>
       <float hash="special_lw_attack_mul">1.5</float>
       <float hash="special_lw_shield_size">10</float>
     </struct>

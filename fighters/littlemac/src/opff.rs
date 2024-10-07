@@ -83,7 +83,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N2,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_BLOW_END,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END,
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP
