@@ -54,24 +54,20 @@ pub unsafe extern "C" fn special_n1_fire_main_loop(fighter: &mut L2CFighterCommo
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let status = fighter.get_status_by_situation(FIGHTER_STATUS_KIND_WAIT, FIGHTER_STATUS_KIND_FALL);
-        fighter.change_status(status, false.into());
+        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
         return 0.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK, *GROUND_CORRECT_KIND_AIR);
         if fighter.is_motion(Hash40::new("special_n1_fire")) && fighter.is_motion(Hash40::new("special_air_n1_fire")) {
-            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_fire"), Hash40::new("special_air_n1_fire"));
-            MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
+            fighter.change_motion_inherit_frame_keep_rate_by_situation("special_n1_fire", "special_air_n1_fire", -1.0, 1.0, 0.0);
         }
         else if fighter.is_motion(Hash40::new("special_n1_fire_max")) && fighter.is_motion(Hash40::new("special_air_n1_fire_max")) {
-            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_fire_max"), Hash40::new("special_air_n1_fire_max"));
-            MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
+            fighter.change_motion_inherit_frame_keep_rate_by_situation("special_n1_fire_max", "special_air_n1_fire_max", -1.0, 1.0, 0.0);
         }
         else {
-            let motion = fighter.get_hash_by_situation(Hash40::new("special_n1_neon"), Hash40::new("special_air_n1_neon"));
-            MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, motion, -1.0, 1.0, 0.0);
+            fighter.change_motion_inherit_frame_keep_rate_by_situation("special_n1_neon", "special_air_n1_neon", -1.0, 1.0, 0.0);
         }
     }
 
