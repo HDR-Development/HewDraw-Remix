@@ -334,6 +334,32 @@ pub extern "C" fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub extern "C" fn right_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.right_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X, u8::MAX as i32 - 1);
+        }
+        else if fighter.right_stick_x().signum() != fighter.prev_right_stick_x().signum()
+        || fighter.prev_right_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X);
+        }
+        
+        if fighter.right_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+        }
+        else if fighter.right_stick_y().signum() != fighter.prev_right_stick_y().signum()
+        || fighter.prev_right_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y);
+        }
+    }
+}
+
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 

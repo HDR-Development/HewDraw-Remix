@@ -174,13 +174,13 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         let sdi_mul = hashmap["stop_delay_"].get_f32();
         // get stick x/y length
         // uses cstick's value if cstick is on (for Double Stick DI)
-        let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && !fighter.is_button_on(Buttons::CStickOverride) {
             ControlModule::get_sub_stick_x(fighter.module_accessor)
         }
         else {
             ControlModule::get_stick_x(fighter.module_accessor)
         };
-        let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && !fighter.is_button_on(Buttons::CStickOverride) {
             ControlModule::get_sub_stick_y(fighter.module_accessor)
         }
         else {
