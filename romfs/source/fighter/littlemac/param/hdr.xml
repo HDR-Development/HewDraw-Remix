@@ -2,6 +2,6 @@
 <struct>
     <struct hash="power_meter">
         <float hash="parry_meter_gain">20.0</float>
-        <float hash="counter_meter_gain">15.0</float>
+        <float hash="counter_meter_gain">10.0</float>
     </struct>
 </struct>
