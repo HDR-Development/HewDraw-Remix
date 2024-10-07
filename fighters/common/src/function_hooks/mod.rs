@@ -785,6 +785,9 @@ pub fn install() {
         // Krool and Pyra are in their respective modules.
         // Gives attacker less clank hitlag than defender
         skyline::patching::Patch::in_text(0x3e0b48).data(0x1E204160);
+
+        // Disables airdodge refresh on hit
+        skyline::patching::Patch::in_text(0x632530).nop();
     }
     skyline::install_hooks!(
         before_collision,
