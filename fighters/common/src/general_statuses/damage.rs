@@ -303,7 +303,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
 unsafe extern "C" fn get_angle_factor(angle_threshold: f32, angle: f32) -> f32 {
     let angle_threshold = angle_threshold.to_radians();
     let angle = (90.0 - ((angle % 180.0).abs() - 90.0).abs()).to_radians();
-    if angle <= angle_threshold { return 0.0; }
+    if angle <= angle_threshold { return 1.0; }
 
     // magic JOB math
     let angle_factor = ((angle_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
@@ -321,7 +321,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let angle_threshold = 29.358;
     let speed_start_horizontal = 4.65; // the start of scaling at angles below the angle_threshold
     let speed_start_vertical = 5.63; // the start of scaling at completely vertical angles
-    let speed_end = 7.4; // the end of scaling
+    let speed_end = 7.5; // the end of scaling
 
     // calculate true speed_start using angle
     let angle_factor = get_angle_factor(angle_threshold, angle); // the actual angle factor
