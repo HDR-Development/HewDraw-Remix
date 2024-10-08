@@ -138,16 +138,8 @@ unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: 
     let kb_end = 250.0;
 
     let ratio = ((kb - kb_start) / (kb_end - kb_start));
-    if ratio <= 0.0 {
-        return min;
-    }
-    if ratio >= 1.0 {
-        return max;
-    }
-
-    let scalar = max - min;
-    let hitlag_mul = ratio.powf(power) * scalar + min;
-    return hitlag_mul.clamp(min, max);
+    let hitlag_mul = util::nlerp(min, max, power, ratio);
+    return hitlag_mul;
 }
 
 // This runs directly after knockback is calculated

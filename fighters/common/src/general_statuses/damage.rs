@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use interpolation::Lerp;
 use utils::game_modes::CustomMode;
 
 pub fn install() {
@@ -297,55 +298,51 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     }
 }
 
+// calculates launch angle factor
+// "compares the length of the vector to the corner of the screen, to the length of the kb vector" -JOB
+unsafe extern "C" fn get_angle_factor(angle_threshold: f32, angle: f32) -> f32 {
+    let angle_threshold = angle_threshold.to_radians();
+    let angle = (90.0 - ((angle % 180.0).abs() - 90.0).abs()).to_radians();
+    if angle <= angle_threshold { return 0.0; }
+
+    // magic JOB math
+    let angle_factor = ((angle_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
+        / ((angle.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt();
+    return angle_factor;
+}
+
 unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     fighter: &mut L2CFighterCommon,
     factor: L2CValue, // Labeled this way because if shot out of a tornado, the game will pass in your hitstun frames instead of speed.
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-    let min_mul = 1.0;
-    let max_mul = 1.8;
-    let power = 1.2;
-    let speed_start = 4.65;
-    let speed_end = 7.5;
-    let speed = factor.get_f32();
-    //dbg!(speed);
-
     let angle = angle.get_f32();
-    let angle_from_horizontal = 90.0 - ((angle % 180.0).abs() - 90.0).abs();  // value of 0-90
-    let angle_mul_threshold = 29.358_f32.to_radians();  // angle from horizontal at which angle-based speedup mul begins applying
-    let min_angle_mul = 0.825;  // applied at straight-vertical angles
-    let max_angle_mul = 1.0;  // applied at and below angle_mul_threshold
-    let angle_mul = if angle_from_horizontal >= angle_mul_threshold {
-        let angle_rad = angle_from_horizontal.to_radians();
-        let angle_factor =  ((angle_mul_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_mul_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
-            / ((angle_rad.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_rad.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt();
-        let ratio = (1.0 - angle_factor) / (1.0 - 0.693);
-        interpolation::Lerp::lerp(&max_angle_mul, &min_angle_mul, &ratio)
-    } else {
-        1.0
-    };
-    
-    let adjusted_speed_start = speed_start / angle_mul;
+    let angle_threshold = 29.358;
+    let speed_start_horizontal = 4.65; // the start of scaling at angles below the angle_threshold
+    let speed_start_vertical = 5.63; // the start of scaling at completely vertical angles
+    let speed_end = 7.4; // the end of scaling
 
-    if check_damage_speed_up_fail(fighter) || speed <= adjusted_speed_start {
+    // calculate true speed_start using angle
+    let angle_factor = get_angle_factor(angle_threshold, angle); // the actual angle factor
+    let ratio_base = get_angle_factor(angle_threshold, 90.0); // the max angle factor
+    let ratio = (1.0 - angle_factor) / (1.0 - ratio_base);
+    let speed_start = speed_start_horizontal.lerp(&speed_start_vertical, &ratio);
+
+    // exit if speed is too slow
+    let speed = factor.get_f32();
+    if check_damage_speed_up_fail(fighter) || speed <= speed_start {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         return;
     }
 
-    let ratio = ((speed - adjusted_speed_start) / (speed_end - adjusted_speed_start));
-    let speed_up_mul = if ratio <= 0.0 {
-        min_mul
-    } else if ratio >= 1.0 {
-        max_mul
-    } else {
-        let scalar = max_mul - min_mul;
-        let mul = ratio.powf(power) * scalar + min_mul;
-        mul.clamp(min_mul, max_mul)
-    };
-
-    //dbg!(speed_up_mul);
+    // calculate speed_up_mul
+    let min_mul = 1.0;
+    let max_mul = 1.8;
+    let power = 1.2;
+    let ratio = ((speed - speed_start) / (speed_end - speed_start));
+    let speed_up_mul = util::nlerp(min_mul, max_mul, power, ratio);
 
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
     WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
