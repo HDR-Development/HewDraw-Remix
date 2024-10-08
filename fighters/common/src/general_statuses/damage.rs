@@ -304,7 +304,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     some_bool: L2CValue
 ) {
     let min_mul = 1.0;
-    let max_mul = 1.75;
+    let max_mul = 1.8;
     let power = 1.2;
     let speed_start = 4.65;
     let speed_end = 7.5;
@@ -326,15 +326,15 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
         1.0
     };
     
-    let adjusted_speed = speed * angle_mul;
+    let adjusted_speed_start = speed_start / angle_mul;
 
-    if check_damage_speed_up_fail(fighter) || adjusted_speed <= speed_start {
+    if check_damage_speed_up_fail(fighter) || speed <= adjusted_speed_start {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
         return;
     }
 
-    let ratio = ((adjusted_speed - speed_start) / (speed_end - speed_start));
+    let ratio = ((speed - adjusted_speed_start) / (speed_end - adjusted_speed_start));
     let speed_up_mul = if ratio <= 0.0 {
         min_mul
     } else if ratio >= 1.0 {
