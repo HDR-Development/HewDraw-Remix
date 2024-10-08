@@ -25,6 +25,8 @@ const SMOKE_FX: [u64 ; 16] = [hash40("sys_atk_smoke"),
 //=================================================================
 #[skyline::hook(replace=smash::app::sv_animcmd::EFFECT)]
 unsafe fn EFFECT_hook(lua_state: u64) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
     let mut hitbox_params: [L2CValue ; 16] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];
@@ -33,7 +35,7 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
 
-    let mut reduce_size = false;
+    let mut effect_size_mul = 1.0;
     let mut reduce_alpha = false;
 
     l2c_agent.clear_lua_stack();
@@ -43,7 +45,17 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
             if SHOCKWAVE_FX.contains(&effect_name.hash) {
-                reduce_size = true;
+                effect_size_mul = if effect_name.hash == hash40("sys_nopassive") {
+                    0.5
+                } else {
+                    0.7
+                };
+
+                let no_rapid_frame_value = WorkModule::get_param_int(boma, hash40("common"), hash40("no_rapid_frame_value"));
+                if ControlModule::get_trigger_count_prev(boma, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xff < no_rapid_frame_value {
+                    effect_size_mul = 0.5;
+                    hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
+                }
             }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
@@ -51,9 +63,9 @@ unsafe fn EFFECT_hook(lua_state: u64) {
             l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
         }
         // Index of effect size
-        else if i == 8 && reduce_size {
+        else if i == 8 && effect_size_mul != 1.0 {
             let size = hitbox_params[i as usize].get_f32();
-            let mut new_size: L2CValue = L2CValue::new_num(size * 0.7);
+            let mut new_size: L2CValue = L2CValue::new_num(size * effect_size_mul);
             l2c_agent.push_lua_stack(&mut new_size);
         }
         else {
@@ -80,7 +92,7 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
 
-    let mut reduce_size = false;
+    let mut effect_size_mul = 1.0;
     let mut reduce_alpha = false;
 
     l2c_agent.clear_lua_stack();
@@ -90,7 +102,11 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
             if SHOCKWAVE_FX.contains(&effect_name.hash) {
-                reduce_size = true;
+                effect_size_mul = if effect_name.hash == hash40("sys_nopassive") {
+                    0.5
+                } else {
+                    0.7
+                };
             }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
@@ -99,9 +115,9 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
             //l2c_agent.push_lua_stack(&mut aux);
             l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
         } 
-        else if i == 8 && reduce_size {
+        else if i == 8 && effect_size_mul != 1.0 {
             let size = hitbox_params[i as usize].get_f32();
-            let mut new_size: L2CValue = L2CValue::new_num(size * 0.7);
+            let mut new_size: L2CValue = L2CValue::new_num(size * effect_size_mul);
             l2c_agent.push_lua_stack(&mut new_size);
         }
         else {
@@ -128,7 +144,7 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
         hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
     }
 
-    let mut reduce_size = false;
+    let mut effect_size_mul = 1.0;
     let mut reduce_alpha = false;
 
     l2c_agent.clear_lua_stack();
@@ -138,7 +154,11 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
             if SHOCKWAVE_FX.contains(&effect_name.hash) {
-                reduce_size = true;
+                effect_size_mul = if effect_name.hash == hash40("sys_nopassive") {
+                    0.5
+                } else {
+                    0.7
+                };
             }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
@@ -147,9 +167,9 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
             //l2c_agent.push_lua_stack(&mut aux);
             l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
         } 
-        else if i == 9 && reduce_size {
+        else if i == 9 && effect_size_mul != 1.0 {
             let size = hitbox_params[i as usize].get_f32();
-            let mut new_size: L2CValue = L2CValue::new_num(size * 0.7);
+            let mut new_size: L2CValue = L2CValue::new_num(size * effect_size_mul);
             l2c_agent.push_lua_stack(&mut new_size);
         }
         else {
