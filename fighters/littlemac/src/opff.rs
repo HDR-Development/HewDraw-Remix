@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor) {
     if !sv_information::is_ready_go()
     || boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
@@ -19,7 +19,7 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL,
         *FIGHTER_STATUS_KIND_THROWN];
-    if damage_statuses.contains(&status_kind) {
+    if damage_statuses.contains(&boma.status()) {
         if StatusModule::is_changing(boma) {
             //println!();
             //println!("HIT!");
@@ -47,17 +47,17 @@ unsafe fn handle_ko_meter_decrement(boma: &mut BattleObjectModuleAccessor, statu
 }
 
 // Tech Roll distance help
-unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, facing: f32, frame: f32) {
-    if frame < 6.0 {
-        let mut motion_vec = Vector3f{x: 1.75, y: 0.0, z: 0.0};
-        if motion_kind == hash40("passive_stand_f") {
-            motion_vec.x *= facing;
-        } else if motion_kind == hash40("passive_stand_b") {
-            motion_vec.x *= -facing;
-        } else {
-            return; // Break out if not passive_stand_x
+unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[Hash40::new("passive_stand_f"), Hash40::new("passive_stand_b")]) {
+        if boma.motion_frame() < 6.0 {
+            let mut motion_vec = Vector3f{x: 1.75, y: 0.0, z: 0.0};
+            if boma.is_motion(Hash40::new("passive_stand_f")) {
+                motion_vec.x *= boma.lr();
+            } else if boma.is_motion(Hash40::new("passive_stand_b")) {
+                motion_vec.x *= -boma.lr();
+            }
+            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
-        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
     }
 }
 
@@ -125,9 +125,9 @@ unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     }
 }
 
-pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    handle_ko_meter_decrement(boma, status_kind);
-    tech_roll_help(boma, motion_kind, facing, frame);
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    handle_ko_meter_decrement(boma);
+    tech_roll_help(boma);
     up_special_proper_landing(fighter);
     dreamland_express(fighter);
     fastfall_specials(fighter);
@@ -143,7 +143,7 @@ pub extern "C" fn littlemac_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFight
 
 pub unsafe fn littlemac_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
 

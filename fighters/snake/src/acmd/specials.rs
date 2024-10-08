@@ -81,7 +81,7 @@ unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {
     }
     frame(lua_state, 64.0);
     if !VarModule::is_flag(agent.battle_object, vars::snake::instance::SPECIAL_S_FORCE_RELOAD) {
-        FT_MOTION_RATE(agent, 1.0);
+        FT_MOTION_RATE_RANGE(agent, 64.0, 80.0, 21.0);
     }
     else {
         FT_MOTION_RATE_RANGE(agent, 64.0, 80.0, 25.0);
