@@ -337,3 +337,14 @@ pub unsafe extern "C" fn is_no_finishing_hit(attacker_boma: &mut BattleObjectMod
     }
     return false;
 }
+
+// non-linear interpolation
+// interpolates between min and max at ratio (0.0 < ratio < 1.0)
+// using a curve to the power of power
+// if power == 1.0, that's just linear interpolation.
+pub unsafe extern "C" fn nlerp(min: f32, max: f32, power: f32, ratio: f32) -> f32 {
+    if ratio <= 0.0 { return min; }
+    if ratio >= 1.0 { return max; }
+    let nlerp = (ratio.powf(power) * (max - min) + min).clamp(min, max);
+    return nlerp;
+}

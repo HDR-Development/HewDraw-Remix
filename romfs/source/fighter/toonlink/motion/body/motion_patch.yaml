@@ -20,7 +20,7 @@ attack_13:
     cancel_frame: 34
 attack_11:
   extra:
-    cancel_frame: 18
+    cancel_frame: 20
 attack_hi4:
   extra:
     cancel_frame: 48
