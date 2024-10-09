@@ -30,7 +30,7 @@ appeal_s_special:
     no_stop_intp: false
 attack_11:
   extra:
-    cancel_frame: 16
+    cancel_frame: 15
 attack_12:
   extra:
     cancel_frame: 17
@@ -39,7 +39,7 @@ attack_air_b:
     cancel_frame: 32
 attack_air_f:
   extra:
-    cancel_frame: 52
+    cancel_frame: 47
 attack_air_hi:
   extra:
     cancel_frame: 33
@@ -48,7 +48,7 @@ attack_dash:
     cancel_frame: 38
 attack_hi3:
   extra:
-    cancel_frame: 32
+    cancel_frame: 29
 attack_hi4:
   extra:
     cancel_frame: 48
