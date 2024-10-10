@@ -22,11 +22,14 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            // burn an extra bar of Elwind on upB1 (totals 2 bars)
-            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+unsafe fn elwind_cost(fighter: &mut L2CFighterCommon) {
+    //cost of each elwind 1 -> 2
+    //if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2]) 
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && StatusModule::is_changing(fighter.module_accessor) {
+        fighter.dec_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
         }
     }
 }
@@ -39,12 +42,10 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw"),
     ])
-    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0 {
-        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY);
-        if VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0
-        && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
-        && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard)
-        && !StatusModule::is_changing(boma) {
+    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY) > 0 {
+        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY);
+        if !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
+        && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard) {
             let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
             if WorkModule::get_int(boma, levin) > 0 {
                 if WorkModule::get_int(boma, levin) == 1 {
@@ -79,11 +80,11 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
         || fighter.is_situation(*SITUATION_KIND_CLIFF)
         || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
     {
-        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
     if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
 }
@@ -124,7 +125,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
-    elwind1_burn(fighter);
+    elwind_cost(fighter);
     levin_leniency(fighter, boma);
     sword_length(boma);
     up_special_freefall(fighter);

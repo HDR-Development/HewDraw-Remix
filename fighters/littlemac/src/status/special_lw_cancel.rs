@@ -78,9 +78,6 @@ unsafe extern "C" fn special_lw_cancel_main_loop(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn special_lw_cancel_main_loop_electric_boogaloo(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         match VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_LW_CANCEL_TYPE) {
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into()),
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_B => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into()),
-            vars::littlemac::SPECIAL_LW_CANCEL_TYPE_ESCAPE_F => fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GUARD => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_GROUND_JUMP => fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), false.into()),
             vars::littlemac::SPECIAL_LW_CANCEL_TYPE_NONE => fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into()),

@@ -7,7 +7,7 @@ use smash::app::{
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
-use crate::InputModule;
+use crate::{InputModule, VarModule};
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -440,6 +440,7 @@ pub trait BomaExt {
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
     unsafe fn status(&mut self) -> i32;
+    unsafe fn lr(&mut self) -> f32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -525,8 +526,9 @@ pub trait BomaExt {
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
 
     /// check for hitfall (should be called once per frame)
-    unsafe fn check_hitfall(&mut self);
+    unsafe fn check_hitfall(&mut self) -> bool;
     unsafe fn check_airdash(&mut self);
+    unsafe fn check_magicseries(&mut self);
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
@@ -1012,6 +1014,11 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::status_kind(self);
     }
 
+    /// gets the current facing direction of the fighter
+    unsafe fn lr(&mut self) -> f32 {
+        return PostureModule::lr(self);
+    }
+
     /// If update_lr is true, we set your facing direction based on your stick position
     /// If skip_other_checks is true, we do not check for USmash
     unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
@@ -1206,51 +1213,26 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// checks whether you should hitfall (call this once per frame)
-    unsafe fn check_hitfall(&mut self) {
-        if self.is_situation(*SITUATION_KIND_AIR) && self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-        {
-            /* this is written this way because stick_y_flick wont update during
-                hitlag, which means we need a flag to allow you to hitfall 1 frame
-                after the end of hitlag as well, and we need to check previous
-                stick y directly to detect hitfall. That way, with the 5 frame buffer,
-                if you input a fastfall during hitlag, it will get registered after
-                the hitlag is over. Without the HITFALL_BUFFER flag, you have to
-                input the fastfall BEFORE you hit the move, only.
-            */
-            if !AttackModule::is_infliction_status(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) || AttackModule::is_infliction(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) {
-                crate::VarModule::set_int(
-                    self.object(),
-                    crate::consts::vars::common::instance::HITFALL_BUFFER,
-                    0,
-                );
-            }
-
-            if AttackModule::is_infliction_status(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            )
-            && !AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
-                crate::VarModule::inc_int(
-                    self.object(),
-                    crate::consts::vars::common::instance::HITFALL_BUFFER,
-                );
-            }
-
-            let buffer = crate::VarModule::get_int(
-                self.object(),
-                crate::consts::vars::common::instance::HITFALL_BUFFER,
-            );
-
-            if self.is_cat_flag(Cat2::FallJump) && self.stick_y() < 0.0 && 0 < buffer && buffer <= 5 {
-                WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
+    unsafe fn check_hitfall(&mut self) -> bool {
+        if !self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+            return false;
         }
+
+        if self.is_in_hitlag() {
+            let dive_cont_value = self.get_param_float("common", "dive_cont_value");
+            let dive_flick_frame_value = self.get_param_int("common", "dive_flick_frame_value");
+            if self.left_stick_y() <= dive_cont_value
+            && VarModule::get_int(self.object(), vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
+            && AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT) {
+                VarModule::on_flag(self.object(), vars::common::status::SHOULD_HITFALL);
+            }
+        } else if VarModule::is_flag(self.object(), vars::common::status::SHOULD_HITFALL) {
+            WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            VarModule::off_flag(self.object(), vars::common::status::SHOULD_HITFALL);
+            return true;
+        }
+
+        return false;
     }
 
     unsafe fn check_airdash(&mut self) {
@@ -1261,10 +1243,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             let speed_x = KineticModule::get_sum_speed_x(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             // lets make sure not to divide by zero
-            let speed_x_adjust = match speed_x {
-                0.0 => 0.01,
-                _ => 0.0
-            };
+            let speed_x_adjust = if speed_x == 0.0 { 0.01 } else { 0.0 };
             let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
 
             let pos = Vector3f { x: 0., y: 3., z: 0.};
@@ -1296,7 +1275,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             );
         }
 
-        if self.motion_frame() >= 4.0
+        if self.motion_frame() >= 6.0
         && !CancelModule::is_enable_cancel(self) {
             CancelModule::enable_cancel(self);
         }
@@ -1304,6 +1283,79 @@ impl BomaExt for BattleObjectModuleAccessor {
         if self.is_situation(*SITUATION_KIND_AIR) {
             let fighter = crate::util::get_fighter_common_from_accessor(self);
             fighter.sub_air_check_fall_common();
+        }
+    }
+
+    unsafe fn check_magicseries(&mut self) {
+        // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+        if CancelModule::is_enable_cancel(self) 
+        || self.is_in_hitlag() 
+        || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
+            return;
+        }
+
+        let status_kind = StatusModule::status_kind(self);
+        
+        // Tilt cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackHi3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+            }
+            if self.is_cat_flag(Cat1::AttackLw3) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+            }
+        }
+    
+        // Smash cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::AttackS4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackHi4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+            }
+            if self.is_cat_flag(Cat1::AttackLw4) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+            }
+        }
+    
+        // Special cancels
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR
+        ].contains(&status_kind) {
+            if self.is_cat_flag(Cat1::SpecialN) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialS) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialHi) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+            }
+            if self.is_cat_flag(Cat1::SpecialLw) {
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+            }
         }
     }
 

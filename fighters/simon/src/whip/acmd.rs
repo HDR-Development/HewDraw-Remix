@@ -12,29 +12,12 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_MOVE);
         WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-            agent.battle_object as *mut Weapon as *mut smash::app::Weapon
+            agent.battle_object as *mut smash::app::Weapon
         );
         WeaponSpecializer_SimonWhip::set_node_fix_flag_list(
-            agent.battle_object as *mut Weapon as *mut smash::app::Weapon,
+            agent.battle_object as *mut smash::app::Weapon,
             6, 7, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1
-        );
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
     }
 }
 
@@ -43,17 +26,11 @@ unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 0.0);
     if is_excute(agent) {
-        WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-            agent.battle_object as *mut Weapon,
-            true
-        );
+        WeaponSpecializer_SimonWhip::set_chain_2_visibility(agent.battle_object as *mut smash::app::Weapon, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-            agent.battle_object as *mut Weapon,
-            false
-        );
+        WeaponSpecializer_SimonWhip::set_chain_2_visibility(agent.battle_object as *mut smash::app::Weapon, false);
     }
 }
 

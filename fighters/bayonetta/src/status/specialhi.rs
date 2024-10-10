@@ -8,8 +8,8 @@ unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CV
 
 unsafe fn set_lag(fighter: &mut L2CFighterCommon) { 
     //vanilla: if special lag variable < lag to be set from current status, skips it to keep the higher number (the problem w whiff lag). Multiplies special lag by landing frame mul then sets it over lag variable (not sure if applicable here but idk)
-    let resources = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) as f32;
-    let dabk = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::DABK_COUNT) as f32; //lag added to base abk lag
+    let resources = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT) as f32;
+    let dabk = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_S_DABK_COUNT) as f32; //lag added to base abk lag
     let abk_total_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) as f32;
     let witch_twist_count = fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT) as f32;
     let whiff_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lag.whiff_lag"); //6

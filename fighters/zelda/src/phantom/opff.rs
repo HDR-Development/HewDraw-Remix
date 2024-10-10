@@ -10,11 +10,11 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
     let zelda_boma = &mut *(*zelda).module_accessor;
     //check if phantom landed a hit
     if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
+        VarModule::on_flag(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT); 
     }
     //apply death timer to destroyed phantom if it didn't land a clean hit
-    if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {
-        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED);
+    if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT) {
+        VarModule::on_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM);
     }
     //misc mechanics
     if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {

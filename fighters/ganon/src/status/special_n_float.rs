@@ -15,7 +15,6 @@ unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CV
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
         0
     );
-
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
         false,
@@ -29,11 +28,11 @@ unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CV
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let cancel = VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
+    let cancel = VarModule::is_flag(fighter.battle_object, vars::ganon::status::SPECIAL_N_END);
     let frame =
     if cancel {
         59.0
@@ -74,14 +73,14 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Increases Ganon's fall speed when this flag is enabled.
-    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE) {
+    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_FALL_SPEED) {
         sv_kinetic_energy!(
             set_stable_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -0.25 // hardcoded value for now
         );
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
+        VarModule::off_flag(fighter.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_FALL_SPEED);
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_air_check_fall_common().get_bool() {
@@ -94,7 +93,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
         return 0.into();
     }
     // Only perform these actions if vars::ganon::status::FLOAT_ENABLE_ACTIONS is true.
-    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS) {
+    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION) {
         // if the proper transition terms are enabled, these functions will check for
         // if Ganon performs an aerial, airdodge, or a double jump.
         if fighter.sub_transition_group_check_air_cliff().get_bool()
@@ -106,7 +105,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
         // If Special is pressed, enable a flag and transition into the next status.
         if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0
         || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
-            VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::ganon::status::SPECIAL_N_END);
             MotionModule::change_motion(
                 fighter.module_accessor,
                 Hash40::new("float"),
@@ -117,7 +116,20 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
                 false,
                 false
             );
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                0.0,
+                speed_y,
+                0.0,
+                0.0,
+                0.0
+            );
             return 0.into();
         }
     }

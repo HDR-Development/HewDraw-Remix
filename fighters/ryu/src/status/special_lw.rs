@@ -1,5 +1,30 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+pub unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_LW);
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_ENABLE_INSTALL) {
+        VarModule::set_flag(
+            fighter.battle_object, 
+            vars::shotos::status::MAGIC_SERIES_CANCEL_ENABLED, 
+            MeterModule::level(fighter.battle_object) >= 4
+        );
+        MeterModule::drain_direct(fighter.battle_object, 1.0 * MeterModule::meter_per_level(fighter.battle_object));
+    } else {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::status::MAGIC_SERIES_CANCEL_ENABLED);
+    }
+    smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_ENABLE_INSTALL);
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
+}
+
 // statuses::ryu::INSTALL
 
 unsafe extern "C" fn special_lw_install_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -34,7 +59,7 @@ unsafe extern "C" fn special_lw_install_main(fighter: &mut L2CFighterCommon) -> 
     special_lw_install_set_kinetic(fighter);
     // install should only have been allowed if we had max meter upon entering DSpecial, so we set meter to max just in case there was a metered DSpecial cancel
     MeterModule::add(fighter.battle_object, (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())) - MeterModule::meter(fighter.battle_object));
-    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL);
     EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handl"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
     EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_thunder"), Hash40::new("handr"), &Vector3f::new(0.0, 0.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.3, false, 0, 0, 0, 0, 0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_install_main_loop as *const () as _))
@@ -113,7 +138,9 @@ unsafe extern "C" fn special_lw_install_set_kinetic(fighter: &mut L2CFighterComm
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::ryu::INSTALL, special_lw_install_pre);
-    agent.status(Main, statuses::ryu::INSTALL, special_lw_install_main);
-    agent.status(End, statuses::ryu::INSTALL, special_lw_install_end);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+    agent.status(Pre, statuses::ryu::SPECIAL_LW_INSTALL, special_lw_install_pre);
+    agent.status(Main, statuses::ryu::SPECIAL_LW_INSTALL, special_lw_install_main);
+    agent.status(End, statuses::ryu::SPECIAL_LW_INSTALL, special_lw_install_end);
 }

@@ -167,7 +167,7 @@ unsafe extern "C" fn game_specialairsthrow(agent: &mut L2CAgentBase) {
 
         // calculate angle to rotate Lucario's model based on knockback angle
         let rot = 270 - kb_angle;
-        VarModule::set_int(agent.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE, rot as i32);
+        VarModule::set_int(agent.battle_object, vars::lucario::status::SPECIAL_S_ROT_ANGLE, rot as i32);
         
         MeterModule::watch_damage(agent.battle_object, true);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, kb_angle, 66, 0, 15, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
@@ -552,8 +552,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairsthrow", expression_specialairsthrow, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
-    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
-    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("game_specialhimove", game_specialhimove, Priority::Low);
     agent.acmd("expression_specialhimove", expression_specialhimove, Priority::Low);

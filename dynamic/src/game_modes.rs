@@ -9,6 +9,8 @@ pub enum CustomMode {
     HitfallMode = 2,
     AirdashMode = 3,
     Smash64Mode = 4,
+    MagicSeriesMode = 5,
+    ElementMode = 6,
 }
 
 impl fmt::Display for CustomMode {
@@ -19,6 +21,8 @@ impl fmt::Display for CustomMode {
             CustomMode::HitfallMode => write!(f, "Hitfall"),
             CustomMode::AirdashMode => write!(f, "Airdash"),
             CustomMode::Smash64Mode => write!(f, "Smash64"),
+            CustomMode::MagicSeriesMode => write!(f, "MagicSeries"),
+            CustomMode::ElementMode => write!(f, "Element"),
         }
     }
 }
@@ -34,6 +38,8 @@ impl FromStr for CustomMode {
             "hitfall"  => Ok(CustomMode::HitfallMode),
             "airdash" => Ok(CustomMode::AirdashMode),
             "smash64" => Ok(CustomMode::Smash64Mode),
+            "magicseries" => Ok(CustomMode::MagicSeriesMode),
+            "element" => Ok(CustomMode::ElementMode),
             _      => Err(()),
         }
     }
@@ -48,6 +54,9 @@ extern "Rust" {
 
     #[link_name = "hdr__game_modes__signal_new_game"]
     fn _signal_new_game();
+
+    #[link_name = "hdr__game_modes__get_melee_mode"]
+    fn _get_melee_mode() -> i32;
 }
 
 pub fn is_custom_mode() -> bool {
@@ -65,5 +74,11 @@ pub fn get_custom_mode() -> Option<HashSet<CustomMode>> {
 pub fn signal_new_game() {
     unsafe {
         _signal_new_game()
+    }
+}
+
+pub fn get_melee_mode() -> i32 {
+    unsafe {
+        _get_melee_mode()
     }
 }

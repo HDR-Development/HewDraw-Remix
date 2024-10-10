@@ -64,8 +64,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
     ]) {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_FADC);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_ENABLE_FADC);
     }
 
     // Re-enables the ability to use sideB when connecting to ground or cliff
@@ -79,16 +79,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     || fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_DAMAGE,
-        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
-    {
+    ]) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
     }
 
@@ -318,6 +309,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
     VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_N_EX_NUM, 0);
+    smashline::update_weapon_count(*WEAPON_KIND_KEN_HADOKEN, 2);
 }
 
 pub fn install(agent: &mut Agent) {

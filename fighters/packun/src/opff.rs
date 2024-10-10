@@ -61,7 +61,7 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
     // handle speed application once
-    if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS) {
+    if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_ENABLE_CHANGE_SPEED) {
         if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
             apply_status_speed_mul(fighter, 1.0);
         } else if fighter.is_status_one_of(&[
@@ -77,12 +77,12 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
             apply_status_speed_mul(fighter, 0.84);
         }
-        VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
+        VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_ENABLE_CHANGE_SPEED);
     }
 
     if fighter.status() != VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS) {
         //println!("Status is changing!");
-        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
+        VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_ENABLE_CHANGE_SPEED);
         VarModule::set_int(fighter.object(), vars::packun::instance::STANCE_STATUS, fighter.status());
         //println!("new stance status: {}", VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS));
     }
@@ -161,10 +161,10 @@ unsafe fn sspecial_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.3);
+        VarModule::set_float(boma.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.3);
     }
     else {
-        VarModule::set_float(boma.object(), vars::packun::instance::PTOOIE_SCALE, 1.0);
+        VarModule::set_float(boma.object(), vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.0);
     }
 }
 
@@ -192,12 +192,26 @@ unsafe fn motion_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &
 }
 
 unsafe fn reverse_switch(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::is_flag(boma.object(), vars::packun::instance::STANCE_REVERSE) {
+    if VarModule::is_flag(boma.object(), vars::packun::instance::APPEAL_STANCE_REVERSE) {
         if !boma.is_motion_one_of(&
             [Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r")]) ||
             !boma.is_button_on(Buttons::AppealHi) {
-                VarModule::off_flag(boma.object(), vars::packun::instance::STANCE_REVERSE);
+                VarModule::off_flag(boma.object(), vars::packun::instance::APPEAL_STANCE_REVERSE);
             }
+    }
+}
+
+unsafe fn game_start_switch(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
+        if fighter.is_button_on(Buttons::AppealSL) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
+        }
+        else if fighter.is_button_on(Buttons::AppealSR) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 2);
+        }
+        else if fighter.is_button_on(Buttons::AppealLw) {
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 1);
+        }
     }
 }
 
@@ -273,6 +287,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
     reverse_switch(boma);
     monch(fighter);
+    game_start_switch(fighter);
 }
 
 pub extern "C" fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

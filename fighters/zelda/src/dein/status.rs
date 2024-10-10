@@ -4,7 +4,7 @@ unsafe extern "C" fn tame_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 		let zelda = utils::util::get_battle_object_from_id(owner_id);
-		let dein = VarModule::get_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID) as u32;
+		let dein = VarModule::get_int(zelda, vars::zelda::instance::SPECIAL_S_DEIN_OBJECT_ID) as u32;
 		dein_remove(weapon, dein);
 	}
     smashline::original_status(Main, weapon, *WEAPON_ZELDA_DEIN_STATUS_KIND_TAME)(weapon)
@@ -29,7 +29,7 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
     //despawn
     if sv_battle_object::is_active(dein) && dein != weapon.battle_object_id {sv_battle_object::end_inhaled(dein, true); }
 	//set id
-    VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, weapon.battle_object_id as i32);
+    VarModule::set_int(zelda, vars::zelda::instance::SPECIAL_S_DEIN_OBJECT_ID, weapon.battle_object_id as i32);
 }
 
 pub fn install(agent: &mut Agent) {

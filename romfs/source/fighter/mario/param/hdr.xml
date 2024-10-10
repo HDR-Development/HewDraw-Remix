@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-    <struct hash="cliff_hang_data">
-        <struct hash="special_hi">
-            <float hash="p1_x">16</float>
-            <float hash="p1_y">17</float>
-            <float hash="p2_x">-9.6</float>
-            <float hash="p2_y">7.5</float>
-        </struct>
+  <struct hash="cliff_hang_data">
+    <struct hash="special_hi">
+      <float hash="p1_x">16</float>
+      <float hash="p1_y">17</float>
+      <float hash="p2_x">-9.6</float>
+      <float hash="p2_y">7.5</float>
     </struct>
+  </struct>
+  <struct hash="param_special_lw">
+    <float hash="ground_start_speed_x_mul">0.5</float>
+    <float hash="ground_start_accel_x_mul">1.0</float>
+    <float hash="air_start_speed_x_mul">0.5</float>
+    <float hash="air_start_accel_x_mul">0.8</float>
+    <float hash="air_start_accel_y_mul">0.5</float>
+    <float hash="air_start_speed_y">1.25</float>
+    <float hash="air_end_speed_x_stable_mul">0.5</float>
+    <float hash="air_end_control_x_mul">0.3</float>
+    <float hash="air_end_accel_y_mul">0.5</float>
+    <float hash="edge_early_start_speed_y">0.8</float>
+    <float hash="edge_late_start_speed_y">0.2</float>
+  </struct>
 </struct>

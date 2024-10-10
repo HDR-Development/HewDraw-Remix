@@ -40,7 +40,7 @@ unsafe extern "C" fn game_koopaspecialnmax(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VarModule::set_int(agent.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,KOOPA_MAX_COOLDOWN);
+        VarModule::set_int(agent.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN,KOOPA_MAX_COOLDOWN);
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
@@ -131,22 +131,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_koopaspecialnstart", effect_koopaspecialnstart, Priority::Low);
     agent.acmd("effect_koopaspecialairnstart", effect_koopaspecialnstart, Priority::Low);
     agent.acmd("sound_koopaspecialnstart", sound_koopaspecialnstart, Priority::Low);
+
     agent.acmd("game_koopaspecialnend", game_koopaspecialnend, Priority::Low);
     agent.acmd("game_koopaspecialairnend", game_koopaspecialnend, Priority::Low);
+    
     agent.acmd("game_koopaspecialnmax", game_koopaspecialnmax, Priority::Low);
     agent.acmd("game_koopaspecialairnmax", game_koopaspecialnmax, Priority::Low);
     agent.acmd("effect_koopaspecialnmax", effect_koopaspecialnmax, Priority::Low);
     agent.acmd("effect_koopaspecialairnmax", effect_koopaspecialnmax, Priority::Low);
     agent.acmd("sound_koopaspecialnmax", sound_koopaspecialnmax, Priority::Low);
     agent.acmd("sound_koopaspecialairnmax", sound_koopaspecialnmax, Priority::Low);
-    agent.acmd(
-        "expression_koopaspecialnmax",
-        expression_koopaspecialnmax,
-        Priority::Low
-    );
-    agent.acmd(
-        "expression_koopaspecialairnmax",
-        expression_koopaspecialnmax,
-        Priority::Low
-    );
+    agent.acmd("expression_koopaspecialnmax", expression_koopaspecialnmax, Priority::Low);
+    agent.acmd("expression_koopaspecialairnmax", expression_koopaspecialnmax, Priority::Low);
 }

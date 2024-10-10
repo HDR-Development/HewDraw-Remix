@@ -48,7 +48,7 @@ unsafe fn arms_switch_during_normals(boma: &mut BattleObjectModuleAccessor, cat1
 }
 
 unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor) {
-    let dragonEffect = VarModule::get_int(boma.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE) as u32;
+    let dragonEffect = VarModule::get_int(boma.object(),vars::tantan::instance::ARMR_DRAGONIZE_EFFECT_HANDLE) as u32;
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
     if WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L) {
         let bigScale = WorkModule::get_param_float(boma,hash40("param_private"),hash40("arm_l_big_scale"));
@@ -56,7 +56,7 @@ unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor) {
 
         if !EffectModule::is_exist_effect(boma, dragonEffect) {
             let handle = EffectModule::req_follow(boma, Hash40::new("tantan_dragon_fire"), Hash40::new("pr1_gimmickc"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, bigScale, true, 0, 0, 0, 0, 0, false, false);
-            VarModule::set_int(boma.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE,handle as i32);
+            VarModule::set_int(boma.object(),vars::tantan::instance::ARMR_DRAGONIZE_EFFECT_HANDLE,handle as i32);
         }
         else if !ArticleModule::is_exist(boma, *FIGHTER_TANTAN_GENERATE_ARTICLE_SPIRALRIGHT)
         && armType==0 {
@@ -70,7 +70,7 @@ unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor) {
         ModelModule::set_joint_scale(boma, Hash40::new("pr1_main"), &Vector3f::new(1.0, 1.0, 1.0));
         if dragonEffect > 0 {
             EffectModule::kill(boma, dragonEffect, false,false);
-            VarModule::set_int(boma.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE,0);
+            VarModule::set_int(boma.object(),vars::tantan::instance::ARMR_DRAGONIZE_EFFECT_HANDLE,0);
         }
     }
 }
@@ -87,13 +87,37 @@ unsafe fn fsmash_effect_translation(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR_END)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
+        let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+        WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
+        WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
+        let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
+        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+    }
+    if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && StatusModule::is_changing(fighter.module_accessor) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AIR_HOP);
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     recoil_cancel(boma,status_kind,situation_kind);
     arms_switch_during_normals(boma, cat[0], status_kind, situation_kind, motion_kind);
     double_dragon(boma);
     fsmash_effect_translation(boma,status_kind);
     //Prevent B Jab
     WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
+    up_special_freefall(fighter);
 }
 
 pub extern "C" fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -105,7 +129,7 @@ pub extern "C" fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterC
 
 pub unsafe fn tantan_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 

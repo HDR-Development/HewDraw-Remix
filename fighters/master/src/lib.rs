@@ -12,6 +12,7 @@ pub mod status;
 mod axe;
 mod arrow1;
 mod arrow2;
+//mod axethrown;
 
 use smash::{
     lib::{
@@ -55,4 +56,7 @@ pub fn install() {
     axe::install();
     arrow1::install();
     arrow2::install();
+
+    //smashline::clone_weapon("master", "arrow1", "master", "axethrown", true);
+    //axethrown::install();
 }

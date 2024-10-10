@@ -78,16 +78,16 @@ unsafe extern "C" fn appeal_wait_main(fighter: &mut L2CFighterCommon) -> L2CValu
     let appeal_wait_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("appeal_wait_frame"));
     fighter.set_int(appeal_wait_frame, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER);
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
-    VarModule::set_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT, 0);
+    VarModule::off_flag(fighter.object(), vars::snake::instance::APPEAL_LW_C4_EXPLODE);
+    VarModule::set_int(fighter.object(), vars::snake::instance::APPEAL_LW_GRENADE_WAIT_COUNT, 0);
     fighter.sub_shift_status_main(L2CValue::Ptr(appeal_wait_main_loop as *const () as _))
     // 0.into()
 }
 
 pub unsafe fn appeal_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if VarModule::get_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT) > 0 {
-        VarModule::dec_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT);
+    if VarModule::get_int(fighter.object(), vars::snake::instance::APPEAL_LW_GRENADE_WAIT_COUNT) > 0 {
+        VarModule::dec_int(fighter.object(), vars::snake::instance::APPEAL_LW_GRENADE_WAIT_COUNT);
     }
     WorkModule::dec_int(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER);
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
@@ -104,7 +104,7 @@ pub unsafe fn appeal_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue 
     else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4) {
-            VarModule::on_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
+            VarModule::on_flag(fighter.object(), vars::snake::instance::APPEAL_LW_C4_EXPLODE);
             fighter.change_status(FIGHTER_SNAKE_STATUS_KIND_APPEAL_END.into(), false.into());
         }
         else {
@@ -118,9 +118,9 @@ pub unsafe fn appeal_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue 
     else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
     && ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE)
-    && VarModule::get_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT) <= 0
+    && VarModule::get_int(fighter.object(), vars::snake::instance::APPEAL_LW_GRENADE_WAIT_COUNT) <= 0
     {
-        VarModule::set_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT, 30);
+        VarModule::set_int(fighter.object(), vars::snake::instance::APPEAL_LW_GRENADE_WAIT_COUNT, 30);
 
         ////adjusts first grenade position only
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
@@ -170,8 +170,8 @@ unsafe extern "C" fn appeal_wait_end(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn appeal_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if VarModule::is_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE) {
-        VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
+    if VarModule::is_flag(fighter.object(), vars::snake::instance::APPEAL_LW_C4_EXPLODE) {
+        VarModule::off_flag(fighter.object(), vars::snake::instance::APPEAL_LW_C4_EXPLODE);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_end_explode"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {

@@ -328,8 +328,10 @@ runtime = []
 panic = "abort"
 
 [profile.release]
+opt-level = 'z'
 panic = "abort"
 lto = true
+codegen-units = 1
 
 [lib]
 crate-type = ["cdylib"]

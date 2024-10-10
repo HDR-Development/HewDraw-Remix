@@ -1,5 +1,19 @@
 use super::*;
 
+unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if WorkModule::get_int(boma, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK) < *PACMAN_SPECIAL_N_RANK_MAX {
+        FT_MOTION_RATE_RANGE(agent, 12.0, 42.0, 22.0);
+    }
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_FLAG_THROW);
+    }
+    frame(lua_state, 42.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 unsafe extern "C" fn game_specialsmove(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -153,6 +167,9 @@ unsafe extern "C" fn sound_speciallwfailure(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialnshoot", game_specialnshoot, Priority::Low);
+    agent.acmd("game_specialairnshoot", game_specialnshoot, Priority::Low);
+
     agent.acmd("game_specialsmove", game_specialsmove, Priority::Low);
     agent.acmd("game_specialsdash", game_specialsdash, Priority::Low);
 

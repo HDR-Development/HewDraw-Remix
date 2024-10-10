@@ -108,8 +108,8 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
         let doll_pos = *GroundModule::get_rhombus(doll_module_accessor, true).add(1);
         let doll_pos_x = doll_pos.x;
         let doll_pos_y = doll_pos.y;
-        println!("Greninja Pos: {}, {}", pos_x, pos_y);
-        println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
+        //println!("Greninja Pos: {}, {}", pos_x, pos_y);
+        //println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
 
         let mut angle = (doll_pos_y - pos_y).atan2(doll_pos_x - pos_x).to_degrees();
         // println!("angle: {}", angle);

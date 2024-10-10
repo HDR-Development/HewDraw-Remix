@@ -13,7 +13,7 @@ pub mod iceclimber;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
-pub mod killscreen;
+pub mod knockback;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
@@ -747,9 +747,9 @@ pub fn install() {
     momentum_transfer::install();
     misc::install();
     jumps::install();
-    killscreen::install();
+    knockback::install();
     stage_hazards::install();
-    set_fighter_status_data::install();
+    //set_fighter_status_data::install();
     attack::install();
     collision::install();
     camera::install();
@@ -785,6 +785,9 @@ pub fn install() {
         // Krool and Pyra are in their respective modules.
         // Gives attacker less clank hitlag than defender
         skyline::patching::Patch::in_text(0x3e0b48).data(0x1E204160);
+
+        // Disables airdodge refresh on hit
+        skyline::patching::Patch::in_text(0x632530).nop();
     }
     skyline::install_hooks!(
         before_collision,

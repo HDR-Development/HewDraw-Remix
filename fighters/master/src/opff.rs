@@ -3,39 +3,9 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
-        *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if frame < 27.0 {
-                VarModule::off_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
-            }
-            if frame >= 27.0 {
-                VarModule::on_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
-            }
-        }
-    }
-    if status_kind == *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_LANDING && VarModule::is_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-    }
-}
-
-// Areadbhar Dash Cancel (Raging Storm)
-unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
-        *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            boma.check_dash_cancel();
-        }
-    }
-}
-
 unsafe fn specialhi_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
-        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH);
+        VarModule::off_flag(fighter.battle_object, vars::master::instance::SPECIAL_HI_CATCH_USED);
     }
 }
 
@@ -52,13 +22,27 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT)  {
+    if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT) {
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 11.0 {
             SlowModule::set_whole(boma, 7, 100);
         }
+    }
+}
+
+unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
+        let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+        WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
+        WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
+        let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
+        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
 
@@ -105,14 +89,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    //areadbhar_autocancel(boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
     aymr_slowdown(boma);
     specialhi_reset(fighter);
+    up_special_freefall(fighter);
     fastfall_specials(fighter);
-
-    // Magic Series
-    //areadbhar_dash_cancel(boma, status_kind, situation_kind, cat[0]);
 }
 
 pub extern "C" fn master_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

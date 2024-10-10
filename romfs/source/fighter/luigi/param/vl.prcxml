@@ -8,14 +8,13 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="charge_frame">70</float>
-      <float hash="discharge_prob">12.5</float>
       <float hash="attack_power">5</float>
       <float hash="ram_speed_x">1.4</float>
       <float hash="ram_speed_x_charge">2.9</float>
-      <float hash="discharge_speed_x">4</float>
+      <float hash="discharge_speed_x">3.2</float>
       <float hash="ram_speed_y">0.4</float>
       <float hash="ram_speed_y_charge">0.72</float>
-      <float hash="discharge_speed_y">0.6</float>
+      <float hash="discharge_speed_y">0.48</float>
       <float hash="ram_accel_y">0.01</float>
       <float hash="end_brake_x">0.05</float>
       <float hash="wall_speed_x">100</float>
@@ -33,8 +32,8 @@
       <float hash="fall_x_mul">0.035</float>
       <float hash="fall_max_x">0.68</float>
       <int hash="critical_frame">36</int>
-	    <int hash="critical_slow_rate">8</int>
-	    <int hash="critical_zoom_in_frame">999</int>
+      <int hash="critical_slow_rate">8</int>
+      <int hash="critical_zoom_in_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -42,7 +41,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="accel_x">0.4</float>
+      <float hash="accel_x">0.2</float>
       <float hash="air_accel_x">0.08</float>
       <float hash="limit_x">2.35</float>
       <float hash="air_limit_x">0.8</float>

@@ -39,6 +39,77 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
+
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 2, 8, 0, 0, 0, 1, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("kirby_smash_line"), Hash40::new("kirby_smash_line"), Hash40::new("top"), -4, 7, -9, 0, 15, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 14, 7, -1.5, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 360, false, 1.5);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn effect_attacks4hi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("kirby_smash_line"), Hash40::new("kirby_smash_line"), Hash40::new("top"), -4, 6.5, -9, -10, 15, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 14, 9.5, -1.5, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 360, false, 1.5);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn effect_attacks4lw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("kirby_smash_line"), Hash40::new("kirby_smash_line"), Hash40::new("top"), -4, 5.5, -9, 7, 15, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 14, 3.5, -1.5, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 360, false, 1.5);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -303,6 +374,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
     agent.acmd("game_attacks4hi", game_attacks4, Priority::Low);
     agent.acmd("game_attacks4lw", game_attacks4, Priority::Low);
+    agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
+    agent.acmd("effect_attacks4hi", effect_attacks4hi, Priority::Low);
+    agent.acmd("effect_attacks4lw", effect_attacks4lw, Priority::Low);
     agent.acmd("sound_attacks4", sound_attacks4, Priority::Low);
     agent.acmd("sound_attacks4hi", sound_attacks4, Priority::Low);
     agent.acmd("sound_attacks4lw", sound_attacks4, Priority::Low);

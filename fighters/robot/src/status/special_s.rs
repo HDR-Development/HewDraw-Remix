@@ -115,7 +115,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     if frame == 18.0 && 
     current_situation_kind == *SITUATION_KIND_AIR &&
-    WorkModule::is_flag(boma, vars::robot::instance::AIRTIME_SIDEB) {
+    WorkModule::is_flag(boma, vars::robot::instance::SPECIAL_S_AIR_USED) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -124,7 +124,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
 
     if frame == 19.0 {
-        WorkModule::off_flag(fighter.module_accessor, vars::robot::instance::AIRTIME_SIDEB);
+        WorkModule::off_flag(fighter.module_accessor, vars::robot::instance::SPECIAL_S_AIR_USED);
     }
 
     if StatusModule::is_situation_changed(fighter.module_accessor) {

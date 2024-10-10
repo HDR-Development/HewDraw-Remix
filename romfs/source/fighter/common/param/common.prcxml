@@ -5,7 +5,7 @@
   <float hash="ground_speed_limit">4</float>
   <float hash="stop_over_speed_brake_mul">1</float>
   <float hash="turn_stick_x">-0.2</float>
-  <float hash="dash_stick_x">0.7957</float>
+  <float hash="dash_stick_x">0.716</float>
   <float hash="dash_s4_frame">4</float>
   <float hash="dash_s4_frame_easy">6</float>
   <float hash="dash_s4_frame_hard">2</float>  
@@ -144,7 +144,7 @@
   <float hash="damage_speed_no_cliff_stop">999</float>
   <float hash="damage_fly_speed_y_mul_base_accel">0</float>
   <float hash="damage_fly_speed_y_mul">0</float>
-  <float hash="damage_fly_correction_max">18</float>
+  <float hash="damage_fly_correction_max">15</float>
   <float hash="damage_fly_length_mul_max">1</float>
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>

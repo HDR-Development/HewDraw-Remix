@@ -60,7 +60,7 @@ appeal_hi_l:
 attack_s4_s:
 attack_s3_s:
   extra:
-    cancel_frame: 48
+    cancel_frame: 47
 appeal_hi_r:
   extra:
     cancel_frame: 26
@@ -89,7 +89,7 @@ attack_dash:
     cancel_frame: 44
 attack_air_n:
   extra:
-    cancel_frame: 51
+    cancel_frame: 52
 attack_air_f2:
   blend_frames: 2
   extra:
@@ -100,7 +100,7 @@ attack_air_f3:
     cancel_frame: 45
 attack_air_hi:
   extra:
-    cancel_frame: 37
+    cancel_frame: 39
 special_air_lw:
   extra:
     intangible_start_frame: 0

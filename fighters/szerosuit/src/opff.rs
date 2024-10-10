@@ -13,9 +13,6 @@ unsafe fn paralyzer_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
 
 // ZSS Flip Jump - Jump Cancel and Flipstool Handilng
 unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW
         || motion_kind == hash40("special_lw_start")
         || motion_kind == hash40("special_air_lw_start") {
@@ -25,7 +22,7 @@ unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_k
             }
         }
         // Turn on the vanilla flip jump footstool-enable flag if you're holding the special button and you're in the window to be able to flipstool manually
-        if VarModule::is_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE){
+        if VarModule::is_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL){
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
                 WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
             }

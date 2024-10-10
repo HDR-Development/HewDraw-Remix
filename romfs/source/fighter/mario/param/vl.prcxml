@@ -20,10 +20,11 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="special_s_start_air_acl_x">0.01</float>
       <float hash="special_s_attack_spd_y">0.8</float>
       <float hash="special_s_attack_acl_y">0.029</float>
       <float hash="special_s_attack_max_y">0.9</float>
-      <float hash="special_s_start_mul_spd_x">1.5</float>
+      <float hash="special_s_start_mul_spd_x">2.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -34,7 +35,7 @@
       <float hash="special_hi_dir_mul">15</float>
       <float hash="special_hi_pass_mul">0.94</float>
       <float hash="special_air_hi_pass_mul">0.94</float>
-      <float hash="special_hi_fall_x_mul">1</float>
+      <float hash="special_hi_fall_x_mul">0.6</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -47,6 +47,15 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
     }
 }
 
+// Prevents DSpecial from being used again if it has already been used once in the current airtime (resets on hit or landing aerial)
+unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // resets IS_USE_EX_SPECIAL
     if !fighter.is_status_one_of(&[
@@ -56,14 +65,23 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
     ]) {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_ENABLE_FADC);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::SPECIAL_LW_ENABLE_FADC);
     }
     
     // Re-enables the ability to use sideB when connecting to ground or cliff
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
+
+    // re-enable DSpecial when landing or hit
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD,
+    ]) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
     }
     
     // ORIGINAL
@@ -268,9 +286,11 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // set the callbacks on fighter init
     fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ryu_check_special_command as *const () as _));
     VarModule::set_int(fighter.battle_object, vars::shotos::instance::SPECIAL_N_EX_NUM, 0);
+    smashline::update_weapon_count(*WEAPON_KIND_RYU_HADOKEN, 2);
 }
 
 pub fn install(agent: &mut Agent) {

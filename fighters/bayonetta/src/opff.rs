@@ -24,7 +24,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             }
         }
         if !fighter.is_motion(Hash40::new("attack_air_lw")) {fighter.check_airdodge_cancel(); }
-        if is_input_cancel && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
+        if is_input_cancel && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT) < 2 {
             StatusModule::change_status_force(boma, new_status, true);
         } //special cancel
     }
@@ -32,19 +32,19 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
 unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     //reset fair state 
-    if !fighter.is_situation(*SITUATION_KIND_AIR) {VarModule::set_int(boma.object(), vars::bayonetta::instance::FAIR_STATE, 0); }
+    if !fighter.is_situation(*SITUATION_KIND_AIR) {VarModule::set_int(boma.object(), vars::bayonetta::instance::ATTACK_AIR_F_COUNT, 0); }
     //reset dabk count
-    if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) == 0 {VarModule::set_int(boma.object(), vars::bayonetta::instance::DABK_COUNT, 0); }
+    if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) == 0 {VarModule::set_int(boma.object(), vars::bayonetta::instance::SPECIAL_S_DABK_COUNT, 0); }
     //refresh hdr resources
-    let resource = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
+    let resource = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT);
     let lag = fighter.get_float(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);
     if lag < 1.0 { //same methd as vanilla
         //filters out lag-cancel techs
         if fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) == 0 && fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT) == 0 {
             if fighter.is_situation(*SITUATION_KIND_AIR) && resource >= 1 {
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1);
+                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT, 1);
             } else { //only gives back 2nd resource
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
+                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::RECOVERY_RESOURCE_COUNT, 0);
             }
         }
     } else if resource >= 2 {
@@ -57,13 +57,15 @@ unsafe fn reset_flags(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
 unsafe fn forward_tilt(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_s3_s")) && MotionModule::frame(boma) >= 28.0 {
-        if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::SpecialN | Cat1::SpecialHi) {//vert kick
-            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
-        } else if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackN) { //side kick
-            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
-        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && boma.is_button_on(Buttons::Attack) {
-            MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
-        }//hold
+        if !boma.is_cat_flag(Cat1::AttackLw3 | Cat1::Catch) {
+            if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::SpecialN | Cat1::SpecialHi) {//vert kick
+                MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
+            } else if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackN) { //side kick
+                MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s2"), 0.0, 1.0, false, 0.0, false, false);
+            } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && boma.is_button_on(Buttons::Attack) {
+                MotionModule::change_motion(boma, smash::phx::Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
+            }//hold
+        }
     }
 }
 
@@ -93,7 +95,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE,
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_FIRE,
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_END,
+        statuses::bayonetta::SPECIAL_N_CANCEL,
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT,
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {

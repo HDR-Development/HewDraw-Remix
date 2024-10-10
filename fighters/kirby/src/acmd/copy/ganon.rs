@@ -9,7 +9,7 @@ unsafe extern "C" fn game_ganonfloatstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_DECIDE_ANGLE);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -18,8 +18,8 @@ unsafe extern "C" fn game_ganonfloatstart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_KINETIC_GROUND);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -74,7 +74,7 @@ unsafe extern "C" fn game_ganonfloatairstart(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -113,11 +113,11 @@ unsafe extern "C" fn game_ganonfloat(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
+        VarModule::on_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_CHANGE_FALL_SPEED);
     }
     frame(lua_state, 60.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
+        VarModule::off_flag(agent.battle_object, vars::ganon::status::SPECIAL_N_ENABLE_ACTION);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }

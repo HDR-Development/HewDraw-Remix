@@ -4,6 +4,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        boma.select_cliff_hangdata_from_name("special_hi");
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.5, 6.5);
     }
     frame(lua_state, 5.0);
@@ -110,6 +111,9 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG4);
@@ -123,7 +127,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     for _ in 0..10 {
         if is_excute(agent) {
@@ -139,6 +142,10 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(lua_state, 51.0);
     if is_excute(agent) {

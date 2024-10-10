@@ -30,9 +30,6 @@ unsafe fn ledge_act(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
 //== LEDGE OCCUPANCY
 //=================================================================
 unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_CLIFF_ATTACK,
         *FIGHTER_STATUS_KIND_CLIFF_CLIMB,

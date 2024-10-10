@@ -3,7 +3,7 @@ use super::*;
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
 unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
+    if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_FREEFALL) {
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
@@ -24,18 +24,22 @@ unsafe fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
         let control = ControlModule::get_attack_air_kind(fighter.module_accessor);
         WorkModule::set_int(fighter.module_accessor, control, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_WORK_INT_ATTACK_AIR_KIND);
-        if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
+        if VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_FREEFALL) {
+            let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
+            let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+            WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
+            WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
         }
         else {
-            VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+            VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE);
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
         return 1.into()
     }
     if fighter.status_frame() > 31 && fighter.is_cat_flag(Cat1::SpecialAny)
-    && !VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL) {
-        VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+    && !VarModule::is_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_FREEFALL) {
+        VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE);
         fighter.change_status(statuses::gamewatch::SPECIAL_HI_OPEN.into(), true.into());
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -50,7 +54,7 @@ unsafe fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_FREEFALL);
+    VarModule::on_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_FREEFALL);
     0.into()
 }
 

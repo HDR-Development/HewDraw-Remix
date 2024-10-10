@@ -37,7 +37,7 @@ unsafe extern "C" fn game_littlemacspecialn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {
-        VarModule::on_flag(agent.object(), vars::kirby::status::KO_PUNCH_GRAVITY);
+        VarModule::on_flag(agent.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_GRAVITY_ENABLE);
     }
 }
 
@@ -74,6 +74,13 @@ unsafe extern "C" fn effect_littlemacspecialn(agent: &mut L2CAgentBase) {
         EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.8, 0.8, 0.8));
         let facing = PostureModule::lr(boma);
         EffectModule::set_rot(boma, handle as u32, &Vector3f::new(45.0 * facing, 135.0, 45.0 * facing));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        if VarModule::is_flag(boma.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+            SlowModule::clear_whole(boma);
+            EffectModule::remove_screen(boma, Hash40::new("bg_criticalhit"), 0);
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {

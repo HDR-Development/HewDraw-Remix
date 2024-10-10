@@ -62,29 +62,126 @@ unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    wait(lua_state, 3.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 1, Hash40::new("pizzapacman"), 0.0, 361, 100, 12, 0, 5.0, 0.0, 3.0, 0.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
-    wait(lua_state, 7.0);
-    for _ in 0..3 {
-        if is_excute(agent) {
-            ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 5.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
-            ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(agent) {
-            AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 7.0);
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 5.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
     }
+    frame(lua_state, 12.0);
+    FT_MOTION_RATE_RANGE(agent, 12.0, 19.0, 6.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 19.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 5.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 21.0);
+    FT_MOTION_RATE_RANGE(agent, 21.0, 28.0, 6.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 28.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 5.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+        ATTACK(agent, 1, 0, Hash40::new("pizzapacman"), 2.0, 12, 15, 0, 40, 5.5, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE_RANGE(agent, 30.0, 37.0, 6.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 37.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 4.0, 60, 65, 0, 100, 7.0, 0.0, 5.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         ATTACK(agent, 0, 0, Hash40::new("pizzapacman"), 4.0, 60, 65, 0, 100, 6.0, 0.0, 3.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 39.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_normal") as i64);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        HIT_NODE(agent, Hash40::new("pizzapacman"), *HIT_STATUS_NORMAL);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("pizzapacman"), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        ItemModule::set_attach_item_visibility(boma, true, *ATTACH_ITEM_GROUP_ALL as u8);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_none") as i64);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        HIT_NODE(agent, Hash40::new("pizzapacman"), *HIT_STATUS_OFF);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
 
@@ -95,4 +192,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack13", effect_attack13, Priority::Low);
 
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("expression_attackdash", expression_attackdash, Priority::Low);
 }
