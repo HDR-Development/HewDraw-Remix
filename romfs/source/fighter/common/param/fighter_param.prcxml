@@ -2907,9 +2907,10 @@
       <float hash="damage_fly_top_speed_y_stable">2.02</float>
       <float hash="dive_speed_y">2.884</float>
       <float hash="weight">95</float>
-      <float hash="landing_attack_air_frame_n">9</float>
-      <float hash="landing_attack_air_frame_f">10</float>
+      <float hash="landing_attack_air_frame_n">10</float>
+      <float hash="landing_attack_air_frame_f">11</float>
       <float hash="landing_attack_air_frame_b">11</float>
+      <float hash="landing_attack_air_frame_hi">10</float>
       <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
@@ -2941,6 +2942,7 @@
       <float hash="weight">78</float>
       <float hash="landing_attack_air_frame_n">9</float>
       <float hash="landing_attack_air_frame_f">9</float>
+      <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">11</float>
       <int hash="attack_100_enable_cnt">2</int>
       <bool hash="wall_jump_type">false</bool>
