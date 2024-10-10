@@ -207,7 +207,7 @@ unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     // println!("HERE2");
 // }
 
-#[skyline::hook(offset = 0x1798ae8, inline)]
+#[skyline::hook(offset = 0x1798ac8, inline)]
 unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
     let ptr1 = *ctx.registers[0].x.as_ref() as *mut u64;
     let ptr2 = *ctx.registers[1].x.as_ref() as *mut u64;

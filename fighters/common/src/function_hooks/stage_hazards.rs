@@ -53,7 +53,7 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x10d, // wuhu island
 ];
 
-#[skyline::hook(offset = 0x178ab80, inline)]
+#[skyline::hook(offset = 0x178ab60, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
     let stage_id = *ctx.registers[1].w.as_ref();
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
