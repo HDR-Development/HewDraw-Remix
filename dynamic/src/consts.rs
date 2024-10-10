@@ -1036,6 +1036,7 @@ pub mod vars {
             // flags
             pub const TELEPORT_CANCEL: i32 = 0x0100;
             pub const UP_SPECIAL_FREEFALL: i32 = 0x0101;
+            pub const GROUNDED_TELEPORT: i32 = 0x0102;
         }
     }
 
@@ -1695,14 +1696,26 @@ pub mod vars {
             pub const PHANTOM_HIT: i32 = 0x0100;
             pub const FORWARD_PHANTOM: i32 = 0x0101;
             pub const PHANTOM_DISABLED: i32 = 0x0102;
+            pub const GROUNDED_TELEPORT: i32 = 0x0103;
 
             // ints
-            pub const DEIN_OBJECT_ID: i32 = 0x0100;
-            pub const DEIN_OBJECT_ID_2: i32 = 0x0101;
-            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0102;
-            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0103;
-            pub const PHANTOM_EFF_HANDLER: i32 = 0x0104;
-            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0105;
+            pub const CURRENT_DEIN_MOVE_OBJECT_ID: i32 = 0x0100;
+            pub const DEIN_OBJECT_ID: i32 = 0x0101;
+            pub const DEIN_OBJECT_ID_2: i32 = 0x0102;
+            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0103;
+            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0104;
+            pub const PHANTOM_EFF_HANDLER: i32 = 0x0105;
+            pub const EFF_COOLDOWN_HANDLER: i32 = 0x0106;
+            pub const PHANTOM_OBJECT_ID: i32 = 0x0107;
+
+            // floats
+            pub const TELEPORT_END_SPEED_X: i32 = 0x0108;
+        }
+        pub mod status {
+            // flags
+            pub const PHANTOM_NO_BUILD: i32 = 0x1100;
+            pub const PHANTOM_CANCEL_FRAME: i32 = 0x1101;
+            pub const DINS_REFRESH: i32 = 0x1102;
         }
     }
 }
