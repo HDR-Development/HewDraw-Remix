@@ -5,6 +5,7 @@ mod special_hi_jump;
 mod special_hi_finish;
 mod special_hi_finish2;
 mod special_hi;
+mod special_lw;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -105,4 +106,5 @@ pub fn install(agent: &mut Agent) {
     special_hi_finish::install(agent);
     special_hi_finish2::install(agent);
     special_hi::install(agent);
+    special_lw::install(agent);
 }
