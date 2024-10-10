@@ -19,6 +19,27 @@ const SMOKE_FX: [u64 ; 16] = [hash40("sys_atk_smoke"),
                             hash40("sys_v_smoke_a"),
                             hash40("sys_v_smoke_b")];
 
+unsafe extern "C" fn is_tech_lockout(boma: &mut BattleObjectModuleAccessor) -> bool {
+    if !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR]) {
+        return false;
+    }
+
+    if StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON {
+        return true;
+    }
+
+    let passive_trigger_frame = WorkModule::get_param_int(boma, hash40("common"), hash40("passive_trigger_frame"));
+    let no_rapid_frame_value = WorkModule::get_param_int(boma, hash40("common"), hash40("no_rapid_frame_value"));
+    let guard_trigger_count = ControlModule::get_trigger_count(boma, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xff;
+    let prev_guard_trigger_count = ControlModule::get_trigger_count_prev(boma, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xff;
+    
+    if guard_trigger_count < passive_trigger_frame {
+        return prev_guard_trigger_count < no_rapid_frame_value;
+    }
+    
+    false
+}
+
 //=================================================================
 //== sv_animcmd::EFFECT
 //== Note: Lua stack is 1-indexed, and "pop" means "get"
@@ -51,8 +72,7 @@ unsafe fn EFFECT_hook(lua_state: u64) {
                     0.7
                 };
 
-                let no_rapid_frame_value = WorkModule::get_param_int(boma, hash40("common"), hash40("no_rapid_frame_value"));
-                if ControlModule::get_trigger_count_prev(boma, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xff < no_rapid_frame_value {
+                if is_tech_lockout(boma) {
                     effect_size_mul = 0.5;
                     hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
                 }
@@ -84,6 +104,8 @@ unsafe fn EFFECT_hook(lua_state: u64) {
 
 #[skyline::hook(replace=smash::app::sv_animcmd::EFFECT_FOLLOW)]
 unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
     let mut hitbox_params: [L2CValue ; 10] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];
@@ -107,6 +129,11 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
                 } else {
                     0.7
                 };
+
+                if is_tech_lockout(boma) {
+                    effect_size_mul = 0.5;
+                    hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
+                }
             }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
@@ -136,6 +163,8 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
 
 #[skyline::hook(replace=smash::app::sv_animcmd::EFFECT_FOLLOW_FLIP)]
 unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    
     let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
 
     let mut hitbox_params: [L2CValue ; 12] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];
@@ -159,6 +188,11 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
                 } else {
                     0.7
                 };
+
+                if is_tech_lockout(boma) {
+                    effect_size_mul = 0.5;
+                    hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
+                }
             }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
@@ -385,13 +419,46 @@ unsafe fn CUT_IN_CENTER_hook(lua_state: u64) {
     original!()(lua_state);
 }
 
+#[skyline::hook(replace=EffectModule::req)]
+unsafe fn req_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg6: u32, arg7: i32, arg8: bool, arg9: i32) -> u64 {
+    let mut eff_size = size;
+    let mut new_eff_hash = effHash;
+    if SHOCKWAVE_FX.contains(&effHash.hash) {
+        let mut effect_size_mul = if effHash.hash == hash40("sys_nopassive") {
+            0.5
+        } else {
+            0.7
+        };
+
+        if is_tech_lockout(boma) {
+            effect_size_mul = 0.5;
+            new_eff_hash = Hash40::new("sys_nopassive");
+        }
+
+        eff_size = size * effect_size_mul;
+    }
+    original!()(boma, new_eff_hash, pos, rot, eff_size, arg6, arg7, arg8, arg9)
+}
+
 #[skyline::hook(replace=EffectModule::req_on_joint)]
 unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: &Vector3f, arg8: &Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
     let mut eff_size = size;
+    let mut new_eff_hash = effHash;
     if SHOCKWAVE_FX.contains(&effHash.hash) {
-        eff_size = size * 0.7;
+        let mut effect_size_mul = if effHash.hash == hash40("sys_nopassive") {
+            0.5
+        } else {
+            0.7
+        };
+        
+        if is_tech_lockout(boma) {
+            effect_size_mul = 0.5;
+            new_eff_hash = Hash40::new("sys_nopassive");
+        }
+
+        eff_size = size * effect_size_mul;
     }
-    original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
+    original!()(boma, new_eff_hash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
 }
 
 #[skyline::hook(replace=EffectModule::req_follow)]
@@ -498,6 +565,7 @@ pub fn install() {
         LANDING_EFFECT_FLIP_hook,
         DOWN_EFFECT_hook,
         CUT_IN_CENTER_hook,
+        req_hook,
         req_on_joint_hook,
         req_follow,
         preset_lifetime_rate_partial_hook,
