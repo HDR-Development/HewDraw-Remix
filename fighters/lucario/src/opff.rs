@@ -89,8 +89,8 @@ pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
 pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
     let meter = MeterModule::meter(agent.battle_object);
     if meter <= 0.0
-    && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-        VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT);
         PLAY_SE(agent, Hash40::new("se_common_spirits_critical_l_tail"));
         MeterModule::add(agent.battle_object, -1.0 * meter);
     }
