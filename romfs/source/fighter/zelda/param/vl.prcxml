@@ -22,7 +22,7 @@
       <float hash="angle_max">85</float>
       <float hash="life">40</float>
       <float hash="count">40</float>
-      <float hash="size_max">4</float>
+      <float hash="size_max">3.8</float>
       <float hash="bang_time">160</float>
       <float hash="size_min">2</float>
     </struct>

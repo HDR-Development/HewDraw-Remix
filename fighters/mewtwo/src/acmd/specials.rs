@@ -67,13 +67,6 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
-    let boma = agent.boma();
-    if is_excute(agent) {
-        GroundModule::set_correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-    }
-}
-
 unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -95,8 +88,8 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-    }
+        agent.on_flag(*FIGHTER_MEWTWO_STATUS_SPECIAL_HI_FLAG_1);
+    } //make use of unused flag to enable drift
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
@@ -182,7 +175,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
 	agent.acmd("effect_specials", effect_specials, Priority::Low);
 
-	agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialairhistart", game_specialairhistart, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     
