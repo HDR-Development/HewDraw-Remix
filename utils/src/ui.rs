@@ -187,14 +187,14 @@ impl UiManager {
     ) {
         let mut manager = UI_MANAGER.write();
         manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
-            .set_meter_info(current, max, per_level, color_1, color_2);
+            .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__change_power_board_color"]
     pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
         manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
-            .change_color(color_1, color_2);
+            .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__set_cyan_meter_enable"]

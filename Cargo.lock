@@ -2362,6 +2362,7 @@ name = "utils"
 version = "0.1.0"
 dependencies = [
  "arcropolis-api",
+ "bitflags 2.6.0",
  "colorgrad",
  "dynamic",
  "hdr-macros",
