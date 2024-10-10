@@ -333,6 +333,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">0.4</float>
+      <float hash="common_effect_0_g">1.6</float>
+      <float hash="common_effect_0_b">0.4</float>
     </struct>
     <!-- NESS -->
     <struct index="9">
@@ -411,6 +414,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">3</float>
+      <float hash="common_effect_0_g">0.7</float>
+      <float hash="common_effect_0_b">0.2</float>
     </struct>
     <!-- JIGGLYPUFF -->
     <struct index="11">
@@ -1261,6 +1267,9 @@
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
       <bool hash="attach_wall_type">false</bool>
+      <float hash="common_effect_0_r">0.3</float>
+      <float hash="common_effect_0_g">0.9</float>
+      <float hash="common_effect_0_b">2.3</float>
     </struct>
     <!-- IVYSAUR -->
     <struct index="34">
@@ -1333,6 +1342,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">3</float>
+      <float hash="common_effect_0_g">0.7</float>
+      <float hash="common_effect_0_b">0.2</float>
     </struct>
     <!-- DIDDY KONG -->
     <struct index="36">
@@ -1407,6 +1419,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">1.8</float>
+      <float hash="common_effect_0_g">1.8</float>
+      <float hash="common_effect_0_b">0.5</float>
     </struct>
     <!-- SONIC -->
     <struct index="38">
@@ -1445,6 +1460,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">2.5</float>
+      <float hash="common_effect_0_g">0.4</float>
+      <float hash="common_effect_0_b">0.5</float>
     </struct>
     <!-- KING DEDEDE -->
     <struct index="39">
@@ -1720,6 +1738,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">2.5</float>
+      <float hash="common_effect_0_g">0.4</float>
+      <float hash="common_effect_0_b">0.5</float>
     </struct>
     <!-- MEGA MAN -->
     <struct index="46">
@@ -2476,6 +2497,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">0.6</float>
+      <float hash="common_effect_0_g">1.3</float>
+      <float hash="common_effect_0_b">0.4</float>
     </struct>
     <!-- INCINEROAR -->
     <struct index="66">
@@ -3294,6 +3318,9 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <float hash="common_effect_0_r">0.8</float>
+      <float hash="common_effect_0_g">1.6</float>
+      <float hash="common_effect_0_b">2.5</float>
     </struct>
     <!-- KEN -->
     <struct index="88">
