@@ -16,13 +16,13 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::from_offset(0x37782c0)]
+#[skyline::from_offset(0x37782e0)]
 unsafe fn replace_texture(pane: u64, index: &u32);
 
-#[skyline::from_offset(0x353d6d0)]
+#[skyline::from_offset(0x353d6f0)]
 unsafe fn get_filepath_index_by_hash40(index: &mut u32, hash40: u64);
 
-#[skyline::hook(offset = 0x1ee9ebc, inline)]
+#[skyline::hook(offset = 0x1ee9edc, inline)]
 unsafe fn among_us_baby(ctx: &InlineCtx) {
     let layout_view = *ctx.registers[0].x.as_ref();
 
@@ -60,7 +60,7 @@ const DLC: &[&'static str] = &[
     "xeno_alst",
 ];
 
-#[skyline::hook(offset = 0x25fdf38, inline)]
+#[skyline::hook(offset = 0x25fdf58, inline)]
 unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     let search = FilesystemInfo::instance().unwrap().search();
     let Ok(path) = search.get_path_list_entry_from_hash(*ctx.registers[8].x.as_ref()) else {
@@ -92,10 +92,10 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
 
 static mut SHOULD_PLAY: bool = false;
 
-#[skyline::from_offset(0x3777730)]
+#[skyline::from_offset(0x3777750)]
 unsafe fn play_animation(layout: u64, anim: *const u8);
 
-#[skyline::hook(offset = 0x2310b48, inline)]
+#[skyline::hook(offset = 0x2310b68, inline)]
 unsafe fn play_out_anim(_: &InlineCtx) {
     SHOULD_PLAY = true;
 }
@@ -105,7 +105,7 @@ unsafe fn stop_play_anim(_: &InlineCtx) {
     SHOULD_PLAY = false;
 }
 
-#[skyline::hook(offset = 0x22d3494, inline)]
+#[skyline::hook(offset = 0x22d34b4, inline)]
 unsafe fn should_play_out_anim(ctx: &mut InlineCtx) {
     if smash::app::smashball::is_training_mode() {
         SHOULD_PLAY = false;

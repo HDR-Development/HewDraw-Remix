@@ -8,7 +8,7 @@ extern "C" {
     fn get_current_stage_alt() -> usize;
 }
 
-#[skyline::hook(offset = 0x30F6DE0)]
+#[skyline::hook(offset = 0x30F6E00)]
 unsafe fn stub(arg: u64) {
     if get_stage_id() == 0x8f && get_current_stage_alt() == 0 {
         return;
@@ -53,7 +53,7 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x10d, // wuhu island
 ];
 
-#[skyline::hook(offset = 0x178ab60, inline)]
+#[skyline::hook(offset = 0x178ab80, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
     let stage_id = *ctx.registers[1].w.as_ref();
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
@@ -71,7 +71,7 @@ unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
     *(battle_object_world as *mut u8).add(0x59) = 0x1;
 }
 
-#[skyline::hook(offset = 0x25fc624, inline)]
+#[skyline::hook(offset = 0x25fc644, inline)]
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     let ptr = *ctx.registers[1].x.as_ref();
     let stage_id = *(ptr as *const u16) as u32;
@@ -82,7 +82,7 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x2981EBC, inline)]
+#[skyline::hook(offset = 0x2981EDC, inline)]
 unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() == 3 {
         *ctx.registers[8].x.as_mut() = 5;
@@ -94,7 +94,7 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 // 0x2 - corneria
 // 0x3 - space battle (small ships)
 // 0x4 - default haz off space
-#[skyline::hook(offset = 0x297D68C, inline)]
+#[skyline::hook(offset = 0x297D6AC, inline)]
 unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
     if get_current_stage_alt() == 0 {
         *ctx.registers[8].x.as_mut() = 0x2;
@@ -105,11 +105,12 @@ unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
 
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port
-    skyline::patching::Patch::in_text(0x298236c + 0xc80).data(0x52800008u32);
-    skyline::patching::Patch::in_text(0x28444cc + 0xc80).data(0x52800009u32);
-    skyline::patching::Patch::in_text(0x28440f4 + 0xc80).data(0x52800009u32);
-    skyline::patching::Patch::in_text(0x2844500 + 0xc80).nop();
-    skyline::patching::Patch::in_text(0x2844128 + 0xc80).nop();
+    // NOTE: The 0xc80 is from the 13.0.2 -> 13.0.3 port
+    skyline::patching::Patch::in_text(0x298236c + 0xc80 + 0x20).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x28444cc + 0xc80 + 0x20).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x28440f4 + 0xc80 + 0x20).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x2844500 + 0xc80 + 0x20).nop();
+    skyline::patching::Patch::in_text(0x2844128 + 0xc80 + 0x20).nop();
     skyline::patching::Patch::in_text(0x4471134)
         .data(std::f32::INFINITY)
         .unwrap(); // palu temple
