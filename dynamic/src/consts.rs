@@ -217,6 +217,9 @@ pub mod vars {
 
             pub const LEDGE_ID: i32 = 0x0010;
 
+            pub const RIGHT_STICK_FLICK_X: i32 = 0x0011;
+            pub const RIGHT_STICK_FLICK_Y: i32 = 0x0012;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -254,6 +257,7 @@ pub mod vars {
             pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
             pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
             pub const DACUS_TRANSITION_SPEED: i32 = 0x0022;
+            pub const ATTACK_S3_CSTICK_X: i32 = 0x0023;
         }
         pub mod status {
             // flags

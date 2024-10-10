@@ -718,6 +718,18 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             (*input_module.owner).clear_commands(Cat1::AttackLw4);
         }
     }
+    
+    unsafe {
+        if cats[0].lifetimes_mut()[0x1] as i32 == ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as i32 - 1 {
+            let cstick_s3_x = if (*input_module.owner).is_button_on(Buttons::CStickOverride)
+            || VarModule::get_int(&mut (*input_module.owner), vars::common::instance::RIGHT_STICK_FLICK_X) < ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as i32 - 1 {
+                (*input_module.owner).right_stick_x()
+            } else {
+                0.0
+            };
+            VarModule::set_float(&mut (*input_module.owner), vars::common::instance::ATTACK_S3_CSTICK_X, cstick_s3_x);
+        }
+    }
 
     InputModule::exec(input_module.owner, &mut lifetimes);
 }
