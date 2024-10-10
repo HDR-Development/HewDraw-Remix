@@ -1,6 +1,7 @@
 use super::*;
 
 mod special_hi;
+mod special_lw;
 
 /// Prevents up b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -110,4 +111,5 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_hi::install(agent);
+    special_lw::install(agent);
 }
