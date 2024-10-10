@@ -217,6 +217,9 @@ pub mod vars {
 
             pub const LEDGE_ID: i32 = 0x0010;
 
+            pub const RIGHT_STICK_FLICK_X: i32 = 0x0011;
+            pub const RIGHT_STICK_FLICK_Y: i32 = 0x0012;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -254,6 +257,7 @@ pub mod vars {
             pub const DASH_HIP_OFFSET_X: i32 = 0x0020;
             pub const RUN_HIP_OFFSET_X: i32 = 0x0021;
             pub const DACUS_TRANSITION_SPEED: i32 = 0x0022;
+            pub const ATTACK_S3_CSTICK_X: i32 = 0x0023;
         }
         pub mod status {
             // flags
@@ -1026,6 +1030,7 @@ pub mod vars {
             // flags
             pub const SPECIAL_HI_TELEPORT_CANCEL: i32 = 0x0100;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0101;
+            pub const SPECIAL_HI_GROUNDED_TELEPORT: i32 = 0x0102;
         }
     }
 
@@ -1689,17 +1694,30 @@ pub mod vars {
     pub mod zelda {
         pub mod instance {
             // flags
-            pub const SPECIAL_LW_PHANTOM_HIT: i32 = 0x0100;
-            pub const SPECIAL_LW_FORWARD_PHANTOM: i32 = 0x0101;
-            pub const SPECIAL_LW_DISABLE_PHANTOM: i32 = 0x0102;
+            pub const SPECIAL_HI_GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const SPECIAL_LW_PHANTOM_HIT: i32 = 0x0101;
+            pub const SPECIAL_LW_FORWARD_PHANTOM: i32 = 0x0102;
+            pub const SPECIAL_LW_DISABLE_PHANTOM: i32 = 0x0103;
 
             // ints
             pub const SPECIAL_S_DEIN_OBJECT_ID: i32 = 0x0100;
-            pub const SPECIL_S_DEIN_OBJECT_ID_2: i32 = 0x0101;
-            pub const SPECIAL_S_DEIN_FLASH_EFFECT_HANDLE: i32 = 0x0102;
-            pub const SPECIAL_S_DEIN_FIRE_EFFECT_HANDLE: i32 = 0x0103;
-            pub const SPECIAL_LW_PHANTOM_EFFECT_HANDLE: i32 = 0x0104;
-            pub const SPECIAL_LW_COOLDOWN_EFFECT_HANDLE: i32 = 0x0105;
+            pub const SPECIAL_S_DEIN_OBJECT_ID_2: i32 = 0x0101;
+            pub const SPECIAL_S_CURRENT_DEIN_MOVE_OBJECT_ID: i32 = 0x0102;
+            pub const SPECIAL_S_DEIN_FLASH_EFFECT_HANDLE: i32 = 0x0103;
+            pub const SPECIAL_S_DEIN_FIRE_EFFECT_HANDLE: i32 = 0x0104;
+            pub const SPECIAL_S_COOLDOWN_EFFECT_HANDLE: i32 = 0x0105;
+            pub const SPECIAL_LW_PHANTOM_OBJECT_ID: i32 = 0x0106;
+            pub const SPECIAL_LW_PHANTOM_EFFECT_HANDLE: i32 = 0x0107;
+            pub const SPECIAL_LW_COOLDOWN_EFFECT_HANDLE: i32 = 0x0108;
+
+            // floats
+            pub const SPECIAL_HI_TELEPORT_END_SPEED_X: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_DINS_REFRESH: i32 = 0x1100;
+            pub const SPECIAL_LW_PHANTOM_NO_BUILD: i32 = 0x1101;
+            pub const SPECIAL_LW_PHANTOM_CANCEL_FRAME: i32 = 0x1102;
         }
     }
 }
