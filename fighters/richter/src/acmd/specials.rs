@@ -66,14 +66,11 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
         if agent.is_situation(*SITUATION_KIND_AIR) {
             app::sv_kinetic_energy::reset_energy(agent.lua_state_agent);
             boma.select_cliff_hangdata_from_name("special_s1");
         }
-        VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
-        VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
-        VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
-        VarModule::on_flag(agent.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
@@ -93,10 +90,8 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {
-        if agent.is_situation(*SITUATION_KIND_AIR) {
-            KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        }
+        VarModule::on_flag(agent.battle_object, vars::richter::status::SPECIAL_S_CHANGE_KINETIC);
+        VarModule::on_flag(agent.battle_object, vars::richter::status::SPECIAL_S_ENABLE_GRAVITY);
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {

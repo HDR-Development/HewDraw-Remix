@@ -1349,6 +1349,8 @@ pub mod vars {
         pub mod status {
             // flags
             pub const ATTACK_LW3_JUMP_BUFFER: i32 = 0x1150;
+            pub const SPECIAL_S_CHANGE_KINETIC: i32 = 0x1151;
+            pub const SPECIAL_S_ENABLE_GRAVITY: i32 = 0x1152;
         }
     }
 
