@@ -8,6 +8,7 @@ use self::ff_meter::FfMeter;
 use self::pichu_meter::PichuMeter;
 use self::power_board::PowerBoard;
 use self::robot_meter::RobotMeter;
+use self::garlic_meter::GarlicMeter;
 
 mod aura_meter;
 mod cyan_meter;
@@ -16,6 +17,7 @@ mod ff_meter;
 mod pichu_meter;
 mod power_board;
 mod robot_meter;
+mod garlic_meter;
 
 trait UiObject {
     fn update(&mut self);
@@ -33,6 +35,7 @@ static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| {
         pichu_meter: [PichuMeter::default(); 8],
         aura_meter: [AuraMeter::default(); 8],
         robot_meter: [RobotMeter::default(); 8],
+        garlic_meter: [GarlicMeter::default(); 8],
     })
 });
 
@@ -45,6 +48,7 @@ pub struct UiManager {
     pichu_meter: [PichuMeter; 8],
     aura_meter: [AuraMeter; 8],
     robot_meter: [RobotMeter; 8],
+    garlic_meter: [GarlicMeter; 8],
 }
 
 impl UiManager {
@@ -260,6 +264,19 @@ impl UiManager {
         manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
             .set_meter_info(current, max, per_level);
     }
+
+    #[export_name = "UiManager__set_garlic_meter_enable"]
+    pub extern "C" fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+    }
+
+    #[export_name = "UiManager__set_garlic_meter_info"]
+    pub extern "C" fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
+        let mut manager = UI_MANAGER.write();
+        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+            .set_meter_info(current, level1, level2, level3);
+    }
 }
 
 fn set_pane_visible(pane: u64, visible: bool) {
@@ -374,6 +391,7 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.pichu_meter[index] = PichuMeter::new(layout_udata);
     manager.aura_meter[index] = AuraMeter::new(layout_udata);
     manager.robot_meter[index] = RobotMeter::new(layout_udata);
+    manager.garlic_meter[index] = GarlicMeter::new(layout_udata);
 }
 
 #[skyline::hook(offset = 0x138a710, inline)]
@@ -426,6 +444,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for robot_meter in mgr.robot_meter.iter_mut() {
         if robot_meter.is_valid() && robot_meter.is_enabled() {
             robot_meter.update();
+        }
+    }
+    for garlic_meter in mgr.garlic_meter.iter_mut() {
+        if garlic_meter.is_valid() && garlic_meter.is_enabled() {
+            garlic_meter.update();
         }
     }
 }

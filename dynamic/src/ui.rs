@@ -58,6 +58,12 @@ extern "C" {
 
     #[link_name = "UiManager__set_robot_meter_info"]
     fn ui_manager_set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+
+    #[link_name = "UiManager__set_garlic_meter_enable"]
+    fn ui_manager_set_garlic_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_garlic_meter_info"]
+    fn ui_manager_set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32);
 }
 
 #[allow(non_snake_case)]
@@ -179,6 +185,18 @@ pub mod UiManager {
     pub fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         unsafe {
             super::ui_manager_set_robot_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
+    pub fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_garlic_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
+        unsafe {
+            super::ui_manager_set_garlic_meter_info(entry_id, current, level1, level2, level3)
         }
     }
 }

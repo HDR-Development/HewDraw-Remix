@@ -92,6 +92,23 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fastfall_specials(fighter);
 }
 
+unsafe extern "C" fn garlic_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
+
+        utils::ui::UiManager::set_garlic_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_garlic_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            (fighter.get_int(0x100000bf) as f32) / 60.0, //FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
+            fighter.get_param_float("param_special_lw", "gass_middle_time"),
+            fighter.get_param_float("param_special_lw", "gass_large_time"),
+            fighter.get_param_float("param_special_lw", "gass_max_time"),
+        );
+    }
+}
+
 pub extern "C" fn wario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
@@ -107,4 +124,5 @@ pub unsafe fn wario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, wario_frame_wrapper);
+    agent.on_line(Main, garlic_meter);
 }
