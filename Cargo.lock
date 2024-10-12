@@ -2366,6 +2366,7 @@ dependencies = [
  "colorgrad",
  "dynamic",
  "hdr-macros",
+ "interpolation",
  "lazy_static",
  "ninput",
  "once_cell",
