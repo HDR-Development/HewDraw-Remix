@@ -11,11 +11,11 @@ extern "C" {
     #[link_name = "UiManager__set_shoto_number"]
     fn ui_manager_set_shoto_number(entry_id: u32, number: i32);
 
-    #[link_name = "UiManager__set_ex_meter_enable"]
-    fn ui_manager_set_ex_meter_enable(entry_id: u32, enable: bool);
+    #[link_name = "UiManager__set_vtrigger_meter_enable"]
+    fn ui_manager_set_vtrigger_meter_enable(entry_id: u32, enable: bool);
 
-    #[link_name = "UiManager__set_ex_meter_info"]
-    fn ui_manager_set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+    #[link_name = "UiManager__set_vtrigger_meter_info"]
+    fn ui_manager_set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool);
 
     #[link_name = "UiManager__set_ff_meter_enable"]
     fn ui_manager_set_ff_meter_enable(entry_id: u32, enable: bool);
@@ -98,15 +98,15 @@ pub mod UiManager {
         }
     }
 
-    pub fn set_ex_meter_enable(entry_id: u32, enable: bool) {
+    pub fn set_vtrigger_meter_enable(entry_id: u32, enable: bool) {
         unsafe {
-            super::ui_manager_set_ex_meter_enable(entry_id, enable)
+            super::ui_manager_set_vtrigger_meter_enable(entry_id, enable)
         }
     }
 
-    pub fn set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+    pub fn set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool) {
         unsafe {
-            super::ui_manager_set_ex_meter_info(entry_id, current, max, per_level)
+            super::ui_manager_set_vtrigger_meter_info(entry_id, current, level_max, per_level, is_vtrigger)
         }
     }
 

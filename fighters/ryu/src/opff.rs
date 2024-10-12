@@ -77,12 +77,13 @@ unsafe extern "C" fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         MeterModule::update(fighter.battle_object, false);
         MeterModule::set_meter_cap(fighter.object(), 4);
         MeterModule::set_meter_per_level(fighter.object(), 30.0);
-        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ex_meter_info(
+        utils::ui::UiManager::set_vtrigger_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_vtrigger_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
-            MeterModule::meter_per_level(fighter.object())
+            MeterModule::meter_cap(fighter.object()),
+            MeterModule::meter_per_level(fighter.object()),
+            VarModule::is_flag(fighter.object(), vars::shotos::instance::MAGIC_SERIES_CANCEL)
         );
     }
 }
