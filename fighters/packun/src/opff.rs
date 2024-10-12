@@ -290,6 +290,20 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     game_start_switch(fighter);
 }
 
+unsafe extern "C" fn plant_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
+
+        utils::ui::UiManager::set_plant_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_plant_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE)
+        );
+    }
+}
+
 pub extern "C" fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
@@ -305,4 +319,5 @@ pub unsafe fn packun_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, packun_frame_wrapper);
+    agent.on_line(Main, plant_meter);
 }
