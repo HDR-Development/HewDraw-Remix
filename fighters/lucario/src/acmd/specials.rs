@@ -400,9 +400,17 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 10.0, 4.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 3.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+    }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 28.0);
+    FT_MOTION_RATE_RANGE(agent, 28.0, 35.0, 11.0);
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
@@ -487,15 +495,6 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 10.0, 4.0);
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE(agent, 1.0);
-}
-
 unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -576,6 +575,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialairlw", sound_speciallw, Priority::Low);
     agent.acmd("expression_speciallw", expression_speciallw, Priority::Low);
     agent.acmd("expression_specialairlw", expression_speciallw, Priority::Low);
-    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
 }
