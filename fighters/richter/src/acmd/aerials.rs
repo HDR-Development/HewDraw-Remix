@@ -393,6 +393,9 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::richter::instance::ATTACK_AIR_LW_REBOUND);
+    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -431,7 +434,11 @@ unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        SET_SPEED_EX(agent, 0.3, 2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if VarModule::is_flag(agent.battle_object, vars::richter::instance::ATTACK_AIR_LW_REBOUND) {
+            SET_SPEED_EX(agent, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        } else {
+            SET_SPEED_EX(agent, 0.3, 2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        };
         WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }

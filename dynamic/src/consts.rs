@@ -1344,7 +1344,8 @@ pub mod vars {
     pub mod richter {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0100;
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x0100;
+            pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0101;
         }
         pub mod status {
             // flags
@@ -1547,6 +1548,10 @@ pub mod vars {
     }
 
     pub mod simon {
+        pub mod instance {
+            // flags
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x0100;
+        }
         pub mod status {
             //flags
             pub const SPECIAL_S_LAND_CANCEL: i32 = 0x1100;

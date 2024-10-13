@@ -112,7 +112,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_sword6"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 15.0);
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 4);
     }
