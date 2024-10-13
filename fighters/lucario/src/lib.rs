@@ -10,6 +10,7 @@ pub mod status;
 // articles
 
 mod auraball;
+mod qigong;
 
 use smash::{
     lib::{
@@ -51,4 +52,5 @@ pub fn install() {
     agent.install();
 
     auraball::install();
+    qigong::install();
 }
