@@ -1,5 +1,16 @@
 use super::*;
 
+unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_JUMP_SQUAT,
+    ].contains(&agent.get_int(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS)) {
+        FT_MOTION_RATE(agent, 0.5);
+    }
+}
+
 unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -534,6 +545,7 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialncancel", game_specialncancel, Priority::Low);
     agent.acmd("game_specialnbomb", game_specialnbomb, Priority::Low);
     agent.acmd("effect_specialnbomb", effect_specialnbomb, Priority::Low);
     agent.acmd("sound_specialnbomb", sound_specialnbomb, Priority::Low);
