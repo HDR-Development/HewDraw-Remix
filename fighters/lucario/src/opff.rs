@@ -10,7 +10,7 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
         }
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 3);
-        MeterModule::set_meter_per_level(fighter.object(), 100.0);
+        MeterModule::set_meter_per_level(fighter.object(), 90.0);
         utils::ui::UiManager::set_aura_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_aura_meter_info(
             (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32),

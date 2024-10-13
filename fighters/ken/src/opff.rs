@@ -75,7 +75,7 @@ unsafe extern "C" fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         }
         MeterModule::update(fighter.battle_object, false);
         MeterModule::set_meter_cap(fighter.object(), 6);
-        MeterModule::set_meter_per_level(fighter.object(), 30.0);
+        MeterModule::set_meter_per_level(fighter.object(), 35.0);
         utils::ui::UiManager::set_vtrigger_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_vtrigger_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,

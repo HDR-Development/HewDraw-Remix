@@ -243,7 +243,7 @@ impl VTriggerMeter {
             [color.r as f32, color.g as f32, color.b as f32, color.a as f32],
             [color.r as f32, color.g as f32, color.b as f32, color.a as f32],
         );
-        self.current_pulse_frame += 1.0;
+        self.current_pulse_frame += 1.5;
     }
 
 }
