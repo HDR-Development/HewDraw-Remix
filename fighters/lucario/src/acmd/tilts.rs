@@ -37,7 +37,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 23.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
@@ -59,7 +59,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 23.0);
+    frame(lua_state, 21.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
@@ -104,7 +104,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }

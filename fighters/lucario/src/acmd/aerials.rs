@@ -39,7 +39,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 32.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -77,7 +77,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
-    frame(lua_state, 26.0);
+    frame(lua_state, 24.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -127,7 +127,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 28.0);
+    frame(lua_state, 26.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
@@ -163,7 +163,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 4.0, 4.0, 8.0, 4.0);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 19.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
@@ -243,7 +243,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
