@@ -432,13 +432,14 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 3.0);
+    frame(lua_state, 13.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
-    frame(lua_state, 10.0);
-    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 28.0);
     FT_MOTION_RATE_RANGE(agent, 28.0, 35.0, 11.0);
+    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.2); // used so that the endlag doesn't halt momentum abruptly, considering motion rate
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }

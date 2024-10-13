@@ -110,9 +110,12 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
         MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
         opff::check_burnout(fighter);
         pause_meter_regen(fighter, 120);
-        if fighter.is_situation(*SITUATION_KIND_GROUND) 
-        && fighter.motion_frame() == 18.0 {
-            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.motion_frame() == 16.0 {
+                KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.4, y: 0.4, z: 0.4}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            }
+        } else {
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.8, y: 0.8, z: 0.8}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
     }
     0.into()
