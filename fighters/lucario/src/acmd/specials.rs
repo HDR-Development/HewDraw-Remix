@@ -96,8 +96,20 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        if !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
+            let bonus_aurapower = ParamModule::get_float(agent.battle_object, ParamType::Agent, "aura.bonus_aurapower");
+            VarModule::set_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+        }
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
+            MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+            opff::check_burnout(agent);
+            opff::pause_meter_regen(agent, 120);
+        }
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
@@ -129,6 +141,10 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        if !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
+            let bonus_aurapower = ParamModule::get_float(agent.battle_object, ParamType::Agent, "aura.bonus_aurapower");
+            VarModule::set_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+        }
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
@@ -138,6 +154,11 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
+            MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+            opff::check_burnout(agent);
+            opff::pause_meter_regen(agent, 120);
+        }
         MeterModule::watch_damage(agent.battle_object, true);
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);

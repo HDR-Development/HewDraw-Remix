@@ -81,9 +81,9 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
-    let frames = frames.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-    VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+pub unsafe fn pause_meter_regen(agent: &mut L2CAgentBase, frames: i32) {
+    let frames = frames.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+    VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
 
 pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
@@ -134,16 +134,10 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 }
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    // critical hit activation
-    if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 21.0)
-    || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 26.0))
-    && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
-        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
-        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
-        MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
-        check_burnout(fighter);
-        pause_meter_regen(fighter, 120);
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
+    && fighter.motion_frame() < 9.0 
+    && !fighter.is_button_on(Buttons::SpecialRaw){
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
     }
 }
 
