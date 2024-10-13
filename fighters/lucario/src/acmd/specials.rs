@@ -117,23 +117,23 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
             opff::pause_meter_regen(agent, 120);
         }
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 14.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE_RANGE(agent, 16.0, 24.0, 2.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
         MeterModule::watch_damage(agent.battle_object, false);
     }
-    FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
     frame(lua_state, 24.0);
     FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
@@ -156,27 +156,30 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
             opff::check_burnout(agent);
             opff::pause_meter_regen(agent, 120);
         }
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
         MeterModule::watch_damage(agent.battle_object, false);
     }
-    frame(lua_state, 15.0);
-    FT_MOTION_RATE_RANGE(agent, 15.0, 24.0, 2.0);
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE_RANGE(agent, 16.0, 24.0, 2.0);
     frame(lua_state, 24.0);
     FT_MOTION_RATE_RANGE(agent, 24.0, 63.0, 46.0);
     if is_excute(agent) {
