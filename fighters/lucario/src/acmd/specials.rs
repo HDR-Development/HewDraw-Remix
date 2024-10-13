@@ -11,16 +11,35 @@ unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        if !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT)
+        && agent.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
+            let bonus_aurapower = ParamModule::get_float(agent.battle_object, ParamType::Agent, "aura.bonus_aurapower");
+            VarModule::set_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+            VarModule::on_flag(agent.battle_object, vars::lucario::instance::IS_POWERED_UP);
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+    }
+}
+
 unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
+        opff::check_burnout(agent);
+        opff::pause_meter_regen(agent, 120);
+    }
     frame(lua_state, 37.0);
     if is_excute(agent) {
         ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
-        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
-        opff::check_burnout(agent);
-        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
     }
 }
 
@@ -52,19 +71,6 @@ unsafe extern "C" fn expression_specialnbomb(agent: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-}
-
-unsafe extern "C" fn game_specialairnbomb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 37.0);
-    if is_excute(agent) {
-        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
-        MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
-        opff::check_burnout(agent);
-        let frames = 120.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
     }
 }
 
@@ -103,7 +109,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
@@ -151,14 +157,14 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
             opff::check_burnout(agent);
             opff::pause_meter_regen(agent, 120);
         }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
         CATCH(agent, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(agent, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
@@ -566,11 +572,13 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialncancel", game_specialncancel, Priority::Low);
+    agent.acmd("game_specialnshoot", game_specialnshoot, Priority::Low);
+    agent.acmd("game_specialairnshoot", game_specialnshoot, Priority::Low);
     agent.acmd("game_specialnbomb", game_specialnbomb, Priority::Low);
     agent.acmd("effect_specialnbomb", effect_specialnbomb, Priority::Low);
     agent.acmd("sound_specialnbomb", sound_specialnbomb, Priority::Low);
     agent.acmd("expression_specialnbomb", expression_specialnbomb, Priority::Low);
-    agent.acmd("game_specialairnbomb", game_specialairnbomb, Priority::Low);
+    agent.acmd("game_specialairnbomb", game_specialnbomb, Priority::Low);
     agent.acmd("effect_specialairnbomb", effect_specialairnbomb, Priority::Low);
     agent.acmd("sound_specialairnbomb", sound_specialairnbomb, Priority::Low);
     agent.acmd("expression_specialairnbomb", expression_specialairnbomb, Priority::Low);

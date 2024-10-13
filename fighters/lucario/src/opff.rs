@@ -107,22 +107,25 @@ unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+    // button hold check
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
+    && fighter.motion_frame() < 8.0 
+    && !fighter.is_button_on(Buttons::SpecialRaw){
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
+    }
 
-    // aura bomb activation
-    // meter is drained in ACMD so that it only happens when projectile is shot
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT 
+    // super transition
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
     && frame == 8.0
-    && fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX)
-    && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
+    && VarModule::get_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
         if situation_kind == *SITUATION_KIND_GROUND {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_n_bomb"), -1.0, 1.0, 0.0, false, false);
         } else {
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_n_bomb"), -1.0, 1.0, 0.0, false, false);
         }
-        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
-        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
-        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+
     }
 
     // float during air aura bomb
@@ -135,7 +138,7 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
-    && fighter.motion_frame() < 9.0 
+    && fighter.motion_frame() < 8.0 
     && !fighter.is_button_on(Buttons::SpecialRaw){
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
     }
