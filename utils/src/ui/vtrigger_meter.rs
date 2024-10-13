@@ -2,6 +2,8 @@ use crate::offsets;
 
 use super::*;
 
+const VTRIGGER_PULSE: [f32; 4] = [138.0 / 255.0, 190.0 / 255.0, 249.0 / 255.0, 1.0];
+
 const FULL_TEXCOORDS: [f32; 8] = [
     0.0, 0.0,
     1.0, 0.0,
@@ -35,6 +37,9 @@ pub struct VTriggerMeter {
     // Progress tracking
     pub actual_percentage: f32,
     pub visual_percentage: f32,
+
+    // Pulsing
+    pub current_pulse_frame: f32,
 
     // Meter Sizing
     pub level: i32,
@@ -76,6 +81,8 @@ impl VTriggerMeter {
             actual_percentage: -1.0,
             visual_percentage: -1.0,
 
+            current_pulse_frame: 0.0,
+
             level: 0,
             level_max: 4,
 
@@ -110,6 +117,9 @@ impl VTriggerMeter {
         self.level = (current / per_level).floor() as i32;
         self.level_max = level_max;
         self.is_vtrigger = is_vtrigger;
+        if self.level < self.level_max || self.is_vtrigger {
+            self.current_pulse_frame = 0.0;
+        }
     }
 
     pub fn update_percentages(&mut self) {
@@ -210,12 +220,39 @@ impl VTriggerMeter {
         );
     }
 
+    pub fn update_pulse(&mut self) {
+        if self.level < self.level_max || self.is_vtrigger { return; }
+
+        let g = colorgrad::CustomGradient::new()
+            .colors(&[
+                colorgrad::Color::from_rgba8(255, 255, 255, 255),
+                colorgrad::Color::from_rgba8(
+                    (VTRIGGER_PULSE[0] * 255.0) as u8,
+                    (VTRIGGER_PULSE[1] * 255.0) as u8,
+                    (VTRIGGER_PULSE[2] * 255.0) as u8,
+                    (VTRIGGER_PULSE[3] * 255.0) as u8
+                ),
+            ])
+            .build()
+            .unwrap();
+
+        let distance = ((-(self.current_pulse_frame * 2.0).to_radians().cos() + 1.0) / 2.0).abs().powf(0.5);
+        let color = g.at(distance as f64);
+        set_pane_colors(
+            self.vtrigger_txt,
+            [color.r as f32, color.g as f32, color.b as f32, color.a as f32],
+            [color.r as f32, color.g as f32, color.b as f32, color.a as f32],
+        );
+        self.current_pulse_frame += 1.0;
+    }
+
 }
 
 impl UiObject for VTriggerMeter {
     fn update(&mut self) {
         self.update_percentages();
         self.update_meter_progress();
+        self.update_pulse();
     }
 
     fn is_valid(&self) -> bool {
