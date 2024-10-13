@@ -545,7 +545,8 @@ pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleOb
             PostureModule::pos_y(defender_boma) + 10.0,     
             PostureModule::pos_z(defender_boma) + 10.0
         );
-        let handle = EffectModule::req(defender_boma, Hash40::new("sys_dead_ripple"), &pos, &Vector3f::new(0.0, 0.0, 0.0), 0.75, 0, 0, false, 0);
+        let handle = EffectModule::req(defender_boma, Hash40::new("sys_dead_ripple"), &pos, &Vector3f::new(0.0, 0.0, 0.0), 0.5625, 0, 0, false, 0);
+        EffectModule::set_alpha(defender_boma, handle as u32, 0.9);
         EffectModule::set_billboard(defender_boma, handle as u32, true);
         EffectModule::set_disable_render_offset_last(defender_boma);
         EffectModule::set_rate_last(defender_boma, 2.5);

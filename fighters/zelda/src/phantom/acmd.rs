@@ -9,55 +9,83 @@ unsafe extern "C" fn game_build(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 2.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
 	frame(lua_state, 9.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
 	frame(lua_state, 12.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 14.0);
+	frame(lua_state, 15.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
-	}
-	frame(lua_state, 17.0);
-	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
 	frame(lua_state, 19.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 27.0);
+	frame(lua_state, 22.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
-	}
-	frame(lua_state, 29.0);
-	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
 	frame(lua_state, 31.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 37.0);
+	frame(lua_state, 34.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 44.0);
+	frame(lua_state, 36.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 49.0);
+	frame(lua_state, 43.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
 	}
-	frame(lua_state, 180.0);
+	frame(lua_state, 51.0);
 	if is_excute(agent) {
-		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
+	}
+	frame(lua_state, 57.0);
+	if is_excute(agent) {
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		}
+	}
+	frame(lua_state, 210.0);
+	if is_excute(agent) {
+		if !VarModule::is_flag(agent.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+			WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
+		} else {
+			boma.change_status_req(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, true);
+		}
 	}   
 }
 
@@ -67,12 +95,21 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		EFFECT(agent, Hash40::new("zelda_phantom_build"), Hash40::new("trans"), 0, 3, 0, 0, -90, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+		let zelda = utils::util::get_battle_object_from_id(owner_id);
+		let zelda_boma: &mut BattleObjectModuleAccessor = &mut *(*zelda).module_accessor;
 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
 			let zelda = utils::util::get_battle_object_from_id(owner_id);
 			let handle = EffectModule::req_follow(boma, Hash40::new("zelda_entry"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::new(0.0, 150.0, 0.0), 0.75, false, 0, 0, 0, 0, 0, false, false);
 			VarModule::set_int64(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_EFFECT_HANDLE, handle);
 		}
 		LAST_EFFECT_SET_COLOR(agent, 0.4, 0.0, 1.0);
+		//player arrow
+		let effect = EffectModule::req_follow(boma, Hash40::new("sys_direction"), Hash40::new("top"), &Vector3f::new(0.0, 22.5, 1.4), &Vector3f::new(0.0, 90.0, 180.0), 0.67, true, 0, 0, 0, 0, 0, false, false);
+    	VarModule::set_int(agent.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, effect as i32);
+    	LAST_EFFECT_SET_SCALE_W(agent, 0.75, 0.45, 0.75);
+    	let team_color = FighterUtil::get_team_color(zelda_boma);
+    	let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+    	EffectModule::set_rgb_partial_last(boma, effect_team_color.x, effect_team_color.y, effect_team_color.z);
 	}
 	frame(lua_state, 5.0);
 	if is_excute(agent) {
@@ -220,7 +257,7 @@ unsafe extern "C" fn effect_attackpunch(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attacks(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-	let rush_speed = 5.5;
+	let rush_speed = 6.5;
 	frame(lua_state, 0.0);
 	if is_excute(agent) {
 		//FT_MOTION_RATE(agent, 5.0/(3.0-0.0));
@@ -424,7 +461,7 @@ unsafe extern "C" fn effect_attackl(agent: &mut L2CAgentBase) {
 		LAST_EFFECT_SET_RATE(agent, 0.5);
 		LAST_EFFECT_SET_COLOR(agent, 0.1, 0.0, 1.0);
 	}
-	frame(lua_state, 9.0);
+	frame(lua_state, 8.0);
 	if is_excute(agent) {
 		AFTER_IMAGE_OFF(agent, 0);
 		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_sword_trace"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -462,21 +499,22 @@ unsafe extern "C" fn game_attackmax(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
 	let rush_speed = 7.0;
-	frame(lua_state, 0.0);
+	FT_MOTION_RATE(agent, 11.0/(3.0-0.0));
 	if is_excute(agent) {
-		FT_MOTION_RATE(agent, 11.0/(3.0-0.0));
 		KineticModule::unable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 	}
 	frame(lua_state, 3.0);
+	FT_MOTION_RATE(agent, 1.0);
 	if is_excute(agent) {
-		FT_MOTION_RATE(agent, 1.0);
-		ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 100, 130, 0, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-		ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 25, 100, 85, 0, 8.5, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+		ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 361, 100, 130, 0, 8.5, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+		ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 25, 100, 85, 0, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
 		app::sv_kinetic_energy::set_speed(lua_state);
 		agent.clear_lua_stack();
+		let hit1 = Vector2f { x: 40.0, y: 15.0 };
+        AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &hit1, 9, false);
 	}
 	frame(lua_state, 11.0);
 	if is_excute(agent) {
@@ -534,12 +572,9 @@ unsafe extern "C" fn effect_attackmax(agent: &mut L2CAgentBase) {
 			LAST_EFFECT_SET_ALPHA(agent, 0.6);
 		}
 	}
-	frame(lua_state, 21.0);
+	frame(lua_state, 20.0);
 	if is_excute(agent) {
 		EFFECT_OFF_KIND(agent, Hash40::new("zelda_phantom_line"), false, false);
-	}
-	frame(lua_state, 24.0);
-	if is_excute(agent) {
 		AFTER_IMAGE_OFF(agent, 8);
 	}
 	frame(lua_state, 119.0);
@@ -555,6 +590,9 @@ unsafe extern "C" fn game_cancel(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
 	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 	let zelda = utils::util::get_battle_object_from_id(owner_id);
+	if is_excute(agent) {
+		JostleModule::set_status(boma, false);
+	}
 	frame(lua_state, 1.0);
 	if VarModule::is_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM) {
 		FT_MOTION_RATE_RANGE(agent, 1.0, 34.0, 99.0);
@@ -576,6 +614,16 @@ unsafe extern "C" fn effect_cancel(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
 		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_end2"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.3, false);
     }
+	frame(lua_state, 27.0);
+    if is_excute(agent) {
+		let effect = VarModule::get_int(agent.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE) as u32;
+		EffectModule::set_pos(boma, effect, &Vector3f{x: 0.0, y: 17.5, z: 1.4});
+	}
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+		let effect = VarModule::get_int(agent.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE) as u32;
+		EffectModule::set_pos(boma, effect, &Vector3f{x: 0.0, y: 12.5, z: 1.4});
+	}
     frame(lua_state, 89.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("zelda_phantom_end"), Hash40::new("trans"), 0, 2, 0, 0, 0, 0, 1.18, 0, 0, 0, 0, 0, 0, true);
