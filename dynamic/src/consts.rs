@@ -882,6 +882,9 @@ pub mod vars {
             pub const METER_PASSIVE_RATE: i32 = 0x0100;
         }
         pub mod status {
+            // flags
+            pub const HIT_CANCEL: i32 = 0x1102;
+
             // ints
             pub const SPECIAL_S_ROT_ANGLE: i32 = 0x1100;
 

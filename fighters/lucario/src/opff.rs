@@ -287,7 +287,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     if CancelModule::is_enable_cancel(boma) 
     || boma.is_in_hitlag() 
     || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+    || !VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL) {
         return;
     }
     
