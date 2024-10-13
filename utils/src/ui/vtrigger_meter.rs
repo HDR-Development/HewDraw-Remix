@@ -148,43 +148,30 @@ impl VTriggerMeter {
         set_pane_visible(self.vtrigger_txt, self.level >= self.level_max || self.is_vtrigger);
 
         // meter_bar_progress
-        let size = 2.0;
-        let offset = if self.is_vtrigger {
-            0.0 / size
-        } else {
-            1.0 / size
-        };
-        let len = 1.0 / size;
+        let short_ratio = if self.level_max <= 4 { 0.68 } else { 1.0 };
         set_tex_coords(
             self.meter_bar_progress, 
             [
                 0.0, offset,
-                self.actual_percentage, offset,
+                self.actual_percentage * short_ratio, offset,
                 0.0, offset + len,
-                self.actual_percentage, offset + len
+                self.actual_percentage * short_ratio, offset + len
             ]
         );
-        set_width_height(self.meter_bar_progress, self.meter_bar_progress_size.0 * self.actual_percentage, self.meter_bar_progress_size.1);
+        set_width_height(self.meter_bar_progress, self.meter_bar_progress_size.0 * self.actual_percentage * short_ratio, self.meter_bar_progress_size.1);
         set_pane_visible(self.meter_bar_progress, self.level < self.level_max);
 
         // meter_bar
-        let size = 2.0;
-        let offset = if self.is_vtrigger {
-            0.0 / size
-        } else {
-            1.0 / size
-        };
-        let len = 1.0 / size;
         set_tex_coords(
             self.meter_bar, 
             [
                 0.0, offset,
-                self.visual_percentage, offset,
+                self.visual_percentage * short_ratio, offset,
                 0.0, offset + len,
-                self.visual_percentage, offset + len
+                self.visual_percentage * short_ratio, offset + len
             ]
         );
-        set_width_height(self.meter_bar, self.meter_bar_size.0 * self.visual_percentage, self.meter_bar_size.1);
+        set_width_height(self.meter_bar, self.meter_bar_size.0 * self.visual_percentage * short_ratio, self.meter_bar_size.1);
         set_pane_visible(self.meter_bar, self.level < self.level_max);
 
         // meter_bar_base
