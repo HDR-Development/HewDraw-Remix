@@ -62,6 +62,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
+    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);

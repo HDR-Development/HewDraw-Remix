@@ -30,6 +30,60 @@ unsafe extern "C" fn game_speciallw8(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_speciallw8(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
+        LAST_EFFECT_SET_RATE(agent, 0.6);
+        FLASH(agent, 0.8, 0.8, 2, 0.1);
+        BURN_COLOR(agent, 4, 1.6, 8, 0.8);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(agent) {
+        FLASH_FRM(agent, 4, 1, 1, 1, 0);
+        BURN_COLOR_FRAME(agent, 4, 1, 1, 1, 0);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+        BURN_COLOR_NORMAL(agent);
+    }
+}
+
+unsafe extern "C" fn effect_specialairlw8(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
+        LAST_EFFECT_SET_RATE(agent, 0.6);
+        FLASH(agent, 0.8, 0.8, 2, 0.1);
+        BURN_COLOR(agent, 4, 1.6, 8, 0.8);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(agent) {
+        FLASH_FRM(agent, 4, 1, 1, 1, 0);
+        BURN_COLOR_FRAME(agent, 4, 1, 1, 1, 0);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+        BURN_COLOR_NORMAL(agent);
+    }
+}
+
 // Kaclang
 unsafe extern "C" fn game_specialairlw10(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -250,6 +304,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallw8", game_speciallw8, Priority::Low);
     agent.acmd("game_specialairlw8", game_speciallw8, Priority::Low);
+    agent.acmd("effect_speciallw8", effect_speciallw8, Priority::Low);
+    agent.acmd("effect_specialairlw8", effect_specialairlw8, Priority::Low);
 
     agent.acmd("game_specialairlw10", game_specialairlw10, Priority::Low);
 

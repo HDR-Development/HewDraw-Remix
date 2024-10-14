@@ -9,7 +9,7 @@ unsafe extern "C" fn game_attacks4sjump(agent: &mut L2CAgentBase) {
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
     if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 20.3;
         ATTACK(agent, 0, 0, Hash40::new("head1"), dmg * p.dmg, 361, 75, 0, 33, 4.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, dmg * p.shield_dmg, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
     }
@@ -36,7 +36,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
     if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 18.2;
         ATTACK(agent, 0, 0, Hash40::new("top"), dmg * p.dmg, 83 + p.angle, 72, 0, 50, 6.0, 0.0, 3.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         let dmg = 14.0;
@@ -64,7 +64,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
     if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 15.4;
         ATTACK(agent, 0, 0, Hash40::new("head1"), dmg * p.dmg, 28 + p.angle, 71, 0, 32, 4.5, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, dmg * p.shield_dmg, 0.2, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_M, p.sound, *ATTACK_REGION_PIKMIN);
     }

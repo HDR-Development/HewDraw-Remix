@@ -26,7 +26,7 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -177,7 +177,7 @@ unsafe extern "C" fn special_hi_set_physics(fighter: &mut L2CFighterCommon, jump
 }
 
 unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("duckhunt_target"), false, false);
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("duckhunt_target"), true, true);
     return 0.into();
 }
 
@@ -207,7 +207,7 @@ unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
