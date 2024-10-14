@@ -1,18 +1,15 @@
 use super::*;
 
-unsafe extern "C" fn game_wait(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 3.0, 0.0, 8.5, 0.0, 0.0, -8.5, 0.0, 0.0, 0.0, 80, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
-    }
-}
-
 unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        let team_color = FighterUtil::get_team_color(boma);
+        let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+        let pos = &*(PostureModule::pos(boma));
+        EffectModule::req(boma, Hash40::new("sys_direction"), &Vector3f::new(pos.x, pos.y + 16.0, pos.z), &Vector3f::new(180.0, 0.0, 0.0), 1.0, 0, -1, false, 0);
+        LAST_EFFECT_SET_COLOR(agent, effect_team_color.x, effect_team_color.y, effect_team_color.z);
         let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
         VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);
@@ -76,7 +73,6 @@ unsafe extern "C" fn sound_wait(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_edge_special_l01_01"));
     }
-
 }
 
 unsafe extern "C" fn game_attack(agent: &mut L2CAgentBase) {
@@ -100,32 +96,14 @@ unsafe extern "C" fn game_attack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_vanish(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
-unsafe extern "C" fn effect_vanish(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    
-}
-
-unsafe extern "C" fn sound_vanish(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-
-}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_wait", game_wait, Priority::Low);
+    agent.acmd("game_wait", acmd_stub, Priority::Low);
     agent.acmd("effect_wait", effect_wait, Priority::Low);
     agent.acmd("sound_wait", sound_wait, Priority::Low);
 
     agent.acmd("game_attack", game_attack, Priority::Low);
 
-    agent.acmd("game_vanish", game_vanish, Priority::Low);
-    agent.acmd("effect_vanish", effect_vanish, Priority::Low);
-    agent.acmd("sound_vanish", sound_vanish, Priority::Low);
+    agent.acmd("game_vanish", acmd_stub, Priority::Low);
+    agent.acmd("effect_vanish", acmd_stub, Priority::Low);
+    agent.acmd("sound_vanish", acmd_stub, Priority::Low);
 }

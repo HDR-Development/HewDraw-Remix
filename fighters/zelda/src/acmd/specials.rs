@@ -334,9 +334,6 @@ unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -370,6 +367,7 @@ unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 1.0);
     if agent.is_prev_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if VarModule::is_flag(agent.battle_object, vars::zelda::instance::SPECIAL_HI_GROUNDED_TELEPORT) {
             FT_MOTION_RATE_RANGE(agent, 1.0, 21.0, 13.0);
@@ -469,8 +467,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specialhi", sound_specialhi, Priority::Low);
     agent.acmd("sound_specialairhi", sound_specialhi, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("game_speciallw", acmd_stub, Priority::Low);
+    agent.acmd("game_specialairlw", acmd_stub, Priority::Low);
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
     agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
     agent.acmd("sound_speciallwattack", sound_speciallwattack, Priority::Low);

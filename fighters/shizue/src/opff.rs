@@ -2,26 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
- 
-unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_START].contains(&status_kind) {
-        if frame < 25.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-                }
-            }
-        }
-    }
-}
-
-unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("attack_air_f"))  {
-        if fighter.motion_frame() > 13.0 || fighter.motion_frame() < 17.0 {
-            ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("havel"), &Vector3f::new(1.075, 1.075, 1.075));
-        }
-    }
-}
 
 //Determine if fuel is past threshold
 unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
@@ -50,32 +30,6 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 6.0, 0.0, 0.0, 0.0, 0.0, 0.7, true);
     }
 }
-
-//Cancel aerials on hit into Balloon Trip
-unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
-    && !fighter.is_in_hitlag() 
-    && VarModule::is_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE) {
-        if fighter.is_cat_flag(Cat1::SpecialHi) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-        }
-    }
-}
-
-//Cancel anything on hit into Lloid Call
-// unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
-//     let boma = fighter.boma();
-//     if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-//     && !fighter.is_in_hitlag()  
-//     && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
-//         if fighter.is_cat_flag(Cat1::SpecialLw) {
-//             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
-//         }
-//     }
-// }
 
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END) 
@@ -184,17 +138,13 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    //fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     reel_in(boma);
-    //lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     boost_ready(boma);
     fastfall_specials(fighter);
     balloon_cancel(fighter);
     balloon_dash(fighter);
-    balloon_special_cancel(fighter);
     fuel_indicators(fighter);
-    fair_scale(fighter);
 }
 
 // symbol-based call for villager/isabelle's common pocket opff
@@ -212,7 +162,7 @@ pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterC
 
 pub unsafe fn shizue_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
 

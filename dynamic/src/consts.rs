@@ -343,6 +343,7 @@ pub mod vars {
             // flags
             pub const PERSIST_RNG: i32 = 0x0100;
             pub const PSYCHE_UP_ACTIVE: i32 = 0x0101;
+            pub const MENU_TRAINING_MODE_LOCK: i32 = 0x0102;
 
             // ints
             pub const SPELL_SLOT_1: i32 = 0x0100;
@@ -358,6 +359,7 @@ pub mod vars {
             pub const SPELL_SLOT_USED_2_3: i32 = 0x0110;
             pub const SPELL_SLOT_USED_2_4: i32 = 0x0111;
             pub const CURSOR_SLOT: i32 = 0x0112;
+            pub const MENU_TRAINING_MODE_INDEX: i32 = 0x0113;
         }
     }
 
@@ -1019,10 +1021,7 @@ pub mod vars {
     pub mod metaknight {
         pub mod instance {
             // flags
-            pub const SPECIAL_N_HIT: i32 = 0x0103;
-            pub const SPECIAL_S_HIT: i32 = 0x0104;
-            pub const SPECIAL_HI_HIT: i32 = 0x0105;
-            pub const SPECIAL_LW_HIT: i32 = 0x0106;
+            pub const SPECIAL_S_HIT: i32 = 0x0100;
         }
     }
 
@@ -1059,13 +1058,11 @@ pub mod vars {
 
             // floats
             pub const ATTACK_CHARGE: i32 = 0x1100;
-            pub const SPECIAL_S3_MISSILE_DETONATE: i32 = 0x1101;
         }
         pub mod instance {
             // flags
             pub const SPECIAL_HI1_LAUNCH_AIR_USED: i32 = 0x0100;
-            pub const SPECIAL_S3_DETONATE_READY: i32 = 0x0101;
-            pub const BOOSTED_ATTACK_AIR_LW_AIRTIME: i32 = 0x0102;
+            pub const BOOSTED_ATTACK_AIR_LW_AIRTIME: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_HI1_LAUNCH_EFFECT_HANDLE: i32 = 0x0100;
@@ -1074,6 +1071,13 @@ pub mod vars {
 
             // floats
             pub const SPECIAL_N3_CHARGE: i32 = 0x0102;
+        }
+    }
+
+    pub mod miigunner_supermissile {
+        pub mod instance {
+            // flags
+            pub const PULSE_DETONATE: i32 = 0x0100;
         }
     }
 
@@ -1340,12 +1344,14 @@ pub mod vars {
     pub mod richter {
         pub mod instance {
             // flags
-            pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0100;
-            pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0101;
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x0100;
+            pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0101;
         }
         pub mod status {
             // flags
             pub const ATTACK_LW3_JUMP_BUFFER: i32 = 0x1150;
+            pub const SPECIAL_S_CHANGE_KINETIC: i32 = 0x1151;
+            pub const SPECIAL_S_ENABLE_GRAVITY: i32 = 0x1152;
         }
     }
 
@@ -1542,6 +1548,10 @@ pub mod vars {
     }
 
     pub mod simon {
+        pub mod instance {
+            // flags
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x0100;
+        }
         pub mod status {
             //flags
             pub const SPECIAL_S_LAND_CANCEL: i32 = 0x1100;

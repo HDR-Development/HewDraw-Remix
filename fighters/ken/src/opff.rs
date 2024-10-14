@@ -373,15 +373,31 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         return;
     }
 
+    let is_nspecial_cancel = (
+        boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+        ]) && frame > 13.0
+    );
+
+    let is_uspecial_cancel = (
+        boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        ]) 
+        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+        && (boma.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_INT_START_SITUATION) == *SITUATION_KIND_GROUND ||  boma.is_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL))
+    );
+
     let is_other_special_cancel = (
         boma.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_S,
             *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
             *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
             *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
             *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
             *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
             statuses::ken::ATTACK_COMMAND_4
@@ -390,14 +406,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
     );
 
-    let is_nspecial_cancel = (boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
-        ]) && frame > 13.0
-    );
-
-    if !is_nspecial_cancel && !is_other_special_cancel {
+    if !is_nspecial_cancel && !is_uspecial_cancel && !is_other_special_cancel {
         return;
     }
 

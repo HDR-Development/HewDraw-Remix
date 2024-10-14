@@ -29,8 +29,8 @@ unsafe extern "C" fn special_hi2_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into();
 }
 
-unsafe extern "C" fn special_hi_2_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
+unsafe extern "C" fn special_hi2_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -62,29 +62,26 @@ unsafe extern "C" fn special_hi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into();
 }
 
-unsafe extern "C" fn special_hi_3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+unsafe extern "C" fn special_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         fighter.set_int(*SITUATION_KIND_GROUND, *FIGHTER_MEWTWO_STATUS_SPECIAL_HI_WORK_INT_START_SITUATION);
         MotionModule::change_motion(fighter.module_accessor, "special_hi".to_hash(), 0.0, 1.0, false, 0.0, false, false);
     } else {
-        GroundModule::set_correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.set_int(*SITUATION_KIND_AIR, *FIGHTER_MEWTWO_STATUS_SPECIAL_HI_WORK_INT_START_SITUATION);
         MotionModule::change_motion(fighter.module_accessor, "special_air_hi".to_hash(), 0.0, 1.0, false, 0.0, false, false);
         let landing_lag = fighter.get_param_float("param_special_hi", "landing_frame");
-        //freefall ver's special lag
-        if VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_ENABLE_FREEFALL) {
-            WorkModule::set_float(fighter.module_accessor, landing_lag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME); 
-        } //lag if not cancellable (also done in end status ig)
+        WorkModule::set_float(fighter.module_accessor, landing_lag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         //special fall speed
         let x_max = fighter.get_param_float("param_special_hi", "fall_x_mull_value");
         WorkModule::set_float(fighter.module_accessor, x_max, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
     }
     
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_3_main_loop as *const () as _))
+    fighter.main_shift(special_hi3_main_loop)
 }
 
-unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let control = ControlModule::get_attack_air_kind(fighter.module_accessor);
     if control == *FIGHTER_COMMAND_ATTACK_AIR_KIND_NONE {
         FighterControlModuleImpl::update_attack_air_kind(fighter.module_accessor, true);
@@ -100,24 +97,23 @@ unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into())
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         } else {
             if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL) {
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into())
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
             } else {
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into())
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             }
         }
+        return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_TELEPORT_CANCEL) {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into())
-            } else {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_LIGHT.into(), false.into())
-            } //re-adds nil from p+?
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            return 1.into();
         } else {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into())
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 1.into();
         }
     }
     //momentum and fastfall
@@ -140,11 +136,14 @@ unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) -> L
             }
         }
     }
-    0.into()
+
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2, special_hi2_pre);
+    agent.status(Exec, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2, special_hi2_exec);
+    
     agent.status(Pre, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3, special_hi3_pre);
-    agent.status(Main, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3, special_hi_3_main);
+    agent.status(Main, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3, special_hi3_main);
 }
