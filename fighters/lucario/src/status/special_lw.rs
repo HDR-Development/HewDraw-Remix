@@ -115,7 +115,7 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
                 KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.4, y: 0.4, z: 0.4}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
         } else {
-            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.8, y: 0.8, z: 0.8}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.7, y: 0.7, z: 0.7}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
     }
     0.into()

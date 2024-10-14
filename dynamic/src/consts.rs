@@ -880,6 +880,7 @@ pub mod vars {
 
             // float
             pub const METER_PASSIVE_RATE: i32 = 0x0100;
+            pub const SPECIAL_HI_MOTION_RATE: i32 = 0x0105;
         }
         pub mod status {
             // flags
@@ -887,6 +888,7 @@ pub mod vars {
 
             // ints
             pub const SPECIAL_S_ROT_ANGLE: i32 = 0x1100;
+            pub const SPECIAL_HI_MARKER_EFFECT_HANDLE: i32 = 0x1103;
 
             // floats
             pub const SPECIAL_N_ANGLE: i32 = 0x1100;
