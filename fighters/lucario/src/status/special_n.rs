@@ -159,6 +159,12 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+unsafe extern "C" fn special_n_hold_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::drain_direct(fighter.battle_object, 0.15);
+    opff::pause_meter_regen(fighter, 30);
+    smashline::original_status(Exec, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD)(fighter)
+}
+
 unsafe extern "C" fn special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_save_charge_status(fighter);
     0.into()
@@ -197,6 +203,12 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
     }
 
     0.into()
+}
+
+unsafe extern "C" fn special_n_max_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // MeterModule::drain_direct(fighter.battle_object, 0.15);
+    // opff::pause_meter_regen(fighter, 30);
+    smashline::original_status(Exec, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX)(fighter)
 }
 
 unsafe extern "C" fn special_n_max_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -379,7 +391,9 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
+    agent.status(Exec, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_exec);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_end);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_main);
+    agent.status(Exec, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_exec);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_end);
 }
