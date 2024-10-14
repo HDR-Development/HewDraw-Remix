@@ -333,7 +333,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let angle2 = if stance.label == 0 { 94 } else { 30 };
     let dmg1 = if stance.label == 0 { 7.0 } else { 14.0 };
     let dmg2 = if stance.label == 0 { 6.0 } else { 12.0 };
-    let fkb1 = if stance.label == 0 { 150 } else { 0 };
+    let fkb1 = if stance.label == 0 { 80 } else { 0 };
     let bkb1 = if stance.label == 0 { 0 } else { 25 }; 
     let kbg2 = if stance.label == 0 { 70 } else { 99 };
     let bkb2 = if stance.label == 0 { 75 } else { 25 };

@@ -4,54 +4,51 @@ use super::*;
 use globals::*;
  
 unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && !VarModule::is_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_HI_GROUNDED_TELEPORT) {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            VarModule::on_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_HI_GROUNDED_TELEPORT)
+        } //touching ground at any point counts as G2G for cancels
+    }
     // Wall Ride momentum fixes
-    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
-        let init_speed_x = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X);
-        let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
-            if !VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
-                VarModule::on_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE);
-            }
-            if init_speed_y > 0.0 {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            }
-        } else if VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, init_speed_x, init_speed_y);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
+    //if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
+        //let init_speed_x = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X);
+        //let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
+        //if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
+        //    if !VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
+        //        VarModule::on_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE);
+        //    }
+        //    if init_speed_y > 0.0 {
+        //        fighter.clear_lua_stack();
+        //        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
+        //        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        //    }
+        //} else if VarModule::is_flag(boma.object(), vars::common::status::IS_TELEPORT_WALL_RIDE) {
+        //    fighter.clear_lua_stack();
+        //    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, init_speed_x, init_speed_y);
+        //    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        //}
         //telecancel
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            fighter.change_status(FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3.into(), true.into());
-            return;
-        }
-    }
-    else if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3) {   
-        if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
-            if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
-                let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            }
-        }
-    }
+    //    if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+    //        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    //        fighter.change_status(FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3.into(), true.into());
+    //        return;
+    //    }
+    //}
+    //else if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3) {   
+    //    if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_SIDE as u32) {
+    //        if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
+    //            let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
+    //            KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    //        }
+    //    }
+    //}
 }
 
 unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
     && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag()
-    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR]) {
+    && VarModule::is_flag(fighter.battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_CANCEL_FRAME) {
         if fighter.is_cat_flag(Cat1::SpecialLw) && !ArticleModule::is_exist(boma, *FIGHTER_ZELDA_GENERATE_ARTICLE_PHANTOM) {
             if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) { //displacement flag
                 VarModule::on_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_FORWARD_PHANTOM);
@@ -78,23 +75,19 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+                WorkModule::set_float(boma, 7.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
             }
         }
     }
 }
 
-pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    let pass_thresh = boma.get_param_float("common", "pass_stick_y");
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if StatusModule::is_changing(boma) {ControlModule::reset_flick_y(boma); }
-        else if GroundModule::is_passable_ground(boma)
-        && fighter.left_stick_y() <= pass_thresh
-        && ControlModule::get_flick_y(boma) < 4 {
-            GroundModule::pass_floor(boma);
-        }//platdrop
-    }
+pub unsafe fn phantom_usability_effects(fighter:&mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let phantom_object_id = VarModule::get_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_PHANTOM_OBJECT_ID) as u32;
+    let phantom_battle_object = utils::util::get_battle_object_from_id(phantom_object_id);
+    let phantom_boma = &mut *(*phantom_battle_object).module_accessor;
     let handle = VarModule::get_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE);
+    let arrow = VarModule::get_int(phantom_battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE);
     //disables effects on winscreen (one of them spawns a phantom)
     if (fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go())  && handle >= 1 {
         EFFECT_OFF_KIND(fighter, Hash40::new("zelda_phantom_aura"), true, true);
@@ -117,6 +110,9 @@ pub unsafe fn phantom_platdrop_effect(fighter:&mut smash::lua2cpp::L2CFighterCom
                 VarModule::off_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT);
                 VarModule::set_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_COOLDOWN_EFFECT_HANDLE, -1);
             }//-1 allows effects to be spawned
+            if EffectModule::is_exist_effect(phantom_boma, arrow as u32) {
+                EffectModule::kill(phantom_boma, arrow as u32, true, true);
+            }//kill check for player arrow
         }
     }
 }
@@ -161,7 +157,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dins_fire_cancels(boma);
     nayru_land_cancel(boma);
     phantom_special_cancel(fighter, boma);
-    phantom_platdrop_effect(fighter, boma);
+    phantom_usability_effects(fighter, boma);
     fastfall_specials(fighter);
 }
 

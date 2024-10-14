@@ -88,7 +88,7 @@ unsafe extern "C" fn game_specialairhifall(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 5.5);
     frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
 }

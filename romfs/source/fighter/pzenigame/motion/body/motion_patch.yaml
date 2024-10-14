@@ -20,6 +20,9 @@ attack_13:
 attack_11:
   extra:
     cancel_frame: 16
+attack_12:
+  extra:
+    cancel_frame: 25
 attack_lw3:
   flags:
     move: false

@@ -10,7 +10,7 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
 	frame(lua_state, 1.0);
 	FT_MOTION_RATE_RANGE(agent, 1.0, 21.0, 17.0);
 	frame(lua_state, 21.0);
-	FT_MOTION_RATE_RANGE(agent, 21.0, 64.0, 36.0);
+	FT_MOTION_RATE_RANGE(agent, 21.0, 64.0, 33.0);
 	if is_excute(agent) {
 		ArticleModule::generate_article(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_FLAMEPILLAR, false, 0);
 	}

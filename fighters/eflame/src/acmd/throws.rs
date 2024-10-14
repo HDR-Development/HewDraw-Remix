@@ -64,6 +64,40 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 84, 49, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 9.0, 11.0);
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        CHECK_FINISH_CAMERA(agent, 5, 7);
+    }
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+}
+
+unsafe extern "C" fn sound_throwhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        let handle = SoundModule::play_se(boma, Hash40::new("se_eflame_throw_h01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, handle as i32, 2.0, 0);
+        PLAY_SEQUENCE(agent, Hash40::new("seq_eflame_rnd_attack01"));
+    }
+}
+
 unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -114,6 +148,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
+
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
+    agent.acmd("sound_throwhi", sound_throwhi, Priority::Low);
 
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

@@ -465,21 +465,24 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
 unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
     let mut eff_size = size;
     // Shrink knockback smoke effect by 25%
-    let mut is_flyroll = false;
+    let mut is_kb_smoke = false;
     if effHash.hash == hash40("sys_flyroll_smoke") as u64 {  // hash for kb smoke
         eff_size = size * 0.7;
-        is_flyroll  = true;
+        is_kb_smoke = true;
     }
 
     let ret = original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-    if is_flyroll {
-        let fighter = util::get_fighter_common_from_accessor(boma);
-        let reaction_frame = fighter.get_float(*FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
 
-        let min_alpha = 0.25;
+    if is_kb_smoke {
+        let fighter = util::get_fighter_common_from_accessor(boma);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let speed = app::sv_kinetic_energy::get_speed_length(fighter.lua_state_agent);
+
+        let min_alpha = 0.0;
         let max_alpha = 1.0;
 
-        let alpha = (min_alpha + ((reaction_frame - 51.0) / 30.0)).clamp(min_alpha, max_alpha);
+        let alpha = (min_alpha + ((speed - 3.5) / 2.0)).clamp(min_alpha, max_alpha);
         fighter.clear_lua_stack();
         fighter.push_lua_stack(&mut L2CValue::new_num(alpha));
         sv_animcmd::LAST_EFFECT_SET_ALPHA(fighter.lua_state_agent);

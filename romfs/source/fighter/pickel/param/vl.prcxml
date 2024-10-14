@@ -9,7 +9,7 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <int hash="material_normal_max">60</int>
+    <int hash="material_normal_max">64</int>
     <int hash="material_red_stone_max">15</int>
     <int hash="start_material_grade_1_num">8</int>
     <int hash="start_material_wood_num">4</int>

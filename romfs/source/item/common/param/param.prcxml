@@ -150,18 +150,10 @@
     <hash40 index="122">dummy</hash40>
     <hash40 index="123">dummy</hash40>
     <hash40 index="124">dummy</hash40>
-    <struct index="125">
-      <hash40 hash="have_kind">item_have_kind_have</hash40>
-    </struct>
-    <struct index="126">
-      <hash40 hash="have_kind">item_have_kind_have</hash40>
-    </struct>
-    <struct index="127">
-      <hash40 hash="have_kind">item_have_kind_have</hash40>
-    </struct>
-    <struct index="128">
-      <hash40 hash="have_kind">item_have_kind_have</hash40>
-    </struct>
+    <hash40 index="125">dummy</hash40>
+    <hash40 index="126">dummy</hash40>
+    <hash40 index="127">dummy</hash40>
+    <hash40 index="128">dummy</hash40>
     <hash40 index="129">dummy</hash40>
     <struct index="130">
       <float hash="hp">999</float>

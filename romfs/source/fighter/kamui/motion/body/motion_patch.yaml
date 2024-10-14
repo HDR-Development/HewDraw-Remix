@@ -22,7 +22,7 @@ attack_s3_s:
   flags:
     move: true
   extra:
-    cancel_frame: 34
+    cancel_frame: 32
 attack_hi3:
   extra:
     cancel_frame: 36
