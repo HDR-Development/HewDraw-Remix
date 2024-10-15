@@ -108,12 +108,12 @@ mod offsets_impl {
 
     #[export_name = "offsets_analog_trigger_l"]
     pub const fn analog_trigger_l() -> usize {
-        0x3666ae0
+        0x3666b00
     }
 
     #[export_name = "offsets_analog_trigger_r"]
     pub const fn analog_trigger_r() -> usize {
-        0x3666af4
+        0x3666b14
     }
 }
 
