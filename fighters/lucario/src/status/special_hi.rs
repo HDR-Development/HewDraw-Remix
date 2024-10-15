@@ -231,10 +231,6 @@ unsafe extern "C" fn special_hi_rush_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-unsafe extern "C" fn special_hi_rush_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    smashline::original_status(Exec, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH)(fighter)
-}
-
 unsafe extern "C" fn special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
     if !MotionModule::is_end(fighter.module_accessor)
@@ -260,7 +256,7 @@ unsafe extern "C" fn special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CV
         opff::pause_meter_regen(fighter, 120);
         KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-        let angle = dbg!(fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
+        let angle = (fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
         let lr = if angle.abs() > 90.0 { -1.0 } else { 1.0 };
         PostureModule::set_lr(fighter.module_accessor, lr);
     }
@@ -367,7 +363,7 @@ unsafe extern "C" fn special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> 
         opff::pause_meter_regen(fighter, 120);
         KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-        let angle = dbg!(fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
+        let angle = (fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
         let lr = if angle.abs() > 90.0 { -1.0 } else { 1.0 };
         PostureModule::set_lr(fighter.module_accessor, lr);
     }
@@ -491,7 +487,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_pre);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_main);
-    agent.status(Exec, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_exec);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_end);
 
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_main);
