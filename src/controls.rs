@@ -46,7 +46,7 @@ impl<T: Copy> CppVector<T> {
     }
 }
 
-#[skyline::hook(offset = 0x1D39A00)]
+#[skyline::hook(offset = 0x1D3A000)]
 unsafe fn get_button_label_by_operation_kind(
     hashed_string: &mut HashedString,
     operation: u8,
@@ -93,7 +93,7 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x1D331E8, inline)]
+#[skyline::hook(offset = 0x1D331F8, inline)]
 unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
     let button = *ctx.registers[25].w.as_ref();
     if [0x4, 0x5, 0x6, 0x9].contains(&button) {
