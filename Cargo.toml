@@ -114,6 +114,7 @@ zelda = { path = "fighters/zelda" }
 name = "hdr"
 version.workspace = true
 authors.workspace = true
+edition.workspace = true
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"
