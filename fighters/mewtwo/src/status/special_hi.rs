@@ -1,4 +1,5 @@
 use super::*;
+use smash::cpp::root::app::KineticEnergy;
 
 unsafe extern "C" fn special_hi2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

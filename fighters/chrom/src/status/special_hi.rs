@@ -60,7 +60,7 @@ pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, 
     let max_y_param = if (status_kind == statuses::chrom::SPECIAL_HI_DIVE) { hash40("air_speed_y_stable") } else { hash40("dive_speed_y") };
     let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, max_y_param, 0);
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[0];
+    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[1];
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let flip_speed_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_speed_y_mul");
