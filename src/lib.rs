@@ -3,6 +3,8 @@
 #![allow(non_snake_case)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
+#![allow(unexpected_cfgs)]
+#![allow(static_mut_refs)]
 #![feature(proc_macro_hygiene)]
 
 // Not sure why these are needed here, probably cargo-skyline BS
