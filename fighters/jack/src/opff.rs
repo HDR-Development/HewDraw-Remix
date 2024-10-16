@@ -82,6 +82,7 @@ unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon, boma: &mut 
 
 unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && !StatusModule::is_changing(fighter.module_accessor)
     && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -93,6 +94,7 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
     if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_HI_HOP);

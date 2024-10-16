@@ -147,6 +147,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
+        PostureModule::reverse_lr(boma);
         ATTACK(agent, 0, 0, Hash40::new("sword1"), 14.0, 50, 113, 0, 20, 4.0, 2.0, 0.0, 2.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
         ATTACK(agent, 1, 0, Hash40::new("shoulderr"), 14.0, 50, 113, 0, 20, 3.75, 0.75, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
         ATTACK(agent, 2, 0, Hash40::new("sword1"), 11.0, 40, 70, 0, 20, 3.5, 2.0, 0.0, 9.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_SWORD);
@@ -166,7 +167,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        PostureModule::reverse_lr(boma);
     }
 }
 

@@ -4,7 +4,8 @@ use super::*;
 use globals::*;
 
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE) {
+    if boma.is_status(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE)
+    && !StatusModule::is_changing(boma) {
         if boma.is_pad_flag(PadFlag::SpecialTrigger) {
             boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
         }

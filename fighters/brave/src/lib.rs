@@ -69,6 +69,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 
     VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
     VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+    //VarModule::off_flag(fighter.battle_object, vars::brave::instance::MENU_TRAINING_MODE_LOCK);
+    //VarModule::set_int(fighter.battle_object, vars::brave::instance::MENU_TRAINING_MODE_INDEX, 0);
 }
 
 pub fn install() {

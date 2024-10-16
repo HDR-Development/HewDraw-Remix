@@ -31,7 +31,8 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 9, 0, 10, -70, 0, 1.15, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -2, 9.5, 1, -10, -70, 20, 1.15, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {

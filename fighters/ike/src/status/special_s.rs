@@ -137,7 +137,7 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
     // jump cancels
     fighter.check_wall_jump_cancel();
     if !VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_INSTAKILL) 
-    && VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_GROUND_START) {
+    && (fighter.is_situation(*SITUATION_KIND_GROUND) || VarModule::is_flag(fighter.battle_object, vars::ike::status::SPECIAL_S_GROUND_START)) {
         VarModule::set_float(fighter.battle_object, vars::common::instance::JUMP_SPEED_MAX_MUL, 1.346);  // 1.75 max jump speed out of Quick Draw
         fighter.check_jump_cancel(true, false);
     }

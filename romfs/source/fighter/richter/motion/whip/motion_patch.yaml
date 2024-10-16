@@ -1,3 +1,47 @@
+attack_hi3_l:
+    game_script: game_attackhi3l
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: c02attackhi3.nuanmb
+        unk: 0
+    scripts:
+      - sound_attackhi3l
+      - effect_attackhi3l
+    extra: ~
+attack_hi3_r:
+    game_script: game_attackhi3r
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: c02attackhi3.nuanmb
+        unk: 0
+    scripts:
+      - sound_attackhi3r
+      - effect_attackhi3r
+    extra: ~
 attack_squat_s3:
     game_script: game_attacks3
     flags:

@@ -13,6 +13,7 @@ mod attackairf_bullet;
 mod bottomshoot;
 mod fullthrottle;
 mod grenadelauncher;
+mod groundbomb;
 mod gunnercharge;
 mod rapidshot_bullet;
 mod stealthbomb;
@@ -62,6 +63,7 @@ pub fn install() {
     bottomshoot::install();
     fullthrottle::install();
     grenadelauncher::install();
+    //groundbomb::install();    // not yet
     gunnercharge::install();
     rapidshot_bullet::install();
     stealthbomb::install();

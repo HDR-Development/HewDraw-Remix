@@ -90,16 +90,8 @@ unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP]) {
         if !boma.is_in_hitlag() {
-            if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) && boma.status_frame() > 3)
-                || !boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD)
-            {
+            if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP) && boma.status_frame() > 1) {
                 boma.check_jump_cancel(false, false);
-            }
-        }
-        if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) {
-            if PostureModule::lr(boma) * ControlModule::get_stick_x(boma) < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
             }
         }
     }

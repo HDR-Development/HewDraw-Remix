@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
  
 unsafe fn teleport_logic(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && !VarModule::is_flag(fighter.battle_object, vars::zelda::instance::SPECIAL_HI_GROUNDED_TELEPORT) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_GROUNDED_TELEPORT) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_GROUNDED_TELEPORT);
         } //touching ground at any point counts as a grounded start

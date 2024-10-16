@@ -8,14 +8,12 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(lua_state, 2.0);
     FT_MOTION_RATE_RANGE(agent, 2.0, 6.0, 2.0);
     frame(lua_state, 6.0);
     FT_MOTION_RATE_RANGE(agent, 6.0, 22.0, 20.0);
     if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 8.8;
         ATTACK(agent, 0, 0, Hash40::new("head2"), dmg * p.dmg, 75 + p.angle, 100, 0, 40, 2.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(agent, 1, 0, Hash40::new("head2"), dmg * p.dmg, 75 + p.angle, 100, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -70,11 +68,9 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(lua_state, 5.0);
     if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 8.0;
         ATTACK(agent, 0, 0, Hash40::new("head2"), dmg * p.dmg, 50 + p.angle, 76, 0, 60, 2.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(agent, 1, 0, Hash40::new("head2"), dmg * p.dmg, 50 + p.angle, 76, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
@@ -99,14 +95,12 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(lua_state, 8.0);
     if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 12.0;
-        ATTACK(agent, 0, 0, Hash40::new("head1"), dmg * p.dmg, 40 + p.angle, 105, 0, 30, 4.0, 0.0, 5.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
-        ATTACK(agent, 1, 0, Hash40::new("head1"), dmg * p.dmg, 40 + p.angle, 105, 0, 20, 4.0, 0.0, -1.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(agent, 0, 0, Hash40::new("head1"), dmg * p.dmg, 40 + p.angle, 110, 0, 30, 4.0, 0.0, 5.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
+        ATTACK(agent, 1, 0, Hash40::new("head1"), dmg * p.dmg, 40 + p.angle, 110, 0, 22, 4.0, 0.0, -1.5, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -120,11 +114,9 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(lua_state, 7.0);
     if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 7.2;
         ATTACK(agent, 0, 0, Hash40::new("head2"), dmg * p.dmg, 95 + p.angle, 74, 0, 65, 3.5, 2.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_M, p.sound, *ATTACK_REGION_PIKMIN);
         ATTACK(agent, 1, 0, Hash40::new("head2"), dmg * p.dmg, 95 + p.angle, 74, 0, 65, 3.5, 0.0, 0.0, 0.0, None, None, None, p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_M, p.sound, *ATTACK_REGION_PIKMIN);
@@ -143,11 +135,9 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let p = PikminInfo::from(variation);
-    if is_excute(agent) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_XLU);
         let dmg = 10.08;
         /* Ground-only */
         ATTACK(agent, 0, 0, Hash40::new("head1"), dmg * p.dmg, 270 + p.angle, 79, 0, 30, 3.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), p.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, dmg * p.shield_dmg, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, p.attr, *ATTACK_SOUND_LEVEL_L, p.sound, *ATTACK_REGION_PIKMIN);

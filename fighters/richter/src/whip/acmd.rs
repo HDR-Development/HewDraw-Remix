@@ -227,6 +227,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackhi3", disable_physics, Priority::Low);
     agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);
 
+    agent.acmd("game_attackhi3l", disable_physics, Priority::Low);
+    agent.acmd("effect_attackhi3l", effect_attackhi3, Priority::Low);
+    agent.acmd("sound_attackhi3l", acmd_stub, Priority::Low);
+
+    agent.acmd("game_attackhi3r", disable_physics, Priority::Low);
+    agent.acmd("effect_attackhi3r", effect_attackhi3, Priority::Low);
+    agent.acmd("sound_attackhi3r", acmd_stub, Priority::Low);
+
     // smashes
     agent.acmd("game_attacks4charge", disable_physics, Priority::Low);
     agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);

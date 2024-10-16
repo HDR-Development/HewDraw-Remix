@@ -50,6 +50,64 @@ attack_hi4:
 attack_hi3:
   extra:
     cancel_frame: 36
+attack_hi3_l:
+  game_script: game_attackhi3l
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c02attackhi3l.nuanmb
+  scripts:
+  - expression_attackhi3l
+  - sound_attackhi3l
+  - effect_attackhi3l
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 36
+    freeze_during_hitstop: false
+attack_hi3_r:
+  game_script: game_attackhi3r
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c02attackhi3r.nuanmb
+  scripts:
+  - expression_attackhi3r
+  - sound_attackhi3r
+  - effect_attackhi3r
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 36
+    freeze_during_hitstop: false
 attack_dash:
   extra:
     cancel_frame: 40
@@ -127,12 +185,12 @@ special_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 45
+    cancel_frame: 42
 special_air_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 45
+    cancel_frame: 42
 special_lw:
   flags:
     move: true

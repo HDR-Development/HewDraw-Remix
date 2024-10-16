@@ -30,6 +30,20 @@ pub unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     return 0.into()
 }
 
+pub unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // if under USpecial penalty and next status would have been landing, use special landing instead
+    let next_status = fighter.global_table[STATUS_KIND].get_i32();
+    if [
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+    ].contains(&next_status) {
+        WorkModule::set_float(fighter.module_accessor, 6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+    }
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
 }
