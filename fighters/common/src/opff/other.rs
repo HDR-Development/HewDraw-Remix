@@ -261,9 +261,13 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
 // otherwise the animations don't transition properly into one another
 // This is so we don't have to edit those 4 other animations if we want to edit a dash anim
 unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    if run_hip_offset_x == 0.0 {
+        return;
+    }
+    
     if fighter.is_status(*FIGHTER_STATUS_KIND_RUN) && fighter.is_motion(Hash40::new("run")) {
         let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
-        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
         
@@ -285,7 +289,6 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     
     if fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) && fighter.is_motion(Hash40::new("turn_run")) {
         let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
-        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
         hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
