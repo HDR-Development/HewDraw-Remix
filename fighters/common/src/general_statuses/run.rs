@@ -36,7 +36,7 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     let mut hip_offset = Vector3f::zero();
     ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
 
-    if ((turn_run_hip_offset.x - hip_offset.x).powf(2.0)).sqrt() > 1.0 {
+    if ((turn_run_hip_offset.x - hip_offset.x).powf(2.0)).sqrt() > 0.5 {
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
         VarModule::set_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X, hip_translate.z);
