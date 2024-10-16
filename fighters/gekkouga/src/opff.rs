@@ -146,11 +146,11 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
                 let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
                 if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
                 || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_SAVE_SPEED) {
-                    effect_team_color.x += 0.22;
-                    effect_team_color.y += 0.22;
-                    effect_team_color.z += 0.22;
+                    effect_team_color.value[0] += 0.22;
+                    effect_team_color.value[1] += 0.22;
+                    effect_team_color.value[2] += 0.22;
                 }
-                EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+                EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
             }
             else {
                 EffectModule::set_rgb(fighter.module_accessor, eff_handle, 0.7, 0.7, 0.7);

@@ -1,5 +1,4 @@
 use super::*;
-use energy::Vec3;
 use utils::ext::*;
 use std::arch::asm;
 
@@ -81,15 +80,16 @@ impl KnockbackCalcContext {
 #[repr(simd)]
 #[derive(Debug)]
 struct Rect {
-    left: f32,
-    right: f32,
-    top: f32,
-    bottom: f32,
+    // left: f32,
+    // right: f32,
+    // top: f32,
+    // bottom: f32,
+    vec: [f32; 4]
 }
 
 impl Rect {
     fn contains(&self, x: f32, y: f32) -> bool {
-        (self.left <= x && x <= self.right) && (self.bottom <= y && y <= self.top)
+        (self.vec[0] <= x && x <= self.vec[1]) && (self.vec[3] <= y && y <= self.vec[2])
     }
 }
 

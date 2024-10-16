@@ -60,7 +60,7 @@ pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, 
     let max_y_param = if (status_kind == statuses::chrom::SPECIAL_HI_DIVE) { hash40("air_speed_y_stable") } else { hash40("dive_speed_y") };
     let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, max_y_param, 0);
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).y;
+    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[0];
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let flip_speed_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_speed_y_mul");
@@ -196,7 +196,7 @@ pub unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CV
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE_CHROM) {
         let move_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as *mut smash::app::KineticEnergy;
         let move_speed_y = lua_bind::KineticEnergy::get_speed_y(move_energy);
-        let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).y;
+        let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[1];
 
         //If rising via motion, or triggered via acmd...
         if motion_y > 0.0 || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_TRANS_JUMP) {
