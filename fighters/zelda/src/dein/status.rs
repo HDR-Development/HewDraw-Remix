@@ -90,7 +90,7 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
     LAST_EFFECT_SET_SCALE_W(weapon, 0.67, 0.4, 0.67);
     let team_color = FighterUtil::get_team_color(zelda_boma);
     let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-    EffectModule::set_rgb_partial_last(weapon.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+    EffectModule::set_rgb_partial_last(weapon.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
 }
 
 unsafe extern "C" fn dins_refresh(weapon: &mut L2CWeaponCommon) -> L2CValue {

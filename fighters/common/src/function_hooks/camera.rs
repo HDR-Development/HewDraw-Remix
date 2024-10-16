@@ -65,7 +65,7 @@ unsafe fn normal_camera(ptr: u64, float: f32) {
     call_original!(ptr, float);
 }
 
-#[skyline::hook(offset = 0x2621470)]
+#[skyline::hook(offset = 0x2621490)]
 pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
     call_original!(param_obj, params);
     params.normal_camera_min_distance = params.normal_camera_min_distance.max(140.0);
@@ -77,7 +77,7 @@ pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCamer
 }
 
 // The following function hook handles Unrestricted Camera
-#[skyline::hook(offset = 0x2623330)]
+#[skyline::hook(offset = 0x2623350)]
 pub fn parse_stprm_pause_camera_params(param_obj: u64, params: &mut PauseCameraParams) {
     call_original!(param_obj, params);
     params.pause_camera_min_fov = 4e-44_f32.to_radians();

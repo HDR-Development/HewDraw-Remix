@@ -26,7 +26,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
         EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(agent, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+        LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
     frame(lua_state, 8.0);
@@ -102,7 +102,7 @@ unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
         EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(agent, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+        LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
     frame(lua_state, 8.0);
@@ -170,7 +170,7 @@ unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
         EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), -3, 7, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_COLOR(agent, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+        LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather_long"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
     frame(lua_state, 6.0);
