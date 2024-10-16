@@ -9,7 +9,7 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
         let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
         let pos = &*(PostureModule::pos(boma));
         EffectModule::req(boma, Hash40::new("sys_direction"), &Vector3f::new(pos.x, pos.y + 16.0, pos.z), &Vector3f::new(180.0, 0.0, 0.0), 1.0, 0, -1, false, 0);
-        LAST_EFFECT_SET_COLOR(agent, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+        LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
         VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);

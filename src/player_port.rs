@@ -39,7 +39,7 @@ unsafe fn check_swap_macro(controller_id: u32) -> bool {
 }
 
 // this hook runs when initializing player cards. used to prevent being able to swap in certain modes
-#[skyline::hook(offset = 0x1a2663c, inline)]
+#[skyline::hook(offset = 0x1a2665c, inline)]
 unsafe fn set_enable_swap(ctx: &mut skyline::hooks::InlineCtx) {
     // by observing the first and last ids of the slots, we can determine how many are present
     let first_card = *ctx.registers[20].x.as_ref();
@@ -53,7 +53,7 @@ unsafe fn set_enable_swap(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 // this address runs whenever the css is initialized. we can use this to clear neccesary data
-#[skyline::hook(offset = 0x1a26ea0, inline)]
+#[skyline::hook(offset = 0x1a26ec0, inline)]
 unsafe fn init_css(ctx: &mut skyline::hooks::InlineCtx) {
     // println!("refreshing port data");
     PORT_DATA = [None; 8];
@@ -62,7 +62,7 @@ unsafe fn init_css(ctx: &mut skyline::hooks::InlineCtx) {
 
 // this runs right afterwards, and stores the port data for this instance of the css
 // this is required on each visit because the data is different for every css session, and cannot be reused without crashing
-#[skyline::hook(offset = 0x1a13308, inline)]
+#[skyline::hook(offset = 0x1a13328, inline)]
 unsafe fn set_port_data(ctx: &mut skyline::hooks::InlineCtx) {
     if PORT_DATA[0] == None { // this function loops on the CSS, so we make sure it only runs storage once per instance
         let base_port_id = *ctx.registers[8].x.as_ref();
@@ -78,7 +78,7 @@ pub const BACK_BUTTON: u64 = 0x1010f00e00;
 
 // resets data when leaving the local battle session
 // this function runs whenever a ui pane is  selected, so we look for the data for the "back" button on rule select
-#[skyline::hook(offset = 0x2407260)]
+#[skyline::hook(offset = 0x2407280)]
 unsafe fn reset_css_session(pane: u64, arg2: u64) {
     if pane == BACK_BUTTON {
         // println!("resetting for next css session, disabling swap");
@@ -91,21 +91,21 @@ unsafe fn reset_css_session(pane: u64, arg2: u64) {
     original!()(pane, arg2)
 }
 
-#[skyline::from_offset(0x1a1e410)] // clears the controller's input and player hand
+#[skyline::from_offset(0x1a1e430)] // clears the controller's input and player hand
 unsafe fn controller_input_off(arg1: u64, arg2: u64);
 
-#[skyline::from_offset(0x1a1e840)] // unsure what this clears, but we run it just to be safe
+#[skyline::from_offset(0x1a1e860)] // unsure what this clears, but we run it just to be safe
 unsafe fn controller_something_off(arg1: u64, port: u64);
 
-#[skyline::from_offset(0x1a1e640)] // clears the player card from the css
+#[skyline::from_offset(0x1a1e660)] // clears the player card from the css
 unsafe fn controller_card_off(port: u64, arg2: u64);
 
-#[skyline::from_offset(0x1a1f090)] // clears the player token
+#[skyline::from_offset(0x1a1f0b0)] // clears the player token
 unsafe fn controller_token_off(arg1: u64, port: u64);
 
 // this function loops while the css is active, so we can use it for running any real-time operations we need
 // more importantly, this runs BEFORE controller initialization, which allows for instant reconnects
-#[skyline::hook(offset = 0x1a2b550)]
+#[skyline::hook(offset = 0x1a2b570)]
 unsafe fn css_main_loop(arg: u64) {
     if !ENABLE_SWAPPING {
         return original!()(arg);
@@ -156,7 +156,7 @@ unsafe fn css_main_loop(arg: u64) {
 }
 
 // this function runs right after a controller connects to the css, and assigns the player port to it
-#[skyline::hook(offset = 0x1a31000)]
+#[skyline::hook(offset = 0x1a31020)]
 unsafe fn init_css_player(
     arg1: u64, // unknown. seems to always be the same; likely points to some kind of struct containing player data
     port: i32, // number of the player port that the game is going to try adding
