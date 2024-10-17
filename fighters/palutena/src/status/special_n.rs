@@ -270,7 +270,13 @@ unsafe extern "C" fn special_n_main_loop_common(fighter: &mut L2CFighterCommon, 
 
 unsafe extern "C" fn special_n_end_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, vars::palutena::status::POWER_BOARD_FLUSHED) {
-        VarModule::on_flag(fighter.battle_object, vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2, 0);
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1, 0);
+        utils::ui::UiManager::change_power_board_color(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+        );
     }
     0.into()
 }
