@@ -15,9 +15,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
-                VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_R);
             //println!("red");
             return 1.into();
@@ -35,9 +32,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
-                VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_B);
             //println!("blud");
             return 1.into();
@@ -55,9 +49,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
-                VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_Y);
             //println!("ielo");
             return 1.into();
