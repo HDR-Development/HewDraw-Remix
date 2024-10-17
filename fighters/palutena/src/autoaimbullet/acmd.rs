@@ -3,24 +3,25 @@ use super::*;
 unsafe extern "C" fn game_shot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {7.0} else {4.0};
-    let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {0.4} else {0.2};
     if is_excute(agent) {
+        let owner_module_accessor = boma.get_owner_boma();
         if owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA {
+            let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {7.0} else {4.0};
+            let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {0.4} else {0.2};
             ATTACK(agent, 0, 0, Hash40::new("top"), damage, 65, 40, 0, 75, 2.3, 0.0, 0.0, 0.0, None, None, None, paralyze, 0.6, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamss"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
+        else {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 2.5, 36, 53, 0, 61, 2.3, 0.0, 0.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beamss"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 unsafe extern "C" fn effect_shot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    let owner_module_accessor = boma.get_owner_boma();
     let palutena = owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA;
-    let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {Hash40::new("sys_hit_elec")} else {Hash40::new("sys_hit_elec_s")};
-    let size = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {2.0} else {1.0};
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_bullet_shot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         if palutena {
@@ -28,6 +29,8 @@ unsafe extern "C" fn effect_shot(agent: &mut L2CAgentBase) {
         }
     }
     if palutena {
+        let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {Hash40::new("sys_hit_elec")} else {Hash40::new("sys_hit_elec_s")};
+        let size = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {2.0} else {1.0};
         for _ in 0..99 {
             if is_excute(agent) {
                 EFFECT_FOLLOW(agent, power, Hash40::new("top"), 0.0, 2.2, 1.2, 0, 0, 0, 0.23 * size, true);

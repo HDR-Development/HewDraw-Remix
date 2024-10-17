@@ -478,6 +478,7 @@ pub trait BomaExt {
     unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
     // gets the boma of the player who is grabbing you
     unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -894,6 +895,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
         let opponent_object = super::util::get_battle_object_from_id(opponent_id);
         &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        return &mut *sv_battle_object::module_accessor((WorkModule::get_int(self, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
     }
 
     unsafe fn get_num_used_jumps(&mut self) -> i32 {
