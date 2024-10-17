@@ -4,13 +4,13 @@ use super::*;
 
 pub unsafe extern "C" fn attack_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
+        fighter.set_status_kind_interrupt(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
         return 1.into();
     } 
 
     let pickel = fighter.global_table[0x5].get_ptr() as *mut BattleObjectModuleAccessor;
     if !FighterSpecializer_Pickel::check_material_special_s_generate_trolley(pickel) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
+        fighter.set_status_kind_interrupt(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_FAILED);
         return 1.into();
     }
 

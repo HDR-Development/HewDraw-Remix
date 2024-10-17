@@ -106,7 +106,7 @@ pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterComm
 
 pub unsafe extern "C" fn special_n_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_prev_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING_LIGHT);
+        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_LANDING_LIGHT);
         return 1.into();
     }
     smashline::original_status(Pre, fighter, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_LANDING)(fighter)

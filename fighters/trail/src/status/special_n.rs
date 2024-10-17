@@ -17,13 +17,13 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         magic_kind = blizzard;
     }
     if ![fire, blizzard, thunder].contains(&magic_kind) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
+        fighter.set_status_kind_interrupt(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
     } else if magic_kind == fire {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
+        fighter.set_status_kind_interrupt(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1);
     } else if magic_kind == blizzard { 
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2);
+        fighter.set_status_kind_interrupt(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2);
     } else if magic_kind == thunder {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3); 
+        fighter.set_status_kind_interrupt(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3); 
     }
 
     // disables use of neutral special until the following cooldown timer runs its course

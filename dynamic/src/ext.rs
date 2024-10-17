@@ -457,6 +457,7 @@ pub trait BomaExt {
     unsafe fn status_frame(&mut self) -> i32;
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
+    unsafe fn set_status_kind_interrupt(&mut self, kind: i32);
 
     // BY SITUATION
     unsafe fn get_status_by_situation(&mut self, ground_status: i32, air_status: i32) -> i32;
@@ -825,6 +826,14 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
         return StatusModule::change_status_request_from_script(self, kind, repeat) as i32;
+    }
+
+    unsafe fn set_status_kind_interrupt(&mut self, kind: i32) {
+        StatusModule::set_status_kind_interrupt(self, kind);
+        let status_module = *(self as *const BattleObjectModuleAccessor as *const u64).add(0x8);
+        *((status_module + 0x98) as *mut i32) = kind;
+        *((status_module + 0x9c) as *mut i32) = kind;
+        crate::util::get_fighter_common_from_accessor(self).global_table[STATUS_KIND].assign(&L2CValue::I32(kind));
     }
 
     unsafe fn get_status_by_situation(&mut self, ground_status: i32, air_status: i32) -> i32 {

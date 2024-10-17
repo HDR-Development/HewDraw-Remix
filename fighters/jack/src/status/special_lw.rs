@@ -8,7 +8,7 @@ pub unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         WorkModule::set_float(fighter.module_accessor, rebel_gauge, 0x4D);
         WorkModule::on_flag(fighter.module_accessor, 0x200000E3); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
         FighterSpecializer_Jack::check_doyle_summon_dispatch(fighter.module_accessor, true, false);
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_JACK_STATUS_KIND_SUMMON);
+        fighter.set_status_kind_interrupt(*FIGHTER_JACK_STATUS_KIND_SUMMON);
         return 1.into();
     }
     StatusModule::init_settings(
@@ -136,6 +136,6 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 pub unsafe extern "C" fn special_lw2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, 0x200000E4); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_END
     FighterSpecializer_Jack::check_doyle_summon_dispatch(fighter.module_accessor, true, false);
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_JACK_STATUS_KIND_DISPATCH);
+    fighter.set_status_kind_interrupt(*FIGHTER_JACK_STATUS_KIND_DISPATCH);
     1.into()
 }

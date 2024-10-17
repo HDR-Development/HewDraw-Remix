@@ -9,7 +9,7 @@ use globals::*;
     if lr != 0.0 {
         if PostureModule::lr(fighter.module_accessor) == 0.0 {
             if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_TURN {
-                StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_DASH_BACK);
+                fighter.set_status_kind_interrupt(*FIGHTER_RYU_STATUS_KIND_DASH_BACK);
                 1.into();
             }
         }

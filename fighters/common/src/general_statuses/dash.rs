@@ -700,7 +700,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("pre turndash");
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
+    fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_TURN);
     return 1.into()
 }
 

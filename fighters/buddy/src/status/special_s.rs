@@ -6,7 +6,7 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     if (fighter.is_situation(*SITUATION_KIND_GROUND) ) {
         let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
         if feathers_g <= 0 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+            fighter.set_status_kind_interrupt(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
             return 1.into();
         }
@@ -48,7 +48,7 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN)>0.0)
         {
             //fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+            fighter.set_status_kind_interrupt(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
             return 1.into();
         }

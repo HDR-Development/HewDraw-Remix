@@ -10,16 +10,13 @@ pub unsafe extern "C" fn turn_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     if lr != 0.0 {
         if PostureModule::lr(fighter.module_accessor) == lr {
             if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_TURN {
-                StatusModule::set_status_kind_interrupt(
-                    fighter.module_accessor,
-                    *FIGHTER_RYU_STATUS_KIND_DASH_BACK,
-                );
+                fighter.set_status_kind_interrupt(*FIGHTER_RYU_STATUS_KIND_DASH_BACK);
                 return L2CValue::I32(1);
             }
         }
     }
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
+    fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_TURN);
     return 1.into();
 }
 
