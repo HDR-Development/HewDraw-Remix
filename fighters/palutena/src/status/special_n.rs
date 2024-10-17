@@ -388,12 +388,12 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, statuses::palutena::SPECIAL_N_R, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_R, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_R, special_n_r_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end_common);
+    agent.status(End, *statuses::palutena::SPECIAL_N_R, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_B, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_B, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_B, special_n_b_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end_common);
+    agent.status(End, statuses::palutena::SPECIAL_N_B, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_Y, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_Y, palutena_special_n_init_common);
