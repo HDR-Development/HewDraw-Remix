@@ -5,7 +5,6 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
         PostureModule::set_lr(boma, PostureModule::lr(boma));
         PostureModule::update_rot_y_lr(boma);
     }
@@ -13,6 +12,7 @@ unsafe extern "C" fn game_specialno(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
     }
 }

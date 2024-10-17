@@ -5,8 +5,8 @@ unsafe extern "C" fn game_shot(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let palutena = owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA;
-    let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {7.0} else {4.0};
-    let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {0.4} else {0.2};
+    let damage = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED) {7.0} else {4.0};
+    let paralyze = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED) {0.4} else {0.2};
     if !palutena {
         if is_excute(agent) {
             WorkModule::set_customize_no(boma, 1, 0);
@@ -30,8 +30,8 @@ unsafe extern "C" fn effect_shot(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     let palutena = owner_module_accessor.kind() == *FIGHTER_KIND_PALUTENA;
-    let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {Hash40::new("sys_hit_elec")} else {Hash40::new("sys_hit_elec_s")};
-    let size = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED) {2.0} else {1.0};
+    let power = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED) {Hash40::new("sys_hit_elec")} else {Hash40::new("sys_hit_elec_s")};
+    let size = if VarModule::is_flag(owner_module_accessor.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED) {2.0} else {1.0};
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("palutena_bullet_shot"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         if palutena {

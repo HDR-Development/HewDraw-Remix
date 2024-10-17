@@ -235,6 +235,8 @@ unsafe fn power_board(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
             VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
             VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
         );
+
+        VarModule::on_flag(fighter.object(), vars::palutena::status::POWER_BOARD_FLUSHED);
     }
     
     utils::ui::UiManager::change_power_board_color(
