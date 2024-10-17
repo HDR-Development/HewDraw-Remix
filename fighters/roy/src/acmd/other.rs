@@ -138,15 +138,6 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_jump(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("vc_roy_jump01"));
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
@@ -165,9 +156,4 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
-
-    agent.acmd("sound_jumpback", sound_jump, Priority::Low);
-    agent.acmd("sound_jumpfront", sound_jump, Priority::Low);
-    agent.acmd("sound_jumpbackmini", sound_jump, Priority::Low);
-    agent.acmd("sound_jumpfrontmini", sound_jump, Priority::Low);
 }

@@ -114,7 +114,7 @@ fn key(entry: u64) -> u64 {
     entry & KEY_MASK
 }
 
-#[skyline::hook(offset = 0x1A14260, inline)]
+#[skyline::hook(offset = 0x1A14280, inline)]
 unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
     let obj = *ctx.registers[23].x.as_ref() as *mut u64;
     let obj = *(obj as *mut *mut u64).add(1);
@@ -152,7 +152,7 @@ unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 // only runs on random pane selected
-#[skyline::hook(offset = 0x1A0D520)]
+#[skyline::hook(offset = 0x1A0D540)]
 unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
     // println!("Entering decide_fighter");
     if !WAS_RANDOM_SELECTION {
@@ -174,7 +174,7 @@ unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
     call_original!(arg1, arg2, arg3, arg4)
 }
 
-#[skyline::hook(offset = 0x1A0E000)]
+#[skyline::hook(offset = 0x1A0E020)]
 unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     let src_obj = *(src as *mut *mut u64).add(1);
     let src_obj = src_obj.add(0x1F0 / 8);

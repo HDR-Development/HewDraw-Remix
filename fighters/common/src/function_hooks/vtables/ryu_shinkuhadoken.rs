@@ -5,7 +5,7 @@ unsafe extern "C" fn shinku_on_hit(vtable: u64, weapon: *mut app::Weapon, someth
     normal_weapon_hit_handler(vtable, weapon, something)
 }
 
-#[skyline::from_offset(0x33bdc10)]
+#[skyline::from_offset(0x33bdc30)]
 unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut app::Weapon, something: u32) -> u64;
 
 pub fn install() {

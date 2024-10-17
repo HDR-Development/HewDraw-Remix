@@ -73,36 +73,14 @@ pub struct KineticEnergy {
     pub energy_reset_type: u32,
 }
 
-#[repr(simd)]
-pub struct Vec2 {
-    pub x: f32,
-    pub y: f32
-}
-
-#[repr(simd)]
-pub struct Vec3 {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32
-}
-
-#[repr(simd)]
-pub struct Vec4 {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32,
-    pub w: f32,
-
-}
-
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, boma: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
         #[skyline::from_offset(0x47b4f0)]        
-        extern "C" fn adjust_speed_for_ground_normal_internal(speed: Vec2, boma: &mut BattleObjectModuleAccessor) -> Vec2;
+        extern "C" fn adjust_speed_for_ground_normal_internal(speed: smash_rs::cpp::simd::Vector2, boma: &mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector2;
 
         unsafe {
-            let result = adjust_speed_for_ground_normal_internal(Vec2 { x: speed.x, y: speed.y }, boma);
-            PaddedVec2::new(result.x, result.y)
+            let result = adjust_speed_for_ground_normal_internal(smash_rs::cpp::simd::Vector2 { vec: [speed.x, speed.y] }, boma);
+            PaddedVec2::new(result.vec[0], result.vec[1])
         }
     }
 

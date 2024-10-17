@@ -96,7 +96,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
                 app::EColorKind(team_color as i32),
                 Hash40::new("shield_effect_color")
             );
-            let color = Vector3f {x: color.x, y: color.y, z: color.z};
+            let color = Vector3f {x: color.value[0], y: color.value[1], z: color.value[2]};
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_shield_damage3"), Hash40::new("throw"), &ZERO_VEC, &ZERO_VEC, 0.1, false, *EFFECT_SUB_ATTRIBUTE_NONE as u32, 0, -1, *EFFECT_FLIP_NONE, 1, false, false);
             EffectModule::set_rgb_partial_last(fighter.module_accessor, color.x, color.y, color.z);
             

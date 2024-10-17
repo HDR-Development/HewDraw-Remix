@@ -241,7 +241,7 @@ pub unsafe fn special_hi_guide_handler(fighter: &mut L2CFighterCommon) { // than
 
     let team_color = FighterUtil::get_team_color(fighter.module_accessor);
     let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-    EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+    EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
 }
 
 // FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP
