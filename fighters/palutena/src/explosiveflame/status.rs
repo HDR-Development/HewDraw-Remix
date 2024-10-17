@@ -49,7 +49,7 @@ unsafe extern "C" fn check_kirby_main(weapon: &mut L2CWeaponCommon) -> L2CValue 
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let owner_object = utils::util::get_battle_object_from_id(owner_id);
     let offset_x = if VarModule::is_flag(owner_object, vars::kirby::status::PALUTENA_SPECIAL_N_HOLD) { 75.0 } else { 45.0 };
-    PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(pos_x + (offset_x * PostureModule::lr(weapon.module_accessor)), pos_y + 8.0, 0.0));
+    PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(pos_x + (offset_x * PostureModule::lr(weapon.module_accessor)), pos_y + 7.0, 0.0));
     if GroundModule::is_touch(weapon.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_UP | *GROUND_TOUCH_FLAG_RIGHT | *GROUND_TOUCH_FLAG_UP_LEFT
     | *GROUND_TOUCH_FLAG_UP_RIGHT) as u32) {
         weapon.on_flag(*WEAPON_PALUTENA_EXPLOSIVEFLAME_INSTANCE_WORK_ID_FLAG_RESERVE_MISS);
