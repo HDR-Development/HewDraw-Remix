@@ -1,9 +1,9 @@
 use super::*;
 use bitflags::bitflags;
 
-const ORB_RED: [f32; 4] = [7000.0 / 255.0, 0.0, 0.0, 1.0];
-const ORB_YELLOW: [f32; 4] = [8000.0 / 255.0, 6000.0 / 255.0, 0.0, 1.0];
-const ORB_BLUE: [f32; 4] = [5.0 / 255.0, 100.0 / 255.0, 3000.0 / 255.0, 1.0];
+const ORB_RED: [f32; 4] = [1.0, 0.1, 0.1, 1.0];
+const ORB_YELLOW: [f32; 4] = [1.0, 0.7, 0.0, 1.0];
+const ORB_BLUE: [f32; 4] = [0.05, 0.3, 1.0, 1.0];
 const ORB_NONE: [f32; 4] = [0.0, 0.0, 0.0, 0.0];
 
 bitflags! {
@@ -125,10 +125,10 @@ impl PowerBoard {
             PowerColor::PURPLE => 5.0,
             _ => 6.0
         };
-        if offset == 6.0 {
-            set_pane_visible(self.icon, false);
-            return;
-        }
+        // if offset == 6.0 {
+        //     set_pane_visible(self.icon, false);
+        //     return;
+        // }
         let offset = offset / 7.0;
         let len = 1.0 / 7.0;
         set_pane_visible(self.icon, true);

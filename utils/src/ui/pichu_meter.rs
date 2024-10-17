@@ -1,6 +1,6 @@
 use super::*;
 
-const COLOR_CHARGED: [f32; 4] = [250.0 / 255.0, 150.0 / 255.0, 0.0 / 255.0, 1.0];
+const COLOR_CHARGED: [f32; 4] = [200.0 / 255.0, 110.0 / 255.0, 20.0 / 255.0, 1.0];
 const COLOR_UNCHARGED: [f32; 4] = [0.0 / 255.0, 120.0 / 255.0, 252.0 / 255.0, 1.0];
 
 const FULL_TEXCOORDS: [f32; 8] = [

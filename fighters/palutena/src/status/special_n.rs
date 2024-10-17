@@ -405,7 +405,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, statuses::palutena::SPECIAL_N_O, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_O, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_O, special_n_o_main);
-    agent.status(Main, statuses::palutena::SPECIAL_N_O, special_n_end_common);
+    agent.status(End, statuses::palutena::SPECIAL_N_O, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_G, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_G, palutena_special_n_init_common);
