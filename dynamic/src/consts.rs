@@ -1824,10 +1824,9 @@ pub mod statuses {
         pub const SPECIAL_N_G: i32 = 0x1EE;
     }
 
-    pub mod palutena_autoaimbullet {
-        pub const CHECK: i32 = 0x2;
-        pub const EXPLODE: i32 = 0x3;
-        pub const MISS: i32 = 0x4;
+    pub mod palutena_explosiveflame {
+        pub const CHECK_KIRBY: i32 = 0x4;
+        pub const EXPLODE_KIRBY: i32 = 0x5;
     }
 
     pub mod pickel_trolley {

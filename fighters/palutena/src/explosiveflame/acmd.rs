@@ -1,5 +1,16 @@
 use super::*;
 
+unsafe extern "C" fn effect_check(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {
+            EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+}
+
 unsafe extern "C" fn game_explode(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -48,5 +59,6 @@ unsafe extern "C" fn game_explode(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("effect_check", effect_check, Priority::Low);
     agent.acmd("game_explode", game_explode, Priority::Low);
 }

@@ -31,7 +31,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 VarModule::on_flag(agent.battle_object, vars::kirby::status::PALUTENA_SPECIAL_N_HOLD);
             }
-            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_AUTOAIMBULLET, false, -1);
+            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME, false, -1);
         }
     }
 }
