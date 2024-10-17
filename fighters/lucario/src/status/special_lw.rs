@@ -40,6 +40,7 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         VarModule::on_flag(fighter.object(), vars::lucario::instance::DISABLE_SPECIAL_LW);
     }
+    ControlModule::clear_command(fighter.module_accessor, true);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
 }
 
@@ -52,7 +53,8 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         if StatusModule::is_situation_changed(fighter.module_accessor) {
             // landing transition
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+                fighter.set_float(10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
                 return 0.into();
             }
             special_lw_set_kinetic(fighter);
@@ -69,18 +71,9 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         && fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
         }
-    }
-    // attack canceling
-    else {
-        let motion = MotionModule::motion_kind(fighter.module_accessor);
-        if fighter.global_table[CURRENT_FRAME].get_f32() + 4.0 < FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion), false)
-        && fighter.is_button_on(Buttons::Attack)
-        && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT) {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
-            opff::check_burnout(fighter);
-            pause_meter_regen(fighter, 120);
+    } else {
+        if special_lw_check_cancel(fighter).get_bool() {
+            return true.into();
         }
     }
     // end
@@ -93,6 +86,100 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     0.into()
+}
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let next_status = fighter.global_table[STATUS_KIND].get_i32();
+    if !MotionModule::is_end(fighter.module_accessor)
+    && !CancelModule::is_enable_cancel(fighter.module_accessor)
+    && [
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_CATCH,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        // *FIGHTER_STATUS_KIND_SPECIAL_LW,
+    ].contains(&next_status) {
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
+        opff::check_burnout(fighter);
+        pause_meter_regen(fighter, 120);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.motion_frame() == 16.0 {
+                KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.4, y: 0.4, z: 0.4}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            }
+        } else {
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.7, y: 0.7, z: 0.7}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        }
+    }
+    0.into()
+}
+
+unsafe extern "C" fn special_lw_check_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) 
+    || fighter.is_in_hitlag() 
+    || VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT)
+    || !VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL) {
+        return false.into();
+    }
+    if fighter.is_cat_flag(Cat1::SpecialN) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+        return true.into();
+    }
+    if fighter.is_cat_flag(Cat1::SpecialS) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+        return true.into();
+    }
+    if fighter.is_cat_flag(Cat1::SpecialHi) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+        return true.into();
+    }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if fighter.is_cat_flag(Cat1::Catch) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_CATCH,true);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackS4) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackHi4) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackLw4) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackS3) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackHi3) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackLw3) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+            return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackN) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK,true);
+            return true.into();
+        }
+    } else {
+        if fighter.get_aerial() != None {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_AIR,true);
+            return true.into();
+        }
+    }
+    return false.into();
 }
 
 unsafe extern "C" fn special_lw_set_kinetic(fighter: &mut L2CFighterCommon) {
@@ -158,4 +245,5 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
 }

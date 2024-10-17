@@ -983,6 +983,7 @@ name = "lucario"
 version = "0.1.0"
 dependencies = [
  "dynamic",
+ "interpolation",
  "skyline 0.2.1 (git+https://github.com/ultimate-research/skyline-rs)",
  "skyline_smash",
  "smash_script",

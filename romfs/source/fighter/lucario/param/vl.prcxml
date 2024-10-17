@@ -11,8 +11,14 @@
   </list>
   <list hash="param_auraball">
     <struct index="0">
-      <float hash="charge_max_scale">4.5</float>
-      <float hash="charge_max_scale_shoot">4.5</float>
+      <float hash="scale_mul">2.6</float>
+      <float hash="scale_add">0.5</float>
+      <float hash="original_size">3.5</float>
+      <float hash="charge_min_scale">1.5</float>
+      <float hash="charge_max_scale_mid">4.3</float>
+      <float hash="charge_max_scale">4.3</float>
+      <float hash="charge_min_scale_shoot">1.5</float>
+      <float hash="charge_max_scale_shoot">4.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -32,8 +38,10 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="rush_speed">4</float>
-      <float hash="0x189cd804c5">0.8</float>
+      <float hash="accel_x">0.04</float>
+      <float hash="accel_y">0.015</float>
+      <float hash="rush_speed">4.6</float>
+      <float hash="0x189cd804c5">0.0</float>
       <float hash="angle_speed">2</float>
       <float hash="end_accel_y">0.3</float>
       <int hash="landing_frame">30</int>
