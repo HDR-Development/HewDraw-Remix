@@ -187,9 +187,6 @@ impl UiManager {
     #[export_name = "UiManager__set_power_board_info"]
     pub extern "C" fn set_power_board_info(
         entry_id: u32,
-        current: f32,
-        max: f32,
-        per_level: f32,
         color_1: i32,
         color_2: i32,
     ) {
