@@ -831,8 +831,8 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn set_status_kind_interrupt(&mut self, kind: i32) {
         StatusModule::set_status_kind_interrupt(self, kind);
         let status_module = *(self as *const BattleObjectModuleAccessor as *const u64).add(0x8);
-        *((status_module + 0x98) as *mut i32) = kind;
-        *((status_module + 0x9c) as *mut i32) = kind;
+        *((status_module + 0x98) as *mut i32) = kind;  // StatusModule::status_kind
+        *((status_module + 0x9c) as *mut i32) = kind;  // StatusModule::status_kind_next
         crate::util::get_fighter_common_from_accessor(self).global_table[STATUS_KIND].assign(&L2CValue::I32(kind));
     }
 
