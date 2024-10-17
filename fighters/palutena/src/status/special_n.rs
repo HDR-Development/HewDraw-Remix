@@ -15,9 +15,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
-                VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_R);
             //println!("red");
             return 1.into();
@@ -35,9 +32,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
-                VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_B);
             //println!("blud");
             return 1.into();
@@ -55,9 +49,6 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
         else {
-            if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
-                VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-            }
             StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_Y);
             //println!("ielo");
             return 1.into();
@@ -268,6 +259,19 @@ unsafe extern "C" fn special_n_main_loop_common(fighter: &mut L2CFighterCommon, 
     return 0.into()
 }
 
+unsafe extern "C" fn special_n_end_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(fighter.battle_object, vars::palutena::status::POWER_BOARD_FLUSHED) {
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2, 0);
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1, 0);
+        utils::ui::UiManager::change_power_board_color(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+        );
+    }
+    0.into()
+}
+
 // colorless
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_main_common(fighter, hash40("special_n"), hash40("special_air_n"));
@@ -284,7 +288,7 @@ unsafe extern "C" fn special_n_r_main(fighter: &mut L2CFighterCommon) -> L2CValu
     special_n_main_common(fighter, hash40("special_n_r"), hash40("special_air_n_r"));
 
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 1 {
-        VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
+        VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
     }
     
     fighter.main_shift(special_n_r_main_loop)
@@ -294,17 +298,12 @@ unsafe extern "C" fn special_n_r_main_loop(fighter: &mut L2CFighterCommon) -> L2
     special_n_main_loop_common(fighter, hash40("special_n_r"), hash40("special_air_n_r"))
 }
 
-unsafe extern "C" fn special_n_r_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-    return 0.into()
-}
-
 // blue: ice attack
 unsafe extern "C" fn special_n_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_main_common(fighter, hash40("special_n_b"), hash40("special_air_n_b"));
 
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 2 {
-        VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
+        VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
     }
     
     fighter.main_shift(special_n_b_main_loop)
@@ -314,17 +313,12 @@ unsafe extern "C" fn special_n_b_main_loop(fighter: &mut L2CFighterCommon) -> L2
     special_n_main_loop_common(fighter, hash40("special_n_b"), hash40("special_air_n_b"))
 }
 
-unsafe extern "C" fn special_n_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-    return 0.into()
-}
-
 // yellow: paralyze attack
 unsafe extern "C" fn special_n_y_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_main_common(fighter, hash40("special_n_y"), hash40("special_air_n_y"));
 
     if VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2) == 3 {
-        VarModule::on_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
+        VarModule::on_flag(fighter.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
     }
     
     fighter.main_shift(special_n_y_main_loop)
@@ -332,11 +326,6 @@ unsafe extern "C" fn special_n_y_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn special_n_y_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_main_loop_common(fighter, hash40("special_n_y"), hash40("special_air_n_y"))
-}
-
-unsafe extern "C" fn special_n_y_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.object(), vars::palutena::instance::SPECIAL_N_PRIMARY_POWERED);
-    return 0.into()
 }
 
 // purple: shake attack
@@ -352,7 +341,7 @@ unsafe extern "C" fn special_n_p_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn special_n_p_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::remove_exist(fighter.boma(), *FIGHTER_PALUTENA_GENERATE_ARTICLE_GODWING, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    return 0.into()
+    special_n_end_common(fighter)
 }
 
 // orange: libra sponge
@@ -379,7 +368,7 @@ unsafe extern "C" fn special_n_g_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn special_n_g_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     STOP_SE(fighter, Hash40::new("se_item_club_wind"));
-    return 0.into()
+    special_n_end_common(fighter)
 }
 
 unsafe extern "C" fn special_n_g_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -391,21 +380,22 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, palutena_special_n_init_common);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_R, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_R, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_R, special_n_r_main);
-    agent.status(End, statuses::palutena::SPECIAL_N_R, special_n_r_end);
+    agent.status(End, statuses::palutena::SPECIAL_N_R, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_B, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_B, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_B, special_n_b_main);
-    agent.status(End, statuses::palutena::SPECIAL_N_B, special_n_b_end);
+    agent.status(End, statuses::palutena::SPECIAL_N_B, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_Y, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_Y, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_Y, special_n_y_main);
-    agent.status(End, statuses::palutena::SPECIAL_N_Y, special_n_y_end);
+    agent.status(End, statuses::palutena::SPECIAL_N_Y, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_P, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_P, palutena_special_n_init_common);
@@ -415,6 +405,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, statuses::palutena::SPECIAL_N_O, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_O, palutena_special_n_init_common);
     agent.status(Main, statuses::palutena::SPECIAL_N_O, special_n_o_main);
+    agent.status(End, statuses::palutena::SPECIAL_N_O, special_n_end_common);
 
     agent.status(Pre, statuses::palutena::SPECIAL_N_G, special_n_color_pre);
     agent.status(Init, statuses::palutena::SPECIAL_N_G, palutena_special_n_init_common);

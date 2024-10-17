@@ -51,6 +51,7 @@ unsafe extern "C" fn special_lw3_end_main(fighter: &mut L2CFighterCommon) -> L2C
                 fighter.set_situation(SITUATION_KIND_GROUND.into());
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.8, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 let rate = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("lw3_end_air_to_ground_rate"));
                 MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw3_end"), 0.0, rate, false, 0.0, false, false);
                 fighter.main_shift(special_lw3_end_main_loop_ground)

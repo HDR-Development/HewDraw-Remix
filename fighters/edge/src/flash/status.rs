@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 
 unsafe extern "C" fn wait_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    EffectModule::kill_kind(weapon.module_accessor, Hash40::new("sys_direction"), true, true);
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("wait"), 0.0, 1.0, false, 0.0, false, false);
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
@@ -18,6 +19,7 @@ unsafe extern "C" fn wait_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
         let offset_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.hold_offset_x");
         PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(pos_x + (offset_x * PostureModule::lr(weapon.module_accessor)), pos_y, 0.0));
     }
+
     weapon.fastshift(L2CValue::Ptr(wait_main_loop as *const () as _))
 }
 
@@ -73,7 +75,7 @@ unsafe extern "C" fn wait_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
         } 
     }
 
-    return 0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn wait_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
@@ -84,11 +86,13 @@ unsafe extern "C" fn wait_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if VarModule::get_int(weapon.battle_object, vars::edge_flash::status::REFRACT_COOLDOWN) > 0 {
         VarModule::dec_int(weapon.battle_object, vars::edge_flash::status::REFRACT_COOLDOWN);
     }
-    return 0.into()
+
+    return 0.into();
 }
 
 unsafe extern "C" fn burst_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     EffectModule::kill_kind(weapon.module_accessor, Hash40::new("edge_senkou_shield"), false, false);
+    EffectModule::kill_kind(weapon.module_accessor, Hash40::new("sys_direction"), false, false);
     smashline::original_status(Pre, weapon, *WEAPON_EDGE_FLASH_STATUS_KIND_ATTACK)(weapon)
 }
 
@@ -107,6 +111,7 @@ unsafe extern "C" fn burst_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 unsafe extern "C" fn vanish_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     EffectModule::kill_kind(weapon.module_accessor, Hash40::new("edge_senkou_shield"), false, false);
+    EffectModule::kill_kind(weapon.module_accessor, Hash40::new("sys_direction"), false, false);
     EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_erace_smoke"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
     StatusModule::init_settings(
         weapon.module_accessor,
@@ -120,16 +125,17 @@ unsafe extern "C" fn vanish_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
         0,
         0
     );
-    return 0.into()
+    
+    return 0.into();
 }
 
 unsafe extern "C" fn vanish_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("vanish"), 0.0, 1.0, false, 0.0, false, false);
-    return 0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn vanish_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    return 0.into()
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {

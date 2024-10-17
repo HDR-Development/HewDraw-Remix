@@ -109,7 +109,7 @@ unsafe extern "C" fn effect_build(agent: &mut L2CAgentBase) {
     	LAST_EFFECT_SET_SCALE_W(agent, 0.75, 0.45, 0.75);
     	let team_color = FighterUtil::get_team_color(zelda_boma);
     	let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-    	EffectModule::set_rgb_partial_last(boma, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+    	EffectModule::set_rgb_partial_last(boma, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
 	}
 	frame(lua_state, 5.0);
 	if is_excute(agent) {

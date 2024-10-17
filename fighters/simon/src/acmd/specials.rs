@@ -83,43 +83,13 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        sv_kinetic_energy!(
-            reset_energy,
-            agent,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
+        sv_kinetic_energy!(reset_energy, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, 0.0, 0.0, 0.0, 0.0);
         KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
-        let fall_x_mul = WorkModule::get_param_float(
-            boma,
-            hash40("param_special_hi"),
-            hash40("fall_x_mul")
-        );
-        sv_kinetic_energy!(
-            set_stable_speed,
-            agent,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            air_speed_x_stable * fall_x_mul,
-            0.0
-        );
-        let fall_accel_x_mul = WorkModule::get_param_float(
-            boma,
-            hash40("param_special_hi"),
-            hash40("fall_accel_x_mul")
-        );
-        sv_kinetic_energy!(
-            set_accel_x_mul,
-            agent,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            fall_accel_x_mul,
-            0.0
-        );
+        let fall_x_mul = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("fall_x_mul"));
+        sv_kinetic_energy!(set_stable_speed, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * fall_x_mul, 0.0);
+        let fall_accel_x_mul = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("fall_accel_x_mul"));
+        sv_kinetic_energy!(set_accel_x_mul, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, fall_accel_x_mul, 0.0);
     }
 }
 

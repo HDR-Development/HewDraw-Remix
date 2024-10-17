@@ -30,7 +30,7 @@ extern "C" {
     fn ui_manager_set_power_board_enable(entry_id: u32, enable: bool);
 
     #[link_name = "UiManager__set_power_board_info"]
-    fn ui_manager_set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32);
+    fn ui_manager_set_power_board_info(entry_id: u32, color_1: i32, color_2: i32);
     
     #[link_name = "UiManager__change_power_board_color"]
     fn ui_manager_change_power_board_color(entry_id: u32, color_1: i32, color_2: i32);
@@ -134,9 +134,9 @@ pub mod UiManager {
         }
     }
 
-    pub fn set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32) {
+    pub fn set_power_board_info(entry_id: u32, color_1: i32, color_2: i32) {
         unsafe {
-            super::ui_manager_set_power_board_info(entry_id, current, max, per_level, color_1, color_2)
+            super::ui_manager_set_power_board_info(entry_id, color_1, color_2)
         }
     }
 

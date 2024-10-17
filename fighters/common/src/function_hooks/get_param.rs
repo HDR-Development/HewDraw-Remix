@@ -78,6 +78,14 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             }
         }
 
+        else if fighter_kind == *FIGHTER_KIND_KROOL {
+            if x1 == hash40("param_special_n")
+            && x2 == hash40("special_n_suction_frame_min")
+            && VarModule::is_flag(boma_reference.object(), vars::krool::instance::SPECIAL_N_GRAB) {
+                return 30;
+            }
+        }
+
     }
 
     else if boma_reference.is_weapon() {

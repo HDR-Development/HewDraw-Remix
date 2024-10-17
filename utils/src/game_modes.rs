@@ -181,7 +181,7 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
 // Press dpad down at local wireless room select to open custom modes
 // (intended for non-hosts - hosts must hold R when opening the room)
-#[skyline::hook(offset = 0x1bd7a68, inline)]
+#[skyline::hook(offset = 0x1bd7a88, inline)]
 unsafe fn local_wireless_pane(_: &skyline::hooks::InlineCtx) {
     if ninput::any::is_down(ninput::Buttons::DOWN) {
         open_modes_session();
@@ -198,7 +198,7 @@ pub extern "Rust" fn get_melee_mode() -> i32 {
 static mut CURRENT_MELEE_MODE: i32 = 0x0;
 
 // updates when initiating the CSS of any game mode
-#[skyline::hook(offset = 0x1a2623c, inline)]
+#[skyline::hook(offset = 0x1a2625c, inline)]
 unsafe fn read_melee_mode(ctx: &mut skyline::hooks::InlineCtx) {
     let mode = *ctx.registers[8].x.as_ref();
     CURRENT_MELEE_MODE = mode as i32;

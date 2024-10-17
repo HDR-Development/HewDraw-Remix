@@ -14,6 +14,12 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+appeal_s_r:
+  extra:
+    cancel_frame: 0
+appeal_s_l:
+  extra:
+    cancel_frame: 0
 attack_dash:
   extra:
     cancel_frame: 31

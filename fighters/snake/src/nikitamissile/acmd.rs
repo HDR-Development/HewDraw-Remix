@@ -72,8 +72,6 @@ unsafe extern "C" fn effect_fallexplosion(agent : &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn stub(agent : &mut L2CAgentBase) {}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_flyattackcommon", game_fly, Priority::Low);
 

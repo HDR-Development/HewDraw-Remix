@@ -120,7 +120,7 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         let facing = PostureModule::lr(boma);
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 4.0 * facing, 18, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 6.0 * facing, 18, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {

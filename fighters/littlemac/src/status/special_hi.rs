@@ -34,7 +34,13 @@ unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_super_jump_punch_main as *const () as _))
 }
 
+unsafe extern "C" fn special_hi_jump_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("littlemac_risinguppercut"), true, true);
+    return 0.into();
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START, special_hi_start_pre);
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main);
+    agent.status(Exit, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exit);
 }

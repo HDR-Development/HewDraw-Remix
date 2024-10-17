@@ -9,7 +9,7 @@ authors = ["HDR Development Team"]
 edition = "2021"
 
 [workspace.dependencies]
-skyline = "0.2"
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
@@ -114,6 +114,7 @@ zelda = { path = "fighters/zelda" }
 name = "hdr"
 version.workspace = true
 authors.workspace = true
+edition.workspace = true
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"

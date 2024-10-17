@@ -187,9 +187,6 @@ impl UiManager {
     #[export_name = "UiManager__set_power_board_info"]
     pub extern "C" fn set_power_board_info(
         entry_id: u32,
-        current: f32,
-        max: f32,
-        per_level: f32,
         color_1: i32,
         color_2: i32,
     ) {
@@ -323,7 +320,7 @@ fn set_vertex_colors(pane: u64, tl: [f32; 4], tr: [f32; 4], bl: [f32; 4], br: [f
 
 unsafe fn get_pane_by_name(layout_view: u64, name: &str) -> [u64; 4] {
     let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60),
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F80),
     );
     func(layout_view, name.as_ptr())
 }
@@ -376,7 +373,7 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::hook(offset = 0x1b6cbe8, inline)]
+#[skyline::hook(offset = 0x1b6cc08, inline)]
 unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     let layout_udata = *ctx.registers[0].x.as_ref();
     let layout_view = *(layout_udata as *const u64).add(1);
