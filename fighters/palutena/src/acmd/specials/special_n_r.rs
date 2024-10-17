@@ -10,12 +10,6 @@ unsafe extern "C" fn game_specialnr(agent: &mut L2CAgentBase) {
     FT_DESIRED_RATE(agent, 18.0, 12.0);
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !MeterModule::drain(boma.object(), 2) {
-            MeterModule::drain(boma.object(), 1);
-        }
-        else {
-            MeterModule::drain(boma.object(), 2);
-        }
         VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
     }
     frame(lua_state, 18.0);

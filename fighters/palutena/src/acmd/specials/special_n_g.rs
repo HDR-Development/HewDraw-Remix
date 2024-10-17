@@ -5,7 +5,6 @@ unsafe extern "C" fn game_specialng(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        MeterModule::drain(boma.object(), 2);
         VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
         HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);

@@ -5,12 +5,6 @@ unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !MeterModule::drain(boma.object(), 2) {
-            MeterModule::drain(boma.object(), 1);
-        }
-        else {
-            MeterModule::drain(boma.object(), 2);
-        }
         VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
     }
     FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 16.0);
