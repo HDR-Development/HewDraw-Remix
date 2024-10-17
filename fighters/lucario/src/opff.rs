@@ -9,8 +9,8 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
             return;
         }
         MeterModule::update(fighter.object(), false);
-        MeterModule::set_meter_cap(fighter.object(), 2);
-        MeterModule::set_meter_per_level(fighter.object(), 100.0);
+        MeterModule::set_meter_cap(fighter.object(), 3);
+        MeterModule::set_meter_per_level(fighter.object(), 90.0);
         utils::ui::UiManager::set_aura_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_aura_meter_info(
             (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32),
@@ -86,6 +86,16 @@ pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
     VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
 
+pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
+    let meter = MeterModule::meter(agent.battle_object);
+    if meter <= 0.0
+    && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT);
+        PLAY_SE(agent, Hash40::new("se_common_spirits_critical_l_tail"));
+        MeterModule::add(agent.battle_object, -1.0 * meter);
+    }
+}
+
 unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if app::smashball::is_training_mode()
     && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
@@ -132,6 +142,7 @@ unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
         MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
+        check_burnout(fighter);
         pause_meter_regen(fighter, 120);
     }
 }
@@ -223,16 +234,11 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let meter = MeterModule::meter(fighter.object());
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
     let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
-    if (meter <= 0.0) {
-        if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
-            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
-            PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
-        }
-    } else if (meter >= meter_per_level) { // exit burnout at 1 half bar
-        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
-            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
-            PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
-        }
+    if meter >= meter_max
+    && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
+        PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
+        MeterModule::drain_direct(fighter.battle_object, meter_max);
     }
     
     // guard clause

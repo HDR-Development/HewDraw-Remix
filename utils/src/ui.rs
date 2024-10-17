@@ -3,19 +3,23 @@ use parking_lot::RwLock;
 
 use self::aura_meter::AuraMeter;
 use self::cyan_meter::CyanMeter;
-use self::ex_meter::ExMeter;
+use self::vtrigger_meter::VTriggerMeter;
 use self::ff_meter::FfMeter;
 use self::pichu_meter::PichuMeter;
 use self::power_board::PowerBoard;
 use self::robot_meter::RobotMeter;
+use self::garlic_meter::GarlicMeter;
+use self::plant_meter::PlantMeter;
 
 mod aura_meter;
 mod cyan_meter;
-mod ex_meter;
+mod vtrigger_meter;
 mod ff_meter;
 mod pichu_meter;
 mod power_board;
 mod robot_meter;
+mod garlic_meter;
+mod plant_meter;
 
 trait UiObject {
     fn update(&mut self);
@@ -26,25 +30,29 @@ trait UiObject {
 
 static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| {
     RwLock::new(UiManager {
-        ex_meter: [ExMeter::default(); 8],
+        vtrigger_meter: [VTriggerMeter::default(); 8],
         ff_meter: [FfMeter::default(); 8],
         power_board: [PowerBoard::default(); 8],
         cyan_meter: [CyanMeter::default(); 8],
         pichu_meter: [PichuMeter::default(); 8],
         aura_meter: [AuraMeter::default(); 8],
         robot_meter: [RobotMeter::default(); 8],
+        garlic_meter: [GarlicMeter::default(); 8],
+        plant_meter: [PlantMeter::default(); 8],
     })
 });
 
 #[repr(C)]
 pub struct UiManager {
-    ex_meter: [ExMeter; 8],
+    vtrigger_meter: [VTriggerMeter; 8],
     ff_meter: [FfMeter; 8],
     power_board: [PowerBoard; 8],
     cyan_meter: [CyanMeter; 8],
     pichu_meter: [PichuMeter; 8],
     aura_meter: [AuraMeter; 8],
     robot_meter: [RobotMeter; 8],
+    garlic_meter: [GarlicMeter; 8],
+    plant_meter: [PlantMeter; 8],
 }
 
 impl UiManager {
@@ -138,17 +146,17 @@ impl UiManager {
         // }
     }
 
-    #[export_name = "UiManager__set_ex_meter_enable"]
-    pub extern "C" fn set_ex_meter_enable(entry_id: u32, enable: bool) {
+    #[export_name = "UiManager__set_vtrigger_meter_enable"]
+    pub extern "C" fn set_vtrigger_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        manager.vtrigger_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
     }
 
-    #[export_name = "UiManager__set_ex_meter_info"]
-    pub extern "C" fn set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+    #[export_name = "UiManager__set_vtrigger_meter_info"]
+    pub extern "C" fn set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
-            .set_meter_info(current, max, per_level);
+        manager.vtrigger_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+            .set_meter_info(current, level_max, per_level, is_vtrigger);
     }
 
     #[export_name = "UiManager__set_ff_meter_enable"]
@@ -179,22 +187,19 @@ impl UiManager {
     #[export_name = "UiManager__set_power_board_info"]
     pub extern "C" fn set_power_board_info(
         entry_id: u32,
-        current: f32,
-        max: f32,
-        per_level: f32,
         color_1: i32,
         color_2: i32,
     ) {
         let mut manager = UI_MANAGER.write();
         manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
-            .set_meter_info(current, max, per_level, color_1, color_2);
+            .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__change_power_board_color"]
     pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
         manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
-            .change_color(color_1, color_2);
+            .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__set_cyan_meter_enable"]
@@ -259,6 +264,32 @@ impl UiManager {
         let mut manager = UI_MANAGER.write();
         manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
             .set_meter_info(current, max, per_level);
+    }
+
+    #[export_name = "UiManager__set_garlic_meter_enable"]
+    pub extern "C" fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+    }
+
+    #[export_name = "UiManager__set_garlic_meter_info"]
+    pub extern "C" fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
+        let mut manager = UI_MANAGER.write();
+        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+            .set_meter_info(current, level1, level2, level3);
+    }
+
+    #[export_name = "UiManager__set_plant_meter_enable"]
+    pub extern "C" fn set_plant_meter_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        manager.plant_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+    }
+
+    #[export_name = "UiManager__set_plant_meter_info"]
+    pub extern "C" fn set_plant_meter_info(entry_id: u32, element: i32) {
+        let mut manager = UI_MANAGER.write();
+        manager.plant_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+            .set_meter_info(element);
     }
 }
 
@@ -367,13 +398,15 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
 
     let mut manager = UI_MANAGER.write();
 
-    manager.ex_meter[index] = ExMeter::new(layout_udata);
+    manager.vtrigger_meter[index] = VTriggerMeter::new(layout_udata);
     manager.ff_meter[index] = FfMeter::new(layout_udata);
     manager.power_board[index] = PowerBoard::new(layout_udata);
     manager.cyan_meter[index] = CyanMeter::new(layout_udata);
     manager.pichu_meter[index] = PichuMeter::new(layout_udata);
     manager.aura_meter[index] = AuraMeter::new(layout_udata);
     manager.robot_meter[index] = RobotMeter::new(layout_udata);
+    manager.garlic_meter[index] = GarlicMeter::new(layout_udata);
+    manager.plant_meter[index] = PlantMeter::new(layout_udata);
 }
 
 #[skyline::hook(offset = 0x138a710, inline)]
@@ -393,9 +426,9 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
         }
     }
     let mut mgr = UI_MANAGER.write();
-    for ex_meter in mgr.ex_meter.iter_mut() {
-        if ex_meter.is_valid() && ex_meter.is_enabled() {
-            ex_meter.update();
+    for vtrigger_meter in mgr.vtrigger_meter.iter_mut() {
+        if vtrigger_meter.is_valid() && vtrigger_meter.is_enabled() {
+            vtrigger_meter.update();
         }
     }
     for ff_meter in mgr.ff_meter.iter_mut() {
@@ -426,6 +459,16 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for robot_meter in mgr.robot_meter.iter_mut() {
         if robot_meter.is_valid() && robot_meter.is_enabled() {
             robot_meter.update();
+        }
+    }
+    for garlic_meter in mgr.garlic_meter.iter_mut() {
+        if garlic_meter.is_valid() && garlic_meter.is_enabled() {
+            garlic_meter.update();
+        }
+    }
+    for plant_meter in mgr.plant_meter.iter_mut() {
+        if plant_meter.is_valid() && plant_meter.is_enabled() {
+            plant_meter.update();
         }
     }
 }

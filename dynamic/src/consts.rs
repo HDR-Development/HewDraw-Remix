@@ -1175,6 +1175,8 @@ pub mod vars {
             // flags
             pub const ENABLE_COLOR_INCREMENT: i32 = 0x1100;
             pub const SPECIAL_HI_TELEPORT_AIR_START: i32 = 0x1101;
+            pub const SPECIAL_N_PRIMARY_POWERED: i32 = 0x1102;
+            pub const POWER_BOARD_FLUSHED: i32 = 0x1150;
 
             // floats
             pub const SPECIAL_LW_STORED_DAMAGE: i32 = 0x1100;
@@ -1184,7 +1186,6 @@ pub mod vars {
             pub const SPECIAL_HI_TELEPORT_GROUND_START: i32 = 0x0100;
             pub const SPECIAL_HI_JUMP_REFRESH: i32 = 0x0101;
             pub const SPECIAL_N_FLUSH_BOARD: i32 = 0x0102;
-            pub const SPECIAL_N_PRIMARY_POWERED: i32 = 0x0103;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0104;
 
             // ints
@@ -1388,7 +1389,6 @@ pub mod vars {
             // flags
             pub const ATTACK_AIR_B_USED: i32 = 0x0100;
             pub const SPECIAL_S_AIR_USED: i32 = 0x0101;
-            pub const IS_INIT_METER: i32 = 0x0102;
             pub const SPECIAL_HI_GROUND_START: i32 = 0x0103;
             pub const SPECIAL_HI_MARKER_EFFECT_HANDLE: i32 = 0x0104;
 
