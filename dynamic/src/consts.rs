@@ -1175,7 +1175,7 @@ pub mod vars {
             // flags
             pub const ENABLE_COLOR_INCREMENT: i32 = 0x1100;
             pub const SPECIAL_HI_TELEPORT_AIR_START: i32 = 0x1101;
-            pub const SPECIAL_N_PRIMARY_POWERED: i32 = 0x0102;
+            pub const SPECIAL_N_PRIMARY_POWERED: i32 = 0x1102;
             pub const POWER_BOARD_FLUSHED: i32 = 0x1150;
 
             // floats
