@@ -5,51 +5,51 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let color_2 = VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2);
     if color_1 == 1 {
         if color_2 == 2 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_P);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_P);
             //println!("and why he ourple");
             return 1.into();
         }
         else if color_2 == 3 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_O);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_O);
             //println!("bornana");
             return 1.into();
         }
         else {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_R);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_R);
             //println!("red");
             return 1.into();
         }
     }
     else if color_1 == 2 {
         if color_2 == 1 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_P);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_P);
             //println!("and why he ourple");
             return 1.into();
         }
         else if color_2 == 3 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_G);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_G);
             //println!("i like cash from my hair to my ass");
             return 1.into();
         }
         else {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_B);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_B);
             //println!("blud");
             return 1.into();
         }
     }
     else if color_1 == 3 {
         if color_2 == 1 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_O);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_O);
             //println!("bornana");
             return 1.into();
         }
         else if color_2 == 2 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_G);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_G);
             //println!("i like cash from my hair to my ass");
             return 1.into();
         }
         else {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, statuses::palutena::SPECIAL_N_Y);
+            fighter.set_status_kind_interrupt(statuses::palutena::SPECIAL_N_Y);
             //println!("ielo");
             return 1.into();
         }

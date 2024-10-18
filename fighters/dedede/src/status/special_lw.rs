@@ -57,7 +57,7 @@ unsafe extern "C" fn special_lw_jump_squat_exec(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn special_lw_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK);
+    fighter.set_status_kind_interrupt(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_ATTACK);
     return 1.into();
 }
 
