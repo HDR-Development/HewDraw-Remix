@@ -15,9 +15,7 @@ use smash::app::utility::*;
 //== LEDGE ACTIONABILITY
 //=================================================================
 unsafe fn ledge_act(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fighter_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
-        *FIGHTER_STATUS_KIND_CLIFF_CATCH,
-        *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&status_kind) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
         if fighter_kind != *FIGHTER_KIND_NANA {
             if boma.status_frame() > 6 {
                 WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHANGE_STATUS_DLAY_MOTION);
