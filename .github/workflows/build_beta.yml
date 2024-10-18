@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: hewdrawremix/hewdraw-builder:latest
+      image: wuboyth/skyline-plugin-builder:latest
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:

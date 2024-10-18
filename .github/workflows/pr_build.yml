@@ -12,7 +12,7 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-20.04
     container: 
-      image: hewdrawremix/hewdraw-builder:latest
+      image: wuboyth/skyline-plugin-builder:latest
     steps:
     - name: setup python
       uses: actions/setup-python@v5.1.0
