@@ -19,6 +19,7 @@ jobs:
     - id: romfs_zip
       uses: robinraju/release-downloader@v1.8
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: "HDR-Development/romfs-release"
         latest: true
         zipBall: true
