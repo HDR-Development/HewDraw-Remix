@@ -506,15 +506,15 @@ unsafe extern "C" fn game_attackmax(agent: &mut L2CAgentBase) {
 	frame(lua_state, 3.0);
 	FT_MOTION_RATE(agent, 1.0);
 	if is_excute(agent) {
+		ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 368, 100, 50, 0, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
 		ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 361, 100, 130, 0, 8.5, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-		ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 25, 100, 85, 0, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+		let hit1 = Vector2f { x: 49.5, y: 14.5 };
+		AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &hit1, 10, false);
 		KineticModule::enable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 		agent.clear_lua_stack();
 		lua_args!(agent, WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL, rush_speed * PostureModule::lr(boma));
 		app::sv_kinetic_energy::set_speed(lua_state);
-		agent.clear_lua_stack();
-		let hit1 = Vector2f { x: 40.0, y: 15.0 };
-        AttackModule::set_vec_target_pos(boma, 0, smash::phx::Hash40::new("top"), &hit1, 9, false);
+		agent.clear_lua_stack();  
 	}
 	frame(lua_state, 11.0);
 	if is_excute(agent) {
