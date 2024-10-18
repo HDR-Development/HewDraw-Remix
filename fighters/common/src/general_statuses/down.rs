@@ -10,7 +10,7 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_AirChkDown,
+            sub_DamageFlyChkUniq,
             status_pre_Down,
             status_Down_Main,
             status_end_DownStandFb,
@@ -50,9 +50,9 @@ unsafe fn status_pre_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_AirChkDown)]
-unsafe fn sub_AirChkDown(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!()(fighter);
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyChkUniq)]
+unsafe fn sub_DamageFlyChkUniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = call_original!(fighter);
     if ret.get_bool() {
         // reset speed mul for damage_speed_up when transitioning to down
         // without this, there be crazy momentum shenanigans

@@ -983,6 +983,7 @@ name = "lucario"
 version = "0.1.0"
 dependencies = [
  "dynamic",
+ "interpolation",
  "skyline 0.2.1 (git+https://github.com/ultimate-research/skyline-rs)",
  "skyline_smash",
  "smash_script",
@@ -2350,9 +2351,11 @@ name = "utils"
 version = "0.1.0"
 dependencies = [
  "arcropolis-api",
+ "bitflags 2.6.0",
  "colorgrad",
  "dynamic",
  "hdr-macros",
+ "interpolation",
  "lazy_static",
  "ninput",
  "once_cell",

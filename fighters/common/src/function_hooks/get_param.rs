@@ -368,6 +368,17 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
+
+        else if fighter_kind == *FIGHTER_KIND_LUCARIO {
+            if x1 == hash40("param_special_hi")
+            && x2 == hash40("rush_speed") {
+                let rate = VarModule::get_float(boma_reference.object(), vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
+                if rate > 0.0 {
+                    let original = original!()(x0, x1, x2);
+                    return original * rate;
+                }
+            } 
+        }
     
     }
     else if boma_reference.is_weapon() {
