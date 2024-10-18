@@ -31,10 +31,10 @@ jobs:
     # - name: Free Disk Space (Ubuntu)
     #   uses: jlumbroso/free-disk-space@v1.3.1
 
-    - name: setup python
-      uses: actions/setup-python@v5.1.0
-      with:
-        python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    # - name: setup python
+    #   uses: actions/setup-python@v5.1.0
+    #   with:
+    #     python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
     - name: checkout version
       uses: actions/checkout@v4.1.4

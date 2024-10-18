@@ -73,10 +73,10 @@ jobs:
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
-    - name: setup python
-      uses: actions/setup-python@v5.1.0
-      with:
-        python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    # - name: setup python
+    #   uses: actions/setup-python@v5.1.0
+    #   with:
+    #     python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
     - id: trimmed_tag
       shell: bash
