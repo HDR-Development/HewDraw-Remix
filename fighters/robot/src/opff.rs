@@ -58,60 +58,40 @@ unsafe fn special_lw_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-    let info = app::lua_bind::FighterManager::get_fighter_information(crate::singletons::FighterManager(), app::FighterEntryID(entry_id));
-    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
-        MeterModule::reset(boma.object());
-    }
-    
+    let meter_max = (MeterModule::meter_cap(boma.object()) as f32 * MeterModule::meter_per_level(boma.object()));
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE
-    ]) {
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY
+    ])
+    || lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
         MeterModule::reset(boma.object());
+        MeterModule::add(boma.object(), meter_max);
     }
 
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) 
-    || !sv_information::is_ready_go() {
-        VarModule::on_flag(boma.object(), vars::robot::instance::IS_INIT_METER);
-    }
-
-    if VarModule::is_flag(boma.object(), vars::robot::instance::IS_INIT_METER) {
-        MeterModule::reset(boma.object());
-        MeterModule::set_meter_cap(boma.object(), 200);
-        MeterModule::set_meter_per_level(boma.object(), 100.0);
-        
-        MeterModule::add(boma.object(), 200.0);
-        VarModule::off_flag(boma.object(), vars::robot::instance::IS_INIT_METER);
-    }
-
-    if MeterModule::meter(boma.object()) < 200.0 && boma.is_situation(*SITUATION_KIND_GROUND) {
+    if boma.is_situation(*SITUATION_KIND_GROUND) {
         MeterModule::add(boma.object(), 0.75);
     }
 
-    if MeterModule::meter(boma.object()) != WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) 
-    && !boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        let diff = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) - MeterModule::meter(boma.object());
-
-        if WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) == 10.0 {
+    let burner_energy_value = boma.get_float(*FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        let charge_frame = VarModule::get_int(boma.object(), vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
+        if charge_frame == 1 {
+            MeterModule::drain_direct(boma.object(), 20.0);
+        } else if charge_frame > 10 {
+            MeterModule::drain_direct(boma.object(), 2.0);
+        }
+    } else if MeterModule::meter(boma.object()) != burner_energy_value {
+        if burner_energy_value == 10.0 {
             let remain = MeterModule::meter(boma.object());
             MeterModule::drain_direct(boma.object(), remain);
         } else {
+            let diff = burner_energy_value - MeterModule::meter(boma.object());
             if diff >= 0.0 {
                 MeterModule::add(boma.object(), diff);
             } else {
                 MeterModule::drain_direct(boma.object(), diff.abs());
             }
-        }
-    }
-
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        let charge_frame = VarModule::get_int(boma.object(), vars::robot::instance::SPECIAL_HI_CHARGE_FRAME);
-
-        if charge_frame == 1 {
-            MeterModule::drain_direct(boma.object(), 20.0);
-        } else if charge_frame > 10 {
-            MeterModule::drain_direct(boma.object(), 2.0);
         }
     }
 }
@@ -163,6 +143,8 @@ unsafe extern "C" fn robot_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon)
             return;
         }
         MeterModule::update(fighter.object(), false);
+        MeterModule::set_meter_cap(fighter.object(), 1);
+        MeterModule::set_meter_per_level(fighter.object(), 200.0);
         utils::ui::UiManager::set_robot_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_robot_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,

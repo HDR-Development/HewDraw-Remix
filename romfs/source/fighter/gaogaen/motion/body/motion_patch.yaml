@@ -50,7 +50,7 @@ catch_turn:
   extra:
     cancel_frame: 43
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
   blend_frames: 10
 furafura_end:

@@ -13,6 +13,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_CliffCatchMove,
             status_end_CliffCatchMove,
             status_end_CliffCatch,
+            bind_address_call_status_CliffWait,
             status_end_CliffWait,
             status_end_CliffAttack,
             status_end_CliffClimb,
@@ -48,6 +49,12 @@ unsafe fn status_end_CliffCatch(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_WAIT {
         VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
     }
+    call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_CliffWait)]
+unsafe fn bind_address_call_status_CliffWait(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("cliff_wait"), 0.0, 1.0, false, 0.0, false, false);
     call_original!(fighter)
 }
 

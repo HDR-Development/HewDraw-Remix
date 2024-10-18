@@ -76,11 +76,11 @@ catch_turn:
   extra:
     cancel_frame: 40
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 furafura_end:
   extra:
     cancel_frame: 34

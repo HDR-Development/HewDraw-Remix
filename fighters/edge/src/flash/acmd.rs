@@ -5,11 +5,11 @@ unsafe extern "C" fn effect_wait(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
-        let team_color = FighterUtil::get_team_color(boma);
+        let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
+        let team_color = FighterUtil::get_team_color(owner_boma);
         let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        let pos = &*(PostureModule::pos(boma));
-        EffectModule::req(boma, Hash40::new("sys_direction"), &Vector3f::new(pos.x, pos.y + 16.0, pos.z), &Vector3f::new(180.0, 0.0, 0.0), 1.0, 0, -1, false, 0);
-        LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+        EffectModule::req_follow(boma, Hash40::new("sys_direction"), Hash40::new("top"), &Vector3f::new(0.0, 16.0, 0.0), &Vector3f::new(0.0, 90.0, 180.0), 0.67, true, 0, 0, 0, 0, 0, false, false);
+        EffectModule::set_rgb_partial_last(boma, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         let flash_handle = EffectModule::req_follow(boma, Hash40::new("edge_senkou_shield"), Hash40::new("top"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.7, false, 0, 0, 0, 0, 0, false, false);
         EffectModule::set_scale_last(boma, &Vector3f::new(0.7, 0.7, 0.4));
         VarModule::set_int64(agent.battle_object, vars::edge_flash::status::EFFECT_HANDLE, flash_handle);

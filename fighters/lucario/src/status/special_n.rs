@@ -29,6 +29,7 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     }
     special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
+    ControlModule::clear_command(fighter.module_accessor, true);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
 }
 
@@ -50,7 +51,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
             return 0.into();
         }
-        ControlModule::clear_command(fighter.module_accessor, true);
         if fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
             fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX.into(), false.into());
             ArticleModule::change_status(
@@ -142,7 +142,7 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
         return 0.into();
     }
 
-    // if fighter.check_jump_cancel(false) {
+    // if fighter.check_jump_cancel(true, false) {
     //     return 0.into();
     // }
 
@@ -157,6 +157,12 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
     }
 
     0.into()
+}
+
+unsafe extern "C" fn special_n_hold_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MeterModule::drain_direct(fighter.battle_object, 0.15);
+    opff::pause_meter_regen(fighter, 30);
+    smashline::original_status(Exec, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD)(fighter)
 }
 
 unsafe extern "C" fn special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -187,7 +193,7 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
         return 0.into();
     }
 
-    // if fighter.check_jump_cancel(false) {
+    // if fighter.check_jump_cancel(true, false) {
     //     return 0.into();
     // }
 
@@ -199,14 +205,21 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
+unsafe extern "C" fn special_n_max_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // MeterModule::drain_direct(fighter.battle_object, 0.15);
+    // opff::pause_meter_regen(fighter, 30);
+    smashline::original_status(Exec, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX)(fighter)
+}
+
 unsafe extern "C" fn special_n_max_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_save_charge_status(fighter);
     0.into()
 }
 
 unsafe extern "C" fn special_n_check_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        if fighter.is_button_on(Buttons::Guard) {
+        if InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) < buffer {
             fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
             return true.into();
         }
@@ -241,13 +254,17 @@ unsafe extern "C" fn special_n_check_cancel(fighter: &mut L2CFighterCommon) -> L
         //     }
         //     return true.into();
         // }
-        if fighter.sub_check_command_guard().get_bool() {
+        if fighter.sub_check_command_guard().get_bool()
+        || InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) < buffer {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
                 fighter.set_int(*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
             } else {
                 fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
             }
             return true.into();
+        }
+        if fighter.is_cat_flag(Cat1::AttackHi4) {
+            fighter.set_int(*FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
         }
         if fighter.sub_check_jump_in_charging_for_cancel_status((*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS).into()).get_bool() {
             return true.into();
@@ -374,7 +391,9 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
+    agent.status(Exec, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_exec);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_end);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_main);
+    agent.status(Exec, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_exec);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX, special_n_max_end);
 }
