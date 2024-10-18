@@ -778,6 +778,7 @@ pub mod vars {
             pub const SPECIAL_N_LITTLEMAC_CLEAR_CRIT: i32 = 0x11F7;
             pub const PURIN_SPECIAL_N_HIT: i32 = 0x11F8;
             pub const PURIN_SPECIAL_N_HIT_CANCEL_OK: i32 = 0x11F9;
+            pub const PALUTENA_SPECIAL_N_HOLD: i32 = 0x11FA;
 
             pub use super::super::mario::status::SPECIAL_N_FIREBRAND;
             pub use super::super::luigi::status::SPECIAL_N_THUNDERHAND;
@@ -1811,10 +1812,6 @@ pub mod statuses {
         pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
     }
 
-    pub mod master_axe {
-        pub const SPECIAL_LW_YEET: i32 = 0x7;
-    }
-
     pub mod mewtwo {
         pub const FLOAT: i32 = 0x1E9;
     }
@@ -1830,6 +1827,11 @@ pub mod statuses {
         pub const SPECIAL_N_P: i32 = 0x1EC;
         pub const SPECIAL_N_O: i32 = 0x1ED;
         pub const SPECIAL_N_G: i32 = 0x1EE;
+    }
+
+    pub mod palutena_explosiveflame {
+        pub const CHECK_KIRBY: i32 = 0x4;
+        pub const EXPLODE_KIRBY: i32 = 0x5;
     }
 
     pub mod pickel_trolley {

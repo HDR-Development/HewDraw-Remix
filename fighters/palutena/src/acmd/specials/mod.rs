@@ -10,26 +10,29 @@ mod special_n_p;
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 72, 40, 0, 70, 8.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        AttackModule::clear(boma, 0, false);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {
-        if agent.kind() == *FIGHTER_KIND_KIRBY {
-            WorkModule::set_customize_no(agent.module_accessor, 1, 0);
-            if VarModule::get_int(boma.object(), vars::palutena::instance::SPECIAL_N_PALUTENA_COLOR_COUNT) >= 3 {
-                SEARCH(agent, 0, 0, Hash40::new("bust"), 150.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
-            }
+    if agent.kind() == *FIGHTER_KIND_PALUTENA {
+        frame(lua_state, 7.0);
+        if is_excute(agent) {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 72, 40, 0, 70, 8.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(agent) {
+            AttackModule::clear(boma, 0, false);
+        }
+        frame(lua_state, 22.0);
+        if is_excute(agent) {
+            search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
         }
     }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    else {
+        FT_MOTION_RATE(agent, 1.2);
+        frame(lua_state, 5.0);
+        if is_excute(agent) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                VarModule::on_flag(agent.battle_object, vars::kirby::status::PALUTENA_SPECIAL_N_HOLD);
+            }
+            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME, false, -1);
+        }
     }
 }
 
