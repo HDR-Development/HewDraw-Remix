@@ -37,8 +37,8 @@ unsafe extern "C" fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue
 unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // 34F max
     let motion_frame = MotionModule::frame(fighter.module_accessor);
-    let start_frame = 10.0;
-    let end_frame = 20.0;
+    let start_frame = 8.0;
+    let end_frame = 21.0;
     if motion_frame > start_frame
     && motion_frame < end_frame
     && !fighter.is_button_on(Buttons::SpecialRaw) {
