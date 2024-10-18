@@ -7,7 +7,7 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
 
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_GORDO_GET){
         if !ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
-            fighter.set_status_kind_interrupt(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_S_MISS);
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_S_MISS);
             return 1.into();
         }
     }

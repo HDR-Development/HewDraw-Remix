@@ -47,24 +47,24 @@ unsafe extern "C" fn status_pre_Jump_Common(fighter: &mut L2CFighterCommon) -> L
 unsafe extern "C" fn status_pre_Jump_Common_param(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     //println!("status_pre_Jump_Common_param");
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
-        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_HAMMER_JUMP);
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_HAMMER_JUMP);
         return true.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SCREW) && arg.get_bool() {
         let screw_jump_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SCREW_JUMP_COUNT);
         if screw_jump_count < *FIGHTER_STATUS_SCREW_JUMP_COUNT_MAX {
-            fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP);
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP);
             return true.into();
         }
     }
     if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_GENESISSET {
-        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_ITEM_SHOOT_JUMP);
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_SHOOT_JUMP);
         return true.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_BOARD) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_BOARD);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-            fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_GIMMICK_JUMP_BOARD);
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_GIMMICK_JUMP_BOARD);
             return true.into();
         }
     }

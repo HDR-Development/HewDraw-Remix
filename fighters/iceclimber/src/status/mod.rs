@@ -74,7 +74,7 @@ pub unsafe extern "C" fn throw_nana(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn nana_catch_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_THROW);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_THROW);
     return true.into();
 }
 
@@ -90,7 +90,7 @@ unsafe extern "C" fn nana_catch_wait_main_loop(fighter: &mut L2CFighterCommon) -
 
 unsafe extern "C" fn popo_status_kind_throw_nana_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
-    fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_WAIT);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT);
     return true.into();
 }
 
