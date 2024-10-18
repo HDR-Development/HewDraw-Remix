@@ -10,6 +10,7 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_DamageFlyChkUniq,
             status_pre_Down,
             status_Down_Main,
             status_end_DownStandFb,
@@ -47,6 +48,20 @@ unsafe fn status_pre_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
         0
     );
     0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyChkUniq)]
+unsafe fn sub_DamageFlyChkUniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = call_original!(fighter);
+    if ret.get_bool() {
+        // reset speed mul for damage_speed_up when transitioning to down
+        // without this, there be crazy momentum shenanigans
+        if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+            fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
+            fighter.set_float(0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
+        }
+    }
+    ret
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Down_Main)]

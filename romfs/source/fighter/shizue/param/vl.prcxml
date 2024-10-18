@@ -21,7 +21,20 @@
       <int hash="life">7</int>
     </struct>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="speed_mul_x">1.0</float>
+      <int hash="hit_reel_stop_frame_fighter">6</int>
+      <float hash="reel_speed_hook">6</float>
+      <float hash="reel_speed_fighter">6</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <struct hash="param_fishingrod">
+    <float hash="shoot_limit_length">30</float>
+    <float hash="shoot_limit_length_flick">45</float>
     <float hash="hook_search_size">4</float>
   </struct>
   <struct hash="param_fishingline">
@@ -45,7 +58,7 @@
   <list hash="param_clayrocket">
     <struct index="0">
       <int hash="erase_time">99999</int>
-      <float hash="life_1">8</float>
+      <float hash="life_1">10</float>
       <float hash="life_2">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>

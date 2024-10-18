@@ -3,11 +3,11 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 guard_off:
   blend_frames: 4
   extra:
@@ -41,6 +41,60 @@ special_n1_cancel:
 special_air_n1_cancel:
   extra:
     cancel_frame: 9
+special_n1_neon:
+  game_script: game_specialn1neon
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialn1.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialn1neon
+    - sound_specialn1neon
+    - effect_specialn1neon
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 40
+    no_stop_intp: false
+special_air_n1_neon:
+  game_script: game_specialairn1neon
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialairn1.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairn1neon
+    - sound_specialairn1neon
+    - effect_specialairn1neon
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 40
+    no_stop_intp: false
 catch_dash:
   extra:
     cancel_frame: 41

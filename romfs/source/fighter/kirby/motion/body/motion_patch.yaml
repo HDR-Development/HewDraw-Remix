@@ -3,15 +3,21 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
+attack_11:
+  extra:
+    cancel_frame: 16
+attack_12:
+  extra:
+    cancel_frame: 16
 attack_13:
   game_script: game_attack13
   flags:
@@ -70,7 +76,7 @@ attack_s4_hi:
     cancel_frame: 53
 attack_air_f:
   extra:
-    cancel_frame: 40
+    cancel_frame: 41
 special_hi_h:
   game_script: game_specialhih
   flags:
@@ -249,6 +255,60 @@ koopa_special_air_n_max:
 mewtwo_special_n_shoot:
   extra:
     cancel_frame: 28
+miigunner_special_n1_neon:
+  game_script: game_miigunnerspecialn1neon
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: miigunnerd00specialn1.nuanmb
+      unk: 0
+  scripts:
+    - expression_miigunnerspecialn1neon
+    - sound_miigunnerspecialn1neon
+    - effect_miigunnerspecialn1neon
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 40
+    no_stop_intp: false
+miigunner_special_air_n1_neon:
+  game_script: game_miigunnerspecialairn1neon
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: miigunnerd00specialairn1.nuanmb
+      unk: 0
+  scripts:
+    - expression_miigunnerspecialairn1neon
+    - sound_miigunnerspecialairn1neon
+    - effect_miigunnerspecialairn1neon
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 40
+    no_stop_intp: false
 littlemac_special_n:
   game_script: game_littlemacspecialn
   flags:
@@ -482,14 +542,6 @@ chrom_special_air_n_end2:
 chrom_special_air_n_end_max:
   extra:
     cancel_frame: 38
-daisy_special_n:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-daisy_special_air_n:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
 diddy_special_n_cancel:
   game_script: game_diddyspecialncancel
   flags:
@@ -925,10 +977,10 @@ ness_special_air_n_end:
     cancel_frame: 36
 pacman_special_n_shoot:
   extra:
-    cancel_frame: 40
+    cancel_frame: 42
 pacman_special_air_n_shoot:
   extra:
-    cancel_frame: 40
+    cancel_frame: 42
 pacman_special_n_cancel:
   extra:
     cancel_frame: 7
@@ -937,10 +989,10 @@ pacman_special_air_n_cancel:
     cancel_frame: 7
 palutena_special_n:
   extra:
-    cancel_frame: 43
+    cancel_frame: 63
 palutena_special_air_n:
   extra:
-    cancel_frame: 43
+    cancel_frame: 63
 peach_special_n:
   extra:
     xlu_start: 0
@@ -961,6 +1013,13 @@ pit_special_n_fire_hi:
 pit_special_air_n_fire_hi:
   extra:
     cancel_frame: 30
+purin_special_n:
+  flags:
+    turn: false
+  extra:
+    xlu_start: 1
+    xlu_end: 28
+    cancel_frame: 210
 reflet_special_n_start:
   flags:
     move: false

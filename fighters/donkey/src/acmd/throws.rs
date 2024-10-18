@@ -151,7 +151,7 @@ unsafe extern "C" fn game_itemheavythrowf(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::set_flag(agent.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS, boma.stick_x().abs() < 0.33); 
+        VarModule::set_flag(agent.object(), consts::vars::donkey::status::SUPERLIFT_NEUTRAL_TOSS, boma.stick_x().abs() < 0.33); 
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -165,7 +165,7 @@ unsafe extern "C" fn game_itemheavythrowf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 2.0);
     }
-    let is_neutral_toss = VarModule::is_flag(agent.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS); 
+    let is_neutral_toss = VarModule::is_flag(agent.object(), consts::vars::donkey::status::SUPERLIFT_NEUTRAL_TOSS); 
     let toss_frame = match is_neutral_toss {
         true => 16.0,
         false => 17.0

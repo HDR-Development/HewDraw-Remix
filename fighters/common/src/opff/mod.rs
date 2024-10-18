@@ -16,6 +16,7 @@ pub mod gimmick;
 pub mod floats;
 pub mod other;
 pub mod fe;
+pub mod pocket;
 
 use other::*;
 
@@ -122,12 +123,28 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     floats::run(fighter, info.status_kind, info.situation_kind);
 }
 
-pub fn install() {
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sys_line_system_control_fighter)]
+pub unsafe fn sys_line_system_control_fighter_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
+    decrease_knockdown_bounce_heights(fighter);
+    left_stick_flick_counter(fighter);
+    right_stick_flick_counter(fighter);
+
+    original!()(fighter)
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            sys_line_system_control_fighter_hook
+        );
+    }
+}
+
+pub fn install() {
     Agent::new("fighter")
-        .on_line(Main, decrease_knockdown_bounce_heights)
-        .on_line(Main, left_stick_flick_counter)
         .install();
 
+    skyline::nro::add_hook(nro_hook);
 }

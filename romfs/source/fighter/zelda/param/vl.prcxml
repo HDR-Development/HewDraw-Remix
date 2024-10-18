@@ -22,7 +22,7 @@
       <float hash="angle_max">85</float>
       <float hash="life">40</float>
       <float hash="count">40</float>
-      <float hash="size_max">4</float>
+      <float hash="size_max">3.8</float>
       <float hash="bang_time">160</float>
       <float hash="size_min">2</float>
     </struct>
@@ -53,6 +53,7 @@
       <float hash="wrap_speed_multi">2</float>
       <float hash="wrap_speed_add">1.2</float>
       <float hash="wrap_xy_speed">0.45</float>
+      <float hash="fall_x_mull_value">0.6</float>
       <float hash="landing_frame">35</float>
     </struct>
     <hash40 index="1">dummy</hash40>

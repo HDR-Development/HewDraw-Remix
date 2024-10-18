@@ -3,11 +3,11 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 landing_fall_special:
   animations:
     - name: c05landingairlw.nuanmb

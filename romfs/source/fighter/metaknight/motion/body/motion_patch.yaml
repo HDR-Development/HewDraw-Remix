@@ -3,7 +3,7 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_f:
   blend_frames: 5
 fall_b:
@@ -25,7 +25,7 @@ attack_hi3:
   extra:
     cancel_frame: 28
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 attack_dash:
   extra:
     cancel_frame: 38
@@ -36,7 +36,7 @@ attack_s3_s:
   extra:
     cancel_frame: 31
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 attack_air_b:
   extra:
     cancel_frame: 36

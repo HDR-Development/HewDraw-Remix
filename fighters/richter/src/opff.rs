@@ -4,36 +4,6 @@ use super::*;
 use globals::*;
 use skyline_smash::app::lua_bind::ControlModule::clear_command_one;
 
-// knife drift
-unsafe fn knife_drift(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
-    && boma.is_situation(*SITUATION_KIND_AIR) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-    }
-}
-
-// knife land cancel
-unsafe fn knife_lc(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
-    && VarModule::is_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL)
-    && boma.is_situation(*SITUATION_KIND_GROUND) {
-        // remove the unthrown knife from richter's hand
-        if (2.0..13.0).contains(&boma.motion_frame())
-        && ArticleModule::is_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE){
-            ArticleModule::remove_exist(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        }
-
-        let landing_lag = 10.0; // amount of frames until richter can act when landing
-        let rate = 27.0 / landing_lag;
-        MotionModule::change_motion(boma, Hash40::new("landing_fall_special"), 0.0, rate, false, 0.0, false, false);
-        VarModule::off_flag(boma.object(), vars::richter::instance::SPECIAL_N_LAND_CANCEL);
-        EffectModule::kill_kind(boma, Hash40::new("sys_sp_flash"), true, true);
-    }
-}
-
 // allow fair to transition into their angled variants when the stick is angled up/down
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
     if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
@@ -56,7 +26,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2
@@ -84,8 +53,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    knife_drift(boma);
-    knife_lc(boma);
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
 }

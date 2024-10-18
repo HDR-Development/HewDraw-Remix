@@ -51,6 +51,14 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             0.0
         );
+    } else {
+        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            speed_y.min(0.0) * 0.33
+        );
     }
 
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -74,15 +82,6 @@ pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CV
     }
     else {
         VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, 0);
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -air_accel_y
-            );
-        }
     }
     special_lw_motion_helper(fighter);
     fighter.main_shift(special_lw_main_loop)
@@ -94,9 +93,27 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     && fighter.check_jump_cancel(false, false) {
         return 0.into();
     }
+
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(statuses::falco::SPECIAL_LW_LOOP.into(), false.into());
     }
+
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0, false, false);
+            fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
+            fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_GROUND), 1.into());
+        }
+    }
+
     0.into()
 }
 
@@ -105,27 +122,31 @@ unsafe extern "C" fn special_lw_motion_helper(fighter: &mut L2CFighterCommon) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 0.0, 1.0, false, 0.0, false, false);
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_GROUND), 1.into());
     }
 }
 
 unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-        return 0.into();
+        return false.into();
     }
     let stop_y_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_stop_y_frame");
     if stop_y_frame != 0 {
         let work_stop_y_frame = VarModule::get_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if work_stop_y_frame - 1 <= 0 {
-            let mut reflector_air_accel_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y");
-            if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
-                reflector_air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            }
+            let mut reflector_air_accel_y = if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
+                // fighter.get_param_float("air_accel_y", "") / 2.0
+                ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y") * 1.67
+            } else {
+                ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y")
+            };
             sv_kinetic_energy!(
                 set_accel,
                 fighter,
@@ -149,7 +170,7 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         }
         VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, work_stop_y_frame - 1);
     }
-    0.into()
+    return false.into();
 }
 
 unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -236,7 +257,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
             return 0.into();
         }
     }
-    if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SET_ATTACK) {
+    if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_SET_ATTACK) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     else {
@@ -247,7 +268,7 @@ unsafe extern "C" fn special_lw_loop_main_loop(fighter: &mut L2CFighterCommon) -
             app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
             fighter.pop_lua_stack(0);
 
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::SET_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_SET_ATTACK);
         }
     }
     if !StatusModule::is_changing(fighter.module_accessor)
@@ -282,17 +303,19 @@ unsafe extern "C" fn special_lw_loop_exec(fighter: &mut L2CFighterCommon) -> L2C
     }
 
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-        return 0.into();
+        return false.into();
     }
     let stop_y_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_stop_y_frame");
     if stop_y_frame != 0 {
         let work_stop_y_frame = VarModule::get_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if work_stop_y_frame - 1 <= 0 {
-            let mut reflector_air_accel_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y");
-            if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
-                reflector_air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            }
+            let mut reflector_air_accel_y = if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
+                // fighter.get_param_float("air_accel_y", "") / 2.0
+                ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y") * 1.67
+            } else {
+                ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y")
+            };
             sv_kinetic_energy!(
                 set_accel,
                 fighter,
@@ -316,7 +339,7 @@ unsafe extern "C" fn special_lw_loop_exec(fighter: &mut L2CFighterCommon) -> L2C
         }
         VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, work_stop_y_frame - 1);
     }
-    0.into()
+    return false.into();
 }
 
 // SPECIAL_LW_END
@@ -412,45 +435,6 @@ unsafe extern "C" fn special_lw_end_end(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-unsafe extern "C" fn special_lw_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-        return 0.into();
-    }
-    let stop_y_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_stop_y_frame");
-    if stop_y_frame != 0 {
-        let work_stop_y_frame = VarModule::get_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        if work_stop_y_frame - 1 <= 0 {
-            let mut reflector_air_accel_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y");
-            if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
-                reflector_air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            }
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -reflector_air_accel_y
-            );
-        }
-        else {
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-        }
-        VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, work_stop_y_frame - 1);
-    }
-    0.into()
-}
-
 unsafe extern "C" fn special_lw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -511,45 +495,6 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
     return 0.into();
 }
 
-unsafe extern "C" fn special_lw_hit_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-        return 0.into();
-    }
-    let stop_y_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_stop_y_frame");
-    if stop_y_frame != 0 {
-        let work_stop_y_frame = VarModule::get_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME);
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        if work_stop_y_frame - 1 <= 0 {
-            let mut reflector_air_accel_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.reflector_air_accel_y");
-            if VarModule::is_flag(fighter.battle_object, vars::falco::instance::SPECIAL_LW_DISABLE_STALL) {
-                reflector_air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            }
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -reflector_air_accel_y
-            );
-        }
-        else {
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-        }
-        VarModule::set_int(fighter.battle_object, vars::falco::status::SPECIAL_LW_STOP_Y_FRAME, work_stop_y_frame - 1);
-    }
-    0.into()
-}
-
 unsafe extern "C" fn special_lw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != statuses::falco::SPECIAL_LW_END
     && StatusModule::status_kind_next(fighter.module_accessor) != statuses::falco::SPECIAL_LW_LOOP {
@@ -562,9 +507,9 @@ unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE) {
+        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION);
         }
         else {
             MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_hit"), -1.0, 1.0, 0.0, false, false);
@@ -573,9 +518,9 @@ unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE) {    
+        if !VarModule::is_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION) {    
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hit"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::REFLECTOR_CONTINUE);
+            VarModule::on_flag(fighter.battle_object, vars::falco::status::SPECIAL_LW_CONTINUE_MOTION);
         }
         else {
             MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_hit"), -1.0, 1.0, 0.0, false, false);
@@ -584,24 +529,25 @@ unsafe extern "C" fn special_lw_hit_motion_helper(fighter: &mut L2CFighterCommon
 }
 
 pub fn install(agent: &mut Agent) {
-        agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
-        agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
-        agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
-        agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec);
-        agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_exec);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
 
-        agent.status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre);
-        agent.status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init);
-        agent.status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main);
-        agent.status(Exec, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_exec);
-        agent.status(End, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_end);
-        agent.status(Pre, statuses::falco::SPECIAL_LW_END, special_lw_end_pre);
-        agent.status(Main, statuses::falco::SPECIAL_LW_END, special_lw_end_main);
-        agent.status(Exec, statuses::falco::SPECIAL_LW_END, special_lw_end_exec);
-        agent.status(End, statuses::falco::SPECIAL_LW_END, special_lw_end_end);
+    agent.status(Pre, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_pre);
+    agent.status(Init, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_init);
+    agent.status(Main, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_main);
+    agent.status(Exec, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_exec);
+    agent.status(End, statuses::falco::SPECIAL_LW_LOOP, special_lw_loop_end);
 
-        agent.status(Pre, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_pre);
-        agent.status(Main, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_main);
-        agent.status(Exec, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_exec);
-        agent.status(End, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_end);
+    agent.status(Pre, statuses::falco::SPECIAL_LW_END, special_lw_end_pre);
+    agent.status(Main, statuses::falco::SPECIAL_LW_END, special_lw_end_main);
+    agent.status(Exec, statuses::falco::SPECIAL_LW_END, special_lw_exec);
+    agent.status(End, statuses::falco::SPECIAL_LW_END, special_lw_end_end);
+
+    agent.status(Pre, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_pre);
+    agent.status(Main, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_main);
+    agent.status(Exec, statuses::falco::SPECIAL_LW_HIT, special_lw_exec);
+    agent.status(End, statuses::falco::SPECIAL_LW_HIT, special_lw_hit_end);
 }

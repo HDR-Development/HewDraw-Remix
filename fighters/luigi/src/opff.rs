@@ -13,25 +13,18 @@ unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn luigi_always_misfire_training_mode(fighter: &mut L2CFighterCommon, status_kind: i32) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ENTRY) && fighter.status_frame() <= 10 {
-        super::calculate_misfire_number(fighter);
-    }
-    if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL && ControlModule::check_button_trigger(fighter.boma(), *CONTROL_PAD_BUTTON_GUARD) { 
-            if !VarModule::is_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES) {
-                VarModule::on_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES);
-                EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.5, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-                
-            }
-            else {
-                VarModule::off_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES);
-                VarModule::off_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
-                EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.5, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-            }
-        }
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::TRAINING_ALWAYS_MISFIRES) {
-        VarModule::on_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
+unsafe fn training_mode_misfire(fighter: &mut L2CFighterCommon) {
+    if !is_training_mode() { return };
+
+    if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) 
+    && fighter.is_button_trigger(Buttons::Guard) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 10, 5, 0, 0, 0, 1.0, true, *EF_FLIP_YZ);
+        if !VarModule::is_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE) {
+            VarModule::on_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE);
+            LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);
+        } else {
+            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE);
+            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
         }
     }
 }
@@ -87,7 +80,7 @@ unsafe fn luigi_missile_edge_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    luigi_always_misfire_training_mode(fighter, status_kind);
+    training_mode_misfire(fighter);
     luigi_missle_ledgegrab(fighter);
     special_s_charge_init(fighter, status_kind);
     special_hi_proper_landing(fighter);
@@ -110,7 +103,7 @@ pub unsafe fn luigi_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 unsafe fn special_s_charge_init(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind)  || !sv_information::is_ready_go() {
-        VarModule::off_flag(fighter.object(), vars::luigi::instance::IS_MISFIRE_STORED);
+        VarModule::off_flag(fighter.object(), vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
     }
 }
 

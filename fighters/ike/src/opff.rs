@@ -3,15 +3,13 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32) {
-    if situation_kind != *SITUATION_KIND_AIR
-    || boma.is_in_hitlag() {
-        return;
-    }
-
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_IKE_STATUS_KIND_SPECIAL_HI_2].contains(&status_kind) {
-        if stick_x != 0.0 {
-            let motion_vec = x_motion_vec(0.3, stick_x);
+unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor) {
+    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_IKE_STATUS_KIND_SPECIAL_HI_2].contains(&boma.status()) {
+        if !boma.is_situation(*SITUATION_KIND_AIR) || boma.is_in_hitlag() {
+            return;
+        }
+        if boma.stick_x() != 0.0 {
+            let motion_vec = x_motion_vec(0.3, boma.stick_x());
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
     }
@@ -21,40 +19,42 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
     if StatusModule::is_changing(boma) {
         return;
     }
-    // Glow blue when attack is charged enough
-    let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
-    let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.45}; // Diffuse vector
-
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD) && fighter.is_situation(*SITUATION_KIND_GROUND){
         if WorkModule::get_int(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_CHARGE_COUNT) > 160 {
-            if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
-                VarModule::on_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL);
+            // Glow blue when attack is charged enough
+            let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
+            let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.45}; // Diffuse vector
+            if !VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) {
+                VarModule::on_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL);
                 EFFECT_FOLLOW(fighter, Hash40::new("ike_volcano_hold"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1.0, false);
                 ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, /*Fadein time*/ 30, /* Display Color */ true);
-                //FLASH(fighter, 0.125, 0.4, 1, 0.45);
-                //BURN_COLOR_FRAME(fighter, 30, 0.125, 0.4, 1, 0.45);
             }
         }
     }
-    if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) && fighter.is_situation(*SITUATION_KIND_GROUND){
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                if PostureModule::lr(boma) > 0.0{
+    if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                if PostureModule::lr(boma) > 0.0 {
                     StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
                     MotionModule::change_motion(boma, Hash40::new("appeal_lw_r"), -1.0, 1.0, false, 0.0, false, false);
                 }
-                else{
+                else {
                     StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
                     MotionModule::change_motion(boma, Hash40::new("appeal_lw_l"), -1.0, 1.0, false, 0.0, false, false);
                 }
             }
         }
     }
-    if !fighter.is_status_one_of(&[*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END, *FIGHTER_STATUS_KIND_APPEAL]){
-        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_STATUS_KIND_APPEAL]) {
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) {
             EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
             ColorBlendModule::cancel_main_color(boma, 0);
-            VarModule::off_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL);
+            VarModule::off_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL);
         }
     }
 }
@@ -65,27 +65,29 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
 // return_frame: frame to start interpolating back to regular angle
 // straight_frame: frame the arm bones should be at the regular angle again
 unsafe fn quickdraw_attack_arm_bend(boma: &mut BattleObjectModuleAccessor) {
-    let frame = MotionModule::frame(boma);
-    let return_frame = 0.0;
-    let straight_frame = 0.1;
-    let end_frame = MotionModule::end_frame(boma);
-    let max_x_rotation = 0.0;
-    let max_y_rotation = 0.0;
-    let max_z_rotation = 75.0;
-    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-        
-    if boma.is_motion_one_of(&[Hash40::new("special_s_attack"), Hash40::new("special_air_s_attack")]) && !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) && frame <= straight_frame {
-        // linear interpolate back to normal
-        let calc_x_rotate = max_x_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let x_rotation = calc_x_rotate.clamp(0.0, max_x_rotation);
-        let calc_y_rotate = max_y_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
-        let calc_z_rotate = max_z_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
-        rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(boma, Hash40::new("armr"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-        ModelModule::set_joint_rotate(boma, Hash40::new("handr"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    }
+    if boma.is_motion_one_of(&[Hash40::new("special_s_attack"), Hash40::new("special_air_s_attack")])
+    && !VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) {
+        let frame = MotionModule::frame(boma);
+        let straight_frame = 0.1;
+        if frame <= straight_frame {
+            let return_frame = 0.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation = 0.0;
+            let max_y_rotation = 0.0;
+            let max_z_rotation = 75.0;
+            let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+            // linear interpolate back to normal
+            let calc_x_rotate = max_x_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+            let x_rotation = calc_x_rotate.clamp(0.0, max_x_rotation);
+            let calc_y_rotate = max_y_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+            let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
+            let calc_z_rotate = max_z_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+            let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
+            rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
+            ModelModule::set_joint_rotate(boma, Hash40::new("armr"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            ModelModule::set_joint_rotate(boma, Hash40::new("handr"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+        }
+    } 
 }
 
 // boma: its a boma
@@ -94,34 +96,34 @@ unsafe fn quickdraw_attack_arm_bend(boma: &mut BattleObjectModuleAccessor) {
 // return_frame: frame to start interpolating back to regular angle
 // straight_frame: frame the bones should be at the regular angle again
 unsafe fn jab_lean(boma: &mut BattleObjectModuleAccessor) {
-    let start_frame = 0.0;
-    let bend_frame = 3.0;
-    let return_frame = 10.0;
-    let straight_frame = 21.0;
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_x_rotation_torso = 0.0;
-    let max_y_rotation_torso = -25.0;
-    let max_z_rotation_torso = 0.0;
-    let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_x_rotation_shoulder = 0.0;
-    let max_y_rotation_shoulder = 25.0;
-    let max_z_rotation_shoulder = 0.0;
-    let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_x_rotation_neck = 0.0;
-    let max_y_rotation_neck = 0.0;
-    let max_z_rotation_neck = -40.0;
-    let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_x_rotation_clavicle = 0.0;
-    let max_y_rotation_clavicle = 0.0;
-    let max_z_rotation_clavicle = -25.0;
-    let mut rotation_clavicle = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    if boma.is_motion(Hash40::new("attack_11")){
+    if boma.is_motion(Hash40::new("attack_11")) {
+        let frame = MotionModule::frame(boma);
+        let start_frame = 0.0;
+        let return_frame = 10.0;
+        let straight_frame = 21.0;
         if frame >= start_frame && frame < return_frame {
+            let bend_frame = 3.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_torso = 0.0;
+            let max_y_rotation_torso = -25.0;
+            let max_z_rotation_torso = 0.0;
+            let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_shoulder = 0.0;
+            let max_y_rotation_shoulder = 25.0;
+            let max_z_rotation_shoulder = 0.0;
+            let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_neck = 0.0;
+            let max_y_rotation_neck = 0.0;
+            let max_z_rotation_neck = -40.0;
+            let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_clavicle = 0.0;
+            let max_y_rotation_clavicle = 0.0;
+            let max_z_rotation_clavicle = -25.0;
+            let mut rotation_clavicle = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // this has to be called every frame, or you snap back to the normal joint angle
             // interpolate to the respective bone bend angle
             // Torso bend
@@ -161,6 +163,28 @@ unsafe fn jab_lean(boma: &mut BattleObjectModuleAccessor) {
             rotation_clavicle = Vector3f{x: x_rotation_clavicle, y: y_rotation_clavicle, z: z_rotation_clavicle};
             ModelModule::set_joint_rotate(boma, Hash40::new("claviclel"), &rotation_clavicle, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
         } else if frame >= return_frame && frame < straight_frame {
+            let bend_frame = 3.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_torso = 0.0;
+            let max_y_rotation_torso = -25.0;
+            let max_z_rotation_torso = 0.0;
+            let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_shoulder = 0.0;
+            let max_y_rotation_shoulder = 25.0;
+            let max_z_rotation_shoulder = 0.0;
+            let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_neck = 0.0;
+            let max_y_rotation_neck = 0.0;
+            let max_z_rotation_neck = -40.0;
+            let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_clavicle = 0.0;
+            let max_y_rotation_clavicle = 0.0;
+            let max_z_rotation_clavicle = -25.0;
+            let mut rotation_clavicle = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // linear interpolate back to normal
             // Torso bend
             let calc_x_rotate_torso = max_x_rotation_torso  *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
@@ -203,32 +227,32 @@ unsafe fn jab_lean(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn grab_lean(boma: &mut BattleObjectModuleAccessor) {
-    let start_frame = 0.0;
-    let bend_frame = 6.0;
-    let return_frame = 13.0;
-    let straight_frame = 36.0;
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_x_rotation_torso = 0.0;
-    let max_y_rotation_torso = -25.0;
-    let max_z_rotation_torso = 0.0;
-    let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_x_rotation_shoulder = 0.0;
-    let max_y_rotation_shoulder = 30.0;
-    let max_z_rotation_shoulder = 0.0;
-    let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_x_rotation_neck = 0.0;
-    let max_y_rotation_neck = 0.0;
-    let max_z_rotation_neck = -45.0;
-    let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    let max_pos_shift = 1.0;
-    let mut trans_offset = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    if boma.is_motion(Hash40::new("catch")){
+    if boma.is_motion(Hash40::new("catch")) {
+        let frame = MotionModule::frame(boma);
+        let start_frame = 0.0;
+        let return_frame = 13.0;
+        let straight_frame = 36.0;
         if frame >= start_frame && frame < return_frame {
+            let bend_frame = 6.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_torso = 0.0;
+            let max_y_rotation_torso = -25.0;
+            let max_z_rotation_torso = 0.0;
+            let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_shoulder = 0.0;
+            let max_y_rotation_shoulder = 30.0;
+            let max_z_rotation_shoulder = 0.0;
+            let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_neck = 0.0;
+            let max_y_rotation_neck = 0.0;
+            let max_z_rotation_neck = -45.0;
+            let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_pos_shift = 1.0;
+            let mut trans_offset = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // this has to be called every frame, or you snap back to the normal joint angle
             // interpolate to the respective bone bend angle
             // Torso bend
@@ -266,6 +290,26 @@ unsafe fn grab_lean(boma: &mut BattleObjectModuleAccessor) {
             trans_offset = Vector3f{x: 0.0, y: 0.0, z: trans_shift};
             ModelModule::set_joint_translate(boma, Hash40::new("trans"), &trans_offset, false, false);
         } else if frame >= return_frame && frame < straight_frame {
+            let bend_frame = 6.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_torso = 0.0;
+            let max_y_rotation_torso = -25.0;
+            let max_z_rotation_torso = 0.0;
+            let mut rotation_torso = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_shoulder = 0.0;
+            let max_y_rotation_shoulder = 30.0;
+            let max_z_rotation_shoulder = 0.0;
+            let mut rotation_shoulder = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_x_rotation_neck = 0.0;
+            let max_y_rotation_neck = 0.0;
+            let max_z_rotation_neck = -45.0;
+            let mut rotation_neck = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+            let max_pos_shift = 1.0;
+            let mut trans_offset = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // linear interpolate back to normal
             // Torso bend
             let calc_x_rotate_torso = max_x_rotation_torso  *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
@@ -306,23 +350,19 @@ unsafe fn grab_lean(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
-    //let start_frame = 0.0;
-    //let bend_frame = 0.3;
-    //let return_frame = 100.0;
-    //let straight_frame = 105.0;
-    let start_frame = 7.0;
-    let bend_frame = 13.0;
-    let return_frame = 14.0;
-    let straight_frame = 26.0;
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_x_rotation_wrist = 0.0;
-    let max_y_rotation_wrist = 35.0;
-    let max_z_rotation_wrist = 0.0;
-    let mut rotation_wrist = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-
-    if boma.is_motion(Hash40::new("attack_air_f")){
+    if boma.is_motion(Hash40::new("attack_air_f")) {
+        let frame = MotionModule::frame(boma);
+        let start_frame = 7.0;
+        let return_frame = 14.0;
+        let straight_frame = 26.0;
         if frame >= start_frame && frame < return_frame {
+            let bend_frame = 13.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_wrist = 0.0;
+            let max_y_rotation_wrist = 35.0;
+            let max_z_rotation_wrist = 0.0;
+            let mut rotation_wrist = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // this has to be called every frame, or you snap back to the normal joint angle
             // interpolate to the respective bone bend angle
             // wrist bend
@@ -335,6 +375,13 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
             rotation_wrist = Vector3f{x: x_rotation_wrist, y: y_rotation_wrist, z: z_rotation_wrist};
             ModelModule::set_joint_rotate(boma, Hash40::new("handr"), &rotation_wrist, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
         } else if frame >= return_frame && frame < straight_frame {
+            let bend_frame = 13.0;
+            let end_frame = MotionModule::end_frame(boma);
+            let max_x_rotation_wrist = 0.0;
+            let max_y_rotation_wrist = 35.0;
+            let max_z_rotation_wrist = 0.0;
+            let mut rotation_wrist = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
             // linear interpolate back to normal
             // wrist bend
             let calc_x_rotate_wrist = max_x_rotation_wrist  *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
@@ -352,7 +399,6 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK)
     && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
     && CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
@@ -398,8 +444,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    aether_drift(boma, status_kind, situation_kind, stick_x, facing);
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    aether_drift(boma);
     quickdraw_instakill(fighter, boma);
     quickdraw_attack_arm_bend(boma);
     jab_lean(boma);
@@ -418,7 +464,7 @@ pub extern "C" fn ike_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterComm
 
 pub unsafe fn ike_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
 

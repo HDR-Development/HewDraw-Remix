@@ -1,83 +1,89 @@
-jump_squat:
-  blend_frames: 0
-  animations:
-  - name: a05landingheavy.nuanmb
-fall:
-  blend_frames: 5
-fall_aerial:
-  blend_frames: 5
-fall_special:
-  blend_frames: 5
-guard_off:
-  blend_frames: 4
+attack_11:
   extra:
-    cancel_frame: 12
-throw_f:
-  extra:
-    cancel_frame: 38
-throw_b:
-  extra:
-    cancel_frame: 41
-throw_lw:
-  extra:
-    cancel_frame: 40
-throw_hi:
-  extra:
-    cancel_frame: 42
+    cancel_frame: 15
 attack_12:
   extra:
     cancel_frame: 17
 attack_13:
   extra:
     cancel_frame: 21
-attack_11:
-  extra:
-    cancel_frame: 15
-attack_lw3:
-  extra:
-    cancel_frame: 24
-attack_hi4:
-attack_lw4:
-  extra:
-    cancel_frame: 48
-attack_dash:
-  extra:
-    cancel_frame: 38
-special_lw:
-  flags:
-    move: false
-  extra:
-    cancel_frame: 64
-    xlu_start: 0
-    xlu_end: 0
-special_air_lw:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-attack_hi3:
-  extra:
-    cancel_frame: 28
-attack_s4_s:
-  extra:
-    cancel_frame: 47
-attack_s4_hi:
-  extra:
-    cancel_frame: 45
 attack_air_b:
   extra:
     cancel_frame: 33
 attack_air_f:
   extra:
     cancel_frame: 35
-attack_air_n:
-  extra:
-    cancel_frame: 15
-attack_s4_lw:
-  extra:
-    cancel_frame: 46
 attack_air_hi:
   extra:
     cancel_frame: 35
+attack_air_n:
+  extra:
+    cancel_frame: 15
+attack_dash:
+  extra:
+    cancel_frame: 38
+attack_hi3:
+  extra:
+    cancel_frame: 28
+attack_lw3:
+  extra:
+    cancel_frame: 24
+attack_lw4:
+  extra:
+    cancel_frame: 48
+attack_s4_hi:
+  extra:
+    cancel_frame: 45
+attack_s4_lw:
+  extra:
+    cancel_frame: 46
+attack_s4_s:
+  extra:
+    cancel_frame: 47
+catch:
+  flags:
+    move: false
+catch_dash:
+  extra:
+    cancel_frame: 45
+catch_turn:
+  extra:
+    cancel_frame: 40
+catch_attack:
+  extra:
+    cancel_frame: 0
+fall:
+  blend_frames: 3
+fall_aerial:
+  blend_frames: 3
+fall_special:
+  blend_frames: 3
+furafura_end:
+  extra:
+    cancel_frame: 34
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+special_lw:
+  flags:
+    move: false
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 57
+special_air_lw:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 57
 special_s_jump:
   extra:
     intangible_start_frame: 0
@@ -88,37 +94,6 @@ special_air_n2:
 special_n_dash:
   extra:
     cancel_frame: 45
-attack_s4_hold:
-attack_hi4_hold:
-special_n_cancel:
-  game_script: game_specialncancel
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d00specialncancel.nuanmb
-  scripts:
-  - expression_specialncancel
-  - sound_specialncancel
-  - effect_specialncancel
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 39
-    freeze_during_hitstop: false
 special_hi_start:
   extra:
     intangible_start_frame: 0
@@ -133,35 +108,6 @@ special_air_s_blow:
 special_n_dash_turn:
   extra:
     cancel_frame: 54
-special_air_n_cancel:
-  game_script: game_specialairncancel
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d00specialairncancel.nuanmb
-  scripts:
-  - expression_specialairncancel
-  - sound_specialairncancel
-  - effect_specialairncancel
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 39
-    freeze_during_hitstop: false
 special_n_min:
   game_script: game_specialn2
   flags:
@@ -336,24 +282,82 @@ special_air_n_max:
     intangible_end_frame: 0
     cancel_frame: 60
     freeze_during_hitstop: false
-catch:
+special_lw_hit:
+  extra:
+    cancel_frame: 32
+special_air_lw_hit:
+  extra:
+    cancel_frame: 32
+special_lw_hit_f:
+  game_script: game_speciallwhitf
   flags:
-    move: false
-catch_dash:
-  extra:
-    cancel_frame: 45
-catch_turn:
-  extra:
-    cancel_frame: 40
-catch_attack:
-  extra:
-    cancel_frame: 0
-furafura_end:
-  extra:
-    cancel_frame: 34
-shield_break_fly:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
   animations:
-    - name: f04downspotd.nuanmb
+  - name: d03speciallwhitf.nuanmb
+  scripts:
+  - expression_speciallwhitf
+  - sound_speciallwhitf
+  - effect_speciallwhitf
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 32
+    freeze_during_hitstop: false
+special_air_lw_hit_f:
+  game_script: game_specialairlwhitf
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03specialairlwhitf.nuanmb
+  scripts:
+  - expression_specialairlwhitf
+  - sound_specialairlwhitf
+  - effect_specialairlwhitf
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 32
+    freeze_during_hitstop: false
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_b:
+  extra:
+    cancel_frame: 40
+throw_f:
+  extra:
+    cancel_frame: 37
+throw_hi:
+  extra:
+    cancel_frame: 42
+throw_lw:
+  extra:
+    cancel_frame: 40

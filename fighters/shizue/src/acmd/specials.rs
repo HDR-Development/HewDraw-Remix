@@ -143,6 +143,20 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_special_s07"));
+        SHIZUE_VC_SEQUENCE_ATTACK(agent);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_shizue_special_s01"));
+    }
+}
+
 unsafe extern "C" fn game_specialsthrowb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -171,7 +185,7 @@ unsafe extern "C" fn game_specialairsthrowb(agent: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(-1.0, 2.75, 0.0));
+        KineticModule::add_speed(boma, &Vector3f::new(-0.5, 2.75, 0.0));
         FT_MOTION_RATE(agent, 0.65);
     }
     frame(lua_state, 14.0);
@@ -204,7 +218,7 @@ unsafe extern "C" fn game_specialairsthrowf(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(1.0, 2.75, 0.0));
+        KineticModule::add_speed(boma, &Vector3f::new(0.5, 2.75, 0.0));
         FT_MOTION_RATE(agent, 0.5);
     }
 }
@@ -310,6 +324,33 @@ unsafe extern "C" fn game_specialairsthrowlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_specialsthrow(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_shizue_special_s08"));
+        PLAY_SE(agent, Hash40::new("se_shizue_special_s04"));
+        SHIZUE_VC_SEQUENCE_ATTACK_HEAVY(agent);
+    }
+}
+
+unsafe extern "C" fn sound_specialsthrowlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_shizue_special_s08"));
+        PLAY_SE(agent, Hash40::new("se_shizue_special_s04"));
+        SHIZUE_VC_SEQUENCE_ATTACK_HEAVY(agent);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_common_kick_hit_m"));
+        PLAY_DOWN_SE(agent, Hash40::new("se_common_down_m_01"));
+    }
+}
+
 unsafe extern "C" fn game_specialairhidetach(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -317,9 +358,8 @@ unsafe extern "C" fn game_specialairhidetach(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-        if VarModule::is_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE) {
-            VarModule::off_flag(agent.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
-            WorkModule::set_float(boma, VarModule::get_float(agent.object(), vars::shizue::instance::STORED_BALLOON_POWER), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
+        if VarModule::is_flag(agent.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE) {
+            VarModule::off_flag(agent.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
         }
     }
 }
@@ -339,6 +379,15 @@ unsafe extern "C" fn game_speciallwset(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_speciallwfire(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        SHIZUE_VC_SEQUENCE_ATTACK_HEAVY(agent);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("game_specialairn", game_specialn, Priority::Low);
@@ -351,6 +400,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
     agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
+    agent.acmd("sound_specialsstart", sound_specialsstart, Priority::Low);
+    agent.acmd("sound_specialairsstart", sound_specialsstart, Priority::Low);
 
     agent.acmd("game_specialsthrowb", game_specialsthrowb, Priority::Low);
     agent.acmd("game_specialairsthrowb", game_specialairsthrowb, Priority::Low);
@@ -364,7 +415,18 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsthrowlw", game_specialsthrowlw, Priority::Low);
     agent.acmd("game_specialairsthrowlw", game_specialairsthrowlw, Priority::Low);
 
+    agent.acmd("sound_specialsthrowf", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialsthrowb", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialsthrowhi", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialsthrowlw", sound_specialsthrowlw, Priority::Low);
+    agent.acmd("sound_specialairsthrowf", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialairsthrowb", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialairsthrowhi", sound_specialsthrow, Priority::Low);
+    agent.acmd("sound_specialairsthrowlw", sound_specialsthrowlw, Priority::Low);
+
     agent.acmd("game_specialairhidetach", game_specialairhidetach, Priority::Low);
 
     agent.acmd("game_speciallwset", game_speciallwset, Priority::Low);
+    agent.acmd("sound_speciallwfire", sound_speciallwfire, Priority::Low);
+    agent.acmd("sound_specialairlwfire", sound_speciallwfire, Priority::Low);
 }

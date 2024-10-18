@@ -3,7 +3,7 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 fall_f:
   blend_frames: 5
 fall_b:
@@ -28,7 +28,7 @@ attack_lw4:
   extra:
     cancel_frame: 62
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 attack_s4_s:
   flags:
     move: false
@@ -36,7 +36,7 @@ attack_s3_s:
   flags:
     move: false
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 attack_s3_lw:
   flags:
     move: false
@@ -249,6 +249,10 @@ special_lw_pogo_landing:
     intangible_end_frame: 0
     cancel_frame: 35
     freeze_during_hitstop: false
+special_air_hi_charge_hi:
+  blend_frames: 3
+special_air_hi_charge_lw:
+  blend_frames: 3
 catch:
   extra:
     cancel_frame: 36

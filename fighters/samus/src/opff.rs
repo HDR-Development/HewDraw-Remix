@@ -21,12 +21,9 @@ extern "Rust" {
 
 // Shinespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 31.0 {
-        if  !VarModule::is_flag(boma.object(), vars::samus::instance::SHINESPARK_READY) {
-            VarModule::on_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
+        if !VarModule::is_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK) {
+            VarModule::on_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK);
             gimmick_flash(boma);
         }
     }
@@ -41,13 +38,12 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
-            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::samus::instance::ATTACK_DASH_ENABLE_SHINESPARK);
+            VarModule::off_flag(boma.object(), vars::samus::instance::ATTACK_DASH_SHINESPARK);
     }
 }
 
 // Morph Ball Crawl
-// PUBLIC
 pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
         return;
@@ -118,7 +114,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
     shinespark_charge(boma, id, status_kind, frame);
     shinespark_reset(boma, id, status_kind);
     fastfall_specials(fighter);

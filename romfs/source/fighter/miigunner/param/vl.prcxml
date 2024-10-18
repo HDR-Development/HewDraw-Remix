@@ -49,8 +49,8 @@
       <int hash="max_req">1</int>
       <int hash="s_life">180</int>
       <float hash="s_spd_x0">0.4</float>
-      <float hash="s_acc_f">181</float>
-      <float hash="s_acc_x">0.08</float>
+      <float hash="s_acc_f">999</float>
+      <float hash="s_acc_x">0.0</float>
       <float hash="s_model_angle_speed">13</float>
       <float hash="s_spd_x_max">0.8</float>
     </struct>

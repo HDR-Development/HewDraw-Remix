@@ -9,7 +9,7 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <int hash="material_normal_max">100</int>
+    <int hash="material_normal_max">64</int>
     <int hash="material_red_stone_max">15</int>
     <int hash="start_material_grade_1_num">8</int>
     <int hash="start_material_wood_num">4</int>
@@ -38,12 +38,16 @@
       <float hash="continuous_generate_x_mul_big">0.5</float>
       <int hash="0x2292c2e1b1">1</int>
       <int hash="0x1f4a111697">1</int>
-      <float hash="mining_tool_diamond_frame_mul">0.65</float>
+      <int hash="mining_stage_common_frame">12</int>
+      <float hash="mining_tool_stone_frame_mul">0.9</float>
+      <float hash="mining_tool_iron_frame_mul">0.8</float>
+      <float hash="mining_tool_gold_frame_mul">0.6</float>
+      <float hash="mining_tool_diamond_frame_mul">0.7</float>
       <int hash="mining_iron_get_num">1</int>
-      <int hash="mining_gold_get_num">6</int>
+      <int hash="mining_gold_get_num">3</int>
       <int hash="mining_red_stone_get_num">3</int>
-      <int hash="craft_frame_diamond">40</int>
-      <int hash="disable_craft_frame">40</int>
+      <int hash="craft_frame_diamond">30</int>
+      <int hash="disable_craft_frame">15</int>
       <float hash="walk_speed_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -52,6 +56,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="start_speed_x_mul_ground">0.9</float>
       <float hash="speed_y_on_jump">1.2</float>
       <float hash="reaction_threshold_to_damage">0</float>
     </struct>
@@ -61,12 +66,18 @@
   </list>
   <list hash="param_trolley">
     <struct index="0">
+      <float hash="speed_limit">1.8</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
+      <float hash="accel_on_powered_rail">0.12</float>
+      <float hash="speed_limit_on_powered_rail">2.15</float>
     </struct>
     <struct index="1">
+      <float hash="speed_limit">1.8</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
+      <float hash="accel_on_powered_rail">0.13</float>
+      <float hash="speed_limit_on_powered_rail">2.2</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
@@ -84,19 +95,23 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_pickelobject">
-    <float hash="hp_grade_1">6</float>
-    <float hash="hp_wood">9</float>
-    <float hash="hp_stone">12</float>
-    <float hash="hp_iron">15</float>
-    <float hash="fighter_landing_damage_mul">5</float>
+    <float hash="hp_grade_1">7</float>
+    <float hash="hp_wood">10</float>
+    <float hash="hp_stone">13</float>
+    <float hash="hp_iron">16</float>
+    <float hash="fighter_landing_damage_mul">7.0</float>
+    <int hash="fighter_landing_damage_mul_frame">24</int>
   </struct>
   <list hash="param_table">
     <struct index="0">
-      <float hash="hp">20</float>
+      <float hash="hp">15</float>
     </struct>
   </list>
   <struct hash="param_craft_data_table">
     <int hash="craft_material_num_stone">2</int>
-    <int hash="repair_material_num_stone">2</int>
+    <int hash="craft_material_num_gold">2</int>
+    <int hash="repair_material_num_stone">1</int>
+    <int hash="repair_material_num_iron">1</int>
+    <int hash="repair_material_num_gold">1</int>
   </struct>
 </struct>

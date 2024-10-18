@@ -5,7 +5,8 @@ use globals::*;
 mod special_n;
 mod special_s;
 mod special_hi;
-mod attack_s4_hold;
+mod attack_s4;
+mod fall_special;
  
 // AGENT INIT AND CALLBACKS
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -13,8 +14,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH,
     *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
         EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"), false, false);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID, 0);
-        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, MAX_COOLDOWN);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID, 0);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, MAX_COOLDOWN);
     }
     true.into()
 }
@@ -29,5 +30,6 @@ pub fn install(agent: &mut Agent) {
     special_n::install(agent);
     special_s::install(agent);
     special_hi::install(agent);
-    attack_s4_hold::install(agent);
+    attack_s4::install(agent);
+    fall_special::install(agent);
 }

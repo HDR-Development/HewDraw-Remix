@@ -17,16 +17,17 @@ use globals::*;
 //     }
 // }
 
-// Repeated Warlock Punch turnaround
-// unsafe fn repeated_warlock_punch_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-//     if status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN {
-//         if frame > 30.0 && frame < 45.0 {
-//             if stick_x * facing < 0.0 {
-//                 StatusModule::change_status_request_from_script(boma, *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN, true);
-//             }
-//         }
-//     }
-// }
+unsafe fn wizards_foot_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
+    if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END].contains(&boma.status())
+    && boma.is_situation(*SITUATION_KIND_AIR) {
+        let jump_count_max = boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
+        if boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == jump_count_max {
+            boma.set_int(jump_count_max - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        }
+    }
+}
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
@@ -63,7 +64,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // dtaunt_counter(boma, motion_kind, frame);
-    // repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
+    wizards_foot_jump_refresh(boma);
     fastfall_specials(fighter);
 }
 

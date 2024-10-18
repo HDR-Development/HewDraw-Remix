@@ -99,14 +99,14 @@ unsafe extern "C" fn game_specialnupperfire(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     for _ in 0..4 {
         if is_excute(agent) && will_bayonet(agent){
-            VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+            VarModule::on_flag(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
             agent.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, true);
-            VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+            VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_EGGS_FIRED,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
             break;
         }
         wait(lua_state, 1.0);
     }
-    if !VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE) {
+    if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE) {
         frame(lua_state, 4.0);
         if is_excute(agent) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
@@ -123,7 +123,7 @@ unsafe extern "C" fn game_specialnfire2(agent: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     for _ in 0..4 {
         if is_excute(agent) && will_bayonet(agent){
-            VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+            VarModule::on_flag(boma.object(), vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
                        
             agent.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, true);
             return;
@@ -267,13 +267,13 @@ unsafe extern "C" fn game_specialairsdash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         //Set control
-        VarModule::on_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
-        VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,0);
-        VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE,0);
+        VarModule::on_flag(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
+        VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME,0);
+        VarModule::set_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE,0);
         let stick_y: f32 = ControlModule::get_stick_y(boma);
-        VarModule::set_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE,stick_y.signum());
+        VarModule::set_float(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_ANGLE,stick_y.signum());
         if stick_y.abs() < 0.1 {
-            VarModule::set_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE,0.0);
+            VarModule::set_float(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_ANGLE,0.0);
         }
         //Clear gravity speed (prevents exponential movement from cliff jump)
         sv_kinetic_energy!(clear_speed, agent, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -422,7 +422,7 @@ unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
         if (!has_hit_shield
-        && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0) {
+        && VarModule::get_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE)==0) {
             CancelModule::enable_cancel(boma);
         }
     }
@@ -430,7 +430,7 @@ unsafe extern "C" fn game_specialairswall(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
         if (!has_hit_shield
-        && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0) {
+        && VarModule::get_int(boma.object(), vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE)==0) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
         }
     }

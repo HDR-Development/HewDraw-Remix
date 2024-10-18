@@ -10,11 +10,19 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
     let zelda_boma = &mut *(*zelda).module_accessor;
     //check if phantom landed a hit
     if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_HIT); 
+        VarModule::on_flag(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT); 
+    } else if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_REFLECTOR) {
+        AttackModule::clear_inflict_kind_status(weapon.module_accessor);
+        StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
     }
     //apply death timer to destroyed phantom if it didn't land a clean hit
-    if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::PHANTOM_HIT) {
-        VarModule::on_flag(zelda, vars::zelda::instance::PHANTOM_DISABLED);
+    if StopModule::is_stop(weapon.module_accessor) && !VarModule::is_flag(zelda, vars::zelda::instance::SPECIAL_LW_PHANTOM_HIT) {
+        VarModule::on_flag(zelda, vars::zelda::instance::SPECIAL_LW_DISABLE_PHANTOM);
+    }
+    //upon release flash on zelda's hand
+    if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK) && StatusModule::is_changing(weapon.module_accessor) {
+        EFFECT_FOLLOW(get_fighter_common_from_accessor(zelda_boma), Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.45, true);
+        LAST_EFFECT_SET_COLOR(get_fighter_common_from_accessor(zelda_boma), 0.4, 0.0, 1.0);
     }
     //misc mechanics
     if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
@@ -73,6 +81,8 @@ pub unsafe extern "C" fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighte
         if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
         && !AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_PARRY)
         && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
+            let sound = SoundModule::play_se(zelda_boma, Hash40::new("se_zelda_special_l09"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(zelda_boma, sound as i32, 1.6, 0);
             StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
         }
     }

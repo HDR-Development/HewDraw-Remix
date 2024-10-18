@@ -107,18 +107,6 @@ pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon){
-    let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
-        lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
-        lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
-    }
-
-    if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED) {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -165,7 +153,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     side_special_cancels(fighter);
-    double_edge_dance_vertical_momentum(fighter);
     fastfall_specials(fighter);
     sword_length(&mut *(fighter.module_accessor));
 }

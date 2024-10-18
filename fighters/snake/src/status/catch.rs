@@ -28,7 +28,7 @@ pub unsafe fn catch_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     else if MotionModule::is_end(fighter.module_accessor) {
         if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.1
         || PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) < -0.1{
-            VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+            VarModule::on_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
         }
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_WAIT.into(), false.into());
         return true.into()
@@ -104,7 +104,7 @@ pub unsafe fn catch_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue
                 return true.into()
             }
             else {
-                VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+                VarModule::on_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_WAIT.into(), false.into());
                 return true.into()
             }
@@ -116,7 +116,7 @@ pub unsafe fn catch_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue
                 return true.into()
             }
             else{
-                VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+                VarModule::on_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_WAIT.into(), false.into());
                 return true.into()
             }
@@ -134,7 +134,7 @@ pub unsafe fn catch_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue
 unsafe extern "C" fn catch_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     ControlModule::reset_trigger(fighter.module_accessor);
-    if VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
+    if VarModule::is_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK) {
         if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.1 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_walk_f"), 0.0, 1.0, false, 0.0, false, false);
         }
@@ -142,7 +142,7 @@ unsafe extern "C" fn catch_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_walk_b"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
-            VarModule::off_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+            VarModule::off_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_wait"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
@@ -186,23 +186,23 @@ pub unsafe fn catch_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) < -0.1 {
-        if !VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
-            VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+        if !VarModule::is_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK) {
+            VarModule::on_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_walk_b"), 0.0, 1.0, false, 0.0, false, false);
         }
         let walk_speed:f32 = 1.6*(PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor)*-1.0);
         MotionModule::set_rate(fighter.module_accessor, walk_speed);
     }
     else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.1 {
-        if !VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
-            VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+        if !VarModule::is_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK) {
+            VarModule::on_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_walk_f"), 0.0, 1.0, false, 0.0, false, false);
         }
         let walk_speed:f32 = 1.4*(PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor));
         MotionModule::set_rate(fighter.module_accessor, walk_speed);
     }
-    else if VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
-        VarModule::off_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+    else if VarModule::is_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK) {
+        VarModule::off_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_wait"), 0.0, 1.0, false, 0.0, false, false);
     }
     return false.into()
@@ -210,7 +210,7 @@ pub unsafe fn catch_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn catch_wait_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::off_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
+    VarModule::off_flag(fighter.object(), vars::snake::instance::CATCH_ENABLE_WALK);
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_CATCH_WAIT)(fighter)
 }
 

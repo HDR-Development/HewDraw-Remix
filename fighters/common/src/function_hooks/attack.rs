@@ -36,7 +36,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
             data.power = 8.0;
             data.vector = 361;
             data.r_eff = 50;
-            data.r_add = 45;
+            data.r_add = 70;
             data.sub_shield = 0;
             data.lr_check = smash_rs::app::AttackLRCheck::Pos;
         }
@@ -50,7 +50,7 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::ElementMode) {
-                let rand = sv_math::rand(hash40("fighter"), 20);
+                let rand = sv_math::rand(hash40("fighter"), 21);
                 match rand { 
                     0 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_aura");          data.sound_attr = CollisionSoundAttr::Fire; },
                     1 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_bury");          data.sound_attr = CollisionSoundAttr::Heavy; },
@@ -59,16 +59,17 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
                     4 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_coin");          data.sound_attr = CollisionSoundAttr::Coin; },
                     5 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_curse_poison");  data.sound_attr = CollisionSoundAttr::Fire; },
                     6 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_elec");          data.sound_attr = CollisionSoundAttr::Elec; },
-                    7 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_flower");        data.sound_attr = CollisionSoundAttr::Kick; },
-                    8 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_ice");           data.sound_attr = CollisionSoundAttr::Freeze; },
-                    9 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_magic");         data.sound_attr = CollisionSoundAttr::Magic; },
-                    10 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal");        data.sound_attr = CollisionSoundAttr::Punch; },
-                    11 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_paralyze");      data.sound_attr = CollisionSoundAttr::Elec; },
-                    12 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_purple");        data.sound_attr = CollisionSoundAttr::Fire; },
-                    13 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sleep");         data.sound_attr = CollisionSoundAttr::Magic; },
-                    14 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_slip");          data.sound_attr = CollisionSoundAttr::Slap; },
-                    15 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sting");         data.sound_attr = CollisionSoundAttr::CutUp; },
-                    16 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_turn");          data.sound_attr = CollisionSoundAttr::Harisen; },
+                    7 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_fire");          data.sound_attr = CollisionSoundAttr::Fire; },
+                    8 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_flower");        data.sound_attr = CollisionSoundAttr::Kick; },
+                    9 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_ice");           data.sound_attr = CollisionSoundAttr::Freeze; },
+                    10 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_magic");         data.sound_attr = CollisionSoundAttr::Magic; },
+                    11 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal");        data.sound_attr = CollisionSoundAttr::Punch; },
+                    12 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_paralyze");      data.sound_attr = CollisionSoundAttr::Elec; },
+                    13 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_purple");        data.sound_attr = CollisionSoundAttr::Fire; },
+                    14 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sleep");         data.sound_attr = CollisionSoundAttr::Magic; },
+                    15 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_slip");          data.sound_attr = CollisionSoundAttr::Slap; },
+                    16 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sting");         data.sound_attr = CollisionSoundAttr::CutUp; },
+                    17 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_turn");          data.sound_attr = CollisionSoundAttr::Harisen; },
                     _ => {} // (slightly larger) chance for the attack to not be randomized
                 }
 
@@ -130,8 +131,15 @@ static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
 unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
-    let mul = (0.414 * std::f32::consts::E.powf(0.0063 * kb)).clamp(1.0, 2.0);
-    return mul;
+    let min = 1.0;
+    let max = 2.0;
+    let power = 1.4;
+    let kb_start = 150.0;
+    let kb_end = 250.0;
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    let hitlag_mul = util::nlerp(min, max, power, ratio);
+    return hitlag_mul;
 }
 
 // This runs directly after knockback is calculated
@@ -178,7 +186,7 @@ unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 // This runs immediately before hitlag is set for attacking articles
-#[skyline::hook(offset = 0x33a9d90, inline)]
+#[skyline::hook(offset = 0x33a9db0, inline)]
 unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let opponent_boma = &mut *(*ctx.registers[24].x.as_ref() as *mut BattleObjectModuleAccessor);
     if !opponent_boma.is_item() {
@@ -248,6 +256,19 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+//Runs on general hits, used for Jigglypuff's Disarming Voice item removal
+#[skyline::hook(offset=0x67a7b0)]
+unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_id: u32, defender_object_id: u32, move_type: u64, arg5: u64, move_type_again: u64) -> u64 {
+	let attacker_boma = &mut *smash::app::sv_battle_object::module_accessor(attacker_object_id);
+	let defender_boma = &mut *smash::app::sv_battle_object::module_accessor(defender_object_id);
+    if VarModule::has_var_module(attacker_boma.object())
+    && VarModule::is_flag(attacker_boma.object(), vars::common::status::HIT_EFFECT_DROP_ITEM)
+    && ItemModule::is_have_item(defender_boma, 0) {
+        ItemModule::drop_item(defender_boma, 90.0, 0.0, 0);
+    }
+	original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x641d84).nop();
     skyline::install_hooks!(
@@ -260,6 +281,7 @@ pub fn install() {
         set_fighter_hitlag,
         handle_on_attack_event,
         set_parry_hitlag,
-        x03df93c
+        x03df93c,
+        notify_log_event_collision_hit
     );
 }

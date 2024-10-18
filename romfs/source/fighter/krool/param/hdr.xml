@@ -12,7 +12,13 @@
     <float hash="special_lw_charge_start">1.0</float>
     <float hash="special_lw_charge_end">2.0</float>
   </struct>
-   <struct hash="param_special_hi">
+  <struct hash="param_charge">
+    <float hash="charge_damage_mul">0.15</float>
+    <float hash="charge_hitlag_mul">0.01</float>
+    <float hash="charge_shield_stun_mul">0.04</float>
+    <float hash="charge_shield_damage_mul">0.5</float>
+  </struct>
+  <struct hash="param_special_hi">
     <int hash="rise_min_frame">12</int>
     <int hash="cancel_min_frame">8</int>
     <float hash="start_brake_x">0.04</float>
@@ -21,17 +27,16 @@
     <float hash="start_cancel_speed_x">1.0</float>
     <float hash="start_cancel_speed_y">2.0</float>
     <float hash="fly_charge_min_spd_x">0.0</float>
-    <float hash="fly_charge_x_mul">0.013</float>
-    <float hash="fly_limit_spd_x">1.0</float>
+    <float hash="fly_charge_x_mul">0.04</float>
+    <float hash="fly_limit_spd_x">2.2</float>
     <float hash="fly_charge_min_spd_y">3.0</float>
     <float hash="fly_charge_y_mul">0.0197</float>
     <float hash="fall_lean_stick_mul_x">0.1</float>
     <float hash="fly_lean_spd_y">0.0025</float>
     <float hash="fly_no_lean_spd_y">0.055</float>
     <float hash="fly_lean_f_spd_y">0.05</float>
-    <float hash="fall_brake_x">0.01</float>
-    <float hash="fall_stable_spd_x">1.0</float>
-    <float hash="fall_limit_spd_x">2.0</float>
+    <float hash="fall_brake_x">0.0175</float>
+    <float hash="fall_stable_spd_x">0.725</float>
     <float hash="fall_special_spd_y">1.7</float>
   </struct>
 </struct>

@@ -44,12 +44,12 @@ unsafe extern "C" fn game_attacks4(agent : &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        VarModule::on_flag(agent.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
+        VarModule::on_flag(agent.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO);
     }
 
     frame(lua_state, 38.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
+        VarModule::off_flag(agent.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO);
     }
     frame(lua_state, 54.0);
     if is_excute(agent) {
@@ -136,12 +136,12 @@ unsafe extern "C" fn game_attacks4s2(agent : &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        VarModule::on_flag(agent.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
+        VarModule::on_flag(agent.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO);
         // WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 34.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
+        VarModule::off_flag(agent.object(), vars::snake::instance::ATTACK_S4_ENABLE_COMBO);
         // WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 50.0);

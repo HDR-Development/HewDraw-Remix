@@ -7,14 +7,14 @@ unsafe fn bouncing_fish_transitions(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK) {
         if MotionModule::is_end(fighter.module_accessor)
         && fighter.is_situation(*SITUATION_KIND_AIR) {
-            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT) {
+            if !VarModule::is_flag(fighter.object(), vars::sheik::instance::SPECIAL_LW_HIT) {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
             }
         }
     }
     if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN)
     && fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.object(), vars::sheik::instance::BOUNCING_FISH_HIT);
+        VarModule::on_flag(fighter.object(), vars::sheik::instance::SPECIAL_LW_HIT);
         if fighter.status_frame() > 14 {
             fighter.check_jump_cancel(false, false);
             fighter.check_airdodge_cancel();
@@ -67,10 +67,12 @@ pub unsafe fn vanish_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE) {
         let init_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_X);
         let init_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
+        if !GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_NONE as u32) {
             if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
                 VarModule::on_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE);
             }
+        }
+        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
             if init_speed_y > 0.0 {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);

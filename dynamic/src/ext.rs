@@ -7,7 +7,7 @@ use smash::app::{
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
-use crate::InputModule;
+use crate::{InputModule, VarModule};
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -429,6 +429,10 @@ pub trait BomaExt {
     unsafe fn prev_left_stick_x(&mut self) -> f32;
     unsafe fn left_stick_y(&mut self) -> f32;
     unsafe fn prev_left_stick_y(&mut self) -> f32;
+    unsafe fn right_stick_x(&mut self) -> f32;
+    unsafe fn prev_right_stick_x(&mut self) -> f32;
+    unsafe fn right_stick_y(&mut self) -> f32;
+    unsafe fn prev_right_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -440,6 +444,7 @@ pub trait BomaExt {
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
     unsafe fn status(&mut self) -> i32;
+    unsafe fn lr(&mut self) -> f32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -452,6 +457,18 @@ pub trait BomaExt {
     unsafe fn status_frame(&mut self) -> i32;
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
+    unsafe fn set_status_kind_interrupt(&mut self, kind: i32);
+
+    // BY SITUATION
+    unsafe fn get_status_by_situation(&mut self, ground_status: i32, air_status: i32) -> i32;
+    unsafe fn change_status_by_situation(&mut self, ground_status: i32, air_status: i32, repeat: bool) -> i32;
+    unsafe fn get_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str) -> Hash40;
+    unsafe fn change_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str, start_frame: f32, rate: f32, arg5: bool, arg6: f32, arg7: bool, arg8: bool) -> i32;
+    unsafe fn change_motion_inherit_frame_by_situation(&mut self, ground_motion: &str, air_motion: &str, frame_offset: f32, rate: f32, arg5: f32, arg6: bool, arg7: bool) -> i32;
+    unsafe fn change_motion_inherit_frame_keep_rate_by_situation(&mut self, ground_motion: &str, air_motion: &str, frame_offset: f32, rate: f32, arg5: f32) -> i32;
+    unsafe fn get_hash_by_situation(&mut self, ground_hash: &str, air_hash: &str) -> Hash40;
+    unsafe fn change_kinetic_by_situation(&mut self, ground_kinetic_type: i32, air_kinetic_type: i32) -> i32;
+    unsafe fn ground_correct_by_situation(&mut self, ground_correct_kind: i32, air_correct_kind: i32) -> i32;
 
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
@@ -462,6 +479,7 @@ pub trait BomaExt {
     unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
     // gets the boma of the player who is grabbing you
     unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -525,7 +543,7 @@ pub trait BomaExt {
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
 
     /// check for hitfall (should be called once per frame)
-    unsafe fn check_hitfall(&mut self);
+    unsafe fn check_hitfall(&mut self) -> bool;
     unsafe fn check_airdash(&mut self);
     unsafe fn check_magicseries(&mut self);
 
@@ -698,6 +716,38 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn right_stick_x(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_stick_x(self);
+        } else {
+            return ControlModule::get_sub_stick_x(self);
+        }
+    }
+
+    unsafe fn prev_right_stick_x(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_stick_prev_x(self);
+        } else {
+            return ControlModule::get_sub_stick_prev_x(self);
+        }
+    }
+
+    unsafe fn right_stick_y(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_stick_y(self);
+        } else {
+            return ControlModule::get_sub_stick_y(self);
+        }
+    }
+
+    unsafe fn prev_right_stick_y(&mut self) -> f32 {
+        if self.was_prev_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_stick_prev_y(self);
+        } else {
+            return ControlModule::get_sub_stick_prev_y(self);
+        }
+    }
+
     unsafe fn get_aerial(&mut self) -> Option<AerialKind> {
         if self.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
             Some(AerialKind::Uair)
@@ -779,6 +829,55 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::change_status_request_from_script(self, kind, repeat) as i32;
     }
 
+    unsafe fn set_status_kind_interrupt(&mut self, kind: i32) {
+        StatusModule::set_status_kind_interrupt(self, kind);
+        let status_module = *(self as *const BattleObjectModuleAccessor as *const u64).add(0x8);
+        *((status_module + 0x98) as *mut i32) = kind;  // StatusModule::status_kind
+        *((status_module + 0x9c) as *mut i32) = kind;  // StatusModule::status_kind_next
+        crate::util::get_fighter_common_from_accessor(self).global_table[STATUS_KIND].assign(&L2CValue::I32(kind));
+    }
+
+    unsafe fn get_status_by_situation(&mut self, ground_status: i32, air_status: i32) -> i32 {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { ground_status } else { air_status };
+    }
+
+    unsafe fn change_status_by_situation(&mut self, ground_status: i32, air_status: i32, repeat: bool) -> i32 {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { self.change_status_req(ground_status, repeat) } else { self.change_status_req(air_status, repeat) };
+    }
+
+    unsafe fn get_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str) -> Hash40 {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+    }
+
+    unsafe fn change_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str, start_frame: f32, rate: f32, arg5: bool, arg6: f32, arg7: bool, arg8: bool) -> i32 {
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        return MotionModule::change_motion(self, motion, start_frame, rate, arg5, arg6, arg7, arg8) as i32;
+    }
+
+    unsafe fn change_motion_inherit_frame_by_situation(&mut self, ground_motion: &str, air_motion: &str, start_frame: f32, rate: f32, arg5: f32, arg6: bool, arg7: bool) -> i32 {
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        return MotionModule::change_motion_inherit_frame(self, motion, start_frame, rate, arg5, arg6, arg7) as i32;
+    }
+
+    unsafe fn change_motion_inherit_frame_keep_rate_by_situation(&mut self, ground_motion: &str, air_motion: &str, frame_offset: f32, rate: f32, arg5: f32) -> i32 {
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        return MotionModule::change_motion_inherit_frame_keep_rate(self, motion, frame_offset, rate, arg5) as i32;
+    }
+
+    unsafe fn get_hash_by_situation(&mut self, ground_hash: &str, air_hash: &str) -> Hash40 {
+        return if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_hash) } else { Hash40::new(air_hash) };
+    }
+
+    unsafe fn change_kinetic_by_situation(&mut self, ground_kinetic_kind: i32, air_kinetic_kind: i32) -> i32 {
+        let kinetic = if self.is_situation(*SITUATION_KIND_GROUND) { ground_kinetic_kind } else { air_kinetic_kind };
+        return KineticModule::change_kinetic(self, kinetic);
+    }
+
+    unsafe fn ground_correct_by_situation(&mut self, ground_correct_type: i32, air_correct_type: i32) -> i32 {
+        let ground_correct = if self.is_situation(*SITUATION_KIND_GROUND) { GroundCorrectKind(ground_correct_type) } else { GroundCorrectKind(air_correct_type) };
+        return GroundModule::correct(self, ground_correct) as i32;
+    }
+
     unsafe fn is_fighter(&mut self) -> bool {
         return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_FIGHTER;
     }
@@ -805,6 +904,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
         let opponent_object = super::util::get_battle_object_from_id(opponent_id);
         &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        return &mut *sv_battle_object::module_accessor((WorkModule::get_int(self, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
     }
 
     unsafe fn get_num_used_jumps(&mut self) -> i32 {
@@ -1013,6 +1116,11 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::status_kind(self);
     }
 
+    /// gets the current facing direction of the fighter
+    unsafe fn lr(&mut self) -> f32 {
+        return PostureModule::lr(self);
+    }
+
     /// If update_lr is true, we set your facing direction based on your stick position
     /// If skip_other_checks is true, we do not check for USmash
     unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
@@ -1207,51 +1315,26 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// checks whether you should hitfall (call this once per frame)
-    unsafe fn check_hitfall(&mut self) {
-        if self.is_situation(*SITUATION_KIND_AIR) && self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-        {
-            /* this is written this way because stick_y_flick wont update during
-                hitlag, which means we need a flag to allow you to hitfall 1 frame
-                after the end of hitlag as well, and we need to check previous
-                stick y directly to detect hitfall. That way, with the 5 frame buffer,
-                if you input a fastfall during hitlag, it will get registered after
-                the hitlag is over. Without the HITFALL_BUFFER flag, you have to
-                input the fastfall BEFORE you hit the move, only.
-            */
-            if !AttackModule::is_infliction_status(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) || AttackModule::is_infliction(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            ) {
-                crate::VarModule::set_int(
-                    self.object(),
-                    crate::consts::vars::common::instance::HITFALL_BUFFER,
-                    0,
-                );
-            }
-
-            if AttackModule::is_infliction_status(
-                self,
-                *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD,
-            )
-            && !AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
-                crate::VarModule::inc_int(
-                    self.object(),
-                    crate::consts::vars::common::instance::HITFALL_BUFFER,
-                );
-            }
-
-            let buffer = crate::VarModule::get_int(
-                self.object(),
-                crate::consts::vars::common::instance::HITFALL_BUFFER,
-            );
-
-            if self.is_cat_flag(Cat2::FallJump) && self.stick_y() < 0.0 && 0 < buffer && buffer <= 5 {
-                WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-            }
+    unsafe fn check_hitfall(&mut self) -> bool {
+        if !self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+            return false;
         }
+
+        if self.is_in_hitlag() {
+            let dive_cont_value = self.get_param_float("common", "dive_cont_value");
+            let dive_flick_frame_value = self.get_param_int("common", "dive_flick_frame_value");
+            if self.left_stick_y() <= dive_cont_value
+            && VarModule::get_int(self.object(), vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
+            && AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT) {
+                VarModule::on_flag(self.object(), vars::common::status::SHOULD_HITFALL);
+            }
+        } else if VarModule::is_flag(self.object(), vars::common::status::SHOULD_HITFALL) {
+            WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            VarModule::off_flag(self.object(), vars::common::status::SHOULD_HITFALL);
+            return true;
+        }
+
+        return false;
     }
 
     unsafe fn check_airdash(&mut self) {
@@ -1262,10 +1345,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             let speed_x = KineticModule::get_sum_speed_x(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             // lets make sure not to divide by zero
-            let speed_x_adjust = match speed_x {
-                0.0 => 0.01,
-                _ => 0.0
-            };
+            let speed_x_adjust = if speed_x == 0.0 { 0.01 } else { 0.0 };
             let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
 
             let pos = Vector3f { x: 0., y: 3., z: 0.};
@@ -1297,7 +1377,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             );
         }
 
-        if self.motion_frame() >= 4.0
+        if self.motion_frame() >= 6.0
         && !CancelModule::is_enable_cancel(self) {
             CancelModule::enable_cancel(self);
         }

@@ -3,16 +3,7 @@ use super::*;
 // FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP
 
 pub unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("special_hi_jump"),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
     fighter.main_shift(special_hi_jump_main_loop)
 }
 
@@ -35,12 +26,12 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
         }
         return 0.into();
     }
-    1.into()
+    return 1.into();
 }
 
 pub unsafe extern "C" fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL);
+        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_FALL_SPECIAL);
         return 1.into();
     }
     fighter.status_pre_Fall()

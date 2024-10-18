@@ -43,9 +43,9 @@ impl DerefMut for FighterKineticEnergyStop {
 impl FighterKineticEnergyStop {
     pub fn get_parent_sum_speed_correct(boma: &mut BattleObjectModuleAccessor, link_no: i32, arg: i32) -> PaddedVec2 {
         unsafe {
-            let func: extern "C" fn(&mut BattleObjectModuleAccessor, i32, i32) -> energy::Vec3 = std::mem::transmute(LinkModule::get_parent_sum_speed as *const ());
+            let func: extern "C" fn(&mut BattleObjectModuleAccessor, i32, i32) -> smash_rs::cpp::simd::Vector3 = std::mem::transmute(LinkModule::get_parent_sum_speed as *const ());
             let vec = func(boma, link_no, arg);
-            PaddedVec2::new(vec.x, vec.y)
+            PaddedVec2::new(vec.vec[0], vec.vec[1])
         }
     }
 }

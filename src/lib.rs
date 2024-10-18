@@ -3,6 +3,8 @@
 #![allow(non_snake_case)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
+#![allow(unexpected_cfgs)]
+#![allow(static_mut_refs)]
 #![feature(proc_macro_hygiene)]
 
 // Not sure why these are needed here, probably cargo-skyline BS
@@ -16,6 +18,7 @@ extern crate skyline;
 extern crate skyline_web;
 extern crate smash;
 extern crate smash_arc;
+extern crate ninput;
 
 mod fighters;
 
@@ -33,6 +36,9 @@ mod online;
 
 #[cfg(feature = "main_nro")]
 mod matchup;
+
+#[cfg(feature = "main_nro")]
+mod player_port;
 
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
@@ -133,10 +139,10 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::from_offset(0x23ed7f0)]
+#[skyline::from_offset(0x23ed810)]
 unsafe fn music_function1(arg: u64);
 
-#[skyline::from_offset(0x23ee0a0)]
+#[skyline::from_offset(0x23ee0c0)]
 unsafe fn music_function2(arg: u64, arg2: u64);
 
 #[skyline::hook(offset = 0x14f99cc, inline)]
@@ -153,7 +159,7 @@ unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x235cab0, inline)]
+#[skyline::hook(offset = 0x235cad0, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
     let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
@@ -165,10 +171,10 @@ unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
     println!("{:#x}", *mode);
 }
 
-#[skyline::from_offset(0x3540150)]
+#[skyline::from_offset(0x3540170)]
 fn load_file_by_hash40(tables: u64, hash: u64);
 
-#[skyline::hook(offset = 0x1864de0, inline)]
+#[skyline::hook(offset = 0x1864e00, inline)]
 unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
     let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8)
         .add(0x5332f20) as *const u64);
@@ -319,13 +325,13 @@ impl FuckingAssStringStructureShit {
     }
 }
 
-#[skyline::hook(offset = 0x23357d8, inline)]
+#[skyline::hook(offset = 0x23357f8, inline)]
 unsafe fn sss_to_css(ctx: &InlineCtx) {
     let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
     (*thing).set("CharaSelectScene");
 }
 
-#[skyline::hook(offset = 0x2335164, inline)]
+#[skyline::hook(offset = 0x2335184, inline)]
 unsafe fn css_to_sss(ctx: &InlineCtx) {
     let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
     (*thing).set("StageSelectScene");
@@ -385,6 +391,7 @@ pub extern "C" fn main() {
         lua::install();
         online::install();
         matchup::install();
+        player_port::install();
         skyline::patching::Patch::in_text(0x14f99cc).nop().unwrap();
         skyline::patching::Patch::in_text(0x1509fd4).nop().unwrap();
         skyline::install_hooks!(

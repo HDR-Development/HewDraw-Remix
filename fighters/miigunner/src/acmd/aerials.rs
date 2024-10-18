@@ -457,12 +457,12 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 	frame(lua_state, 20.0);
 	FT_MOTION_RATE(agent, 1.0);
 	if is_excute(agent) {
-		let charge = VarModule::get_float(agent.battle_object, vars::miigunner::status::CURRENT_CHARGE);
+		let charge = VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE);
 		if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
 			let charge_mul = 1.0 + (charge * 0.025);
-			let mul = if VarModule::is_flag(agent.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) { 0.5 } else { 1.0 };
-			if !VarModule::is_flag(agent.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME) {
-				VarModule::on_flag(agent.object(), vars::miigunner::instance::BOOSTED_DAIR_AIRTIME);
+			let mul = if VarModule::is_flag(agent.object(), vars::miigunner::instance::BOOSTED_ATTACK_AIR_LW_AIRTIME) { 0.5 } else { 1.0 };
+			if !VarModule::is_flag(agent.object(), vars::miigunner::instance::BOOSTED_ATTACK_AIR_LW_AIRTIME) {
+				VarModule::on_flag(agent.object(), vars::miigunner::instance::BOOSTED_ATTACK_AIR_LW_AIRTIME);
 			}
 			ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(agent, 1, 0, Hash40::new("handr"), 12.0 * charge_mul, 80, 65, 0, 50, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -507,7 +507,8 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 43.0);
 	if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-		FT_MOTION_RATE_RANGE(agent, 43.0, 50.0, 9.0 + 2.0 * VarModule::get_float(agent.battle_object, vars::miigunner::status::CURRENT_CHARGE));
+		let charge_mul = if VarModule::is_flag(agent.battle_object, vars::miigunner::instance::BOOSTED_ATTACK_AIR_LW_AIRTIME) { 1.0 } else { 2.0 };
+		FT_MOTION_RATE_RANGE(agent, 43.0, 50.0, 9.0 + charge_mul * VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE));
 	}
 	if is_excute(agent) {
 		if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
@@ -532,7 +533,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		if VarModule::is_flag(agent.battle_object, vars::miigunner::status::BOOSTED_AERIAL){
 			let handle = EffectModule::req_follow(boma, Hash40::new("sys_smash_flash"), Hash40::new("top"), &Vector3f::new(0.0, 10.0, -1.0), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
-			VarModule::set_int64(agent.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER, handle);
+			VarModule::set_int64(agent.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE, handle);
 			EffectModule::set_rate(boma, handle as u32, 0.1);
 		}
 	}
@@ -550,7 +551,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
 			EFFECT_FOLLOW(agent, Hash40::new("miigunner_gimmckjump"), Hash40::new("armr"), 6, 0, 0, 0, -90, 0, 1, true);
 			LAST_EFFECT_SET_RATE(agent, 1.1);
 			LAST_EFFECT_SET_COLOR(agent, 0.15, 1.0, 10.0);
-			if VarModule::get_float(agent.battle_object, vars::miigunner::status::CURRENT_CHARGE) >= 10.0 {
+			if VarModule::get_float(agent.battle_object, vars::miigunner::status::ATTACK_CHARGE) >= 10.0 {
 				EFFECT_FLW_POS(agent, Hash40::new("miigunner_gimmck_attack"), Hash40::new("top"), 0, 15, 0, 0, 0, 0, 1, true);
 				LAST_EFFECT_SET_RATE(agent, 1.1);
 			}

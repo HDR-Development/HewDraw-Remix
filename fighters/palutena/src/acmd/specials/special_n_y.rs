@@ -4,18 +4,10 @@ unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(agent) {
-        if !MeterModule::drain(boma.object(), 2) {
-            MeterModule::drain(boma.object(), 1);
-        }
-        else {
-            MeterModule::drain(boma.object(), 2);
-        }
-        VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
-    }
     FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 16.0);
     frame(lua_state, 20.0);
     if is_excute(agent) {
+        VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
             WorkModule::set_float(boma, PostureModule::pos_x(boma) - 100.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
         }
@@ -49,7 +41,7 @@ unsafe extern "C" fn effect_specialny(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_specialny(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let power = VarModule::is_flag(agent.object(), vars::palutena::instance::POWERED);
+    let power = VarModule::is_flag(agent.object(), vars::palutena::status::SPECIAL_N_PRIMARY_POWERED);
     let sound_lvl = if power {Hash40::new("se_common_electric_hit_l")} else {Hash40::new("se_common_electric_hit_m")};
     frame(lua_state, 11.0);
     if is_excute(agent) {

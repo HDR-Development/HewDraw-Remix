@@ -22,28 +22,28 @@ unsafe fn space_pirate_rush_flight(boma: &mut BattleObjectModuleAccessor, status
 }
 
 // Ridley Wing Blitz Drift
-unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32) {
-    let motion_value1 = 0.7;
-    let motion_value2 = 0.7;
-    if situation_kind == *SITUATION_KIND_AIR
-    && !boma.is_in_hitlag() {
-        if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW].contains(&status_kind) {
-            if stick_x != 0.0 {
-                let motion_vec = x_motion_vec(motion_value1, stick_x);
-                KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-
-        if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B].contains(&status_kind) {
-            if stick_y != 0.0 {
-                let motion_vec = Vector3f{x: 0.0, y: motion_value2 * stick_y.signum(), z: 0.0};
-                KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-    }
-}
+// unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32) {
+//     let motion_value1 = 0.7;
+//     let motion_value2 = 0.7;
+//     if situation_kind == *SITUATION_KIND_AIR
+//     && !boma.is_in_hitlag() {
+//         if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI,
+//             *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW].contains(&status_kind) {
+//             if stick_x != 0.0 {
+//                 let motion_vec = x_motion_vec(motion_value1, stick_x);
+//                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+//             }
+//         }
+//
+//         if [*FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F,
+//             *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B].contains(&status_kind) {
+//             if stick_y != 0.0 {
+//                 let motion_vec = Vector3f{x: 0.0, y: motion_value2 * stick_y.signum(), z: 0.0};
+//                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+//             }
+//         }
+//     }
+// }
 
 // Puts stabbed opponents into footstool state
 // unsafe fn stab_footstool(fighter: &mut L2CFighterCommon) {
@@ -80,11 +80,11 @@ unsafe fn tail_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let tail_y = VarModule::get_float(boma.object(), vars::ridley::status::SKEWER_STICK_Y);
+    let tail_y = VarModule::get_float(boma.object(), vars::ridley::status::SPECIAL_LW_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma.object(), vars::ridley::status::SKEWER_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), vars::ridley::status::SPECIAL_LW_STICK_Y, stick_y);
         rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame
@@ -144,7 +144,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //space_pirate_rush_flight(boma, status_kind, situation_kind, stick_x);
-    wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
+    //wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
     //stab_footstool(fighter);
     angled_skewer(fighter);
     fastfall_specials(fighter);

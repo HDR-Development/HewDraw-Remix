@@ -3,7 +3,7 @@ jump_squat:
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
+  blend_frames: 3
 guard_off:
   blend_frames: 4
   extra:
@@ -77,7 +77,7 @@ special_hi:
   flags:
     loop: false
   extra:
-    cancel_frame: 25
+    cancel_frame: 35
 special_hi_2:
   game_script: game_specialhi2
   flags:
@@ -95,7 +95,7 @@ special_hi_2:
     unk_800: false
     unk_1000: false
     unk_2000: false
-  blend_frames: 10
+  blend_frames: 0
   animations:
   - name: d02specialhi2.nuanmb
   scripts:
@@ -124,7 +124,7 @@ special_hi_3:
     unk_800: false
     unk_1000: false
     unk_2000: false
-  blend_frames: 10
+  blend_frames: 0
   animations:
   - name: d02specialhi3.nuanmb
   scripts:
@@ -137,9 +137,9 @@ special_hi_3:
     cancel_frame: 0
     freeze_during_hitstop: false
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 attack_air_b:
   extra:
     cancel_frame: 37

@@ -7,6 +7,10 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+
+mod disarmingvoice;
+
 use smash::{
     lib::{
         L2CValue,
@@ -45,4 +49,7 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    disarmingvoice::install();
+    smashline::clone_weapon("koopajr", *WEAPON_KIND_KOOPAJR_CANNONBALL, "purin", "disarmingvoice", false);
 }

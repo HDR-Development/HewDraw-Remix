@@ -83,7 +83,7 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
         if pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SONIC_INSTANCE_WORK_ID_FLOAT_SPECIAL_N_ADD_ATTACK_POWER);
             VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK);
-            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
             fighter.change_status(FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START.into(), true.into());
         }
     }
@@ -106,7 +106,7 @@ pub unsafe extern "C" fn special_n_homing_start_pre(fighter: &mut L2CFighterComm
 
 pub unsafe extern "C" fn special_n_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_prev_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING_LIGHT);
+        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_LANDING_LIGHT);
         return 1.into();
     }
     smashline::original_status(Pre, fighter, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_LANDING)(fighter)

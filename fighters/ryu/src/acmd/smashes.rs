@@ -14,7 +14,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         // agent.on_flag(*FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
@@ -26,7 +26,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
@@ -138,31 +138,31 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
         };
         MeterModule::watch_damage(agent.battle_object, true);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 14.4, 83, 95, 0, 30, 5.3, 0.0, 9.0, 8.5, None, None, None, 1.22, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 14.4, 83, 95, 0, 30, 5.3, 0.0, 9.0, 8.5, None, None, None, 1.22, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
         };
-        ATTACK(agent, 0, 0, Hash40::new("armr"), 13.5, 83, 86, 0, 32, 4.3, -2.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("armr"), 13.5, 83, 86, 0, 32, 4.3, -2.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+        let attr = if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
             Hash40::new("collision_attr_elec")
         } else {
             Hash40::new("collision_attr_normal")
         };
-        ATTACK(agent, 0, 0, Hash40::new("top"), 13.5, 83, 86, 0, 32, 4.8, 0.0, 21.5, 5.0, Some(0.0), Some(17.0), Some(6.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 13.5, 83, 86, 0, 32, 4.8, 0.0, 21.5, 5.0, Some(0.0), Some(17.0), Some(6.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, attr, *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {

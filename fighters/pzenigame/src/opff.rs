@@ -31,7 +31,6 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 11.0 {
     */
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_HIT].contains(&status_kind)
-    && !StatusModule::is_changing(boma)
     && frame >= 13.0
     && !boma.is_in_hitlag() {
         //boma.check_jump_cancel(true, false);
@@ -83,7 +82,7 @@ unsafe fn special_lw_track(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && !boma.is_button_on(Buttons::SpecialAll) {
         let parent_id = LinkModule::get_parent_id(boma, *FIGHTER_POKEMON_LINK_NO_PTRAINER, true) as u32;
         let object = utils::util::get_battle_object_from_id(parent_id);
-        VarModule::off_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS);
+        VarModule::off_flag(object, vars::ptrainer::instance::SPECIAL_LW_BACKWARDS_SWITCH);
     }
 }
 

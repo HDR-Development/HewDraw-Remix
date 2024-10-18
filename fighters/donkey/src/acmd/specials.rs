@@ -325,18 +325,18 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME);
+        WorkModule::on_flag(boma, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME);
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 80, 0, 40, 8.0, 0.0, 11.0, -8.0, Some(0.0), Some(11.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-        FT_MOTION_RATE(agent, 1.0);
     }
     frame(lua_state, 7.0);
+    FT_MOTION_RATE(agent, 0.6);
     if is_excute(agent) {
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
-        FT_MOTION_RATE(agent, 0.6);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 8.0);
@@ -345,7 +345,6 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
     }
     wait(lua_state, 8.0);
-
     // loop increasingly weak multihits
     let mut damage = 8.0;
     for _ in 0..8 {
@@ -356,15 +355,18 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
         wait(lua_state, 6.0);
         if is_excute(agent) {
             damage = damage * 0.75;
-            WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
             AttackModule::clear_all(boma);
         }
     }
     frame(lua_state, 68.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT); // set on 68 in vanilla (this is frame 72 rn)
-        FT_MOTION_RATE(agent, 1);
+        WorkModule::on_flag(boma, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT); // set on 68 in vanilla (this is frame 72 rn)
+    }
+    frame(lua_state, 75.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
     }
 }
 
@@ -414,6 +416,15 @@ unsafe extern "C" fn sound_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specialairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 unsafe extern "C" fn game_specialairlwlanding(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -457,6 +468,15 @@ unsafe extern "C" fn sound_specialairlwlanding(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_specialairlwlanding(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("game_specialairn", game_specialn, Priority::Low);
@@ -481,12 +501,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
     agent.acmd("sound_specialairlw", sound_specialairlw, Priority::Low);
-    // todo add expression
+    agent.acmd("expression_specialairlw", expression_specialairlw, Priority::Low);
 
     agent.acmd("game_specialairlwlanding", game_specialairlwlanding, Priority::Low);
     agent.acmd("effect_specialairlwlanding", effect_specialairlwlanding, Priority::Low);
     agent.acmd("sound_specialairlwlanding", sound_specialairlwlanding, Priority::Low);
-    // todo add expression
+    agent.acmd("sound_specialairlwlanding", sound_specialairlwlanding, Priority::Low);
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
 }

@@ -6,7 +6,7 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     if (fighter.is_situation(*SITUATION_KIND_GROUND) ) {
         let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
         if feathers_g <= 0 {
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+            fighter.set_status_kind_interrupt(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
             return 1.into();
         }
@@ -45,15 +45,15 @@ pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
         //GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         //GroundModule::set_attach_ground(fighter.module_accessor, false);
-        if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
+        if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN)>0.0)
         {
             //fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
-            StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
+            fighter.set_status_kind_interrupt(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL);
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
             return 1.into();
         }
         else{
-            VarModule::on_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
+            VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_FAIL_ENABLE);
         }
         return 0.into();
     }
@@ -64,7 +64,7 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     let feathers_g = WorkModule::get_int(fighter.module_accessor,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
     //Bypass if transitioning into Air Fail
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        if VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN) > 0.0 {
+        if VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN) > 0.0 {
             return 1.into();
         }
     }
@@ -167,17 +167,17 @@ unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CV
 pub unsafe extern "C" fn special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
     {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED)
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_FAIL_ENABLE)
         {
             sv_kinetic_energy!(
                 clear_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY
             );
-            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_FAIL_ENABLE);
         }
     }
-    else if (VarModule::get_int(fighter.battle_object, vars::buddy::instance::BEAKBOMB_FRAME) > 0){
+    else if (VarModule::get_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME) > 0){
         let ground_brake = sv_fighter_util::get_default_fighter_param_ground_brake(fighter.lua_state_agent);
         KineticModule::clear_speed_all(fighter.module_accessor);
         sv_kinetic_energy!(

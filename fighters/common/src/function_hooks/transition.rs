@@ -11,7 +11,6 @@ use globals::*;
 unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool {
     // Fighters
     if boma.is_fighter() {
-
         let fighter_kind = boma.kind();
         let status_kind = StatusModule::status_kind(boma);
         let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -44,7 +43,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             return true;
         }
     
-    
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
             return false;
         }
@@ -70,42 +68,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                 }
             }
         }
-        /*
-        // Marth & Lucina - special fair FAF
-        if fighter_kind == FIGHTER_KIND_MARTH || fighter_kind == *FIGHTER_KIND_LUCINA {
-            if MotionModule::motion_kind(boma) == hash40("attack_air_f") {
-                if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR && ControlModule::get_attack_air_kind(boma) == FIGHTER_COMMAND_ATTACK_AIR_KIND_F {
-                    if MotionModule::frame(boma) < 38.0 {
-                        return false;
-                    }
-                }
-            }
-        }
-        */
-
-        // Meta Knight - Disable use of specials midair again after hitting them during the current airtime
-        if fighter_kind == FIGHTER_KIND_METAKNIGHT {
-            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
-                return false;
-            }
-        }
-
-        //Disable sonic airdodge out of up-b and enable followup neutral B after a successful hit
-        if fighter_kind == *FIGHTER_KIND_SONIC {
-            /*
-            if SONIC_NO_AIRDODGE[id] && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR {
-                return false;
-            }
-            */
-            /*
-            if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HIT && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
-                return true;
-            }
-            */
-        }
 
         // Disable Mii Swordfighter nspecial if the Tornado projectile is still active
         if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
@@ -117,7 +79,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if fighter_kind == *FIGHTER_KIND_TRAIL {
             if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
                 if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
-                || VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT) {
+                || VarModule::is_flag(boma.object(), vars::metaknight::instance::SPECIAL_S_HIT) {
                     return false;
                 }
             }
@@ -125,9 +87,9 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         //Disable Duck Hunt Down Special on a timer
         if boma.kind() == *FIGHTER_KIND_DUCKHUNT  {
-            if VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) != 0 
+            if VarModule::get_int(boma.object(), vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER) != 0 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                    return false
+                return false;
             }
         }
 

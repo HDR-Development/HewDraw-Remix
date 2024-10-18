@@ -16,7 +16,7 @@ unsafe fn charge_handle(boma: &mut BattleObjectModuleAccessor) {
             } else {
                 ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
             };
-        let charge = VarModule::get_float(boma.object(), vars::miigunner::status::CURRENT_CHARGE);
+        let charge = VarModule::get_float(boma.object(), vars::miigunner::status::ATTACK_CHARGE);
         let mut charge_start_frame = 0.0;
         let mut charge_end_frame = 0.0;
         let mut max_charge_frames = ParamModule::get_float(boma.object(), ParamType::Agent, "param_charge.max_charge_frames");
@@ -39,31 +39,31 @@ unsafe fn charge_handle(boma: &mut BattleObjectModuleAccessor) {
 
         if (charge_start_frame..charge_end_frame).contains(&boma.motion_frame()) && charge < max_charge_frames && is_hold {
             if boma.is_motion(Hash40::new("attack_air_lw")) {
-                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f::new(0.75 + 0.018 * charge, 0.75 + 0.018 * charge, 0.75 + 0.018 * charge));
             }
             else if boma.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
                 let motion_vec = if charge <= 10.0 { Vector3f{ x: 1.0, y: 0.55, z: 1.0 } } else { Vector3f{ x: 1.0, y: 0.35, z: 1.0 } };
                 KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE);
                 EffectModule::set_rate(boma, handle as u32, 1.0/boma.motion_frame());
             }
             let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
             MotionModule::set_rate(boma, motion_rate);
-            VarModule::set_float(boma.object(), vars::miigunner::status::CURRENT_CHARGE, charge + 1.0);
+            VarModule::set_float(boma.object(), vars::miigunner::status::ATTACK_CHARGE, charge + 1.0);
         }
         else {
             if boma.is_motion(Hash40::new("attack_air_lw")) {
-                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE);
                 EffectModule::set_rate(boma, handle as u32, 1.0);
                 MotionModule::set_rate(boma, 1.0);
             }
             else if boma.is_motion_one_of(&[Hash40::new("special_n3_start"), Hash40::new("special_air_n3_start")]) {
-                VarModule::set_float(boma.object(), vars::miigunner::instance::GRENADE_CHARGE, charge);
+                VarModule::set_float(boma.object(), vars::miigunner::instance::SPECIAL_N3_CHARGE, charge);
                 MotionModule::set_rate(boma, 1.0);
             }
             else if boma.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
-                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_EFF_HANDLER);
+                let handle = VarModule::get_int64(boma.object(), vars::miigunner::instance::SPECIAL_HI1_LAUNCH_EFFECT_HANDLE);
                 EffectModule::set_rate(boma, handle as u32, 1.0);
                 MotionModule::set_rate(boma, 1.0);
             }
@@ -90,16 +90,8 @@ unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP]) {
         if !boma.is_in_hitlag() {
-            if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) && boma.status_frame() > 3)
-                || !boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD)
-            {
+            if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP) && boma.status_frame() > 1) {
                 boma.check_jump_cancel(false, false);
-            }
-        }
-        if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) {
-            if PostureModule::lr(boma) * ControlModule::get_stick_x(boma) < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
             }
         }
     }
@@ -147,9 +139,6 @@ unsafe fn missile_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn arm_rocket_airdash(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if fighter.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH) && fighter.status_frame() > 16 {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
     }
@@ -162,13 +151,13 @@ unsafe fn arm_rocket_airdash(fighter: &mut L2CFighterCommon) {
 /// Allow uncharged or slightly charged Lunar Launch to be actionable
 unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if fighter.status_frame() >= 35 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CURRENT_CHARGE) <= 10.0 {
+        if fighter.status_frame() >= 35 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::ATTACK_CHARGE) <= 10.0 {
             // if already used once this airtime
-            if VarModule::is_flag(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
+            if VarModule::is_flag(fighter.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_AIR_USED) {
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             }
             else {
-                VarModule::on_flag(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED);
+                VarModule::on_flag(fighter.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_AIR_USED);
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, false);
             }
         }
@@ -178,7 +167,7 @@ unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon) {
 /// Resets Lunar Launch use count
 unsafe fn lunar_launch_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
-        VarModule::off_flag(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED);
+        VarModule::off_flag(fighter.battle_object, vars::miigunner::instance::SPECIAL_HI1_LAUNCH_AIR_USED);
     }
 }
 

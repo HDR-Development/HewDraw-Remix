@@ -7,10 +7,10 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.499);
         VarModule::off_flag(agent.battle_object, vars::dolly::status::IS_SHATTER_STRIKE);
-        VarModule::off_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-            VarModule::on_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
-            VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+        VarModule::off_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
+            VarModule::on_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
+            VarModule::off_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL);
         }
     }
     frame(lua_state, 6.0);
@@ -22,7 +22,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
             }
         }
         if VarModule::is_flag(agent.battle_object, vars::dolly::status::IS_SHATTER_STRIKE){
-            VarModule::off_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
+            VarModule::off_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
             FT_MOTION_RATE(agent, 1.000);
         }
         else{
@@ -72,7 +72,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
             KineticModule::add_speed(boma, &Vector3f::new(2.5*shatter_strike_speed, 0.0, 0.0));
         }
         else{
-            if VarModule::is_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
+            if VarModule::is_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE) {
                 ATTACK(agent, 0, 0, Hash40::new("legl"), 8.0, 361, 40, 0, 70, 4.5, 0.0, -3.0, 0.0, None, None, None, 1.25, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
                 ATTACK(agent, 1, 0, Hash40::new("kneel"), 8.0, 361, 40, 0, 70, 4.5, 0.0, -3.0, 0.0, None, None, None, 1.25, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
                 ATTACK(agent, 2, 0, Hash40::new("kneel"), 8.0, 361, 40, 0, 70, 4.5, 5.0, -3.0, 0.0, None, None, None, 1.25, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -228,12 +228,12 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-        VarModule::off_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
-        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
-            VarModule::off_flag(agent.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-            VarModule::on_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
+        VarModule::off_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
+        if VarModule::is_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL) {
+            VarModule::off_flag(agent.battle_object, vars::shotos::instance::MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
         }
-        if VarModule::is_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE) {
             FT_MOTION_RATE(agent, 1.0);
         }
         else{
@@ -257,30 +257,30 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.000);
         MeterModule::watch_damage(agent.battle_object, true);
-         if VarModule::is_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
+         if VarModule::is_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE) {
             ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 11.0, 60, 40, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("armr"), 11.0, 60, 40, 0, 50, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 2, 0, Hash40::new("armr"), 11.0, 60, 40, 0, 50, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(agent, 1, 0, Hash40::new("top"), 11.0, 60, 40, 0, 50, 5.0, 0.0, 6.0, 9.5, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
          }
          else {
-            ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 16.0, 83, 90, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 1, 0, Hash40::new("armr"), 16.0, 83, 90, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 2, 0, Hash40::new("armr"), 16.0, 83, 90, 0, 40, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 3, 0, Hash40::new("top"), 16.0, 83, 90, 0, 40, 5.0, 0.0, 7.0, 9.5, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 16.0, 83, 90, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 1, 0, Hash40::new("armr"), 16.0, 83, 90, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 2, 0, Hash40::new("armr"), 16.0, 83, 90, 0, 40, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 3, 0, Hash40::new("top"), 16.0, 83, 90, 0, 40, 5.0, 0.0, 7.0, 9.5, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
          }
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
+        if VarModule::is_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE) {
 
          }
          else {
-            ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 18.0, 85, 82, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 1, 0, Hash40::new("armr"), 18.0, 85, 82, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 2, 0, Hash40::new("armr"), 18.0, 85, 82, 0, 40, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 18.0, 85, 82, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 1, 0, Hash40::new("armr"), 18.0, 85, 82, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 2, 0, Hash40::new("armr"), 18.0, 85, 82, 0, 40, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
          }
         AttackModule::clear(boma, 3, false);
     }
@@ -303,7 +303,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::dolly::status::IS_USE_FIRE_KICK);
-        VarModule::off_flag(agent.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
+        VarModule::off_flag(agent.battle_object, vars::shotos::status::SCALE_COMBO_DAMAGE);
      }
     frame(lua_state, 3.0);
     if is_excute(agent) {

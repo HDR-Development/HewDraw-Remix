@@ -2,7 +2,7 @@ use super::*;
 
 unsafe extern "C" fn demon_landing_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND) == hash40("attack_air_lw") {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DOWN);
+        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_DOWN);
         return 1.into();
     }
     StatusModule::init_settings(

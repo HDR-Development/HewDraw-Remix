@@ -9,15 +9,15 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
             return;
         }
         MeterModule::update(fighter.object(), false);
-        MeterModule::set_meter_cap(fighter.object(), 2);
-        MeterModule::set_meter_per_level(fighter.object(), 100.0);
+        MeterModule::set_meter_cap(fighter.object(), 3);
+        MeterModule::set_meter_per_level(fighter.object(), 90.0);
         utils::ui::UiManager::set_aura_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_aura_meter_info(
             (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32),
             (MeterModule::meter(fighter.object())),
             (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             (MeterModule::meter_per_level(fighter.object())),
-            (VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT))
+            (VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT))
         );
     }
 }
@@ -81,9 +81,19 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
-    let frames = frames.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-    VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+pub unsafe fn pause_meter_regen(agent: &mut L2CAgentBase, frames: i32) {
+    let frames = frames.max(VarModule::get_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+    VarModule::set_int(agent.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+}
+
+pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
+    let meter = MeterModule::meter(agent.battle_object);
+    if meter <= 0.0
+    && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT);
+        PLAY_SE(agent, Hash40::new("se_common_spirits_critical_l_tail"));
+        MeterModule::add(agent.battle_object, -1.0 * meter);
+    }
 }
 
 unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -97,22 +107,25 @@ unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+    // button hold check
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
+    && fighter.motion_frame() < 8.0 
+    && !fighter.is_button_on(Buttons::SpecialRaw){
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
+    }
 
-    // aura bomb activation
-    // meter is drained in ACMD so that it only happens when projectile is shot
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT 
+    // super transition
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
     && frame == 8.0
-    && fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX)
-    && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+    && VarModule::get_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
         if situation_kind == *SITUATION_KIND_GROUND {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_n_bomb"), -1.0, 1.0, 0.0, false, false);
         } else {
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_n_bomb"), -1.0, 1.0, 0.0, false, false);
         }
-        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
-        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
-        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+
     }
 
     // float during air aura bomb
@@ -124,15 +137,10 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 }
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    // critical hit activation
-    if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 21.0)
-    || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 26.0))
-    && fighter.is_button_on(Buttons::SpecialRaw)
-    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
-        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
-        MeterModule::drain_direct(fighter.battle_object, MeterModule::meter_per_level(fighter.battle_object));
-        pause_meter_regen(fighter, 120);
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
+    && fighter.motion_frame() < 8.0 
+    && !fighter.is_button_on(Buttons::SpecialRaw){
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
     }
 }
 
@@ -223,16 +231,11 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let meter = MeterModule::meter(fighter.object());
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
     let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
-    if (meter <= 0.0) {
-        if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-            PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
-        }
-    } else if (meter >= meter_per_level) { // exit burnout at 1 half bar
-        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
-            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-            PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
-        }
+    if meter >= meter_max
+    && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
+        PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
+        MeterModule::drain_direct(fighter.battle_object, meter_max);
     }
     
     // guard clause
@@ -242,7 +245,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     // determine if we should use the burnout regen rate
     let meter_regen_type = {
-        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+        if VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
             "aura.regen_rate_burnout"
         } else {
             "aura.regen_rate"
@@ -281,7 +284,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     if CancelModule::is_enable_cancel(boma) 
     || boma.is_in_hitlag() 
     || !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+    || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY)
+    || !VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL) {
         return;
     }
     

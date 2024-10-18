@@ -167,6 +167,34 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.5);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("samus_smash_arc"), Hash40::new("top"), 0, 2, 9, 0, -40, 180, 1.4, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("samus_smash_arc"), false, true);
+        EFFECT_FOLLOW(agent, Hash40::new("samus_smash_arc"), Hash40::new("top"), 2, 2, -6, 0, 120, 180, 1.4, true);
+        LAST_EFFECT_SET_RATE(agent, 1.1);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
     agent.acmd("game_attacks4hi", game_attacks4hi, Priority::Low);
@@ -177,4 +205,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackhi4", sound_attackhi4, Priority::Low);
     
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
+    agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);
 }
