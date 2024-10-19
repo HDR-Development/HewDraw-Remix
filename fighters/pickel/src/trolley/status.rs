@@ -85,9 +85,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     };
     VarModule::inc_int(weapon.battle_object, TRAVEL_FRAMES);
 
-    let owner_id = VarModule::get_int(weapon.battle_object, PEARL_OWNER_ID) as u32;
-    let owner = utils::util::get_battle_object_from_id(owner_id);
-    let owner_boma = &mut *(*owner).module_accessor;
+    let owner_boma = weapon.boma().get_owner_boma();
 
     // reset trajectory if the pearl is reflected
     let reflect_count = ReflectModule::count(weapon.module_accessor) as i32;
@@ -122,10 +120,18 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     // statuses where steve should not teleport
     let is_blacklist_status = owner_boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
     ]);
     
     if is_blacklist_status {
+        let pos = PostureModule::pos(weapon.boma());
+        EffectModule::req_2d(owner_boma, Hash40::new("pickel_erace_smoke"), pos, &Vector3f::zero(), 1.0, 0);
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
         return 1.into();
     }
@@ -165,6 +171,26 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, (y_pos + (owner_pos.y - pos.y) - offset) * 2.0, ((owner_pos.x - pos.x) * lr) * 2.0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
         LAST_EFFECT_SET_RATE(weapon, 0.6);
+    }
+
+    // let go of any opponents steve has grabbed so that they do not teleport with him
+    if owner_boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_CATCH_PULL,
+        *FIGHTER_STATUS_KIND_CATCH_WAIT,
+        *FIGHTER_STATUS_KIND_CATCH_ATTACK
+    ]) 
+    || (owner_boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_THROW,
+        *FIGHTER_STATUS_KIND_CATCH
+        ]) && CatchModule::is_catch(owner_boma))
+    {
+        let opponent = owner_boma.get_grabbed_opponent_boma() as *mut BattleObjectModuleAccessor;
+        StatusModule::change_status_force(opponent, *FIGHTER_STATUS_KIND_CAPTURE_CUT, true);
+        if ArticleModule::is_exist(owner_boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE) {
+            ArticleModule::remove_exist(owner_boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
+        }
+        StatusModule::change_status_force(owner_boma, *FIGHTER_STATUS_KIND_CATCH_CUT, true);
+        StatusModule::change_status_force(opponent, *FIGHTER_STATUS_KIND_CAPTURE_CUT, true);
     }
 
     // initiate teleport

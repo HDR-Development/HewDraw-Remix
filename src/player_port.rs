@@ -112,7 +112,7 @@ unsafe fn css_main_loop(arg: u64) {
     }
 
     // online arenas pass the usual check, so disable it if we are there
-    if game_modes::get_melee_mode() == melee_mode::ARENA {
+    if [melee_mode::TRAINING, melee_mode::ARENA].contains(&game_modes::get_melee_mode()) {
         ENABLE_SWAPPING = false;
         return original!()(arg);
     }
