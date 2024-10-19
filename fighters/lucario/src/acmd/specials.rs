@@ -110,7 +110,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
@@ -155,7 +155,7 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
@@ -476,7 +476,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
-    frame(lua_state, 30.0);
+    frame(lua_state, 31.0);
     FT_MOTION_RATE_RANGE(agent, 31.0, 35.0, 8.0);
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.25); // used so that the endlag doesn't halt momentum abruptly, considering motion rate
     if is_excute(agent) {
