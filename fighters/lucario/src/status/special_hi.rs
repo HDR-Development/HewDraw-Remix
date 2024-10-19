@@ -251,7 +251,7 @@ unsafe extern "C" fn special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CV
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
     ].contains(&next_status) {
         let rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) - (13.5 * rate));
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) - (9.0 * rate));
         opff::check_burnout(fighter);
         opff::pause_meter_regen(fighter, 120);
         KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
@@ -358,7 +358,7 @@ unsafe extern "C" fn special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> 
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
     ].contains(&next_status) {
         let rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
-        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) - (13.5 * rate));
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) - (9.0 * rate));
         opff::check_burnout(fighter);
         opff::pause_meter_regen(fighter, 120);
         KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);

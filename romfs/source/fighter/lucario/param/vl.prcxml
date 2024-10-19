@@ -61,13 +61,13 @@
   <list hash="param_aurapower">
     <struct index="0">
       <float hash="se_middle_aurapower">1.0</float>
-      <float hash="se_high_aurapower">1.05</float>
+      <float hash="se_high_aurapower">1.04</float>
     </struct>
   </list>
   <list hash="param_aurascale">
     <struct index="0">
-      <float hash="min_aura_power">0.9</float>
-      <float hash="max_aura_power">1.1</float>
+      <float hash="min_aura_power">0.92</float>
+      <float hash="max_aura_power">1.08</float>
     </struct>
   </list>
 </struct>

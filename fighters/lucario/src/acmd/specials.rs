@@ -367,7 +367,7 @@ unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, rate);
     if is_excute(agent) {
         JostleModule::set_status(boma, false);
-        MeterModule::drain_direct(agent.battle_object, 13.5 * rate);
+        MeterModule::drain_direct(agent.battle_object, 9.0 * rate);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -472,15 +472,19 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 3.0);
     frame(lua_state, 13.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
-    frame(lua_state, 28.0);
-    FT_MOTION_RATE_RANGE(agent, 28.0, 35.0, 11.0);
-    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.2); // used so that the endlag doesn't halt momentum abruptly, considering motion rate
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE_RANGE(agent, 31.0, 35.0, 8.0);
+    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.25); // used so that the endlag doesn't halt momentum abruptly, considering motion rate
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
+    frame(lua_state, 35.0);
+    FT_MOTION_RATE(agent, 1.0);
+    sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.0);
 }
 
 unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
