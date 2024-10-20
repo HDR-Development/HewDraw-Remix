@@ -9,7 +9,8 @@ pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CVa
         VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         KineticModule::resume_energy_all(fighter.module_accessor);
-        if [
+        if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && [
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
         ].contains(&next_status) {
