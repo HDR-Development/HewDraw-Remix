@@ -40,7 +40,7 @@
     <struct index="0">
       <float hash="accel_x">0.04</float>
       <float hash="accel_y">0.015</float>
-      <float hash="rush_speed">4.6</float>
+      <float hash="rush_speed">4.9</float>
       <float hash="0x189cd804c5">0.0</float>
       <float hash="angle_speed">2</float>
       <float hash="end_accel_y">0.3</float>
