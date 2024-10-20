@@ -16,8 +16,7 @@ unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT)
-        && agent.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
+        if !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
             let bonus_aurapower = ParamModule::get_float(agent.battle_object, ParamType::Agent, "aura.bonus_aurapower");
             VarModule::set_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
             VarModule::on_flag(agent.battle_object, vars::lucario::instance::IS_POWERED_UP);
@@ -353,7 +352,7 @@ unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, rate * 0.8);
     if is_excute(agent) {
         JostleModule::set_status(boma, false);
-        MeterModule::drain_direct(agent.battle_object, 9.0 * rate);
+        MeterModule::drain_direct(agent.battle_object, 8.1 * rate);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
