@@ -231,7 +231,7 @@ unsafe extern "C" fn game_specialairsthrow(agent: &mut L2CAgentBase) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 55.0);
+    frame(lua_state, 44.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         KineticModule::resume_energy_all(boma);
