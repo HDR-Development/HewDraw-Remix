@@ -4,17 +4,20 @@ use dynamic::{consts::*, *};
 pub const CONTROLLER_ID: [u32; 9] = [0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x20]; // 0x20 is the id for handheld
 
 static mut ENABLE_SWAPPING: bool = false;
+static mut LOCAL_WIRELESS: bool = false;
 
 static mut ACTIVE_CONTROLLER: Option<u32> = None;
 static mut PORT_ACTIVE: [bool; 8] = [true, false, false, false, false, false, false, false];
 static mut NEXT_PORT: [i32; 9] = [1; 9];
+
+static mut CONTROLLER_PORT: [u32; 9] = [1, 0, 0, 0, 0, 0, 0, 0, 1]; // used to keep track of what port a controller has
+static mut PORT_CONTROLLER: [u32;8] = [0; 8];   // used to keep track of what controller a port has
 
 // stores the raw argument data for the 8 player panes, to pass around different functions
 static mut PORT_DATA: [Option<u64>; 8] = [None; 8];
 
 static mut X_PRESSED: bool = false; // makes sure we only run related code once per button press
 static mut ACTION: &str = "right";
-
 
 // returns true/false depending on if the specified controller is performing the defined button macro
 unsafe fn check_swap_macro(controller_id: u32) -> bool {
@@ -46,6 +49,7 @@ unsafe fn set_enable_swap(ctx: &mut skyline::hooks::InlineCtx) {
     let last_card = *ctx.registers[26].x.as_ref();
     // if the difference is 0x80, 8 slots are active and we can safely enable the feature
     if last_card == first_card + 0x80
+    && !LOCAL_WIRELESS
     && !ENABLE_SWAPPING {
         ENABLE_SWAPPING = true;
         // println!("enabling port swapping!");
@@ -75,17 +79,28 @@ unsafe fn set_port_data(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 pub const BACK_BUTTON: u64 = 0x1010f00e00;
+pub const WIRELESS_ENTER: u64 = 0x1010efe850;
+pub const WIRELESS_EXIT: u64 = 0x1010f00d18;
 
 // resets data when leaving the local battle session
 // this function runs whenever a ui pane is  selected, so we look for the data for the "back" button on rule select
 #[skyline::hook(offset = 0x2407280)]
 unsafe fn reset_css_session(pane: u64, arg2: u64) {
-    if pane == BACK_BUTTON {
+    // println!("pane: {:#x}", pane);
+    if [BACK_BUTTON, WIRELESS_EXIT].contains(&pane) {
         // println!("resetting for next css session, disabling swap");
         PORT_ACTIVE = [true, false, false, false, false, false, false, false];
         PORT_DATA = [None; 8];
         NEXT_PORT = [1; 9];
+        CONTROLLER_PORT = [1, 0, 0, 0, 0, 0, 0, 0, 1];
+        PORT_CONTROLLER = [0; 8];
         ENABLE_SWAPPING = false;
+        LOCAL_WIRELESS = false;
+    }
+
+    if pane == WIRELESS_ENTER {
+        // println!("entering local wireless, disabling swap");
+        LOCAL_WIRELESS = true;
     }
 
     original!()(pane, arg2)
@@ -177,7 +192,7 @@ unsafe fn init_css_player(
         return;
     }
 
-    // println!("controller {} port {} data: {:#x} / {:#x}", id, port, arg3, arg4);
+    // println!("controller {} port {} data: {:#x} / {:#x}", controller, port, arg3, arg4);
 
     // find the next available port to be loaded into
     let id = controller as usize;
@@ -208,9 +223,45 @@ unsafe fn init_css_player(
 
     // println!("changing controller {}'s port from {} to {}, diff: {}", id, port, new_port, port_diff);
     PORT_ACTIVE[(new_port - 1) as usize] = true;
+    CONTROLLER_PORT[id] = new_port as u32; // track what port this controller has
+    PORT_CONTROLLER[(new_port - 1) as usize] = controller;
     ACTIVE_CONTROLLER = None; // clear the stored controller id now that the operation has performed
 
     original!()(arg1, new_port, new3, new4);
+}
+
+// runs when a controller gets disconnected from the system
+#[skyline::hook(offset = 0x1a30bb0, inline)]
+unsafe fn controller_disconnect(ctx: &mut skyline::hooks::InlineCtx) {
+    let mut controller =  *ctx.registers[1].x.as_ref();
+    if controller == 0x20 { controller = 0x8 };
+    let port = CONTROLLER_PORT[controller as usize];
+
+    PORT_ACTIVE[port as usize] = false;
+    NEXT_PORT[controller as usize] = 1;
+    CONTROLLER_PORT[controller as usize] = 0;
+    // println!("controller id {} disconnected", controller as u32);
+}
+
+// runs when removing a player card from the css
+#[skyline::hook(offset = 0x1a1e660, inline)]
+unsafe fn card_removal(ctx: &mut skyline::hooks::InlineCtx) {
+    let data =  *ctx.registers[0].x.as_ref();
+    for i in 0..8 {
+        if Some(data) == PORT_DATA[i] 
+        && PORT_ACTIVE[i] {
+            // println!("clearing data for port {}", i + 1);
+            PORT_ACTIVE[i] = false;
+
+            let controller = PORT_CONTROLLER[i];
+            PORT_CONTROLLER[i] = 0;
+            if ACTIVE_CONTROLLER == None {
+                NEXT_PORT[controller as usize] = 1;
+            }
+            CONTROLLER_PORT[controller as usize] = 0;
+            break;
+        }
+    }
 }
 
 pub fn install() {
@@ -220,6 +271,8 @@ pub fn install() {
         set_port_data,
         reset_css_session,
         css_main_loop,
-        init_css_player
+        init_css_player,
+        controller_disconnect,
+        card_removal
     );
 }
