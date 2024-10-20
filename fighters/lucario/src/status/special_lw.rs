@@ -128,7 +128,8 @@ unsafe extern "C" fn special_lw_check_cancel(fighter: &mut L2CFighterCommon) -> 
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
         return true.into();
     }
-    if fighter.is_cat_flag(Cat1::SpecialS) {
+    if fighter.is_cat_flag(Cat1::SpecialS)
+    && !fighter.is_cat_flag(Cat1::SpecialLw) {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
         return true.into();
     }
