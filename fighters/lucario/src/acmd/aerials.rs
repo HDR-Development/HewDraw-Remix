@@ -42,6 +42,10 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
@@ -76,6 +80,10 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
@@ -130,6 +138,10 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {
@@ -186,6 +198,10 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -266,6 +282,10 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
