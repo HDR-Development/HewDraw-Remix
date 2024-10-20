@@ -82,17 +82,21 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn reflector_jc(boma: &mut BattleObjectModuleAccessor) {
+    // TODO: replace this with gravity-based landing for multishines
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    if boma.is_status_one_of(&[
-        *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_HIT,
-        *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
-        *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP]) {
-        if !boma.is_in_hitlag() {
-            if (boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP) && boma.status_frame() > 1) {
-                boma.check_jump_cancel(false, false);
-            }
+
+    if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP) {
+        if boma.status_frame() < 1 {
+            boma.clear_commands(Cat1::Jump | Cat1::JumpButton | Cat1::AttackHi4); 
+        } else if !boma.is_in_hitlag() && boma.check_jump_cancel(false, false) {
+            return;
+        }
+    }
+    if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END) {
+        if !boma.is_in_hitlag() && boma.check_jump_cancel(false, false) {
+            return;
         }
     }
 }

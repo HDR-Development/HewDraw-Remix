@@ -26,7 +26,7 @@ unsafe extern "C" fn special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            speed_y.min(0.0) * 0.33
+            speed_y.min(0.0) * 0.2
         );
     }
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
@@ -45,9 +45,10 @@ pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[CURRENT_FRAME].get_i32() > 2  // Allows for jump cancel on frame 4 in game
-    && !fighter.is_in_hitlag()
-    && fighter.check_jump_cancel(false, false) {
+    // Allows for jump cancel on frame 4 in game
+    if fighter.global_table[CURRENT_FRAME].get_i32() < 3 {
+        fighter.clear_commands(Cat1::Jump | Cat1::JumpButton | Cat1::AttackHi4); 
+    } else if !fighter.is_in_hitlag() && fighter.check_jump_cancel(false, false) {
         return 0.into();
     }
 
@@ -121,7 +122,7 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         if work_stop_y_frame - 1 <= 0 {
             let mut reflector_air_accel_y = if fighter.is_flag(*FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING) {
                 // fighter.get_param_float("air_accel_y", "") / 2.0
-                fighter.get_param_float("param_special_lw", "reflector_air_accel_y") * 1.67
+                fighter.get_param_float("param_special_lw", "reflector_air_accel_y") * 1.2
             } else {
                 fighter.get_param_float("param_special_lw", "reflector_air_accel_y")
             };
@@ -175,7 +176,7 @@ unsafe extern "C" fn special_lw_loop_exec(fighter: &mut L2CFighterCommon) -> L2C
         if work_stop_y_frame - 1 <= 0 {
             let mut reflector_air_accel_y = if fighter.is_flag(*FIGHTER_FOX_INSTANCE_WORK_ID_FLAG_REFLECTOR_LANDING) {
                 // fighter.get_param_float("air_accel_y", "") / 2.0
-                fighter.get_param_float("param_special_lw", "reflector_air_accel_y") * 1.67
+                fighter.get_param_float("param_special_lw", "reflector_air_accel_y") * 1.2
             } else {
                 fighter.get_param_float("param_special_lw", "reflector_air_accel_y")
             };
