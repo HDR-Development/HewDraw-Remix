@@ -184,9 +184,12 @@ unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 18.0, 32.0);
-    frame(lua_state, 18.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 6.0, 10.0);
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE_RANGE(agent, 6.0, 16.0, 20.0);
+    frame(lua_state, 16.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 18.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 93, 10, 0, 50, 7.0, 0.0, 8.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
@@ -199,30 +202,27 @@ unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("wolf_shoot_hold"), Hash40::new("top"), 0, 5.5, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        if boma.is_situation(*SITUATION_KIND_GROUND) {
-            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, true);
-            LAST_EFFECT_SET_RATE(agent, 1.2);
-            LAST_EFFECT_SET_ALPHA(agent, 0.8);
-        }
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, true);
+        LAST_EFFECT_SET_RATE(agent, 1.2);
+        LAST_EFFECT_SET_ALPHA(agent, 0.8);
     }
-    for _ in 0..4 {
+    for _ in 0..6 {
         if is_excute(agent) {
             FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 5, 0, 5, 0, 0, 0, false);
             FLASH(agent, 0.5, 0.4, 1, 0.7);
         }
-        wait(lua_state, 1.0);
+        wait(lua_state, 0.5);
         if is_excute(agent) {
             FLASH_FRM(agent, 2, 0.3, 0, 1, 0);
         }
-        wait(lua_state, 2.0);
+        wait(lua_state, 1.0);
         if is_excute(agent) {
             COL_NORMAL(agent);
         }
-        wait(lua_state, 1.0);
+        wait(lua_state, 0.5);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
@@ -230,16 +230,37 @@ unsafe extern "C" fn effect_specialhihold(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        if boma.is_situation(*SITUATION_KIND_GROUND) {
-            LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn effect_specialhiholdair(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("wolf_shoot_hold"), Hash40::new("top"), 0, 5.5, 0, 0, 0, 0, 1, true);
+    }
+    for _ in 0..6 {
+        if is_excute(agent) {
+            FLASH(agent, 0.5, 0.4, 1, 0.7);
         }
+        wait(lua_state, 0.5);
+        if is_excute(agent) {
+            FLASH_FRM(agent, 2, 0.3, 0, 1, 0);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(agent) {
+            COL_NORMAL(agent);
+        }
+        wait(lua_state, 0.5);
     }
 }
 
 unsafe extern "C" fn sound_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         PLAY_STATUS(agent, Hash40::new("se_wolf_special_h01"));
     }
@@ -397,7 +418,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhihold", game_specialhihold, Priority::Low);
     agent.acmd("sound_specialhihold", sound_specialhihold, Priority::Low);
     agent.acmd("game_specialhiholdair", game_specialhihold, Priority::Low);
-    agent.acmd("effect_specialhiholdair", effect_specialhihold, Priority::Low);
+    agent.acmd("effect_specialhiholdair", effect_specialhiholdair, Priority::Low);
     agent.acmd("sound_specialhiholdair", sound_specialhihold, Priority::Low);
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("game_specialhifall", game_specialhifall, Priority::Low);
