@@ -126,10 +126,42 @@ unsafe extern "C" fn special_hi2_end(fighter: &mut L2CFighterCommon) -> L2CValue
                 let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
                 let speed = Vector2f{ x: lua_bind::KineticEnergy::get_speed_x(stop_energy), y: lua_bind::KineticEnergy::get_speed_y(stop_energy)};
                 sv_kinetic_energy!(set_speed, fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, speed.x.abs() * lr * 1.05, speed.y); //b-reverse telecancel reverses momentum on ground
+                EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 5.5 * lr, 8.0, -2.0, 0, 0, 0, 1.65, true);
+                LAST_EFFECT_SET_COLOR(fighter, 0.95, 3.0, 0.6);
+                LAST_EFFECT_SET_ALPHA(fighter, 0.75);
+                LAST_EFFECT_SET_RATE(fighter, 1.10); //spawn gr cancel eff frame 0
             }
         }
     }
     0.into()
+}
+
+unsafe extern "C" fn special_hi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        (*FS_SUCCEEDS_KEEP_ATTACK | *FS_SUCCEEDS_KEEP_EFFECT) as i32 //allow effect to spawn on ledge cancel
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -230,5 +262,6 @@ pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2, special_hi2_pre);
     agent.status(Main, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2, special_hi2_main);
     agent.status(End, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2, special_hi2_end);
+    agent.status(Pre, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, special_hi3_pre);
     agent.status(Main, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, special_hi3_main);
 }

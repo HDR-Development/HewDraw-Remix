@@ -38,6 +38,9 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);//reset flick for platdrop
+    ControlModule::reset_trigger(fighter.module_accessor);
+    ControlModule::clear_command(fighter.module_accessor, true);
+    ControlModule::reset_special_command(fighter.module_accessor, true);
     let phantom_object_id = VarModule::get_int(fighter.battle_object, vars::zelda::instance::SPECIAL_LW_PHANTOM_OBJECT_ID) as u32;
     let phantom_battle_object = utils::util::get_battle_object_from_id(phantom_object_id);
     let phantom_boma = &mut *(*phantom_battle_object).module_accessor;
@@ -70,9 +73,14 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
     && ControlModule::get_flick_y(fighter.module_accessor) < 4 {
         GroundModule::pass_floor(fighter.module_accessor);
     }//platdrop
-    if (fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw))
-    || fighter.is_button_trigger(Buttons::Attack) { //filter non d-special inputs??
-        fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
+    if VarModule::is_flag(phantom_battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) {
+        if (fighter.is_button_trigger(Buttons::Special) && fighter.is_cat_flag(Cat1::SpecialLw)) {
+            fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
+        } //if cancelled, require a down special input as if she were actionable
+    } else {
+        if fighter.is_button_trigger(Buttons::Special | Buttons::Attack) {
+            fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE);
+        } //vanilla phantom inputs
     }
     //checks if phantom is alive and hers, also frame gate
     if sv_battle_object::is_active(phantom_object_id)
@@ -84,7 +92,7 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
             //attack input
             if fighter.is_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_LW_FLAG_ATTACK_PRECEDE) {
                 fighter.sub_change_motion_by_situation(Hash40::new("special_lw_attack").into(), Hash40::new("special_air_lw_attack").into(), false.into());
-            } else if frame >= 20.0{
+            } else if frame >= 20.0 {
                 //cancel handling
                 if !VarModule::is_flag(phantom_battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD)
                 && MotionModule::frame(fighter.module_accessor) < 58.0 //before full build
@@ -97,8 +105,8 @@ unsafe extern "C" fn phantom_button_checks(fighter: &mut L2CFighterCommon) -> L2
             }
         } else if !phantom_boma.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK) 
         && !VarModule::is_flag(phantom_battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD) 
-        && frame < 58.0 
-        && frame >= 20.0{
+        && frame < 58.0 //when phantom is fully built
+        && frame >= 20.0 {
             //if phantom is not building or attacking
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
             VarModule::on_flag(phantom_battle_object, vars::zelda::status::SPECIAL_LW_PHANTOM_NO_BUILD);
