@@ -39,15 +39,23 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     let motion_frame = MotionModule::frame(fighter.module_accessor);
     let start_frame = 8.0;
     let end_frame = 21.0;
-    if motion_frame > start_frame
-    && motion_frame < end_frame
-    && !fighter.is_button_on(Buttons::SpecialRaw) {
-        let rate = (0.6).lerp(&1.0, &((motion_frame - start_frame) / (end_frame - start_frame)));
-        VarModule::set_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE, rate);
-        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, end_frame, true, true, false);
+    if motion_frame > start_frame {
+        if motion_frame < end_frame {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR_ROT);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
+            let rate = (0.6).lerp(&1.0, &((motion_frame - start_frame) / (end_frame - start_frame)));
+            if !fighter.is_button_on(Buttons::SpecialRaw) {
+                VarModule::set_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE, rate);
+                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, end_frame, true, true, false);
+            }
+            if motion_frame > start_frame + 13.0 / 24.0 {
+                special_hi_guide_handler(fighter, rate);
+            }
+        } else {
+            let rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
+            special_hi_guide_handler(fighter, rate);
+        }
     }
-    // let angle = fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR).to_degrees();
-    // special_hi_guide_handler(fighter);
     smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter)
 }
 
@@ -60,47 +68,47 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter)
 }
 
-// unsafe extern "C" fn arrow_guide_pos(fighter: &mut L2CFighterCommon, angle: L2CValue) -> Vector2f {
-//     let pos = PostureModule::pos(fighter.module_accessor);
-//     let rad = angle.get_f32().to_radians();
-//     let scale = PostureModule::scale(fighter.module_accessor);
-//     let dist = 20.0;
-//     let dist_scaled = dist * scale;
-//     let x_pos = rad.cos() * dist_scaled + (*pos).x;
-//     let y_pos = rad.sin() * dist_scaled + (*pos).y;
-//     let y_offset = 6.0;
-//     let y_pos = y_offset * scale + y_pos;
-//     Vector2f{x: x_pos, y: y_pos}
-// }
+unsafe extern "C" fn arrow_guide_pos(fighter: &mut L2CFighterCommon, angle: L2CValue, scale: f32) -> Vector2f {
+    let pos = PostureModule::pos(fighter.module_accessor);
+    let rad = angle.get_f32().to_radians();
+    let posture_scale = PostureModule::scale(fighter.module_accessor);
+    let dist = 16.0;
+    let dist_scaled = dist * posture_scale * scale;
+    let x_pos = rad.cos() * dist_scaled + (*pos).x;
+    let y_pos = rad.sin() * dist_scaled + (*pos).y;
+    let y_offset = 10.5;
+    let y_pos = y_offset * posture_scale + y_pos;
+    Vector2f{x: x_pos, y: y_pos}
+}
 
-// unsafe extern "C" fn special_hi_guide_handler(fighter: &mut L2CFighterCommon) { // thanks wuboy <3
-//     let mut angle = fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR).to_degrees();
-//     if angle == 90.0 { return; }
+unsafe extern "C" fn special_hi_guide_handler(fighter: &mut L2CFighterCommon, scale: f32) { // thanks wuboy <3
+    let mut angle = dbg!(fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR).to_degrees());
 
-//     let mut eff_handle = VarModule::get_int(fighter.battle_object, vars::lucario::status::SPECIAL_HI_MARKER_EFFECT_HANDLE) as u32;
-//     let guide_pos = arrow_guide_pos(fighter, angle.into());
-//     if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
-//         eff_handle = EffectModule::req(
-//             fighter.module_accessor,
-//             Hash40::new("sys_direction2"),
-//             &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0},
-//             &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-//             1.0,
-//             0,
-//             -1,
-//             false,
-//             0
-//         ) as u32;
-//         VarModule::set_int(fighter.battle_object, vars::lucario::status::SPECIAL_HI_MARKER_EFFECT_HANDLE, eff_handle as i32);
-//     } else {
-//         EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0});
-//     }
-//     EffectModule::set_rot(fighter.module_accessor, eff_handle, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
+    let mut eff_handle = VarModule::get_int(fighter.battle_object, vars::lucario::status::SPECIAL_HI_MARKER_EFFECT_HANDLE) as u32;
+    let guide_pos = arrow_guide_pos(fighter, angle.into(), scale);
+    if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+        eff_handle = EffectModule::req(
+            fighter.module_accessor,
+            Hash40::new("sys_direction2"),
+            &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0},
+            &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            1.0,
+            0,
+            -1,
+            false,
+            0
+        ) as u32;
+        VarModule::set_int(fighter.battle_object, vars::lucario::status::SPECIAL_HI_MARKER_EFFECT_HANDLE, eff_handle as i32);
+    } else {
+        EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0});
+    }
+    EffectModule::set_rot(fighter.module_accessor, eff_handle, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
+    EffectModule::set_scale(fighter.module_accessor, eff_handle, &Vector3f::new(scale, scale, scale));
 
-//     let team_color = FighterUtil::get_team_color(fighter.module_accessor);
-//     let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-//     EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.x, effect_team_color.y, effect_team_color.z);
-// }
+    let team_color = FighterUtil::get_team_color(fighter.module_accessor);
+    let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+    EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+}
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
 
