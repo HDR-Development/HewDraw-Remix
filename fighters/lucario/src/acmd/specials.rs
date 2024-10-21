@@ -33,6 +33,16 @@ unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        let max_charge_frame = agent.get_param_float("param_special_n", "max_charge_frame");
+        agent.set_int(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME, max_charge_frame as i32);
+        agent.on_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX);
+        ArticleModule::change_status(
+            agent.module_accessor,
+            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL,
+            *WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE,
+            ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST)
+        );
+
         MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
         opff::check_burnout(agent);
         opff::pause_meter_regen(agent, 120);
