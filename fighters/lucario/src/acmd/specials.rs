@@ -426,37 +426,11 @@ unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
-    }
-}
-
-unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        MeterModule::watch_damage(agent.battle_object, true);
-        ATTACK(agent, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        MeterModule::watch_damage(agent.battle_object, false);
-        AttackModule::clear_all(boma);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
 }
 
@@ -639,7 +613,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhimove", effect_specialhimove, Priority::Low);
     agent.acmd("expression_specialhimove", expression_specialhimove, Priority::Low);
     agent.acmd("game_specialhiend", game_specialhiend, Priority::Low);
-    agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
+    agent.acmd("game_specialairhiend", game_specialhiend, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);

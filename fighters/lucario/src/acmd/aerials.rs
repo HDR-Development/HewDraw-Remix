@@ -24,6 +24,10 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -38,10 +42,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            KineticModule::resume_energy_all(boma);
-        }
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
@@ -266,6 +266,10 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            KineticModule::resume_energy_all(boma);
+        }
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
@@ -277,10 +281,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(boma.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            KineticModule::resume_energy_all(boma);
-        }
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 20.0);

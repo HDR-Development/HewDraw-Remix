@@ -247,6 +247,32 @@ unsafe extern "C" fn special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END
 
+unsafe extern "C" fn special_hi_rush_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Init, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END)(fighter);
+
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
+    if situation != *SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x.clamp(-2.5, 2.5), 0.0);
+        let end_brake_x = fighter.get_param_float("param_special_hi", "end_brake_x");
+        sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, end_brake_x, end_brake_x);
+        let end_accel_y = fighter.get_param_float("param_special_hi", "end_accel_y");
+        sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -end_accel_y);
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y.clamp(-1.25, 1.25));
+    }
+    else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x.clamp(-2.5, 2.5), 0.0);
+        let end_brake_x = fighter.get_param_float("param_special_hi", "end_brake_x");
+        sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, end_brake_x, end_brake_x);
+    }
+
+    return ret;
+}
+
 unsafe extern "C" fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     if situation != *SITUATION_KIND_GROUND {
@@ -254,19 +280,11 @@ unsafe extern "C" fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) ->
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
         GroundModule::set_cliff_check(fighter.module_accessor, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        let end_brake_x = fighter.get_param_float("param_special_hi", "end_brake_x");
-        sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, end_brake_x, 0.0);
-        let end_accel_y = fighter.get_param_float("param_special_hi", "end_accel_y");
-        sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -end_accel_y);
-        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y.clamp(-5.0, 2.0));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_end"), 0.0, 1.0, false, 0.0, false, false);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
     }
     else {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_end"), 0.0, 1.0, false, 0.0, false, false);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     }
@@ -453,6 +471,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_main);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, special_hi_rush_end);
 
+    agent.status(Init, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_init);
     agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_main);
     agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, special_hi_rush_end_end);
 }
