@@ -36,7 +36,8 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if !StopModule::is_stop(fighter.module_accessor)
-        && fighter.is_button_trigger(Buttons::Special) {
+        && fighter.is_button_trigger(Buttons::Special)
+        && ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL) < 2 {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_SHOOT);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LUCARIO_AURABALL_TRANSITION_TERM_ID_START_HOLD);
         }
@@ -137,7 +138,8 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
         return 0.into();
     }
     
-    if fighter.is_button_trigger(Buttons::Special) {
+    if fighter.is_button_trigger(Buttons::Special)
+    && ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL) < 2 {
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
         return 0.into();
     }
@@ -188,7 +190,8 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
         return 0.into();
     }
     
-    if fighter.is_button_trigger(Buttons::Special) {
+    if fighter.is_button_trigger(Buttons::Special)
+    && ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL) < 2 {
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
         return 0.into();
     }

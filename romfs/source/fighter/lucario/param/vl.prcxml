@@ -12,13 +12,14 @@
   <list hash="param_auraball">
     <struct index="0">
       <float hash="scale_mul">2.6</float>
-      <float hash="scale_add">0.5</float>
+      <float hash="scale_add">-2.7</float>
       <float hash="original_size">3.5</float>
-      <float hash="charge_min_scale">1.5</float>
+      <float hash="charge_min_scale">3.0</float>
       <float hash="charge_max_scale_mid">4.3</float>
       <float hash="charge_max_scale">4.3</float>
-      <float hash="charge_min_scale_shoot">1.5</float>
-      <float hash="charge_max_scale_shoot">4.3</float>
+      <float hash="charge_min_scale_shoot">3.0</float>
+      <float hash="charge_max_scale_shoot">4.2</float>
+      <float hash="flicker_scale_max">0.05</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

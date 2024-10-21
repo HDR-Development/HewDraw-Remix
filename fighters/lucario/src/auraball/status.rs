@@ -10,6 +10,8 @@ pub unsafe extern "C" fn shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue 
         vars::lucario::instance::IS_POWERED_UP, 
         is_powered_up
     );
+    let aurapower = fighter.get_owner_boma().get_float(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
+    fighter.set_float(aurapower, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_AURAPOWER);
     if fighter.get_owner_boma().is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
         let max_charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
         fighter.set_int(max_charge_frame, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
@@ -30,15 +32,6 @@ pub unsafe extern "C" fn shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 // unsafe extern "C" fn auraball_start_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     return 0.into();
 // }
-
-pub unsafe extern "C" fn start_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.get_owner_boma().is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
-        let max_charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
-        fighter.set_int(max_charge_frame, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
-        auraball_set_scale(fighter);
-    }
-    smashline::original_status(Exec, fighter, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_START)(fighter)
-}
 
 // WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE
 
@@ -65,13 +58,21 @@ pub unsafe extern "C" fn start_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
 //     return 0.into();
 // }
 
-pub unsafe extern "C" fn charge_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_powered_up = VarModule::is_flag(fighter.get_owner_boma().object(), vars::lucario::instance::IS_POWERED_UP);
+    VarModule::set_flag(
+        fighter.battle_object, 
+        vars::lucario::instance::IS_POWERED_UP, 
+        is_powered_up
+    );
+    let aurapower = fighter.get_owner_boma().get_float(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
+    fighter.set_float(aurapower, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_AURAPOWER);
     if fighter.get_owner_boma().is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
         let max_charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
         fighter.set_int(max_charge_frame, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
         auraball_set_scale(fighter);
     }
-    smashline::original_status(Exec, fighter, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE)(fighter)
+    return false.into();
 }
 
 unsafe extern "C" fn auraball_set_scale(fighter: &mut L2CFighterCommon) {
@@ -114,6 +115,5 @@ unsafe extern "C" fn auraball_set_scale(fighter: &mut L2CFighterCommon) {
 
 pub fn install(agent: &mut Agent) {
     agent.status(Init, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, shoot_init);
-    agent.status(Exec, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, start_exec);
-    agent.status(Exec, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE, charge_exec);
+    agent.status(Init, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE, charge_init);
 }
