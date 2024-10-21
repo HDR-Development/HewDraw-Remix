@@ -49,4 +49,12 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    let whitelist_articles = [
+        (*FIGHTER_KIND_PALUTENA, *WEAPON_KIND_PALUTENA_EXPLOSIVEFLAME),
+        (*FIGHTER_KIND_PALUTENA, *WEAPON_KIND_PALUTENA_EXPLOSIVEFLAME_RESERVE)
+    ];
+    for (fighter_id, article_id) in whitelist_articles.iter() {
+        smashline::whitelist_kirby_copy_article(*fighter_id, *article_id);
+    }
 }
