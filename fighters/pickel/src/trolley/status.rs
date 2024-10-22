@@ -234,8 +234,57 @@ unsafe extern "C" fn pearl_fly_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     return 0.into();
 }
 
+unsafe extern "C" fn start_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let boma = weapon.boma();
+
+    let grounded = GroundModule::get_touch_line_raw(boma, GroundTouchID(*GROUND_TOUCH_ID_DOWN)) == 1;
+    if !grounded {
+        WorkModule::off_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR);
+    } else {
+        WorkModule::on_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR);
+    }
+
+    if !WorkModule::is_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR) {
+        WorkModule::set_int(boma, -1, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_INT_NO_GRAVITY_COUNT);
+        weapon.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    } else {
+        let frame_no_gravity_on_start = WorkModule::get_param_int(boma, hash40("param_trolley"), hash40("frame_no_gravity_on_start"));
+        WorkModule::set_int(boma, frame_no_gravity_on_start, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_INT_NO_GRAVITY_COUNT);
+        weapon.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    }
+
+    weapon.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+    
+    TeamModule::set_hit_team(boma, *TEAM_NONE);
+
+    if LinkModule::is_link(boma, *WEAPON_LINK_NO_CONSTRAINT) {
+        LinkModule::set_attribute(boma, *WEAPON_LINK_NO_CONSTRAINT, LinkAttribute{_address:*LINK_ATTRIBUTE_REFERENCE_PARENT_CONTROLLER as u8}, true);
+    }
+
+    if !WorkModule::is_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR) {
+        GroundModule::set_attach_ground(boma, true);
+    } else {
+        GroundModule::set_attach_ground(boma, false);
+    }
+
+    weapon.fastshift(L2CValue::Ptr(start_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn start_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    if StatusModule::is_changing(weapon.module_accessor) {
+        return 0.into();
+    }
+    weapon.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+  
+    return 0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_pre);
     agent.status(Main, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_main);
     agent.status(End, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_end);
+
+    agent.status(Main, *WEAPON_PICKEL_TROLLEY_STATUS_KIND_START, start_main);
 }
