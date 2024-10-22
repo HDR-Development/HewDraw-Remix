@@ -11,7 +11,7 @@ use smash::phx::*;
 use smash::app::*;
 use smash::app;
 use smash::hash40;
-
+use smash::app::sv_animcmd::*;
 use utils::{
     *,
     util::*,
@@ -29,6 +29,7 @@ pub mod general_statuses;
 pub mod function_hooks;
 pub mod shoto_status;
 // pub mod tag;
+pub mod acmd;
 
 // for storing what team color the last attacker had. used in a couple different common files
 pub static mut LAST_ATTACK_TEAM_COLOR: i32 = 0;
@@ -45,6 +46,7 @@ pub fn install() {
     general_statuses::install();
     function_hooks::install();
     opff::install();
+    acmd::install();
 
     Agent::new("fighter")
         .on_start(common_init)
