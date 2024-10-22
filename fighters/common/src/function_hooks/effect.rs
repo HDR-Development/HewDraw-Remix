@@ -65,18 +65,6 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if SHOCKWAVE_FX.contains(&effect_name.hash) {
-                effect_size_mul = if effect_name.hash == hash40("sys_nopassive") {
-                    0.5
-                } else {
-                    0.7
-                };
-
-                if is_tech_lockout(boma) {
-                    effect_size_mul = 0.5;
-                    hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
-                }
-            }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
