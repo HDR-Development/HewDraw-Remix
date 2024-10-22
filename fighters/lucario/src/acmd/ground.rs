@@ -115,7 +115,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 24.0);
-    FT_MOTION_RATE_RANGE(agent, 24.0, 42.0, 24.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 42.0, 27.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::lucario::status::HIT_CANCEL);
     }
