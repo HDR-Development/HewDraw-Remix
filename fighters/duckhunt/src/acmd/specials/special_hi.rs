@@ -25,7 +25,9 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        //EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        let eff_handle = EffectModule::req_on_joint(boma, Hash40::new("duckhunt_target"), Hash40::new("top"), &Vector3f::new(0.0, 3.0, 0.0), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+        VarModule::set_int64(agent.battle_object, vars::duckhunt::status::SPECIAL_HI_RETICLE_EFFECT_HANDLE, eff_handle as u64);
         LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
@@ -101,7 +103,9 @@ unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        //EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        let eff_handle = EffectModule::req_on_joint(boma, Hash40::new("duckhunt_target"), Hash40::new("top"), &Vector3f::new(0.0, 3.0, 0.0), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+        VarModule::set_int64(agent.battle_object, vars::duckhunt::status::SPECIAL_HI_RETICLE_EFFECT_HANDLE, eff_handle as u64);
         LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
@@ -169,7 +173,9 @@ unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let team_color = FighterUtil::get_team_color(boma);
         let effect_team_color = &FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), -3, 7, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        //EFFECT(agent, Hash40::new("duckhunt_target"), Hash40::new("top"), -3, 7, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        let eff_handle = EffectModule::req_on_joint(boma, Hash40::new("duckhunt_target"), Hash40::new("top"), &Vector3f::new(-3.0, 7.0, 0.0), &Vector3f::zero(), 1.2, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+        VarModule::set_int64(agent.battle_object, vars::duckhunt::status::SPECIAL_HI_RETICLE_EFFECT_HANDLE, eff_handle as u64);
         LAST_EFFECT_SET_COLOR(agent, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         EFFECT_FOLLOW(agent, Hash40::new("duckhunt_feather_long"), Hash40::new("duckneck"), -4, 0, 0, 0, 0, -90, 1, true);
     }
