@@ -152,7 +152,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         else { "se_common_bomb_s" };
 
     if charge_frame >= 10.0 {
-        launch_speed.y = ((2.0 + (0.05 * charge_frame)) - (0.025 * rot_x.abs())).min(3.75);
+        launch_speed.y = ((1.65 + (0.05 * charge_frame)) - (0.025 * rot_x.abs())).min(3.75);
     }
 
     // launches/exits if rob ran out of fuel
