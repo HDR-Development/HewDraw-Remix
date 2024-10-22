@@ -465,6 +465,22 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        if !VarModule::is_flag(agent.battle_object, vars::dedede::instance::SPECIAL_LW_CONTINUE_JET_SPIN) {
+            let charge_frames = VarModule::get_int(agent.battle_object, vars::dedede::instance::SPECIAL_LW_CHARGE_FRAME);
+            let charge_level = charge_frames as f32 / 30.0;
+            if charge_level < 2.0 {
+                PLAY_SEQUENCE(agent, Hash40::new("seq_dedede_rnd_attack01"));
+            }
+            else {
+                let rand = sv_math::rand(hash40("fighter"), 2);
+                if rand == 1 {
+                    PLAY_SE(agent, Hash40::new("vc_dedede_final01"));
+                }
+                else {
+                    PLAY_SE(agent, Hash40::new("vc_dedede_final03"));
+                }
+            } 
+        }
         PLAY_STATUS(agent, Hash40::new("se_dedede_special_l05"));
     }
 }
