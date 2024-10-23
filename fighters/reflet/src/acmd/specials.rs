@@ -40,18 +40,11 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
     frame(lua_state, 12.0);
-    if is_excute(agent) {
-        if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-            WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-        }
-        else{
-            MotionModule::set_rate(boma, 2.0);
-        }
-    }
+    MotionModule::set_rate(boma, 2.0);
     wait(lua_state, 1.0);
     for _ in 0..30 {
         if is_excute(agent) {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
             }
         }

@@ -30,9 +30,56 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    0.into()
+    transfer_hit_cancel(fighter);
+    
+    return 0.into();
+}
+
+unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter);
+    VarModule::off_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
+    ret
+}
+
+unsafe extern "C" fn special_lw_out_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
+    return 0.into();
+}
+
+unsafe extern "C" fn transfer_hit_cancel(fighter: &mut L2CFighterCommon) {
+    if let Some(object_id) = Some(fighter.battle_object_id + 0x10000) {
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_EFLAME {
+                if VarModule::is_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL) {
+                    VarModule::off_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
+                    VarModule::on_flag(object, vars::eflame::instance::HIT_CANCEL);
+                }
+                return;
+            }
+        }
+    }
+    //This is used if the player selects Mythra first
+    if let Some(object_id) = Some(fighter.battle_object_id - 0x10000) {
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_EFLAME {
+                if VarModule::is_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL) {
+                    VarModule::off_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
+                    VarModule::on_flag(object, vars::eflame::instance::HIT_CANCEL);
+                }
+            }
+        }
+    }
 }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_end);
+    
+    agent.status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_LW_OUT, special_lw_out_end);
 }

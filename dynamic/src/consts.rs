@@ -608,6 +608,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_HI: i32 = 0x0104;
+            pub const HIT_CANCEL: i32 = 0x0105;
         }
     }
 
@@ -618,6 +619,7 @@ pub mod vars {
             pub const DISABLE_SPECIAL_S: i32 = 0x0101;
             pub const SPECIAL_S_ENABLE_ACTION: i32 = 0x0102;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0103;
+            pub const HIT_CANCEL: i32 = 0x0104;
         }
         pub mod status {
             // ints
