@@ -65,18 +65,6 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if SHOCKWAVE_FX.contains(&effect_name.hash) {
-                effect_size_mul = if effect_name.hash == hash40("sys_nopassive") {
-                    0.5
-                } else {
-                    0.7
-                };
-
-                if is_tech_lockout(boma) {
-                    effect_size_mul = 0.5;
-                    hitbox_params[i as usize] = L2CValue::new_hash(hash40("sys_nopassive"));
-                }
-            }
             if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
@@ -419,8 +407,10 @@ unsafe fn CUT_IN_CENTER_hook(lua_state: u64) {
     original!()(lua_state);
 }
 
-#[skyline::hook(replace=EffectModule::req)]
-unsafe fn req_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg6: u32, arg7: i32, arg8: bool, arg9: i32) -> u64 {
+// EffectModule::req
+#[skyline::hook(offset = 0x44de70)]
+unsafe fn req_hook(effect_module: u64, effHash: smash::phx::Hash40, pos: *mut Vector3f, rot: *mut Vector3f, size: f32, arg6: u32, arg7: i32, arg8: bool, arg9: i32) -> u64 {
+    let boma = *(effect_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
     if SHOCKWAVE_FX.contains(&effHash.hash) {
@@ -430,18 +420,20 @@ unsafe fn req_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::H
             0.7
         };
 
-        if is_tech_lockout(boma) {
+        if is_tech_lockout(&mut *boma) {
             effect_size_mul = 0.5;
             new_eff_hash = Hash40::new("sys_nopassive");
         }
 
         eff_size = size * effect_size_mul;
     }
-    original!()(boma, new_eff_hash, pos, rot, eff_size, arg6, arg7, arg8, arg9)
+    call_original!(effect_module, new_eff_hash, pos, rot, eff_size, arg6, arg7, arg8, arg9)
 }
 
-#[skyline::hook(replace=EffectModule::req_on_joint)]
-unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &Vector3f, rot: &Vector3f, size: f32, arg7: &Vector3f, arg8: &Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
+// EffectModule::req_on_joint
+#[skyline::hook(offset = 0x44e200)]
+unsafe fn req_on_joint_hook(effect_module: u64, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: *mut Vector3f, rot: *mut Vector3f, size: f32, arg7: *mut Vector3f, arg8: *mut Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
+    let boma = *(effect_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
     if SHOCKWAVE_FX.contains(&effHash.hash) {
@@ -451,14 +443,14 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
             0.7
         };
         
-        if is_tech_lockout(boma) {
+        if is_tech_lockout(&mut *boma) {
             effect_size_mul = 0.5;
             new_eff_hash = Hash40::new("sys_nopassive");
         }
 
         eff_size = size * effect_size_mul;
     }
-    original!()(boma, new_eff_hash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
+    call_original!(effect_module, new_eff_hash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
 }
 
 #[skyline::hook(replace=EffectModule::req_follow)]
