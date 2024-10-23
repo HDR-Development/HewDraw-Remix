@@ -74,4 +74,13 @@ step_pose_back:
     cancel_frame: 6
 throw_hi:
   extra:
-    cancel_frame: 47
+    cancel_frame: 54
+throw_b:
+  extra:
+    cancel_frame: 40
+throw_f:
+  extra:
+    cancel_frame: 35
+throw_lw:
+  extra:
+    cancel_frame: 50
