@@ -20,7 +20,7 @@ attack_dash:
     cancel_frame: 42
 attack_11:
   extra:
-    cancel_frame: 19
+    cancel_frame: 18
 attack_12:
   game_script: game_attack12
   flags:
