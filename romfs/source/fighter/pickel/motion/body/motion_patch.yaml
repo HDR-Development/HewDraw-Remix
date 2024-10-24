@@ -125,3 +125,5 @@ air_catch_landing:
     xlu_end: 0
     cancel_frame: 15
     no_stop_intp: false
+cliff_wait:
+  blend_frames: 2

@@ -110,11 +110,7 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
         MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
         opff::check_burnout(fighter);
         pause_meter_regen(fighter, 120);
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            if fighter.motion_frame() == 16.0 {
-                KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.4, y: 0.4, z: 0.4}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            }
-        } else {
+        if !fighter.is_situation(*SITUATION_KIND_GROUND) {
             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.7, y: 0.7, z: 0.7}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
     }
@@ -132,7 +128,8 @@ unsafe extern "C" fn special_lw_check_cancel(fighter: &mut L2CFighterCommon) -> 
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
         return true.into();
     }
-    if fighter.is_cat_flag(Cat1::SpecialS) {
+    if fighter.is_cat_flag(Cat1::SpecialS)
+    && !fighter.is_cat_flag(Cat1::SpecialLw) {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
         return true.into();
     }

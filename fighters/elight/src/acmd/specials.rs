@@ -1142,9 +1142,23 @@ unsafe extern "C" fn effect_specialairhijump(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 5.5);
     frame(lua_state, 12.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+	if VarModule::is_flag(agent.battle_object, vars::elight::instance::HIT_CANCEL) {
+        VarModule::off_flag(agent.battle_object, vars::elight::instance::HIT_CANCEL);
+    }
+    else {
+        FT_MOTION_RATE_RANGE(agent, 1.0, 14.0, 18.0);
+    }
+    frame(lua_state, 14.0);
     FT_MOTION_RATE(agent, 1.0);
 }
 
@@ -1184,4 +1198,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
+    agent.acmd("game_speciallwend", game_speciallwend, Priority::Low);
+    agent.acmd("game_specialairlwend", game_speciallwend, Priority::Low);
 }

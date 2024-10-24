@@ -180,10 +180,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
-
     agent.acmd("game_throwf", game_throwf, Priority::Low);
-
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
-    
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

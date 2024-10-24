@@ -121,6 +121,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     FT_MOTION_RATE(agent, 2.0);
+    frame(lua_state, 15.5);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

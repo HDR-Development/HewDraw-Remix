@@ -63,16 +63,14 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
     }
     frame(lua_state, 11.0);
+    FT_MOTION_RATE_RANGE(agent, 11.0, 27.0, 11.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 53, 75, 0, 40, 4.5, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-    frame(lua_state, 22.0);
-    FT_MOTION_RATE_RANGE(agent, 22.0, 47.0, 16.0);
+    frame(lua_state, 27.0);
+    FT_MOTION_RATE_RANGE(agent, 27.0, 47.0, 11.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 27.0);
-    if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::off_flag(agent.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
     }

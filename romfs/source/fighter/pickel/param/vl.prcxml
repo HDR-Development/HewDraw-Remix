@@ -66,18 +66,18 @@
   </list>
   <list hash="param_trolley">
     <struct index="0">
-      <float hash="speed_limit">1.8</float>
+      <float hash="speed_limit">2.0</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
       <float hash="accel_on_powered_rail">0.12</float>
-      <float hash="speed_limit_on_powered_rail">2.15</float>
+      <float hash="speed_limit_on_powered_rail">2.5</float>
     </struct>
     <struct index="1">
-      <float hash="speed_limit">1.8</float>
+      <float hash="speed_limit">2.0</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
-      <float hash="accel_on_powered_rail">0.13</float>
-      <float hash="speed_limit_on_powered_rail">2.2</float>
+      <float hash="accel_on_powered_rail">0.12</float>
+      <float hash="speed_limit_on_powered_rail">2.5</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
