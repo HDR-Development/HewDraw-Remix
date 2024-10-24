@@ -37,7 +37,8 @@ unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.0, y: 0.5, z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let end_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.end_y_mul");
+    KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 1.0, y: end_y_mul, z:  1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     smashline::original_status(Main, fighter, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END)(fighter)
 }
 
