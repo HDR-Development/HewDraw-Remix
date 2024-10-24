@@ -2,7 +2,7 @@ use super::*;
 use globals::*;
 
 const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), hash40("sys_nopassive")];
-const SMOKE_FX: [u64 ; 17] = [hash40("sys_atk_smoke"),
+const SMOKE_FX: [u64 ; 19] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
                             hash40("sys_dash_smoke"),
@@ -18,6 +18,8 @@ const SMOKE_FX: [u64 ; 17] = [hash40("sys_atk_smoke"),
                             hash40("sys_turn_smoke"),
                             hash40("sys_v_smoke_a"),
                             hash40("sys_v_smoke_b"),
+                            hash40("sys_action_smoke_h"),
+                            hash40("sys_action_smoke_v"),
                             hash40("null")];
 
 unsafe extern "C" fn is_tech_lockout(boma: &mut BattleObjectModuleAccessor) -> bool {
