@@ -85,9 +85,7 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     };
     VarModule::inc_int(weapon.battle_object, TRAVEL_FRAMES);
 
-    let owner_id = VarModule::get_int(weapon.battle_object, PEARL_OWNER_ID) as u32;
-    let owner = utils::util::get_battle_object_from_id(owner_id);
-    let owner_boma = &mut *(*owner).module_accessor;
+    let owner_boma = weapon.boma().get_owner_boma();
 
     // reset trajectory if the pearl is reflected
     let reflect_count = ReflectModule::count(weapon.module_accessor) as i32;
@@ -122,10 +120,18 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
     // statuses where steve should not teleport
     let is_blacklist_status = owner_boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
     ]);
     
     if is_blacklist_status {
+        let pos = PostureModule::pos(weapon.boma());
+        EffectModule::req_2d(owner_boma, Hash40::new("pickel_erace_smoke"), pos, &Vector3f::zero(), 1.0, 0);
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
         return 1.into();
     }
@@ -165,6 +171,26 @@ unsafe extern "C" fn pearl_fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CVal
         EFFECT(weapon, Hash40::new("pickel_erace_smoke"), Hash40::new("top"), 0, (y_pos + (owner_pos.y - pos.y) - offset) * 2.0, ((owner_pos.x - pos.x) * lr) * 2.0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(weapon, 0.9, 0.2, 0.9);
         LAST_EFFECT_SET_RATE(weapon, 0.6);
+    }
+
+    // let go of any opponents steve has grabbed so that they do not teleport with him
+    if owner_boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_CATCH_PULL,
+        *FIGHTER_STATUS_KIND_CATCH_WAIT,
+        *FIGHTER_STATUS_KIND_CATCH_ATTACK
+    ]) 
+    || (owner_boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_THROW,
+        *FIGHTER_STATUS_KIND_CATCH
+        ]) && CatchModule::is_catch(owner_boma))
+    {
+        let opponent = owner_boma.get_grabbed_opponent_boma() as *mut BattleObjectModuleAccessor;
+        StatusModule::change_status_force(opponent, *FIGHTER_STATUS_KIND_CAPTURE_CUT, true);
+        if ArticleModule::is_exist(owner_boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE) {
+            ArticleModule::remove_exist(owner_boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
+        }
+        StatusModule::change_status_force(owner_boma, *FIGHTER_STATUS_KIND_CATCH_CUT, true);
+        StatusModule::change_status_force(opponent, *FIGHTER_STATUS_KIND_CAPTURE_CUT, true);
     }
 
     // initiate teleport
@@ -208,8 +234,57 @@ unsafe extern "C" fn pearl_fly_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     return 0.into();
 }
 
+unsafe extern "C" fn start_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let boma = weapon.boma();
+
+    let grounded = GroundModule::get_touch_line_raw(boma, GroundTouchID(*GROUND_TOUCH_ID_DOWN)) == 1;
+    if !grounded {
+        WorkModule::off_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR);
+    } else {
+        WorkModule::on_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR);
+    }
+
+    if !WorkModule::is_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR) {
+        WorkModule::set_int(boma, -1, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_INT_NO_GRAVITY_COUNT);
+        weapon.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    } else {
+        let frame_no_gravity_on_start = WorkModule::get_param_int(boma, hash40("param_trolley"), hash40("frame_no_gravity_on_start"));
+        WorkModule::set_int(boma, frame_no_gravity_on_start, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_INT_NO_GRAVITY_COUNT);
+        weapon.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    }
+
+    weapon.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+    
+    TeamModule::set_hit_team(boma, *TEAM_NONE);
+
+    if LinkModule::is_link(boma, *WEAPON_LINK_NO_CONSTRAINT) {
+        LinkModule::set_attribute(boma, *WEAPON_LINK_NO_CONSTRAINT, LinkAttribute{_address:*LINK_ATTRIBUTE_REFERENCE_PARENT_CONTROLLER as u8}, true);
+    }
+
+    if !WorkModule::is_flag(boma, *WEAPON_PICKEL_TROLLEY_INSTANCE_WORK_ID_FLAG_TYPE_AIR) {
+        GroundModule::set_attach_ground(boma, true);
+    } else {
+        GroundModule::set_attach_ground(boma, false);
+    }
+
+    weapon.fastshift(L2CValue::Ptr(start_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn start_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    if StatusModule::is_changing(weapon.module_accessor) {
+        return 0.into();
+    }
+    weapon.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+  
+    return 0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_pre);
     agent.status(Main, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_main);
     agent.status(End, WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY, pearl_fly_end);
+
+    agent.status(Main, *WEAPON_PICKEL_TROLLEY_STATUS_KIND_START, start_main);
 }
