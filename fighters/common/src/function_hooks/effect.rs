@@ -68,9 +68,9 @@ unsafe fn FOOT_EFFECT_hook(lua_state: u64) {
         }
     }
 
-    VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
     original!()(lua_state);
-    VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
 }
 
 #[skyline::hook(replace=smash::app::sv_animcmd::FOOT_EFFECT_FLIP)]
@@ -98,9 +98,9 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
         }
     }
 
-    VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
     original!()(lua_state);
-    VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
 }
 
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT)]
@@ -129,9 +129,9 @@ unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
         }
     }
 
-    VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
     original!()(lua_state);
-    VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
 }
 
 #[skyline::hook(replace=smash::app::sv_animcmd::LANDING_EFFECT_FLIP)]
@@ -160,9 +160,9 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
         }
     }
 
-    VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
     original!()(lua_state);
-    VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
 }
 
 #[skyline::hook(replace=smash::app::sv_animcmd::DOWN_EFFECT)]
@@ -190,9 +190,9 @@ unsafe fn DOWN_EFFECT_hook(lua_state: u64) {
         }
     }
 
-    VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::on_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
     original!()(lua_state);
-    VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);
+    if VarModule::has_var_module(boma.object()) {VarModule::off_flag(boma.object(), vars::common::instance::ACMD_EFFECT);}
 }
 
 #[skyline::hook(replace=smash::app::sv_animcmd::EFFECT_GLOBAL_BACK_GROUND_CUT_IN_CENTER_POS)]
@@ -287,6 +287,7 @@ unsafe fn req_on_joint_hook(effect_module: u64, effHash: smash::phx::Hash40, bon
     }
 
     if SMOKE_FX.contains(&effHash.hash)
+    && VarModule::has_var_module((*boma).object())
     && !VarModule::is_flag((*boma).object(), vars::common::instance::ACMD_EFFECT) {
         eff_size = size * 0.7;
     }
