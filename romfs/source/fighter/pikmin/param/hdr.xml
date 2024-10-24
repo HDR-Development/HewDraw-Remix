@@ -8,4 +8,7 @@
         <float hash="light_bright_alpha">1.0</float>
         <float hash="light_dim_alpha">0.05</float>
     </struct>
+    <struct hash="param_special_hi">
+        <float hash="end_y_mul">0.5</float>
+    </struct>
 </struct>
