@@ -185,6 +185,8 @@ pub mod vars {
 
             pub const WEIRD_ASS_TURN_RUN_ANIMATION: i32 = 0x0067;
 
+            pub const ACMD_EFFECT: i32 = 0x0068;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
