@@ -1,79 +1,88 @@
-jump_squat:
-  blend_frames: 0
-  animations:
-  - name: a05landingheavy.nuanmb
-fall:
-  blend_frames: 3
-fall_aerial:
-  blend_frames: 3
-fall_special:
-  blend_frames: 3
-landing_fall_special:
-  animations:
-    - name: c05landingairlw.nuanmb
-guard_off:
-  blend_frames: 4
-  extra:
-    cancel_frame: 12
-catch:
-  flags:
-    move: false
-throw_hi:
-  extra:
-    cancel_frame: 47
-special_s:
-  extra:
-    cancel_frame: 29
 attack_11:
   extra:
     cancel_frame: 16
-attack_lw3:
-  extra:
-    cancel_frame: 29
-attack_hi3:
-  extra:
-    cancel_frame: 37
-attack_s3_s:
-  flags:
-    move: false
 attack_air_b:
   extra:
     cancel_frame: 35
 attack_air_f:
   extra:
     cancel_frame: 30
-attack_air_n:
-  extra:
-    cancel_frame: 42
-special_air_s:
-  extra:
-    cancel_frame: 29
-attack_air_lw:
-  extra:
-    cancel_frame: 41
 attack_air_hi:
   extra:
     cancel_frame: 34
-special_n_start:
+attack_air_lw:
   extra:
-    cancel_frame: 16
-special_n_failure:
+    cancel_frame: 41
+attack_air_n:
+  extra:
+    cancel_frame: 42
+attack_hi3:
+  extra:
+    cancel_frame: 37
+attack_lw3:
   extra:
     cancel_frame: 29
-special_air_n_failure:
-  extra:
-    cancel_frame: 29
+attack_s3_s:
+  flags:
+    move: false
+catch:
+  flags:
+    move: false
 catch_attack:
   extra:
     cancel_frame: 0
+fall:
+  blend_frames: 3
+fall_aerial:
+  blend_frames: 3
+fall_special:
+  blend_frames: 3
 furafura_end:
   extra:
     cancel_frame: 34
+guard_off:
+  blend_frames: 4
+  extra:
+    cancel_frame: 12
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+landing_fall_special:
+  animations:
+  - name: c05landingairlw.nuanmb
 shield_break_fly:
   animations:
-    - name: f03downspotu.nuanmb
+  - name: f03downspotu.nuanmb
+special_air_n_failure:
+  extra:
+    cancel_frame: 29
+special_air_s:
+  extra:
+    cancel_frame: 29
+special_n_failure:
+  extra:
+    cancel_frame: 29
+special_n_start:
+  extra:
+    cancel_frame: 16
+special_s:
+  extra:
+    cancel_frame: 29
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_hi:
+  extra:
+    cancel_frame: 54
+throw_b:
+  extra:
+    cancel_frame: 40
+throw_f:
+  extra:
+    cancel_frame: 35
+throw_lw:
+  extra:
+    cancel_frame: 50
 cliff_wait:
   blend_frames: 2

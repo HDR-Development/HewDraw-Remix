@@ -129,11 +129,13 @@ pub unsafe extern "C" fn special_s_failed_main(fighter: &mut L2CFighterCommon) -
         Hash40::new("special_s_failed").into(), 
         false.into()
     );
-
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack_dash_uniq as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_failed_main_loop as *const () as _))
 }
 
 pub unsafe extern "C" fn special_s_failed_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue{
+    fighter.status_AttackDash_Main();
+    
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -157,7 +159,6 @@ pub unsafe extern "C" fn special_s_failed_main_loop(fighter: &mut L2CFighterComm
 
     return 0.into();
 }
-
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);

@@ -138,7 +138,7 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
-    && fighter.motion_frame() < 8.0 
+    && fighter.motion_frame() < 9.0 
     && !fighter.is_button_on(Buttons::SpecialRaw){
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
     }

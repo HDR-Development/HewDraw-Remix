@@ -25,9 +25,12 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
+
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         fighter.sub_air_check_dive();
     }
+
+    // Airdodge lockout during first 20f of tumble
     if fighter.global_table[CURRENT_FRAME].get_i32() <= 20 {
         WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
@@ -36,9 +39,39 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::enable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
     }
+
+    // Prevent buffering wiggle out of tumble from previous status
+    if StatusModule::is_changing(fighter.module_accessor) {
+        ControlModule::clear_command_one(
+            fighter.module_accessor,
+            *FIGHTER_PAD_COMMAND_CATEGORY1,
+            *FIGHTER_PAD_CMD_CAT1_DASH,
+        );
+        ControlModule::clear_command_one(
+            fighter.module_accessor,
+            *FIGHTER_PAD_COMMAND_CATEGORY1,
+            *FIGHTER_PAD_CMD_CAT1_TURN_DASH,
+        );
+    }
+
     if fighter.check_damage_fall_transition().get_bool() {
         return 0.into();
     }
+    
+    // Wiggle out of tumble
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+    && fighter.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
+    {
+        ControlModule::reset_trigger(fighter.module_accessor);
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
             should_tech = fighter.sub_check_passive_button(L2CValue::I32(trigger_frame)).get_bool();
@@ -52,6 +85,7 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
         should_tech = fighter.sub_check_passive_button(L2CValue::I32(ganon_special_s_passive_trigger_frame)).get_bool();
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
@@ -64,6 +98,7 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return true.into();
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
@@ -75,6 +110,7 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return true.into();
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN)
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         fighter.change_status(
@@ -83,6 +119,8 @@ unsafe fn status_DamageFall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return 0.into();
     }
+
     fighter.sub_damage_fall_uniq_process_exec_fix_pos();
+
     return 0.into()
 }

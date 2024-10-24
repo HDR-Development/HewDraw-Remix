@@ -77,7 +77,7 @@ unsafe extern "C" fn effect_littlemacspecialn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        if VarModule::is_flag(boma.object(), vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+        if VarModule::is_flag(boma.object(), vars::kirby::status::SPECIAL_N_CLEAR_CRIT) {
             SlowModule::clear_whole(boma);
             EffectModule::remove_screen(boma, Hash40::new("bg_criticalhit"), 0);
         }

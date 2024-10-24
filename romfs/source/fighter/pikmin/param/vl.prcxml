@@ -23,6 +23,8 @@
   </list>
   <list hash="param_pikmin">
     <struct index="0">
+      <float hash="throw_power_mul_2">1.0</float>
+      <float hash="throw_power_mul_3">1.0</float>
       <int hash="special_s_lever_clatter_frame">0</int>
       <int hash="special_s_damage_remove_rate">0</int>
     </struct>

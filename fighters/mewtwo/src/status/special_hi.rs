@@ -30,6 +30,138 @@ unsafe extern "C" fn special_hi2_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_2_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
+    let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
+    let mut length = sv_math::vec2_length(stick_x, stick_y).min(1.0);
+
+    let wrap_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("wrap_stick"));
+    let mut follow_stick = false;
+    if length <= wrap_stick {
+        if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_GROUND {
+            follow_stick = true;
+        }
+        else {
+            if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+                if GroundModule::is_passable_ground(fighter.module_accessor) {
+                    follow_stick = true;
+                }
+                else {
+                    let normal_x = GroundModule::get_touch_normal_x(fighter.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32);
+                    let normal_y = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32);
+                    let angle = sv_math::vec2_angle(normal_x, normal_y, stick_x, stick_y);
+                    if angle < 90.0_f32.to_radians() {
+                        follow_stick = true;
+                    }
+                }
+            }
+        }
+    }
+    else {
+        follow_stick = true;
+    }
+
+    if 0.00001 < stick_x {
+        PostureModule::set_lr(fighter.module_accessor, 1.0);
+    }
+    else if stick_x < -0.00001 {
+        PostureModule::set_lr(fighter.module_accessor, -1.0);
+    }
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
+
+    let lr = PostureModule::lr(fighter.module_accessor);
+
+    let wrap_speed_multi = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("wrap_speed_multi"));
+    let wrap_speed_add = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("wrap_speed_add"));
+
+    let mut speed_x;
+    let mut speed_y = 0.0;
+    if !follow_stick {
+        let atan = stick_y.atan2(stick_x * lr);
+        let length_mul = wrap_speed_multi * length;
+
+        let speed = length_mul + wrap_speed_add;
+        let cos = atan.cos();
+        speed_x = speed * cos;
+        speed_x *= lr;
+    }
+    else {
+        let angle = if length < wrap_stick {
+            length = 1.0;
+            90.0_f32.to_radians()
+        }
+        else {
+            stick_y.atan2(stick_x * lr)
+        };
+
+        let length_mul = wrap_speed_multi * length;
+
+        let speed = length_mul + wrap_speed_add;
+        let cos = angle.cos();
+        speed_x = speed * cos;
+        speed_x *= lr;
+
+        let sin = angle.sin();
+        speed_y = speed * sin;
+
+        if angle != 0.0 && angle.to_degrees() != 180.0 { //previously would force airborne on horizontal angles..
+            fighter.set_situation(SITUATION_KIND_AIR.into());
+            GroundModule::set_attach_ground(fighter.module_accessor, false);
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        } 
+    }
+
+    KineticModule::unable_energy_all(fighter.module_accessor);
+
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        ENERGY_STOP_RESET_TYPE_FREE,
+        speed_x,
+        speed_y,
+        0.0,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_accel,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        -1.0,
+        -1.0
+    );
+
+    sv_kinetic_energy!(
+        enable,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP
+    );
+
+    HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+
+    GroundModule::clear_cliff_point(fighter.module_accessor);
+
+    0.into()
+}
+
 unsafe extern "C" fn special_hi2_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
@@ -143,6 +275,7 @@ unsafe extern "C" fn special_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2, special_hi2_pre);
+    agent.status(Init, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2, special_hi_2_init);
     agent.status(Exec, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2, special_hi2_exec);
     
     agent.status(Pre, *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3, special_hi3_pre);
