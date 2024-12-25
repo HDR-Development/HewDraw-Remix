@@ -43,4 +43,8 @@
     <float hash="guard_off_parry_faf">37</float>
     <int hash="pummel_max_cancel_frame">8</int>
     <int hash="button_walljump_leniency_frame">3</int>
+    <int hash="guard_damage_precede">2</int>
+    <int hash="damage_level2_precede">1</int>
+    <int hash="damage_level3_precede">2</int>
+    <float hash="attack_air_cliff_catch_frame_after_cancel_frame">5</float>
 </struct>

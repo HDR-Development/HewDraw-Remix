@@ -26,6 +26,7 @@ mod reflet_special_n;
 mod richter_special_n;
 mod ridley_special_n;
 mod sonic_special_n;
+mod trail_special_n;
 
 pub fn install(agent: &mut Agent) {
     bayonetta_special_n_cancel::install(agent);
@@ -52,4 +53,5 @@ pub fn install(agent: &mut Agent) {
     richter_special_n::install(agent);
     ridley_special_n::install(agent);
     sonic_special_n::install(agent);
+    trail_special_n::install(agent);
 }

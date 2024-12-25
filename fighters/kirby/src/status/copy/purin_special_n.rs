@@ -41,7 +41,9 @@ pub unsafe extern "C" fn purin_special_n_exec(fighter: &mut L2CFighterCommon) ->
 
 pub unsafe extern "C" fn purin_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("purin_special_n"), 0.0, 1.0, false, 0.0, false, false);
-    situation_helper(fighter);
+    fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *GROUND_CORRECT_KIND_AIR);
+
     fighter.main_shift(purin_special_n_main_loop)
 }
 
@@ -49,14 +51,12 @@ pub unsafe extern "C" fn purin_special_n_main_loop(fighter: &mut L2CFighterCommo
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return false.into();
     }
-
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return true.into();
         }
     }
-
     if VarModule::is_flag(fighter.battle_object, vars::kirby::status::PURIN_SPECIAL_N_HIT)
     && !VarModule::is_flag(fighter.battle_object, vars::kirby::status::PURIN_SPECIAL_N_HIT_CANCEL_OK) {
         let enable_hit_cancel_frame = VarModule::get_int(fighter.battle_object, vars::kirby::status::PURIN_SPECIAL_N_ENABLE_HIT_CANCEL_FRAME);
@@ -65,12 +65,18 @@ pub unsafe extern "C" fn purin_special_n_main_loop(fighter: &mut L2CFighterCommo
             VarModule::on_flag(fighter.battle_object, vars::kirby::status::PURIN_SPECIAL_N_HIT_CANCEL_OK);
         }
     }
-
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT) {
+        VarModule::on_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT);
+        SlowModule::set_whole(fighter.module_accessor, 8, 25);
+        PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+        EffectModule::req_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), false, true, true);
+    }
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
-        situation_helper(fighter);
+        fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *GROUND_CORRECT_KIND_AIR);
     }
-
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
@@ -89,22 +95,15 @@ fn copy_ability_reset(fighter: *mut Fighter, some_miifighter_bool: bool);
 pub unsafe extern "C" fn purin_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
+    if VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT) {
+        SlowModule::clear_whole(fighter.module_accessor);
+        EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
+    }
     let kirb = fighter.battle_object.cast::<Fighter>();
     copy_ability_reset(kirb, false);
     EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("kirby_star"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
     PLAY_SE(fighter, Hash40::new("se_kirby_special_n05"));
     return 0.into()
-}
-
-unsafe extern "C" fn situation_helper(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-    }
-    else {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-    }
 }
 
 pub fn install(agent: &mut Agent) {

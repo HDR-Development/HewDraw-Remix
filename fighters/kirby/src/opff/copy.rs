@@ -438,24 +438,44 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 }
 
 // Sora Magic Cancels
-unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+unsafe fn trail_magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // Firaga Airdodge Cancel
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT {
-        if frame > 2.0 {
-            boma.check_airdodge_cancel();
-        }
+    if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT) 
+    && boma.is_motion(Hash40::new("trail_special_air_n1")) 
+    && boma.motion_frame() > 2.0 {
+        boma.check_airdodge_cancel();
     }
-    // Thundaga Land Cancel
+    // thundaga land cancel
     if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3)
     && boma.is_situation(*SITUATION_KIND_GROUND)
-    && boma.is_prev_situation(*SITUATION_KIND_AIR)
-    {
-        let special_n_fire_cancel_frame_ground = 69.0;
-        let landing_lag = 12.0;
-        if MotionModule::frame(boma) < (special_n_fire_cancel_frame_ground - landing_lag) {
+    && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        let special_n_fire_cancel_frame_ground = 69.0; // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
+        let landing_lag = 12.0; // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+        if boma.motion_frame() < (special_n_fire_cancel_frame_ground - landing_lag) {
+            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
         }
     }
+    // blizzaga jump cancel
+    if (boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2)
+    && boma.motion_frame() > 12.0) {
+        boma.check_jump_cancel(false, false);
+    }
+
+    // handles the cooldown timer between casting spells
+    if VarModule::get_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER) > 0 {
+        VarModule::dec_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER);
+
+        // cycles and enables magic on the last frame of the cooldown window
+        if VarModule::get_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER) == 1 {
+            WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+            let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
+            FighterSpecializer_Trail::change_magic(trail);
+
+            VarModule::off_flag(boma.object(), vars::trail::instance::DISABLE_SPECIAL_N);
+        }
+    }   
 }
 
 // cycles Kirby to firaga after copying Sora
@@ -471,6 +491,29 @@ unsafe fn trail_magic_cycle(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         } else if magic_kind == *FIGHTER_TRAIL_SPECIAL_N_MAGIC_KIND_THUNDER
         && frame > 4.0 {
             FighterSpecializer_Trail::change_magic(kirby); // cycles to "blizzard", which is now fire
+        }
+    }
+}
+
+// handles the speed and disappearance of blizzaga effects
+unsafe fn trail_flower_frame(boma: &mut BattleObjectModuleAccessor) {
+    if ArticleModule::is_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER) {
+        let article = ArticleModule::get_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        let article_boma = sv_battle_object::module_accessor(article_id);
+        if MotionModule::motion_kind(article_boma) == hash40("special_n2") {
+            let blizz_frame = MotionModule::frame(article_boma) as i32;
+            if blizz_frame == 1 {
+                MotionModule::set_rate(article_boma, 1.1);
+            }
+            if (12..64).contains(&blizz_frame)
+            && !boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2) {
+                MotionModule::set_rate(article_boma, 1.7);
+            }
+            if (65..90).contains(&blizz_frame) {
+                MotionModule::set_rate(article_boma, 1.1);
+                ArticleModule::remove_exist(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER, app::ArticleOperationTarget(0));
+            }
         }
     }
 }
@@ -1228,6 +1271,25 @@ unsafe fn packun_ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe extern "C" fn plant_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        if !sv_information::is_ready_go() && fighter.status_frame() < 1 {
+            return;
+        }
+
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != FIGHTER_KIND_PACKUN {
+            utils::ui::UiManager::set_plant_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, false);
+            return;
+        }
+
+        utils::ui::UiManager::set_plant_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_plant_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE)
+        );
+    }
+}
+
 unsafe fn ken_hado_landcancel(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if !boma.is_status_one_of(&[
         *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N,
@@ -1286,8 +1348,9 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x35 => max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame),
         // Sora
         0x5D => {
-            magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
+            trail_magic_handling(fighter, boma, frame);
             trail_magic_cycle(fighter, boma, frame);
+            trail_flower_frame(boma);
         },
         // Steve
         0x58 => pickel_mining(fighter, boma),
@@ -1379,4 +1442,8 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon, boma: &mut Batt
         0x56 => master_nspecial_cancels(boma, status_kind, situation_kind),
         _ => {}
     }
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, plant_meter);
 }

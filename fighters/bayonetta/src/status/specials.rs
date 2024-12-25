@@ -113,7 +113,7 @@ unsafe extern "C" fn special_s_slow_hit(fighter: &mut L2CFighterCommon) -> L2CVa
     fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT);
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, shield_x);
-    } else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ATTACK) {
+    } else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, mul_x);
         fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT_BEFORE_GUARD);
     }

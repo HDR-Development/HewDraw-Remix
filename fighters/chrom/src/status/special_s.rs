@@ -49,9 +49,6 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
             let reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
             smash::app::lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
             smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
-            let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
-            lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
-            lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
             smash::app::lua_bind::KineticEnergy::enable(stop_energy);
             smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
             smash::app::lua_bind::KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -80,6 +77,18 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
+pub unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter);
+
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
+        let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::FighterKineticEnergyGravity;
+        lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
+        lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
+    }
+
+    ret
+}
+
 pub fn set_gravity_delay_resume_frame(energy: *mut app::FighterKineticEnergyGravity, frames: i32) {
     unsafe {
       *(energy as *mut i32).add(0x50 / 4) = frames;
@@ -89,4 +98,5 @@ pub fn set_gravity_delay_resume_frame(energy: *mut app::FighterKineticEnergyGrav
 
 pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_exec);
 }

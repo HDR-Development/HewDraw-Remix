@@ -19,6 +19,7 @@ unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon
     && fighter.is_cat_flag(Cat1::SpecialLw)
     && !fighter.is_in_hitlag() {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
     }
 }
 

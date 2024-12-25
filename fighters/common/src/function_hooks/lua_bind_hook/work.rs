@@ -7,9 +7,9 @@ unsafe fn is_flag_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool
         if flag == *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN {
             return true;
         }
-        else if flag == *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR {
-            if boma.is_fighter()
-            && (boma.kind() == *FIGHTER_KIND_CLOUD && boma.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE))
+        
+        if flag == *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR {
+            if (boma.kind() == *FIGHTER_KIND_CLOUD && boma.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE))
             || (boma.kind() == *FIGHTER_KIND_EDGE && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N))
             || (boma.kind() == *FIGHTER_KIND_LUCARIO && boma.is_status(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD))
             || (boma.kind() == *FIGHTER_KIND_MEWTWO && boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD))
@@ -40,6 +40,17 @@ unsafe fn is_flag_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool
                 ])) {
                 return false;
             }
+        }
+        
+        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR])
+        && flag == *FIGHTER_STATUS_DAMAGE_FLAG_REACTION_CANCEL {
+            return true;
+        }
+
+        if boma.kind() == *FIGHTER_KIND_PFUSHIGISOU
+        && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+        && flag == *FIGHTER_PFUSHIGISOU_STATUS_SPECIAL_HI_SET_MAP_COLL_OFFSET {
+            return false;
         }
     }
     original!()(boma, flag)

@@ -231,3 +231,5 @@ throw_f:
 throw_lw:
   extra:
     cancel_frame: 60
+cliff_wait:
+  blend_frames: 2

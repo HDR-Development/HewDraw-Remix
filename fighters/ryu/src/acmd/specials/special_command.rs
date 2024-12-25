@@ -45,6 +45,7 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        VarModule::set_int(agent.battle_object, vars::shotos::status::HIT_CANCEL_TIMER, 12);
         MeterModule::watch_damage(agent.battle_object, true);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             MeterModule::watch_damage(agent.battle_object, false);
@@ -76,10 +77,6 @@ unsafe extern "C" fn game_attackcommand4(agent: &mut L2CAgentBase) {
         JostleModule::set_team(boma, 0);
         MeterModule::watch_damage(agent.battle_object, false);
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 33.0);
-    if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 46.0);
     FT_MOTION_RATE(agent, 1.0);

@@ -13,6 +13,7 @@ mod inkbullet;
 mod roller;
 mod splash;
 mod splashbomb;
+mod squid;
 
 use smash::{
     lib::{
@@ -57,4 +58,5 @@ pub fn install() {
     roller::install();
     splash::install();
     splashbomb::install();
+    squid::install();
 }

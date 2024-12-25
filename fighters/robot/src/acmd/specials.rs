@@ -360,8 +360,8 @@ unsafe extern "C" fn game_specialhirise(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(agent, 
-        if VarModule::is_flag(agent.battle_object, vars::robot::instance::SPECIAL_HI_GROUND_START) { 0.25 }
-        else { 0.35 }
+        if VarModule::is_flag(agent.battle_object, vars::robot::instance::SPECIAL_HI_GROUND_START) { 0.17 }
+        else { 0.34 }
     );
     if is_excute(agent) {
         AttackModule::clear_all(boma);

@@ -195,7 +195,11 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
         let cancel_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_LANDING_WORK_FLOAT_STIFFNESS_FRAME);
         if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE)
         && MotionModule::frame(fighter.module_accessor) >= cancel_frame - 1.0 {
-            ControlModule::clear_command(fighter.module_accessor, false);
+            // Reduce buffer out of non-CCd non-tumble hitstun landing
+            let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
+            let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
+            let dif = precede - damage_level3_precede;
+            ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
         }
     }
 
@@ -390,7 +394,7 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
         if fighter.sub_check_command_parry().get_bool() {
             VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
         if fighter.sub_check_command_guard().get_bool() {
@@ -775,6 +779,8 @@ unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_fram
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_cancel_damage_face)]
 pub unsafe fn sub_landing_cancel_damage_face(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    
     original!()(fighter)
 }
 

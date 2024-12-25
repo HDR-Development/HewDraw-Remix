@@ -6,19 +6,33 @@ pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CVa
     // if under USpecial penalty and next status would have been landing, use special landing instead
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
     if VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
-        if [
+        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::resume_energy_all(fighter.module_accessor);
+        if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && [
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
         ].contains(&next_status) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
-        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
     }
     smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
 }
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
+    if VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+        // special kinetics
+        KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.2, y: 0.2, z: 0.2}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        KineticModule::suspend_energy_all(fighter.module_accessor);
+        // meter cost
+        let rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) - (8.1 * rate));
+        opff::check_burnout(fighter);
+        opff::pause_meter_regen(fighter, 120);
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(attack_air_main_loop as *const () as _))
 }
 
@@ -41,13 +55,6 @@ unsafe extern "C" fn attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.off_flag(*FIGHTER_LUCARIO_ATTACK_AIR_STATUS_WORK_ID_FLAG_DEC_SPEED);
     }
 
-    // if aerial is hit, ignore USpecial cancel penalty
-    // allows lucario to combo out of the attacks he lands from USpecial cancel
-    if VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL)
-    }
-
     if !status_AttackAir_Main_lucario(fighter).get_bool() {
         // idk what this stuff is but it's in common impl
         fighter.sub_air_check_superleaf_fall_slowly();
@@ -65,18 +72,24 @@ unsafe extern "C" fn status_AttackAir_Main_lucario(fighter: &mut L2CFighterCommo
         return true.into();
     }
 
+    let should_special_fall = VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) 
+        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD);
+
     // disallow cancel if under USpecial penalty
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool() {
-            return true.into();
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        KineticModule::resume_energy_all(fighter.module_accessor);
+        if !should_special_fall {
+            if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+            || fighter.sub_air_check_fall_common().get_bool() {
+                return true.into();
+            }
         }
     }
 
     // transition to special fall if under USpecial penalty
     if MotionModule::is_end(fighter.module_accessor) {
-        if VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+        if should_special_fall {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
         } else {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

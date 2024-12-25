@@ -197,7 +197,7 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
         && fighter.is_cat_flag(CatHdr::Parry) {
             VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
             StopModule::cancel_hit_stop(fighter.module_accessor);
-            StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_GUARD_OFF, true);
+            StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_GUARD_OFF, false);
             return true.into();
         }
     

@@ -1124,22 +1124,40 @@ unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::Inli
     }
 }
 
-#[skyline::hook(replace=ControlModule::reset_flick_x)]
-unsafe fn reset_flick_x(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
-    call_original!(boma);
+#[skyline::hook(offset = 0x3f8460)]
+unsafe fn reset_flick_x(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    VarModule::set_int((*boma).object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+
+    call_original!(control_module);
 }
 
-#[skyline::hook(replace=ControlModule::reset_flick_y)]
-unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
-    call_original!(boma);
+#[skyline::hook(offset = 0x3f8470)]
+unsafe fn reset_flick_y(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    VarModule::set_int((*boma).object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+
+    call_original!(control_module);
 }
 
-#[skyline::hook(replace=ControlModule::reset_trigger)]
-unsafe fn reset_trigger_hook(boma: &mut BattleObjectModuleAccessor) {
-    InputModule::reset_trigger(boma.object());
-    call_original!(boma)
+#[skyline::hook(offset = 0x3f82a0)]
+unsafe fn reset_trigger_hook(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    InputModule::reset_trigger((*boma).object());
+
+    call_original!(control_module)
+}
+
+#[skyline::hook(offset = 0x6baa10)]
+unsafe fn clear_command_hook(control_module: u64, arg2: bool) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    InputModule::clear_commands((*boma).object(), 4, -1);
+
+    call_original!(control_module, arg2)
 }
 
 // fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -1191,7 +1209,8 @@ pub fn install() {
         exec_command_reset_attack_air_kind_hook,
         reset_flick_x,
         reset_flick_y,
-        reset_trigger_hook
+        reset_trigger_hook,
+        clear_command_hook
     );
     //skyline::nro::add_hook(nro_hook);
 }

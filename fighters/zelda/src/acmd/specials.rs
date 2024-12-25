@@ -271,10 +271,12 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FLASH(agent, 0.62, 0.94, 0.9, 0.6);
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            EFFECT_FOLLOW(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 4.5 * lr, 10.0, -4.0, 0, 0, 0, 1.65, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.95, 3.0, 0.6);
-            LAST_EFFECT_SET_ALPHA(agent, 0.75);
-            LAST_EFFECT_SET_RATE(agent, 1.15);
+            if boma.is_situation(*SITUATION_KIND_AIR) {
+                EFFECT_FOLLOW(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 4.5 * lr, 10.0, -4.0, 0, 0, 0, 1.65, true);
+                LAST_EFFECT_SET_COLOR(agent, 0.95, 3.0, 0.6);
+                LAST_EFFECT_SET_ALPHA(agent, 0.75);
+                LAST_EFFECT_SET_RATE(agent, 1.15);
+            }
         } else {
             if lr < 0.0 {
                 EFFECT_FOLLOW(agent, Hash40::new("zelda_flor_end_l"), Hash40::new("top"), 0, 9, -0.75, 0, 0, 0, 1.0, false);
@@ -396,10 +398,6 @@ unsafe extern "C" fn effect_landingfallspecial(agent: &mut L2CAgentBase) {
         frame(lua_state, 3.0);
         if is_excute(agent) {
             FLASH(agent, 0.62, 0.94, 0.9, 0.6);
-            EFFECT_FOLLOW(agent, Hash40::new("zelda_atk"), Hash40::new("top"), 5.5 * lr, 8.0, -2.0, 0, 0, 0, 1.65, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.95, 3.0, 0.6);
-            LAST_EFFECT_SET_ALPHA(agent, 0.75);
-            LAST_EFFECT_SET_RATE(agent, 1.10);
             if lr < 0.0 {
                 EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, false);
             }

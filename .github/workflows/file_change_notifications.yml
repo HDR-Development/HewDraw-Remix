@@ -59,8 +59,6 @@ jobs:
           "fighters/richter/src/acmd/specials.rs:249-257"
           "fighters/simon/src/acmd/specials.rs:80-84"
           
-          "**/status/**"
-          
           "fighters/lucas/src/acmd/aerials.rs"
           "fighters/mewtwo/src/acmd/aerials.rs"
           "fighters/ness/src/acmd/aerials.rs"

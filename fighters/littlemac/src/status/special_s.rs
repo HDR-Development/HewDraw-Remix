@@ -2,6 +2,35 @@ use super::*;
 
 // FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP
 
+pub unsafe extern "C" fn special_s_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    
+    return 0.into();
+}
+
 unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
@@ -152,6 +181,7 @@ unsafe extern "C" fn special_s_blow_end_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_pre);
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
     agent.status(Main, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP_END, special_s_jump_end_main);
 

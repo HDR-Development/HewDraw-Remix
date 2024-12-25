@@ -89,15 +89,28 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     && CancelModule::is_enable_cancel(fighter.module_accessor) {
         let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
         WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
+
     if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && StatusModule::is_changing(fighter.module_accessor) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_HI_HOP);
+    }
+
+    if fighter.is_status(*FIGHTER_STATUS_KIND_AIR_LASSO_FAILURE)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && MotionModule::is_end(fighter.module_accessor) {
+        let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.landing_frame");
+        WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
     }
 }
 

@@ -71,8 +71,8 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && !VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
-        VarModule::on_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT);
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT) {
+        VarModule::on_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT);
         SlowModule::set_whole(fighter.module_accessor, 8, 25);
         PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
         EffectModule::req_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), false, true, true);
@@ -138,7 +138,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_starrod_bullet"), false, false);
-    if VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_LITTLEMAC_CLEAR_CRIT) {
+    if VarModule::is_flag(fighter.battle_object, vars::kirby::status::SPECIAL_N_CLEAR_CRIT) {
         SlowModule::clear_whole(fighter.module_accessor);
         EffectModule::remove_screen(fighter.module_accessor, Hash40::new("bg_criticalhit"), 0);
     }

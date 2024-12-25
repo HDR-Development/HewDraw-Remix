@@ -229,7 +229,21 @@ unsafe extern "C" fn special_s_reel_main_loop(fighter: &mut L2CFighterCommon) ->
     return 0.into();
 }
 
+// FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_HIT
+
+unsafe extern "C" fn special_s_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let caught_id = fighter.get_int(*FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_INT_TARGET_OBJECT_ID);
+
+    if sv_battle_object::category(caught_id as u32) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        let caught_boma = sv_battle_object::module_accessor(caught_id as u32);
+        GroundModule::set_passable_check(caught_boma, false);
+    }
+
+    smashline::original_status(End, fighter, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_HIT)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
     agent.status(Main, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_REEL, special_s_reel_main);
+    agent.status(End, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_HIT, special_s_hit_end);
 }

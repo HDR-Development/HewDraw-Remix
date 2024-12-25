@@ -79,8 +79,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_FALL,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP,
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK,
-            *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2,
-            *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3
+            *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3//because for some reason it doesn't work if its in the lua_consts range below
             ])
         || (0x206..0x377).contains(&copystatus) {
             fighter.sub_air_check_dive();
@@ -143,5 +142,6 @@ pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
+    copy::install(agent);
     agent.on_line(Main, kirby_frame_wrapper);
 }

@@ -19,8 +19,13 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_DamageFlyCommon_hook,
             exec_damage_elec_hit_stop_hook,
             FighterStatusDamage__is_enable_damage_fly_effect_hook,
+            sub_update_damage_fly_effect,
+            ftStatusUniqProcessDamage_init,
             status_Damage_Main,
-            status_DamageAir_Main
+            ftStatusUniqProcessDamageAir_init,
+            status_DamageAir_Main,
+            sub_damage_uniq_process_exit,
+            sub_thrown_uniq_process_init
         );
     }
 }
@@ -296,6 +301,9 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         let invalid_paralyze_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_paralyze_frame"));
         WorkModule::set_float(fighter.module_accessor, invalid_paralyze_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_PARALYZE_FRAME);
     }
+    if FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
+        ControlModule::reset_trigger(fighter.module_accessor);
+    }
 }
 
 // calculates launch angle factor
@@ -321,7 +329,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let angle_threshold = 29.358;
     let speed_start_horizontal = 4.65; // the start of scaling at angles below the angle_threshold
     let speed_start_vertical = 5.63; // the start of scaling at completely vertical angles
-    let speed_end = 7.5; // the end of scaling
+    let speed_end = 7.2; // the end of scaling
 
     // calculate true speed_start using angle
     let angle_factor = get_angle_factor(angle_threshold, angle); // the actual angle factor
@@ -339,10 +347,16 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
 
     // calculate speed_up_mul
     let min_mul = 1.0;
-    let max_mul = 1.8;
-    let power = 1.2;
+    let max_mul = 1.65;
+    let power = 1.0;
     let ratio = ((speed - speed_start) / (speed_end - speed_start));
-    let speed_up_mul = util::nlerp(min_mul, max_mul, power, ratio);
+    let speed_up_mul = if speed <= speed_end {
+        util::nlerp(min_mul, max_mul, power, ratio)
+    } else {
+        let dif = (speed_end * max_mul) - speed_end;
+        let new_speed = speed + dif;
+        new_speed / speed
+    };
 
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
     WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
@@ -612,11 +626,87 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
 pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
     let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
 
-    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
-        return L2CValue::Bool(false);
+    let speed = sv_math::vec2_length(
+        KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+            + KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE),
+
+        KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+            + KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE)
+    );
+
+    let fly_effect_smoke_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("fly_effect_smoke_speed"));
+
+    if ret.get_bool() {
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME) < 3 {
+            // Prevents knockback smoke "farts"
+            // when only 1 or 2 smoke puffs would result from the knockback curve
+            if speed > 0.0
+            && speed < fly_effect_smoke_speed + 1.0 {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_NO_SMOKE);
+            }
+
+            return L2CValue::Bool(false);
+        }
+        else if speed < fly_effect_smoke_speed {
+            return L2CValue::Bool(false);
+        }
     }
 
     ret
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_update_damage_fly_effect)]
+pub unsafe fn sub_update_damage_fly_effect(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue, arg6: L2CValue, arg7: L2CValue, arg8: L2CValue) -> L2CValue {
+    // This allows us to generate kb smoke as separate puffs every frame
+    let generate_smoke = arg2.clone();
+    let mut new_generate_smoke = generate_smoke.clone();
+    let hitlag_frames_remaining = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
+    let fly_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
+
+    if arg4.clone().get_u64() == 0x1154cb72bf
+    && generate_smoke.get_bool() {
+        if hitlag_frames_remaining != 0
+        || (fly_frame > 3
+            && fly_frame % 2 == 1)
+        {
+            new_generate_smoke = L2CValue::Bool(false);
+        }
+    }
+    let handle = call_original!(fighter, new_generate_smoke.clone(), arg3.clone(), arg4.clone(), arg5.clone(), arg6.clone(), arg7.clone(), arg8.clone());
+
+    if arg4.get_u64() == 0x1154cb72bf
+    && generate_smoke.get_bool()
+    && hitlag_frames_remaining == 0
+    && !new_generate_smoke.get_bool() {
+        return call_original!(fighter, generate_smoke, arg3, arg4, arg5, arg6, arg7, arg8);
+    }
+
+    handle
+}
+
+
+#[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init)]
+unsafe fn ftStatusUniqProcessDamage_init(fighter: &mut L2CFighterCommon, arg2: L2CValue) {
+    original!()(fighter, arg2);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("level"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let level = fighter.pop_lua_stack(1).get_i32();
+
+    let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
+
+    // Reduce buffer during non-tumble kb
+    if level == *DAMAGE_LEVEL_2 {
+        let damage_level2_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level2_precede");
+        let dif = precede - damage_level2_precede;
+        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+    }
+    else if level == *DAMAGE_LEVEL_3 {
+        let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
+        let dif = precede - damage_level3_precede;
+        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+    }
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Damage_Main)]
@@ -624,25 +714,75 @@ unsafe fn status_Damage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true);
 
-    if MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("level"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let level = fighter.pop_lua_stack(1).get_i32();
+
+    if level == *DAMAGE_LEVEL_1
+    && MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
     && MotionModule::prev_frame(fighter.module_accessor) + 0.0001 < cancel_frame - 1.0 {
-        // Prevent buffering out of non-tumble kb
+        // Prevent buffering out of very low non-tumble kb
         ControlModule::clear_command(fighter.module_accessor, false);
     }
 
     original!()(fighter)
 }
 
+#[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamageAir_init)]
+unsafe fn ftStatusUniqProcessDamageAir_init(fighter: &mut L2CFighterCommon, arg2: L2CValue) {
+    original!()(fighter, arg2);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("level"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let level = fighter.pop_lua_stack(1).get_i32();
+
+    let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
+
+    // Reduce buffer during non-tumble kb
+    if level == *DAMAGE_LEVEL_2 {
+        let damage_level2_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level2_precede");
+        let dif = precede - damage_level2_precede;
+        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+    }
+    else if level == *DAMAGE_LEVEL_3 {
+        let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
+        let dif = precede - damage_level3_precede;
+        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+    }
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_DamageAir_Main)]
 unsafe fn status_DamageAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true);
+    
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("level"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let level = fighter.pop_lua_stack(1).get_i32();
 
-    if MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
+    if level == *DAMAGE_LEVEL_1
+    && MotionModule::frame(fighter.module_accessor) + 0.0001 >= cancel_frame - 1.0
     && MotionModule::prev_frame(fighter.module_accessor) + 0.0001 < cancel_frame - 1.0 {
-        // Prevent buffering out of non-tumble kb
+        // Prevent buffering out of very low non-tumble kb
         ControlModule::clear_command(fighter.module_accessor, false);
     }
+
+    original!()(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_damage_uniq_process_exit)]
+unsafe fn sub_damage_uniq_process_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+
+    original!()(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_thrown_uniq_process_init)]
+unsafe fn sub_thrown_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::reset_trigger(fighter.module_accessor);
 
     original!()(fighter)
 }

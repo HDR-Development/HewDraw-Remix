@@ -302,8 +302,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                           || (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
     let tether_aerial = boma.is_fighter()
-                        && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
-                          || (fighter_kind == *FIGHTER_KIND_MASTER  && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
+                        && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) );
 
     // Ledgehog code
     let cliff_id = GroundModule::get_cliff_id_uint32(boma);
@@ -324,10 +323,12 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     }
 
     if boma.is_fighter() {
-        // Disable grabbing ledge while rising during an airborne state (not specials)
-        if situation_kind == *SITUATION_KIND_AIR && !boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-            if rising >= 0.0 && !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
-                return 0;
+        if !run_vanilla_check(boma) {
+            // Disable grabbing ledge while rising during an airborne state
+            if situation_kind == *SITUATION_KIND_AIR {
+                if rising >= 0.0 && !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
+                    return 0;
+                }
             }
         }
 
@@ -338,6 +339,27 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     }
 
     original!()(boma)
+}
+
+unsafe fn run_vanilla_check(boma: &mut BattleObjectModuleAccessor) -> bool {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+        return true;
+    }
+
+    if [*FIGHTER_KIND_ICE_CLIMBER, *FIGHTER_KIND_POPO, *FIGHTER_KIND_NANA].contains(&boma.kind())
+    && boma.is_status_one_of(&[
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP_PRE,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_PARTNER,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP_PARTNER,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_CLIFF_COMP_PARTNER,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_CLIFF_PULL_PARTNER,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_CLIFF_COMP])
+    {
+        return true;
+    }
+
+    false
 }
 
 pub fn install() {

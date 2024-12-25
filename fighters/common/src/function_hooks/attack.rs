@@ -269,6 +269,17 @@ unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_i
 	original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
+// Disables pushback when your attack is parried
+#[skyline::hook(offset = 0x62864c, inline)]
+unsafe fn disable_attacker_parry_pushback(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[19].x.as_ref() as *mut Fighter;
+    let object = (*fighter).battle_object;
+    
+    if AttackModule::is_infliction(object.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        asm!("fmov s0, wzr")
+    }
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x641d84).nop();
     skyline::install_hooks!(
@@ -282,6 +293,7 @@ pub fn install() {
         handle_on_attack_event,
         set_parry_hitlag,
         x03df93c,
-        notify_log_event_collision_hit
+        notify_log_event_collision_hit,
+        disable_attacker_parry_pushback
     );
 }

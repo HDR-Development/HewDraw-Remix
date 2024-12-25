@@ -48,7 +48,9 @@ unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
 
-    let damage_statuses = &[
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+
+    let prev_damage = fighter.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -58,23 +60,17 @@ unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL
-    ];
-    let prev_status_kind = StatusModule::prev_status_kind(fighter.module_accessor, 0);
-    let prev_status_kind_2 = StatusModule::prev_status_kind(fighter.module_accessor, 1);
-    let is_prev_damage = damage_statuses.contains(&prev_status_kind) || damage_statuses.contains(&prev_status_kind_2);
+    ]);
 
-    if !is_prev_damage {
-        KineticModule::clear_speed_all(fighter.module_accessor);
+    if !prev_damage {
         KineticModule::suspend_energy_all(fighter.module_accessor);
+        KineticModule::clear_speed_all(fighter.module_accessor);
     } else {
-        KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.6, y: 0.2, z: 0.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.6, y: 0.2, z: 0.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-
-    let air_brake_x = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
     sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
@@ -130,6 +126,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
 
         launch_speed.y = 3.75 - (0.025 * rot_x.abs());
+        // println!("launch speed: {}", launch_speed.y);
         KineticModule::add_speed(fighter.module_accessor, &launch_speed);
         fighter.set_float(remaining_fuel, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
 
@@ -155,12 +152,15 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         else { "se_common_bomb_s" };
 
     if charge_frame >= 10.0 {
-        launch_speed.y = (1.5 + (0.05 * charge_frame)) - (0.025 * rot_x.abs());
+        launch_speed.y = ((1.65 + (0.05 * charge_frame)) - (0.025 * rot_x.abs())).min(3.75);
     }
 
     // launches/exits if rob ran out of fuel
     if fuel_depleted {
-        if start_fuel > 0.0 { KineticModule::add_speed(fighter.module_accessor, &launch_speed); }
+        if start_fuel > 0.0 { 
+            // println!("launch speed: {}", launch_speed.y);
+            KineticModule::add_speed(fighter.module_accessor, &launch_speed);
+        }
         fighter.set_float(0.0, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         PLAY_SE(fighter, Hash40::new(sfx));
 
@@ -172,6 +172,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
     // otherwise, launch with the amount of consumed fuel at the time of releasing the button
     if charge_frame >= 10.0 { // 10 frame minimum before launching
+        // println!("launch speed: {}", launch_speed.y);
         KineticModule::add_speed(fighter.module_accessor, &launch_speed);
         fighter.set_float(remaining_fuel, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         PLAY_SE(fighter, Hash40::new(sfx));
@@ -283,11 +284,13 @@ unsafe extern "C" fn special_hi_keep_main_loop(fighter: &mut L2CFighterCommon) -
 
     // interpolate back to upright position
     let current_rot = PostureModule::rot_x(fighter.module_accessor, 0);
-    if (fighter.motion_frame() >= 45.0) && current_rot != 0.0 {
-        let rot_amount = 0.125; // percent of remaining distance rotated each frame. will decrease exponentially
+    if (fighter.motion_frame() >= 42.0) && current_rot != 0.0 {
+        let rot_mul = if VarModule::is_flag(fighter.object(), vars::robot::instance::SPECIAL_HI_GROUND_START) { 2.0 } else { 1.0 };
+        let rot_amount = 0.15 * rot_mul; // percent of remaining distance rotated each frame. will decrease exponentially
         let mut new_rot = current_rot - (current_rot * rot_amount);
         if (-1.0..1.0).contains(&new_rot) { new_rot = 0.0 }; // snap to 0 when close enough
-        PostureModule::set_rot(fighter.module_accessor, &Vector3f::new(new_rot, 0.0, 0.0) ,0);
+        // println!("{new_rot}");
+        PostureModule::set_rot(fighter.module_accessor, &Vector3f::new(new_rot, 0.0, 0.0), 0);
     }
 
     return 0.into();

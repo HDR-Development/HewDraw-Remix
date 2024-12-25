@@ -41,6 +41,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     meter_module(fighter, boma, status_kind, situation_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    hit_cancel_timer(fighter, boma);
     training_mode_max_meter(fighter, boma, status_kind);
 }
 
@@ -138,7 +139,7 @@ unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
-    && fighter.motion_frame() < 8.0 
+    && fighter.motion_frame() < 9.0 
     && !fighter.is_button_on(Buttons::SpecialRaw){
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
     }
@@ -347,6 +348,18 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         }
         if boma.is_cat_flag(Cat1::SpecialLw) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+        }
+    }
+}
+
+unsafe fn hit_cancel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let hit_cancel_timer = VarModule::get_int(fighter.battle_object, vars::lucario::status::HIT_CANCEL_TIMER);
+    if hit_cancel_timer > 0
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !fighter.is_in_hitlag() {
+        VarModule::dec_int(fighter.battle_object, vars::lucario::status::HIT_CANCEL_TIMER);
+        if hit_cancel_timer - 1 == 0 {
+            VarModule::off_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL);
         }
     }
 }

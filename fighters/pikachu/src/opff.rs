@@ -41,19 +41,6 @@ unsafe fn quick_attack_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     }
 }
 
-pub unsafe fn electric_rats_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    disable_qa_jc(boma);
-    fastfall_specials(fighter);
-    skull_bash_edge_cancel(fighter);
-}
-
-#[no_mangle]
-pub unsafe extern "Rust" fn electric_rats_common(fighter: &mut L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        electric_rats_moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -97,13 +84,15 @@ unsafe fn skull_bash_edge_cancel(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     quick_attack_cancel(fighter, boma);
+    disable_qa_jc(boma);
+    fastfall_specials(fighter);
+    skull_bash_edge_cancel(fighter);
 }
 
 pub extern "C" fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pikachu_frame(fighter);
-        electric_rats_common(fighter);
     }
 }
 

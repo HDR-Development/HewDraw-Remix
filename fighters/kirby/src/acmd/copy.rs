@@ -1,5 +1,6 @@
 use super::*;
 
+mod chrom;
 mod daisy;
 mod diddy;
 mod edge;
@@ -21,9 +22,11 @@ mod ridley;
 mod roy;
 mod shizue;
 mod sonic;
+mod trail;
 mod wolf;
 
 pub fn install(agent: &mut Agent) {
+    chrom::install(agent);
     daisy::install(agent);
     diddy::install(agent);
     edge::install(agent);
@@ -45,5 +48,6 @@ pub fn install(agent: &mut Agent) {
     roy::install(agent);
     shizue::install(agent);
     sonic::install(agent);
+    trail::install(agent);
     wolf::install(agent);
 }

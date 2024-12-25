@@ -79,6 +79,12 @@ unsafe fn dreamland_express(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn side_special_whiff_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP) {
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -130,6 +136,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     tech_roll_help(boma);
     up_special_proper_landing(fighter);
     dreamland_express(fighter);
+    side_special_whiff_ledgegrab(fighter);
     fastfall_specials(fighter);
     training_mode_meter(fighter, boma);
 }

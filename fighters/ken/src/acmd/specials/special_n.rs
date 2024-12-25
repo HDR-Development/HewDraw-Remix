@@ -38,16 +38,15 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    }
     frame(lua_state, 28.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 58.0);
     FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
 }
 
 unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
@@ -91,16 +90,15 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    frame(lua_state, 22.0);
-    if is_excute(agent) {
-        agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    }
     frame(lua_state, 40.0);
     if is_excute(agent) {
         agent.off_flag(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 70.0);
     FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        agent.off_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
 }
 
 unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
