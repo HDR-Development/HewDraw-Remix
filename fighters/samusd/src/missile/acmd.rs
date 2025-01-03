@@ -37,9 +37,10 @@ unsafe extern "C" fn effect_hburst(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         agent.clear_lua_stack();
-        lua_args!(agent, Hash40::new("sys_bomb_a"), Hash40::new("sys_bomb_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        lua_args!(agent, Hash40::new("sys_bomb_a"), Hash40::new("sys_bomb_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.68, 0, 0, 0, 0, 0, 0, true);
         sv_animcmd::EFFECT_BRANCH_SITUATION(agent.lua_state_agent);
         agent.clear_lua_stack();
+        LAST_EFFECT_SET_RATE(agent, 1.33);
     }
 }
 
