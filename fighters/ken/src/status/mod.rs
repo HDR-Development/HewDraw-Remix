@@ -13,6 +13,7 @@ mod attack_lw4;
 mod attack;
 mod dash;
 mod guard;
+mod landing;
 utils::import_noreturn!(common::shoto_status::{
     fgc_end_dashback,
     ryu_idkwhatthisis2
@@ -34,7 +35,6 @@ extern "Rust" {
     fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
     fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
     fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
-    fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -59,11 +59,6 @@ unsafe extern  "C" fn check_autoturn(fighter: &mut L2CFighterCommon) -> L2CValue
     let next_status = fighter.global_table[globals::STATUS_KIND].get_i32();
     let prev_status = fighter.global_table[globals::STATUS_KIND_INTERRUPT].get_i32();
     let situation_kind = fighter.global_table[globals::SITUATION_KIND].get_i32();
-    unsafe fn update_lr(fighter: &mut L2CFighterCommon, lr: f32) {
-        PostureModule::set_lr(fighter.module_accessor, lr);
-        PostureModule::update_rot_y_lr(fighter.module_accessor);
-    }
-
     fighter.off_flag(*FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLAG_AUTO_TURN_END_STATUS);
     let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
     if lr == 0.0
@@ -76,13 +71,8 @@ unsafe extern  "C" fn check_autoturn(fighter: &mut L2CFighterCommon) -> L2CValue
     if ![
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
-        *FIGHTER_STATUS_KIND_JUMP_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT_RV,
-        *FIGHTER_STATUS_KIND_LANDING,
-        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
-        *FIGHTER_STATUS_KIND_GUARD_ON,
-        *FIGHTER_STATUS_KIND_ESCAPE,
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
@@ -160,17 +150,6 @@ unsafe extern  "C" fn check_autoturn(fighter: &mut L2CFighterCommon) -> L2CValue
         return false.into();
     }
 
-    if next_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT 
-    && [ // don't autoturn jumpsquat from these statuses, for gamefeel
-        *FIGHTER_STATUS_KIND_RUN,
-        *FIGHTER_STATUS_KIND_TURN_DASH,
-        *FIGHTER_STATUS_KIND_TURN_RUN,
-        *FIGHTER_RYU_STATUS_KIND_DASH_BACK,
-        *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK,
-    ].contains(&prev_status) {
-        return false.into();
-    }
-
     if !VarModule::is_flag(fighter.battle_object, vars::common::instance::WAS_PREV_STATUS_CANCELABLE)
     && [ // don't autoturn if using a direct cancel from shield
         *FIGHTER_STATUS_KIND_GUARD_ON,
@@ -191,7 +170,8 @@ unsafe extern  "C" fn check_autoturn(fighter: &mut L2CFighterCommon) -> L2CValue
         return false.into();
     }
 
-    update_lr(fighter, lr);
+    PostureModule::set_lr(fighter.module_accessor, lr);
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
     return true.into();
 }
 
@@ -309,12 +289,6 @@ pub unsafe extern "C" fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Wait()
 }
 
-// FIGHTER_STATUS_KIND_LANDING
-
-pub unsafe extern "C" fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_landing_main(fighter)
-}
-
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
@@ -327,7 +301,6 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     agent.status(Pre, *FIGHTER_STATUS_KIND_WAIT, wait_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_LANDING, landing_main);
 
     finals::install(agent);
     special_cmd4::install(agent);
@@ -340,4 +313,5 @@ pub fn install(agent: &mut Agent) {
     attack::install(agent);
     dash::install(agent);
     guard::install(agent);
+    landing::install(agent);
 }
