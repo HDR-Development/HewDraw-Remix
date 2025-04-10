@@ -113,19 +113,19 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         0xB => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            // if lr == -1.0 {
-            //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, Hash40::new("entry_l"), true, -1.0);
-            //     ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
-            // } 
-            // else {
-            //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, Hash40::new("entry_r"), true, -1.0);
-            //     ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
-            // }
-            // if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON) {
-            //     let article_boma = fighter.get_article_boma(*FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON);
-            //     StatusModule::change_status_request_from_script(article_boma, *WEAPON_CAPTAIN_BLUEFALCON_STATUS_KIND_ENTRY, false);
-            //     ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
-            // }
+            if lr == -1.0 {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, Hash40::new("entry_l"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
+            } 
+            else {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, Hash40::new("entry_r"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
+            }
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_CAPTAIN_BLUEFALCON_STATUS_KIND_ENTRY, false);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
+            }
         },
         0xC => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL, false, -1);
@@ -432,7 +432,6 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
     let pos_z = (*pos).z;
 
     if fighter.sub_rebirth_common().get_bool() {
-        println!("rebirth common");
         return 1.into();
     }
     if [hash40("entry_l"), hash40("entry_r")].contains(&motion_kind) {
@@ -442,8 +441,7 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
         fighter.sub_wait_motion(false.into());
     }
 
-    let rebirth_cancel_frame: i32 = 60;
-    if cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 && fighter.global_table[CURRENT_FRAME].get_i32() >= rebirth_cancel_frame {
+    if cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_ENABLE_STRANS) {
         if lr >= 0.0 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_r"), 0.0, 1.0, false, 0.0, false, false);
         }
@@ -452,7 +450,7 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     if (cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0 || cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0)
-    && fighter.global_table[CURRENT_FRAME].get_i32() >= rebirth_cancel_frame {
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_ENABLE_STRANS) {
         if lr >= 0.0 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_r"), 0.0, 1.0, false, 0.0, false, false);
         }
@@ -460,7 +458,7 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_l"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
-    if cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 && fighter.global_table[CURRENT_FRAME].get_i32() >= rebirth_cancel_frame {
+    if cmd_cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_ENABLE_STRANS) {
         if lr >= 0.0 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 0.0, 1.0, false, 0.0, false, false);
         }
@@ -691,7 +689,6 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
         _ => {}
     }
     if fighter.sub_air_check_fall_common().get_bool() {
-        println!("fall common");
         return 1.into();
     }
     if !fighter.global_table[IS_STOPPING].get_bool() {
@@ -709,8 +706,9 @@ unsafe extern "C" fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_Rebirth)]
-unsafe extern "C" fn status_end_rebirth(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_end_Rebirth)]
+unsafe extern "C" fn bind_address_call_status_end_Rebirth(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    println!("end rebirth");
     fighter.status_end_Rebirth_common();
 
     fighter.sub_entry_remove_article();
@@ -723,7 +721,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_rebirth_common_pre,
             status_rebirth_main,
-            status_end_rebirth
+            bind_address_call_status_end_Rebirth
         );
     }
 }
