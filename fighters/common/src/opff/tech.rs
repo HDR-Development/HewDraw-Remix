@@ -207,44 +207,6 @@ extern "C" {
     pub fn stage_id() -> i32;
 }
 
-pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if !boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH) {
-        return;
-    }
-
-    match MotionModule::motion_kind(boma) {
-        utils::hash40!("appeal_hi_r") => return,
-        utils::hash40!("appeal_hi_l") => return,
-        utils::hash40!("appeal_lw_r") => return,
-        utils::hash40!("appeal_lw_l") => return,
-        utils::hash40!("appeal_s_l") => return,
-        utils::hash40!("appeal_s_r") => return,
-        _ => {}
-    }
-
-    let motion = if boma.is_button_trigger(Buttons::AppealHi) {
-        if PostureModule::lr(boma) == 1.0 {
-            Hash40::new("appeal_hi_r")
-        } else {
-            Hash40::new("appeal_hi_l")
-        }
-    } else if boma.is_button_trigger(Buttons::AppealSL) {
-        Hash40::new("appeal_s_l")
-    } else if boma.is_button_trigger(Buttons::AppealSR) {
-        Hash40::new("appeal_s_r")
-    } else if boma.is_button_trigger(Buttons::AppealLw) {
-        if PostureModule::lr(boma) == 1.0 {
-            Hash40::new("appeal_lw_r")
-        } else {
-            Hash40::new("appeal_lw_l")
-        }
-    } else {
-        return;
-    };
-
-    MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
-}
-
 // Teeter cancelling
 pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if (boma.is_situation(*SITUATION_KIND_GROUND)
@@ -301,6 +263,5 @@ pub unsafe fn run(
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
     //drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
-    respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
 }

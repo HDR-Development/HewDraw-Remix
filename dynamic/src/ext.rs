@@ -480,6 +480,7 @@ pub trait BomaExt {
     // gets the boma of the player who is grabbing you
     unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
     unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    unsafe fn get_article_boma(&mut self, article_type: i32) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -914,6 +915,12 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn get_owner_boma(&mut self) -> &mut BattleObjectModuleAccessor {
         return &mut *sv_battle_object::module_accessor((WorkModule::get_int(self, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
+    }
+
+    unsafe fn get_article_boma(&mut self, article_type: i32) -> &mut BattleObjectModuleAccessor {
+        let article = ArticleModule::get_article(self, article_type);
+        let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+        return &mut *sv_battle_object::module_accessor(article_id);
     }
 
     unsafe fn get_num_used_jumps(&mut self) -> i32 {

@@ -33,6 +33,7 @@ mod down;
 mod float;
 mod slip;
 mod lasso;
+mod rebirth;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -1103,6 +1104,7 @@ pub fn install() {
     down::install();
     slip::install();
     lasso::install();
+    rebirth::install();
 
     skyline::nro::add_hook(nro_hook);
 }
