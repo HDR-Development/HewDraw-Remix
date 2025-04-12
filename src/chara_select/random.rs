@@ -1,13 +1,5 @@
 use super::*;
 
-use std::time::{SystemTime, UNIX_EPOCH};
-use rand::{
-    prelude::SliceRandom,
-    Rng, 
-    rngs::StdRng,
-    SeedableRng
-};
-
 const RANDOM_CFG_TOML: &str = "ui/param/menu/chara_random_config.toml";
 
 #[derive(Debug, Deserialize)]
@@ -65,38 +57,37 @@ unsafe fn decide_random(ctx: &mut skyline::hooks::InlineCtx) {
     let is_melee = ninput::any::is_down_any(ninput::Buttons::ZL | ninput::Buttons::ZR);
     if is_melee {
         let player_id = (*(*(ctx.registers[21].x.as_ref() as *const u64) as *const u64) + 0x150) as *const u8;
-        generate_random(*player_id as usize, main_chara, sub_chara);
+        let rng = (0..*obj_ptr).choose(&mut rand::thread_rng()).unwrap_or(0) as usize;
+        generate_random(*player_id as usize, main_chara, sub_chara, rng);
         *ctx.registers[24].x.as_mut() = CHARA_DATA.read().unwrap().main_id;
     }
 
     CHARA_DATA.write().unwrap().melee_random = is_melee;
 }
 
-unsafe fn generate_random(player_id: usize, main_data: u64, sub_data: u64) {
-    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    let mut rng_seed = StdRng::seed_from_u64((now.as_millis() as u64 + 1) * rand::thread_rng().gen::<u64>());
-    let mut chara_string = decide_fighter_from_id(player_id, &mut rng_seed);
+unsafe fn generate_random(player_id: usize, main_data: u64, sub_data: u64, rng_seed: usize) {
+    println!("\nDeciding random :3 !!!!!\n");
+    println!("RNG seed: {:#x}", rng_seed);
+    let mut chara_string = decide_fighter_from_id(player_id, rng_seed);
     let mut chara_hash = hash40(&format!("ui_chara_{}", chara_string)).0;
-
     let mut chara_data = CHARA_DATA.write().unwrap();
     chara_data.main_id = chara_hash | (main_data & KEY_MASK);
 
     if chara_string == "ptrainer" {
-        chara_hash = [
+        chara_hash = *[
             hash40("ui_chara_pzenigame").0,
             hash40("ui_chara_plizardon").0,
             hash40("ui_chara_pfushigisou").0,
         ]
-        .choose(&mut rng_seed).copied()
-        .unwrap_or(hash40("ui_chara_random").0);
+        .get(rng_seed % 3).unwrap_or(&hash40("ui_chara_random").0);
     }
     chara_data.sub_id = chara_hash | (sub_data & KEY_MASK);
    
     // handle costume rng
     let mut rng = chara_data.costume_rng.clone();
     let costume = {
-        rng.choose(&mut rng_seed).copied()
-        .unwrap_or((rng_seed.gen::<u32>() % 8) as i32)
+        rng.get(rng_seed % rng.len())
+        .unwrap_or(&((rng_seed % 8) as i32)).to_owned()
     };
     rng.retain(|&x| x != costume);
 
@@ -107,7 +98,7 @@ unsafe fn generate_random(player_id: usize, main_data: u64, sub_data: u64) {
     println!("Randomly selected costume slot to be {costume}");
 }
 
-unsafe fn decide_fighter_from_id(id: usize, seed: &mut StdRng) -> String {
+unsafe fn decide_fighter_from_id(id: usize, seed: usize) -> String {
     let chara_data = { CHARA_DATA.read().unwrap().clone() };
     let mut whitelist = chara_data.whitelist;
 
@@ -119,7 +110,7 @@ unsafe fn decide_fighter_from_id(id: usize, seed: &mut StdRng) -> String {
     }
 
     // choose a fighter from base whitelist
-    let mut chara_string =  match whitelist.choose(seed) {
+    let mut chara_string =  match whitelist.get(seed % whitelist.len()) {
         Some(string) => string.as_str(),
         None => return dbg!("mario").to_owned()
     };
@@ -200,7 +191,7 @@ unsafe fn decide_fighter_from_id(id: usize, seed: &mut StdRng) -> String {
     }
     // re-query with adjusted list
     println!("{} is not allowed for tag {}! Adjusting...", default, &tag);
-    chara_string = match whitelist.choose(seed) {
+    chara_string = match whitelist.get(seed % whitelist.len())  {
         Some(str) => str.as_str(),
         None => return dbg!(default)
     };
@@ -213,7 +204,7 @@ unsafe fn decide_fighter_from_id(id: usize, seed: &mut StdRng) -> String {
 #[skyline::hook(offset = 0x1a0d540)]
 unsafe fn set_random_fighter_data(base_ptr: *mut u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
     let chara_data = { CHARA_DATA.read().unwrap().clone() };
-    
+
     let main_chara = base_ptr.add(2);
     let sub_chara = base_ptr.add(3);
     // println!("Fighter: {:#x}, Sub-fighter: {:#x}", *main_chara, *sub_chara);
@@ -224,9 +215,9 @@ unsafe fn set_random_fighter_data(base_ptr: *mut u64, arg2: u64, arg3: u64, arg4
     } else {
         // ensure random is re-rolled between games
         let player_id = (*base_ptr as u8 - 1) as usize;
-        generate_random(player_id, *main_chara, *sub_chara);
+        let rng = (0..arg2).choose(&mut rand::thread_rng()).unwrap_or(0) as usize;
+        generate_random(player_id, *main_chara, *sub_chara, rng);
     }
-
     let ret = call_original!(base_ptr, arg2, arg3, arg4);
 
     // at this point, for the normal random, it's safe to modify the data without affecting any UI

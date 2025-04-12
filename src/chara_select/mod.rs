@@ -10,6 +10,7 @@ use smash2::{
     phx::hash40
 };
 use serde::Deserialize;
+use rand::prelude::*;
 use utils::modules::TourneyConfig;
 
 mod layout;
