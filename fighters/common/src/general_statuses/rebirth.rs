@@ -21,12 +21,20 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
 
     PhysicsModule::set_swing_rebirth(fighter.module_accessor, true);
 
-    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("entry_l"));
+    let end_frame = if lr == -1.0 {
+        MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("entry_l"))
+    } else {
+        MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("entry_r"))
+    };
+
     let mut start_frame: f32 = (end_frame - 85.0).max(0.0);
-    println!("start frame {}", start_frame);
 
     if [*FIGHTER_KIND_ROSETTA].contains(&kind) {
         start_frame = 0.0;
+    }
+
+    if kind == *FIGHTER_KIND_GAMEWATCH {
+        start_frame = 70.0;
     }
 
     if [*FIGHTER_KIND_PZENIGAME,
@@ -40,11 +48,13 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     }
     else {
         if lr == -1.0 {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("entry_l"), start_frame, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("entry_l"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("entry_r"), start_frame, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("entry_r"), 0.0, 1.0, false, 0.0, false, false);
         }
+
+        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, start_frame, false, false, false);
     }
 
     match kind {
@@ -159,18 +169,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_r"), true, -1.0);
                 ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, start_frame);
-            }
-        },
-        0xE => {
-            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            if lr == -1.0 {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, start_frame);
-            } 
-            else {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, start_frame);
             }
         },
         0x12 => {
@@ -429,8 +427,14 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         },
         0x4B => {
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            if lr == -1.0 {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_l"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            } 
+            else {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_r"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            }
 
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_POPO_GENERATE_ARTICLE_CONDOR);
@@ -439,15 +443,21 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             }
         },
         0x4C => {
-            // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            // ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry"), true, -1.0);
-            // ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            if lr == -1.0 {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_l"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            } 
+            else {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_r"), true, -1.0);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            }
 
-            // if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR) {
-            //     let article_boma = fighter.get_article_boma(*FIGHTER_POPO_GENERATE_ARTICLE_CONDOR);
-            //     StatusModule::change_status_request_from_script(article_boma, *WEAPON_POPO_CONDOR_STATUS_KIND_ENTRY, false);
-            //     ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
-            // }
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_POPO_GENERATE_ARTICLE_CONDOR);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_POPO_CONDOR_STATUS_KIND_ENTRY, false);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            }
         },
         0x56 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, false, -1);
@@ -597,12 +607,6 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
         0xD => {
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR);
-                PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z});
-            }
-        },
-        0xE => {
-            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
-                let article_boma = fighter.get_article_boma(*FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR);
                 PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z});
             }
         },
