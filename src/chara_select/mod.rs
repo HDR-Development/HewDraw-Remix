@@ -220,11 +220,11 @@ unsafe fn update_player_tag(arg1: u64, tag_index: *const u8) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        update_player_tag
-    );
+    // skyline::install_hooks!(
+    //     update_player_tag
+    // );
 
-    layout::install();
-    random::install();
-    player_port::install();
+    // layout::install();
+    // random::install();
+    // player_port::install();
 }
