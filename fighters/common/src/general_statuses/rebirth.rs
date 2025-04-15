@@ -38,6 +38,10 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         start_frame = 70.0;
     }
 
+    if kind == *FIGHTER_KIND_CAPTAIN {
+        start_frame = end_frame - 61.0;
+    }
+
     if [*FIGHTER_KIND_PZENIGAME,
         *FIGHTER_KIND_PFUSHIGISOU,
         *FIGHTER_KIND_PLIZARDON].contains(&kind)
@@ -342,9 +346,12 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             }
         },
         0x33 => {
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO) {
+                ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
-            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO, *WEAPON_ROSETTA_TICO_STATUS_KIND_ENTRY);
+                let article_boma = fighter.get_article_boma(*FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_ROSETTA_TICO_STATUS_KIND_ENTRY, false);
+            }
         },
         0x34 => {
             let costume_slot = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -394,9 +401,11 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
-            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, *WEAPON_PACMAN_BIGPACMAN_STATUS_KIND_ENTRY);
-
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_PACMAN_BIGPACMAN_STATUS_KIND_ENTRY, false);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, start_frame);
+            }
         },
         0x46 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, false, -1);
@@ -464,12 +473,18 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT, start_frame);
         },
         0x5A => {
-            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY, false);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER, start_frame);
+            }
         },
         0x5B => {
-            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER);
+                StatusModule::change_status_request_from_script(article_boma, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY, false);
+                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER, start_frame);
+            }
         },
         _ => {}
     }
