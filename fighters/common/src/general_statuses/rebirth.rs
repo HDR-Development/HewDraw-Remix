@@ -66,79 +66,109 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         0x0 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, start_frame);
+            }
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x1 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x3 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_SAMUS_GENERATE_ARTICLE_TRANSPORTATION);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x6 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR, start_frame);
             }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_KIRBY_GENERATE_ARTICLE_WARPSTAR);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
+
         },
         0x7 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_FOX_GENERATE_ARTICLE_ARWING) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_FOX_GENERATE_ARTICLE_ARWING);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x8 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL, Hash40::new("entry_r"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PIKACHU_GENERATE_ARTICLE_MONSTERBALL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x9 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_LUIGI_GENERATE_ARTICLE_DOKAN);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0xB => {
@@ -153,112 +183,155 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, Hash40::new("entry_r"), true, -1.0);
             }
 
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_CAPTAIN_GENERATE_ARTICLE_BLUEFALCON);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0xC => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL, Hash40::new("entry"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PURIN_GENERATE_ARTICLE_MONSTERBALL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0xD => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x12 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_MARIOD_GENERATE_ARTICLE_CAPSULEBLOCK);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x13 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL, Hash40::new("entry_r"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PICHU_GENERATE_ARTICLE_MONSTERBALL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x14 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_FALCO_GENERATE_ARTICLE_ARWING) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_FALCO_GENERATE_ARTICLE_ARWING);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x16 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_LUCINA_GENERATE_ARTICLE_MASK);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x1A => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ROY_GENERATE_ARTICLE_SWORD) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_ROY_GENERATE_ARTICLE_SWORD);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x1C => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_ENTRY, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_ENTRY, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_ENTRY) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_GAMEWATCH_GENERATE_ARTICLE_ENTRY);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x1D => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x20 => {
-            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, false, -1);
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            // ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, false, -1);
+            // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
-            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, *WEAPON_SZEROSUIT_GUNSHIP_STATUS_KIND_ENTRY);
+            // ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, *WEAPON_SZEROSUIT_GUNSHIP_STATUS_KIND_ENTRY);
 
-            if lr == -1.0 {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, start_frame);
-            } 
-            else {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, start_frame);
-            }
+            // if lr == -1.0 {
+            //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, Hash40::new("entry_l"), true, -1.0);
+            // } 
+            // else {
+            //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, Hash40::new("entry_r"), true, -1.0);
+            // }
             
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP, start_frame);
+            // if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP) {
+            //     let article_boma = fighter.get_article_boma(*FIGHTER_SZEROSUIT_GENERATE_ARTICLE_GUNSHIP);
+            //     MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            // }
         },
         0x21 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE, false, -1);
@@ -276,43 +349,59 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE, Hash40::new("entry_r"), true, -1.0);
             }
 
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x27 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_DIDDY_GENERATE_ARTICLE_DKBARREL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x28 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_LUCAS_GENERATE_ARTICLE_DOSEITABLE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x2A => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE, start_frame);
             }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_DEDEDE_GENERATE_ARTICLE_SHRINE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
+
         },
         0x30 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, false, -1);
@@ -320,11 +409,14 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
 
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x32 => {
@@ -332,17 +424,24 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD, start_frame);
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD, start_frame);
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_WIIFIT_GENERATE_ARTICLE_BALANCEBOARD);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x33 => {
@@ -359,22 +458,26 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             || costume_slot == 7 {
                 ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, false, -1);
                 ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, false, -1);
-                
                 ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
                 ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+                
                 if lr == -1.0 {
-                    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, Hash40::new("entry_l"), true, -1.0);
-                    ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, start_frame);
-                    
+                    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, Hash40::new("entry_l"), true, -1.0);                    
                     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, Hash40::new("entry_l"), true, -1.0);
-                    ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, start_frame);
                 } 
                 else {
                     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, Hash40::new("entry_r"), true, -1.0);
-                    ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC, start_frame);
-                    
                     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, Hash40::new("entry_r"), true, -1.0);
-                    ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT, start_frame);
+                }
+
+                if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC) {
+                    let article_boma = fighter.get_article_boma(*FIGHTER_LITTLEMAC_GENERATE_ARTICLE_SWEATLITTLEMAC);
+                    MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+                }
+
+                if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT) {
+                    let article_boma = fighter.get_article_boma(*FIGHTER_LITTLEMAC_GENERATE_ARTICLE_THROWSWEAT);
+                    MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
                 }
             }
         },
@@ -383,47 +486,65 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_GEKKOUGA_GENERATE_ARTICLE_MONSTERBALL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_GEKKOUGA_GENERATE_ARTICLE_MONSTERBALL, Hash40::new("entry"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_GEKKOUGA_GENERATE_ARTICLE_MONSTERBALL, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_GEKKOUGA_GENERATE_ARTICLE_MONSTERBALL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_GEKKOUGA_GENERATE_ARTICLE_MONSTERBALL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x36 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PALUTENA_GENERATE_ARTICLE_GATE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x37 => {
-            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, false, -1);
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            // ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, false, -1);
+            // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
-            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN) {
-                let article_boma = fighter.get_article_boma(*FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN);
-                StatusModule::change_status_request_from_script(article_boma, *WEAPON_PACMAN_BIGPACMAN_STATUS_KIND_ENTRY, false);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, start_frame);
-            }
+            // ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN, *WEAPON_PACMAN_BIGPACMAN_STATUS_KIND_ENTRY);
+            
+            // if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN) {
+            //     let article_boma = fighter.get_article_boma(*FIGHTER_PACMAN_GENERATE_ARTICLE_BIGPACMAN);
+            //     MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            // }
         },
         0x46 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x47 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL, Hash40::new("entry"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_GAOGAEN_GENERATE_ARTICLE_MONSTERBALL);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x4B => {
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -437,7 +558,10 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_r"), true, -1.0);
             }
 
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_POPO_GENERATE_ARTICLE_CONDOR);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x4C => {
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -451,18 +575,25 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, Hash40::new("entry_r"), true, -1.0);
             }
 
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR, start_frame);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_POPO_GENERATE_ARTICLE_CONDOR) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_POPO_GENERATE_ARTICLE_CONDOR);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x56 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, false, -1);
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, Hash40::new("entry_l"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, start_frame);
             } 
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, Hash40::new("entry_r"), true, -1.0);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON, start_frame);
+            }
+
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BATON) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_MASTER_GENERATE_ARTICLE_BATON);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x58 => {
@@ -470,20 +601,26 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT, Hash40::new("entry_r"), true, -1.0);
-            ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT, start_frame);
+            
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_PICKEL_GENERATE_ARTICLE_ENTRYOBJECT);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
+            }
         },
         0x5A => {
+            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY);
+            
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER);
-                StatusModule::change_status_request_from_script(article_boma, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY, false);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_DIVER, start_frame);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         0x5B => {
+            ArticleModule::change_status_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY);
+            
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER);
-                StatusModule::change_status_request_from_script(article_boma, *WEAPON_ELEMENT_DIVER_STATUS_KIND_ENTRY, false);
-                ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_DIVER, start_frame);
+                MotionModule::set_frame_sync_anim_cmd(article_boma, start_frame, false, false, false);
             }
         },
         _ => {}
@@ -697,6 +834,14 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_WIIFIT_GENERATE_ARTICLE_WIIBO);
                 PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z});
+            }
+        },
+        0x33 => {
+            if StatusModule::is_changing(fighter.module_accessor) {
+                if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO) {
+                    let article_boma = fighter.get_article_boma(*FIGHTER_ROSETTA_GENERATE_ARTICLE_TICO);
+                    PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z});
+                }
             }
         },
         0x34 => {
