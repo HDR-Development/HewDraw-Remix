@@ -14,7 +14,6 @@ pub mod controls;
 pub mod misc;
 pub mod jumps;
 pub mod knockback;
-pub mod knockback_util;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;

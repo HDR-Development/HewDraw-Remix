@@ -1,5 +1,4 @@
 use super::*;
-use super::knockback_util::*;
 use utils::ext::*;
 use std::arch::asm;
 
@@ -11,8 +10,87 @@ pub fn install() {
 }
 
 extern "C" {
+    #[link_name = "_ZN3app6camera13get_dead_areaEv"]
+    fn get_dead_area() -> Rect;
+
     #[link_name = "_ZN3app10sv_animcmd25EFFECT_GLOBAL_BACK_GROUNDEP9lua_State"]
     fn EFFECT_GLOBAL_BACK_GROUND(lua_state: u64);
+}
+
+#[derive(Debug, Copy, Clone)]
+struct KnockbackCalcContext {
+    pub knockback: f32,
+    pub x_launch_speed: f32,
+    pub y_launch_speed: f32,
+    pub y_chara_speed: f32,
+    pub tumble: bool,
+    pub is_damage_fly_top: bool,
+    pub hitstun: f32,
+    pub gravity: f32,
+    pub damageflytop_gravity: f32,
+    pub fall_speed: f32,
+    pub damageflytop_fall_speed: f32,
+    pub x_pos: f32,
+    pub y_pos: f32,
+    pub x_pos_prev: f32,
+    pub y_pos_prev: f32,
+    pub decay_x: f32,
+    pub decay_y: f32,
+    pub speed_up_mul: f32,
+}
+
+impl KnockbackCalcContext {
+    pub fn step(&mut self) {
+        self.x_pos_prev = self.x_pos;
+        self.y_pos_prev = self.y_pos;
+        self.x_pos += self.x_launch_speed;
+        self.y_pos += self.y_launch_speed + self.y_chara_speed;
+        if self.x_launch_speed != 0.0 {
+            let dir = self.x_launch_speed.signum();
+            self.x_launch_speed = self.x_launch_speed.abs() - self.decay_x;
+            if self.x_launch_speed < 0.0 {
+                self.x_launch_speed = 0.0;
+            } else {
+                self.x_launch_speed *= dir;
+            }
+        }
+        if self.y_launch_speed != 0.0 {
+            let dir = self.y_launch_speed.signum();
+            self.y_launch_speed = self.y_launch_speed.abs() - self.decay_y;
+            if self.y_launch_speed < 0.0 {
+                self.y_launch_speed = 0.0;
+            } else {
+                self.y_launch_speed *= dir;
+            }
+        }
+        if self.is_damage_fly_top {
+            self.y_chara_speed -= self.damageflytop_gravity;
+            if self.y_chara_speed < -self.damageflytop_fall_speed {
+                self.y_chara_speed = -self.damageflytop_fall_speed;
+            }
+        } else {
+            self.y_chara_speed -= self.gravity;
+            if self.y_chara_speed < -self.fall_speed {
+                self.y_chara_speed = -self.fall_speed;
+            }
+        }
+    }
+}
+
+#[repr(simd)]
+#[derive(Debug)]
+struct Rect {
+    // left: f32,
+    // right: f32,
+    // top: f32,
+    // bottom: f32,
+    vec: [f32; 4]
+}
+
+impl Rect {
+    fn contains(&self, x: f32, y: f32) -> bool {
+        (self.vec[0] <= x && x <= self.vec[1]) && (self.vec[3] <= y && y <= self.vec[2])
+    }
 }
 
 /// Knockback log
@@ -138,8 +216,6 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
     // let before = std::time::Instant::now();
     // println!("");
-    if VarModule::has_var_module(defender_boma.object()) {VarModule::off_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
-
     if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
         // let elapsed = std::time::Instant::now().duration_since(before);
         // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
@@ -156,8 +232,6 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     }
     // let elapsed = std::time::Instant::now().duration_since(before);
     // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
-    if VarModule::has_var_module(defender_boma.object()) {VarModule::on_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
-    
     call_finishing_hit_effects(defender_boma, attacker_boma);
 }
 
@@ -251,27 +325,204 @@ pub unsafe extern "C" fn is_final_killing_hit(defender_boma: &mut BattleObjectMo
     return true;
 }
 
+const NUM_ANGLE_CHECK: i32 = 12;
+const NUM_FALSE_ANGLES_ALLOWED: i32 = 1;
+const NUM_HITSTUN_LENIENCY: f32 = 1.0;
+
 unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     let knockback = *knockback_info;
-    let hitstun = *knockback_info.add(0x48 / 4);
-    let damage = *knockback_info.add(22);
-    let sdi_mul = *knockback_info.add(24);
-    let launch_radians = *knockback_info.add(0x10);
-    let launch_speed = Vector2f::new(*knockback_info.add(4), *knockback_info.add(5));
-    let is_tumble = *(knockback_info.add(1) as *const u32) >= 3;
-    let mut context = KnockbackCalcContext::new(
-        defender_boma,
-        knockback,
-        hitstun,
-        damage,
-        sdi_mul,
-        launch_radians,
-        launch_speed,
-        is_tumble,
-    );
+    let initial_speed_x = *knockback_info.add(4);
+    let initial_speed_y = *knockback_info.add(5);
+    // let initial_pos_x = *knockback_info.add(8);
+    // let initial_pos_y = *knockback_info.add(9);
+    let reaction = *knockback_info.add(0x48 / 4);
+    let angle = *knockback_info.add(0x10);
+    let top_lw = defender_boma.get_param_float("battle_object", "fly_top_angle_lw");
+    let top_hi = defender_boma.get_param_float("battle_object", "fly_top_angle_hi");
 
-    let is_final = is_final_killing_hit(defender_boma, attacker_boma);
-    return context.is_finishing_hit(is_final);
+    // let ecb_top = *GroundModule::get_rhombus(defender_boma, true).add(0);
+    let ecb_bottom = *GroundModule::get_rhombus(defender_boma, true).add(1);
+    let ecb_left = *GroundModule::get_rhombus(defender_boma, true).add(2);
+    let ecb_right = *GroundModule::get_rhombus(defender_boma, true).add(3);
+
+    let base_sdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_mul"));
+    let sdi_frame = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_frame"));
+    let sdi_max_count = WorkModule::get_param_int(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_flick_max_count"));
+    let base_asdi = WorkModule::get_param_float(defender_boma, smash::hash40("common"), smash::hash40("hit_stop_delay_auto_mul"));
+    let sdi_mul = *knockback_info.add(24);
+
+    let hitlag_max = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_max"));
+    let hitlag_add = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_add"));
+    let hitlag_mul = WorkModule::get_param_float(defender_boma, smash::hash40("battle_object"), smash::hash40("hitstop_frame_mul"));
+    let damage = *knockback_info.add(22);
+    let hitlag = (2.0 * (damage * hitlag_mul + hitlag_add)).clamp(0.0, hitlag_max).floor();
+    let sdi_count = ((hitlag - 1.0) / (sdi_frame as f32)).clamp(0.0, sdi_max_count as f32).floor();
+    let sdi_distance = (sdi_count * base_sdi + base_asdi) * sdi_mul;
+
+    // println!("base_sdi: {}", base_sdi);
+    // println!("sdi_frame: {}", sdi_frame);
+    // println!("sdi_max_count: {}", sdi_max_count);
+    // println!("base_asdi: {}", base_asdi);
+    // println!("sdi_mul: {}", sdi_mul);
+
+    // println!("hitlag_max: {}", hitlag_max);
+    // println!("hitlag_add: {}", hitlag_add);
+    // println!("hitlag_mul: {}", hitlag_mul);
+    // println!("damage: {}", damage);
+    // println!("hitlag: {}", hitlag);
+    // println!("sdi_distance: {}", sdi_distance);
+    // for off in 0..128 {
+    //     println!("{}: {}", off, *knockback_info.add(off));
+    // }
+
+    let speed_up_mul = if defender_boma.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
+        defender_boma.get_float(*FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG)
+    } else {
+        1.0
+    };
+
+    let mut context = KnockbackCalcContext {
+        knockback,
+        x_launch_speed: initial_speed_x,
+        y_launch_speed: initial_speed_y,
+        y_chara_speed: 0.0,
+        tumble: *(knockback_info.add(1) as *const u32) >= 3,
+        is_damage_fly_top: top_lw <= angle && angle <= top_hi,
+        hitstun: reaction,
+        gravity: defender_boma.get_param_float("air_accel_y", ""),
+        damageflytop_gravity: defender_boma.get_param_float("damage_fly_top_air_accel_y", ""),
+        fall_speed: defender_boma.get_param_float("air_speed_y_stable", ""),
+        damageflytop_fall_speed: defender_boma.get_param_float("damage_fly_top_speed_y_stable", ""),
+        x_pos: ecb_bottom.x,
+        y_pos: ecb_bottom.y,
+        x_pos_prev: ecb_bottom.x,
+        y_pos_prev: ecb_bottom.y,
+        decay_x: defender_boma.get_param_float("common", "damage_air_brake") * angle.cos().abs(),
+        decay_y: defender_boma.get_param_float("common", "damage_air_brake") * angle.sin().abs(),
+        speed_up_mul: speed_up_mul,
+    };
+    //println!("{:#x}: {:?}", defender, context);
+
+    let blastzones = get_dead_area();
+    let mag = (context.y_launch_speed.powi(2) + context.x_launch_speed.powi(2)).sqrt();
+    let kb_angle = context.y_launch_speed.atan2(context.x_launch_speed).to_degrees();
+    let di_angle = defender_boma.get_param_float("common", "damage_fly_correction_max");
+    let min_di = kb_angle - di_angle;
+    let max_di = kb_angle + di_angle;
+    // println!("base kb angle: {}, di angle: {}, min_di: {}, max_di: {}", kb_angle, di_angle, min_di, max_di);
+
+    let step = (di_angle * 2.0) / (NUM_ANGLE_CHECK as f32);
+    let context_ref = context;
+    let mut false_angle_num = 0;
+    for idx in -1..NUM_ANGLE_CHECK + 1 {
+        let ang = (min_di + (idx as f32 * step)).to_radians();
+        context.x_launch_speed = ang.cos() * mag;
+        context.y_launch_speed = ang.sin() * mag;
+
+        // special checks for max SDI left/right
+        if idx == -1 { // full SDI left (negative X)
+            let ang = if ang.sin() > 0.0 {max_di} else {min_di}.to_radians();
+            context.x_launch_speed = ang.cos() * mag;
+            context.y_launch_speed = ang.sin() * mag;
+
+            // check wall tech
+            let ecb_offset = ecb_left.x - ecb_bottom.x;
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+                &Vector2f{ x: -1.0 * sdi_distance + ecb_offset, y: 0.0},
+                true
+            ) == 1 {
+                // println!("idx: {} would be wall techable on the left", idx);
+                return false;
+            }
+            
+            context.x_pos -= sdi_distance;
+            context.x_pos_prev -= sdi_distance;
+        }
+        else if idx == NUM_ANGLE_CHECK { // full SDI right (positive X)
+            let ang = if ang.sin() > 0.0 {min_di} else {max_di}.to_radians();
+            context.x_launch_speed = ang.cos() * mag;
+            context.y_launch_speed = ang.sin() * mag;
+
+            // check wall tech
+            let ecb_offset = ecb_right.x - ecb_bottom.x;
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+                &Vector2f{ x: sdi_distance + ecb_offset, y: 0.0},
+                true
+            ) == 1 {
+                // println!("idx: {} would be wall techable on the right", idx);
+                return false;
+            }
+            
+            context.x_pos += sdi_distance;
+            context.x_pos_prev += sdi_distance;
+        }
+
+        // check possible amsah techs
+        context.step();
+        if context.y_pos - context.y_pos_prev < base_asdi * sdi_mul
+        && GroundModule::ray_check(
+            defender_boma, 
+            &Vector2f{ x: context.x_pos, y: context.y_pos}, 
+            &Vector2f{ x: 0.0, y: sdi_distance},
+            true
+        ) == 1 {
+            // println!("idx: {} would be amsah techable", idx);
+            return false;
+        }
+
+        let mut curr_hitstun = 0;
+        let mut does_angle_kill = false;
+        // do first iteration of knockback check
+        if GroundModule::ray_check(
+            defender_boma, 
+            &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
+            &Vector2f{ x: context.x_pos - context.x_pos_prev, y: context.y_pos - context.y_pos_prev}, 
+            context.y_pos <= context.y_pos_prev // only check for platforms if going downwards
+        ) == 1 {
+            // if it's ever possible to touch stage, this is not a valid finishing hit
+            // println!("idx: {} would touch stage", idx);
+            return false;
+        }
+        if !blastzones.contains(context.x_pos, context.y_pos){
+            // println!("{} will kill! adding to counter.", ang.to_degrees());
+            does_angle_kill = true;
+        }
+        curr_hitstun += 1;
+
+
+        while context.hitstun - NUM_HITSTUN_LENIENCY > curr_hitstun as f32 { // subtracting from the hitstun gives us room for error in the calculations
+            context.step();
+            if GroundModule::ray_check(
+                defender_boma, 
+                &Vector2f{ x: context.x_pos_prev, y: context.y_pos_prev}, 
+                &Vector2f{ x: context.x_pos - context.x_pos_prev, y: context.y_pos - context.y_pos_prev}, 
+                context.y_pos <= context.y_pos_prev // only check for platforms if going downwards
+            ) == 1 {
+                // if it's ever possible to touch stage, this is not a valid finishing hit
+                // println!("idx: {} would touch stage", idx);
+                return false;
+            }
+            if !blastzones.contains(context.x_pos, context.y_pos){
+                // println!("{} will kill! adding to counter.", ang.to_degrees());
+                does_angle_kill = true;
+                break;
+            }
+            curr_hitstun += 1;
+        }
+        context = context_ref;
+        let false_allowed_num = if is_final_killing_hit(defender_boma, attacker_boma) { NUM_FALSE_ANGLES_ALLOWED }  else { 0 };
+        if idx != -1 && idx != NUM_ANGLE_CHECK && !does_angle_kill {false_angle_num += 1;}
+        if false_angle_num > false_allowed_num { 
+            // println!("false angles: at least {}", false_angle_num);
+            return false; 
+        }
+    }
+    // println!("false angles: {}", false_angle_num);
+    return true;
 }
 
 const HANDLE: i32 = 0x01FF;
