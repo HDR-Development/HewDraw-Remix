@@ -223,14 +223,14 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             }
         },
         0xD => {
-            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, -1);
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, true, -1);
+            // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             
             if lr == -1.0 {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_l"), true, -1.0);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_l"), false, -1.0);
             } 
             else {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_r"), true, -1.0);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("entry_r"), false, -1.0);
             }
 
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR) {
@@ -428,6 +428,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         },
         0x30 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, false, -1);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_CMD_ARTICLE_SET_OFFSET_ARTICLE, FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, 0, 0, -10);
+            sv_module_access::article(fighter.lua_state_agent);
             // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_HOUSE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
             if lr == -1.0 {
@@ -544,7 +547,10 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         },
         0x46 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, false, -1);
-            ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_CMD_ARTICLE_SET_OFFSET_ARTICLE, FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, 0, 0, -10);
+            sv_module_access::article(fighter.lua_state_agent);
+            // ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             
             if lr == -1.0 {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE, Hash40::new("entry_l"), true, -1.0);
