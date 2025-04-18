@@ -118,9 +118,6 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
                 // <HDR>
                 check_asdi(fighter);
 
-                // make sure we can enter tech/missed tech on f1 of damage fly statuses (vanilla only allows them starting on f3)
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
-
                 // </HDR>
                 return 0.into();
             }
@@ -157,9 +154,6 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
 
     // <HDR>
     check_asdi(fighter);
-
-    // make sure we can enter tech/missed tech on f1 of damage fly statuses (vanilla only allows them starting on f3)
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
 
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR])
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
@@ -204,14 +198,6 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
             ControlModule::get_stick_y(fighter.module_accessor)
         };
 
-        // check stick vector length against ASDI stick threshold
-        let vector = fighter.Vector2__create(stick_x.into(), stick_y.into());
-        let length = fighter.Vector2__length(vector.clone());
-        let asdi_stick = ParamModule::get_float(fighter.battle_object, ParamType::Common, "asdi_stick");
-        if length.get_f32() < asdi_stick {
-            return;
-        }
-
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
         let asdi_speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
@@ -239,6 +225,9 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         pos.x += asdi_x;
         pos.y += asdi_y;
         PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos.x, y: pos.y, z: pos.z});
+
+        // make sure we can enter tech/missed tech on f1 of damage fly statuses (vanilla only allows them starting on f3)
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
     }
 }
 
@@ -642,9 +631,6 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP);
 
         check_asdi(fighter);
-
-        // make sure we can enter tech/missed tech on f1 of damage fly statuses (vanilla only allows them starting on f3)
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
     }
 }
 

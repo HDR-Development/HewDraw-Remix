@@ -779,28 +779,6 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     call_original!(stage, index, buffer);
 }
 
-// Allows us to set the hitbox overlap threshold for phantom hits
-#[skyline::hook(offset = 0x3e6664, inline)]
-unsafe fn phantom_hit_check(ctx: &mut skyline::hooks::InlineCtx) {
-    let opponent_battle_object_id = *(*ctx.registers[20].x.as_ref() as *const u32).add(0x28 / 4);
-    let opponent_boma = &mut *(sv_battle_object::module_accessor(opponent_battle_object_id));
-
-    let mut phantom_threshold: f32;
-    asm!("fmov w8, s9", out("w8") phantom_threshold);
-
-    if opponent_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE]) {
-        // threshold while shielding
-        phantom_threshold = 1.0;
-    }
-    else {
-        // normal threshold
-        // 0.0 = phantom hits disabled
-        phantom_threshold = 0.0;
-    }
-
-    asm!("fmov s9, w8", in("w8") phantom_threshold)
-}
-
 pub fn install() {
     energy::install();
     effect::install();
@@ -836,9 +814,8 @@ pub fn install() {
         // Changes full hops to calculate vertical velocity identically to short hops
         skyline::patching::Patch::in_text(0x6d21a8).data(0x52800015u32);
 
-        // Disables spark gfx/sfx on phantom hits
-        skyline::patching::Patch::in_text(0x4ceae8).data(0x140000D1u32);
-        skyline::patching::Patch::in_text(0x3fd360).nop();
+        // removes phantoms
+        skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
         
 
         // The following handles disabling the "Weapon Catch" animation for those who have it.
@@ -859,7 +836,6 @@ pub fn install() {
         after_collision,
         status_module__change_status,
         change_elec_hitlag_for_attacker,
-        set_uniform_buffer,
-        phantom_hit_check
+        set_uniform_buffer
     );
 }

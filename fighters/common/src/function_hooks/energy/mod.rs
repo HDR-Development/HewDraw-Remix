@@ -159,5 +159,5 @@ pub fn install() {
     control::install();
     motion::install();
     stop::install();
-    damage::install();
+    // damage::install();
 }
