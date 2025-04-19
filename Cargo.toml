@@ -220,9 +220,8 @@ hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["war
 once_cell = "1"
 ninput = { git = "https://github.com/blu-dev/ninput" }
 rand = { git = "https://github.com/skyline-rs/rand" }
-serde = { version = "1", features = ["derive"] }
-toml = "0.8.20"
-parking_lot = "0.12.3"
+lazy_static = "1.4.0"
+toml = "0.5.2"
 runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true

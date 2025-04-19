@@ -117,7 +117,6 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
                 WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
                 // <HDR>
                 check_asdi(fighter);
-
                 // </HDR>
                 return 0.into();
             }
@@ -151,17 +150,14 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
         }
         WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     }
-
     // <HDR>
     check_asdi(fighter);
-
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR])
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
         MotionModule::set_rate(fighter.module_accessor, 1.0);
         WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
     }
     // </HDR>
-    
     0.into()
 }
 
@@ -182,7 +178,6 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
     {
         let hashmap = fighter.local_func__fighter_status_damage_2();
         let sdi_mul = hashmap["stop_delay_"].get_f32();
-
         // get stick x/y length
         // uses cstick's value if cstick is on (for Double Stick DI)
         let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && !fighter.is_button_on(Buttons::CStickOverride) {
@@ -197,7 +192,6 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         else {
             ControlModule::get_stick_y(fighter.module_accessor)
         };
-
         // get base asdi distance
         let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
         let asdi_speed_up_mul = if fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP) {
@@ -206,26 +200,21 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
         else {
             1.0
         };
-
         // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
         let asdi = sdi_mul * base_asdi * asdi_speed_up_mul;
-
         // mul stick x/y by total sdi
         let asdi_x = asdi * stick_x;
         let asdi_y = asdi * stick_y;
-
         // get current pos
         let mut pos = Vector3f {
             x: PostureModule::pos_x(fighter.module_accessor),
             y: PostureModule::pos_y(fighter.module_accessor),
             z: PostureModule::pos_z(fighter.module_accessor)
         };
-
         // add asdi x/y to pos
         pos.x += asdi_x;
         pos.y += asdi_y;
         PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos.x, y: pos.y, z: pos.z});
-
         // make sure we can enter tech/missed tech on f1 of damage fly statuses (vanilla only allows them starting on f3)
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
     }
@@ -338,8 +327,8 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
 ) {
     let angle = angle.get_f32();
     let angle_threshold = 29.358;
-    let speed_start_horizontal = 4.6; // the start of scaling at angles below the angle_threshold
-    let speed_start_vertical = 5.57; // the start of scaling at completely vertical angles
+    let speed_start_horizontal = 4.65; // the start of scaling at angles below the angle_threshold
+    let speed_start_vertical = 5.63; // the start of scaling at completely vertical angles
     let speed_end = 7.2; // the end of scaling
 
     // calculate true speed_start using angle
@@ -357,7 +346,7 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     }
 
     // calculate speed_up_mul
-    let min_mul = 1.15;
+    let min_mul = 1.0;
     let max_mul = 1.65;
     let power = 1.0;
     let ratio = ((speed - speed_start) / (speed_end - speed_start));
@@ -588,7 +577,7 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
         // if !is_paralyze {
         //     fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay_flick(hashmap);
         // }
-        // StatusModule::set_keep_situation_air(fighter.module_accessor, false);
+        StatusModule::set_keep_situation_air(fighter.module_accessor, false);
         let release_action = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
         if release_action == *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_GROUND_TO_AIR {
             StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
@@ -629,7 +618,6 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_PARALYZE_EFFECT);
         }
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP);
-
         check_asdi(fighter);
     }
 }

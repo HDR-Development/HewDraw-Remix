@@ -97,11 +97,6 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     || boma.is_status_one_of(damage_statuses) {
         boma.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_WALL_JUMP_COUNT);
     }
-
-    // Successive aerial jump timer for multijump characters
-    if VarModule::get_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME) > 0 {
-        VarModule::dec_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME);
-    }
 }
 
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {

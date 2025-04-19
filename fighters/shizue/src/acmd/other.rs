@@ -241,28 +241,7 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_damagefly02"), true, false, false, false, app::enSEType(0));
-                SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
-            }
-            else {
-                SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing(boma, Hash40::new("vc_shizue_damagefly01"))
-        && !SoundModule::is_playing(boma, Hash40::new("vc_shizue_damagefly02")) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_damagefly02"), true, false, false, false, app::enSEType(0));
-                SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
-            }
-            else {
-                SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
-            }
-        }
+        SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
     }
 }
 

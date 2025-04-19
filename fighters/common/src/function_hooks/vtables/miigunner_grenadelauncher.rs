@@ -52,32 +52,8 @@ unsafe extern "C" fn miigunner_grenadelauncher_init(vtable: u64, weapon: &mut sm
 //     return call_original!(vtable, fighter, param_3);
 // }
 
-// #[skyline::hook(offset = 0x33bdb70)]
-// unsafe extern "C" fn miigunner_groundbomb_set_team_flags(vtable: u64, weapon: &mut smash::app::Weapon) {
-//     println!("set team flags?");
-
-//     return call_original!(vtable, weapon);
-// }
-
-// #[skyline::hook(offset = 0x33be150)]
-// unsafe extern "C" fn miigunner_groundbomb_on_damage2(vtable: u64, weapon: &mut smash::app::Weapon) {
-//     println!("on damage2?");
-
-//     return call_original!(vtable, weapon);
-// }
-
-// #[skyline::hook(offset = 0x33be0b0)]
-// unsafe extern "C" fn miigunner_groundbomb_on_reflect(vtable: u64, weapon: &mut smash::app::Weapon) {
-//     println!("on reflect?");
-
-//     return call_original!(vtable, weapon);
-// }
-
 pub fn install() {
     skyline::install_hooks!(
-        miigunner_grenadelauncher_init,
-        // miigunner_groundbomb_set_team_flags,
-        // miigunner_groundbomb_on_damage2,
-        // miigunner_groundbomb_on_reflect,
+        miigunner_grenadelauncher_init
     );
 }

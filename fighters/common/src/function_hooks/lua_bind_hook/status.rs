@@ -287,11 +287,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON {   
                 VarModule::on_flag(boma.object(), vars::common::instance::DOWN_DISABLE_PASSIVE);
             }
-
-            if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-            || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
-                VarModule::on_flag(boma.object(), vars::common::instance::DOWN_DISABLE_A_LAND);
-            }
         }
 
         // Tether trump logic
@@ -318,13 +313,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && next_status == *FIGHTER_STATUS_KIND_LANDING
         && boma.motion_frame() < 1.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::IS_CC_NON_TUMBLE);
-        }
-
-        // Prevents multijump characters from bypassing successive aerial jump lockout
-        // when interrupting an aerial jump with another action
-        if next_status == *FIGHTER_STATUS_KIND_FLY
-        && VarModule::get_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME) > 0 {
-            return 0;
         }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL {

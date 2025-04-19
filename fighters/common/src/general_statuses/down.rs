@@ -99,9 +99,7 @@ unsafe fn status_Down_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
         // Input lag forgiveness mechanic:
         // Allow A-landing during first 2 frames of knockdown
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FALL
-        && !VarModule::is_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_A_LAND) {
+        if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FALL {
             if fighter.is_button_trigger(Buttons::AttackAll)
             || fighter.is_button_trigger(Buttons::TiltAttack) {
                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
@@ -143,7 +141,6 @@ unsafe fn status_end_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     VarModule::off_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_PASSIVE);
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_A_LAND);
 
     0.into()
 }

@@ -60,7 +60,7 @@
   <int hash="hit_stop_delay_flick">2</int>
   <float hash="hit_stop_delay_flick_mul">5.25</float>
   <int hash="hit_stop_delay_flick_frame">3</int>
-  <int hash="hit_stop_delay_flick_max_count">5</int>
+  <int hash="hit_stop_delay_flick_max_count">7</int>
   <int hash="0x256ea4745d">-1</int>
   <float hash="0x2373146726">1</float>
   <int hash="0x29dae31932">-1</int>
