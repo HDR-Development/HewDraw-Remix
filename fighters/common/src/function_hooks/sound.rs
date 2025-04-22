@@ -4,13 +4,28 @@ use utils::*;
 
 #[skyline::hook(offset = 0x4cf6c0)]
 unsafe fn soundmodule__play_se_hook(sound_module: u64, se: smash::phx::Hash40, arg2: bool, arg3: bool, arg4: bool, arg5: bool, se_type: smash::app::enSEType) -> u64 {
-    let handle = original!()(sound_module, se, arg2, arg3, arg4, arg5, se_type);
     let boma = *(sound_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    let fighter_boma = if (*boma).is_weapon() {
+        (*boma).get_owner_boma()
+    } else {
+        boma
+    };
+
+    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*fighter_boma).status_frame() == 0
+    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+        return 0;
+    }
+
+    let handle = original!()(sound_module, se, arg2, arg3, arg4, arg5, se_type);
+    
     if se_type.0 == 0
     && !utils::se::SE_LIST.contains(&se.hash) {
         // Increase volume of most of the game's SFX (excluding voice clips)
         SoundModule::set_se_vol(boma, handle as i32, 1.25, 0);
     }
+
     handle
 }
 

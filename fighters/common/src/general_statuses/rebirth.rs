@@ -7,9 +7,6 @@ unsafe extern "C" fn sub_rebirth_uniq_process_init(fighter: &mut L2CFighterCommo
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
 
-    let status_module = *(fighter.module_accessor as *const BattleObjectModuleAccessor as *const u64).add(0x8);
-    *((status_module + 0x98) as *mut i32) = *FIGHTER_STATUS_KIND_ENTRY;  // StatusModule::status_kind
-
     match kind {
         0x0 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, false, -1);
@@ -327,8 +324,6 @@ unsafe extern "C" fn sub_rebirth_uniq_process_init(fighter: &mut L2CFighterCommo
         _ => {}
     }
 
-    *((status_module + 0x98) as *mut i32) = *FIGHTER_STATUS_KIND_REBIRTH;  // StatusModule::status_kind
-
     original!()(fighter)
 }
 
@@ -384,18 +379,22 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         0x2A => {
             end_frame - 80.0
         },
+        0x30 => {
+            54.0
+        },
         0x32 => {
             end_frame - 75.0
         },
         0x33 => {
             0.0
         },
+        0x46 => {
+            54.0
+        },
         _ => {
             (end_frame - 85.0).max(0.0)
         }
     };
-
-    let costume = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
 
     if [*FIGHTER_KIND_PZENIGAME,
         *FIGHTER_KIND_PFUSHIGISOU,

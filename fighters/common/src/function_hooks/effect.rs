@@ -243,6 +243,19 @@ unsafe fn req_hook(effect_module: u64, effHash: smash::phx::Hash40, pos: *mut Ve
     let boma = *(effect_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
+
+    let fighter_boma = if (*boma).is_weapon() {
+        (*boma).get_owner_boma()
+    } else {
+        boma
+    };
+
+    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*fighter_boma).status_frame() == 0
+    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+        return 0;
+    }
+
     if SHOCKWAVE_FX.contains(&effHash.hash) {
         let mut effect_size_mul = if effHash.hash == hash40("sys_nopassive") {
             0.5
@@ -273,6 +286,19 @@ unsafe fn req_on_joint_hook(effect_module: u64, effHash: smash::phx::Hash40, bon
     let boma = *(effect_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
+
+    let fighter_boma = if (*boma).is_weapon() {
+        (*boma).get_owner_boma()
+    } else {
+        boma
+    };
+
+    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*fighter_boma).status_frame() == 0
+    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+        return 0;
+    }
+
     if SHOCKWAVE_FX.contains(&effHash.hash) {
         let mut effect_size_mul = if effHash.hash == hash40("sys_nopassive") {
             0.5
@@ -312,6 +338,18 @@ unsafe fn req_follow(effect_module: u64, effHash: smash::phx::Hash40, boneHash: 
     let boma = *(effect_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
+
+    let fighter_boma = if (*boma).is_weapon() {
+        (*boma).get_owner_boma()
+    } else {
+        boma
+    };
+
+    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*fighter_boma).status_frame() == 0
+    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+        return 0;
+    }
 
     // Shrink knockback smoke effect by 25%
     let mut is_kb_smoke = false;

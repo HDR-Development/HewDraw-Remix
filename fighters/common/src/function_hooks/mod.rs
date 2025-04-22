@@ -22,6 +22,7 @@ pub mod collision;
 pub mod camera;
 pub mod shotos;
 pub mod sound;
+pub mod article;
 mod lua_bind_hook;
 mod fighterspecializer;
 mod fighter_util;
@@ -823,6 +824,7 @@ pub fn install() {
     camera::install();
     shotos::install();
     sound::install();
+    article::install();
     lua_bind_hook::install();
     fighterspecializer::install();
     fighter_util::install();
