@@ -14,7 +14,8 @@ unsafe fn soundmodule__play_se_hook(sound_module: u64, se: smash::phx::Hash40, a
 
     if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
     && (*fighter_boma).status_frame() == 0
-    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")])
+    && VarModule::is_flag((*fighter_boma).object(), vars::common::status::IGNORE_INITIAL_SOUND) {
         return 0;
     }
 

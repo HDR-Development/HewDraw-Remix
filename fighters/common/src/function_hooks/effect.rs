@@ -244,15 +244,10 @@ unsafe fn req_hook(effect_module: u64, effHash: smash::phx::Hash40, pos: *mut Ve
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
 
-    let fighter_boma = if (*boma).is_weapon() {
-        (*boma).get_owner_boma()
-    } else {
-        boma
-    };
-
-    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
-    && (*fighter_boma).status_frame() == 0
-    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+    if (*boma).is_weapon()
+    && (*boma).get_owner_boma().is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*boma).get_owner_boma().status_frame() == 0
+    && (*boma).get_owner_boma().is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
         return 0;
     }
 
@@ -287,15 +282,10 @@ unsafe fn req_on_joint_hook(effect_module: u64, effHash: smash::phx::Hash40, bon
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
 
-    let fighter_boma = if (*boma).is_weapon() {
-        (*boma).get_owner_boma()
-    } else {
-        boma
-    };
-
-    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
-    && (*fighter_boma).status_frame() == 0
-    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+    if (*boma).is_weapon()
+    && (*boma).get_owner_boma().is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*boma).get_owner_boma().status_frame() == 0
+    && (*boma).get_owner_boma().is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
         return 0;
     }
 
@@ -339,15 +329,10 @@ unsafe fn req_follow(effect_module: u64, effHash: smash::phx::Hash40, boneHash: 
     let mut eff_size = size;
     let mut new_eff_hash = effHash;
 
-    let fighter_boma = if (*boma).is_weapon() {
-        (*boma).get_owner_boma()
-    } else {
-        boma
-    };
-
-    if (*fighter_boma).is_status(*FIGHTER_STATUS_KIND_REBIRTH)
-    && (*fighter_boma).status_frame() == 0
-    && (*fighter_boma).is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+    if (*boma).is_weapon()
+    && (*boma).get_owner_boma().is_status(*FIGHTER_STATUS_KIND_REBIRTH)
+    && (*boma).get_owner_boma().status_frame() == 0
+    && (*boma).get_owner_boma().is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
         return 0;
     }
 

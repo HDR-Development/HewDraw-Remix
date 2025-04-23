@@ -396,6 +396,10 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         }
     };
 
+    if start_frame > 35.0 {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::IGNORE_INITIAL_SOUND);
+    }
+
     if [*FIGHTER_KIND_PZENIGAME,
         *FIGHTER_KIND_PFUSHIGISOU,
         *FIGHTER_KIND_PLIZARDON].contains(&kind)

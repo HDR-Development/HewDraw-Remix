@@ -320,6 +320,8 @@ pub mod vars {
 
             pub const IS_DASH_CANCEL: i32 = 0x1055;
 
+            pub const IGNORE_INITIAL_SOUND: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
