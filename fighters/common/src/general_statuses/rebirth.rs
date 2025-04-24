@@ -332,8 +332,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
 
-    let move_total_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_WORK_INT_MOVE_TOTAL_FRAME);
-
     CameraModule::reset_all(fighter.module_accessor);
 
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -353,10 +351,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("entry_r"))
     };
 
-
     let start_frame: f32 = match kind {
         0x4 => {
-            end_frame - 73.0
+            end_frame - 75.0
         },
         0xA => {
             0.0
@@ -375,6 +372,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         },
         0x21 => {
             15.0
+        },
+        0x22 => {
+            end_frame - 75.0
         },
         0x2A => {
             end_frame - 80.0
@@ -396,7 +396,7 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         }
     };
 
-    if start_frame > 35.0 {
+    if start_frame > 45.0 {
         VarModule::on_flag(fighter.battle_object, vars::common::status::IGNORE_INITIAL_SOUND);
     }
 
@@ -671,8 +671,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_rebirth_uniq_check as *const () as _));
 
     GroundModule::set_ignore_boss(fighter.module_accessor, true);
-
-    WorkModule::set_int(fighter.module_accessor, move_total_frame, *FIGHTER_STATUS_REBIRTH_WORK_INT_MOVE_TOTAL_FRAME);
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Rebirth_Main)]
@@ -681,7 +679,6 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
     let cmd_cat2 = fighter.global_table[CMD_CAT2].get_i32();
-    let frame = fighter.global_table[CURRENT_FRAME].get_i32();
     let pos = PostureModule::pos(fighter.module_accessor);
     let pos_x = (*pos).x;
     let pos_y = (*pos).y;

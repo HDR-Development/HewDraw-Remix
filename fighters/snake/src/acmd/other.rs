@@ -227,6 +227,63 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_entry(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f20a9d549), false);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x24772eddef), false);
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f20a9d549), true);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x24772eddef), true);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 44.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 56.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+    frame(lua_state, 60.0);
+    if is_excute(agent) {
+        if boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_ENTRY_FLAG_SPYCLOAK);
+        }
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -255,4 +312,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("expression_entryl", expression_entry, Priority::Low);
+    agent.acmd("expression_entryr", expression_entry, Priority::Low);
 }
