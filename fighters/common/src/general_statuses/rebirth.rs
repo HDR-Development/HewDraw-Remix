@@ -332,8 +332,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
 
-    let move_total_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_WORK_INT_MOVE_TOTAL_FRAME);
-
     CameraModule::reset_all(fighter.module_accessor);
 
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -353,10 +351,18 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("entry_r"))
     };
 
-
     let start_frame: f32 = match kind {
+        0x0 => {
+            end_frame - 90.0
+        },
         0x4 => {
-            end_frame - 73.0
+            end_frame - 75.0
+        },
+        0x6 => {
+            end_frame - 80.0
+        },
+        0x9 => {
+            end_frame - 90.0
         },
         0xA => {
             0.0
@@ -376,6 +382,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         0x21 => {
             15.0
         },
+        0x22 => {
+            end_frame - 75.0
+        },
         0x2A => {
             end_frame - 80.0
         },
@@ -388,6 +397,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         0x33 => {
             0.0
         },
+        0x37 => {
+            end_frame - 80.0
+        },
         0x46 => {
             54.0
         },
@@ -395,6 +407,10 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
             (end_frame - 85.0).max(0.0)
         }
     };
+
+    if start_frame > 45.0 {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::IGNORE_INITIAL_SOUND);
+    }
 
     if [*FIGHTER_KIND_PZENIGAME,
         *FIGHTER_KIND_PFUSHIGISOU,
@@ -667,8 +683,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_rebirth_uniq_check as *const () as _));
 
     GroundModule::set_ignore_boss(fighter.module_accessor, true);
-
-    WorkModule::set_int(fighter.module_accessor, move_total_frame, *FIGHTER_STATUS_REBIRTH_WORK_INT_MOVE_TOTAL_FRAME);
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Rebirth_Main)]
@@ -677,7 +691,6 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
     let cmd_cat2 = fighter.global_table[CMD_CAT2].get_i32();
-    let frame = fighter.global_table[CURRENT_FRAME].get_i32();
     let pos = PostureModule::pos(fighter.module_accessor);
     let pos_x = (*pos).x;
     let pos_y = (*pos).y;
@@ -997,7 +1010,8 @@ unsafe extern "C" fn bind_address_call_status_end_Rebirth(fighter: &mut L2CFight
 
     fighter.sub_entry_remove_article();
 
-    EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, true);
+    EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_FOLLOW as u32, true, true);
+    EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_EMIT as u32, true, true);
 
     0.into()
 }
