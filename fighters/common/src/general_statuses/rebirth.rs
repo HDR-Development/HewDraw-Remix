@@ -934,6 +934,12 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
                 PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z});
             }
         },
+        0x3B => {
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_GRASS) {
+                let article_boma = fighter.get_article_boma(*FIGHTER_DUCKHUNT_GENERATE_ARTICLE_GRASS);
+                PostureModule::set_pos(article_boma, &Vector3f{x: pos_x, y: pos_y, z: pos_z + 7.4});
+            }
+        },
         0x46 => {
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE) {
                 let article_boma = fighter.get_article_boma(*FIGHTER_SHIZUE_GENERATE_ARTICLE_OFFICE);
