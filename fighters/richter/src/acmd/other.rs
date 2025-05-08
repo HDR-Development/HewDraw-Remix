@@ -3,35 +3,23 @@ use super::*;
 unsafe extern "C" fn sound_damagefly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));}
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));}
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
+        } else {
+            let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+            let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+
+            let play_vc = if speed_vector < 3.8 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {
+                PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));
             }
         }
     }
@@ -40,26 +28,12 @@ unsafe extern "C" fn sound_damagefly(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_damageflyroll(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
-            }
-            else {
-                PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
-            }
-            else {
-                PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));
-            }
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(fighter, Hash40::new("vc_richter_damagefly02"));
+        } else {
+            PLAY_FLY_VOICE(fighter, Hash40::new("seq_richter_rnd_futtobi01"), Hash40::new("seq_richter_rnd_futtobi02"));
         }
     }
 }
@@ -71,7 +45,6 @@ unsafe extern "C" fn game_dash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-
 }
 
 unsafe extern "C" fn sound_dash(fighter: &mut L2CAgentBase) {

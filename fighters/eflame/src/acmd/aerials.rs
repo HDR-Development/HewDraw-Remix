@@ -48,10 +48,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 75.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
 }
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
@@ -96,10 +92,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(lua_state, 69.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
@@ -146,10 +138,6 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 71.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
 }
 
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
@@ -193,10 +181,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
         }
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         FT_MOTION_RATE(agent, 0.7);
-    }
-    frame(lua_state, 79.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 

@@ -1385,5 +1385,8 @@ shield_break_fly:
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_lw:
+  extra:
+    cancel_frame: 71
 cliff_wait:
   blend_frames: 2

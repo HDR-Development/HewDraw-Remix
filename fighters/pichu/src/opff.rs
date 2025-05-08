@@ -127,15 +127,6 @@ unsafe fn charge_state_effects(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn discharge_momentum(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_LW_HIT) && VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK) {
-        let air_brake_x = WorkModule::get_param_float(fighter.module_accessor, smash::hash40("air_brake_x"), 0);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, air_brake_x, 0.0);
-        app::sv_kinetic_energy::set_brake(fighter.lua_state_agent);
-    }
-}
-
 unsafe fn zippy_zap_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::pichu::instance::CHARGE_STATE_ATTACK) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
@@ -246,7 +237,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     charge_state_damage_multipliers(boma);
     charge_state_reset(boma);
     charge_state_effects(boma);
-    discharge_momentum(fighter);
     zippy_zap_jump_cancel(boma, status_kind, situation_kind, cat[0]);
     charge_training_taunt(fighter, boma, status_kind);
     fastfall_specials(fighter);

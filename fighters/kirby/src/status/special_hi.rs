@@ -1,5 +1,9 @@
 use super::*;
 
+unsafe extern "C" fn special_hi2_check_attack(fighter: &mut L2CFighterCommon, param_2: &L2CValue, param_3: &L2CValue) -> L2CValue {
+    return 0.into();
+}
+
 // statuses::kirby::SPECIAL_HI_H
 
 unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -28,7 +32,7 @@ unsafe extern "C" fn special_hi_h_pre(fighter: &mut L2CFighterCommon) -> L2CValu
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi_h_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -64,15 +68,18 @@ unsafe extern "C" fn special_hi_h_main_loop(fighter: &mut L2CFighterCommon) -> L
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
         }
     }
-    return 0.into()
+
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi_h_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    return 0.into()
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(CheckAttack, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2, special_hi2_check_attack);
+
     agent.status(Pre, statuses::kirby::SPECIAL_HI_H, special_hi_h_pre);
     agent.status(Main, statuses::kirby::SPECIAL_HI_H, special_hi_h_main);
     agent.status(End, statuses::kirby::SPECIAL_HI_H, special_hi_h_end);

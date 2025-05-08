@@ -67,20 +67,12 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 105, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
         }
         else {
-            ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 69, 86, 0, 70, 9.5, 0.0, 10.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        }
-    }
-    frame(lua_state, 32.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
-            AttackModule::clear_all(boma);
+            ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 69, 57, 0, 80, 9.5, 0.0, 10.0, 5.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED) {
-            AttackModule::clear_all(boma);
-        }
+        AttackModule::clear_all(boma);
     }
 }
 

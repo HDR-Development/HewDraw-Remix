@@ -41,24 +41,13 @@ unsafe fn area_manager_process(manager: *const u64) {
     call_original!(manager)
 }
 
-static HAZARDLESS_STAGE_IDS: &[u32] = &[
-    0x3b,  // venom
-    0x3e,  // brinstar
-    0x62,  // skyworld
-    0x77,  // summit
-    0xcb,  // find mii (StreetPass)
-    0xb9,  // reset bomb forest
-    0xec,  // skyloft,
-    0x107, // wrecking crew
-    0x10d, // wuhu island
-];
 
 #[skyline::hook(offset = 0x178ab60, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
     let stage_id = *ctx.registers[1].w.as_ref();
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
         || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    if is_alt_haz_off {
         *ctx.registers[3].w.as_mut() = 0;
     }
 }
@@ -77,7 +66,7 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     let stage_id = *(ptr as *const u16) as u32;
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
         || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    if is_alt_haz_off {
         *(ptr as *mut bool).add(0x10) = false;
     }
 }

@@ -38,7 +38,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-    || fighter.is_status_one_of(damage_statuses) || fighter.is_status(*FIGHTER_STATUS_KIND_LANDING){ 
+    || fighter.is_status_one_of(damage_statuses) || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) { 
         //Re-enable Mythra UpB 
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
         //Re-enable Mythra SideB
@@ -48,7 +48,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         Set_Pyra_Up_Special_Cancel(fighter,false);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
     return true.into();

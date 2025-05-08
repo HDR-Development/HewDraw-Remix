@@ -125,8 +125,18 @@ unsafe fn status_CliffWait_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 if !fighter.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_SUB_FIGHTER) {
                     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_CLIFF_RELEASE_NUM);
                 }
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
-                ControlModule::reset_trigger(fighter.module_accessor);
+
+                let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
+
+                // Ignores attack input if you used C-stick to drop from ledge
+                if InputModule::get_trigger_count(fighter.battle_object, Buttons::CStickOn) < (buffer + 1) {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+                    ControlModule::reset_trigger(fighter.module_accessor);
+                }
+                else {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                }
+                
                 return true.into();
             }
         }

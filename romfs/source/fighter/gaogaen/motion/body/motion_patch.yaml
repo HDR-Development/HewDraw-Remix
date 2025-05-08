@@ -161,6 +161,9 @@ special_lw_turn:
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_b:
+  extra:
+    cancel_frame: 48
 throw_f:
   extra:
     cancel_frame: 76

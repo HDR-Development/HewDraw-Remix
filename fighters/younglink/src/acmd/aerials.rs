@@ -279,10 +279,6 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_LANDING);
     }
-    frame(lua_state, 53.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
     frame(lua_state, 72.0);
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

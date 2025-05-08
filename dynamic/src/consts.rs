@@ -580,6 +580,13 @@ pub mod vars {
         }
     }
 
+    pub mod duckhunt_can {
+        pub mod instance {
+            // flags
+            pub const KILLSHOT_EXPLODE: i32 = 0x0100;
+        }
+    }
+
     pub mod edge {
         pub mod instance {
             // flags
@@ -1058,10 +1065,7 @@ pub mod vars {
             // flags
             pub const ATTACK_S4_SPECIAL: i32 = 0x0100;
             pub const SPECIAL_HI_CATCH_USED: i32 = 0x0101;
-        }
-        pub mod status {
-            // flags
-            pub const SPECIAL_LW_HOLD: i32 = 0x1100;
+            pub const SPECIAL_LW_HOLD: i32 = 0x0102;
         }
     }
 
@@ -1284,6 +1288,7 @@ pub mod vars {
         pub mod instance {
             //flags
             pub const CHARGE_STATE_ATTACK: i32 = 0x0102;
+            pub const SPECIAL_LW_DISCHARGE_AIR_START: i32 = 0x0103;
 
             //ints
             pub const CHARGE_STATE_ENABLED: i32 = 0x0100;

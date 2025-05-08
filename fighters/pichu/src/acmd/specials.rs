@@ -230,8 +230,11 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK);
         if charged {
+            if !VarModule::is_flag(agent.battle_object, vars::pichu::instance::SPECIAL_LW_DISCHARGE_AIR_START)
+            && boma.is_situation(*SITUATION_KIND_AIR) {
+                VarModule::on_flag(agent.battle_object, vars::pichu::instance::SPECIAL_LW_DISCHARGE_AIR_START);
+            }
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time") as f32;
             let charge_state_remaining = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) as f32;
             // 5 seconds to use full strength Discharge before it starts decreasing in power
@@ -248,6 +251,15 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
             MeterModule::drain_direct(boma.object(), 999.0);
         }
+        else {
+            VarModule::off_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        if !charged && !VarModule::is_flag(agent.battle_object, vars::pichu::instance::SPECIAL_LW_DISCHARGE_AIR_START) {
+            WorkModule::on_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_GENERATE);
+        }
     }
     if VarModule::is_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK) {
         frame(lua_state, 15.0);
@@ -255,12 +267,6 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         frame(lua_state, 21.0);
         if is_excute(agent) {
             boma.change_status_req(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_LW_HIT, true);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(agent) {
-        if !charged {
-            WorkModule::on_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_GENERATE);
         }
     }
 }
@@ -309,6 +315,14 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
             ATTACK(agent, 0, 0, Hash40::new("top"), 14.0, 361, 71, 0, 90, 11.0, 0.0, 10.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 12, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         }
         else {
+            if boma.is_situation(*SITUATION_KIND_GROUND) {
+                let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
+                sv_kinetic_energy!(set_brake, agent, FIGHTER_KINETIC_ENERGY_ID_STOP, ground_brake, 0.0);
+            }
+            else {
+                let air_brake_x = WorkModule::get_param_float(boma, hash40("air_brake_x"), 0);
+                sv_kinetic_energy!(set_brake, agent, FIGHTER_KINETIC_ENERGY_ID_STOP, air_brake_x, 0.0);
+            }
             FT_ADD_DAMAGE(agent, 8.0 * discharge_power_mul);
             ATTACK(agent, 0, 0, Hash40::new("top"), 20.0 * discharge_power_mul, 361, 80, 0, 70, 10.0 * discharge_size_mul, 0.0, 10.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 12, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
@@ -324,8 +338,8 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK) && agent.is_situation(*SITUATION_KIND_AIR) {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        if VarModule::is_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ATTACK) {
+            boma.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_FALL);
         }
     }
 }

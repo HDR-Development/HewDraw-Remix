@@ -117,12 +117,17 @@ pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32)
                 TeamModule::set_hit_team(defender_boma, attacker_team_no);
             }
             else if attacker_boma.is_item() {
-                if attacker_boma.kind() == *ITEM_KIND_MECHAKOOPA { return; }
-                let owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32;
-                //println!("owner id: {}", owner_id);
+                let owner_id;
+                if LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_CREATEOWNER) {
+                    owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_CREATEOWNER, true) as u32;
+                } else if !LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_TEAMOWNER) {
+                    owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32;
+                } else {
+                    return; // this item somehow isn't able to have its team found, get out of here
+                }
                 let owner_boma = &mut *(*utils::util::get_battle_object_from_id(owner_id));
                 // failsafe in case this somehow isn't a fighter
-                if !owner_boma.is_fighter(){ return };
+                if !owner_boma.is_fighter() { return };
                 let attacker_team_no = TeamModule::hit_team_no(owner_boma) as i32;
                 //println!("swapping barrel team to {} and owner id to {}", attacker_team_no, owner_id);
                 TeamModule::set_team_owner_id(defender_boma, owner_id);

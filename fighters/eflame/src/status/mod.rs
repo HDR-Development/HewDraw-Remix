@@ -33,7 +33,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         set_mythra_up_special_cancel(fighter,false);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         reset_mythra_up_special_freefall(fighter);
     }
     return true.into();

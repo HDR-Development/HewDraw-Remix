@@ -63,10 +63,6 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 54.0);
     FT_MOTION_RATE(agent, 1.0);
-    frame(lua_state, 77.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
 }
 
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {

@@ -226,10 +226,6 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, 73.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {

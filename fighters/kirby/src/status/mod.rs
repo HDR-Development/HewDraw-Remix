@@ -4,7 +4,7 @@ use globals::*;
 
 mod copy;
 mod landing_fall_special;
-mod special_hi_h;
+mod special_hi;
 mod special_lw;
 mod special_s;
 
@@ -18,7 +18,8 @@ unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterComm
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     /// Ganon: Re-enables the ability to use aerial specials when connecting to ground or cliff
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF) 
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::ganon::instance::DISABLE_SPECIAL_N);
     }
 
@@ -304,7 +305,7 @@ pub fn install(agent: &mut Agent) {
 
     copy::install(agent);
     landing_fall_special::install(agent);
-    special_hi_h::install(agent);
+    special_hi::install(agent);
     special_lw::install(agent);
     special_s::install(agent);
 }
