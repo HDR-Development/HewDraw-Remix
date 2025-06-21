@@ -392,7 +392,7 @@ pub mod vars {
         pub mod instance {
             // flag
             pub const SPECIAL_S_BEAKBOMB_ACTIVE: i32 = 0x0100;
-            pub const SPECIAL_N_BAYONET_ACTIVE: i32 = 0x0101;
+            pub const SPECIAL_N_BAYONET_DISABLE: i32 = 0x0101;
             pub const SPECIAL_S_FAIL_ENABLE: i32 = 0x0102;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0103;
             pub const SPECIAL_N_LAND_CANCEL: i32 = 0x0104;
@@ -403,6 +403,8 @@ pub mod vars {
             pub const SPECIAL_S_BEAKBOMB_FRAME: i32 = 0x0101;
             // 0: Normal Bounce (can be cancelled) 1: weak bounce 2: heavy bounce.
             pub const SPECIAL_S_BEAKBOMB_BOUNCE_TYPE: i32 = 0x0102;
+            pub const BOUNCE_TYPE_NORMAL: i32 = 0;
+            pub const BOUNCE_TYPE_ATTACK: i32 = 1;
             //Eggs fired gets reset when entering Bayonet, so we have to temporarily store current eggs fired
             pub const SPECIAL_N_BAYONET_EGGS_FIRED: i32 = 0x0103;
 
@@ -797,7 +799,10 @@ pub mod vars {
             // flags
             //pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
             pub const SPECIAL_N_PICKEL_CYCLE_MATERIAL: i32 = 0x01F4;
+            pub const BUDDY_SPECIAL_N_BAYONET_ACTIVE: i32 = 0x01F5;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
+            pub use super::super::buddy::instance::SPECIAL_N_LAND_CANCEL;
+            pub use super::super::buddy::instance::SPECIAL_N_BAYONET_DISABLE;
 
             // ints
             pub const SPECIAL_N_PICKEL_MATERIAL_INDEX: i32 = 0x01F5;
@@ -1900,7 +1905,7 @@ pub mod statuses {
     }
 
     pub mod buddy {
-        pub const SPECIAL_N_BAYONET_END: i32 = 0x1FB;
+        pub const SPECIAL_N_BAYONET: i32 = 0x1FB;
     }
 
     pub mod daisy_kinopio {
@@ -1957,7 +1962,7 @@ pub mod statuses {
         pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
         pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
         pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
-        pub const BUDDY_SPECIAL_N_BAYONET_END: i32 = 0x3ED;
+        pub const BUDDY_SPECIAL_N_BAYONET: i32 = 0x3ED;
     }
 
     pub mod krool {

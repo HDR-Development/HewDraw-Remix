@@ -3,7 +3,7 @@ use globals::*;
 // status script import
 
 mod bayonetta_special_n_cancel;
-// mod buddy_bayonet_end;
+mod buddy_bayonet_end;
 mod captain_special_n;
 mod daisy_special_n;
 mod diddy_special_n_cancel;
@@ -33,7 +33,7 @@ mod trail_special_n;
 
 pub fn install(agent: &mut Agent) {
     bayonetta_special_n_cancel::install(agent);
-    // buddy_bayonet_end::install(agent);
+    buddy_bayonet_end::install(agent);
     captain_special_n::install(agent);
     daisy_special_n::install(agent);
     diddy_special_n_cancel::install(agent);

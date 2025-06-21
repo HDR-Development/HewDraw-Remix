@@ -1,6 +1,7 @@
 use super::*;
 
 mod bayonetta;
+mod buddy;
 mod chrom;
 mod daisy;
 mod diddy;
@@ -31,6 +32,7 @@ mod wolf;
 
 pub fn install(agent: &mut Agent) {
     bayonetta::install(agent);
+    buddy::install(agent);
     chrom::install(agent);
     daisy::install(agent);
     diddy::install(agent);

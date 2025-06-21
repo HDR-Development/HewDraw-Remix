@@ -783,6 +783,36 @@ unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon) {
 	}
 }
 
+unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon) {
+    let motion = MotionModule::motion_kind(fighter.module_accessor);
+    let motion_partial = MotionModule::motion_kind_partial(fighter.module_accessor,*FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+    if fighter.is_status_one_of(&[
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_F,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_B,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_LANDING
+    ]) 
+    && fighter.is_situation(*SITUATION_KIND_GROUND) 
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE) {
+        if motion_partial == hash40("buddy_special_n_shoot_upper_fire") {
+            let frame_partial = MotionModule::frame_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+            let disable_frame = 3.0; //frame before egg fires
+            let disable_bayonet = (!CancelModule::is_enable_cancel(fighter.module_accessor) && frame_partial >= disable_frame);
+            VarModule::set_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE,disable_bayonet);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
+        }
+        let is_csticking = ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+        if (is_csticking && !VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE)) {
+            VarModule::on_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_SHOOT);
+            fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT.into(), false.into());            
+        }
+    }
+}
+
 // Byleth
 unsafe fn master_nspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_CANCEL) {
@@ -1118,6 +1148,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         0x54 => {
             blue_eggs_land_cancels(fighter);
             indicator_breegull_fatigue(fighter);
+            breegull_bayonet(fighter);
         },
         // Terry
         0x55 => check_special_cancels(fighter),
