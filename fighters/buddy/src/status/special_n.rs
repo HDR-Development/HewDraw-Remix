@@ -69,9 +69,14 @@ unsafe extern "C" fn bayonet_main_loop(fighter: &mut L2CFighterCommon) -> L2CVal
     // exit if the animation is not done yet
     if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_n_attack_end") {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END) {
+            let start_frame = 26.0;
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_attack_end"), 26.0, 1.0, false, 0.0, false, false);
-            //ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, 26.0);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_attack_end"), start_frame, 1.0, false, 0.0, false, false);
+            
+            if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER) {
+                ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, 0);
+            }
+            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, start_frame);
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {

@@ -1,9 +1,9 @@
 use super::*;
 use globals::*;
 
-const HUD_DISPLAY_TIME_MAX: i32 = 90;
+pub const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
-const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
+pub const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
 const BEAKBOMB_END_FRAME: i32 = 25; // Dash timer is shared between ground and air in vl.prc
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
@@ -276,9 +276,6 @@ unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon) {
         && VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN) > FEATHERS_RED_COOLDOWN_MAX - 5.0 {
             VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, 1.0);
         }
-        else if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH]) {
-            VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, FEATHERS_RED_COOLDOWN_MAX);
-        }
 	}
 
 	buddy_meter_display(fighter, in_Air);
@@ -289,7 +286,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, RedFeather: bool) 
 	if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH,
-        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL,
+        //*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL,
         //*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL,
 		*FIGHTER_STATUS_KIND_REBIRTH
     ])
@@ -305,7 +302,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, RedFeather: bool) 
 	}
 }
 
-unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, RedFeather: bool) {
+pub unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, RedFeather: bool) {
 	EffectModule::kill_kind(fighter.module_accessor, Hash40::new("buddy_special_s_count"), false, true);
 
     let FEATHERS_GOLD_COUNT = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);

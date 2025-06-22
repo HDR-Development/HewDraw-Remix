@@ -3,6 +3,10 @@ use super::*;
 // BUDDY_BUDDY_BAYONET_END
 
 pub unsafe extern "C" fn bayonet_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE) {
+        return smashline::original_status(Pre, fighter, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT)(fighter);
+    }
+
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_GROUND),
@@ -81,13 +85,14 @@ unsafe extern "C" fn bayonet_main_loop(fighter: &mut L2CFighterCommon) -> L2CVal
     // exit if the animation is not done yet
     if MotionModule::motion_kind(fighter.module_accessor) != hash40("buddy_special_n_attack_end") {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END) {
+            let start_frame = 26.0;
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("buddy_special_n_attack_end"), 26.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("buddy_special_n_attack_end"), start_frame, 1.0, false, 0.0, false, false);
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAT) {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAT, Hash40::new("special_n_start"), false, 26.0);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAT, Hash40::new("special_n_start"), false, start_frame);
             }
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER) {
-                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, 26.0);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, start_frame);
             }
         }
     }
@@ -115,7 +120,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(End, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_end);
     agent.status(Exit, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_exit); 
     */
-    //agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_pre);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_pre);
     agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_main);
     agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_end);
     agent.status(Exit, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_exit); 

@@ -122,7 +122,7 @@ unsafe extern "C" fn game_specialnattack(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 21.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
     }
@@ -218,9 +218,6 @@ unsafe extern "C" fn expression_specialnattack(agent: &mut L2CAgentBase) {
     }
 }
 unsafe extern "C" fn game_specialnattackend(agent: &mut L2CAgentBase) {
-    if is_excute(agent) {
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
-    }
     FT_MOTION_RATE(agent, 0.75);
     wait(agent.lua_state_agent, 36.0);
     FT_MOTION_RATE(agent, 0.25);

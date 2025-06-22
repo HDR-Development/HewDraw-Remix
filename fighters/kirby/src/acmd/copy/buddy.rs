@@ -131,7 +131,7 @@ unsafe extern "C" fn game_buddyspecialnattack(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 24.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
     }

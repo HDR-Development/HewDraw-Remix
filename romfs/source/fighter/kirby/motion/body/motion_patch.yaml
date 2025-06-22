@@ -579,7 +579,7 @@ buddy_special_n_attack_end:
     unk_800: false
     unk_1000: false
     unk_2000: false
-  blend_frames: 6
+  blend_frames: 5
   animations:
     - name: buddyd00specialnstart.nuanmb
   scripts:

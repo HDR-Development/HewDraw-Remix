@@ -142,7 +142,7 @@ special_n_attack_hi:
   flags:
     turn: false
     loop: false
-    move: false
+    move: true
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -171,7 +171,7 @@ special_n_attack_s:
   flags:
     turn: false
     loop: false
-    move: false
+    move: true
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -200,7 +200,7 @@ special_n_attack_lw:
   flags:
     turn: false
     loop: false
-    move: false
+    move: true
     fix_trans: false
     fix_rot: false
     fix_scale: false
@@ -241,7 +241,7 @@ special_n_attack_end:
     unk_800: false
     unk_1000: false
     unk_2000: false
-  blend_frames: 6
+  blend_frames: 8
   animations:
       - name: d00specialnstart.nuanmb
   scripts:

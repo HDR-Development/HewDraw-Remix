@@ -63,6 +63,10 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_SUPER_ARMOR_EQUIP);
 
+    if has_red_feather {
+        VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, super::super::opff::FEATHERS_RED_COOLDOWN_MAX);
+    }
+
     original
 }
 
@@ -127,8 +131,13 @@ unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CV
 }
 unsafe extern "C" fn special_s_dash_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_HIT_FIGHTER) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_HIT_FIGHTER)
+        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, 0.0);
+            super::super::opff::buddy_meter_update_HUD(fighter, true);
+            VarModule::set_int(fighter.battle_object, vars::buddy::instance::HUD_DISPLAY_TIME, 45);
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
+
             VarModule::set_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE, vars::buddy::instance::BOUNCE_TYPE_ATTACK);
             fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL.into(), false.into());
         }
@@ -231,7 +240,7 @@ unsafe extern "C" fn special_s_wall_main(fighter: &mut L2CFighterCommon) -> L2CV
     let original = smashline::original_status(Main, fighter, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL)(fighter);
 
     let bounce_type = VarModule::get_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_BOUNCE_TYPE);
-    if bounce_type == vars::buddy::instance::BOUNCE_TYPE_NORMAL && fighter.is_situation(*SITUATION_KIND_GROUND){
+    if bounce_type == vars::buddy::instance::BOUNCE_TYPE_NORMAL || fighter.is_situation(*SITUATION_KIND_GROUND){
         return original;
     }
 
@@ -243,7 +252,7 @@ unsafe extern "C" fn special_s_wall_main(fighter: &mut L2CFighterCommon) -> L2CV
         set_speed,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        1.5
+        2.25
     );
 
     let speed_x = PostureModule::lr(fighter.module_accessor) *-1.0;
