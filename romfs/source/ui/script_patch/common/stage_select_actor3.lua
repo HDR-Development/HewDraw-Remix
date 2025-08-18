@@ -351,50 +351,45 @@ local set_alt_panel_textures = function(is_forward)
     local parts_name = get_stage_preview_name(current_selected_preview)
     local parts = root_view:get_parts(parts_name)
 
-    if count == 0 then
-        set_alt_texture(true, nil, current_selected_preview)
-        set_alt_texture(false, nil, current_selected_preview)
-    elseif count == 1 then
+if count == 0 then
+
         set_alt_texture(true, nil, current_selected_preview)
 
+        set_alt_texture(false, nil, current_selected_preview)
+
+    elseif count == 1 then
+
+
+        set_alt_texture(true, nil, current_selected_preview)
         local idx = preview.selected_alt_ == 0 and 1 or 0
         set_alt_texture(false, Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, idx),
             current_selected_preview)
     else
-        local left_idx = preview.selected_alt_ == 0 and count or preview.selected_alt_ - 1
-        local right_idx = preview.selected_alt_ == count and 0 or preview.selected_alt_ + 1
+        local left_idx = (preview.selected_alt_ - 1 + count + 1) % (count + 1)
+        local right_idx = (preview.selected_alt_ + 1) % (count + 1)
         local left_texture = Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, left_idx)
         local right_texture = Alts.get_alt_texture_index(current_selected_panel, preview.form_type_, right_idx)
 
         if left_texture >= 0 then
-            set_alt_texture(
-                true,
-                left_texture,
-                current_selected_preview
-            )
+            set_alt_texture(true, left_texture, current_selected_preview)
         end
 
         if right_texture >= 0 then
-            set_alt_texture(
-                false,
-                right_texture,
-                current_selected_preview
-            )
+            set_alt_texture(false, right_texture, current_selected_preview)
         end
     end
 
-    if texture_idx < 0 then
-        return
-    end
-    local pane_name = "set_rep_stage"
-    if preview.form_type_ == STAGE_FORM_TYPE_BATTLE then
-        pane_name = "set_rep_stage_battle"
-    elseif preview.form_type_ == STAGE_FORM_TYPE_END then
-        pane_name = "set_rep_stage_end"
-    end
+    if texture_idx >= 0 then
+        local pane_name = "set_rep_stage"
+        if preview.form_type_ == STAGE_FORM_TYPE_BATTLE then
+            pane_name = "set_rep_stage_battle"
+        elseif preview.form_type_ == STAGE_FORM_TYPE_END then
+            pane_name = "set_rep_stage_end"
+        end
 
-    local texture_pane = parts:get_pane(pane_name)
-    texture_pane:replace_texture(texture_idx)
+        local texture_pane = parts:get_pane(pane_name)
+        texture_pane:replace_texture(texture_idx)
+    end
 end
 
 -- Gets the name of the stage icon part in the layout file
@@ -2079,7 +2074,7 @@ local update_stage_previews = function()
         end
         root_view:play_animation_parts(get_stage_preview_name(current_selected_preview), anim)
         local preview_parts = root_view:get_parts(get_stage_preview_name(current_selected_preview))
-        preview_parts:get_pane("txt_attention"):set_text_string("This stage has been striked")
+        preview_parts:get_pane("txt_attention"):set_text_string("This stage has been struck")
     end
     prev_invalid_stage_2 = is_striked
 

@@ -34,6 +34,15 @@ extern "Rust" {
     #[link_name = "InputModule__get_trigger_count"]
     fn InputModule__get_trigger_count(object: *mut BattleObject, button: Buttons) -> usize;
 
+    #[link_name = "InputModule__get_release_count"]
+    fn InputModule__get_release_count(object: *mut BattleObject, button: Buttons) -> usize;
+
+    #[link_name = "InputModule__reset_trigger"]
+    fn InputModule__reset_trigger(object: *mut BattleObject);
+
+    #[link_name = "InputModule__get_command_life"]
+    fn InputModule__get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8;
+
     #[link_name = "InputModule__is_persist"]
     fn InputModule__is_persist(object: *mut BattleObject) -> bool;
 
@@ -220,5 +229,33 @@ pub mod InputModule {
     /// The frame count since the button was pressed
     pub fn get_trigger_count(object: *mut BattleObject, button: Buttons) -> usize {
         unsafe { InputModule__get_trigger_count(object, button) }
+    }
+
+    /// Tracks how many frames have elapsed since a button was released
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `button` - The button in question
+    /// # Returns
+    /// The frame count since the button was released
+    pub fn get_release_count(object: *mut BattleObject, button: Buttons) -> usize {
+        unsafe { InputModule__get_release_count(object, button) }
+    }
+
+    /// Resets all trigger counts and release counts
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    pub fn reset_trigger(object: *mut BattleObject) {
+        unsafe { InputModule__reset_trigger(object) }
+    }
+
+    /// Returns the remaining valid frames of an input in the buffer
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `category` - Which command flag category the input is under (valid values are 0-3)
+    /// * `flag` - Which flag in the category you are checking hold buffer for
+    /// # Returns
+    /// The frame count until the input will no longer be valid
+    pub fn get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8 {
+        unsafe { InputModule__get_command_life(object, category, flag) }
     }
 }

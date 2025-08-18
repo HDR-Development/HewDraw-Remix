@@ -868,18 +868,19 @@ unsafe fn map_controls_hook(
         (*out).buttons |= Buttons::RivalsWallJump;
     }
 
-    let (parry, hold) = if is_parry_taunt {
+    let (parry_manual, hold) = if is_parry_taunt {
         (Buttons::AppealAll, Buttons::Special)
     } else {
         (Buttons::Special, Buttons::AppealAll)
     };
 
-    if (*out).buttons.intersects(Buttons::Guard) {
-        if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry
-        } else if (*out).buttons.intersects(hold) {
-            (*out).buttons |= Buttons::GuardHold;
-        }
+    if (*out).buttons.intersects(parry_manual) {
+        (*out).buttons |= Buttons::ParryManual;
+    }
+
+    if (*out).buttons.intersects(Buttons::Guard) 
+    && (*out).buttons.intersects(hold) {
+        (*out).buttons |= Buttons::GuardHold;
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
@@ -1006,28 +1007,28 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 /// fix throws not respecting the cstick, especially dk cargo throw
-#[skyline::hook(replace = L2CFighterCommon_IsThrowStick)]
-unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut out = fighter.local_func__fighter_status_catch_1();
-    let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
-    let stick_y = fighter.stick_y();
-    if stick_x > fighter.get_param_float("common", "attack_lw3_stick_x") {
-        out["f"] = true.into();
-    } else if stick_x < -fighter.get_param_float("common", "attack_lw3_stick_x") {
-        out["b"] = true.into();
-    }
-    if stick_y > fighter.get_param_float("common", "attack_hi4_stick_y") {
-        out["hi"] = true.into();
-    } else if stick_y < fighter.get_param_float("common", "attack_lw4_stick_y") {
-        out["lw"] = true.into();
-    }
-    out
-}
+// #[skyline::hook(replace = L2CFighterCommon_IsThrowStick)]
+// unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     let mut out = fighter.local_func__fighter_status_catch_1();
+//     let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
+//     let stick_y = fighter.stick_y();
+//     if stick_x > fighter.get_param_float("common", "attack_lw3_stick_x") {
+//         out["f"] = true.into();
+//     } else if stick_x < -fighter.get_param_float("common", "attack_lw3_stick_x") {
+//         out["b"] = true.into();
+//     }
+//     if stick_y > fighter.get_param_float("common", "attack_hi4_stick_y") {
+//         out["hi"] = true.into();
+//     } else if stick_y < fighter.get_param_float("common", "attack_lw4_stick_y") {
+//         out["lw"] = true.into();
+//     }
+//     out
+// }
 
 static mut SHOULD_END_RESULT_SCREEN: bool = false;
 
 // Skip results screen with start button
-#[skyline::hook(offset = 0x3664CC0)]
+#[skyline::hook(offset = 0x3664CE0)]
 unsafe fn process_inputs_handheld(controller: &mut Controller) {
     let entry_count = lua_bind::FighterManager::entry_count(utils::singletons::FighterManager());
     if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager())
@@ -1057,7 +1058,7 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3666AAC, inline)]
+#[skyline::hook(offset = 0x3666ACC, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x100) as *mut _;
@@ -1067,7 +1068,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x366690C, inline)]
+#[skyline::hook(offset = 0x366692C, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -1123,23 +1124,47 @@ unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::Inli
     }
 }
 
-#[skyline::hook(replace=ControlModule::reset_flick_x)]
-unsafe fn reset_flick_x(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
-    call_original!(boma);
+#[skyline::hook(offset = 0x3f8460)]
+unsafe fn reset_flick_x(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    VarModule::set_int((*boma).object(), vars::common::instance::LEFT_STICK_FLICK_X, u8::MAX as i32 - 1);
+
+    call_original!(control_module);
 }
 
-#[skyline::hook(replace=ControlModule::reset_flick_y)]
-unsafe fn reset_flick_y(boma: &mut BattleObjectModuleAccessor) {
-    VarModule::set_int(boma.object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
-    call_original!(boma);
+#[skyline::hook(offset = 0x3f8470)]
+unsafe fn reset_flick_y(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    VarModule::set_int((*boma).object(), vars::common::instance::LEFT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+
+    call_original!(control_module);
 }
 
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hook!(is_throw_stick);
-    }
+#[skyline::hook(offset = 0x3f82a0)]
+unsafe fn reset_trigger_hook(control_module: u64) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    InputModule::reset_trigger((*boma).object());
+
+    call_original!(control_module)
 }
+
+#[skyline::hook(offset = 0x6baa10)]
+unsafe fn clear_command_hook(control_module: u64, arg2: bool) {
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    InputModule::clear_commands((*boma).object(), 4, -1);
+
+    call_original!(control_module, arg2)
+}
+
+// fn nro_hook(info: &skyline::nro::NroInfo) {
+//     if info.name == "common" {
+//         skyline::install_hook!(is_throw_stick);
+//     }
+// }
 
 pub fn install() {
     // Custom buffer-state handling
@@ -1148,8 +1173,8 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x6bd4a4).nop();
 
     // Stuff for parry input
-    skyline::patching::Patch::in_text(0x3666ADC).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3666AF0).data(0xAA0803EAu32);
+    skyline::patching::Patch::in_text(0x3666AFC).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3666B10).data(0xAA0803EAu32);
 
     // Removes 10f C-stick lockout for tilt stick and special stick
     skyline::patching::Patch::in_text(0x17532ac).data(0x2A1F03FA);
@@ -1163,6 +1188,10 @@ pub fn install() {
     // Prevents attack_air_kind from resetting every frame
     // Found in ControlModule::exec_command
     skyline::patching::Patch::in_text(0x6bd6c4).nop();
+
+    // Always have the game check for wall jump flick inputs, even
+    // if the character doesn't normally have a wall jump.
+    skyline::patching::Patch::in_text(0x6bc420).nop();
 
     skyline::install_hooks!(
         map_controls_hook,
@@ -1180,6 +1209,8 @@ pub fn install() {
         exec_command_reset_attack_air_kind_hook,
         reset_flick_x,
         reset_flick_y,
+        reset_trigger_hook,
+        clear_command_hook
     );
-    skyline::nro::add_hook(nro_hook);
+    //skyline::nro::add_hook(nro_hook);
 }

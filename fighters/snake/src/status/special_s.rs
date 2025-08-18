@@ -1,10 +1,10 @@
 use super::*;
-use globals::*;
- 
 
-////side-special tranq gun
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
-unsafe extern "C" fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// side-special tranq gun
+
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     fighter.set_int64(hash40("special_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
@@ -17,10 +17,11 @@ unsafe extern "C" fn snake_side_special_status_main(fighter: &mut L2CFighterComm
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_start"), 0.0, 1.0, false, 0.0, false, false);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_side_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
     // 0.into()
 }
-pub unsafe fn special_side_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+pub unsafe fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
@@ -64,12 +65,7 @@ pub unsafe fn change_motion_by_situation(fighter: &mut L2CFighterCommon, skip_ch
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
 }
-pub fn install() {
-    smashline::Agent::new("snake")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            snake_side_special_status_main,
-        )
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }

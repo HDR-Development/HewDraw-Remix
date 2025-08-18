@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END
 
 pub unsafe extern "C" fn special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END)(fighter);
@@ -9,12 +10,6 @@ pub unsafe extern "C" fn special_s_end_main(fighter: &mut L2CFighterCommon) -> L
     ret
 }
 
-pub fn install() {
-    smashline::Agent::new("pit")
-        .status(
-            Main,
-            *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END,
-            special_s_end_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END, special_s_end_main);
 }

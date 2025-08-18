@@ -14,4 +14,7 @@
             <float hash="p2_y">9</float>
         </struct>
     </struct>
+    <struct hash="param_special_s">
+        <int hash="end_walljump_valid_frame">10</int>
+    </struct>
 </struct>

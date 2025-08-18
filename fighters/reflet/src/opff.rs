@@ -2,12 +2,11 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
     //PM-like neutral-b canceling
-    if status_kind == *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL {
-        if situation_kind == *SITUATION_KIND_AIR {
+    if boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL) {
+        if boma.is_situation(*SITUATION_KIND_AIR) {
             if WorkModule::get_int(boma, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
                 WorkModule::set_int(boma, *STATUS_KIND_NONE, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
@@ -23,16 +22,21 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            // burn an extra bar of Elwind on upB1 (totals 2 bars)
-            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+// move to hi_main
+unsafe fn elwind_cost(fighter: &mut L2CFighterCommon) {
+    //cost of each elwind 1 -> 2
+    //if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2]) 
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && StatusModule::is_changing(fighter.module_accessor) {
+        fighter.dec_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
         }
     }
 }
 
 unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    // move to attack_air
     if boma.is_motion_one_of(&[
         Hash40::new("attack_air_n"),
         Hash40::new("attack_air_f"),
@@ -40,12 +44,10 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw"),
     ])
-    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0 {
-        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY);
-        if VarModule::get_int(fighter.battle_object, vars::reflet::instance::LEVIN_AERIAL_LENIENCY) > 0
-        && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
-        && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard)
-        && !StatusModule::is_changing(boma) {
+    && VarModule::get_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY) > 0 {
+        VarModule::dec_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY);
+        if !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
+        && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Guard) {
             let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
             if WorkModule::get_int(boma, levin) > 0 {
                 if WorkModule::get_int(boma, levin) == 1 {
@@ -61,22 +63,24 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-    let long_sword_scale = Vector3f{x: 1.0, y: 1.175, z: 1.0475};
-    ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
+    && WorkModule::is_flag(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+        if boma.status_frame() <= 14 {
+            ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &Vector3f::new(1.0, 1.075, 1.0475));
+        }
+    }
+    else {
+        let long_sword_scale = Vector3f{x: 1.0, y: 1.175, z: 1.0475};
+        ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
+    }
 }
 
 // upB freefalls after one use per airtime
 unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor)
-    && (fighter.is_situation(*SITUATION_KIND_GROUND)
-        || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
-    {
-        VarModule::off_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
-    }
+    // move to hi_end
     if fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::UP_SPECIAL_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
 }
@@ -95,29 +99,12 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    nspecial_cancels(boma, status_kind, situation_kind);
-    elwind1_burn(fighter);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    nspecial_cancels(boma);
+    elwind_cost(fighter);
     levin_leniency(fighter, boma);
     sword_length(boma);
     up_special_freefall(fighter);
@@ -133,11 +120,10 @@ pub extern "C" fn reflet_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterC
 
 pub unsafe fn reflet_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
-pub fn install() {
-    smashline::Agent::new("reflet")
-        .on_line(Main, reflet_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, reflet_frame_wrapper);
 }

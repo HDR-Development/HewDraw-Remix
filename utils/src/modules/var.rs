@@ -272,11 +272,11 @@ impl VarModule {
     /// * `false` - `what` remains greater than or equal to `min` after decrementing
     #[export_name = "VarModule__countdown_int"]
     pub extern "Rust" fn countdown_int(object: *mut BattleObject, what: i32, min: i32) -> bool {
-        if Self::get_int(object, what) < min {
-            true
-        } else {
+        if Self::get_int(object, what) > min {
             Self::dec_int(object, what);
-            Self::get_int(object, what) < min
+            Self::get_int(object, what) == min
+        } else {
+            false
         }
     }
 

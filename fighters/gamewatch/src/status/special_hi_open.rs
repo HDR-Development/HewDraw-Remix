@@ -1,5 +1,4 @@
 use super::*;
-use globals::*;
 
 unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -27,23 +26,29 @@ unsafe extern "C" fn special_hi_open_pre(fighter: &mut L2CFighterCommon) -> L2CV
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi_open_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::UP_SPECIAL_PARACHUTE);
+    VarModule::off_flag(fighter.battle_object, vars::gamewatch::instance::SPECIAL_HI_ENABLE_PARACHUTE);
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, false, -1);
     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_RESCUE, Hash40::new("special_hi_open"), false, -1.0);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_open"), 0.0, 1.0, false, 0.0, false, false);
+    
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_open_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn special_hi_open_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING)
-            { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL } else { FIGHTER_STATUS_KIND_LANDING };
+        let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING) {
+            WorkModule::set_float(fighter.module_accessor, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+        }
+        else {
+            FIGHTER_STATUS_KIND_LANDING
+        };
         fighter.change_status(status.into(), true.into());
-        return 1.into()
+        return 1.into();
     }
     fighter.sub_air_check_dive();
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -55,18 +60,17 @@ unsafe extern "C" fn special_hi_open_main_loop(fighter: &mut L2CFighterCommon) -
     if MotionModule::is_end(fighter.module_accessor) || fighter.status_frame() > 45 {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
-    return 0.into()
+
+    return 0.into();
 }
 
 unsafe extern "C" fn special_hi_open_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_PARACHUTE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    0.into()
+    return 0.into();
 }
 
-pub fn install() {
-    smashline::Agent::new("gamewatch")
-        .status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre)
-        .status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main)
-        .status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_pre);
+    agent.status(Main, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_main);
+    agent.status(End, statuses::gamewatch::SPECIAL_HI_OPEN, special_hi_open_exit);
 }

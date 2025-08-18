@@ -1,19 +1,19 @@
 use super::*;
 
-mod aerials;
+mod ground;
 mod tilts;
 mod smashes;
-mod other;
-mod ground;
+mod aerials;
 mod specials;
 mod throws;
+mod other;
 
-pub fn install() {
-    aerials::install();
-    tilts::install();
-    smashes::install();
-    other::install();
-    ground::install();
-    specials::install();
-    throws::install();
+pub fn install(agent: &mut Agent) {
+    ground::install(agent);
+    tilts::install(agent);
+    smashes::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    other::install(agent);
 }

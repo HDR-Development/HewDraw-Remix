@@ -1,0 +1,46 @@
+clash_pledge_w:
+  game_script: game_clashpledgew
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations: []
+  scripts:
+  - sound_clashpledgew
+  - effect_clashpledgew
+  extra: ~
+clash_pledge_f:
+  game_script: game_clashpledgef
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations: []
+  scripts:
+  - sound_clashpledgef
+  - effect_clashpledgef
+  extra: ~

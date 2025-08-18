@@ -72,23 +72,23 @@ static VIRTUAL_INPUT_MAPS: Lazy<Mutex<HashMap<u64, ExtraInputDetection>>> =
 static SUBMENU_STATES: Lazy<Mutex<HashMap<u64, WithCancel>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
 
-#[skyline::from_offset(0x19fa710)]
+#[skyline::from_offset(0x19fa730)]
 fn init_layout(ptr: u64);
 
-#[skyline::from_offset(0x3777950)]
+#[skyline::from_offset(0x3777970)]
 fn play_animation(layout_ptr: u64, name: *const u8, speed: f32);
 
-#[skyline::from_offset(0x37a18c0)]
+#[skyline::from_offset(0x37a18e0)]
 fn create_text_pane(out_pane: u64, text: *const u16, color: u32, value: i32);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F60);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F80);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
-#[skyline::hook(offset = 0x19fba98, inline)]
+#[skyline::hook(offset = 0x19fbab8, inline)]
 unsafe fn set_layout_position(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[19].x.as_ref();
 
@@ -105,7 +105,7 @@ unsafe fn set_layout_position(ctx: &mut InlineCtx) {
         .unwrap_or_default() as u64;
 }
 
-#[skyline::hook(offset = 0x19fba0c, inline)]
+#[skyline::hook(offset = 0x19fba2c, inline)]
 unsafe fn create_layout(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[19].x.as_ref();
 
@@ -119,10 +119,10 @@ unsafe fn create_layout(ctx: &mut InlineCtx) {
     *ctx.registers[1].x.as_mut() = state.get_button_count() as u64 + 1;
 }
 
-#[skyline::from_offset(0x37a1ef0)]
+#[skyline::from_offset(0x37a1f10)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
-#[skyline::hook(offset = 0x19f6790)]
+#[skyline::hook(offset = 0x19f67b0)]
 unsafe fn create_layout_button(root: u64, index: i32, button: u64) {
     // In the degenerate case that we haven't set a state yet, let's just call original
     // This will likely happen the very first time we call this function
@@ -184,7 +184,7 @@ unsafe fn get_controls_id_from_button_id(root_layout: u64, button_id: i32) -> Op
     Some(index as usize)
 }
 
-#[skyline::hook(offset = 0x19f9b98, inline)]
+#[skyline::hook(offset = 0x19f9bb8, inline)]
 unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
     let ptr = *ctx.registers[8].x.as_ref();
     let virt = VIRTUAL_INPUT_MAPS.lock().get(&ptr).copied();
@@ -268,7 +268,7 @@ unsafe fn check_for_input(mask: u32, ptr: u64) -> bool {
     false
 }
 
-#[skyline::hook(offset = 0x377ce90, inline)]
+#[skyline::hook(offset = 0x377ceb0, inline)]
 unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
     let ptr = *ctx.registers[0].x.as_ref();
     let virtual_input = *(*ctx.registers[1].x.as_ref() as *const u64).add(1);

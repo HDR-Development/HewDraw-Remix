@@ -4,28 +4,11 @@ use globals::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_exitStatus)]
 unsafe fn ftStatusUniqProcessGuardOff_exitStatus(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if app::FighterUtil::is_valid_just_shield(fighter.module_accessor) {
-        ShieldModule::set_status(
-            fighter.module_accessor,
-            *FIGHTER_SHIELD_KIND_GUARD,
-            app::ShieldStatus(*SHIELD_STATUS_NONE),
-            0
-        );
-        let shield_type = app::FighterUtil::get_shield_type_of_guard(
-            fighter.global_table[FIGHTER_KIND].get_i32()
-        ) as i32;
-        ShieldModule::set_shield_type(
-            fighter.module_accessor,
-            app::ShieldType(shield_type),
-            *FIGHTER_SHIELD_KIND_GUARD,
-            0
-        );
-        ReflectorModule::set_status(
-            fighter.module_accessor,
-            0,
-            app::ShieldStatus(*SHIELD_STATUS_NONE),
-            *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD
-        );
+    if VarModule::is_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF) {
+        ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
+        let shield_type = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;
+        ShieldModule::set_shield_type(fighter.module_accessor, app::ShieldType(shield_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+        ReflectorModule::set_status(fighter.module_accessor, 0, app::ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         ShieldModule::set_hit_stop_mul(fighter.module_accessor, 1.0);
     }
     if

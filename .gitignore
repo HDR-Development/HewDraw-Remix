@@ -3,9 +3,10 @@
 **/*.pyc
 **/build/
 **/.vscode/
-Cargo.lock
 !scripts/*
 .vscode
+.cargo
+.zed
 distributions/
 scripts/change_summary.txt
 scripts/log.txt
@@ -23,3 +24,4 @@ scripts/artifacts/deletions.json
 **/upgrade/
 **/upgrade_artifacts/
 .DS_Store
+**/Cargo.lock

@@ -2,8 +2,8 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">25</float>
-      <float hash="p2_y">12</float>
+      <float hash="p1_y">22</float>
+      <float hash="p2_y">10</float>
     </struct>
     <struct index="1">
       <float hash="p1_y">20</float>
@@ -11,8 +11,15 @@
   </list>
   <list hash="param_auraball">
     <struct index="0">
-      <float hash="charge_max_scale">4.5</float>
-      <float hash="charge_max_scale_shoot">4.5</float>
+      <float hash="scale_mul">2.6</float>
+      <float hash="scale_add">-2.7</float>
+      <float hash="original_size">3.5</float>
+      <float hash="charge_min_scale">3.0</float>
+      <float hash="charge_max_scale_mid">4.3</float>
+      <float hash="charge_max_scale">4.3</float>
+      <float hash="charge_min_scale_shoot">3.0</float>
+      <float hash="charge_max_scale_shoot">4.2</float>
+      <float hash="flicker_scale_max">0.05</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -21,11 +28,10 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="critical_aura_power">1.45</float>
-      <int hash="critical_frame">4</int>
-      <int hash="critical_slow_rate">4</int>
-      <float hash="critical_zoom_rate">1.0</float>
+      <int hash="critical_frame">10</int>
+      <int hash="critical_slow_rate">1</int>
+      <float hash="critical_zoom_rate">1</float>
       <int hash="critical_zoom_in_frame">999</int>
-      <int hash="critical_bg_only_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -33,11 +39,15 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="rush_speed">4</float>
-      <float hash="0x189cd804c5">0.8</float>
+      <float hash="accel_x">0.04</float>
+      <float hash="accel_y">0.015</float>
+      <float hash="rush_speed">5.8</float>
+      <float hash="0x189cd804c5">0.0</float>
       <float hash="angle_speed">2</float>
-      <float hash="end_accel_y">0.3</float>
-      <int hash="landing_frame">30</int>
+      <float hash="end_brake_x">0.1</float>
+      <float hash="end_accel_y">0.1</float>
+      <float hash="crush_angle">999.0</float>
+      <int hash="landing_frame">32</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -54,13 +64,13 @@
   <list hash="param_aurapower">
     <struct index="0">
       <float hash="se_middle_aurapower">1.0</float>
-      <float hash="se_high_aurapower">1.10</float>
+      <float hash="se_high_aurapower">1.04</float>
     </struct>
   </list>
   <list hash="param_aurascale">
     <struct index="0">
-      <float hash="min_aura_power">0.85</float>
-      <float hash="max_aura_power">1.15</float>
+      <float hash="min_aura_power">0.92</float>
+      <float hash="max_aura_power">1.08</float>
     </struct>
   </list>
 </struct>

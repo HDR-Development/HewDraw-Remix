@@ -2,7 +2,6 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-
  
 unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if (fighter.is_status_one_of(&[
@@ -20,26 +19,29 @@ unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon
     && fighter.is_cat_flag(Cat1::SpecialLw)
     && !fighter.is_in_hitlag() {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::HIT_CANCEL);
     }
 }
 
 unsafe fn photon_edge_actionability(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD) 
-       && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) 
-       && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY);
-    }
-    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD){
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) 
+        && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
+            VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_S_ENABLE_ACTION);
+        }
         // Allow canceling before reappearing, but still after teleporting forward
         // frame 25 (more with hitlag) felt the best both visualy and for semi combo utility
         // If this cancel check isnt here, the cancel itself wouldnt line up with the visual and would just feel cumbersome
-        if fighter.status_frame() >= 15 && VarModule::is_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY){
+        if fighter.status_frame() >= 15 && VarModule::is_flag(fighter.battle_object, vars::elight::instance::SPECIAL_S_ENABLE_ACTION){
             CancelModule::enable_cancel(fighter.boma());
         }
     }
     if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END) {
+        if fighter.status_frame() <= 20 {
+            fighter.check_wall_jump_cancel();
+        }
         // Allow cancel afterwards if ur bad and delay your jump input for the rest of the end animation
-        if VarModule::is_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY){
+        if VarModule::is_flag(fighter.battle_object, vars::elight::instance::SPECIAL_S_ENABLE_ACTION){
             CancelModule::enable_cancel(fighter.boma());
         }
 	}
@@ -52,23 +54,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -89,8 +74,6 @@ pub unsafe extern "C" fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CF
     side_special_landing_lag(fighter);
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .on_line(Main, elight_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, elight_frame_wrapper);
 }

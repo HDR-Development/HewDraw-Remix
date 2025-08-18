@@ -2,14 +2,17 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">23</float>
+      <float hash="p1_y">20</float>
+      <float hash="p2_y">8</float>
     </struct>
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <int hash="hulahoop_jump_frame">40</int>
-      <float hash="hulahoop_jump_y_speed">0.82</float>
+      <int hash="hulahoop_jump_frame">30</int>
+      <float hash="hulahoop_jump_y_speed">0.88</float>
       <float hash="hulahoop_jump_stick_x_speed_rate">0.1</float>
+      <float hash="hulahoop_jump_restart_add_speed_y">0.3</float>
+      <float hash="0x1d57d7b043">0.08</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -17,7 +20,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="0x1d19c540e7">1.2</float>
+      <float hash="0x1d19c540e7">1.1</float>
       <float hash="0x1d67331740">1.0</float>
       <float hash="0x1b87f2d11b">1.1</float>
       <float hash="0x20bf99af3d">1.1</float>
@@ -25,7 +28,7 @@
       <float hash="0x222f497375">1.1</float>
       <float hash="0x219af274ea">1.2</float>
       <float hash="0x21a7925d5a">1.2</float>
-      <float hash="0x1d3e7e27d6">1.2</float>
+      <float hash="0x1d3e7e27d6">1.1</float>
       <float hash="0x1d40887071">1.0</float>
       <float hash="0x1bc7bda96d">1.1</float>
       <float hash="0x20ec3fb7d9">1.1</float>

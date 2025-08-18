@@ -304,17 +304,31 @@ use serde::{Deserialize, Serialize};
 // use serde_json::Result;
 
 /// stores the tournament mode configuration
-#[derive(Serialize, Deserialize, Debug)]
+#[allow(non_snake_case)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(default)]
 #[repr(C)]
-struct TourneyConfig {
+pub struct TourneyConfig {
     /// whether the tourney mode is enabled
-    enabled: bool,
+    pub enabled: bool,
+    useOfficial: bool,
     /// the ordered list of starters stages which should be enabled,
     /// or `None` if there are no starters
     starters: Option<Vec<String>>,
     /// the ordered list of counterpick stages which should be enabled,
     /// or `None` if there are no counterpicks
     counterpicks: Option<Vec<String>>,
+}
+
+impl Default for TourneyConfig {
+    fn default() -> Self {
+        TourneyConfig {
+            enabled: false,
+            useOfficial: false,
+            starters: None,
+            counterpicks: None
+        }
+    }
 }
 
 impl TourneyConfig {
@@ -342,10 +356,23 @@ impl TourneyConfig {
         return true;
     }
     /// loads the tourney config from the sdcard
-    fn load() -> Option<TourneyConfig> {
+    pub fn load() -> Option<TourneyConfig> {
         // load the tourney config
-        let config: Option<TourneyConfig> =
+        let mut config: Option<TourneyConfig> =
             match std::fs::read_to_string("sd:/ultimate/hdr-config/tourney_mode.json") {
+                Ok(json) => serde_json::from_str(&json)
+                    .expect("A tourney_mode.json was found, but its contents were invalid!"),
+                Err(_) => {
+                    println!(
+                        "No tourney mode config was found. Assuming tourney mode is disabled."
+                    );
+                    return None;
+                }
+            };
+        // if we should be using the official list, load that directly instead (because it could be updated)
+        let unwrapped_config = config.clone().unwrap();
+        if unwrapped_config.enabled && unwrapped_config.useOfficial {
+            config = match std::fs::read_to_string("sd:/ultimate/mods/hdr-stages/tourney_mode_official.json") {
                 Ok(json) => serde_json::from_str(&json)
                     .expect("A tourney_mode.json was found, but its contents were invalid!"),
                 Err(_) => {
@@ -355,6 +382,7 @@ impl TourneyConfig {
                     None
                 }
             };
+        }
         return config;
     }
 }
@@ -651,6 +679,14 @@ impl ParamModule {
             owner: owner,
             agent_params,
         }
+    }
+
+    /// Checks if the object has `ParamModule`
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    #[export_name = "ParamModule__has_param_module"]
+    pub extern "Rust" fn has_param_module(object: *mut BattleObject) -> bool {
+        has_param_module!(object)
     }
 
     /// Attempts to pull the agent param listing from the global agent params

@@ -10,7 +10,7 @@
     <int hash="grimoire_giga_fire_usage_count_max">5</int>
     <int hash="grimoire_el_window_usage_count_max">20</int>
     <int hash="grimoire_rizaia_usage_count_max">3</int>
-    <int hash="thunder_sword_revival_time">480</int>
+    <int hash="thunder_sword_revival_time">600</int>
     <int hash="grimoire_thunder_revival_time">540</int>
     <int hash="grimoire_giga_fire_revival_time">540</int>
     <int hash="grimoire_el_window_revival_time">480</int>
@@ -23,6 +23,8 @@
       <int hash="special_n_el_thunder_consume_point">2</int>
       <int hash="special_n_giga_thunder_consume_point">4</int>
       <int hash="special_n_tron_consume_point">8</int>
+      <int hash="special_n_tron_shoot_duration_min">12</int>
+      <int hash="special_n_tron_shoot_duration_max">16</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -56,7 +58,11 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="special_hi_shoot_store_x_initial_velocity_mul">0.975</float>
+      <float hash="special_hi_shoot_store_y_initial_velocity_mul">0.775</float>
       <float hash="special_hi_next_jump_y_speed">2.8</float>
+      <float hash="special_hi_shoot_store_x_second_velocity_mul">1.0875</float>
+      <float hash="special_hi_shoot_store_y_second_velocity_mul">0.4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

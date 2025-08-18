@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_s">
+      <float hash="landing_lag">7.0</float>
+      <float hash="base_detonate_range">6.0</float>
+      <float hash="add_detonate_range">3.5</float>
+    </struct>
+</struct>

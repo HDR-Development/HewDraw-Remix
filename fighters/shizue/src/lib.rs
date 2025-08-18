@@ -4,8 +4,16 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod bullet;
+mod clayrocket;
+mod fishingrod;
+mod pot;
+mod trafficsign;
 
 use smash::{
     lib::{
@@ -37,20 +45,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
-
-extern "C" fn shizue_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        VarModule::off_flag(fighter.object(), vars::shizue::instance::LLOID_ASYNC);
-        VarModule::set_int(fighter.object(), vars::shizue::instance::LLOID_TIMER, 0);
-    }
-}
+#[macro_use] extern crate smash_script;
 
 pub fn install() {
-    smashline::Agent::new("shizue")
-        .on_start(shizue_init)
-        .install();
+    let agent = &mut Agent::new("shizue");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
 
-    acmd::install();
-    status::install();
-    opff::install();
+    bullet::install();
+    clayrocket::install();
+    fishingrod::install();
+    pot::install();
+    trafficsign::install();
 }

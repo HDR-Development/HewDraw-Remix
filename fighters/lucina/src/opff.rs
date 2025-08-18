@@ -92,11 +92,9 @@ unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
     }
 }
+
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     //Lucina frame 6
     let mut target_frame = 6.0;
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
@@ -108,17 +106,18 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, status_kind:
         }
     }
 }
+
 // lets lucina toggle her mask on/off with down taunt
 unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+    let mask_is_equipped = VarModule::is_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
     let mask_is_exist = ArticleModule::is_exist(boma, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK);
     
     if fighter.is_motion_one_of(&[Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r")])
     && frame as i32 == 12 {
         if mask_is_equipped { // take off mask
-            VarModule::off_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+            VarModule::off_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
         } else { // put on mask
-            VarModule::on_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+            VarModule::on_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
         }
     } else {
         if mask_is_equipped && !mask_is_exist {
@@ -140,7 +139,7 @@ unsafe fn mask_toggle(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // remove mask on entry and death
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD])
     && mask_is_equipped {
-        VarModule::off_flag(boma.object(), vars::lucina::instance::EQUIP_MASK);
+        VarModule::off_flag(boma.object(), vars::lucina::instance::APPEAL_EQUIP_MASK);
     }
 }
 
@@ -163,23 +162,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -211,8 +193,6 @@ pub unsafe fn lucina_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("lucina")
-        .on_line(Main, lucina_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, lucina_frame_wrapper);
 }

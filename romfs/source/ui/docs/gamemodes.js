@@ -4,6 +4,8 @@ enabled_modes.set('turbo', false);
 enabled_modes.set('hitfall', false);
 enabled_modes.set('airdash', false);
 enabled_modes.set('smash64', false);
+enabled_modes.set('magicseries', false);
+enabled_modes.set('element', false);
 
 function toggle_mode(mode_name, self) {
     if (event && event.keyCode !== 13) return

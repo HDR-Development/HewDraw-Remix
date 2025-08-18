@@ -10,7 +10,18 @@
       <int hash="special_n_discharge_frame">24</int>
       <int hash="special_n_shootspan_frame">99999</int>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="special_n_auto_target_deg_angle">90</float>
+      <float hash="special_n_auto_target_distance">11</float>
+      <hash40 hash="special_n_auto_target_base_joint">bust</hash40>
+      <float hash="special_n_auto_target_start_x_offset">-0.4</float>
+      <float hash="special_n_auto_target_start_y_offset">0.4</float>
+      <float hash="special_n_speed_x_mul">0.6</float>
+      <float hash="special_n_speed_y_mul">1</float>
+      <float hash="special_n_speed_y_add">0</float>
+      <int hash="special_n_discharge_frame">21</int>
+      <int hash="special_n_shootspan_frame">6</int>
+    </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
@@ -19,11 +30,44 @@
       <float hash="speed">2.4</float>
       <int hash="life">280</int>
     </struct>
+    <struct index="1">
+      <float hash="speed">6</float>
+      <int hash="life">40</int>
+      <int hash="is_penetration">1</int>
+    </struct>
   </list>
+  
+  <list hash="param_meteor">
+    <struct index="0">
+      <float hash="command_power_mul">1.2</float>
+      <float hash="speed_w">0.8</float>
+      <float hash="speed_m">1.3</float>
+      <float hash="speed_s">2.2</float>
+      <float hash="speed_w_sp">0.8</float>
+      <float hash="speed_m_sp">1.0</float>
+      <float hash="speed_s_sp">1.2</float>
+      <int hash="life_w">100</int>
+      <int hash="life_m">62</int>
+      <int hash="life_s">45</int>
+      <int hash="life_w_sp">100</int>
+      <int hash="life_m_sp">80</int>
+      <int hash="life_s_sp">67</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <struct hash="map_collision_meteor">
+    <hash40 hash="shape_type">grcorrect_shape_rhombus</hash40>
+    <float hash="up">1</float>
+    <float hash="down">-1</float>
+    <float hash="half_width">1</float>
+  </struct>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_wrap_speed_multi">3.25</float>
       <float hash="special_hi_wrap_x_max">0.75</float>
+      <float hash="special_hi_fall_x_mull_value">0.8</float>
       <float hash="special_hi_landing_frame">28</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -32,16 +76,17 @@
   </list>
   <list hash="param_reflectionboard">
     <struct index="0">
-      <float hash="life">167</float>
+      <float hash="life">147</float>
       <int hash="durability">100</int>
-      <int hash="move_frame">80</int>
-      <float hash="move_speed">0.37</float>
+      <int hash="move_frame">50</int>
+      <float hash="move_speed">0.27</float>
       <float hash="effect_rate">5.333</float>
     </struct>
   </list>
   <list hash="param_reflector">
     <struct index="0">
-      <float hash="life_mul">0</float>
+      <float hash="life_mul">0.5</float>
+      <float hash="speed_mul">1.0</float>
       <float hash="offset_y_start">11.5</float>
       <float hash="offset_y_end">-7.5</float>
       <float hash="offset_z_start">4.0</float>

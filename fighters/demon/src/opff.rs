@@ -4,99 +4,84 @@ use super::*;
 use globals::*;
 
  
-unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if [*FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) && motion_kind == hash40("attack_hi3") {
-        if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP){
-            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4){
-               if boma.is_stick_backward() && !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::demon::instance::SLAUGHTER_HIGH_KICK);
+unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI3) && boma.is_motion(Hash40::new("attack_hi3")) {
+        if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP) {
+            if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) && !boma.is_in_hitlag() {
+               if boma.is_stick_backward() {
+                    VarModule::on_flag(boma.object(), vars::demon::instance::ATTACK_HI3_SLAUGHTER_HIGH_KICK);
                     boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5, false);
                }
-               if boma.is_stick_forward() && !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::demon::instance::DEVASTATOR);
+               if boma.is_stick_forward() {
+                    VarModule::on_flag(boma.object(), vars::demon::instance::ATTACK_HI3_DEVASTATOR);
                     boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
                }
             }
         }
     }
-    if ![*FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::demon::instance::SLAUGHTER_HIGH_KICK);
-    }
-    if ![*FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::demon::instance::DEVASTATOR);
-    }
+    // shouldn't need these anymore as they get turned on/off when needed
+    // if ![*FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5].contains(&status_kind) {
+    //     VarModule::off_flag(boma.object(), vars::demon::instance::ATTACK_HI3_SLAUGHTER_HIGH_KICK);
+    // }
+    // if ![*FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) {
+    //     VarModule::off_flag(boma.object(), vars::demon::instance::ATTACK_HI3_DEVASTATOR);
+    // }
 }
 
-// unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-//     if [*FIGHTER_STATUS_KIND_ESCAPE].contains(&status_kind)
-//         && boma.status_frame() > 17 {
-//         if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N){
-//             VarModule::on_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
-//             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
-//         }
-//     }
-//     if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) {
-//         VarModule::off_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
-//     }
-// }
-
-unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("attack_stand_21") {
-        if frame < 19.0{
-            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) && !VarModule::is_flag(boma.object(), vars::demon::instance::SPINNING_DEMON) {
-                VarModule::on_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT);
+unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_stand_21")) {
+        if boma.status_frame() < 19 {
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) && !VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STEP2S_SPINNING_DEMON) {
+                VarModule::on_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT);
             }
         }
-        else{
-            if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
+        else {
+            if VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT) {
                 MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_22"), 0.0, 1.2, 0.0);
             }
         }
     }
-    if motion_kind == hash40("attack_stand_22") && frame > 16.0 {
-        if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
+    if boma.is_motion(Hash40::new("attack_stand_22")) && boma.status_frame() > 16 {
+        if VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT) {
             MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_23"), 0.0, 1.15, 0.0);
         }
     }
-    if motion_kind == hash40("attack_stand_23") && frame > 16.0 {
-        if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
+    if boma.is_motion(Hash40::new("attack_stand_23")) && boma.status_frame() > 16 {
+        if VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT) {
             boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2L, false);
         }
     }
-    if ![hash40("attack_stand_21"), hash40("attack_stand_22"), hash40("attack_stand_23"), hash40("attack_step_2l")].contains(&motion_kind) {
-        VarModule::off_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT);
+    if !boma.is_motion_one_of(&[Hash40::new("attack_stand_21"), Hash40::new("attack_stand_22"), Hash40::new("attack_stand_23"), Hash40::new("attack_step_2l")]) {
+        VarModule::off_flag(boma.object(), vars::demon::instance::ATTACK_STAND2_LIGHTNING_SCREW_UPPERCUT);
     }
 }
 
-unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if motion_kind == hash40("attack_step_2s") {
-        if frame > 16.0 && frame < 18.0{
+unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_step_2s")) {
+        if boma.status_frame() > 16 && boma.status_frame() < 18 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                VarModule::on_flag(boma.object(), vars::demon::instance::SPINNING_DEMON);
+                VarModule::on_flag(boma.object(), vars::demon::instance::ATTACK_STEP2S_SPINNING_DEMON);
             }
         }
-        else if frame >= 18.0{
-            if VarModule::is_flag(boma.object(), vars::demon::instance::SPINNING_DEMON){
+        else if boma.status_frame() >= 18 {
+            if VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STEP2S_SPINNING_DEMON) {
                 boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, false);
             }
         }
     }
-    if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2) && VarModule::is_flag(boma.object(), vars::demon::instance::SPINNING_DEMON) && motion_kind == hash40("attack_stand_21"){
+    if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2)
+    && VarModule::is_flag(boma.object(), vars::demon::instance::ATTACK_STEP2S_SPINNING_DEMON)
+    && boma.is_motion(Hash40::new("attack_stand_21")) {
         MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_24"), 0.0, 1.0, 0.0);
     }
-    if ![hash40("attack_stand_21"), hash40("attack_stand_24"), hash40("attack_step_2s")].contains(&motion_kind) {
-        VarModule::off_flag(boma.object(), vars::demon::instance::SPINNING_DEMON);
+    if !boma.is_motion_one_of(&[Hash40::new("attack_stand_21"), Hash40::new("attack_stand_24"), Hash40::new("attack_step_2s")]) {
+        VarModule::off_flag(boma.object(), vars::demon::instance::ATTACK_STEP2S_SPINNING_DEMON);
     }
 }
 
-unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
+unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
-    && boma.left_stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
-    {
+    && boma.left_stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y")) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }
 
@@ -105,9 +90,7 @@ unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, sta
         *FIGHTER_STATUS_KIND_SQUAT_WAIT,
         *FIGHTER_STATUS_KIND_SQUAT_RV,
     ])
-    && compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)
-    && boma.left_stick_y() > WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
-    {
+    && boma.is_cat_flag(Cat1::TurnDash) && boma.left_stick_y() > WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y")) {
         boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK, false);
     }
 }
@@ -183,23 +166,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -207,22 +173,23 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if StatusModule::is_changing(fighter.module_accessor)
     && (fighter.is_situation(*SITUATION_KIND_GROUND)
         || fighter.is_situation(*SITUATION_KIND_CLIFF)
-        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]))
+        || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]))
     {
-        VarModule::off_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL);
+        VarModule::off_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
 
     if fighter.is_prev_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
         if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::on_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL);
         }
     }
 
     if fighter.is_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE) {
         if fighter.is_situation(*SITUATION_KIND_AIR)
-        && !StatusModule::is_changing(fighter.module_accessor)
-        && VarModule::is_flag(fighter.battle_object, vars::demon::instance::UP_SPECIAL_FREEFALL) {
+        && VarModule::is_flag(fighter.battle_object, vars::demon::instance::SPECIAL_HI_ENABLE_FREEFALL) {
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                let speed_x_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_speed_x_mul"));
+                WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
                 let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
                 *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
@@ -231,16 +198,20 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    slaughter_high_kick_devastator(boma, cat[0], status_kind, situation_kind, motion_kind);
-    // jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
-    korean_back_dash(boma, cat[0], status_kind, stick_y);
-    lightning_screw_uppercut(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
-    spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
+unsafe fn camera_lockout(fighter: &mut L2CFighterCommon) {
+    let lockout = VarModule::get_int(fighter.battle_object, vars::demon::instance::CAMERA_LOCKOUT_TIMER);
+    VarModule::set_int(fighter.battle_object, vars::demon::instance::CAMERA_LOCKOUT_TIMER, (lockout - 1).max(0));
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    slaughter_high_kick_devastator(boma);
+    korean_back_dash(boma);
+    lightning_screw_uppercut(boma);
+    spinning_demon(boma);
     enable_both_recovery_specials(boma);
-    rotate_forward_bair(boma);
     fastfall_specials(fighter);
     up_special_freefall(fighter, boma);
+    camera_lockout(fighter);
 }
 
 pub extern "C" fn demon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -252,11 +223,10 @@ pub extern "C" fn demon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCo
 
 pub unsafe fn demon_frame(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
-pub fn install() {
-    smashline::Agent::new("demon")
-        .on_line(Main, demon_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, demon_frame_wrapper);
 }

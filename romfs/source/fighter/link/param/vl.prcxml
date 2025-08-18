@@ -32,11 +32,13 @@
       <float hash="rslash_air_gravity_y_mul">0.535</float>
       <float hash="rslash_air_accel_x_mul">0.01</float>
       <float hash="rslash_air_max_x_mul">0.7</float>
+      <int hash="rslash_landing_frame">30</int>
       <float hash="rslash_end_air_accel_x_mul">0.01</float>
-      <float hash="rslash_end_air_max_x">0.7</float>
+      <float hash="rslash_end_air_max_x">0.8</float>
+      <float hash="rslash_fall_special_accel_x_mul">0.01</float>
+      <float hash="rslash_fall_special_speed_x_max_mul">0.8</float>
       <float hash="rslash_air_spd_x_mul">0.4</float>
       <float hash="rslash_air_init_spd_mul">1.0</float>
-
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -44,7 +46,17 @@
   </list>
   <list hash="param_linkbomb">
     <struct index="0">
-      <float hash="linkbomb_scale_mul">1.55</float>
+      <float hash="linkbomb_scale_mul">1.3</float>
+      <float hash="linkbomb_limit_frame">28800.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_Dair">
+    <struct index="0">
+      <float hash="air_lw_blank_time">1.0</float>
+      <int hash="air_lw_max_hit">99</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

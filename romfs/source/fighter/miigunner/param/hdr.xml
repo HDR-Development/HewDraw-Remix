@@ -4,9 +4,16 @@
     <float hash="max_charge_frames">20.0</float>
     <float hash="attack_air_lw_charge_start">10.0</float>
     <float hash="attack_air_lw_charge_end">14.0</float>
+    <float hash="attack_air_lw_charge_speed_x_mul">0.7</float>
+    <float hash="attack_air_lw_charge_speed_y_mul">0.735</float>
     <float hash="special_n3_charge_start">10.0</float>
     <float hash="special_n3_charge_end">15.0</float>
+    <float hash="special_n3_charge_max_angle">44.0</float>
     <float hash="special_hi1_charge_start">6.0</float>
     <float hash="special_hi1_charge_end">8.0</float>
+    <float hash="attack_air_f_boost_landing_frame">13.0</float>
+    <float hash="attack_air_b_boost_landing_frame">14.0</float>
+    <float hash="attack_air_hi_boost_landing_frame">25.0</float>
+    <float hash="attack_air_lw_boost_landing_frame">18.0</float>
   </struct>
 </struct>

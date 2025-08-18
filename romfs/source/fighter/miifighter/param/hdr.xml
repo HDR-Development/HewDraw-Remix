@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="cliff_hang_data">
+        <struct hash="special_s2">
+            <float hash="p1_x">12</float>
+            <float hash="p1_y">21</float>
+            <float hash="p2_x">-9.6</float>
+            <float hash="p2_y">8.9</float>
+        </struct>
+        <struct hash="special_hi3">
+            <float hash="p1_x">16</float>
+            <float hash="p1_y">25</float>
+            <float hash="p2_x">-9.6</float>
+            <float hash="p2_y">8.9</float>
+        </struct>
+    </struct>
     <struct hash="param_flash_kick">
         <float hash="fall_x_mul">0.7</float>
         <float hash="fall_acl_y_mul">0.5</float>
     </struct>
     <struct hash="earthquake_fist_ground">
-        <float hash="charge_start_frame">4.0</float>
-        <float hash="charge_end_frame">8.0</float>
+        <float hash="charge_start_frame">6.0</float>
+        <float hash="charge_end_frame">7.0</float>
         <float hash="max_charge_frames">25.0</float>
         <float hash="max_charge_distance">80.0</float>
     </struct>

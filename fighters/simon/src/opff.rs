@@ -5,9 +5,6 @@ use globals::*;
 
  
 unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if frame > 20.0 {
             boma.check_airdodge_cancel();
@@ -35,8 +32,8 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR)
-        && fighter.status_frame() >= 19 {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::simon::status::SPECIAL_S_LAND_CANCEL) {
+            VarModule::off_flag(fighter.battle_object, vars::simon::status::SPECIAL_S_LAND_CANCEL);
             // Current FAF in motion list is 42, frame is 0 indexed so subtract a frame
             let special_s1_cancel_frame_ground = 41.0;
             // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
@@ -53,6 +50,12 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
     if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
     && (11.0..12.0).contains(&frame) {
+        let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+            ControlModule::get_sub_stick_y(fighter.module_accessor)
+        }
+        else {
+            ControlModule::get_stick_y(fighter.module_accessor)
+        };
         if stick_y > 0.5 { // stick is held up
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_f_hi"), -1.0, 1.0, 0.0, false, false);
         } else if stick_y < -0.5 { // stick is held down
@@ -61,6 +64,12 @@ unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     } 
     else if fighter.is_motion_one_of(&[Hash40::new("attack_air_b"), Hash40::new("attack_air_b_hi"), Hash40::new("attack_air_b_lw")])
     && (11.0..12.0).contains(&frame) {
+        let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+            ControlModule::get_sub_stick_y(fighter.module_accessor)
+        }
+        else {
+            ControlModule::get_stick_y(fighter.module_accessor)
+        };
         if stick_y > 0.5 { // stick is held up
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("attack_air_b_hi"), -1.0, 1.0, 0.0, false, false);
         } else if stick_y < -0.5 { // stick is held down
@@ -78,23 +87,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -119,8 +111,6 @@ pub unsafe fn simon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("simon")
-        .on_line(Main, simon_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, simon_frame_wrapper);
 }

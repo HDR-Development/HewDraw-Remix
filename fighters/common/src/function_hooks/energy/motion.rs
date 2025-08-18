@@ -111,24 +111,24 @@ impl FighterKineticEnergyMotion {
 
     pub fn trans_move_speed_correct(boma: &mut BattleObjectModuleAccessor) -> Vector3f {
         unsafe {
-            let func: extern "C" fn(&mut BattleObjectModuleAccessor) -> energy::Vec3 = std::mem::transmute(MotionModule::trans_move_speed as *const ());
+            let func: extern "C" fn(&mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector3 = std::mem::transmute(MotionModule::trans_move_speed as *const ());
             let vec = func(boma);
             Vector3f {
-                x: vec.x,
-                y: vec.y,
-                z: vec.z
+                x: vec.vec[0],
+                y: vec.vec[1],
+                z: vec.vec[2]
             }
         }
     }
 
     pub fn trans_move_speed_2nd_correct(boma: &mut BattleObjectModuleAccessor) -> Vector3f {
         unsafe {
-            let func: extern "C" fn(&mut BattleObjectModuleAccessor) -> energy::Vec3 = std::mem::transmute(MotionModule::trans_move_speed_2nd as *const ());
+            let func: extern "C" fn(&mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector3 = std::mem::transmute(MotionModule::trans_move_speed_2nd as *const ());
             let vec = func(boma);
             Vector3f {
-                x: vec.x,
-                y: vec.y,
-                z: vec.z
+                x: vec.vec[0],
+                y: vec.vec[1],
+                z: vec.vec[2]
             }
         }
     }
@@ -181,7 +181,7 @@ impl FighterKineticEnergyMotion {
 
 // This function references BattleObjectWorld, which is defo for the ledge positions
 #[skyline::from_offset(0x6941e0)]
-extern "C" fn handle_cliff(boma: &mut BattleObjectModuleAccessor, vec: &Vector4f) -> energy::Vec4;
+extern "C" fn handle_cliff(boma: &mut BattleObjectModuleAccessor, vec: &Vector4f) -> smash_rs::cpp::simd::Vector4;
 
 #[skyline::hook(offset = 0x6d5cb0)]
 unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut BattleObjectModuleAccessor) {
@@ -416,13 +416,13 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
             let motion_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x88 / 0x8);
             let motion_vtable = *(motion_module as *const *const u64);
-            let some_func: extern "C" fn(u64) -> energy::Vec4 = std::mem::transmute(*motion_vtable.add(0x230 / 0x8));
+            let some_func: extern "C" fn(u64) -> smash_rs::cpp::simd::Vector4 = std::mem::transmute(*motion_vtable.add(0x230 / 0x8));
             let vec = some_func(motion_module);
             let vec = Vector4f {
-                x: vec.x,
-                y: vec.y,
-                z: vec.z,
-                w: vec.w
+                x: vec.vec[0],
+                y: vec.vec[1],
+                z: vec.vec[2],
+                w: vec.vec[3]
             };
             if reset_type == CliffTransGround {
                 energy.active_flag = true;
@@ -431,9 +431,9 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
             if reset_type == CliffTransIntp {
                 let frame = WorkModule::get_int(boma, 0x11000005);
                 let interpolated = 1.0 / (frame + 1) as f32;
-                PaddedVec2::new(vec.x * interpolated, vec.y * interpolated)
+                PaddedVec2::new(vec.vec[0] * interpolated, vec.vec[1] * interpolated)
             } else {
-                PaddedVec2::new(vec.x, vec.y)
+                PaddedVec2::new(vec.vec[0], vec.vec[1])
             }
         },
 

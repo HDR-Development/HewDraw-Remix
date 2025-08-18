@@ -2,10 +2,11 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">23.5</float>
+      <float hash="p1_y">21</float>
+      <float hash="p2_y">9</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">49</float>
+      <float hash="p1_x">50</float>
       <float hash="p1_y">44</float>
       <float hash="p2_x">10</float>
       <float hash="p2_y">-24</float>
@@ -57,13 +58,13 @@
   </list>
   <list hash="param_missile">
     <struct index="0">
-      <int hash="h_life">60</int>
+      <int hash="h_life">77</int>
       <float hash="h_anglemax">70</float>
-      <float hash="h_angle">2.0</float>
-      <float hash="h_spd">0.5</float>
-      <int hash="h_homingf">30</int>
+      <float hash="h_angle">1.5</float>
+      <float hash="h_spd">0.4</float>
+      <int hash="h_homingf">45</int>
       <float hash="h_spdmul">1.1</float>
-      <float hash="h_spdmin">0.4</float>
+      <float hash="h_spdmin">0.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -82,6 +83,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="sjump_ar_vy0">3.155</float>
+      <float hash="sjump_landing_frame">26</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -100,7 +102,7 @@
   <list hash="param_bomb">
     <struct index="0">
       <int hash="life">180</int>
-      <float hash="0x1c309814d2">1.0</float>
+      <float hash="0x1c309814d2">0.9</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

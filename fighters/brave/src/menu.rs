@@ -139,48 +139,58 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
     fighter.off_flag(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_ENABLE_COMMAND_WINDOW_OVERWRITE);
     let mut index = VarModule::get_int(fighter, vars::brave::instance::CURSOR_SLOT);
 
-    if !VarModule::is_flag(fighter, vars::brave::instance::PERSIST_RNG) {
-        VarModule::on_flag(fighter, vars::brave::instance::PERSIST_RNG);
-        index = 0;
-        let we_ball = smash::app::sv_math::rand(smash::hash40("fighter"), 100);
-        if we_ball == 1 {
-            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("top"), &Vector3f::new(0.0, 10.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.8, false, 0, 0, 0, 0, 0, false, false);
-            SoundModule::play_se_no3d(fighter.module_accessor, Hash40::new("se_item_specialflag_1up"), true, true);
-            let mut rand: i32;
-            loop {
-                rand = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
-                if rand == 0xF {
-                    continue;
-                }
-                else {
-                    break;
-                }
-            }
-            
-            set_command_for_slot(fighter, 0, rand);/*0x14);*/
-            set_command_for_slot(fighter, 1, rand);/*0xB);*/
-            set_command_for_slot(fighter, 2, rand);/*0xA);*/
-            set_command_for_slot(fighter, 3, rand);/*0x7);*/
-        }
-        else {
-            let mut vals = vec![];
-            roll_spells(fighter, &mut vals);
-
-            set_command_for_slot(fighter, 0, vals[0]);
-            set_command_for_slot(fighter, 1, vals[1]);
-            set_command_for_slot(fighter, 2, vals[2]);
-            set_command_for_slot(fighter, 3, vals[3]);
-        }
+    if app::smashball::is_training_mode()
+    && VarModule::is_flag(fighter, vars::brave::instance::MENU_TRAINING_MODE_LOCK) {
+        let mut index = VarModule::get_int(fighter, vars::brave::instance::MENU_TRAINING_MODE_INDEX);
+        set_command_for_slot(fighter, 0, index);
+        set_command_for_slot(fighter, 1, index);
+        set_command_for_slot(fighter, 2, index);
+        set_command_for_slot(fighter, 3, index);
     }
     else {
-        let slot_1 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_1);
-        let slot_2 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_2);
-        let slot_3 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_3);
-        let slot_4 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_4);
-        set_command_for_slot(fighter, 0, slot_1);
-        set_command_for_slot(fighter, 1, slot_2);
-        set_command_for_slot(fighter, 2, slot_3);
-        set_command_for_slot(fighter, 3, slot_4);
+        if !VarModule::is_flag(fighter, vars::brave::instance::PERSIST_RNG) {
+            VarModule::on_flag(fighter, vars::brave::instance::PERSIST_RNG);
+            index = 0;
+            let we_ball = smash::app::sv_math::rand(smash::hash40("fighter"), 100);
+            if we_ball == 1 {
+                EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("top"), &Vector3f::new(0.0, 10.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.8, false, 0, 0, 0, 0, 0, false, false);
+                SoundModule::play_se_no3d(fighter.module_accessor, Hash40::new("se_item_specialflag_1up"), true, true);
+                let mut rand: i32;
+                loop {
+                    rand = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
+                    if rand == 0xF {
+                        continue;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                
+                set_command_for_slot(fighter, 0, rand);/*0x14);*/
+                set_command_for_slot(fighter, 1, rand);/*0xB);*/
+                set_command_for_slot(fighter, 2, rand);/*0xA);*/
+                set_command_for_slot(fighter, 3, rand);/*0x7);*/
+            }
+            else {
+                let mut vals = vec![];
+                roll_spells(fighter, &mut vals);
+    
+                set_command_for_slot(fighter, 0, vals[0]);
+                set_command_for_slot(fighter, 1, vals[1]);
+                set_command_for_slot(fighter, 2, vals[2]);
+                set_command_for_slot(fighter, 3, vals[3]);
+            }
+        }
+        else {
+            let slot_1 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_1);
+            let slot_2 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_2);
+            let slot_3 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_3);
+            let slot_4 = VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_4);
+            set_command_for_slot(fighter, 0, slot_1);
+            set_command_for_slot(fighter, 1, slot_2);
+            set_command_for_slot(fighter, 2, slot_3);
+            set_command_for_slot(fighter, 3, slot_4);
+        }
     }
 
     fighter.set_int(index, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);

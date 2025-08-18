@@ -4,8 +4,13 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+// articles
+
+mod fire;
+mod thunder;
 
 use smash::{
     lib::{
@@ -37,11 +42,18 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
-// cycle magic to firaga at start of match
+// how many frames sora has to wait between spells
+pub const MAGIC_COOLDOWN_FRAME: i32 = 35;
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("trail");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    fire::install();
+    thunder::install();
 }

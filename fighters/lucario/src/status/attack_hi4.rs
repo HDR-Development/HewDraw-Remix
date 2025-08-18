@@ -1,6 +1,6 @@
 use super::*;
-use globals::*;
-// status script import
+
+// FIGHTER_STATUS_KIND_ATTACK_HI4
 
 pub unsafe extern "C" fn attack_hi4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -64,7 +64,7 @@ unsafe extern "C" fn attack_hi4_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
 
-    if MotionModule::trans_move_speed(fighter.module_accessor).y < 0.0 
+    if MotionModule::trans_move_speed(fighter.module_accessor).value[1] < 0.0 
     && fighter.sub_transition_group_check_air_landing().get_bool() {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_LIGHT);
         return 0.into();
@@ -90,9 +90,8 @@ unsafe extern "C" fn attack_hi_set_kinetic(fighter: &mut L2CFighterCommon) {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
 }
-pub fn install() {
-    smashline::Agent::new("lucario")
-        .status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_main)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI4, attack_hi4_main);
 }

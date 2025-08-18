@@ -3,7 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT) {
         if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
@@ -13,12 +12,10 @@ unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
 }
 
 // Dark Pit Guardian Orbitar Jump Cancels
-unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if boma.status_frame() > 1 && !boma.is_in_hitlag(){
-            boma.check_jump_cancel(false, false);
-        }
+unsafe fn guardian_orbitar_jc(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD, *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END])
+    && !fighter.is_in_hitlag() {
+        fighter.check_jump_cancel(false, false);
     }
 }
 
@@ -28,7 +25,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma);
-    guardian_orbitar_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+    guardian_orbitar_jc(fighter);
     pits_common(fighter, boma, status_kind);
 }
 
@@ -45,8 +42,6 @@ pub unsafe fn pitb_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("pitb")
-        .on_line(Main, pitb_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pitb_frame_wrapper);
 }

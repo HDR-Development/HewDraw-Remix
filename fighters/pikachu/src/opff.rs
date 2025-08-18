@@ -3,69 +3,41 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
 // Disable QA jump cancels if not directly QA into the ground
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP) {
         // only allow QAC from QA1
         if WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT) > 1 {
-            VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+            VarModule::on_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL);
         }
     }
     if boma.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END) {
         // only allow QAC from QA into ground
-        if boma.is_situation(*SITUATION_KIND_AIR) && boma.status_frame() > 2 {
-            VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
+        if boma.is_situation(*SITUATION_KIND_AIR) && boma.status_frame() == 2 {
+            VarModule::on_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL);
         }
-    }
-}
-
-// Reset JC disable flag
-unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)
-    && boma.is_situation(*SITUATION_KIND_GROUND)
-    && ![*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&boma.status()) {
-        VarModule::off_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
-        VarModule::off_flag(boma.object(), vars::common::instance::PERFECT_WAVEDASH);
     }
 }
 
 // This is held together with the finest Elmer's, I apologize
 unsafe fn quick_attack_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)
-    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
+    && !VarModule::is_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_DISABLE_JUMP_CANCEL) {
         GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         PostureModule::add_pos(boma, &Vector3f::new(0.0, 2.5, 0.0));
-        VarModule::on_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+        VarModule::on_flag(fighter.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL);
     }
-    if VarModule::is_flag(boma.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL) {
         if fighter.is_cat_flag(Cat1::AirEscape) {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), false.into());
             VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
             PostureModule::add_pos(boma, &Vector3f::new(0.0, -2.5, 0.0));
         }
         if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, *FIGHTER_STATUS_KIND_LANDING_LIGHT]) {
-            VarModule::off_flag(fighter.object(), vars::pikachu::instance::QUICK_ATTACK_CANCEL);
+            VarModule::off_flag(fighter.object(), vars::pikachu::instance::SPECIAL_HI_QUICK_ATTACK_CANCEL);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
         }
-    }
-}
-
-pub unsafe fn electric_rats_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    disable_qa_jc(boma);
-    reset_jc_disable_flag(boma);
-    fastfall_specials(fighter);
-    skull_bash_edge_cancel(fighter);
-}
-
-#[no_mangle]
-pub unsafe extern "Rust" fn electric_rats_common(fighter: &mut L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        electric_rats_moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 
@@ -81,23 +53,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -112,13 +67,15 @@ unsafe fn skull_bash_edge_cancel(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     quick_attack_cancel(fighter, boma);
+    disable_qa_jc(boma);
+    fastfall_specials(fighter);
+    skull_bash_edge_cancel(fighter);
 }
 
 pub extern "C" fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		pikachu_frame(fighter);
-        electric_rats_common(fighter);
     }
 }
 
@@ -127,8 +84,7 @@ pub unsafe fn pikachu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma);
     }
 }
-pub fn install() {
-    smashline::Agent::new("pikachu")
-        .on_line(Main, pikachu_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pikachu_frame_wrapper);
 }

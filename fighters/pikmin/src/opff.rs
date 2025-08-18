@@ -3,29 +3,30 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
-        if boma.is_cat_flag(Cat1::SpecialN) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END, false);
-        }
-        if boma.check_airdodge_cancel() {
-            VarModule::on_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR);
-        }
+unsafe fn winged_pikmin_ledgegrab(fighter: &mut L2CFighterCommon, status_kind: i32) {
+    if [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI, 
+        *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT,
+        *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END,
+    ].contains(&status_kind) {
+        GroundModule::set_cliff_check(fighter.module_accessor, smash::app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
+        fighter.sub_transition_group_check_air_cliff();
     }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && CancelModule::is_enable_cancel(fighter.module_accessor)
-    && VarModule::is_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR) {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
-        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+}
+
+unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+    if [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI, 
+        *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT
+    ].contains(&status_kind)
+    && boma.is_cat_flag(Cat1::SpecialAny | Cat1::AirEscape)
+    && boma.status_frame() > boma.get_param_int("param_special_hi", "disable_landing_frame") {
+        fighter.change_status(FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
     }
 }
 
 pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
-    if StatusModule::is_changing(boma) 
-    || WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM) != 0 {
+    if WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM) != 0 {
         return;
     }
     let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};
@@ -130,27 +131,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    winged_pikmin_ledgegrab(fighter, status_kind);
     winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
     pikmin_antenna_indicator(fighter);
@@ -169,8 +154,7 @@ pub unsafe fn pikmin_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("pikmin")
-        .on_line(Main, pikmin_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, pikmin_frame_wrapper);
 }

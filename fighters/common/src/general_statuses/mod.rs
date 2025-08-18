@@ -18,6 +18,7 @@ mod attack;
 mod shield;
 mod turn;
 mod walk;
+mod pass;
 mod passive;
 mod damagefall;
 mod downdamage;
@@ -30,6 +31,8 @@ mod dead;
 // mod damageflyreflect;
 mod down;
 mod float;
+mod slip;
+mod lasso;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -63,19 +66,19 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
 pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("knockback units: {}", DamageModule::reaction(fighter.module_accessor, 0));
-    
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("angle"));
     sv_information::damage_log_value(fighter.lua_state_agent);
     let angle = fighter.pop_lua_stack(1).get_f32();
     let degrees = angle.to_degrees();
     let meteor_vector_min = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_min")) as f32;
-    let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max")) as f32; 
-    
+    let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max")) as f32;
+
     if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW)
     || (degrees >= meteor_vector_min && degrees <= meteor_vector_max && DamageModule::reaction(fighter.module_accessor, 0) >= 65.0) {
         //println!("forced tumble");
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
+        fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_DAMAGE_FLY);
         return 1.into();
     }
 
@@ -103,16 +106,18 @@ pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_wait_common_Main, 
-            damage_fly_common_init, 
+            sub_wait_common_Main,
+            damage_fly_common_init,
             status_pre_DamageAir,
             status_Landing_MainSub,
             status_LandingStiffness,
             status_pre_LandingLight,
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
+            sub_landing_fall_special_init,
             sub_air_transition_group_check_air_attack_hook,
-            // sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_lasso,
+            sub_transition_group_check_air_wall_jump,
             sub_transition_group_check_ground_jump_mini_attack,
             change_status_jump_mini_attack,
             sub_transition_group_check_ground_attack,
@@ -123,6 +128,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sys_line_status_system_control_hook,
             status_FallSub_hook,
             super_jump_punch_main_hook,
+            super_jump_punch_uniq,
             sub_cliff_uniq_process_exec_fix_pos,
             end_pass_ground,
             virtual_ftStatusUniqProcessDamage_exec_common,
@@ -130,6 +136,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             FighterStatusDamage__correctDamageVectorEffect,
             sub_fighter_pre_end_status,
             sub_is_dive,
+            sub_calc_landing_motion_rate,
+            sub_landing_cancel_damage_face,
+            sub_air_check_fall_common,
+            check_damage_fall_transition
         );
     }
 }
@@ -141,10 +151,8 @@ pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValu
         // halve hitstun on non-tumble landing if CC'd
         // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-        let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
-        WorkModule::set_float(fighter.module_accessor, (hitstun * 0.5).max(landing_frame), *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+        WorkModule::set_float(fighter.module_accessor, hitstun * 0.5, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     }
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
     original!()(fighter)
 }
 
@@ -178,6 +186,21 @@ pub unsafe fn status_pre_landing_fall_special(fighter: &mut L2CFighterCommon) ->
     original!()(fighter)
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_fall_special_init)]
+pub unsafe fn sub_landing_fall_special_init(fighter: &mut L2CFighterCommon, arg2: L2CValue) {
+    let landing_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+
+    // When a special fall LL value isn't defined
+    // the game puts you in 30f of LL
+    if landing_frame == 0.0 {
+        // Increase this default value to 32f
+        // to account for input lag
+        WorkModule::set_float(fighter.module_accessor, 32.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+    }
+
+    original!()(fighter, arg2)
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Landing_MainSub)]
 pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
@@ -187,6 +210,37 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_B);
     }
+
+
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR {
+        let cancel_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_LANDING_WORK_FLOAT_STIFFNESS_FRAME);
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE)
+        && MotionModule::frame(fighter.module_accessor) >= cancel_frame - 1.0 {
+            // Reduce buffer out of non-CCd non-tumble hitstun landing
+            let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
+            let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
+            let dif = precede - damage_level3_precede;
+            ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        }
+    }
+
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN {
+        let down_sfx = [
+            Hash40::new("se_common_down_soil_s"),
+            Hash40::new("se_common_down_m_01"),
+            Hash40::new("se_common_down_l_01"),
+            Hash40::new("se_demon_down"),
+            Hash40::new("se_dolly_down01"),
+    
+        ];
+    
+        for x in down_sfx.iter() {
+            if SoundModule::is_playing(fighter.module_accessor, *x) {
+                SoundModule::stop_se(fighter.module_accessor, *x, 3);
+            }
+        }
+    }
+
     original!()(fighter)
 }
 
@@ -201,27 +255,81 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_lasso)]
 unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        // Disable Airdodging if you're pressing Grab.
-        let is_guard_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Guard input was pressed within max tap buffer window
-        let is_attack_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Attack input was pressed within max tap buffer window
-        // original line
-        // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
-        // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
-        // you will never get an air tether. That's the theory, anyway.
-        // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
-        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || is_guard_buffered)
-        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || is_attack_buffered)
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
-            let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
-            if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
-            && !LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
-                fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
-                return true.into();
-            }
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+        return false.into();
+    }
+
+    // specific air_lasso validity check
+    let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
+    if air_lasso == *FIGHTER_AIR_LASSO_TYPE_NONE
+    || LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
+        return false.into();
+    }
+
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
+
+    // actual grab button
+    let catch_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Catch);
+    if catch_trigger_count < buffer {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+
+    let guard_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard);
+    let guard_release_count = InputModule::get_release_count(fighter.battle_object, Buttons::Guard);
+    let is_guard_held = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+
+    // special checks for air_lasso
+    // - attack button must be in the buffer window
+    // - shield button must be in the buffer window
+    // - attack button must have been pressed while shield was pressed/held
+    let attack_trigger_count = InputModule::get_trigger_count(fighter.battle_object, Buttons::AttackAll);
+    if attack_trigger_count < buffer
+    && guard_trigger_count < buffer
+    && attack_trigger_count <= guard_trigger_count
+    && (is_guard_held || attack_trigger_count > guard_release_count) {
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+        return true.into();
+    }
+    return false.into();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_wall_jump)]
+unsafe fn sub_transition_group_check_air_wall_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[0x31].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x31].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
         }
     }
-    false.into()
+
+    // basic validity checks
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || fighter.is_status(*FIGHTER_STATUS_KIND_WALL_JUMP)
+    || fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_WALL_JUMP_COUNT) >= ParamModule::get_int(fighter.battle_object, ParamType::Common, "wall_jump_count_airtime")
+    || fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_WALL_JUMP_FRAME) > 0 {
+        return false.into();
+    }
+
+    // unused since we removed wall clings but y'know just in case
+    let attach_wall_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attach_wall_type"), 0);
+    if attach_wall_type == *FIGHTER_ATTACH_WALL_TYPE_NORMAL
+    && fighter.sub_fighter_general_term_is_can_attach_wall().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACH_WALL.into(), true.into());
+        return true.into();
+    }
+
+    let wall_jump_type = WorkModule::get_param_int(fighter.module_accessor, hash40("wall_jump_type"), 0);
+    if (wall_jump_type == *FIGHTER_WALL_JUMP_TYPE_NORMAL
+    || VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP))
+    && fighter.sub_fighter_general_term_is_can_wall_jump().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(), true.into());
+        return true.into();
+    }
+
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
@@ -245,8 +353,7 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
 
 #[skyline::hook(replace = L2CFighterCommon_change_status_jump_mini_attack)]
 unsafe fn change_status_jump_mini_attack(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
-    if fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_100,
+    if [*FIGHTER_STATUS_KIND_ATTACK_100,
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -257,7 +364,7 @@ unsafe fn change_status_jump_mini_attack(fighter: &mut L2CFighterCommon, arg: L2
         *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD
-    ]) {
+    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_ATTACK_CANCEL);
     }
     call_original!(fighter, arg)
@@ -271,17 +378,30 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
             return true.into();
         }
     }
+
+    // Input lag forgiveness mechanic:
+    // Ignore airdodge inputs during your first 2 airborne frames
+    // after slipping off an edge within the first 2 frames of knockdown
+    let prev_status_transition_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::PREV_STATUS_TRANSITION_FRAME);
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN
+    && prev_status_transition_frame + fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
+        ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+        return false.into();
+    }
+
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
-                    // Disable Airdodging if you're pressing Attack.
-        && (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0
+        && (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0  // Disable Airdodging if you're pressing Attack.
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0)
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR)
+        {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
             return true.into();
         }
     }
+
     false.into()
 }
 
@@ -310,12 +430,31 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
-    // if fighter.is_button_on(Buttons::Parry) {
-    //     VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
-    //     fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-    //     return true.into()
-    // }
-    call_original!(fighter)
+
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+        return false.into();
+    }
+
+    if fighter.global_table[0x4f].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x4f].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
+        if fighter.sub_check_command_parry().get_bool() {
+            VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
+            return true.into();
+        }
+        if fighter.sub_check_command_guard().get_bool() {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+            return true.into();
+        }
+    }
+
+    return false.into();
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]
@@ -442,7 +581,7 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
             if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
             && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-            && MotionModule::trans_move_speed(fighter.module_accessor).y < 0.0
+            && MotionModule::trans_move_speed(fighter.module_accessor).value[1] < 0.0
             {
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
             }
@@ -460,6 +599,75 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
         fighter.change_status_req(new_status, false);
     }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_super_jump_punch_uniq)]
+pub unsafe fn super_jump_punch_uniq(fighter: &mut L2CFighterCommon, arg2: L2CValue) -> L2CValue {
+    if arg2.get_bool() {
+        return 0.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE)
+    || !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
+        if fighter.global_table[FIGHTER_KIND] != FIGHTER_KIND_SZEROSUIT {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE) {
+                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS)
+                && KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_AIR_STOP {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                    
+                    let speed_x_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_MOVE_TRANS_END_SPEED_X_MUL);
+                    let speed_y_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_MOVE_TRANS_END_SPEED_Y_MUL);
+
+                    if speed_x_mul > 0.0
+                    && speed_x_mul != 1.0 {
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+                        let speed_x = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * speed_x_mul, 0.0);
+                        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                    }
+
+                    if speed_y_mul > 0.0
+                    && speed_y_mul != 1.0 {
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                        let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y * speed_y_mul);
+                        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                    }
+                }
+            }
+        }
+    }
+    else {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
+
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_SUPER_JUMP_PUNCH_AIR_TRANS);
+
+        StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_AIR), false);
+        let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+        fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+
+        let reverse_lr_stick_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_LR_STICK_X);
+
+        if fighter.global_table[STICK_X].get_f32().abs() > reverse_lr_stick_x {
+            PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
+
+    0.into()
 }
 
 // I honestly don't know why this function was needed in vanilla in the first place
@@ -585,7 +793,7 @@ pub unsafe fn FighterStatusDamage__correctDamageVector(fighter: &mut L2CFighterC
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
-pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::Smash64Mode) {
@@ -595,14 +803,14 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
         _ => {}
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
-        return call_original!(fighter);
+        return call_original!(fighter, param_1);
     }
     // This allows us to call the blue DI line effect on non-tumble knockback
     // Currently not able to be done by reimplementing this function
     // because an inner function returns multiple L2CValues
     // which is not currently supported by skyline-smash
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_FLY));
-    let ret = call_original!(fighter);
+    let ret = call_original!(fighter, param_1);
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
     ret
 }
@@ -618,8 +826,22 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
         return false.into();
     }
 
+    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
     let status_kind = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
+
+    // Prevents Yoshi/Peach from fastfalling during the initial dip of their double jump
+    if (fighter_kind == *FIGHTER_KIND_YOSHI
+        || fighter_kind == *FIGHTER_KIND_PEACH)
+    && ((status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL
+        && MotionModule::frame(fighter.module_accessor) < 20.0)
+        || (status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR
+            && KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND
+            && MotionModule::frame_2nd(fighter.module_accessor) < 20.0))
+    {
+        return false.into();
+    }
+
     if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
         return false.into();
@@ -642,7 +864,7 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if cliff_count > cliff_dive_count_max {
         return false.into();
     }
-    
+
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL)
     || KineticModule::is_suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         return false.into();
@@ -672,8 +894,188 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if speed_y < -dive_speed_y {
         return false.into();
     }
-    
+
+    if [*FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION,
+        *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND,
+        *FIGHTER_KINETIC_TYPE_MOTION_AIR,
+        *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor))
+    {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+        
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+        KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+    }
+
     true.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_calc_landing_motion_rate)]
+unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_frame: L2CValue, landing_frame: L2CValue) -> L2CValue {
+    // Coupled with "landing_heavy" change in change_motion hook
+    // Because we start heavy landing anims on f3 rather than f1, we need to reduce the total length of the anim by 3 frames
+    // when calculating motion rate for airdodge landing or hitstun landing
+    let start_frame = 3.0;
+    let anim_length = end_frame.get_f32() - start_frame;
+    let ratio = (anim_length + 0.01) / landing_frame.get_f32();
+    ratio.into()
+}
+
+// This runs within FIGHTER_STATUS_KIND_LANDING's end status
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_cancel_damage_face)]
+pub unsafe fn sub_landing_cancel_damage_face(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    
+    original!()(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_air_check_fall_common)]
+pub unsafe fn sub_air_check_fall_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame_in_air = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+
+    if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_FALL
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
+    && frame_in_air <= 2 {
+        // Input lag forgiveness mechanic:
+        // Allow teching during your first 2 airborne frames
+        // after slipping off an edge within the first 2 frames of knockdown
+        let prev_status_transition_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::PREV_STATUS_TRANSITION_FRAME);
+
+        if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN
+        && prev_status_transition_frame + fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
+            let trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("passive_trigger_frame"));
+
+            if fighter.sub_check_passive_button_for_damage(L2CValue::I32(trigger_frame)).get_bool() {
+                let passive_fb_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
+
+                if fighter.global_table[STICK_X].get_f32().abs() >= passive_fb_cont_value {
+                    // Re-ground your fighter at their last grounded position
+                    // and enter tech roll
+                    let last_grounded_pos = VarModule::get_vec3(fighter.battle_object, vars::common::instance::LAST_GROUNDED_POS);
+
+                    PostureModule::set_pos(fighter.module_accessor, &last_grounded_pos);
+                    GroundModule::attach_ground(fighter.module_accessor, false);
+
+                    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
+                    fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32((*SITUATION_KIND_GROUND)));
+                    fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+
+                    fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
+
+                    return true.into();
+                }
+            }
+        }
+
+        // Input lag forgiveness mechanic:
+        // Prevent unintended inputs after slipping off an edge near the end of grounded knockback speed
+        // during first 2 airborne frames
+        let mut damage_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+        let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+
+        if damage_speed_x != 0.0
+        && damage_speed_x.abs() < 0.75 {
+            // If your last grounded state was actionable
+            if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_WAIT
+            || VarModule::is_flag(fighter.battle_object, vars::common::instance::WAS_PREV_STATUS_CANCELABLE) {
+                fighter.sub_wait_ground_check_common_pre();
+
+                fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+                if fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() {
+                    // Re-ground your fighter at their last grounded position
+                    // and enter the action you would have triggered had you been grounded
+                    let last_grounded_pos = VarModule::get_vec3(fighter.battle_object, vars::common::instance::LAST_GROUNDED_POS);
+
+                    PostureModule::set_pos(fighter.module_accessor, &last_grounded_pos);
+                    GroundModule::attach_ground(fighter.module_accessor, false);
+
+                    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
+                    fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32((*SITUATION_KIND_GROUND)));
+
+                    return true.into();
+                }
+                fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+            }
+            else if [
+                *FIGHTER_STATUS_KIND_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+                *FIGHTER_STATUS_KIND_SQUAT_F,
+                *FIGHTER_STATUS_KIND_SQUAT_B,
+                *FIGHTER_STATUS_KIND_SQUAT_RV
+            ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
+                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND);
+                WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
+                WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+                WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
+                
+                fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+                if fighter.sub_squat_common_Main().get_bool() {
+                    let last_grounded_pos = VarModule::get_vec3(fighter.battle_object, vars::common::instance::LAST_GROUNDED_POS);
+
+                    PostureModule::set_pos(fighter.module_accessor, &last_grounded_pos);
+                    GroundModule::attach_ground(fighter.module_accessor, false);
+
+                    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
+                    fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32((*SITUATION_KIND_GROUND)));
+
+                    return true.into();
+                }
+                fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+            }
+            else {
+                // If your last grounded state was was not actionable (e.g. in hitstun)
+                if fighter.sub_transition_group_check_air_landing().get_bool()
+                || fighter.sub_transition_group_check_air_cliff().get_bool() {
+                    return true.into();
+                }
+
+                // Ignore inputs during first 2 airborne frames
+                ControlModule::clear_command(fighter.module_accessor, false);
+
+                return false.into();
+            }
+        }
+    }
+    
+    original!()(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_check_damage_fall_transition)]
+pub unsafe fn check_damage_fall_transition(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame_in_air = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+
+    // Input lag forgiveness mechanic:
+    // Ignore inputs during the first 2 frames of tumble
+    // after slipping off an edge near the end of shieldstun
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
+    && frame_in_air <= 2 {
+        let mut damage_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+        let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+
+        if damage_speed_x != 0.0
+        && damage_speed_x.abs() < 0.75 {
+            ControlModule::clear_command(fighter.module_accessor, false);
+
+            return false.into();
+        }
+    }
+
+    original!()(fighter)
 }
 
 pub fn install() {
@@ -687,6 +1089,7 @@ pub fn install() {
     shield::install();
     turn::install();
     walk::install();
+    pass::install();
     passive::install();
     damagefall::install();
     downdamage::install();
@@ -698,6 +1101,8 @@ pub fn install() {
     dead::install();
     // damageflyreflect::install();
     down::install();
+    slip::install();
+    lasso::install();
 
     skyline::nro::add_hook(nro_hook);
 }

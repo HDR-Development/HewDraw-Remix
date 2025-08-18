@@ -1,10 +1,11 @@
 use super::*;
-use globals::*;
 
-unsafe extern "C" fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
+unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-    || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB) {
-        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_GRAB);
+    || VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_GROUND_START) {
+        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_GROUND_START);
         smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
     }
     else {
@@ -23,14 +24,14 @@ unsafe extern "C" fn special_lw_status_main(fighter: &mut L2CFighterCommon) -> L
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RIDLEY_STATUS_SPECIAL_LW_FLAG_TO_FINISH);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_BOUNCE);
         VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_ENABLE_LANDING);
-        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING);
+        VarModule::off_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_LANDING);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_pogo"), 0.0, 1.0, false, 0.0, false, false);
         fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))
     }
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING) {
+    if VarModule::is_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_LANDING) {
         if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into()
@@ -51,7 +52,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             fighter.set_situation(SITUATION_KIND_GROUND.into());
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_pogo_landing"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_IS_LANDING);
+            VarModule::on_flag(fighter.battle_object, vars::ridley::instance::SPECIAL_LW_LANDING);
         }
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
@@ -60,6 +61,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     else if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+
         return true.into()
     }
     else if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -114,7 +116,7 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
                     slope_angle = 360.0 -((-pos_diff_y / 5.0).atan().to_degrees());
                 }
             }
-            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), (ground_hit_pos.x - pos_x_global) * lr, ground_hit_pos.y - pos_y_global, 0, slope_angle, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), (ground_hit_pos.x - pos_x_global) * lr, ground_hit_pos.y - pos_y_global, 0, slope_angle, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), (ground_hit_pos.x - pos_x_global) * lr, ground_hit_pos.y - pos_y_global, 0, slope_angle, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
             PLAY_SE(fighter, Hash40::new("se_ridley_special_h03"));
             QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
@@ -154,12 +156,6 @@ unsafe extern "C" fn special_lw_pogo_bounce_check(fighter: &mut L2CFighterCommon
 //     return true.into()
 // }
 
-pub fn install() {
-    smashline::Agent::new("ridley")
-        .status(
-            Main,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            special_lw_status_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 }

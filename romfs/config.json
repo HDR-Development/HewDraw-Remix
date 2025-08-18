@@ -117,6 +117,66 @@
 		],
 		"fighter/ken/cmn": [
 			"fighter/ken/param/hdr.xml"
+		],
+		"fighter/littlemac/cmn": [
+			"fighter/littlemac/param/hdr.xml"
+		],
+		"fighter/bayonetta/cmn": [
+			"fighter/bayonetta/param/hdr.xml"
+		],
+		"fighter/gamewatch/cmn": [
+			"fighter/gamewatch/param/hdr.xml"
+		],
+		"fighter/gaogaen/cmn": [
+			"fighter/gaogaen/param/hdr.xml"
+		],
+		"fighter/jack/cmn": [
+			"fighter/jack/param/hdr.xml"
+		],
+		"fighter/kirby/cmn": [
+			"fighter/kirby/param/hdr.xml"
+		],
+		"fighter/koopa/cmn": [
+			"fighter/koopa/param/hdr.xml"
+		],
+		"fighter/sonic/cmn": [
+			"fighter/sonic/param/hdr.xml"
+		],
+		"fighter/wiifit/cmn": [
+			"fighter/wiifit/param/hdr.xml"
+		],
+		"fighter/inkling/cmn": [
+			"fighter/inkling/param/hdr.xml"
+		],
+		"fighter/master/cmn": [
+			"fighter/master/param/hdr.xml"
+		],
+		"fighter/pfushigisou/cmn": [
+			"fighter/pfushigisou/param/hdr.xml"
+		],
+		"fighter/plizardon/cmn": [
+			"fighter/plizardon/param/hdr.xml"
+		],
+		"fighter/pzenigame/cmn": [
+			"fighter/pzenigame/param/hdr.xml"
+		],
+		"fighter/tantan/cmn": [
+			"fighter/tantan/param/hdr.xml"
+		],
+		"fighter/zelda/cmn": [
+			"fighter/zelda/param/hdr.xml"
+		],
+		"fighter/pikachu/cmn": [
+			"fighter/pikachu/param/hdr.xml"
+		],
+		"fighter/ridley/cmn": [
+			"fighter/ridley/param/hdr.xml"
+		],
+		"fighter/robot/cmn": [
+			"fighter/robot/param/hdr.xml"
+		],
+		"fighter/shulk/cmn": [
+			"fighter/shulk/param/hdr.xml"
 		]
 	}
 }

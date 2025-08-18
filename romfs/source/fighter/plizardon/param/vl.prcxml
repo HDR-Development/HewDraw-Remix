@@ -2,12 +2,14 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">25</float>
+      <float hash="p1_y">23</float>
+      <float hash="p2_y">11</float>
     </struct>
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="speed_x_">3</float>
+      <float hash="rush_rotate_count_">1</float>
+      <float hash="speed_x_">2.5</float>
       <float hash="brake_x_">0.04</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -19,10 +21,59 @@
       <float hash="dir_mul">18</float>
       <float hash="pass_mul">0.85</float>
       <float hash="air_pass_mul">0.85</float>
-      <int hash="landing_frame">28</int>
+      <int hash="landing_frame">32</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list size="4" hash="param_rock">
+    <struct index="0">
+      <float hash="mp_coll_offset">-0.5</float>
+      <int hash="life">129</int>
+      <float hash="speed_min">0.3</float>
+      <float hash="speed_max">3</float>
+      <int hash="is_penetration">0</int>
+      <float hash="speed">2.4</float>
+      <float hash="flick_speed">3.1</float>
+      <float hash="rot_speed">22</float>
+      <float hash="flick_rot_speed">26</float>
+      <float hash="accel">0.047</float>
+      <float hash="flick_attack_mul">1.2</float>
+      <float hash="turn_angle">0.75</float>
+      <float hash="turn_follow_dist">19</float>
+      <float hash="turn_dist">16</float>
+      <float hash="turn_dist_flick">24</float>
+      <float hash="reflect_angle">30</float>
+      <float hash="0x1cb25d4dc6">4</float>
+      <float hash="angle_x">-68</float>
+      <float hash="angle_x_turn">-16</float>
+      <float hash="angle_x_back">-16</float>
+      <int hash="hop_life">60</int>
+      <float hash="hop_speed_x">-0.15</float>
+      <float hash="hop_speed_y">1.25</float>
+      <float hash="hop_accel_y">0.09</float>
+      <float hash="hop_limit_speed_y">1.4</float>
+      <float hash="hop_rot_mul">0.2</float>
+      <int hash="0x1a86ae83ba">0</int>
+      <float hash="speed_mul">1</float>
+      <int hash="follow_frame">128</int>
+      <int hash="flick_life">171</int>
+    </struct>
+  </list>
+  <list hash="param_rockstone">
+    <struct index="0">
+      <int hash="life">9</int>
+      <int hash="is_penetration">1</int>
+      <float hash="speed">10</float>
+      <int hash="stay_life">120</int>
+      <float hash="ref_frame_mul">0.5</float>
+    </struct>
+  </list>
+  <struct hash="map_collision_rockstone">
+    <hash40 hash="shape_type">grcorrect_shape_rhombus</hash40>
+    <float hash="up">0.4</float>
+    <float hash="down">0.1</float>
+    <float hash="half_width">0.3</float>
+  </struct>
 </struct>

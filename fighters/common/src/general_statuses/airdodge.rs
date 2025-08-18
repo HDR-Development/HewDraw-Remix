@@ -113,10 +113,11 @@ unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2
 #[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
 pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
-    if [*FIGHTER_STATUS_KIND_FALL,*FIGHTER_STATUS_KIND_LANDING].contains(&status_kind)
+
+    if status_kind == *FIGHTER_STATUS_KIND_LANDING
     || (fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_KOOPAJR
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT)
-        && [*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_FALL, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind))
+        && status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING)
     {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
             let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide_max"));
@@ -138,15 +139,14 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air")) as f32;
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         }
-        if status_kind == FIGHTER_STATUS_KIND_LANDING {
-            // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-            app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+        
+        // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
 
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
-        }
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
     }
     VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);

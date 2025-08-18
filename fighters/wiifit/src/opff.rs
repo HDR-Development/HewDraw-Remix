@@ -3,59 +3,14 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn header_cancel(boma: &mut BattleObjectModuleAccessor) {
-    let status_kind_prev = StatusModule::prev_status_kind(boma, 0);
-    if boma.is_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL)
-        && boma.is_prev_status_one_of(&[
-            *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP,
-            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_HEADING])
-        && boma.is_situation(*SITUATION_KIND_AIR) {
-        if !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
-            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
-            ControlModule::reset_trigger(boma);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-        }
-    }
-}
-
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_CANCEL) {
-        if boma.is_situation(*SITUATION_KIND_AIR) {
-            if WorkModule::get_int(boma, *FIGHTER_WIIFIT_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE) == *FIGHTER_WIIFIT_SPECIAL_N_CANCEL_TYPE_AIR_ESCAPE_AIR {
-                WorkModule::set_int(boma, *FIGHTER_WIIFIT_SPECIAL_N_CANCEL_TYPE_NONE, *FIGHTER_WIIFIT_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);
-            }
-        }
-    }
-}
-
-unsafe fn deep_breathing_respawn_cooldown(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 1 {
-        VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
-    }
-    else if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 1 {
-        //println!("cooldown over");
-        VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
-        VarModule::off_flag(boma.object(), vars::wiifit::instance::DEEP_BREATHING_COOLDOWN);
-    }
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH]) {
-        //println!("starting cooldown");
-        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 180);
-        VarModule::off_flag(boma.object(), vars::wiifit::instance::DEEP_BREATHING_COOLDOWN);
-    }
-}
-
 /// Starts ring effect for hitboxes
 pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_size: f32, end_size: f32, bone: Hash40, mut offset: Vector3f, mut color: Vector3f, mut color2: Vector3f, follow: bool) {
-    VarModule::on_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+    VarModule::on_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_END_FRAME, duration);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_CURRENT_FRAME, 0.0);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_START_SIZE, start_size);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_END_SIZE, end_size);
-    VarModule::set_int64(fighter.object(), vars::wiifit::instance::SHOW_RING_MOTION, MotionModule::motion_kind(fighter.module_accessor));
+    VarModule::set_int64(fighter.object(), vars::wiifit::instance::RING_SHOW_MOTION, MotionModule::motion_kind(fighter.module_accessor));
     
     // Make sure that no color alpha is zero
     color.x = if color.x == 0.0 { 0.1 } else { color.x };
@@ -90,16 +45,16 @@ pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_si
     EffectModule::set_rgb(fighter.module_accessor, handle as u32, color.x, color.y, color.z);
     EffectModule::set_rgb(fighter.module_accessor, dark_handle as u32, color.x, color.y, color.z);
     EffectModule::set_rgb(fighter.module_accessor, light_handle as u32, color.x, color.y, color.z);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE, handle as i32);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE, dark_handle as i32);
-    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE, light_handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE, handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE, dark_handle as i32);
+    VarModule::set_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE, light_handle as i32);
 }
 
 /// Updates ring color to second defined color
 unsafe fn set_ring_color(fighter: &mut L2CFighterCommon, mut color: Vector3f) {
-    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE);
-    let dark_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE);
-    let light_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE);
+    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE);
+    let dark_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE);
+    let light_handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE);
 
     // Make sure no color alpha is 0.0
     color.x = if color.x == 0.0 { 0.1 } else { color.x };
@@ -118,11 +73,11 @@ unsafe fn set_ring_color(fighter: &mut L2CFighterCommon, mut color: Vector3f) {
 
 /// Updates size and color of ring
 pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
-    if !VarModule::is_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE) { return; }
-    let motion_kind = VarModule::get_int64(fighter.object(), vars::wiifit::instance::SHOW_RING_MOTION);
+    if !VarModule::is_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE) { return; }
+    let motion_kind = VarModule::get_int64(fighter.object(), vars::wiifit::instance::RING_SHOW_MOTION);
     if !fighter.is_motion(Hash40::new_raw(motion_kind)) {
         EFFECT_OFF_KIND(fighter, Hash40::new("wiifit_fukushiki_ring"), false, true);
-        VarModule::off_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+        VarModule::off_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
         return;
     }
 
@@ -133,7 +88,7 @@ pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
     // Kill effect if beyond end frame
     if current_frame > end_frame {
         EFFECT_OFF_KIND(fighter, Hash40::new("wiifit_fukushiki_ring"), false, true);
-        VarModule::off_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
+        VarModule::off_flag(fighter.object(), vars::wiifit::instance::RING_EFFECT_VISIBLE);
         return;
     }
 
@@ -143,9 +98,9 @@ pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
         set_ring_color(fighter, color);
     }
     
-    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFF_HANDLE);
-    let handle2 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFF_HANDLE);
-    let handle3 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFF_HANDLE);
+    let handle = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_EFFECT_HANDLE);
+    let handle2 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_SECOND_EFFECT_HANDLE);
+    let handle3 = VarModule::get_int(fighter.object(), vars::wiifit::instance::RING_THIRD_EFFECT_HANDLE);
     let start_size = VarModule::get_float(fighter.object(), vars::wiifit::instance::RING_START_SIZE);
     let end_size = VarModule::get_float(fighter.object(), vars::wiifit::instance::RING_END_SIZE);
     let lerp = (current_frame as f32/end_frame as f32);
@@ -161,6 +116,17 @@ pub unsafe fn update_ring(fighter: &mut L2CFighterCommon) {
     EffectModule::set_alpha(fighter.module_accessor, handle2 as u32, lerp_color);
     EffectModule::set_alpha(fighter.module_accessor, handle3 as u32, lerp_color);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_CURRENT_FRAME, current_frame + 1.0);
+}
+
+unsafe fn up_special_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during upB startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+
+    if fighter.is_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL) {
+        fighter.select_cliff_hangdata_from_name("special_hi");
+    }
 }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
@@ -180,30 +146,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    header_cancel(boma);
-    nspecial_cancels(boma);
-    deep_breathing_respawn_cooldown(boma);
+    up_special_startup_ledgegrab(fighter);
     fastfall_specials(fighter);
     //update_ring(fighter);
 }
@@ -220,8 +167,7 @@ pub unsafe fn wiifit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("wiifit")
-        .on_line(Main, wiifit_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, wiifit_frame_wrapper);
 }

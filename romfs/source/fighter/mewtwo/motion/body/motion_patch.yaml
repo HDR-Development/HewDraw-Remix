@@ -1,12 +1,74 @@
+passive:
+  extra:
+    xlu_end: 21
+    cancel_frame: 29
+passive_stand_f:
+  extra:
+    xlu_end: 21
+    cancel_frame: 43
+passive_stand_b:
+  extra:
+    xlu_end: 21
+    cancel_frame: 43
+down_stand_u:
+  extra:
+    xlu_end: 23
+    cancel_frame: 33
+down_stand_d:
+  extra:
+    xlu_end: 23
+    cancel_frame: 33
+down_attack_u:
+  extra:
+    cancel_frame: 52
+down_attack_d:
+  extra:
+    cancel_frame: 52
+down_forward_u:
+  extra:
+    cancel_frame: 38
+down_forward_d:
+  extra:
+    cancel_frame: 38
+down_back_u:
+  extra:
+    cancel_frame: 38
+down_back_d:
+  extra:
+    cancel_frame: 38
+cliff_climb_quick:
+  extra:
+    xlu_end: 35
+    cancel_frame: 37
+cliff_attack_quick:
+  extra:
+    cancel_frame: 58
+cliff_escape_quick:
+  extra:
+    xlu_end: 31
+    cancel_frame: 52
+cliff_jump_quick1:
+  extra:
+    xlu_end: 17
+slip_stand:
+  extra:
+    xlu_end: 18
+    cancel_frame: 24
+slip_attack:
+  extra:
+    cancel_frame: 52
+slip_escape_f:
+  extra:
+    cancel_frame: 31
+slip_escape_b:
+  extra:
+    cancel_frame: 31
 jump_squat:
   blend_frames: 0
   animations:
   - name: a05landingheavy.nuanmb
 fall:
-  blend_frames: 5
-catch:
-  flags:
-    move: false
+  blend_frames: 3
 fall_f:
   blend_frames: 5
 fall_b:
@@ -23,7 +85,36 @@ attack_dash:
     cancel_frame: 42
 attack_11:
   extra:
-    cancel_frame: 20
+    cancel_frame: 18
+attack_12:
+  game_script: game_attack12
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackend.nuanmb
+  scripts:
+  - expression_attack12
+  - sound_attack12
+  - effect_attack12
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 33
+    freeze_during_hitstop: true
 attack_lw3:
   extra:
     cancel_frame: 23
@@ -41,7 +132,7 @@ attack_hi3:
   extra:
     cancel_frame: 31
 fall_aerial:
-  blend_frames: 5
+  blend_frames: 3
 attack_s4_s:
   flags:
     move: false
@@ -49,7 +140,7 @@ attack_s4_s:
     cancel_frame: 57
 attack_s3_s:
 fall_special:
-  blend_frames: 5
+  blend_frames: 3
 attack_s3_lw:
 attack_s4_hi:
   flags:
@@ -58,7 +149,7 @@ attack_s4_hi:
     cancel_frame: 57
 attack_air_b:
   extra:
-    cancel_frame: 37
+    cancel_frame: 36
 attack_air_f:
   extra:
     cancel_frame: 38
@@ -77,7 +168,7 @@ fall_aerial_b:
   blend_frames: 5
 attack_air_hi:
   extra:
-    cancel_frame: 37
+    cancel_frame: 33
 special_air_lw:
   extra:
     intangible_start_frame: 0
@@ -98,9 +189,26 @@ item_light_throw_f:
 special_air_n_cancel:
   extra:
     cancel_frame: 9
+catch:
+  flags:
+    move: false
+catch_dash:
+  extra:
+    cancel_frame: 45
+catch_turn:
+  extra:
+    cancel_frame: 40
 catch_attack:
   extra:
     cancel_frame: 0
 furafura_end:
   extra:
-    cancel_frame: 10
+    cancel_frame: 34
+shield_break_fly:
+  animations:
+    - name: f04downspotd.nuanmb
+step_pose_back:
+  extra:
+    cancel_frame: 6
+cliff_wait:
+  blend_frames: 2

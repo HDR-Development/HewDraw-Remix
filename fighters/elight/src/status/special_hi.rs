@@ -24,13 +24,15 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     }
 }
 
+// FIGHTER_STATUS_KIND_SPECIAL_HI
+
 unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_MOTION_CLIFF_MOVE,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -77,6 +79,10 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_hi"));
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_hi_start"), L2CValue::Hash40s("special_air_hi_start"), true.into());
 
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+
     // [v] check if you are doing the input for spreadbullet, and if the animation is over (this is the initial swipe)
     //      transition into the jump
     special_hi_common_check_spreadbullet(fighter);
@@ -102,11 +108,9 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("elight")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end)
-        .status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec);
 }

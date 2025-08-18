@@ -1,8 +1,8 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub unsafe extern "C" fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH
+
+pub unsafe extern "C" fn special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let log_mask_flags;
     let power_up_bit;
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SONIC_STATUS_SPECIAL_S_DASH_FLAG_SPECIAL_LW_HOLD) {
@@ -38,17 +38,11 @@ pub unsafe extern "C" fn pre_special_s_dash(fighter: &mut L2CFighterCommon) -> L
         0
     );
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
     }
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .status(
-            Pre,
-            *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH,
-            pre_special_s_dash,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_pre);
 }

@@ -12,6 +12,7 @@ unsafe fn float_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
         }
     }
 }
+
 unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP {
         let lr = PostureModule::lr(boma);
@@ -23,16 +24,16 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
             touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
         };
         if touch_wall && (1..25).contains(&frame){
-                VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
+                VarModule::on_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
     }
     else if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END {
-        if VarModule::is_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE) {
+        if VarModule::is_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE) {
             MotionModule::set_rate(boma, 0.6);
         }
     } else {
-        VarModule::off_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
+        VarModule::off_flag(boma.object(), vars::peach::instance::SPECIAL_S_WALL_BOUNCE);
     }
 }
 
@@ -52,23 +53,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -91,8 +75,7 @@ pub unsafe fn peach_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-pub fn install() {
-    smashline::Agent::new("peach")
-        .on_line(Main, peach_frame_wrapper)
-        .install();
+
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, peach_frame_wrapper);
 }

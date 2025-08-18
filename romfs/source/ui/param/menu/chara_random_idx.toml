@@ -1,0 +1,19 @@
+# Sets the "center" point for random based on CSS icon count
+# With how the hexagon staggering works, the *actual* center point in the order won't always look good
+
+placement = [
+     0,  1,  1,  1,  1,  1,  3,  1,  5,  1, # 1-10 icons
+     5,  2,  6,  2,  8,  2,  8,  3,  9,  3, # 11-20 icons
+    11,  3, 11,  4, 12,  4, 14,  4, 14,  5, # 21-30 icons
+    15,  5, 17,  5, 17,  6, 18, 14, 20,  6, # 31-40 icons
+    20,  7, 21,  7, 23,  7, 23,  8, 24, 15, # 41-50 icons
+    25, 15, 26, 15, 28, 17, 28, 17, 29, 18, # 51-60 icons
+    30, 18, 31, 18, 33, 20, 33, 20, 34, 21, # 61-70 icons
+    35, 21, 36, 21, 38, 23, 38, 23, 39, 24, # 71-80 icons
+    40, 24, 41, 24, 43, 26, 43, 26, 44, 27, # 81-90 icons
+    45
+]
+
+# currently accounts for up to 91 icons, which is the vanilla limit
+# may support larger CSS arrangements (custom characters) if you add more entries
+# haven't tested that though, so your mileage may vary!

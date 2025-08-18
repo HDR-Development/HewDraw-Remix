@@ -7,20 +7,24 @@
   <float hash="damage_speed_mul">0.03</float>
   <float hash="damage_angle_ground_max">44</float>
   <float hash="damage_fly_quake_l">90</float>
-  <int hash="damage_fly_speed_up_reaction_frame_min">998</int>
-  <int hash="damage_fly_speed_up_reaction_frame_max">999</int>
-  <int hash="damage_fly_speed_up_end_rate">32</int>
-  <int hash="damage_fly_speed_up_max_mag">3</int>
-  <float hash="damage_fly_speed_up_angle_rate">85</float>
+  <int hash="damage_fly_speed_up_reaction_frame_min">63</int>
+  <int hash="damage_fly_speed_up_reaction_frame_max">102</int>
+  <int hash="damage_fly_speed_up_end_rate">70</int>
+  <int hash="damage_fly_speed_up_max_mag">2</int>
+  <float hash="damage_fly_speed_up_angle_rate">100</float>
+  <float hash="hitstop_frame_max">24</float>
   <float hash="hitstop_frame_add">4</float>
   <float hash="hitstop_frame_mul">0.45</float>
   <float hash="hitstop_elec_mul">1.25</float>
-  <int hash="just_shield_hitstop_frame_add">22</int>
-  <int hash="just_shield_hitstop_frame_max">23</int>
-  <float hash="just_shield_reflect_attack_mul">0.5</float>
+  <int hash="just_shield_hitstop_frame_add">15</int>
+  <int hash="0x28492c704c">15</int>
+  <int hash="0x323a6f8f63">2</int>
+  <int hash="0x2bef82b907">2</int>
+  <int hash="just_shield_hitstop_frame_max">15</int>
+  <float hash="just_shield_reflect_attack_mul">1.0</float>
   <float hash="just_shield_reflect_speed_mul">1.0</float>
   <float hash="just_shield_reflect_life_mul">1</float>
-  <int hash="just_shield_reflect_count_max">7</int>
+  <int hash="just_shield_reflect_count_max">999</int>
   <float hash="rebound_reaction_mul">0.3</float>
   <float hash="rebound_reaction_add">2.0</float>
   <float hash="rebound_power_diff">6.0</float>
@@ -34,8 +38,8 @@
   <float hash="0x16911ce78c">0.875</float>
   <float hash="jostle_team_overlap_rate">0.3</float>
   <float hash="damage_angle_air">0.785398</float>
-  <float hash="fly_top_angle_lw">0.802851</float>
-  <float hash="fly_top_angle_hi">2.338741</float>
+  <float hash="fly_top_angle_lw">1.22173</float>
+  <float hash="fly_top_angle_hi">1.919862</float>
   <list hash="0x192e58d48b">
     <hash40 index="0">dummy</hash40>
     <float index="1">1</float>
@@ -54,4 +58,6 @@
     <hash40 index="5">dummy</hash40>
     <hash40 index="6">dummy</hash40>
   </list>
+  <float hash="max_ink_for_damage_mul">200</float>
+  <float hash="max_damage_mul_for_ink">1.3</float>
 </struct>

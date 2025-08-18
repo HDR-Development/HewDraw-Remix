@@ -3,20 +3,18 @@ use crate::globals::*;
 use std::arch::asm;
 pub mod energy;
 pub mod effect;
-pub mod edge_slipoffs;
-pub mod ledges;
+pub mod finals;
 pub mod get_param;
-pub mod change_motion;
 pub mod transition;
 pub mod djcancel;
-pub mod init_settings;
 pub mod momentum_transfer;
 pub mod hitstun;
-pub mod change_status;
-pub mod is_flag;
+pub mod iceclimber;
 pub mod controls;
 pub mod misc;
 pub mod jumps;
+pub mod knockback;
+pub mod knockback_util;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
@@ -24,9 +22,11 @@ pub mod collision;
 pub mod camera;
 pub mod shotos;
 pub mod sound;
+mod lua_bind_hook;
 mod fighterspecializer;
 mod fighter_util;
 mod vtables;
+mod item;
 
 #[repr(C)]
 pub struct TempModule {
@@ -296,8 +296,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
             if (*boma).is_fighter() {
                 let motion_kind = MotionModule::motion_kind(boma);
                 if motion_kind != hash40("invalid") {
-                    let motion_module__update_motion_slow: extern "C" fn(*const TempModule, u64) -> u64 = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0x680) as *const u64));
-                    motion_module__update_motion_slow(module_accessor.motion_module, motion_kind);
+                    let fighter_motion_module_impl__unk: extern "C" fn(*const TempModule, u64) -> u64 = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0x680) as *const u64));
+                    fighter_motion_module_impl__unk(module_accessor.motion_module, motion_kind);
 
                     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(motion_kind), true);
 
@@ -397,7 +397,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a6140);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a6160);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -437,7 +437,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33A6140);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33A6160);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -480,7 +480,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
         }
         else if (*boma).is_weapon() {
-            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33A6140);
+            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33A6160);
             let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object as *mut app::Weapon, false);
         }
@@ -572,7 +572,13 @@ unsafe fn after_collision(object: *mut BattleObject) {
     let module_accessor: *mut ModuleAccessor = std::mem::transmute((*object).module_accessor);
     let module_accessor = *module_accessor;
 
-    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
+    if VarModule::has_var_module((*boma).object()) {
+        VarModule::off_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION);
+
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+            VarModule::set_vec3((*boma).object(), vars::common::instance::LAST_GROUNDED_POS, *PostureModule::pos(boma));
+        }
+    }
 
     if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
         return call_original!(object);
@@ -729,40 +735,99 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = 0x406824, inline)]
 unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
-  let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
-  if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
-    *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
-  }
+    let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
+    if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
+        *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
+    }
+}
+
+static mut DATA_ACCESS_LOCK: [u8; 0x20] = [0; 0x20];
+
+// Reduces rim lighting on fighters to 0.5 strength
+#[skyline::hook(offset = 0x38026f0)]
+unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
+    let cbuf = *((buffer + 8) as *const u64);
+    let buffer_ptr = *((cbuf + 0x98) as *const u64);
+
+    if buffer_ptr == 0 {
+        return call_original!(stage, index, buffer);
+    }
+
+    let size = *((cbuf + 0x10) as *const usize);
+    let addr = *((cbuf + 0xb0) as *const u64);
+
+    let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
+    let func = *(text.add(0x5940d28) as *const u64);
+    let func: extern "C" fn(*mut u8) -> *mut u8 = std::mem::transmute(func);
+    let map = func(buffer_ptr as _);
+
+    let data = std::slice::from_raw_parts_mut(map, size);
+
+    skyline::nn::os::LockMutex(DATA_ACCESS_LOCK.as_mut_ptr().cast());
+
+    if index == 8 {
+        data[0xAC as usize..0xB0 as usize]
+            .copy_from_slice(&vec![0x00, 0x00, 0x00, 0x3F]);  // 0x00, 0x00, 0x00, 0x3F = 0.5 floating point
+    }
+
+    let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
+    let func = *(text.add(0x5940d38) as *const u64);
+    let func: extern "C" fn(*mut u8, isize, usize) = std::mem::transmute(func);
+    func(buffer_ptr as _, 0, size);
+
+    skyline::nn::os::UnlockMutex(DATA_ACCESS_LOCK.as_mut_ptr().cast());
+
+    call_original!(stage, index, buffer);
+}
+
+// Allows us to set the hitbox overlap threshold for phantom hits
+#[skyline::hook(offset = 0x3e6664, inline)]
+unsafe fn phantom_hit_check(ctx: &mut skyline::hooks::InlineCtx) {
+    let opponent_battle_object_id = *(*ctx.registers[20].x.as_ref() as *const u32).add(0x28 / 4);
+    let opponent_boma = &mut *(sv_battle_object::module_accessor(opponent_battle_object_id));
+
+    let mut phantom_threshold: f32;
+    asm!("fmov w8, s9", out("w8") phantom_threshold);
+
+    if opponent_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE]) {
+        // threshold while shielding
+        phantom_threshold = 1.0;
+    }
+    else {
+        // normal threshold
+        // 0.0 = phantom hits disabled
+        phantom_threshold = 0.0;
+    }
+
+    asm!("fmov s9, w8", in("w8") phantom_threshold)
 }
 
 pub fn install() {
     energy::install();
     effect::install();
-    edge_slipoffs::install();
-    ledges::install();
+    finals::install();
     get_param::install();
-    change_motion::install();
     transition::install();
     djcancel::install();
-    init_settings::install();
     hitstun::install();
-    change_status::install();
-    is_flag::install();
+    iceclimber::install();
     controls::install();
     momentum_transfer::install();
     misc::install();
-    //dash_dancing::install();
     jumps::install();
+    knockback::install();
     stage_hazards::install();
-    set_fighter_status_data::install();
+    //set_fighter_status_data::install();
     attack::install();
     collision::install();
     camera::install();
     shotos::install();
     sound::install();
+    lua_bind_hook::install();
     fighterspecializer::install();
     fighter_util::install();
     vtables::install();
+    item::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -772,12 +837,10 @@ pub fn install() {
         // Changes full hops to calculate vertical velocity identically to short hops
         skyline::patching::Patch::in_text(0x6d21a8).data(0x52800015u32);
 
-        // removes phantoms
-        skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
-
-        // Resets projectile lifetime on parry, rather than using remaining lifetime
-        skyline::patching::Patch::in_text(0x33bdfd8).nop();
-        skyline::patching::Patch::in_text(0x33bdfdc).data(0x2a0a03e1);
+        // Disables spark gfx/sfx on phantom hits
+        skyline::patching::Patch::in_text(0x4ceae8).data(0x140000D1u32);
+        skyline::patching::Patch::in_text(0x3fd360).nop();
+        
 
         // The following handles disabling the "Weapon Catch" animation for those who have it.
         // You will only enter the weapon catch animation if you are completely idle.
@@ -788,11 +851,16 @@ pub fn install() {
         // Krool and Pyra are in their respective modules.
         // Gives attacker less clank hitlag than defender
         skyline::patching::Patch::in_text(0x3e0b48).data(0x1E204160);
+
+        // Disables airdodge refresh on hit
+        skyline::patching::Patch::in_text(0x632530).nop();
     }
     skyline::install_hooks!(
         before_collision,
         after_collision,
         status_module__change_status,
-        change_elec_hitlag_for_attacker
+        change_elec_hitlag_for_attacker,
+        set_uniform_buffer,
+        phantom_hit_check
     );
 }

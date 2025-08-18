@@ -7,10 +7,10 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="charge_up_frame">8</int>
+      <int hash="charge_up_frame">10</int>
       <int hash="max_charge_frame">12</int>
       <int hash="target_max_num">2</int>
-      <int hash="changed_charge_up_frame">8</int>
+      <int hash="changed_charge_up_frame">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -62,6 +62,8 @@
   <list hash="param_boss">
     <struct index="0">
       <int hash="life">180</int>
+      <float hash="reflection_x_speed_mul">0.5</float>
+      <float hash="reflection_y_speed_mul">0.9</float>
       <int hash="reflection_max_num">3</int>
       <float hash="rot_min_time">38</float>
       <float hash="rot_max_time">38</float>
@@ -83,6 +85,8 @@
     <struct index="0">
       <int hash="life">45</int>
       <int hash="reflection_max_num">3</int>
+      <float hash="reflection_x_speed_mul">0.1</float>
+      <float hash="reflection_y_speed_mul">0.75</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -91,6 +95,8 @@
   <list hash="param_special_s">
     <struct index="0">
       <int hash="dash_max_frame">14</int>
+      <float hash="dash_min_power">6</float>
+      <float hash="dash_max_power">9</float>
       <float hash="dash_power_mul">2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -109,6 +115,7 @@
     <struct index="0">
       <float hash="air_accel_x_mul">1</float>
       <float hash="air_max_speed_x_mul">1</float>
+      <float hash="landing_frame">33</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -116,10 +123,16 @@
   </list>
   <list hash="param_firehydrant">
     <struct index="0">
-      <int hash="hp">16</int>
+      <int hash="hp">12</int>
+      <float hash="smash_reflect_speed_mul">0.85</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="hit_data_firehydrant">
+    <struct index="0">
+      <float hash="size">7</float>
+    </struct>
   </list>
 </struct>

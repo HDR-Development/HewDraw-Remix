@@ -1,211 +1,149 @@
-
 use super::*;
 
-unsafe extern "C" fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
+unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_kirby_damagefly02"));
+        } else {
+            let damage_speed_x = agent.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            let damage_speed_y = agent.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+            let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+
+            let play_vc = if speed_vector < 3.8 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
             };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
+            if play_vc == 0 {
+                PLAY_FLY_VOICE(agent, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));
+            }
         }
     }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
+}
+
+unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_kirby_damagefly02"));
         } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn damageflylw_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
+            PLAY_FLY_VOICE(agent, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));
         }
     }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-    }
 }
 
-unsafe extern "C" fn damageflyn_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));
-    }
-}
-
-unsafe extern "C" fn damageflytop_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_kirby_rnd_futtobi01"), Hash40::new("seq_kirby_rnd_futtobi02"));}
-    }
-}
-
-unsafe extern "C" fn dash_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_kirby_dash_start"), true, false, false, false, app::enSEType(0));
+    if is_excute(agent) {
+        let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_kirby_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 13.0);
-    if is_excute(fighter) {
-        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_kirby_step_left_m"), Hash40::new("se_kirby_step_right_m"));
+    if is_excute(agent) {
+        PLAY_STEP_FLIPPABLE(agent, Hash40::new("se_kirby_step_left_m"), Hash40::new("se_kirby_step_right_m"));
     }
     wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_kirby_step_right_m"), Hash40::new("se_kirby_step_left_m"));
+    if is_excute(agent) {
+        PLAY_STEP_FLIPPABLE(agent, Hash40::new("se_kirby_step_right_m"), Hash40::new("se_kirby_step_left_m"));
     }
 }
 
-unsafe extern "C" fn kirby_turn_dash_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 3.0);
-    if is_excute(fighter) {
-		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
     }
     frame(lua_state, 13.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
-    
 }
 
-unsafe extern "C" fn escape_air_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
     frame(lua_state, 29.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     frame(lua_state, escape_air_cancel_frame);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
-unsafe extern "C" fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
     frame(lua_state, 29.0);
-    if is_excute(fighter) {
+    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
     frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
-unsafe extern "C" fn game_landingheavy(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
+unsafe extern "C" fn game_landingheavy(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("virtualweakpoint"), *HIT_STATUS_OFF);
     }
 }
 
-unsafe extern "C" fn landingheavy_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+unsafe extern "C" fn effect_landingheavy(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("kirby_star"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("kirby")
-        .acmd("sound_damageflyhi", damageflyhi_sound)
-        .acmd("sound_damageflylw", damageflylw_sound)
-        .acmd("sound_damageflyn", damageflyn_sound)
-        .acmd("sound_damageflyroll", damageflyroll_sound)
-        .acmd("sound_damageflytop", damageflytop_sound)
-        .acmd("sound_dash", dash_sound)
-        .acmd("game_turndash", kirby_turn_dash_game)
-        .acmd("game_escapeair", escape_air_game)
-        .acmd("game_escapeairslide", escape_air_slide_game)
-        .acmd("game_landingheavy", game_landingheavy)
-        .acmd("effect_landingheavy", landingheavy_effect)
-        .install();
+unsafe extern "C" fn game_catchcut(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    // I don't like this any more than you do
+    if boma.is_prev_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_FALL, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP1, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_JUMP2, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_FALL, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_PASS, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_TURN, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_TURN_AIR, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_WALK, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_EAT_LANDING, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW_WAIT]) && boma.is_situation(*SITUATION_KIND_AIR) {
+        FT_MOTION_RATE_RANGE(agent, 1.0, 30.0, 34.0);
+    }
+    frame(lua_state, 30.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
+
+    agent.acmd("sound_damageflyhi", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflylw", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
+    agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
+
+    agent.acmd("sound_dash", sound_dash, Priority::Low);
+    agent.acmd("game_turndash", game_turndash, Priority::Low);
+
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_landingheavy", game_landingheavy, Priority::Low);
+    agent.acmd("effect_landingheavy", effect_landingheavy, Priority::Low);
+
+    agent.acmd("game_catchcut", game_catchcut, Priority::Low);
 }

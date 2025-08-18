@@ -1,0 +1,28 @@
+# To set up:
+# Make a new header with whatever tag you would like to configure (e.g. [my cool tag]). Case sensitive!
+# kind: either "blacklist" or "whitelist"
+#   - blacklist: the listed fighters will NOT be chosen by random
+#   - whitelist: random can ONLY choose from the listed fighters
+#   - in general, pick the one where you have to list the least amount of names!
+
+# The following settings will be applied regardless of tag
+[global_settings]
+kind = "blacklist"
+list = [
+    # "mario", "mariod", "luigi", "peach", "daisy", "rosetta", "koopa", "koopajr", "packun", "yoshi", "wario", 
+    # "donkey", "diddy", "krool", "buddy", "ice_climber", "gamewatch", "link", "younglink", "toonlink", "zelda", 
+    # "sheik", "ganon", "samus", "szerosuit", "ridley", "samusd", "kirby", "metaknight", "dedede", "fox", "falco",
+    # "wolf", "robot", "duckhunt","pikachu", "pichu", "ptrainer", "purin", "mewtwo", "lucario", "gekkouga", 
+    # "gaogaen", "marth", "roy", "ike", "reflet", "chrom", "lucina", "kamui", "master","ness", "lucas", "captain",
+    # "pit", "pitb", "palutena", "pikmin", "murabito", "shizue", "wiifit", "littlemac", "shulk", "element",
+    # "inkling", "tantan", "snake", "simon", "richter", "sonic", "bayonetta", "jack", "rockman", "ryu", "ken", 
+    # "dolly", "demon", "pacman", "cloud", "edge", "trail", "brave", "pickel"
+]
+
+# Example tag listing. A player with the tag "mongoose" picking random will always get one of these seven characters.
+[mongoose]
+kind = "whitelist"
+list = [
+    "pickel", "buddy", "trail", "purin", "ness", "daisy", "pichu"
+]
+

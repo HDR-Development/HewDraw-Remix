@@ -2127,7 +2127,7 @@ local update_stage_previews = function()
         end
         root_view:play_animation_parts(get_stage_preview_name(current_selected_preview), anim)
         local preview_parts = root_view:get_parts(get_stage_preview_name(current_selected_preview))
-        preview_parts:get_pane("txt_attention"):set_text_string("This stage has been striked")
+        preview_parts:get_pane("txt_attention"):set_text_string("This stage has been struck")
     end
     prev_invalid_stage_2 = is_striked
 

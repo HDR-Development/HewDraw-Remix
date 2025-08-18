@@ -43,9 +43,9 @@ impl DerefMut for FighterKineticEnergyStop {
 impl FighterKineticEnergyStop {
     pub fn get_parent_sum_speed_correct(boma: &mut BattleObjectModuleAccessor, link_no: i32, arg: i32) -> PaddedVec2 {
         unsafe {
-            let func: extern "C" fn(&mut BattleObjectModuleAccessor, i32, i32) -> energy::Vec3 = std::mem::transmute(LinkModule::get_parent_sum_speed as *const ());
+            let func: extern "C" fn(&mut BattleObjectModuleAccessor, i32, i32) -> smash_rs::cpp::simd::Vector3 = std::mem::transmute(LinkModule::get_parent_sum_speed as *const ());
             let vec = func(boma, link_no, arg);
-            PaddedVec2::new(vec.x, vec.y)
+            PaddedVec2::new(vec.vec[0], vec.vec[1])
         }
     }
 }
@@ -131,6 +131,7 @@ pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, re
         || (boma.kind() == *FIGHTER_KIND_SHEIK && boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE))
         || (boma.kind() == *FIGHTER_KIND_ZELDA && boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2)) )
     {
+        VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X, initial_speed.x);
         VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y, initial_speed.y);
     }
     call_original!(energy, reset_type, initial_speed, unk, boma);

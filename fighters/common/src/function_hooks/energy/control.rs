@@ -625,6 +625,8 @@ unsafe fn control_setup(energy: &mut FighterKineticEnergyControl, reset_type: En
             if cap.abs() < sum.abs() {
                 energy.speed.x = cap.abs() * speed.x.signum();
             }
+
+            VarModule::set_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME, fly_data.shoot_fly_next_frame);
         }, // not reached in game afaik
         ShootDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {

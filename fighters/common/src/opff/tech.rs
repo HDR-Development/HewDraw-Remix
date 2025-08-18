@@ -13,33 +13,33 @@ use vars::*;
 //=================================================================
 //== TUMBLE EXIT
 //=================================================================
-unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL) {
-        if boma.status_frame() == 0 {
-            ControlModule::clear_command_one(
-                boma,
-                *FIGHTER_PAD_COMMAND_CATEGORY1,
-                *FIGHTER_PAD_CMD_CAT1_DASH,
-            );
-            ControlModule::clear_command_one(
-                boma,
-                *FIGHTER_PAD_COMMAND_CATEGORY1,
-                *FIGHTER_PAD_CMD_CAT1_TURN_DASH,
-            );
-        }
-        if !(WorkModule::is_flag(
-            boma,
-            *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR,
-        ) || WorkModule::is_flag(
-            boma,
-            *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND,
-        )) && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
-        {
-            ControlModule::reset_trigger(boma);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        }
-    }
-}
+// unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
+//     if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL) {
+//         if boma.status_frame() == 0 {
+//             ControlModule::clear_command_one(
+//                 boma,
+//                 *FIGHTER_PAD_COMMAND_CATEGORY1,
+//                 *FIGHTER_PAD_CMD_CAT1_DASH,
+//             );
+//             ControlModule::clear_command_one(
+//                 boma,
+//                 *FIGHTER_PAD_COMMAND_CATEGORY1,
+//                 *FIGHTER_PAD_CMD_CAT1_TURN_DASH,
+//             );
+//         }
+//         if !(WorkModule::is_flag(
+//             boma,
+//             *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR,
+//         ) || WorkModule::is_flag(
+//             boma,
+//             *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND,
+//         )) && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
+//         {
+//             ControlModule::reset_trigger(boma);
+//             boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+//         }
+//     }
+// }
 
 // This allows us to generate the blue DI line effect on non-tumble knockback
 unsafe fn non_tumble_di_gfx(fighter: &mut L2CFighterCommon) {
@@ -294,7 +294,7 @@ pub unsafe fn run(
     facing: f32,
     curr_frame: f32,
 ) {
-    tumble_exit(boma);
+    // tumble_exit(boma);
     non_tumble_di_gfx(fighter);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()

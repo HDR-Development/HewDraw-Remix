@@ -1,5 +1,6 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_N
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -24,7 +25,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     if fighter.status_frame() == 10 && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-        VarModule::on_flag(fighter.object(), vars::mariod::status::CHILL_PILL);
+        VarModule::on_flag(fighter.object(), vars::mariod::status::SPECIAL_N_CHILL_PILL);
         let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) { Hash40::new("special_n_chill") } else { Hash40::new("special_air_n_chill") };
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
     }
@@ -33,13 +34,13 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                let motion = if VarModule::is_flag(fighter.object(), vars::mariod::status::CHILL_PILL) { Hash40::new("special_n_chill") } else { Hash40::new("special_n") };
+                let motion = if VarModule::is_flag(fighter.object(), vars::mariod::status::SPECIAL_N_CHILL_PILL) { Hash40::new("special_n_chill") } else { Hash40::new("special_n") };
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
             }
             else {
                 GroundModule::correct(fighter.module_accessor, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-                let motion = if VarModule::is_flag(fighter.object(), vars::mariod::status::CHILL_PILL) { Hash40::new("special_air_n_chill") } else { Hash40::new("special_air_n") };
+                let motion = if VarModule::is_flag(fighter.object(), vars::mariod::status::SPECIAL_N_CHILL_PILL) { Hash40::new("special_air_n_chill") } else { Hash40::new("special_air_n") };
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
             }
         }
@@ -56,8 +57,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("mariod")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
 }

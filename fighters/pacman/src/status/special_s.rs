@@ -1,7 +1,35 @@
 use super::*;
-use globals::*;
 
 // FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH
+
+unsafe extern "C" fn special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+
+    return 0.into();
+}
 
 pub unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)(fighter);
@@ -11,6 +39,35 @@ pub unsafe extern "C" fn special_s_dash_main(fighter: &mut L2CFighterCommon) -> 
 }
 
 // FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN
+
+unsafe extern "C" fn special_s_return_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+
+    return 0.into();
+}
 
 pub unsafe extern "C" fn special_s_return_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)(fighter);
@@ -46,10 +103,10 @@ pub unsafe extern "C" fn fall_special_init(fighter: &mut L2CFighterCommon) -> L2
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_FALL_SPECIAL)(fighter)
 }
 
-pub fn install() {
-    smashline::Agent::new("pacman")
-        .status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main)
-        .status( Main,*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main)
-        .status(Init, *FIGHTER_STATUS_KIND_FALL_SPECIAL, fall_special_init)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_pre);
+    agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main);
+    agent.status(Pre, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_pre);
+    agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN, special_s_return_main);
+    agent.status(Init, *FIGHTER_STATUS_KIND_FALL_SPECIAL, fall_special_init);
 }

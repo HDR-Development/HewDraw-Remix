@@ -9,7 +9,7 @@ authors = ["HDR Development Team"]
 edition = "2021"
 
 [workspace.dependencies]
-skyline = "0.2"
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
@@ -41,6 +41,7 @@ gamewatch = { path = "fighters/gamewatch" }
 ganon = { path = "fighters/ganon" }
 gaogaen = { path = "fighters/gaogaen" }
 gekkouga = { path = "fighters/gekkouga" }
+iceclimber = { path = "fighters/iceclimber" }
 ike = { path = "fighters/ike" }
 inkling = { path = "fighters/inkling" }
 jack = { path = "fighters/jack" }
@@ -67,7 +68,6 @@ miifighter = { path = "fighters/miifighter" }
 miigunner = { path = "fighters/miigunner" }
 miiswordsman = { path = "fighters/miiswordsman" }
 murabito = { path = "fighters/murabito" }
-nana = { path = "fighters/nana" }
 ness = { path = "fighters/ness" }
 packun = { path = "fighters/packun" }
 pacman = { path = "fighters/pacman" }
@@ -81,7 +81,7 @@ pikmin = { path = "fighters/pikmin" }
 pit = { path = "fighters/pit" }
 pitb = { path = "fighters/pitb" }
 plizardon = { path = "fighters/plizardon" }
-popo = { path = "fighters/popo" }
+ptrainer = { path = "fighters/ptrainer" }
 purin = { path = "fighters/purin" }
 pzenigame = { path = "fighters/pzenigame" }
 reflet = { path = "fighters/reflet" }
@@ -115,6 +115,7 @@ zelda = { path = "fighters/zelda" }
 name = "hdr"
 version.workspace = true
 authors.workspace = true
+edition.workspace = true
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"
@@ -143,6 +144,7 @@ gamewatch = { workspace = true, optional = true }
 ganon = { workspace = true, optional = true }
 gaogaen = { workspace = true, optional = true }
 gekkouga = { workspace = true, optional = true }
+iceclimber = { workspace = true, optional = true }
 ike = { workspace = true, optional = true }
 inkling = { workspace = true, optional = true }
 jack = { workspace = true, optional = true }
@@ -169,7 +171,6 @@ miifighter = { workspace = true, optional = true }
 miigunner = { workspace = true, optional = true }
 miiswordsman = { workspace = true, optional = true }
 murabito = { workspace = true, optional = true }
-nana = { workspace = true, optional = true }
 ness = { workspace = true, optional = true }
 packun = { workspace = true, optional = true }
 pacman = { workspace = true, optional = true }
@@ -183,7 +184,7 @@ pikmin = { workspace = true, optional = true }
 pit = { workspace = true, optional = true }
 pitb = { workspace = true, optional = true }
 plizardon = { workspace = true, optional = true }
-popo = { workspace = true, optional = true }
+ptrainer = { workspace = true, optional = true }
 purin = { workspace = true, optional = true }
 pzenigame = { workspace = true, optional = true }
 reflet = { workspace = true, optional = true }
@@ -219,12 +220,18 @@ hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["war
 once_cell = "1"
 ninput = { git = "https://github.com/blu-dev/ninput" }
 rand = { git = "https://github.com/skyline-rs/rand" }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8.20"
+parking_lot = "0.12.3"
 runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
+hash40 = "1.2.0"
+smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
+smash2 = { git = "https://github.com/blu-dev/smash-rs", package = "smash"}
 
 [features]
 default = [
@@ -251,6 +258,7 @@ default = [
     "ganon",
     "gaogaen",
     "gekkouga",
+    "iceclimber",
     "ike",
     "inkling",
     "jack",
@@ -277,7 +285,6 @@ default = [
     "miigunner",
     "miiswordsman",
     "murabito",
-    "nana",
     "ness",
     "packun",
     "pacman",
@@ -291,7 +298,7 @@ default = [
     "pit",
     "pitb",
     "plizardon",
-    "popo",
+    "ptrainer",
     "purin",
     "pzenigame",
     "reflet",
@@ -325,15 +332,14 @@ dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web", "common"]
 runtime = []
 
-[patch.'https://github.com/jam1garner/smash-arc']
-smash-arc = "0.5"
-
 [profile.dev]
 panic = "abort"
 
 [profile.release]
+opt-level = 'z'
 panic = "abort"
 lto = true
+codegen-units = 1
 
 [lib]
 crate-type = ["cdylib"]

@@ -39,9 +39,11 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="jump_speed_f">2.55</float>
-      <float hash="jump_speed_n">2.35</float>
-      <float hash="jump_speed_b">2.15</float>
+      <float hash="jump_speed_f">3.06</float>
+      <float hash="jump_speed_n">2.82</float>
+      <float hash="jump_speed_b">2.58</float>
+      <float hash="jump_decel">0.04</float>
+      <float hash="jump_rot_speed">0.4</float>
       <float hash="end_accel_y_mul">1.15</float>
       <float hash="fall_special_limit_speed">1</float>
     </struct>

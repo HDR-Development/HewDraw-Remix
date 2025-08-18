@@ -1,53 +1,177 @@
-jump_squat:
-  blend_frames: 0
-  animations:
-  - name: a05landingheavy.nuanmb
-fall:
-  blend_frames: 5
-throw_lw:
+attack_11:
   extra:
-    cancel_frame: 50
-throw_hi:
-  extra:
-    cancel_frame: 48
+    cancel_frame: 16
 attack_12:
   extra:
     cancel_frame: 18
+attack_13:
+  game_script: game_attack13
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c00attackend.nuanmb
+  scripts:
+  - expression_attack13
+  - sound_attack13
+  - effect_attack13
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 33
+    freeze_during_hitstop: true
+attack_air_b:
+  extra:
+    cancel_frame: 38
+attack_air_hi:
+  extra:
+    cancel_frame: 36
+attack_air_lw:
+  extra:
+    cancel_frame: 51
+attack_air_n:
+  extra:
+    cancel_frame: 42
+attack_dash:
+  extra:
+    cancel_frame: 36
+attack_lw3:
+  extra:
+    cancel_frame: 27
+attack_s3_hi:
+  extra:
+    cancel_frame: 27
+attack_s3_s:
+  extra:
+    cancel_frame: 27
+attack_s3_lw:
+  extra:
+    cancel_frame: 27
+attack_s4_s:
+  extra:
+    cancel_frame: 51
+catch:
+  extra:
+    cancel_frame: 36
+catch_attack:
+  extra:
+    cancel_frame: 0
+catch_dash:
+  extra:
+    cancel_frame: 44
+catch_turn:
+  extra:
+    cancel_frame: 40
+fall:
+  blend_frames: 3
+fall_aerial:
+  blend_frames: 3
+fall_special:
+  blend_frames: 3
+furafura_end:
+  extra:
+    cancel_frame: 34
 guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-attack_11:
+passive:
   extra:
-    cancel_frame: 16
-attack_lw3:
+    xlu_end: 21
+    cancel_frame: 29
+passive_stand_f:
   extra:
-    cancel_frame: 27
-attack_hi3:
-fall_aerial:
-  blend_frames: 5
-attack_dash:
+    xlu_end: 21
+    cancel_frame: 43
+passive_stand_b:
   extra:
-    cancel_frame: 36
-attack_s4_s:
+    xlu_end: 21
+    cancel_frame: 43
+down_stand_u:
   extra:
-    cancel_frame: 51
-attack_s3_s:
-fall_special:
-  blend_frames: 5
-attack_s3_lw:
-attack_air_b:
+    xlu_end: 23
+    cancel_frame: 33
+down_stand_d:
+  extra:
+    xlu_end: 23
+    cancel_frame: 33
+down_attack_u:
+  extra:
+    cancel_frame: 52
+down_attack_d:
+  extra:
+    cancel_frame: 52
+down_forward_u:
   extra:
     cancel_frame: 38
-attack_s3_hi:
-special_lw_start:
+down_forward_d:
+  extra:
+    cancel_frame: 38
+down_back_u:
+  extra:
+    cancel_frame: 38
+down_back_d:
+  extra:
+    cancel_frame: 38
+cliff_climb_quick:
+  extra:
+    xlu_end: 35
+    cancel_frame: 37
+cliff_attack_quick:
+  extra:
+    cancel_frame: 58
+cliff_escape_quick:
+  extra:
+    xlu_end: 31
+    cancel_frame: 52
+cliff_jump_quick1:
+  extra:
+    xlu_end: 17
+slip_stand:
+  extra:
+    xlu_end: 18
+    cancel_frame: 24
+slip_attack:
+  extra:
+    cancel_frame: 52
+slip_escape_f:
+  extra:
+    cancel_frame: 31
+slip_escape_b:
+  extra:
+    cancel_frame: 31
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+shield_break_fly:
+  animations:
+  - name: f04downspotd.nuanmb
+special_air_lw_start:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
+special_air_lw_start_l:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_air_s_end:
   extra:
     cancel_frame: 0
-special_air_lw_start:
+special_lw_start:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -55,13 +179,14 @@ special_lw_start_l:
   extra:
     xlu_start: 0
     xlu_end: 0
-special_air_lw_start_l:
+step_pose_back:
   extra:
-    xlu_start: 0
-    xlu_end: 0
-catch_attack:
+    cancel_frame: 6
+throw_hi:
   extra:
-    cancel_frame: 0
-furafura_end:
+    cancel_frame: 48
+throw_lw:
   extra:
-    cancel_frame: 10
+    cancel_frame: 50
+cliff_wait:
+  blend_frames: 2

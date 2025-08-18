@@ -3,33 +3,31 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- // Handles double jump reset, cancel at the apex, and early activation of the dive
+// Handles double jump reset, cancel at the apex, and early activation of the dive
 unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     if (fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi_start")]) && MotionModule::frame(fighter.module_accessor) > 21.0)
     || (fighter.is_motion(Hash40::new("special_air_hi_turn"))) {
         if fighter.is_button_on(Buttons::Special) {
-            VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
+            VarModule::off_flag(fighter.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
         }
     }
-    // Uncomment for Cross Chop descent to refresh double jump
-    // if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
-    //     if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-    //         WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-    //     }
-    // }
+    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL)
+    && StatusModule::is_changing(fighter.module_accessor) {
+        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        }
+    }
 }
 
 // Incineroar Fthrow Movement
 unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_THROW) 
      && fighter.is_motion(smash::phx::Hash40::new("throw_f"))
-     && fighter.is_situation(*SITUATION_KIND_GROUND) 
+     && fighter.status_frame() <= 58
      && fighter.stick_x() != 0.0 {
-
         let motion_mul = if WorkModule::is_flag(fighter.boma(), *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) {1.0} else {0.5};
         let motion_vec = x_motion_vec(motion_mul, fighter.stick_x());
         KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        
     }
 }
 
@@ -53,11 +51,11 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let grab_y = VarModule::get_float(boma.object(), vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+    let grab_y = VarModule::get_float(boma.object(), vars::gaogaen::status::GRAB_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma.object(), vars::gaogaen::status::ANGLE_GRAB_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), vars::gaogaen::status::GRAB_STICK_Y, stick_y);
         rotate_bust(boma, max_angle, min_angle, stick_y * ((frame as f32) / 7.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame
@@ -69,9 +67,6 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
 }
 
 unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
     if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) {
         catch_lean(fighter.boma(), 8.0, 31.0, 50.0, 30.0);
     } else if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_TURN) {
@@ -121,32 +116,24 @@ unsafe fn command_grab_joint_rotate(boma: &mut BattleObjectModuleAccessor, rotat
 }
 
 unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_s_start")){
-        if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_ALTERNATE_GRAB) {
+    if fighter.is_motion(Hash40::new("special_s_start")) {
+        if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_ALTERNATE_GRAB) {
             // OTG Grab
-            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB){
+            if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_LOW_GRAB) {
                 command_grab_joint_rotate(fighter.boma(), 20.0, 14.0, 19.0, 31.0, 46.0);
             }
             // Anti-air grab
-            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB){
+            else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_HIGH_GRAB) {
                 command_grab_joint_rotate(fighter.boma(), -50.0, 14.0, 19.0, 31.0, 46.0);
             }
         }
     }
 }
 
-unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_KEEP));
-        fighter.sub_transition_group_check_air_cliff();
-    }
-}
-
 unsafe fn rotate_revenge_uthrow(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("throw_hi")){
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            revenge_uthrow_rotation(boma, 11.0, 16.0, 17.0, 23.0);
-        }
+    if boma.is_motion(Hash40::new("throw_hi"))
+    && VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
+        revenge_uthrow_rotation(boma, 11.0, 16.0, 17.0, 23.0);
     }
 }
 
@@ -194,11 +181,40 @@ unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_f
     }
 }
 
-unsafe fn cross_chop_flip_ledgegrab(fighter: &mut L2CFighterCommon) {
+unsafe fn cross_chop_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during upB startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+
     if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN) {
         // allows ledgegrab during the flip at Cross Chop's apex
         fighter.sub_transition_group_check_air_cliff();
     }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        fighter.check_wall_jump_cancel();
+    }
+}
+
+unsafe fn jab_tilt_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if CancelModule::is_enable_cancel(boma) 
+    || boma.is_in_hitlag() {
+        return;
+    }
+
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK 
+    && fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        if boma.is_cat_flag(Cat1::AttackS3) && !boma.is_cat_flag(Cat1::AttackS4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackHi3) && !boma.is_cat_flag(Cat1::AttackHi4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+        }
+        if boma.is_cat_flag(Cat1::AttackLw3) && !boma.is_cat_flag(Cat1::AttackLw4) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+        }
+    }
+
 }
 
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
@@ -215,23 +231,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
-        if fighter.is_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-            if [*FIGHTER_KINETIC_TYPE_MOTION_AIR, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE].contains(&KineticModule::get_kinetic_type(fighter.module_accessor)) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
-                app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-
-                KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-            }
-        }
     }
 }
 
@@ -252,19 +251,17 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		cross_chop_techniques(fighter);
-        cross_chop_flip_ledgegrab(fighter);
+        cross_chop_ledgegrab(fighter);
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
-        lariat_ledge_slipoff(fighter);
         rotate_revenge_uthrow(boma);
         fighter.check_hitfall();
+        jab_tilt_cancels(fighter, boma);
         fastfall_specials(fighter);
     }
 }
 
-pub fn install() {
-    smashline::Agent::new("gaogaen")
-        .on_line(Main, gaogaen_frame_wrapper)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, gaogaen_frame_wrapper);
 }

@@ -1,0 +1,66 @@
+enabled = true # determines whether the feature is enabled
+order = "series" # determines which schema will be loaded
+
+###################################
+
+# Note: if centered_random is set to false, you must include an entry for "random" in the schema for it to appear
+
+# Defaults
+
+[series]
+centered_random = true
+order = [
+    "mario", "luigi", "mariod", "peach", "daisy", "rosetta", "koopa", "koopajr", "packun", "yoshi", "wario", "donkey", "diddy", "krool", "buddy", "murabito", "shizue",
+    "link", "younglink", "toonlink", "zelda", "sheik", "ganon", "samus", "szerosuit", "ridley", "samusd", "kirby", "metaknight", "dedede", "fox", "falco", "wolf", "ness", "lucas",
+    "pikachu", "pichu", "purin", "mewtwo", "ptrainer", "lucario", "gekkouga", "gaogaen", "marth", "roy", "ike", "reflet", "chrom", "lucina", "kamui", "master",
+    "captain", "ice_climber", "gamewatch", "pit", "pitb", "palutena", "pikmin", "robot", "wiifit", "littlemac", "shulk", "element", "duckhunt", "inkling", "tantan", "miifighter", "miiswordsman", "miigunner",
+    "snake", "simon", "richter", "sonic", "bayonetta", "jack", "rockman", "ryu", "ken", "dolly", "demon", "pacman", "cloud", "edge", "trail", "brave", "pickel"
+]
+
+
+[number] 
+centered_random = true
+order = [
+    "mario", "donkey", "link", "samus", "yoshi", "kirby", "fox", "pikachu", "luigi", "ness", "captain", "purin", "peach", "koopa", "ice_climber", "sheik", "zelda",
+    "mariod", "pichu", "falco", "marth", "younglink", "ganon", "mewtwo", "roy", "gamewatch", "metaknight", "pit", "szerosuit", "wario", "snake", "ike", "ptrainer", "diddy", "lucas",
+    "sonic", "dedede", "pikmin", "lucario", "robot", "toonlink", "wolf", "murabito", "rockman", "wiifit", "rosetta", "littlemac", "gekkouga", "miifighter", "miiswordsman", "miigunner",
+    "palutena", "pitb", "pacman", "lucina", "reflet", "shulk", "koopajr", "duckhunt", "ryu", "cloud", "kamui", "bayonetta", "inkling", "daisy", "ridley", "simon", "richter", "chrom",
+    "samusd", "krool", "shizue", "ken", "gaogaen", "packun", "jack", "brave", "buddy", "dolly", "master", "tantan", "pickel", "edge", "element", "demon", "trail"
+]
+
+# Past Smash Titles
+
+[64]
+centered_random = true
+order = [
+    "luigi", "mario", "donkey", "link",
+    "kirby", "fox", "samus", "captain", 
+    "ness", "yoshi", "pikachu", "purin"
+]
+
+[melee]
+centered_random = true
+order = [
+    "mariod", "mario", "luigi", "koopa", "peach", "yoshi", "donkey", "ness", "captain", "ganon", 
+    "falco", "fox", "kirby", "samus", "zelda", "sheik", "link", "younglink", 
+    "pichu", "pikachu", "purin", "mewtwo", "ice_climber", "gamewatch", "marth", "roy"
+]
+
+[brawl]
+centered_random = false
+order = [
+    "mario", "donkey", "link", "samus", "szerosuit", "kirby", "fox", "pikachu", "marth", "gamewatch", 
+    "luigi", "diddy", "zelda", "pit", "metaknight", "falco", "ptrainer", "ike", "snake", 
+    "peach", "yoshi", "sheik", "ganon", "ice_climber", "dedede", "wolf", "lucario", "ness", "sonic",
+    "koopa", "wario", "toonlink", "robot", "pikmin", "captain", "purin", "lucas", "random"
+]
+
+[wii_u]
+centered_random = false
+order = [
+    "mario", "luigi", "peach", "koopa", "yoshi", "rosetta", "koopajr", "wario", "donkey", "diddy", "gamewatch", 
+    "littlemac", "link", "zelda", "sheik", "ganon", "toonlink", "samus", "szerosuit", "pit", "palutena", "fox", "falco",
+    "marth", "ike", "reflet", "duckhunt", "kirby", "dedede", "metaknight", "pikachu", "ptrainer", "lucario", "purin", "gekkouga", "robot",
+    "ness", "captain", "murabito", "pikmin", "wiifit", "shulk", "mariod", "pitb", "lucina", "pacman", "rockman", "sonic", 
+    "mewtwo", "lucas", "roy", "ryu", "cloud", "kamui", "bayonetta", "miifighter", "miiswordsman", "miigunner", "random"
+]

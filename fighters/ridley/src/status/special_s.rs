@@ -1,7 +1,40 @@
 use super::*;
-use globals::*;
 
-unsafe extern "C" fn special_s_failure_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor, 
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON)  as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    
+    0.into()
+}
+
+// FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE
+
+unsafe extern "C" fn special_s_failure_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel_frame = (FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("special_s_start"), false) - MotionModule::frame(fighter.module_accessor)) + WorkModule::get_param_int(fighter.module_accessor, hash40("landing_heavy_frame"), 0) as f32 + 5.0;
     if cancel_frame < 1.0 {
         VarModule::set_float(fighter.battle_object, vars::ridley::instance::SPECIAL_S_FAILURE_CANCEL_FRAME, 1.0);
@@ -44,12 +77,7 @@ pub unsafe fn side_special_failure_main_loop(fighter: &mut L2CFighterCommon) -> 
     false.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("ridley")
-        .status(
-            Main,
-            *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE,
-            special_s_failure_status_main,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE, special_s_failure_main);
 }

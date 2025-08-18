@@ -1,7 +1,6 @@
 use super::*;
-use globals::*;
 
-// FIGHTER_STATUS_KIND_SPECIAL_S //
+// FIGHTER_STATUS_KIND_SPECIAL_S
 
 pub unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("monkey_flip_jump_start_spd_y"));
@@ -66,6 +65,15 @@ unsafe extern "C" fn special_s_jump_substatus(fighter: &mut L2CFighterCommon, pa
     if param_1.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_KICK_FRAME);
     }
+    if VarModule::is_flag(fighter.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_ATTACK) {
+        VarModule::off_flag(fighter.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_ATTACK);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_JUMP) {
+        VarModule::off_flag(fighter.battle_object, vars::diddy::status::SPECIAL_S_ENABLE_JUMP);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+    }
     0.into()
 }
 
@@ -79,6 +87,14 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
         || fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
         }
+    }
+
+    if fighter.sub_transition_group_check_air_attack().get_bool() {
+        return 1.into();
+    }
+
+    if fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        return 1.into();
     }
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -102,8 +118,6 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("diddy")
-        .status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
 }

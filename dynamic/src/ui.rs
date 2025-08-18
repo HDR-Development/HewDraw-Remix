@@ -11,11 +11,11 @@ extern "C" {
     #[link_name = "UiManager__set_shoto_number"]
     fn ui_manager_set_shoto_number(entry_id: u32, number: i32);
 
-    #[link_name = "UiManager__set_ex_meter_enable"]
-    fn ui_manager_set_ex_meter_enable(entry_id: u32, enable: bool);
+    #[link_name = "UiManager__set_vtrigger_meter_enable"]
+    fn ui_manager_set_vtrigger_meter_enable(entry_id: u32, enable: bool);
 
-    #[link_name = "UiManager__set_ex_meter_info"]
-    fn ui_manager_set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+    #[link_name = "UiManager__set_vtrigger_meter_info"]
+    fn ui_manager_set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool);
 
     #[link_name = "UiManager__set_ff_meter_enable"]
     fn ui_manager_set_ff_meter_enable(entry_id: u32, enable: bool);
@@ -30,10 +30,16 @@ extern "C" {
     fn ui_manager_set_power_board_enable(entry_id: u32, enable: bool);
 
     #[link_name = "UiManager__set_power_board_info"]
-    fn ui_manager_set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32);
+    fn ui_manager_set_power_board_info(entry_id: u32, color_1: i32, color_2: i32);
     
     #[link_name = "UiManager__change_power_board_color"]
     fn ui_manager_change_power_board_color(entry_id: u32, color_1: i32, color_2: i32);
+
+    #[link_name = "UiManager__set_cyan_meter_enable"]
+    fn ui_manager_set_cyan_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_cyan_meter_info"]
+    fn ui_manager_set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
     
     #[link_name = "UiManager__set_pichu_meter_enable"]
     fn ui_manager_set_pichu_meter_enable(entry_id: u32, enable: bool);
@@ -52,6 +58,24 @@ extern "C" {
 
     #[link_name = "UiManager__set_robot_meter_info"]
     fn ui_manager_set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+
+    #[link_name = "UiManager__set_garlic_meter_enable"]
+    fn ui_manager_set_garlic_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_garlic_meter_info"]
+    fn ui_manager_set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32);
+
+    #[link_name = "UiManager__set_plant_meter_enable"]
+    fn ui_manager_set_plant_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_plant_meter_info"]
+    fn ui_manager_set_plant_meter_info(entry_id: u32, element: i32);
+    
+    #[link_name = "UiManager__set_ptrainer_meter_enable"]
+    fn ui_manager_set_ptrainer_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_ptrainer_meter_info"]
+    fn ui_manager_set_ptrainer_meter_info(entry_id: u32, current_pledge: f32, max_pledge: f32, current_swap: f32, max_swap: f32, pledge_state: i32, paused: bool);
 }
 
 #[allow(non_snake_case)]
@@ -80,15 +104,15 @@ pub mod UiManager {
         }
     }
 
-    pub fn set_ex_meter_enable(entry_id: u32, enable: bool) {
+    pub fn set_vtrigger_meter_enable(entry_id: u32, enable: bool) {
         unsafe {
-            super::ui_manager_set_ex_meter_enable(entry_id, enable)
+            super::ui_manager_set_vtrigger_meter_enable(entry_id, enable)
         }
     }
 
-    pub fn set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+    pub fn set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool) {
         unsafe {
-            super::ui_manager_set_ex_meter_info(entry_id, current, max, per_level)
+            super::ui_manager_set_vtrigger_meter_info(entry_id, current, level_max, per_level, is_vtrigger)
         }
     }
 
@@ -116,9 +140,9 @@ pub mod UiManager {
         }
     }
 
-    pub fn set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32) {
+    pub fn set_power_board_info(entry_id: u32, color_1: i32, color_2: i32) {
         unsafe {
-            super::ui_manager_set_power_board_info(entry_id, current, max, per_level, color_1, color_2)
+            super::ui_manager_set_power_board_info(entry_id, color_1, color_2)
         }
     }
 
@@ -128,6 +152,18 @@ pub mod UiManager {
         }
     }
     
+    pub fn set_cyan_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_cyan_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+        unsafe {
+            super::ui_manager_set_cyan_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
     pub fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
         unsafe {
             super::ui_manager_set_pichu_meter_enable(entry_id, enable)
@@ -161,6 +197,42 @@ pub mod UiManager {
     pub fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         unsafe {
             super::ui_manager_set_robot_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
+    pub fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_garlic_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
+        unsafe {
+            super::ui_manager_set_garlic_meter_info(entry_id, current, level1, level2, level3)
+        }
+    }
+
+    pub fn set_plant_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_plant_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_plant_meter_info(entry_id: u32, element: i32) {
+        unsafe {
+            super::ui_manager_set_plant_meter_info(entry_id, element)
+        }
+    }
+
+    pub fn set_ptrainer_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_ptrainer_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_ptrainer_meter_info(entry_id: u32, current_pledge: f32, max_pledge: f32, current_swap: f32, max_swap: f32, pledge_state: i32, disabled: bool) {
+        unsafe {
+            super::ui_manager_set_ptrainer_meter_info(entry_id, current_pledge, max_pledge, current_swap, max_swap, pledge_state, disabled)
         }
     }
 }

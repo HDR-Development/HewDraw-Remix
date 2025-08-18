@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_lag">
+        <float hash="base_lag">8.0</float>
+        <float hash="whiff_lag">6.0</float>
+        <float hash="dive_side_special">3.0</float>
+        <float hash="side_special">6.0</float>
+        <float hash="up_special">6.0</float>
+    </struct>
+    <struct hash="param_special_n">
+        <float hash="startup_frame">15.0</float>
+        <float hash="charge_frame_max">29.0</float>
+        <float hash="charge_frame_max_cancel">19.0</float>
+        <float hash="base_endlag">25.0</float>
+        <float hash="lag_per_round">5.0</float>
+        <float hash="max_air_speed_x">0.4</float>
+        <float hash="air_accel_x_mul">0.04</float>
+    </struct>
+</struct>

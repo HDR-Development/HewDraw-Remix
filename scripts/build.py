@@ -14,7 +14,6 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
 is_dev_build = False
 plugin_subpath = "skyline/plugins/"
 development_subpath = "smashline/"
-ryujinx_rom_path = "mods/contents/01006a800016e000/skyline/romfs"
 switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
 
 def install_with_ip(ip: str, is_dev: bool):
@@ -125,7 +124,6 @@ for arg in sys.argv:
     mod_name = arg.split('=')[1]
 
 switch_hdr_dir = "ultimate/mods/" + mod_name
-ryujinx_hdr_dir = "sdcard/ultimate/mods/" + mod_name
 
 # search for dev plugin args
 dev_characters = set()
@@ -174,7 +172,6 @@ if (is_dev_build and not is_publish):
     print("subpath: " + development_subpath)
     print("type: " + build_type)
     pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
-    pkgutil.collect_plugin("hdr-ryujinx", os.path.join("sdcard", switch_rom_path, development_subpath), build_type, "development.nro", "development")
 
   # setup normal nro
   non_dev_characters = characters.copy()
@@ -209,13 +206,6 @@ if (is_dev_build and not is_publish):
     # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
 
-  # collect ryujinx plugin
-  pkgutil.collect_plugin("hdr-ryujinx", 
-    os.path.join(ryujinx_hdr_dir), 
-    build_type, "plugin.nro", "standalone")
-  
-  # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
 else:
   feature_list = "--features=\"main_nro\""
@@ -256,13 +246,6 @@ else:
   # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
 
-  # collect ryujinx plugin
-  pkgutil.collect_plugin("hdr-ryujinx", 
-    os.path.join(ryujinx_hdr_dir), 
-    build_type, "plugin.nro")
-  
-  # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
 os.chdir(current_dir)
 

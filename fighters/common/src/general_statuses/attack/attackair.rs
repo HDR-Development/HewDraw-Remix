@@ -80,6 +80,10 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN {
+        StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_GROUND), false);
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+    }
     if !CancelModule::is_enable_cancel(fighter.module_accessor)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
     && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOAT)
@@ -87,7 +91,8 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
         let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
         let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
         if fighter.left_stick_y() <= dive_cont_value
-        && VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value {
+        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value 
+        {
             let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
             if status_kind != 0 {
                 VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
@@ -106,6 +111,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         );
     }
 }
+
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
 }

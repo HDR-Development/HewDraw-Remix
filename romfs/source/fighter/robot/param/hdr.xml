@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_hi">
+        <int hash="start_stop_y_frame">12</int>
+        <float hash="start_accel_y">0.01</float>
+    </struct>
+</struct>

@@ -1,30 +1,13 @@
 use super::*;
-use globals::*;
+
+// FIGHTER_STATUS_KIND_SPECIAL_HI
 
 pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_air_hi"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_hi"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
     }
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_PACKUN_CLIFF_HANG_DATA_SPECIAL_HI as u32);
 	fighter.main_shift(special_hi_main_loop)
@@ -45,11 +28,11 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
     }
     
     // Shield cancel
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && fighter.global_table[CURRENT_FRAME].get_i32() >= 30 {
-        fighter.change_status(FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
-        return 0.into();
-    }
+    // if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    // && fighter.global_table[CURRENT_FRAME].get_i32() >= 30 {
+    //     fighter.change_status(FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
+    //     return 0.into();
+    // }
 
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACKUN_STATUS_SPECIAL_HI_FLAG_START_RISE) {
         let start_rise_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_rise_frame"));
@@ -128,9 +111,7 @@ unsafe extern "C" fn special_hi_landing_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("packun")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main)
-        .status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+    agent.status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, special_hi_landing_main);
 }

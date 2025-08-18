@@ -4,8 +4,11 @@
 
 pub mod acmd;
 
-pub mod status;
 pub mod opff;
+pub mod status;
+
+mod wave;
+//mod meteor;
 
 use smash::{
     lib::{
@@ -36,6 +39,7 @@ use utils::{
     ext::*
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub const FIGHTER_CLOUD_GENERATE_ARTICLE_METEOR: i32 = 2;
 pub const WEAPON_CLOUD_METEOR_INSTANCE_WORK_ID_INT_ANGLE: i32 = 0x10000009;
@@ -51,9 +55,14 @@ pub const METEOR_OFFSET_X: [f32; 4] = [0.0,5.0,5.0,-5.0];
 pub const METEOR_OFFSET_Y: [f32; 4] = [0.0,5.0,-5.0,-5.0];
 
 pub fn install() {
-    acmd::install();
-    opff::install();
-    status::install();
+    let agent = &mut Agent::new("cloud");
+    acmd::install(agent);
+    opff::install(agent);
+    status::install(agent);
+    agent.install();
+
+    wave::install();
 
     smashline::clone_weapon("sheik", "needle", "cloud","meteor",false);
+    //meteor::install();
 }

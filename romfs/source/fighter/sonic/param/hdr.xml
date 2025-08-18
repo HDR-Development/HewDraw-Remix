@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_hi">
+      <float hash="fall_special_accel_x_mul">1</float>
+      <float hash="fall_special_speed_x_max_mul">0.6</float>
+    </struct>
+</struct>

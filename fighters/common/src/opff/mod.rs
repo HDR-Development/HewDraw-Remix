@@ -9,7 +9,6 @@ pub mod tech;
 pub mod tech_cleanup;
 pub mod cancels;
 pub mod var_resets;
-pub mod gentleman;
 pub mod momentum_transfer_line;
 pub mod shotos;
 //pub mod magic;
@@ -17,6 +16,7 @@ pub mod gimmick;
 pub mod floats;
 pub mod other;
 pub mod fe;
+pub mod pocket;
 
 use other::*;
 
@@ -113,7 +113,6 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     cancels::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     ledges::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     var_resets::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    gentleman::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     //magic::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     other::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     momentum_transfer_line::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
@@ -121,15 +120,31 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
     // Character Moveset Changes
     // moveset_changes::run(boma, id, cat, status_kind, situation_kind, motion_kind, fighter_kind, stick_x, stick_y, facing, frame);
-    floats::run(fighter, info.status_kind, info.situation_kind);
+    floats::run(fighter, info.situation_kind);
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sys_line_system_control_fighter)]
+pub unsafe fn sys_line_system_control_fighter_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Reserved for common OPFF to be placed on exec status
+    // rather than main status (default behavior)
+    decrease_knockdown_bounce_heights(fighter);
+    left_stick_flick_counter(fighter);
+    right_stick_flick_counter(fighter);
+
+    original!()(fighter)
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            sys_line_system_control_fighter_hook
+        );
+    }
 }
 
 pub fn install() {
-    // Reserved for common OPFF to be placed on exec status
-    // rather than main status (default behavior)
     Agent::new("fighter")
-        .on_line(Main, decrease_knockdown_bounce_heights)
-        .on_line(Main, left_stick_flick_counter)
         .install();
 
+    skyline::nro::add_hook(nro_hook);
 }

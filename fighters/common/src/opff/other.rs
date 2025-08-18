@@ -11,6 +11,7 @@ use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::phx::*;
 use smash::hash40;
 use smash::app::sv_animcmd::*;
+use smash::app::smashball::*;
 use smash_script::*;
 use crate::misc::*;
 use globals::*;
@@ -45,15 +46,6 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
     let pos_bottom = Vector3f {x: center_pos + offset_x, y: PostureModule::pos_y(boma) + offset_y, z: 15.0}; //need a positive Z value so the effect is in front of everything
     EffectModule::kill_kind(boma, Hash40::new("sys_ripstick_bullet"), true, true);
     EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
-}
-
-pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    
-    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR) {
-        //println!("dont refresh!");
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
-    }
-    VarModule::set_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
 pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
@@ -111,16 +103,13 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
 }
 
 pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
-    let cliff_xlu = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
-    // If you have ledge intan frames left
-    if cliff_xlu > 0 {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            // Remove ledge intan on landing
+    let cliff_xlu_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+    if cliff_xlu_frame > 0 {
+        VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+        if cliff_xlu_frame - 1 == 0 
+        || fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
             VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
-        }
-        else{
-            VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
         }
     }
 }
@@ -135,18 +124,6 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
     {
         VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
-    }
-}
-
-pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL])
-    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-    && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
-    && fighter.is_parry_input()
-    {
-        EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, false);
-        SoundModule::stop_all_sound(fighter.module_accessor);
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
     }
 }
 
@@ -185,6 +162,10 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
         if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) && fighter.status_frame() == 10 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 println!("toggling debug");
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+                smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+                fighter.pop_lua_stack(1);
                 let prev = VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG);
                 VarModule::set_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG, !prev);
                 VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
@@ -277,23 +258,34 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
 // otherwise the animations don't transition properly into one another
 // This is so we don't have to edit those 4 other animations if we want to edit a dash anim
 unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
+    let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
+    if run_hip_offset_x == 0.0 {
+        return;
+    }
+    
     if fighter.is_status(*FIGHTER_STATUS_KIND_RUN) && fighter.is_motion(Hash40::new("run")) {
         let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
-        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
-        hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::WEIRD_ASS_TURN_RUN_ANIMATION) {
+            hip_translate.z -= dash_hip_offset_x - run_hip_offset_x;
+        }
+        else {
+            hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
+        }
+        
         ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("hip"), &Vector3f{ x: hip_translate.x, y: hip_translate.y, z: hip_translate.z }, false, false);
     }
     else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_RUN)
     && StatusModule::is_changing(fighter.module_accessor)
-    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) {
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN_BRAKE) {
         ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
     }
     
     if fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN) && fighter.is_motion(Hash40::new("turn_run")) {
         let dash_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::DASH_HIP_OFFSET_X);
-        let run_hip_offset_x = VarModule::get_float(fighter.battle_object, vars::common::instance::RUN_HIP_OFFSET_X);
         let mut hip_translate = Vector3f::zero();
         MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("hip"), false, &mut hip_translate);
         hip_translate.z += dash_hip_offset_x - run_hip_offset_x;
@@ -301,7 +293,8 @@ unsafe fn custom_dash_anim_support(fighter: &mut L2CFighterCommon) {
     }
     else if fighter.is_prev_status(*FIGHTER_STATUS_KIND_TURN_RUN)
     && StatusModule::is_changing(fighter.module_accessor)
-    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_RUN)
+    && !fighter.is_status(*FIGHTER_STATUS_KIND_TURN_RUN_BRAKE) {
         ModelModule::clear_joint_srt(fighter.module_accessor, Hash40::new("hip"));
     }
 }
@@ -332,13 +325,72 @@ pub extern "C" fn left_stick_flick_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub extern "C" fn right_stick_flick_counter(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.right_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X, u8::MAX as i32 - 1);
+        }
+        else if fighter.right_stick_x().signum() != fighter.prev_right_stick_x().signum()
+        || fighter.prev_right_stick_x() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_X);
+        }
+        
+        if fighter.right_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y, u8::MAX as i32 - 1);
+        }
+        else if fighter.right_stick_y().signum() != fighter.prev_right_stick_y().signum()
+        || fighter.prev_right_stick_y() == 0.0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y, 0);
+        }
+        else {
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::RIGHT_STICK_FLICK_Y);
+        }
+    }
+}
+
+const HANDLE: i32 = 0x01FF;
+const COUNTER: i32 = 0x01FE;
+
+unsafe extern "C" fn kill_screen_handler(fighter: &mut L2CFighterCommon) {
+    // handles turning off kill effects
+    if VarModule::get_int(fighter.object(), COUNTER) > 0 {
+        let scale = (30 - VarModule::get_int(fighter.object(), COUNTER)) as f32 / 30.0 * 5.0;
+        EffectModule::set_scale(fighter.module_accessor, VarModule::get_int(fighter.object(), HANDLE) as u32, &Vector3f::new(scale, 1.0, scale));
+        if VarModule::get_int(fighter.object(), COUNTER) == 10 {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("sys_bg_finishhit"), false, false);
+            smash::app::sv_animcmd::EFFECT_OFF_KIND(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("sys_bg_black"), false, false);
+            smash::app::sv_animcmd::EFFECT_OFF_KIND(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1);
+        }
+        if VarModule::get_int(fighter.object(), COUNTER) == 5 {
+            SlowModule::clear_whole(fighter.boma());
+        }
+        VarModule::dec_int(fighter.object(), COUNTER);
+    } else {
+        VarModule::set_int(fighter.object(), HANDLE, 0);
+    }
+    
+    // let frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+    // let last = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
+    // if frame - 1.0 < 0.0  && frame != 0.0 {
+    //     println!("<{:.2}, {:.2}>", PostureModule::pos_x(fighter.module_accessor), PostureModule::pos_y(fighter.module_accessor));
+    // }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
     faf_ac_debug(fighter);
-    taunt_parry_forgiveness(fighter);
+    // taunt_parry_forgiveness(fighter);
     custom_dash_anim_support(fighter);
+    kill_screen_handler(fighter);
 }
 

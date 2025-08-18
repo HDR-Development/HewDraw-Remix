@@ -10,7 +10,8 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            status_CatchCut
+            status_CatchCut,
+            fighterstatuscapture_set_invalid_capture_swinggaogaen
         );
     }
 }
@@ -23,4 +24,9 @@ unsafe fn status_CatchCut(fighter: &mut L2CFighterCommon) -> L2CValue {
         app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
     }
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusCapture_set_invalid_capture_SwingGaogaen)]
+unsafe extern "C" fn fighterstatuscapture_set_invalid_capture_swinggaogaen(_fighter: &mut L2CFighterCommon) {
+    // Haha there's nothing here now
 }

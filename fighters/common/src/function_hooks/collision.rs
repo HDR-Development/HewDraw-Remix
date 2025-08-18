@@ -137,6 +137,10 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
     && ecb_offset_y != 0.0
     && lua_bind::BattleObjectSlow::is_adjust(utils::singletons::BattleObjectSlow())
     {
+        // fix some physics jank with steve's minecart because of course why wouldn't he cause problems
+        let object_kind = *(groundcollisioninfo.add(0x3ac / 4) as *mut i32);
+        if object_kind == *WEAPON_KIND_PICKEL_TROLLEY { return };
+
         // When landing, sets your position to the coordinates of the surface you are landing on
         *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
         // Reset ECB offset to 0.0

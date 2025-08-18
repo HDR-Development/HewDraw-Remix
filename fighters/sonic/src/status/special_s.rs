@@ -1,14 +1,14 @@
 use super::*;
-use globals::*;
-use smashline::*;
 
-pub unsafe extern "C" fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+pub unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 	StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -37,7 +37,7 @@ pub unsafe extern "C" fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub unsafe extern "C" fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_s"), L2CValue::Hash40s("special_air_s"), false.into());
     VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_START);
     MotionModule::change_motion(
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CVa
         false
     );
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
@@ -81,6 +81,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if situation == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false, false);
@@ -107,7 +108,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         else {
-            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+            VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         }
@@ -192,7 +193,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                     );
                     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP);
-                    VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+                    VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
                     1.85
                 }
                 else {
@@ -226,12 +227,11 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
                 y_speed
             );
-            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP.into());
             VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_DASH);
         }
         else if step == vars::sonic::SPECIAL_S_STEP_DASH {
             let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                VarModule::off_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
+                VarModule::off_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
                 hash40("special_s_boost_end")
             }
             else {
@@ -305,9 +305,7 @@ unsafe fn sonic_special_s_ledge_cancel_helper(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_END);
 }
 
-pub fn install() {
-    smashline::Agent::new("sonic")
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, pre_special_s)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, main_special_s)
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }

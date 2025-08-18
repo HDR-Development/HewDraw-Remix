@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <struct hash="cliff_hang_data">
+    <struct hash="special_s">
+      <float hash="p1_x">20</float>
+      <float hash="p1_y">30.5</float>
+      <float hash="p2_x">-13</float>
+      <float hash="p2_y">10.5</float>
+    </struct>
+  </struct>
+  <struct hash="param_special_hi">
+    <int hash="hover_stop_y_frame">12</int>
+    <float hash="hover_accel_y">0.01</float>
+  </struct>
+</struct>

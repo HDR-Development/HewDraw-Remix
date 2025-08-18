@@ -1,15 +1,50 @@
 use super::*;
 
-unsafe extern "C" fn trail_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor, 
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    
+    0.into()
+}
+
+unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     fighter.sub_change_motion_by_situation(Hash40::new("special_s_start").into(), Hash40::new("special_air_s_start").into(), false.into());
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_s").into());
     WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT);
     WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_TARGET_ID);
+    VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP);
 
-    fighter.sub_shift_status_main(L2CValue::Ptr(trail_special_s_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_s_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn trail_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     trail_special_s_set_angle_guide(fighter);
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK.into(), false.into());
@@ -77,7 +112,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
         EffectModule::set_rot(fighter.module_accessor, effect, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
         let team_color = FighterUtil::get_team_color(fighter.module_accessor);
         let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
         WorkModule::set_int(fighter.module_accessor, effect as i32, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE);
     }
 }
@@ -95,7 +130,7 @@ unsafe extern "C" fn trail_special_s_get_guide_pos(fighter: &mut L2CFighterCommo
     Vector2f{x: x_pos, y: y_pos}
 }
 
-unsafe extern "C" fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let effect = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE) as u32;
     if effect != 0 {
         EffectModule::kill(fighter.module_accessor, effect, true, true);
@@ -106,19 +141,14 @@ unsafe extern "C" fn trail_special_s_end(fighter: &mut L2CFighterCommon) -> L2CV
 
 // FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
 
-pub unsafe extern "C" fn trail_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::trail::status::STOP_SIDE_SPECIAL);
+pub unsafe extern "C" fn special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::trail::status::SPECIAL_S_STOP);
     0.into()
 }
 
-pub fn install() {
-    smashline::Agent::new("trail")
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, trail_special_s_main)
-        .status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, trail_special_s_end)
-        .status(
-            End,
-            *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
-            trail_special_s_end_end,
-        )
-        .install();
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
+    agent.status(End, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END, special_s_end_end);
 }

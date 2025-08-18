@@ -1,6 +1,7 @@
 name: publish_lvd_beta.yml
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: [make beta]
     types:
@@ -14,11 +15,12 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: checkout version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.4
 
     - id: romfs_zip
       uses: robinraju/release-downloader@v1.8
       with:
+        token: ${{ secrets.RELEASE_TOKEN }}
         repository: "HDR-Development/romfs-release"
         latest: true
         zipBall: true

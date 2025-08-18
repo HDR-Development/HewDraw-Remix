@@ -10,6 +10,11 @@
       <int hash="life">15</int>
     </struct>
   </list>
+  <list size="1" hash="param_grenadelauncher">
+    <struct index="0">
+      <float hash="angle">64.0</float>
+    </struct>
+  </list>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="s1_angle_ground">-15</float>
@@ -47,10 +52,10 @@
   <list hash="param_supermissile">
     <struct index="0">
       <int hash="max_req">1</int>
-      <int hash="s_life">180</int>
-      <float hash="s_spd_x0">0.4</float>
-      <float hash="s_acc_f">181</float>
-      <float hash="s_acc_x">0.08</float>
+      <int hash="s_life">120</int>
+      <float hash="s_spd_x0">0.1</float>
+      <float hash="s_acc_f">1</float>
+      <float hash="s_acc_x">0.0187</float>
       <float hash="s_model_angle_speed">13</float>
       <float hash="s_spd_x_max">0.8</float>
     </struct>
@@ -83,5 +88,15 @@
       <float hash="lw3_phy_magnet_size">11.5</float>
     </struct>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_groundbomb">
+    <struct index="0">
+      <int hash="life">150</int>
+      <float hash="max_speed_x">1.0</float>
+      <int hash="damage_reflect_explosion_frame">45</int>
+      <int hash="damage_reflect_hit_stop_frame">4</int>
+      <float hash="reflect_speed_x">0.03</float>
+      <float hash="reflect_add_speed_x_mul">0.3</float>
+    </struct>
   </list>
 </struct>

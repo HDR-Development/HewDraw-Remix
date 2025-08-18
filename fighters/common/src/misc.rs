@@ -87,72 +87,97 @@ pub fn install() {
         .on_line(Main, turbo_mode)
         .on_line(Main, hitfall_mode)
         .on_line(Main, airdash_mode)
+        .on_line(Main, magicseries_mode)
         .install();
     // skyline::patching::Patch::in_text(0x6417f4).nop();
     // skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
         steve_parry_stuff_fix,
-        set_hit_team_hook,
-        set_hit_team_second_hook,
-        set_team_second_hook,
+        //set_hit_team_hook,
+        //set_hit_team_second_hook,
+        //set_team_second_hook,
         set_team_hook,
-        set_team_owner_id_hook,
+        //set_team_owner_id_hook,
         // shield_damage_analog,
         // shield_pushback_analog
     );
 }
 
-#[skyline::hook(replace=TeamModule::set_hit_team)]
-unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set hit team called for barrel: {:x}", arg2);
-        return;
-    }
-}
+// #[skyline::hook(replace=TeamModule::set_hit_team)]
+// unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set hit team called for barrel: {:x}", arg2);
+//         //println!("set hit team called");
+//         //println!("barrel status: {:x}", boma.status());
+//         let current_team = TeamModule::hit_team_no(boma);
+//         //println!("setting hit team from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
 
-#[skyline::hook(replace=TeamModule::set_hit_team_second)]
-unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.is_item()
-    && boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set hit team second called for barrel: {:x}", arg2);
-        return;
-    }
-}
-/// used to ignore setting the team for barrel. This resolves an issue
-/// where, when someone throws barrel upwards or forwards, they are
-/// able to be hit by their own barrel for 1 frame. This is here
-/// because editing item statuses is not possible
+// #[skyline::hook(replace=TeamModule::set_hit_team_second)]
+// unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.is_item()
+//     && boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set hit team second called for barrel: {:x}", arg2);
+//         //println!("set team second called");
+//         //println!("barrel status: {:x}", boma.status());
+//         let current_team = TeamModule::hit_team_second_no(boma);
+//         //println!("setting hit team second from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
+
+/// This resolves an issue where when someone moves into a barrel
+/// after throwing it upwards, they are able to be hit by their
+/// own barrel for 1 frame. This can also happen when throwing the
+/// barrel forward and then moving into it while it is traveling along
+/// the ground. This is here because editing item statuses is not possible
 #[skyline::hook(replace=TeamModule::set_team)]
 unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
     if (boma.is_item()
       && boma.kind() == *ITEM_KIND_BARREL) {
         //println!("set team ignored for barrel: {:x}", arg2);
+        //println!("set team called");
+        //println!("barrel status: {:x}", boma.status());
+        let current_team = TeamModule::team_no(boma);
+        //println!("setting team from {} to {}", current_team, arg2);
+        if arg2 != -1 {
+            original!()(boma, arg2, arg3);
+        }
     } else {
         original!()(boma, arg2, arg3);
     }
 }
 
-#[skyline::hook(replace=TeamModule::set_team_second)]
-unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    // if (boma.is_item()
-    // && boma.kind() == *ITEM_KIND_BARREL) {
-    //     //println!("set team second called for barrel: {:x}", arg2);
-    //     return;
-    // }
-}
+// #[skyline::hook(replace=TeamModule::set_team_second)]
+// unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     // if (boma.is_item()
+//     // && boma.kind() == *ITEM_KIND_BARREL) {
+//     //     //println!("set team second called for barrel: {:x}", arg2);
+//     //     return;
+//     // }
+// }
 
-#[skyline::hook(replace=TeamModule::set_team_owner_id)]
-unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
-    original!()(boma, arg2);
-    if (boma.is_item()
-    && boma.kind() == *ITEM_KIND_BARREL) {
-        //println!("set team owner id called for barrel: {:x}", arg2);
-        return;
-    }
-}
+// #[skyline::hook(replace=TeamModule::set_team_owner_id)]
+// unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+//     original!()(boma, arg2);
+//     if (boma.is_item()
+//     && boma.kind() == *ITEM_KIND_BARREL) {
+//         //println!("set team owner id called for barrel: {:x}", arg2);
+//         println!("set team owner id called");
+//         //println!("barrel status: {:x}", boma.status());
+//         //let current_team = TeamModule::team_owner_id(boma);
+//         //println!("setting team owner id from {} to {}", current_team, arg2);
+//         //println!();
+//         //return;
+//     }
+// }
 
 pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -171,7 +196,6 @@ pub extern "C" fn fighter_reset(fighter: &mut L2CFighterCommon) {
             MeterModule::reset(fighter.battle_object);
         }
     }
-
 }
 
 pub extern "C" fn turbo_mode(fighter: &mut L2CFighterCommon) {
@@ -215,7 +239,7 @@ pub extern "C" fn airdash_mode(fighter: &mut L2CFighterCommon) {
         match utils::game_modes::get_custom_mode() {
             Some(modes) => {
                 if modes.contains(&CustomMode::AirdashMode) {
-                    check_airdash(fighter);
+                    fighter.check_airdash();
                 }
             },
             _ => {}
@@ -223,37 +247,15 @@ pub extern "C" fn airdash_mode(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-        if fighter.status_frame() < 1 {
-            let speed_x = KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            let speed_y = KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            // lets make sure not to divide by zero
-            let speed_x_adjust = if speed_x == 0.0 {
-                0.01
-            }
-            else {
-                0.0
-            };
-            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
-
-            let pos = Vector3f { x: 0., y: 3., z: 0.};
-            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
-
-            if speed_x > 0. {
-                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
-                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
-            }
-            else{
-                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
-                EffectModule::req_on_joint(fighter.boma(), Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
-                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
-            }
-        }
-
-        CancelModule::enable_cancel(fighter.boma());
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            fighter.sub_air_check_fall_common();
+pub extern "C" fn magicseries_mode(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        match utils::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&CustomMode::MagicSeriesMode) {
+                    fighter.check_magicseries();
+                }
+            },
+            _ => {}
         }
     }
 }

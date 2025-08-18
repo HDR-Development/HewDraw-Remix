@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_s">
+      <float hash="start_speed_y_mul">0.25</float>
+      <float hash="start_speed_y_add">0.5</float>
+    </struct>
+    <struct hash="param_special_n">
+      <!-- This is 10 frames in game -->
+      <float hash="landing_frame">9.0</float>
+    </struct>
+    <struct hash="param_special_lw">
+      <!-- these are duplicated for each pokemon -->
+      <int hash="pledge_duration_frame">1800</int>
+      <int hash="pledge_duration_frame_training">3600</int>
+      <int hash="pledge_use_cost_frame">180</int>
+      <int hash="swap_lockout_frame">300</int>
+    </struct>
+</struct>

@@ -13,6 +13,9 @@ pub enum ParamType {
 }
 
 extern "Rust" {
+    #[link_name = "ParamModule__has_param_module"]
+    fn ParamModule__has_param_module(object: *mut BattleObject) -> bool;
+
     #[link_name = "ParamModule__get_int"]
     fn ParamModule__get_int(object: *mut BattleObject, ty: ParamType, key: &str) -> i32;
 
@@ -34,6 +37,12 @@ extern "Rust" {
 #[allow(non_snake_case)]
 pub mod ParamModule {
     use super::*;
+
+    pub fn has_param_module(object: *mut BattleObject) -> bool {
+        unsafe {
+            ParamModule__has_param_module(object)
+        }
+    }
 
     pub fn get_int(object: *mut BattleObject, ty: ParamType, key: &str) -> i32 {
         unsafe {

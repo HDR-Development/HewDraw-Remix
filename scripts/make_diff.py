@@ -6,21 +6,21 @@ from shutil import copyfileobj
 import zipfile
 import diff_lib
 
-#  this file diffs the existing switch-package.zip against whatever the latest nightly or
+#  this file diffs the existing switch-package.zip against whatever the latest prerelease or
 #  beta is, depending on arguments, and produces a upgrade.zip for that version to this
 #  version, as well as an deletions.json file with the files that should be deleted
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 2:
     if len(sys.argv) != 2:
         print("bad argument length!")
-    print("make_diff.py <nightly/beta>")
+    print("make_diff.py <prerelease/beta>")
     exit(0)
 
 if not os.path.exists("artifacts/switch-package.zip"):
     exit("package zip not found!")
 
-if sys.argv[1] == "nightly":
-    release_type = "Nightlies"
+if sys.argv[1] == "prerelease":
+    release_type = "PreReleases"
     url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
 elif sys.argv[1] == "beta":
     release_type = "Releases"
@@ -31,7 +31,10 @@ else:
 
 print("type: " + release_type + ", getting latest from url: " + url)
 
-urllib.request.urlretrieve(url, "switch-package-previous.zip")
+if sys.argv[1] != "devrelease":
+    urllib.request.urlretrieve(url, "switch-package-previous.zip")
+else:
+    shutil.move("switch-package.zip", "switch-package-previous.zip")
 
 diff_lib.create_diff("switch-package-previous.zip", "artifacts/switch-package.zip", "upgrade")
 
