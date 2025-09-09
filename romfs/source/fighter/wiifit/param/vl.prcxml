@@ -8,10 +8,13 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <int hash="hulahoop_jump_frame">30</int>
-      <float hash="hulahoop_jump_y_speed">0.88</float>
+      <int hash="hulahoop_jump_frame">60</int>
+      <int hash="hulahoop_jump_restart_end_frame">45</int>
+      <int hash="hulahoop_jump_restart_prohibition_frame">6</int>
+      <int hash="hulahoop_jump_max_speed_y">6</int>
+      <float hash="hulahoop_jump_y_speed">0.80</float>
       <float hash="hulahoop_jump_stick_x_speed_rate">0.1</float>
-      <float hash="hulahoop_jump_restart_add_speed_y">0.3</float>
+      <float hash="hulahoop_jump_restart_add_speed_y">0.2</float>
       <float hash="0x1d57d7b043">0.08</float>
     </struct>
     <hash40 index="1">dummy</hash40>
