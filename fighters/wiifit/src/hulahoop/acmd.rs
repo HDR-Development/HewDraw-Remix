@@ -8,7 +8,7 @@ unsafe extern "C" fn game_wait(agent: &mut L2CAgentBase) {
         ATTACK(agent, 1, 0, Hash40::new("hulahoop2"), 2.0, 103, 100, 80, 0, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         ATTACK(agent, 2, 0, Hash40::new("hulahoop3"), 2.0, 103, 100, 80, 0, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
-    frame(lua_state, 45.0);
+    frame(lua_state, 69.0);
     if is_excute(agent) {
         AttackModule::reset_status_attack(boma, 0);
         AttackModule::reset_status_attack(boma, 1);
