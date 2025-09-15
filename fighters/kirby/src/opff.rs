@@ -55,19 +55,29 @@ unsafe fn inhale_forced_end(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn stone_jumps(fighter: &mut L2CFighterCommon) {
-    // preserve jumps used when landing
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_STONE)
-    && StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        let jumps = fighter.get_num_used_jumps();
-        VarModule::set_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS, jumps);
-    }
+unsafe fn stone_escape_handler(fighter: &mut L2CFighterCommon) {
+    // set remaining jumps
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_END)
     && StatusModule::is_changing(fighter.module_accessor) {
         let jumps = VarModule::get_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS);
         fighter.set_int(jumps, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_STONE, Hash40::new("special_lw2"), false, -1.0);
+    }
+
+    // disables stone if broken out of for any reason
+    if fighter.is_prev_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_STONE)
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::DISABLE_STONE) {
+        VarModule::on_flag(fighter.battle_object, vars::kirby::instance::DISABLE_STONE);
+    }
+
+    // enables movement on frame 14
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_END)
+    && MotionModule::frame(fighter.module_accessor) >= 14.0 {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
     }
 }
 
@@ -105,7 +115,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
     final_cutter_landing_bugfix(fighter);
     hammer_swing_drift_landcancel(fighter);
     inhale_forced_end(fighter);
-    stone_jumps(fighter);
+    stone_escape_handler(fighter);
     fastfall_specials(fighter);
 
     copy::kirby_copy_handler(fighter);
