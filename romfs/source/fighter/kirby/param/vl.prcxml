@@ -57,7 +57,7 @@
       <int hash="special_lw_hold_frame">90</int>
       <int hash="special_lw_enable_cancel_frame">18</int>
       <float hash="special_lw_stone_fall_max_speed">3.9</float>
-      <float hash="special_lw_max_2nd_damage">16</float>
+      <float hash="special_lw_max_2nd_damage">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
