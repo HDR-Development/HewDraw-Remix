@@ -1,7 +1,8 @@
 use super::*;
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS, 0);
+    let jumps = fighter.get_num_used_jumps();
+    VarModule::set_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS, jumps);
     special_lw_off_mtrans(fighter);
     fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
     fighter.off_flag(*FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_MOT_FRAME_INHERIT);
@@ -141,6 +142,16 @@ unsafe extern "C" fn special_lw_check_mtrans_2(fighter: &mut L2CFighterCommon) -
     return true;
 }
 
+
+unsafe extern "C" fn special_lw_stone_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_STONE_END)(fighter);
+    let jumps = VarModule::get_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS);
+    fighter.set_int(jumps.max(1), *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    ret
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
+
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_STONE_END, special_lw_stone_end_main);
 }

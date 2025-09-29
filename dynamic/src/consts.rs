@@ -832,6 +832,7 @@ pub mod vars {
             pub const SPECIAL_N_PICKEL_CYCLE_MATERIAL: i32 = 0x01F4;
             pub const SPECIAL_LW_USED_JUMPS: i32 = 0x01F5;
             pub const DISABLE_STONE: i32 = 0x01F8;
+            pub use super::super::bayonetta::instance::WAS_CANCEL;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
 
             // ints
