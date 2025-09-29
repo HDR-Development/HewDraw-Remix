@@ -351,8 +351,11 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
 		WorkModule::off_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
-        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
 	}
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
+    }
 	frame(lua_state, 49.0);
 	FT_MOTION_RATE(agent, 0.8);
 }
@@ -387,6 +390,8 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
         ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         VisibilityModule::set_whole(boma, true);
     }
+    // not in is_excute because I want this flag to reset if we happen to edge cancel this or something
+    VarModule::on_flag(agent.battle_object, vars::kamui::status::SPECIAL_LW_ENABLE_FALL);
 }
 
 unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {

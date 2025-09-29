@@ -1112,8 +1112,8 @@
       <float hash="landing_attack_air_frame_n">8</float>
       <float hash="landing_attack_air_frame_f">7</float>
       <float hash="landing_attack_air_frame_b">12</float>
-      <float hash="landing_attack_air_frame_hi">9</float>
-      <float hash="landing_attack_air_frame_lw">29</float>
+      <float hash="landing_attack_air_frame_hi">10</float>
+      <float hash="landing_attack_air_frame_lw">25</float>
       <float hash="landing_frame">4</float>
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>

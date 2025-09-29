@@ -2,6 +2,9 @@ use super::*;
 
 unsafe extern "C" fn super_special_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::drain(fighter.battle_object, 2);
+
+    WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_OBJECT_ID);
+
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_super_special").into());
     MotionModule::change_motion(
         fighter.module_accessor,

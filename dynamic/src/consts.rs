@@ -811,9 +811,17 @@ pub mod vars {
     }
 
     pub mod kamui {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0100;
+        }
+
         pub mod status {
             // floats
             pub const ATTACK_AIR_B_CHARGE: i32 = 0x1100;
+
+            // flags
+            pub const SPECIAL_LW_ENABLE_FALL: i32 = 0x1101;
         }
     }
 
@@ -1994,6 +2002,10 @@ pub mod statuses {
 
     pub mod gekkouga {
         pub const SPECIAL_LW_JUMP: i32 = 0x1F1;
+    }
+
+    pub mod kamui {
+        pub const SPECIAL_LW: i32 = 0x1F5;
     }
 
     pub mod ken {

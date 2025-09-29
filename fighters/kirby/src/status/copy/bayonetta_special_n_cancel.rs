@@ -12,9 +12,9 @@ unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_start_f").into(), Hash40::new("bayonetta_special_air_n_start_f").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_start_f").into(), Hash40::new("special_air_n_start_f").into(), false.into());
     } else {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_start_h").into(), Hash40::new("bayonetta_special_air_n_start_h").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_start_h").into(), Hash40::new("special_air_n_start_h").into(), false.into());
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter);
@@ -33,9 +33,9 @@ unsafe extern "C" fn special_n_charge_init(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_charge_f").into(), Hash40::new("bayonetta_special_air_n_charge_f").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_charge_f").into(), Hash40::new("special_air_n_charge_f").into(), false.into());
     } else {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_charge_h").into(), Hash40::new("bayonetta_special_air_n_charge_h").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_charge_h").into(), Hash40::new("special_air_n_charge_h").into(), false.into());
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter);
@@ -51,9 +51,9 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
         if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_STEP) == 0 {
             if MotionModule::is_end(fighter.module_accessor) {
                 if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-                    fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_loop_f").into(), Hash40::new("bayonetta_special_air_n_loop_f").into(), true.into());
+                    fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_loop_f").into(), Hash40::new("special_air_n_loop_f").into(), false.into());
                 } else {
-                    fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_loop_h").into(), Hash40::new("bayonetta_special_air_n_loop_h").into(), true.into());
+                    fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_loop_h").into(), Hash40::new("special_air_n_loop_h").into(), false.into());
                 }
                 app::FighterUtil::flash_eye_info(fighter.module_accessor);
                 PLAY_SE(fighter, Hash40::new("se_bayonetta_special_n05"));
@@ -97,9 +97,9 @@ unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_end_f").into(), Hash40::new("bayonetta_special_air_n_end_f").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_end_f").into(), Hash40::new("special_air_n_end_f").into(), false.into());
     } else {
-        fighter.sub_change_motion_by_situation(Hash40::new("bayonetta_special_n_end_h").into(), Hash40::new("bayonetta_special_air_n_end_h").into(), false.into());
+        fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_end_h").into(), Hash40::new("special_air_n_end_h").into(), false.into());
     }
     let cancel_frame = fighter.get_param_int("param_special_n", "cancel_frame");
     fighter.set_int(cancel_frame, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME);
