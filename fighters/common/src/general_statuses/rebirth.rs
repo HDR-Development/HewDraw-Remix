@@ -7,6 +7,10 @@ unsafe extern "C" fn sub_rebirth_uniq_process_init(fighter: &mut L2CFighterCommo
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
 
+    if !ParamModule::is_flag(fighter.object(), ParamType::Shared, "use_entry_anim_on_respawn") {
+        return original!()(fighter);
+    }
+
     match kind {
         0x0 => {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_DOKAN, false, -1);
@@ -331,6 +335,10 @@ unsafe extern "C" fn sub_rebirth_uniq_process_init(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
+
+    if !ParamModule::is_flag(fighter.object(), ParamType::Shared, "use_entry_anim_on_respawn") {
+        return original!()(fighter);
+    }
 
     CameraModule::reset_all(fighter.module_accessor);
 
