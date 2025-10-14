@@ -84,7 +84,6 @@ unsafe extern "C" fn game_specialhi2hold(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.6);
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         VarModule::off_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 17.0);

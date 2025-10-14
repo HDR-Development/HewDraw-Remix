@@ -3,35 +3,23 @@ use super::*;
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));}
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));}
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
+        } else {
+            let damage_speed_x = agent.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            let damage_speed_y = agent.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+            let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+
+            let play_vc = if speed_vector < 3.8 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {
+                PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));
             }
         }
     }
@@ -40,26 +28,12 @@ unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
-            }
-            else {
-                PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
-            }
-            else {
-                PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));
-            }
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_pikachu_damagefly02"));
+        } else {
+            PLAY_FLY_VOICE(agent, Hash40::new("seq_pikachu_rnd_futtobi01"), Hash40::new("seq_pikachu_rnd_futtobi02"));
         }
     }
 }
@@ -87,7 +61,7 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -122,6 +96,23 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 100, 100, 15, 0, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 362, 100, 60, 0, 6.5, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+    }
+    wait(lua_state, 4.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -130,10 +121,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyn", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
-    
+
     agent.acmd("sound_dash", sound_dash, Priority::Low);
     agent.acmd("game_turndash", game_turndash, Priority::Low);
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_appealhil", game_appealhi, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhi, Priority::Low);
 }

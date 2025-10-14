@@ -4,13 +4,16 @@
     <struct index="0">
       <float hash="p1_y">23</float>
     </struct>
+    <!-- UP SPECIAL TETHER (LATE) -->
     <struct index="1">
       <float hash="p1_x">60</float>
       <float hash="p1_y">70</float>
       <float hash="p2_x">-5</float>
       <float hash="p2_y">-30</float>
     </struct>
+    <!-- UP SPECIAL TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
+    <!-- UP SPECIAL TETHER (EARLY) -->
     <struct index="3">
       <float hash="p1_x">30</float>
       <float hash="p1_y">70</float>
@@ -69,16 +72,5 @@
     <struct index="0">
       <float hash="rewind_frame">18</float>
     </struct>
-  </list>
-  <list hash="param_special_lw">
-    <struct index="0">
-      <float hash="super_armor_damage_max">16</float>
-      <int hash="critical_frame">36</int>
-	    <int hash="critical_slow_rate">8</int>
-	    <int hash="critical_zoom_in_frame">999</int>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
   </list>
 </struct>

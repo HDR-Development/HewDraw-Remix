@@ -11,6 +11,7 @@ unsafe fn ff_chef_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleO
             sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul * 0.5);
             sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add * 0.5);
         }
+
         if boma.is_situation(*SITUATION_KIND_AIR) {
             if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REQUEST_DIVE_EFFECT) {
                 WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_REQUEST_DIVE_EFFECT);
@@ -23,10 +24,10 @@ unsafe fn ff_chef_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleO
                 }
             }
         }
-        if boma.is_prev_situation(*SITUATION_KIND_AIR) && boma.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.set_float(6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-        }
+
+        let landing_lag = 6.0;
+        boma.check_land_cancel(Some(landing_lag));
+
         if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);

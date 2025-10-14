@@ -14,15 +14,10 @@ unsafe fn will_bayonet(agent: &mut L2CAgentBase) -> bool {
 unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-        VarModule::off_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL);
-    }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
-            WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
-            WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_ENABLE_SHOOT);
-        }
+        WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
+        WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_ENABLE_SHOOT);
     }
 }
 
@@ -33,8 +28,7 @@ unsafe extern "C" fn effect_specialnfire(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 
-    && !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
         if is_excute(agent) {
             EFFECT_FOLLOW(agent, Hash40::new("buddy_missile_shot_l"), Hash40::new("top"), 0, 10, 9, 0, 0, 0, 1, false);
         }
@@ -62,9 +56,7 @@ unsafe extern "C" fn sound_specialnfire(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 42.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
-            PLAY_SE(agent, Hash40::new("se_buddy_special_n04_01"));
-        }
+        PLAY_SE(agent, Hash40::new("se_buddy_special_n04_01"));
     }
     frame(lua_state, 55.0);
     if is_excute(agent) {
@@ -88,9 +80,7 @@ unsafe extern "C" fn expression_specialnfire(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        if !VarModule::is_flag(boma.object(), vars::buddy::instance::SPECIAL_N_LAND_CANCEL) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

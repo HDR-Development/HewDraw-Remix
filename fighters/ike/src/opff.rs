@@ -38,30 +38,21 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
             }
         }
     }
-    if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) && fighter.is_situation(*SITUATION_KIND_GROUND) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) && MotionModule::frame(boma) >= 30.0 {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if PostureModule::lr(boma) > 0.0 {
-                    StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
-                    MotionModule::change_motion(boma, Hash40::new("appeal_lw_r"), -1.0, 1.0, false, 0.0, false, false);
+    if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL)
+        && VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL_CHECK_HIT) {
+            if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL_HIT) {
+                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
+                let motion = if PostureModule::lr(boma) > 0.0 {
+                    Hash40::new("appeal_lw_r")
                 }
                 else {
-                    StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_APPEAL, false);
-                    MotionModule::change_motion(boma, Hash40::new("appeal_lw_l"), -1.0, 1.0, false, 0.0, false, false);
-                }
+                    Hash40::new("appeal_lw_l")
+                };
+                MotionModule::change_motion(boma, motion, -1.0, 1.0, false, 0.0, false, false);
             }
-        }
-    }
-    if !fighter.is_status_one_of(&[
-        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD,
-        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH,
-        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK,
-        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_STATUS_KIND_APPEAL]) {
-        if VarModule::is_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL) {
-            EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
-            ColorBlendModule::cancel_main_color(boma, 0);
-            VarModule::off_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL);
+            VarModule::off_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL_CHECK_HIT);
+            VarModule::off_flag(boma.object(), vars::ike::status::SPECIAL_S_INSTAKILL_HIT);
         }
     }
 }

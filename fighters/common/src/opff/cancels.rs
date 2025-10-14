@@ -13,35 +13,28 @@ use smash::hash40;
 //=================================================================
 //== DITCIT
 //=================================================================
-unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, facing: f32) {
-        let mut motion_value: f32 = 0.0;
-    let mut motion_vec = Vector3f {x: 0.0, y: 0.0, z: 0.0};
+// unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor) {
+//     if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW_DASH) {
+//         if boma.status_frame() > 2 && boma.status_frame() < 6
+//             && ((boma.is_cat_flag(Cat1::AttackHi4))
+//              || (boma.is_cat_flag(Cat1::AttackLw4))
+//              || (boma.is_cat_flag(Cat1::AttackS4))
+//              || (boma.is_cat_flag(Cat1::AttackHi3))
+//              || (boma.is_cat_flag(Cat1::AttackLw3))
+//              || (boma.is_cat_flag(Cat1::AttackS3))) {
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
+//         }
+//     }
+    
+//     if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
+//     && boma.is_prev_status(*FIGHTER_STATUS_KIND_ITEM_THROW_DASH)
+//     && StatusModule::is_changing(boma) {
+//         let added_speed_x = 2.5 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
+//         let added_speed = Vector3f{x: added_speed_x, y: 0.0, z: 0.0};
 
-    if status_kind != *FIGHTER_STATUS_KIND_ITEM_THROW {
-        VarModule::off_flag(boma.object(), vars::common::instance::DITCIT_SLIDING);
-    }
-
-    if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW_DASH {
-        if boma.status_frame() > 2 && boma.status_frame() < 6
-            && ((boma.is_cat_flag(Cat1::AttackHi4))
-             || (boma.is_cat_flag(Cat1::AttackLw4))
-             || (boma.is_cat_flag(Cat1::AttackS4))
-             || (boma.is_cat_flag(Cat1::AttackHi3))
-             || (boma.is_cat_flag(Cat1::AttackLw3))
-             || (boma.is_cat_flag(Cat1::AttackS3))) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
-            VarModule::on_flag(boma.object(), vars::common::instance::DITCIT_SLIDING);
-        }
-    } else {
-        if VarModule::is_flag(boma.object(), vars::common::instance::DITCIT_SLIDING) {  // status_kind == ITEM_THROWN, coming from THROW_DASH
-            motion_value = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            motion_vec.x = motion_value * facing;
-            motion_vec.y = 0.0;
-            motion_vec.z = 0.0;
-            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
-    }
-}
+//         KineticModule::add_speed(boma, &added_speed);
+//     }
+// }
 
 //=================================================================
 //== ANTI-FOOTSTOOL DEGENERACY TECH
@@ -83,7 +76,7 @@ pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_
     //jump_cancel_airdodge(boma, cat[0], status_kind, fighter_kind); // experimental, must be called before jcgrab
     // jump_cancel_grab(boma, cat[0], status_kind, fighter_kind);
     // airdodge_cancels(boma, cat[1], cat[2], status_kind, fighter_kind, facing, stick_x);
-    ditcit(boma, cat[0], status_kind, facing); // original = ditcit(boma, cat1, status_kind, motion_value, motion_vec, facing);
+    // ditcit(boma); // original = ditcit(boma, cat1, status_kind, motion_value, motion_vec, facing);
     //dacus(boma, cat[0], status_kind, stick_y);
     footstool_defense(boma, status_kind, situation_kind);
 }

@@ -68,7 +68,13 @@ attack_11:
     cancel_frame: 17
 attack_air_n:
   extra:
-    cancel_frame: 30
+    cancel_frame: 28
+attack_air_hi:
+  extra:
+    cancel_frame: 34
+attack_air_f:
+  extra:
+    cancel_frame: 32
 attack_command4:
   game_script: game_attackcommand4
   flags:
@@ -140,6 +146,37 @@ special_lw_breaking:
     cancel_frame: 25
     no_stop_intp: true
 
+super_special_triple:
+  game_script: game_superspecialtriple
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d04superspecialtriple.nuanmb
+      unk: 0
+  scripts:
+    - expression_superspecialtriple
+    - sound_superspecialtriple
+    - effect_superspecialtriple
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 107
+    no_stop_intp: false
+
 catch_attack:
   extra:
     cancel_frame: 0
@@ -183,7 +220,12 @@ special_n:
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_hi:
+  extra:
+    cancel_frame: 32
 throw_b:
-    cancel_frame: 55
+  extra:
+    cancel_frame: 54
 throw_f:
-    cancel_frame: 55
+  extra:
+    cancel_frame: 54

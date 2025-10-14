@@ -218,12 +218,18 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 37.0, 16.0);
     if is_excute(agent) {
-        KineticModule::mul_speed(boma, &Vector3f::new(0.8, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
         ArticleModule::change_motion(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_f"), false, 0.0);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        ATTACK(agent, 0, 0, Hash40::new("hip"), 0.5, 367, 100, 16, 0, 6.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 1, 0, Hash40::new("hip"), 0.5, 367, 100, 32, 0, 6.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        AttackModule::set_no_finish_camera(boma, 0, true, false);
+        AttackModule::set_no_finish_camera(boma, 1, true, false);
     }
     frame(lua_state, 37.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_JACK_STATUS_SPECIAL_HI2_FLAG_APPEAR_DOYLE);
     }
@@ -232,7 +238,17 @@ unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhiendf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 7.0);
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("hip"), 6.0, 75, 10, 0, 80, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+        KineticModule::mul_speed(boma, &Vector3f::new(0.75, 0.5, 1.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    }
+    wait(lua_state, 6.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }

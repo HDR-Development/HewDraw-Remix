@@ -253,6 +253,12 @@ pub unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub unsafe extern "C" fn special_hi_check_aerial(fighter: &mut L2CFighterCommon) {
+    // Only allow aerial canceling on first bounce
+    let jump_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_HI_JUMP_NUM);
+    if jump_num > 0 {
+        return;
+    }
+
     if VarModule::is_flag(fighter.battle_object, vars::pacman::status::SPECIAL_HI_AERIAL) {
         if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);

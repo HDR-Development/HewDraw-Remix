@@ -118,7 +118,7 @@ impl FilesystemInfo {
         unsafe {
             let ptr = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text)
                 as *const u8)
-                .add(0x5332f20) as *const u64);
+                .add(0x5331f20) as *const u64);
             if ptr == 0 {
                 return None;
             }
@@ -131,7 +131,7 @@ impl FilesystemInfo {
         unsafe {
             let ptr = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text)
                 as *const u8)
-                .add(0x5332f20) as *const u64);
+                .add(0x5331f20) as *const u64);
             if ptr == 0 {
                 return None;
             }

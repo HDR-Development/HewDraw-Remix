@@ -104,7 +104,11 @@ impl AuraMeter {
     }
 
     pub fn set_meter_info(&mut self, current: f32, _max: f32, per_level: f32, burnout: bool) {
-        let percent = current / _max;
+        let percent = if burnout {
+            (current * 3.0) / _max
+        } else {
+            current / _max
+        }.clamp(0.0, 1.0);
         self.actual_percentage = percent;
 
         if burnout != self.is_burnout {

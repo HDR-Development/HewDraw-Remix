@@ -1,6 +1,5 @@
 use super::*;
 
-mod bayonetta;
 mod chrom;
 mod daisy;
 mod diddy;
@@ -12,12 +11,15 @@ mod koopajr;
 mod krool;
 mod littlemac;
 mod lucas;
+mod lucario;
 mod luigi;
 mod mario;
 mod mariod;
+mod mewtwo;
 mod miigunner;
 mod palutena;
 mod pfushigisou;
+mod pikmin;
 mod plizardon;
 mod purin;
 mod pzenigame;
@@ -30,7 +32,6 @@ mod trail;
 mod wolf;
 
 pub fn install(agent: &mut Agent) {
-    bayonetta::install(agent);
     chrom::install(agent);
     daisy::install(agent);
     diddy::install(agent);
@@ -42,12 +43,15 @@ pub fn install(agent: &mut Agent) {
     krool::install(agent);
     littlemac::install(agent);
     lucas::install(agent);
+    lucario::install(agent);
     luigi::install(agent);
     mario::install(agent);
     mariod::install(agent);
+    mewtwo::install(agent);
     miigunner::install(agent);
     palutena::install(agent);
     pfushigisou::install(agent);
+    pikmin::install(agent);
     plizardon::install(agent);
     pzenigame::install(agent);
     purin::install(agent);

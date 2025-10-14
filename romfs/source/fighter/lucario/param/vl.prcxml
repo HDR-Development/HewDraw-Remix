@@ -5,7 +5,9 @@
       <float hash="p1_y">22</float>
       <float hash="p2_y">10</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="1">
+      <float hash="p1_x">11</float>
       <float hash="p1_y">20</float>
     </struct>
   </list>
@@ -63,14 +65,10 @@
   </list>
   <list hash="param_aurapower">
     <struct index="0">
+      <float hash="min_aurapower">0.92</float>
+      <float hash="max_aurapower">1.08</float>
       <float hash="se_middle_aurapower">1.0</float>
       <float hash="se_high_aurapower">1.04</float>
-    </struct>
-  </list>
-  <list hash="param_aurascale">
-    <struct index="0">
-      <float hash="min_aura_power">0.92</float>
-      <float hash="max_aura_power">1.08</float>
     </struct>
   </list>
 </struct>

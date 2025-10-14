@@ -1,48 +1,71 @@
-passive:
+attack_11:
   extra:
-    xlu_end: 21
-    cancel_frame: 29
-passive_stand_f:
+    cancel_frame: 25
+attack_air_f:
   extra:
-    xlu_end: 21
-    cancel_frame: 43
-passive_stand_b:
+    cancel_frame: 32
+attack_hi3:
+  animations:
+    - name: d01specials3hi.nuanmb # Stolen from Dancing Blade 3 High
   extra:
-    xlu_end: 21
-    cancel_frame: 43
-down_stand_u:
+    cancel_frame: 32
+attack_hi4:
+  game_script: game_attackhi4
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c04attackhi4.nuanmb
+      unk: 0
+  scripts:
+    - expression_attackhi4
+    - sound_attackhi4
+    - effect_attackhi4
   extra:
-    xlu_end: 23
-    cancel_frame: 33
-down_stand_d:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 45
+    no_stop_intp: false
+attack_lw3:
   extra:
-    xlu_end: 23
-    cancel_frame: 33
-down_attack_u:
+    cancel_frame: 19
+attack_s3_s:
   extra:
-    cancel_frame: 52
-down_attack_d:
+    cancel_frame: 44
+attack_s4_s:
   extra:
-    cancel_frame: 52
-down_forward_u:
+    cancel_frame: 62
+catch:
+  flags:
+    move: false
   extra:
     cancel_frame: 38
-down_forward_d:
+catch_attack:
   extra:
-    cancel_frame: 38
-down_back_u:
+    cancel_frame: 0
+catch_dash:
   extra:
-    cancel_frame: 38
-down_back_d:
+    cancel_frame: 42
+cliff_attack_quick:
   extra:
-    cancel_frame: 38
+    cancel_frame: 58
 cliff_climb_quick:
   extra:
     xlu_end: 35
     cancel_frame: 37
-cliff_attack_quick:
-  extra:
-    cancel_frame: 58
 cliff_escape_quick:
   extra:
     xlu_end: 31
@@ -50,92 +73,82 @@ cliff_escape_quick:
 cliff_jump_quick1:
   extra:
     xlu_end: 17
-slip_stand:
-  extra:
-    xlu_end: 18
-    cancel_frame: 24
-slip_attack:
+cliff_wait:
+  blend_frames: 2
+down_attack_d:
   extra:
     cancel_frame: 52
-slip_escape_f:
+down_attack_u:
   extra:
-    cancel_frame: 31
-slip_escape_b:
+    cancel_frame: 52
+down_back_d:
   extra:
-    cancel_frame: 31
-jump_squat:
-  blend_frames: 0
-  animations:
-  - name: a05landingheavy.nuanmb
+    cancel_frame: 38
+down_back_u:
+  extra:
+    cancel_frame: 38
+down_forward_d:
+  extra:
+    cancel_frame: 38
+down_forward_u:
+  extra:
+    cancel_frame: 38
+down_stand_d:
+  extra:
+    xlu_end: 23
+    cancel_frame: 33
+down_stand_u:
+  extra:
+    xlu_end: 23
+    cancel_frame: 33
+escape:
+  flags:
+    move: false
 fall:
   blend_frames: 3
 fall_aerial:
   blend_frames: 3
 fall_special:
   blend_frames: 3
+furafura_end:
+  extra:
+    cancel_frame: 34
 guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-escape:
-  flags:
-    move: false
-throw_lw:
+jump_squat:
+  blend_frames: 0
+  animations:
+  - name: a05landingheavy.nuanmb
+passive:
   extra:
+    xlu_end: 21
+    cancel_frame: 29
+passive_stand_b:
+  extra:
+    xlu_end: 21
     cancel_frame: 43
-throw_hi:
+passive_stand_f:
   extra:
-    cancel_frame: 39
-attack_11:
+    xlu_end: 21
+    cancel_frame: 43
+shield_break_fly:
+  animations:
+  - name: f03downspotu.nuanmb
+slip_attack:
   extra:
-    cancel_frame: 25
-attack_lw3:
-special_lw:
-  flags:
-    move: false
+    cancel_frame: 52
+slip_escape_b:
   extra:
-    xlu_start: 0
-    xlu_end: 0
-special_air_lw:
+    cancel_frame: 31
+slip_escape_f:
   extra:
-    xlu_start: 0
-    xlu_end: 0
-attack_hi3:
+    cancel_frame: 31
+slip_stand:
   extra:
-    cancel_frame: 34
-attack_s4_s:
-  extra:
-    cancel_frame: 62
-attack_s3_s:
-  extra:
-    cancel_frame: 44
-special_n_end:
-  extra:
-    cancel_frame: 28
-special_n_end2:
-  extra:
-    cancel_frame: 30
-special_n_end3:
-  extra:
-    cancel_frame: 38
-special_air_n_end:
-  extra:
-    cancel_frame: 38
-special_n_end_max:
-  extra:
-    cancel_frame: 38
-special_air_n_end3:
-  extra:
-    cancel_frame: 38
-special_air_n_end2:
-  extra:
-    cancel_frame: 38
-special_air_n_end_max:
-  extra:
-    cancel_frame: 38
-special_hi_1:
-  flags:
-    move: true
+    xlu_end: 18
+    cancel_frame: 24
 special_air_hi_1:
   flags:
     move: true
@@ -145,6 +158,92 @@ special_air_hi_2:
   - expression_specialhiadd
   - sound_specialhiadd
   - effect_specialhiadd
+special_air_lw:
+  flags:
+    move: true
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+special_air_lw_hit:
+  flags:
+    move: true
+  extra:
+    xlu_start: 1
+    xlu_end: 9
+    cancel_frame: 35
+special_air_n_end:
+  extra:
+    cancel_frame: 38
+special_air_n_end2:
+  extra:
+    cancel_frame: 38
+special_air_n_end3:
+  extra:
+    cancel_frame: 38
+special_air_n_end_max:
+  extra:
+    cancel_frame: 38
+
+# Dancing Blade 1
+special_air_s2_hi: # duplicated special_s2_lw
+  game_script: game_specialairs2lw
+  animations:
+    - name: d01specialairs1.nuanmb
+  scripts:
+    - expression_specialairs2lw
+    - sound_specialairs2lw
+    - effect_specialairs2lw
+  extra:
+    cancel_frame: 40
+special_air_s2_lw:
+  animations:
+    - name: d01specialairs1.nuanmb
+  extra:
+    cancel_frame: 40
+
+# Dancing Blade 2
+special_air_s3_hi: # duplicated special_s4_hi
+  game_script: game_specialairs4hi
+  animations:
+    - name: d01specialairs4hi.nuanmb
+  scripts:
+    - expression_specialairs4hi
+    - sound_specialairs4hi
+    - effect_specialairs4hi
+  extra:
+    cancel_frame: 40
+special_air_s3_lw:
+  animations:
+    - name: d01specialairs3lw.nuanmb
+  extra:
+    cancel_frame: 44
+special_air_s3_s:
+  animations:
+    - name: d01specialairs3s.nuanmb
+  extra:
+    cancel_frame: 47
+
+# Dancing Blade 3
+special_air_s4_hi:
+  animations:
+    - name: d01specialairs4hi.nuanmb
+  extra:
+    cancel_frame: 40
+special_air_s4_lw:
+  animations:
+    - name: a02dash.nuanmb # replaced with a dash
+  extra:
+    cancel_frame: 20
+special_air_s4_s:
+  animations:
+    - name: d01specialairs4s.nuanmb
+  extra:
+    cancel_frame: 59
+
+special_hi_1:
+  flags:
+    move: true
 special_hi_3_start:
   game_script: game_specialhi3start
   flags:
@@ -161,36 +260,106 @@ special_hi_3_start:
     unk_400: false
   blend_frames: 0
   animations:
-    - name: d02specialhi3start.nuanmb
-      unk: 0
+  - name: d02specialhi3start.nuanmb
+    unk: 0
   scripts:
-    - expression_specialhi3start
-    - sound_specialhi3start
-    - effect_specialhi3start
+  - expression_specialhi3start
+  - sound_specialhi3start
+  - effect_specialhi3start
   extra:
     xlu_start: 0
     xlu_end: 0
     cancel_frame: 0
     no_stop_intp: false
-catch:
+special_lw:
   flags:
-    move: false
+    move: true
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 76
+special_lw_hit:
+  flags:
+    move: true
+  extra:
+    xlu_start: 1
+    xlu_end: 9
+    cancel_frame: 35
+special_n_end:
+  extra:
+    cancel_frame: 28
+special_n_end2:
+  extra:
+    cancel_frame: 30
+special_n_end3:
   extra:
     cancel_frame: 38
-catch_dash:
+special_n_end_max:
   extra:
-    cancel_frame: 42
-catch_attack:
-  extra:
-    cancel_frame: 0
-furafura_end:
-  extra:
-    cancel_frame: 34
-shield_break_fly:
+    cancel_frame: 38
+
+# Dancing Blade 1
+special_s2_hi: # duplicated special_s2_lw
+  game_script: game_specials2lw
   animations:
-    - name: f03downspotu.nuanmb
+    - name: d01specials1.nuanmb
+  scripts:
+    - expression_specials2lw
+    - sound_specials2lw
+    - effect_specials2lw
+  extra:
+    cancel_frame: 40
+special_s2_lw:
+  animations:
+    - name: d01specials1.nuanmb
+  extra:
+    cancel_frame: 40
+
+# Dancing Blade 2
+special_s3_hi: # duplicated special_s4_hi
+  game_script: game_specials4hi
+  animations:
+    - name: d01specials4hi.nuanmb
+  scripts:
+    - expression_specials4hi
+    - sound_specials4hi
+    - effect_specials4hi
+  extra:
+    cancel_frame: 40
+special_s3_lw:
+  animations:
+    - name: d01specials3lw.nuanmb
+  extra:
+    cancel_frame: 44
+special_s3_s:
+  animations:
+    - name: d01specials3s.nuanmb
+  extra:
+    cancel_frame: 44
+
+# Dancing Blade 3
+special_s4_hi:
+  animations:
+    - name: d01specials4hi.nuanmb
+  extra:
+    cancel_frame: 40
+special_s4_lw:
+  animations:
+    - name: a02dash.nuanmb # replaced with a dash
+  extra:
+    cancel_frame: 20
+special_s4_s:
+  animations:
+    - name: d01specials4s.nuanmb
+  extra:
+    cancel_frame: 59
+
 step_pose_back:
   extra:
     cancel_frame: 6
-cliff_wait:
-  blend_frames: 2
+throw_hi:
+  extra:
+    cancel_frame: 39
+throw_lw:
+  extra:
+    cancel_frame: 43

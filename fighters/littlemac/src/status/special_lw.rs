@@ -76,15 +76,15 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
             fighter.change_motion_inherit_frame_by_situation("special_lw_hit", "special_air_lw_hit", -1.0, 1.0, 0.0, false, false);
         }
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            let dir = if fighter.is_motion(Hash40::new("special_lw_hit_f")) { 1.0 } else { -1.0 };
-            let feint_x_speed = fighter.get_param_float("param_special_lw", "special_lw_feint_x_speed_") * fighter.lr() * dir;
+            let speed_mul = if fighter.is_motion(Hash40::new("special_lw_hit_f")) { 1.2 } else { -1.1 };
+            let feint_x_speed = fighter.get_param_float("param_special_lw", "special_lw_feint_x_speed_") * fighter.lr() * speed_mul;
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_GROUND, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);
             sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);
         }
         else {
-            let dir = if fighter.is_motion(Hash40::new("special_air_lw_hit_f")) { 1.0 } else { -1.0 };
-            let feint_x_speed = fighter.get_param_float("param_special_lw", "special_air_lw_feint_x_speed_") * fighter.lr() * dir;
+            let speed_mul = if fighter.is_motion(Hash40::new("special_air_lw_hit_f")) { 1.2 } else { -1.1 };
+            let feint_x_speed = fighter.get_param_float("param_special_lw", "special_air_lw_feint_x_speed_") * fighter.lr() * speed_mul;
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);
             sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);

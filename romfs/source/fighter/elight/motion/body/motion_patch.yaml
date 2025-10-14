@@ -104,19 +104,45 @@ attack_air_f:
 attack_air_n:
   extra:
     cancel_frame: 43
+attack_air_hi:
+  extra:
+    cancel_frame: 49
 attack_air_lw:
   extra:
     cancel_frame: 46
-special_s_end:
+special_air_hi_end2:
+  game_script: game_specialairhiend2
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialairhiend2.nuanmb
+  scripts:
+  - expression_specialairhiend2
+  - sound_specialairhiend2
+  - effect_specialairhiend2
   extra:
-    cancel_frame: 30
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 20
+    freeze_during_hitstop: false
 special_lw_in:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-attack_air_hi:
-  extra:
-    cancel_frame: 49
 special_air_lw_in:
   extra:
     intangible_start_frame: 0

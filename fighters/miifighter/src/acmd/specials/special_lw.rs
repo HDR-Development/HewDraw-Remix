@@ -227,7 +227,9 @@ unsafe extern "C" fn game_speciallw2start(agent: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MIIFIGHTER_STATUS_WORK_ID_REVERSAL_KICK_FLAG_WALL_JUMP_ENABLE);
-        SEARCH(agent, 0, 0, Hash40::new("hip"), 3.5, 1.0, 0.0, 0.0, Some(-3.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_ALL, false);
+        if !VarModule::is_flag(agent.battle_object, vars::miifighter::status::SPECIAL_LW2_CHECK_HOLD) {
+            SEARCH(agent, 0, 0, Hash40::new("hip"), 3.5, 1.0, 0.0, 0.0, Some(-3.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_ALL, false);
+        }
     }
     frame(lua_state, 43.0);
     if is_excute(agent) {

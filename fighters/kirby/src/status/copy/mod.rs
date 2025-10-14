@@ -14,14 +14,18 @@ mod ganon_special_n_float;
 mod gaogaen_special_n;
 mod koopa_special_n;
 mod littlemac_special_n;
+mod lucario_special_n;
 mod lucas_special_n;
 mod luigi_special_n;
 mod mario_special_n;
 mod mariod_special_n;
+mod mewtwo_special_n;
 mod miigunner_special_n;
 mod pacman_special_n;
 mod palutena_special_n;
 mod pfushigisou_special_n;
+mod pikmin_special_n;
+mod pikmin_special_n_failure;
 mod plizardon_special_n;
 mod purin_special_n;
 mod pzenigame_special_n;
@@ -30,6 +34,7 @@ mod richter_special_n;
 mod ridley_special_n;
 mod sonic_special_n;
 mod trail_special_n;
+mod wario_special_n;
 
 pub fn install(agent: &mut Agent) {
     bayonetta_special_n_cancel::install(agent);
@@ -44,14 +49,18 @@ pub fn install(agent: &mut Agent) {
     gaogaen_special_n::install(agent);
     koopa_special_n::install(agent);
     littlemac_special_n::install(agent);
+    lucario_special_n::install(agent);
     lucas_special_n::install(agent);
     luigi_special_n::install(agent);
     mario_special_n::install(agent);
     mariod_special_n::install(agent);
+    mewtwo_special_n::install(agent);
     miigunner_special_n::install(agent);
     pacman_special_n::install(agent);
     palutena_special_n::install(agent);
     pfushigisou_special_n::install(agent);
+    pikmin_special_n::install(agent);
+    pikmin_special_n_failure::install(agent);
     plizardon_special_n::install(agent);
     purin_special_n::install(agent);
     pzenigame_special_n::install(agent);
@@ -60,4 +69,5 @@ pub fn install(agent: &mut Agent) {
     ridley_special_n::install(agent);
     sonic_special_n::install(agent);
     trail_special_n::install(agent);
+    wario_special_n::install(agent);
 }

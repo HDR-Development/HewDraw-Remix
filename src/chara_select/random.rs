@@ -50,7 +50,7 @@ enum ListKind {
 // this hook occurs during the main loop of the css, where it calls a function to select a chosen fighter from random
 #[skyline::hook(offset = 0x1a14280, inline)]
 unsafe fn decide_random(ctx: &mut skyline::hooks::InlineCtx) {
-    let src = *ctx.registers[23].x.as_ref() as *mut u64;
+    let src = ctx.registers[23].x() as *mut u64;
     let obj_ptr = *(src as *mut *mut u64).add(1);
 
     let main_chara = *obj_ptr.add(0x200 / 0x8);
@@ -64,9 +64,9 @@ unsafe fn decide_random(ctx: &mut skyline::hooks::InlineCtx) {
     
     let is_melee = ninput::any::is_down_any(ninput::Buttons::ZL | ninput::Buttons::ZR);
     if is_melee {
-        let player_id = (*(*(ctx.registers[21].x.as_ref() as *const u64) as *const u64) + 0x150) as *const u8;
+        let player_id = (*(*(ctx.registers[21].x() as *const u64) as *const u64) + 0x150) as *const u8;
         generate_random(*player_id as usize, main_chara, sub_chara);
-        *ctx.registers[24].x.as_mut() = CHARA_DATA.read().unwrap().main_id;
+        ctx.registers[24].set_x(CHARA_DATA.read().unwrap().main_id);
     }
 
     CHARA_DATA.write().unwrap().melee_random = is_melee;
@@ -245,8 +245,8 @@ unsafe fn set_random_fighter_data(base_ptr: *mut u64, arg2: u64, arg3: u64, arg4
 
 #[skyline::hook(offset = 0x1798ac8, inline)]
 unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
-    let ptr1 = *ctx.registers[0].x.as_ref() as *mut u64;
-    let ptr2 = *ctx.registers[1].x.as_ref() as *mut u64;
+    let ptr1 = ctx.registers[0].x() as *mut u64;
+    let ptr2 = ctx.registers[1].x() as *mut u64;
 
     *ptr2.add(0x2) = *ptr1.add(0x2);
     *ptr2.add(0x3) = *ptr1.add(0x3);

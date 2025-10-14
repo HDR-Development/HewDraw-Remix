@@ -19,9 +19,11 @@ unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
     }
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
     || fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START) {
-        VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
-        fighter.set_int(0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
-        VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, 0);
+        if StatusModule::is_changing(fighter.module_accessor) {
+            VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
+            fighter.set_int(0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
+            VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, 0);
+        }
     }
 }
 
@@ -79,13 +81,6 @@ unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn up_special_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_HOLD]) {
-        // allows ledgegrab during upB startup
-        fighter.sub_transition_group_check_air_cliff();
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -117,7 +112,6 @@ pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     dspecial_cancels(fighter);
     dash_cancel_frizz(fighter);
     kaclang_jc(fighter);
-    up_special_startup_ledgegrab(fighter);
     fastfall_specials(fighter);
 
     // Extend sword length

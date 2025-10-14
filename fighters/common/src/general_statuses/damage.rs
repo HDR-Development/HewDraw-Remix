@@ -61,7 +61,9 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
     }
+
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_NONE, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
+
     let mut damage_motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     let mut start_frame = 0.0;
     if damage_motion_kind == hash40("damage_fly_roll") {
@@ -246,23 +248,28 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
 unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("speed_vec_x") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_x = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed x probably: {}", damage_speed_x);
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("speed_vec_y") as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_y = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed y probably: {}", damage_speed_y);
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("attr"));
     sv_information::damage_log_value(fighter.lua_state_agent);
     let attr = fighter.pop_lua_stack(1).get_u64();
     // println!("damage log value attr: {}", attr);
+
     let _status = StatusModule::status_kind(fighter.module_accessor);
     // this isn't used in anyhthing???
+
     if !(0 < reaction_frame as i32) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
@@ -273,6 +280,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION);
         WorkModule::set_float(fighter.module_accessor, reaction_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         WorkModule::set_float(fighter.module_accessor, reaction_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
+
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
         }
@@ -280,24 +288,25 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
         }
     }
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("angle"));
     sv_information::damage_log_value(fighter.lua_state_agent);
     let angle = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value angle: {}", angle);
+
     let degrees = angle.to_degrees();
+    
     let meteor_vector_min = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_min"));
     let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max"));
+
     if degrees >= meteor_vector_min as f32
     && degrees <= meteor_vector_max as f32 {
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SPIKE);
     }
-    let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
-    // println!("speed vector: {}", speed_vector);
-    // fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
-    fighterstatusdamage_init_damage_speed_up_by_speed(fighter, speed_vector.into(), degrees.into(), false.into());
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
+    
     let cursor_fly_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cursor_fly_speed"));
     // println!("cursor_fly_speed: {}", cursor_fly_speed);
     let pop1squared = damage_speed_x * damage_speed_x;
@@ -307,15 +316,18 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     let combined = pop1squared + pop2squared;
     let cursor_fly_speed_squared = cursor_fly_speed * cursor_fly_speed;
     // println!("cursor_fly_speed_squared: {}", cursor_fly_speed_squared);
+
     if cursor_fly_speed_squared < combined {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CURSOR);
         let cursor_fly_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cursor_fly_frame"));
         WorkModule::set_int(fighter.module_accessor, cursor_fly_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CURSOR_FRAME);
     }
+
     let damage_fly_attack_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_fly_attack_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_fly_attack_frame, *FIGHTER_STATUS_DAMAGE_WORK_INT_ATTACK_DISABLE_FRAME);
     let damage_fly_escape_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_fly_escape_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_fly_escape_frame, *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME);
+
     if [
         hash40("collision_attr_paralyze"),
         hash40("collision_attr_paralyze_ghost")
@@ -323,77 +335,10 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         let invalid_paralyze_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_paralyze_frame"));
         WorkModule::set_float(fighter.module_accessor, invalid_paralyze_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_PARALYZE_FRAME);
     }
+
     if FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
         ControlModule::reset_trigger(fighter.module_accessor);
     }
-}
-
-// calculates launch angle factor
-// "compares the length of the vector to the corner of the screen, to the length of the kb vector" -JOB
-unsafe extern "C" fn get_angle_factor(angle_threshold: f32, angle: f32) -> f32 {
-    let angle_threshold = angle_threshold.to_radians();
-    let angle = (90.0 - ((angle % 180.0).abs() - 90.0).abs()).to_radians();
-    if angle <= angle_threshold { return 1.0; }
-
-    // magic JOB math
-    let angle_factor = ((angle_threshold.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle_threshold.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt()
-        / ((angle.cos().powf(2.0) / 640.0_f32.powf(2.0)) + (angle.sin().powf(2.0) / 360.0_f32.powf(2.0))).sqrt();
-    return angle_factor;
-}
-
-unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
-    fighter: &mut L2CFighterCommon,
-    factor: L2CValue, // Labeled this way because if shot out of a tornado, the game will pass in your hitstun frames instead of speed.
-    angle: L2CValue,
-    some_bool: L2CValue
-) {
-    let angle = angle.get_f32();
-    let angle_threshold = 29.358;
-    let speed_start_horizontal = 4.6; // the start of scaling at angles below the angle_threshold
-    let speed_start_vertical = 5.57; // the start of scaling at completely vertical angles
-    let speed_end = 7.2; // the end of scaling
-
-    // calculate true speed_start using angle
-    let angle_factor = get_angle_factor(angle_threshold, angle); // the actual angle factor
-    let ratio_base = get_angle_factor(angle_threshold, 90.0); // the max angle factor
-    let ratio = (1.0 - angle_factor) / (1.0 - ratio_base);
-    let speed_start = speed_start_horizontal.lerp(&speed_start_vertical, &ratio);
-
-    // exit if speed is too slow
-    let speed = factor.get_f32();
-    if check_damage_speed_up_fail(fighter) || speed <= speed_start {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
-        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
-        return;
-    }
-
-    // calculate speed_up_mul
-    let min_mul = 1.15;
-    let max_mul = 1.65;
-    let power = 1.0;
-    let ratio = ((speed - speed_start) / (speed_end - speed_start));
-    let speed_up_mul = if speed <= speed_end {
-        util::nlerp(min_mul, max_mul, power, ratio)
-    } else {
-        let dif = (speed_end * max_mul) - speed_end;
-        let new_speed = speed + dif;
-        new_speed / speed
-    };
-
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
-    WorkModule::set_float(fighter.module_accessor, speed_up_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
-}
-
-unsafe extern "C" fn check_damage_speed_up_fail(fighter: &mut L2CFighterCommon) -> bool {
-    let log = DamageModule::damage_log(fighter.module_accessor);
-    if log == 0 {
-        return true;
-    }
-    let log = log as *mut u8;
-    return *log.add(0x8f) != 0 
-        || *log.add(0x92) != 0
-        || *log.add(0x93) != 0 
-        || *log.add(0x98) != 0;
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
@@ -608,8 +553,11 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
             GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
         }
+
         WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_NONE, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
+
         fighter.virtual_ftStatusUniqProcessDamage_init(L2CValue::Bool(true));
+
         fighter.clear_lua_stack();
         lua_args!(fighter, Hash40::new_raw(0x244371e88f));
         smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);

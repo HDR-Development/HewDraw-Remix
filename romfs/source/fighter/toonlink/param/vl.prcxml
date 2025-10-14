@@ -7,12 +7,14 @@
       <float hash="p2_x">-9.6</float>
       <float hash="p2_y">7</float>
     </struct>
+    <!-- ZAIR TETHER -->
     <struct index="1">
       <float hash="p1_x">42</float>
       <float hash="p1_y">33</float>
       <float hash="p2_x">10</float>
       <float hash="p2_y">-23</float>
     </struct>
+    <!-- ZAIR TETHER (HANG) -->
     <struct index="2">
       <float hash="p1_x">13</float>
       <float hash="p1_y">12</float>

@@ -4,6 +4,15 @@ use smash::app::smashball::*;
 
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
+unsafe fn special_n_hold(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
+    && VarModule::is_flag(fighter.battle_object, vars::cloud::status::SPECIAL_N_HOLD)
+    && !fighter.is_button_on(Buttons::SpecialAll)
+    && fighter.motion_frame() < 8.0 {
+        VarModule::off_flag(fighter.battle_object, vars::cloud::status::SPECIAL_N_HOLD);
+    }
+}
+
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_END)
     && fighter.is_situation(*SITUATION_KIND_AIR)
@@ -55,6 +64,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe extern "C" fn cloud_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
+    special_n_hold(fighter);
     dspecial_cancels(fighter);
     up_special_proper_landing(fighter);
     training_mode_limit(fighter);

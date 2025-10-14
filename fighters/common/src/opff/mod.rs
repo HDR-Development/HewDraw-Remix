@@ -120,7 +120,7 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
     // Character Moveset Changes
     // moveset_changes::run(boma, id, cat, status_kind, situation_kind, motion_kind, fighter_kind, stick_x, stick_y, facing, frame);
-    floats::run(fighter, info.status_kind, info.situation_kind);
+    floats::run(fighter, info.situation_kind);
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sys_line_system_control_fighter)]

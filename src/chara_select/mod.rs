@@ -196,7 +196,7 @@ pub static mut PLAYER_TAG_INDEX: &'static mut [u8] = &mut [0; 8];
 pub unsafe fn get_tag_from_save(idx: u8) -> String {
     let tag_address =
         (***(((*((*((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-            .add(0x5314510) as *const u64)) as *const u64))
+            .add(0x5313510) as *const u64)) as *const u64))
             + 0x58) as *const *const *const u64)
             + ((idx as u64) * 0xF7D8)
             + 0xC) as *const u16;

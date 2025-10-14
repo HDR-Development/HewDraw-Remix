@@ -262,6 +262,9 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     // AKA the 'move' flag is true for this motion's entry in motion_list.bin
 
     // Allows all grounded attacks to retain sliding momentum by default
+
+    let mut is_stop_added = false;
+    
     if !energy.update_flag
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
@@ -284,6 +287,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         let reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
         lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_GROUND, &reset_speed_2f, &reset_speed_3f, boma);
         lua_bind::KineticEnergy::enable(stop_energy);
+        
+        is_stop_added = true;
     }
 
     // begin block for calculating move speed based on animation
@@ -321,7 +326,11 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     energy.active_flag = false;
 
     if boma.status_frame() == 0 {
-        move_speed.x = energy.prev_speed.x;
+        move_speed.x = if is_stop_added {
+            0.0
+        } else {
+            energy.prev_speed.x
+        };
         // if reset_type.is_air() || reset_type.is_cliff() {
         //     move_speed.y = energy.prev_speed.y;
         // }

@@ -3,20 +3,11 @@ use super::*;
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_RECOIL_MUL);
     let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_STATE_DAMAGE_MUL);
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
-    if is_excute(agent){
-        if !charged {
-            MeterModule::watch_damage(agent.battle_object, true);
-        }
-    }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        FT_ADD_DAMAGE(agent, 1.5 * recoil_mul);
-        if !charged {
-            MeterModule::add(agent.battle_object, 2.0);
-        }
+        PICHU_ADD_DAMAGE(agent, 2.0);
+        MeterModule::watch_damage(agent.battle_object, true);
         ATTACK(agent, 0, 0, Hash40::new("footl"), 9.0 * damage_mul, 40, 105, 0, 50, 3.5, 0.0, 0.0, 0.0, Some(0.0), Some(-4.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 9.0);
@@ -52,7 +43,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let charged = VarModule::get_int(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED) == 1;
+    let charged = VarModule::is_flag(agent.battle_object, vars::pichu::instance::CHARGE_STATE_ENABLED);
     frame(lua_state, 6.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("tail1"), 6.0, 120, 94, 0, 44, 3.5, 0.0, -0.4, -0.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);

@@ -137,31 +137,32 @@ const TABLE_RESPAWN_TIMER: i32 = vars::common::instance::GIMMICK_TIMER;
 
 // steve table respawn
 unsafe fn table_recreate(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    let cooldown_frame = VarModule::get_int(boma.object(), TABLE_RESPAWN_TIMER);
-    if cooldown_frame > 0 { VarModule::dec_int(boma.object(), TABLE_RESPAWN_TIMER); }
+    // let cooldown_frame = VarModule::get_int(boma.object(), TABLE_RESPAWN_TIMER);
+    // if cooldown_frame > 0 { VarModule::dec_int(boma.object(), TABLE_RESPAWN_TIMER); }
     
     if ArticleModule::is_exist(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE) {
         let table = ArticleModule::get_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_TABLE);
-        let table_id = smash::app::lua_bind::Article::get_battle_object_id(table) as u32;
+        let table_id = lua_bind::Article::get_battle_object_id(table) as u32;
         let table_boma = sv_battle_object::module_accessor(table_id);
         // make sure steve cannot spawn the table if it already exists
         if VarModule::is_flag(boma.object(), TABLE_ENABLE_RESPAWN){
             VarModule::off_flag(boma.object(), TABLE_ENABLE_RESPAWN);
         }
-        // sets timer for the respawn cooldown when table breaks
-        if StatusModule::status_kind(table_boma) == *WEAPON_PICKEL_TABLE_STATUS_KIND_BREAK
-        && cooldown_frame == 0 {
-            VarModule::set_int(boma.object(), TABLE_RESPAWN_TIMER, 240);
-        }
+        // // sets timer for the respawn cooldown when table breaks
+        // if StatusModule::status_kind(table_boma) == *WEAPON_PICKEL_TABLE_STATUS_KIND_BREAK
+        // && cooldown_frame == 0 {
+        //     VarModule::set_int(boma.object(), TABLE_RESPAWN_TIMER, 240);
+        // }
     } else { // set the flag for table respawning when cooldown is over and play effects
         if !VarModule::is_flag(boma.object(), TABLE_ENABLE_RESPAWN)
-        && cooldown_frame == 0 {
-            gimmick_flash(boma);
-            LAST_EFFECT_SET_SCALE_W(fighter, 0.65, 0.65, 0.65);
-            LAST_EFFECT_SET_RATE(fighter, 0.6);
-            EFFECT_FOLLOW(fighter, Hash40::new("pickel_icon_table"), Hash40::new("top"), 0, 13, 0, 0, 0, 0, 1.15, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.4);
-            PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
+        // && cooldown_frame == 0 
+        {
+            // gimmick_flash(boma);
+            // LAST_EFFECT_SET_SCALE_W(fighter, 0.65, 0.65, 0.65);
+            // LAST_EFFECT_SET_RATE(fighter, 0.6);
+            // EFFECT_FOLLOW(fighter, Hash40::new("pickel_icon_table"), Hash40::new("top"), 0, 13, 0, 0, 0, 0, 1.15, false);
+            // LAST_EFFECT_SET_RATE(fighter, 0.4);
+            // PLAY_SE(fighter, Hash40::new("se_pickel_special_n_craft_end"));
             VarModule::on_flag(boma.object(), TABLE_ENABLE_RESPAWN);
         }
     }

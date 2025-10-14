@@ -2,13 +2,6 @@ use super::*;
 
 // Note: Neutral air is handled in tilts.rs, as it shares a script with forward tilt/jab
 
-// shorthand for referencing steve's different MATERIAL_KIND constants
-const WOOD: i32 = 0x1;
-const STONE: i32 = 0x2;
-const IRON: i32 = 0x3;
-const GOLD: i32 = 0x4;
-const DIAMOND: i32 = 0x6;
-
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -105,9 +98,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
             wait(lua_state, 2.0);
             if is_excute(agent) {
                 /* Ground */
-                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 275, 60, 0, 70, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-                /* Air */
-                ATTACK(agent, 3, 0, Hash40::new("haver"), damage[1], 275, 50, 0, 30, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+                ATTACK(agent, 2, 0, Hash40::new("haver"), damage[1], 275, 62, 0, 24, 5.0, 0.0, 5.0, 0.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
                 agent.set_float(6.5, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLOAT_ATTACK_DURABILITY);
             }
         } else {

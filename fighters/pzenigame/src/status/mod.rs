@@ -7,6 +7,7 @@ mod run;
 mod special_n;
 mod special_s;
 mod special_lw;
+mod special_hi;
 
 unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     reset_ptrainer_vars(fighter);
@@ -44,4 +45,5 @@ pub fn install(agent: &mut Agent) {
     special_n::install(agent);
     special_s::install(agent);
     special_lw::install(agent);
+    special_hi::install(agent);
 }

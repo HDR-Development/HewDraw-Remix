@@ -32,7 +32,7 @@ unsafe extern "C" fn special_hi_ground_pre(fighter: &mut L2CFighterCommon) -> L2
         app::SituationKind(situation),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -60,14 +60,6 @@ unsafe extern "C" fn special_hi_ground_main(fighter: &mut L2CFighterCommon) -> L
     let rush_angle_g = fighter.get_param_float("param_special_hi", "rush_angle_g");
     fighter.set_float(rush_angle_g.to_radians(), *FIGHTER_TANTAN_STATUS_SPECIAL_HI_WORK_FLOAT_GROUND_ANGLE_RAD);
 
-    let p1_x = 15.0;
-    let p1_y = 20.0;
-    let p2_x = -9.6;
-    let p2_y = 10.0;
-    fighter.set_front_cliff_hangdata(p1_x, p1_y - p2_y);
-    fighter.set_back_cliff_hangdata(p2_x * -1.0, p1_y - p2_y);
-    fighter.set_center_cliff_hangdata(0.0, p2_y);
-
     fighter.main_shift(special_hi_ground_main_loop)
 }
 
@@ -82,10 +74,6 @@ unsafe extern "C" fn special_hi_ground_init(fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn special_hi_ground_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
-    }
-
     let charge_start_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), 0x151502d27a);
     if fighter.status_frame() >= charge_start_frame {
         let max_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), 0x15c81d2557);

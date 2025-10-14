@@ -392,10 +392,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
             AttackModule::clear(boma, 0, false);
             AttackModule::clear(boma, 1, false);
             ATTACK(agent, 2, 0, Hash40::new("knife"), 10.0, 38, 50, 0, 47, 4.0, 0.0, 2.3, -2.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            /* Ground-only */
-            ATTACK(agent, 3, 1, Hash40::new("top"), 10.0, 270, 96, 0, 35, 5.0, 0.0, 2.0, 1.0, Some(0.0), Some(-4.0), Some(1.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-            /* Air-only */
-            ATTACK(agent, 4, 1, Hash40::new("top"), 10.0, 270, 58, 0, 35, 5.0, 0.0, 2.0, 1.0, Some(0.0), Some(-4.0), Some(1.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
+            ATTACK(agent, 3, 1, Hash40::new("top"), 10.0, 270, 63, 0, 31, 5.0, 0.0, 2.0, 1.0, Some(0.0), Some(-4.0), Some(1.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
         }
     }
     frame(lua_state, 17.0);

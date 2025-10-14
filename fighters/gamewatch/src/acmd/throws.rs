@@ -218,11 +218,11 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::set_float(boma, 70.0, *FIGHTER_GAMEWATCH_STATUS_THROW_WORK_FLOAT_STOCK_ICON_ROTATE);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 30.0);
     if is_excute(agent) {
         CHECK_FINISH_CAMERA(agent, -9, 0);
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 31.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_THROW_FLAG_SET_STOCK_ICON);
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &Vector3f{x: 0.0, y: -5.0, z: -9.912}, false, false);
@@ -234,6 +234,27 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 47.0);
     FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn effect_throwlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 2, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
 }
 
 pub fn install(agent: &mut Agent) {
@@ -248,4 +269,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
     
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
+    agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
 }

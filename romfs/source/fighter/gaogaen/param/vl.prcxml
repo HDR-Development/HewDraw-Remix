@@ -5,12 +5,15 @@
       <float hash="p1_y">17</float>
       <float hash="p2_y">8</float>
     </struct>
+    <!-- SIDE SPECIAL -->
     <struct index="1">
       <float hash="p1_y">18</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="2">
       <float hash="p1_y">21.5</float>
     </struct>
+    <!-- UP SPECIAL REBOUND -->
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_n">

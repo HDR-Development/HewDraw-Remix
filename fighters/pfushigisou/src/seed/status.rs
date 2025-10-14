@@ -51,7 +51,7 @@ pub unsafe extern "C" fn move_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     weapon.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     weapon.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
 
-    let speed_x = owner_boma.stick_x() * 0.6;
+    let speed_x = owner_boma.stick_x() * 0.5;
     let speed_y = weapon.get_param_float("param_seed", "shoot_speed_y");
     sv_kinetic_energy!(reset_energy, weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, 0.0, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy!(set_speed, weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, speed_x, speed_y);

@@ -62,6 +62,7 @@
   <list hash="param_special_lw">
     <struct index="0">
       <int hash="landing_frame">32</int>
+      <float hash="start_accel_x_stick_max">0.4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

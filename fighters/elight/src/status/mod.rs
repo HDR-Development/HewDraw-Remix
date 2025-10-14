@@ -1,6 +1,9 @@
 use super::*;
 
-mod special_hi_attack;
+mod landing;
+
+mod special_s_forward;
+mod special_s_end;
 mod special_hi_jump;
 mod special_hi_finish;
 mod special_hi_finish2;
@@ -38,7 +41,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-    || fighter.is_status_one_of(damage_statuses) || fighter.is_status(*FIGHTER_STATUS_KIND_LANDING){ 
+    || fighter.is_status_one_of(damage_statuses) || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) { 
         //Re-enable Mythra UpB 
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
         //Re-enable Mythra SideB
@@ -48,7 +51,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         Set_Pyra_Up_Special_Cancel(fighter,false);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
-    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING]) {
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
     }
     return true.into();
@@ -101,7 +104,10 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
-    special_hi_attack::install(agent);
+    landing::install(agent);
+
+    special_s_forward::install(agent);
+    special_s_end::install(agent);
     special_hi_jump::install(agent);
     special_hi_finish::install(agent);
     special_hi_finish2::install(agent);

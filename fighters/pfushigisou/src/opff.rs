@@ -34,7 +34,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_N_END,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

@@ -1,19 +1,19 @@
 use skyline::hooks::InlineCtx;
 use std::fmt::Display;
 
-#[skyline::from_offset(0x37a1f10)]
+#[skyline::from_offset(0x37a22f0)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F80);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
 unsafe fn set_room_text(arg: u64, string: String) {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776930);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776d10);
     let callable: extern "C" fn(u64, *const u8, usize, *const u16, ...) =
         std::mem::transmute(func_addr);
     callable(
@@ -115,10 +115,10 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1887b1c, inline)]
 unsafe fn set_room_id(ctx: &skyline::hooks::InlineCtx) {
-    let panel = *((*((*ctx.registers[0].x.as_ref() + 8) as *const u64) + 0x10) as *const u64);
+    let panel = *((*((ctx.registers[0].x() + 8) as *const u64) + 0x10) as *const u64);
     CURRENT_PANE_HANDLE = panel as usize;
     CURRENT_ARENA_ID = dbg!(String::from_utf16(std::slice::from_raw_parts(
-        *ctx.registers[3].x.as_ref() as *const u16,
+        ctx.registers[3].x() as *const u16,
         5
     ))
     .unwrap());
@@ -157,10 +157,10 @@ unsafe fn update_css2(arg: u64) {
 
 #[skyline::hook(offset = 0x16ccc58, inline)]
 unsafe fn set_online_latency(ctx: &InlineCtx) {
-    let auto = *(*ctx.registers[19].x.as_ref() as *mut u8);
+    let auto = *(ctx.registers[19].x() as *mut u8);
     MOST_RECENT_AUTO = auto as isize;
     if CURRENT_INPUT_BUFFER != -1 {
-        *(*ctx.registers[19].x.as_ref() as *mut u8) = CURRENT_INPUT_BUFFER as u8;
+        *(ctx.registers[19].x() as *mut u8) = CURRENT_INPUT_BUFFER as u8;
     }
 }
 

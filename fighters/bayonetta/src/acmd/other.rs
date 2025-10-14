@@ -3,35 +3,23 @@ use super::*;
 unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
-            }
-            else {
-                let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                    app::sv_math::rand(hash40("fighter"), 3)
-                } else {
-                    0
-                };
-                if play_vc == 0 {PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));}
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
+        } else {
+            let damage_speed_x = agent.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            let damage_speed_y = agent.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+            let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+
+            let play_vc = if speed_vector < 3.8 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {
+                PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));
             }
         }
     }
@@ -40,26 +28,12 @@ unsafe extern "C" fn sound_damageflyhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
-            }
-            else {
-                PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing_voice(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
-            }
-            else {
-                PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));
-            }
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            PLAY_SE(agent, Hash40::new("vc_bayonetta_damagefly03"));
+        } else {
+            PLAY_FLY_VOICE(agent, Hash40::new("seq_bayonetta_rnd_futtobi01"), Hash40::new("seq_bayonetta_rnd_futtobi02"));
         }
     }
 }
@@ -126,7 +100,7 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    
+
     frame(lua_state, 4.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), true);
@@ -145,8 +119,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_escapen(agent: &mut L2CAgentBase) {
-}
+unsafe extern "C" fn game_escapen(agent: &mut L2CAgentBase) {}
 
 unsafe extern "C" fn game_escapef(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -156,8 +129,7 @@ unsafe extern "C" fn game_escapef(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_escapeb(agent: &mut L2CAgentBase) {
-}
+unsafe extern "C" fn game_escapeb(agent: &mut L2CAgentBase) {}
 
 unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
@@ -171,53 +143,52 @@ unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appealsr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE(agent, 144/(90-1));
+    FT_MOTION_RATE(agent, 144 / (90 - 1));
 }
 
 unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE(agent, 210/(100-1));
+    FT_MOTION_RATE(agent, 210 / (100 - 1));
 }
 
 unsafe extern "C" fn sound_appealhil(agent: &mut L2CAgentBase) {
-	let lua_state = agent.lua_state_agent;
-	let boma = agent.boma();
-	frame(lua_state, 1.0);
-		if is_excute(agent) {
-			agent.clear_lua_stack();
-            lua_args!(agent, Hash40::new("vc_bayonetta_appeal01"));
-            sv_animcmd::PLAY_DAMAGESTOP(lua_state);
-		}
-		frame(lua_state, 4.0);
-		if is_excute(agent) {
-			PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h01"));
-		}
-		frame(lua_state, 8.0);
-		if is_excute(agent) {
-			PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h02"));
-		}
-		frame(lua_state, 25.0);
-		if is_excute(agent) {
-			PLAY_SE(agent, Hash40::new("se_bayonetta_step_right_s"));
-		}
-        frame(lua_state, 38.0);
-        if is_excute(agent) {
-            agent.clear_lua_stack();
-            lua_args!(agent, Hash40::new("vc_bayonetta_appeal01_02"));
-            sv_animcmd::PLAY_DAMAGESTOP(lua_state);
-        }
-		frame(lua_state, 41.0);
-		if is_excute(agent) {
-			PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h03"));
-		}
-		frame(lua_state, 45.0);
-		if is_excute(agent) {
-			PLAY_SE(agent, Hash40::new("se_bayonetta_step_right_m"));
-		}
-	}
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        agent.clear_lua_stack();
+        lua_args!(agent, Hash40::new("vc_bayonetta_appeal01"));
+        sv_animcmd::PLAY_DAMAGESTOP(lua_state);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h01"));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h02"));
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_bayonetta_step_right_s"));
+    }
+    frame(lua_state, 38.0);
+    if is_excute(agent) {
+        agent.clear_lua_stack();
+        lua_args!(agent, Hash40::new("vc_bayonetta_appeal01_02"));
+        sv_animcmd::PLAY_DAMAGESTOP(lua_state);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_bayonetta_appeal_h03"));
+    }
+    frame(lua_state, 45.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_bayonetta_step_right_m"));
+    }
+}
 
-    
 unsafe extern "C" fn sound_appeallwr(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 21.0);
@@ -278,7 +249,7 @@ unsafe extern "C" fn effect_justshieldoff(agent: &mut L2CAgentBase) {
     // if agent.get_int(*WEAPON_BAYONETTA_BAT_INSTANCE_WORK_ID_INT_COSTUME_KIND) == *FIGHTER_BAYONETTA_COSTUME_KIND_BAYONETTA_1 {
     //     if is_excute(agent) {
     //         EFFECT_FOLLOW(agent, Hash40::new("bayonetta_batwithin_bat"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
-    //     } 
+    //     }
     // } else {
     //     if is_excute(agent) {
     //         EFFECT_FOLLOW(agent, Hash40::new("bayonetta_batwithin_bat2"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.6, true);
@@ -314,7 +285,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflyn", sound_damageflyhi, Priority::Low);
     agent.acmd("sound_damageflytop", sound_damageflyhi, Priority::Low);
     agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
-    
+
     agent.acmd("game_dash", game_dash, Priority::Low);
     agent.acmd("sound_dash", sound_dash, Priority::Low);
     agent.acmd("game_turndash", game_turndash, Priority::Low);
@@ -335,7 +306,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_appeallwr", sound_appeallwr, Priority::Low);
     agent.acmd("sound_appeallwl", sound_appeallwl, Priority::Low);
 
-    
     agent.acmd("effect_justshieldoff", effect_justshieldoff, Priority::Low);
     agent.acmd("sound_justshieldoff", sound_justshieldoff, Priority::Low);
 }

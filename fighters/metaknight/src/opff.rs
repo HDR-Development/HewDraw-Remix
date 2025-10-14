@@ -4,9 +4,6 @@ use super::*;
 use globals::*;
  
 unsafe fn dimensional_cape_early_attack(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
     && boma.status_frame() > 11
     && compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {

@@ -7,9 +7,9 @@ unsafe fn pickel_stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
         0x1B, // GUARD_ON
         0x1C // GUARD
     ];
-    let status = *ctx.registers[0].x.as_ref();
+    let status = ctx.registers[0].x();
     if new_shield_statuses.contains(&status) {
-        *ctx.registers[0].x.as_mut() = 0x1E;
+        ctx.registers[0].set_x(0x1E);
     } 
 }
 

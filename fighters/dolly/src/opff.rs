@@ -71,6 +71,12 @@ unsafe fn inherit_final_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn super_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    // Dont use cancels if we're already in cancel frames, if we're in hitlag, or if we didn't connect
+    if CancelModule::is_enable_cancel(fighter.module_accessor) 
+    || fighter.is_in_hitlag() {
+        return;
+    }
+
     let is_landing_cancel = {
         fighter.is_status_one_of(&[
             *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_LANDING,
@@ -90,8 +96,10 @@ unsafe fn super_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
         && fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_SPECIAL_HI,
             *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND,
+            *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
+            statuses::dolly::SPECIAL_LW_BREAKING,
             statuses::dolly::ATTACK_COMMAND_4
         ])
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
@@ -99,34 +107,7 @@ unsafe fn super_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battl
     };
 
     if is_landing_cancel || is_nspecial_cancel || is_other_special_cancel {
-        check_super_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
-    }
-}
-
-unsafe fn check_super_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    // Dont use cancels if we're already in cancel frames, if we're in hitlag, or if we didn't connect
-    if CancelModule::is_enable_cancel(boma) 
-    || boma.is_in_hitlag() {
-        return;
-    }
-    
-    let terms = [
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
-    ];
-    let mut enableds = [false; 10];
-    for x in 0..terms.len() {
-        enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
-    }
-    fighter.enable_transition_term_many(&terms);
-    for val in terms.iter() {
-        WorkModule::enable_transition_term(fighter.module_accessor, *val);
-    }
-    status::dolly_check_super_special_command(fighter);
-    for x in 0..terms.len() {
-        if !enableds[x] {
-            WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
-        }
+        status::dolly_check_super_special_command_wrapper(fighter);
     }
 }
 

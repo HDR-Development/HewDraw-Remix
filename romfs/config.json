@@ -177,6 +177,9 @@
 		],
 		"fighter/shulk/cmn": [
 			"fighter/shulk/param/hdr.xml"
+		],
+		"fighter/metaknight/cmn": [
+			"fighter/metaknight/param/hdr.xml"
 		]
 	}
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_lw">
+      <float hash="attack_base_x">5.0</float>
+      <float hash="attack_add_x_turn">10.0</float>
+    </struct>
+</struct>

@@ -30,7 +30,9 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses) {
+        || boma.is_status_one_of(death_statuses) 
+        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+            {
             VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         }
     }
@@ -39,7 +41,9 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses) {
+        || boma.is_status_one_of(death_statuses)
+        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+        {
             VarModule::off_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
         }
     }
@@ -47,14 +51,18 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     // Side Special Cancel (doesn't reset on hit)
     if VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)
     && (!boma.is_situation(*SITUATION_KIND_AIR)
-    || boma.is_status_one_of(death_statuses)) {
+    || boma.is_status_one_of(death_statuses))
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
         VarModule::off_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
 
     // Up Special Wall Jump
     if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
-        || boma.is_status_one_of(death_statuses) {
+        || boma.is_status_one_of(death_statuses)
+        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+        {
             VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
         }
     }
@@ -63,7 +71,9 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses) {
+        || boma.is_status_one_of(death_statuses)
+        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+        {
             VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
         }
     }
@@ -72,21 +82,27 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses) {
+        || boma.is_status_one_of(death_statuses)
+        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+        {
             VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
         }
     }
 
     // Special Motion Reset
     if !boma.is_situation(*SITUATION_KIND_AIR)
-    || boma.is_status_one_of(death_statuses) {
+    || boma.is_status_one_of(death_statuses)
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
         VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
         VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
     }
 
     // Aerial Glide Toss Reset
     if !boma.is_situation(*SITUATION_KIND_AIR)
-    || boma.is_status_one_of(death_statuses) {
+    || boma.is_status_one_of(death_statuses)
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
         VarModule::set_int(boma.object(), vars::common::instance::AGT_USED_COUNTER, 0);
     }
 
@@ -94,7 +110,9 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_situation(*SITUATION_KIND_AIR)
     || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
     || boma.is_status_one_of(death_statuses) 
-    || boma.is_status_one_of(damage_statuses) {
+    || boma.is_status_one_of(damage_statuses)
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
         boma.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_WALL_JUMP_COUNT);
     }
 
