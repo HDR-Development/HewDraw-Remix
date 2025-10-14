@@ -48,8 +48,6 @@ use utils::{
 use smashline::*;
 #[macro_use] extern crate smash_script;
 
-pub const WEAPON_PICKEL_TROLLEY_STATUS_KIND_PEARL_FLY: i32 = statuses::pickel_trolley::PEARL_FLY;
-
 pub fn install() {
     let agent = &mut Agent::new("pickel");
     acmd::install(agent);
@@ -65,5 +63,5 @@ pub fn install() {
     trolley::install();
 
     // increases the amount of trolley articles that can be spawned at once
-    skyline::patching::Patch::in_text(0x50118a4).data(0x2u8);
+    skyline::patching::Patch::in_text(0x50108a4).data(0x2u8);
 }

@@ -182,15 +182,11 @@ unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_f
 }
 
 unsafe fn cross_chop_ledgegrab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        // allows ledgegrab during upB startup
-        fighter.sub_transition_group_check_air_cliff();
-    }
-
     if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN) {
         // allows ledgegrab during the flip at Cross Chop's apex
         fighter.sub_transition_group_check_air_cliff();
     }
+
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
         fighter.check_wall_jump_cancel();
     }

@@ -2,41 +2,8 @@ use super::*;
 
 // FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP
 
-unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        app::SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE,
-        *GROUND_CORRECT_KIND_AIR as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
-        0
-    );
-
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_AIR_LASSO) as u64,
-        0,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
-        0
-    );
-
-    0.into()
-}
-
 unsafe extern "C" fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
-    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
-    
-    
 
     // [v] get the current position of the stick to be used for angle calculations
     let stick = Vector2f::new(
@@ -98,33 +65,17 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
         return 1.into();
     }
 
-    // [v] exit early if the animation is not over, since the end of this function
-    //      forces a status change one way or the other
-    // [h] instead of checking MotionModule::is_end we check for if we are beyond the input frame
-    if fighter.motion_frame() < 15.0 {
-        return 0.into();
-    }
+    special_hi::special_hi_common_check_spreadbullet(fighter);
 
-    // [v] check if you are pressing the buttons for spreadbullet
-    if fighter.is_button_on(Buttons::Special | Buttons::Attack) {
-        fighter.on_flag(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET);
-    }
-
-    if fighter.is_button_on(Buttons::Special) {
-        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
-    } else if fighter.is_button_on(Buttons::Attack) {
-        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
-    }
-
-    // [v] if we are using spreadbullet then switch to Attack2 and not Attack1
-    // [h] instead of using the spreadbullet flag, we use a custom VarModule int to
-    //      determine what kind of action we are going into here. it is initialized
-    //      in the SpecialHi script and then changed depending on the inputs
-    match VarModule::get_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION) {
-        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into()),
-        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into()),
-        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_status(statuses::elight::SPECIAL_HI_FINISH2.into(), false.into()),
-        _ => {} // undefined behavior
+    if MotionModule::is_end(fighter.module_accessor) {
+        let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET) {
+            VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
+            FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2
+        }
+        else {
+            FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1
+        };
+        fighter.change_status(status.into(), false.into());
     }
 
     0.into()
@@ -139,26 +90,18 @@ unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CV
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
 
-    if fighter.global_table[globals::STATUS_KIND].get_i32() != statuses::elight::SPECIAL_HI_FINISH2 {
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
-    }
-    
     //Disable up special
     VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+    if VarModule::is_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL) {
+        VarModule::on_flag(fighter.battle_object, vars::elight::status::SPECIAL_HI_FREEFALL);
+    }
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::SPECIAL_HI_ENABLE_FREEFALL);
     super::Set_Pyra_Up_Special_Cancel(fighter, true);
 
     0.into()
 }
 
-unsafe extern "C" fn special_hi_jump_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // [v] increment this flag, just like regular special hi for spreadbullet check
-    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
-    0.into()
-}
-
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_pre);
     agent.status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_main);
     agent.status(End, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end);
-    agent.status(Exec, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_exec);
 }

@@ -48,7 +48,7 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
 // handle toggling belly on/off
 // #[no_mangle]
 // pub unsafe extern "C" fn krool_belly_toggle_hook(ctx: &mut skyline::hooks::InlineCtx) {
-//     *ctx.registers[0].x.as_mut() = 0;    // bool for toggle
+//     ctx.registers[0].set_x(0);    // bool for toggle
 //     // ...as_mut() &= logic
 // }
 

@@ -269,15 +269,13 @@ unsafe fn ken_ex_hado(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // disallow changing from aerial to grounded hadoken
     // instead, we enter a landing animation
-    if boma.is_situation(*SITUATION_KIND_GROUND) 
-    && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        if frame < 70.0 { // the autocancel frame
-            WorkModule::set_float(boma, 14.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
-        } else {
-            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
-        }
-    }
+    let landing_lag: Option<f32> = if frame < 70.0 { // the autocancel frame
+        Some(14.0)
+    } else {
+        None
+    };
+
+    fighter.check_land_cancel(landing_lag);
 }
 
 unsafe fn ken_ex_tatsu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {

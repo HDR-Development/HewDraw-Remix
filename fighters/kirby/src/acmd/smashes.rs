@@ -16,7 +16,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         let bkb = if copy_lucas { 4 } else { 0 };
         let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_normal") };
         let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0 + damage, 361, 106, 0, 36 + bkb, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footl"), 15.0 + damage, 38, 100, 0, 40 + bkb, 4.2, 0.0, -7.5, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         let bkb = if copy_lucas { 2 } else { 0 };
         let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_normal") };
         let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0 + damage, 60, 98, 0, 40 + bkb, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("footl"), 11.0 + damage, 60, 98, 0, 40 + bkb, 3.5, 0.0, -5.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -163,31 +163,31 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         let hitlag = if copy_lucas { 1.1 } else { 1.0 };
         let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_cutup") };
         let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 75, 107, 0, 36, 5.2, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 75, 107, 0, 36, 5.2, 1.5, -2.6, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 75, 107, 0, 36, 5.2, 1.5, -6.2, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 72, 125, 0, 30, 5.2, 0.0,  0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 72, 125, 0, 30, 5.2, 1.5, -2.6, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 72, 125, 0, 30, 5.2, 1.5, -6.2, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 2.0);
     if is_excute(agent) {
         let damage_foot = if copy_lucas { 16.0 } else { 14.0 };
         let damage_body = if copy_lucas { 16.0 } else { 13.0 };
         let hitlag = if copy_lucas { 1.1 } else { 1.0 };
         let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_normal") };
         let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 88, 102, 0, 20, 6.3, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 88, 102, 0, 20, 6.3, 0.0, -2.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 88, 102, 0, 20, 6.3, 0.0, -5.2, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 88, 102, 0, 20, 6.3, 0.0, 0.0, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 88, 102, 0, 20, 6.3, 0.0, -2.5, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 88, 102, 0, 20, 6.3, 0.0, -5.2, 0.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 3.0);
     if is_excute(agent) {
         let damage_foot = if copy_lucas { 15.0 } else { 13.0 };
         let damage_body = if copy_lucas { 15.0 } else { 12.0 };
         let kbg = if copy_lucas { 78 } else { 52 };
         let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_normal") };
         let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 50, kbg, 0, 10, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 50, kbg, 0, 10, 5.0, 0.0, -2.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 50, kbg, 0, 10, 5.0, 0.0, -5.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 0, 0, Hash40::new("kneer"), damage_foot, 50, kbg, 0, 10, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("footr"), damage_foot, 50, kbg, 0, 10, 5.0, 0.0, -2.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
+        ATTACK(agent, 2, 0, Hash40::new("footr"), damage_body, 50, kbg, 0, 10, 5.0, 0.0, -5.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_M, collision_sfx, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
@@ -250,30 +250,25 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        let damage_foot = if copy_lucas { 16.0 } else { 14.0 };
-        let bkb_foot = if copy_lucas { 28 } else { 25 };
-        let kbg_foot = if copy_lucas { 89 } else { 92 };
-        let damage_body = if copy_lucas { 15.0 } else { 11.0 };
-        let bkb_body = if copy_lucas { 80 } else { 80 };
-        let kbg_body = if copy_lucas { 70 } else { 40 };
-        let hitlag = if copy_lucas { 1.15 } else { 1.0 };
-        let collision_attr = if copy_lucas { Hash40::new("collision_attr_elec") } else { Hash40::new("collision_attr_normal") };
-        let collision_sfx = if copy_lucas { *COLLISION_SOUND_ATTR_ELEC } else { *COLLISION_SOUND_ATTR_KICK };
-        ATTACK(agent, 0, 0, Hash40::new("top"), damage_foot, 29, kbg_foot, 0, bkb_foot, 3.5, 0.0, 3.0, 9.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("top"), damage_foot, 29, kbg_foot, 0, bkb_foot, 3.5, 0.0, 3.0, -9.0, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 2, 0, Hash40::new("top"), damage_body, 90, kbg_body, 0, bkb_body, 4.0, 0.0, 4.5, 1.0, Some(0.0), Some(4.5), Some(-1.0), hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 3, 0, Hash40::new("top"), damage_foot, 29, kbg_foot, 0, bkb_foot, 3.5, 0.0, 3.0, 4.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
-        ATTACK(agent, 4, 0, Hash40::new("top"), damage_foot, 29, kbg_foot, 0, bkb_foot, 3.5, 0.0, 3.0, -4.5, None, None, None, hitlag, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, collision_attr, *ATTACK_SOUND_LEVEL_L, collision_sfx, *ATTACK_REGION_KICK);
+        if copy_lucas {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 15.0, 50, 100, 0, 30, 4.0, 0.0, 2.5, 3.0, Some(0.0), Some(2.5), Some(-3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
+            ATTACK(agent, 1, 0, Hash40::new("top"), 16.0, 29, 84, 0, 25, 4.0, 0.0, 3.25, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
+            ATTACK(agent, 2, 0, Hash40::new("top"), 16.0, 29, 84, 0, 25, 4.0, 0.0, 3.25, -8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
+        }
+        else {
+            ATTACK(agent, 0, 0, Hash40::new("top"), 14.0, 50, 100, 0, 30, 4.0, 0.0, 2.5, 3.0, Some(0.0), Some(2.5), Some(-3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+            ATTACK(agent, 1, 0, Hash40::new("top"), 14.0, 29, 84, 0, 25, 4.0, 0.0, 3.25, 8.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_KICK);
+            ATTACK(agent, 2, 0, Hash40::new("top"), 14.0, 29, 84, 0, 25, 4.0, 0.0, 3.25, -8.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_KICK);
+        }
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         HIT_RESET_ALL(agent);
-        let damage = if copy_lucas { 3 } else { 0 };
-        ATK_POWER(agent, 0, 10 + damage);
-        ATK_POWER(agent, 1, 10 + damage);
-        ATK_POWER(agent, 3, 10 + damage);
-        ATK_POWER(agent, 4, 10 + damage);
+        let damage = if copy_lucas { 3.0 } else { 0.0 };
+        ATTACK(agent, 0, 0, Hash40::new("top"), 12.0 + damage, 50, 100, 0, 30, 4.0, 0.0, 2.5, 3.0, Some(0.0), Some(2.5), Some(-3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 10.0 + damage, 29, 84, 0, 25, 4.0, 0.0, 3.25, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_KICK);
+        ATTACK(agent, 2, 0, Hash40::new("top"), 10.0 + damage, 29, 84, 0, 25, 4.0, 0.0, 3.25, -8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {

@@ -3,6 +3,9 @@ use super::*;
 unsafe extern "C" fn game_specialairsfstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -19,6 +22,9 @@ unsafe extern "C" fn game_specialairsfstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsfstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -37,6 +43,7 @@ unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 0.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
         agent.on_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::watch_damage(agent.battle_object, true);
@@ -81,10 +88,12 @@ unsafe extern "C" fn game_specialairsfend(agent: &mut L2CAgentBase) {
         if agent.get_int(*FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
             MotionModule::set_rate(boma, 1.0);
         }
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
+        VarModule::off_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
@@ -101,6 +110,11 @@ unsafe extern "C" fn game_specialsfend(agent: &mut L2CAgentBase) {
         if agent.get_int(*FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
             MotionModule::set_rate(boma, 1.2);
         }
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {

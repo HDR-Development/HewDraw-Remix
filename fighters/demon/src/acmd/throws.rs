@@ -279,7 +279,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
                 if !WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_DISABLE_THROW_MOTION_CAMERA) {
                     if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
                         if is_excute(agent) {
-                            REQ_MOTION_CAMERA(agent, Hash40::new("e01throwcommand.nuanmb"), false);
+                            REQ_MOTION_CAMERA(agent, Hash40::new("e01throwf.nuanmb"), false);
                         }
                     }
                 }

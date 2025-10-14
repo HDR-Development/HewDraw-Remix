@@ -14,7 +14,7 @@ unsafe fn lucario_guard_damage_init(fighter: &mut L2CFighterCommon) {
         VarModule::set_int(fighter.battle_object,vars::lucario::instance::METER_PAUSE_REGEN_FRAME,0);
     } else {
         let mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.shield_damage_meter_drain_mul");
-        MeterModule::drain_direct(fighter.object(),mul * fighter.get_float(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
+        MeterModule::drain_direct_clamp_to_level(fighter.object(),mul * fighter.get_float(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER));
         let frames = (90).max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
         VarModule::set_int(fighter.object(),vars::lucario::instance::METER_PAUSE_REGEN_FRAME,frames);
     }

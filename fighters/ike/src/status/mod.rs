@@ -28,7 +28,9 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
     {
         VarModule::off_flag(fighter.battle_object, vars::ike::instance::DISABLE_SPECIAL_S);
     }

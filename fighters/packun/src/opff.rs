@@ -13,7 +13,8 @@ unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor) {
             GroundModule::correct(boma,GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         }
         let stop_add_speed_y_frame = WorkModule::get_param_int(boma, hash40("param_special_hi"), hash40("stop_add_speed_y_frame"));
-        if boma.status_frame() >= stop_add_speed_y_frame {
+        if boma.is_situation(*SITUATION_KIND_GROUND)
+        && boma.status_frame() >= stop_add_speed_y_frame {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, false);
         }
     }

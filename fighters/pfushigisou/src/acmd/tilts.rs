@@ -86,7 +86,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 3.0, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 3.0, 4.0);
     frame(lua_state, 3.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 4.0);
@@ -103,7 +103,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     FT_MOTION_RATE_RANGE(agent, 13.0, 32.0, 9.0);
-    frame(lua_state, 32.0); // FAF 25
+    frame(lua_state, 32.0); // FAF 24
     FT_MOTION_RATE(agent, 1.0);
 }
 

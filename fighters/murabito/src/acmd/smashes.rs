@@ -88,7 +88,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 90, 82, 0, 55, 5.5, pos_z, pos_y + 3.5, pos_x - 5.0, Some(pos_z), Some(pos_y + 3.5), Some(pos_x + 5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 12, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         } else {
-            ATTACK(agent, 1, 0, Hash40::new("top"), 14.0, 40, 98, 0, 40, 6.0, 0.0, 3.0, 13.0, Some(0.0), Some(3.0), Some(9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("top"), 14.0, 40, 98, 0, 40, 6.0, 0.0, 3.0, 13.0, Some(0.0), Some(3.0), Some(9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
@@ -130,7 +130,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             ATTACK(agent, 0, 0, Hash40::new("top"), 20.0, 90, 82, 0, 55, 5.5, pos_z, pos_y + 3.5, pos_x - 5.0, Some(pos_z), Some(pos_y + 3.5), Some(pos_x + 5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 12, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         } else {
-            ATTACK(agent, 1, 0, Hash40::new("top"), 14.0, 40, 98, 0, 40, 6.0, 0.0, 3.0, -13.0, Some(0.0), Some(3.0), Some(-9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(agent, 1, 0, Hash40::new("top"), 14.0, 40, 98, 0, 40, 6.0, 0.0, 3.0, -13.0, Some(0.0), Some(3.0), Some(-9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }        
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }

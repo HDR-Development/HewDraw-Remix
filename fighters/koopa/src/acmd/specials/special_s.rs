@@ -30,9 +30,6 @@ unsafe extern "C" fn game_specialscatch(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     FT_MOTION_RATE_RANGE(agent, 25.0, 60.0, 25.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
-    }
     frame(lua_state, 60.0);
     FT_MOTION_RATE(agent, 1.0);
 }

@@ -103,16 +103,13 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
 }
 
 pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
-    let cliff_xlu = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
-    // If you have ledge intan frames left
-    if cliff_xlu > 0 {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            // Remove ledge intan on landing
+    let cliff_xlu_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+    if cliff_xlu_frame > 0 {
+        VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+        if cliff_xlu_frame - 1 == 0 
+        || fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
             VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
-        }
-        else{
-            VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
         }
     }
 }

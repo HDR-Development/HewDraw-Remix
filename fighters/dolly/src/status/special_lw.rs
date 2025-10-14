@@ -116,11 +116,12 @@ unsafe extern "C" fn dolly_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
 
     if !fighter.global_table[IS_STOPPING].get_bool()
     && MotionModule::is_end(fighter.module_accessor) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::status::SPECIAL_LW_BREAK)
-        && MeterModule::level(fighter.battle_object) >= 1 {
+        if VarModule::is_flag(fighter.battle_object, vars::dolly::status::SPECIAL_LW_BREAK) {
             VarModule::off_flag(fighter.battle_object, vars::dolly::status::SPECIAL_LW_BREAK);
-            fighter.change_status(statuses::dolly::SPECIAL_LW_BREAKING.into(), true.into());
-            return 0.into();
+            if MeterModule::level(fighter.battle_object) >= 1 {
+                fighter.change_status(statuses::dolly::SPECIAL_LW_BREAKING.into(), true.into());
+                return 0.into();
+            }
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP) {
             let frame = MotionModule::frame(fighter.module_accessor);

@@ -207,13 +207,13 @@ unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor, 
 
 #[skyline::hook(offset = 0x1083bec, inline)]
 unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
 #[skyline::hook(offset = 0x10838e0, inline)]
 unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 

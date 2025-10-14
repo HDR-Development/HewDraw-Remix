@@ -284,6 +284,17 @@ impl MeterModule {
         }
     }
 
+    #[export_name = "MeterModule__drain_direct_clamp_to_level"]
+    pub extern "Rust" fn drain_direct_clamp_to_level(object: *mut BattleObject, amount: f32) {
+        let module = require_meter_module!(object);
+        let meter = Self::meter(module.owner);
+        let level = Self::level(module.owner) as f32;
+        let meter_cap = Self::meter_cap(module.owner) as f32;
+        let meter_per_level = Self::meter_per_level(module.owner);
+        let nearest_level = (level * meter_per_level).clamp(0.0, meter_cap * meter_per_level);
+        module.current_meter = (meter - amount).max(nearest_level);
+    }
+
     #[export_name = "MeterModule__add"]
     pub extern "Rust" fn add(object: *mut BattleObject, amount: f32) {
         let module = require_meter_module!(object);
@@ -365,7 +376,10 @@ impl MeterModule {
 
 #[skyline::hook(offset = 0x46ae84, inline)]
 unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
-    let data = *ctx.registers[1].x.as_ref() as *mut u32;
+    let module = ctx.registers[0].x();
+    let receiver_boma = &mut *(*(module as *mut *mut BattleObjectModuleAccessor).add(1));
+
+    let data = ctx.registers[1].x() as *mut u32;
     let attacker_id = *data;
 
     let collision_id = *data.add(1);
@@ -374,12 +388,18 @@ unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
         return;
     }
 
-    let collision_data = *ctx.registers[27].x.as_ref() as *mut f32;
+    let collision_data = ctx.registers[27].x() as *mut f32;
     let loc_x = *collision_data.add(4);
     let loc_y = *collision_data.add(5);
     let loc_z = *collision_data.add(6);
     VarModule::set_int(battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID, collision_id as i32);
     VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
+
+    if !receiver_boma.is_fighter() && !receiver_boma.is_weapon() {
+        return;
+    }
+
+    VarModule::set_vec3(receiver_boma.object(), vars::common::instance::LAST_RECEIVED_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
 }
 
 #[skyline::hook(offset = 0x4c7080)]

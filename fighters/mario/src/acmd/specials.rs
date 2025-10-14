@@ -189,9 +189,9 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 7.0);
     if is_excute(agent) {
-        shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 6.0, 0.0, 9.0, 5.0, 0.0, 9.0, -5.0, 1.2, 1.0, 50, false, 1.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+        shield!(agent, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 6.0, 0.0, 9.0, 5.0, 0.0, 9.0, -5.0, 1.2, 0.8, 50, false, 0.8, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
@@ -244,7 +244,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent){
         agent.on_flag(*FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
     }
-    frame(lua_state, 28.0);
+    frame(lua_state, 34.0);
     if is_excute(agent){
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
@@ -367,6 +367,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let collision_sound_attr = if (WorkModule::is_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY)) { *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN } else { *COLLISION_SOUND_ATTR_COIN };
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {

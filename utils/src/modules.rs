@@ -169,23 +169,23 @@ fn set_fighter_vtable_hook(ctx: &mut InlineCtx) {
     static DESTRUCTOR_HOOK: Once = Once::new();
     DESTRUCTOR_HOOK.call_once(|| {
         unsafe {
-            FIGHTER_DESTRUCTOR = *((*ctx.registers[8].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
-            FIGHTER_DELETER = *((*ctx.registers[8].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
+            FIGHTER_DESTRUCTOR = *((ctx.registers[8].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
+            FIGHTER_DELETER = *((ctx.registers[8].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
         }
         skyline::install_hooks!(fighter_destructor_hook, fighter_deleter_hook);
     });
 
     unsafe {
-        let new_vtable = recreate_vtable_with_space(*ctx.registers[8].x.as_ref() as _);
-        let buffer_module = Box::new(InputModule::new(*ctx.registers[25].x.as_ref() as _));
-        let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
-        let meter_module = Box::new(MeterModule::new(*ctx.registers[25].x.as_ref() as _));
+        let new_vtable = recreate_vtable_with_space(ctx.registers[8].x() as _);
+        let buffer_module = Box::new(InputModule::new(ctx.registers[25].x() as _));
+        let param_module = Box::new(ParamModule::new(ctx.registers[25].x() as _));
+        let meter_module = Box::new(MeterModule::new(ctx.registers[25].x() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
-        *ctx.registers[8].x.as_mut() = new_vtable as _;
+        ctx.registers[8].set_x(new_vtable as _);
     };
 }
 
@@ -209,23 +209,23 @@ fn set_weapon_vtable_hook(ctx: &mut InlineCtx) {
     static DESTRUCTOR_HOOK: Once = Once::new();
     DESTRUCTOR_HOOK.call_once(|| {
         unsafe {
-            WEAPON_DESTRUCTOR = *((*ctx.registers[25].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
-            WEAPON_DELETER = *((*ctx.registers[25].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
+            WEAPON_DESTRUCTOR = *((ctx.registers[25].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
+            WEAPON_DELETER = *((ctx.registers[25].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
         }
         skyline::install_hooks!(weapon_fighter_destructor_hook, weapon_fighter_deleter_hook);
     });
 
     unsafe {
-        let new_vtable = recreate_vtable_with_space(*ctx.registers[25].x.as_ref() as _);
-        let buffer_module = Box::new(InputModule::new(*ctx.registers[25].x.as_ref() as _));
-        let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
-        let meter_module = Box::new(MeterModule::new(*ctx.registers[25].x.as_ref() as _));
+        let new_vtable = recreate_vtable_with_space(ctx.registers[25].x() as _);
+        let buffer_module = Box::new(InputModule::new(ctx.registers[25].x() as _));
+        let param_module = Box::new(ParamModule::new(ctx.registers[25].x() as _));
+        let meter_module = Box::new(MeterModule::new(ctx.registers[25].x() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
-        *(*ctx.registers[22].x.as_ref() as *mut *mut *mut u64) = new_vtable;
+        *(ctx.registers[22].x() as *mut *mut *mut u64) = new_vtable;
     };
 }
 
@@ -249,23 +249,23 @@ fn set_item_vtable_hook(ctx: &mut InlineCtx) {
     static DESTRUCTOR_HOOK: Once = Once::new();
     DESTRUCTOR_HOOK.call_once(|| {
         unsafe {
-            ITEM_DESTRUCTOR = *((*ctx.registers[23].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
-            ITEM_DELETER = *((*ctx.registers[23].x.as_ref() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
+            ITEM_DESTRUCTOR = *((ctx.registers[23].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DESTRUCTOR_OFFSET) as *mut usize) as usize;
+            ITEM_DELETER = *((ctx.registers[23].x() as usize + offsets::BATTLE_OBJECT_VTABLE_DELETER_OFFSET) as *mut usize) as usize;
         }
         skyline::install_hooks!(item_destructor_hook, item_deleter_hook);
     });
 
     unsafe {
-        let new_vtable = recreate_vtable_with_space(*ctx.registers[23].x.as_ref() as _);
-        let buffer_module = Box::new(InputModule::new(*ctx.registers[28].x.as_ref() as _));
-        let param_module = Box::new(ParamModule::new(*ctx.registers[28].x.as_ref() as _));
-        let meter_module = Box::new(MeterModule::new(*ctx.registers[28].x.as_ref() as _));
+        let new_vtable = recreate_vtable_with_space(ctx.registers[23].x() as _);
+        let buffer_module = Box::new(InputModule::new(ctx.registers[28].x() as _));
+        let param_module = Box::new(ParamModule::new(ctx.registers[28].x() as _));
+        let meter_module = Box::new(MeterModule::new(ctx.registers[28].x() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
-        *(*ctx.registers[28].x.as_ref() as *mut *mut *mut u64) = new_vtable as _;
+        *(ctx.registers[28].x() as *mut *mut *mut u64) = new_vtable as _;
     };
 }
 

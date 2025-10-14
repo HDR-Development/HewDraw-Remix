@@ -13,6 +13,10 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
     }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 5.0);
@@ -108,6 +112,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         if MotionModule::motion_kind(boma) == hash40("special_hi_command") {
             WHOLE_HIT(agent, *HIT_STATUS_XLU);
         }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 4.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -211,8 +219,10 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(agent, 0.7);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            FOOT_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(agent, 0.7);
+        }
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
             FLASH(agent, 0.95, 0.522, 0.051, 1.7);
         }

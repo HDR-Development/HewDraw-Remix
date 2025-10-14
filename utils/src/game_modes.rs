@@ -200,7 +200,7 @@ static mut CURRENT_MELEE_MODE: i32 = 0x0;
 // updates when initiating the CSS of any game mode
 #[skyline::hook(offset = 0x1a2625c, inline)]
 unsafe fn read_melee_mode(ctx: &mut skyline::hooks::InlineCtx) {
-    let mode = *ctx.registers[8].x.as_ref();
+    let mode = ctx.registers[8].x();
     CURRENT_MELEE_MODE = mode as i32;
 }
 

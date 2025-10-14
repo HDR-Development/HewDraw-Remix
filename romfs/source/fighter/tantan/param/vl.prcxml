@@ -4,13 +4,16 @@
     <struct index="0">
       <float hash="p1_y">25</float>
     </struct>
+    <!-- UP SPECIAL TETHER (LATE) -->
     <struct index="1">
       <float hash="p1_x">67</float>
       <float hash="p1_y">70</float>
       <float hash="p2_x">-5</float>
       <float hash="p2_y">-25</float>
     </struct>
+    <!-- UP SPECIAL TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
+    <!-- UP SPECIAL TETHER (EARLY) -->
     <struct index="3">
       <float hash="p1_x">31</float>
       <float hash="p1_y">70</float>

@@ -321,13 +321,11 @@ unsafe extern "C" fn special_n_set_kinetic(fighter: &mut L2CFighterCommon) {
 pub unsafe extern "C" fn special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
     let curr_status = StatusModule::status_kind(fighter.module_accessor);
     let next_status = fighter.global_table[STATUS_KIND].get_i32();
-    let is_kirby = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY;
-    // define statuses for kirby or lucario
-    let special_n =         if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N}          else {*FIGHTER_STATUS_KIND_SPECIAL_N};
-    let special_n_hold =    if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_HOLD}     else {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD};
-    let special_n_max =     if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_MAX}      else {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_MAX};
-    let special_n_shoot =   if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_SHOOT}    else {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_SHOOT};
-    let special_n_cancel =  if is_kirby {*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_CANCEL}   else {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL};
+    let special_n =         {*FIGHTER_STATUS_KIND_SPECIAL_N};
+    let special_n_hold =    {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD};
+    let special_n_max =     {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_MAX};
+    let special_n_shoot =   {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_SHOOT};
+    let special_n_cancel =  {*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL};
 
     // handle charge storage
     // store charge if in cancel status or if moving between valid statuses

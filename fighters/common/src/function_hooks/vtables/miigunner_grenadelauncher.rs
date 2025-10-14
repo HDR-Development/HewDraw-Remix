@@ -2,7 +2,7 @@ use super::*;
 use utils::ext::*;
 use super::super::energy::PaddedVec2;
 
-#[skyline::hook(offset = 0x3453b10)]
+#[skyline::hook(offset = 0x34538a0)]
 unsafe extern "C" fn miigunner_grenadelauncher_init(vtable: u64, weapon: &mut smash::app::Weapon, init_struct: u64) {
     let boma = weapon.battle_object.module_accessor;
     let speed = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("speed"));
@@ -52,21 +52,21 @@ unsafe extern "C" fn miigunner_grenadelauncher_init(vtable: u64, weapon: &mut sm
 //     return call_original!(vtable, fighter, param_3);
 // }
 
-// #[skyline::hook(offset = 0x33bdb70)]
+// #[skyline::hook(offset = 0x33bd900)]
 // unsafe extern "C" fn miigunner_groundbomb_set_team_flags(vtable: u64, weapon: &mut smash::app::Weapon) {
 //     println!("set team flags?");
 
 //     return call_original!(vtable, weapon);
 // }
 
-// #[skyline::hook(offset = 0x33be150)]
+// #[skyline::hook(offset = 0x33bdee0)]
 // unsafe extern "C" fn miigunner_groundbomb_on_damage2(vtable: u64, weapon: &mut smash::app::Weapon) {
 //     println!("on damage2?");
 
 //     return call_original!(vtable, weapon);
 // }
 
-// #[skyline::hook(offset = 0x33be0b0)]
+// #[skyline::hook(offset = 0x33bde40)]
 // unsafe extern "C" fn miigunner_groundbomb_on_reflect(vtable: u64, weapon: &mut smash::app::Weapon) {
 //     println!("on reflect?");
 

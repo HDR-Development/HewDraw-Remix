@@ -51,7 +51,7 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             }
             if motion_frame > start_frame + 13.0 / 16.0 {
                 special_hi_guide_handler(fighter, rate);
-                MeterModule::drain_direct(fighter.battle_object, ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.uspecial_cost") / length);
+                MeterModule::drain_direct_clamp_to_level(fighter.battle_object, ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.uspecial_cost") / length);
             }
         } else {
             let rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE);
@@ -130,7 +130,7 @@ unsafe extern "C" fn special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CV
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,

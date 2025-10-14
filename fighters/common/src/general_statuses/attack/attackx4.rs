@@ -68,16 +68,37 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     }
     else {
-        // This should only reduce the highest speed the dacus will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, 0.0);
+            let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_STOP);
+            println!("x {}", speed_x);
+            let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+            let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+            let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
+
+            speed_x = speed_x * dacus_mul;
+
+            if min_speed > 0.0 {
+                if speed_x == 0.0 {
+                    speed_x = min_speed * PostureModule::lr(fighter.module_accessor);
+                }
+                else {
+                    speed_x = speed_x.abs().max(min_speed) * speed_x.signum();
+                }
+            }
+
+            if max_speed > 0.0 {
+                speed_x = speed_x.abs().min(max_speed) * speed_x.signum();
+            }
+
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x, speed_y);
         }
         // let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
         // println!("DACUS MOTION: {}", speed_x);
         // speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
         // println!("DACUS STOP: {}", speed_x);
     }
+
     let log_attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if sha_frame == 1 && !fighter.global_table[8].get_bool() && log_attack_kind > 0 {
         FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log_attack_kind);
@@ -106,18 +127,18 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
     return 0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start)]
-unsafe fn status_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion = Hash40::new("attack_hi4");
-    fighter.status_AttackHi4Start_common(L2CValue::Hash40(motion));
-    return 0.into()
-}
+// #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start)]
+// unsafe fn status_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     let motion = Hash40::new("attack_hi4");
+//     fighter.status_AttackHi4Start_common(L2CValue::Hash40(motion));
+//     return 0.into()
+// }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start_common)]
-unsafe fn status_AttackHi4Start_Common(fighter: &mut L2CFighterCommon, motion: L2CValue) {
-    fighter.sub_status_AttackHi4Start_common(motion);
-    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackHi4Start_Main as *const () as _));
-}
+// #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start_common)]
+// unsafe fn status_AttackHi4Start_Common(fighter: &mut L2CFighterCommon, motion: L2CValue) {
+//     fighter.sub_status_AttackHi4Start_common(motion);
+//     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackHi4Start_Main as *const () as _));
+// }
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackHi4Start)]
 unsafe extern "C" fn bind_address_call_status_end_attackhi4start(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
@@ -157,35 +178,36 @@ unsafe fn status_AttackLw4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     }
     else {
-        // This should only reduce the highest speed the dacds will reach (the first frame); it should still decrease at the same rate as those with a 1.0 mul
         if StatusModule::is_changing(fighter.module_accessor) {
-            //let spdx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            //println!("old motion speed: {}", spdx);
-            let speed_x = VarModule::get_float(fighter.object(), vars::common::instance::DACUS_TRANSITION_SPEED);
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed_x, 0.0);
-            //let spx = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
-            //println!("new motion speed: {}", spx);
-        }
-        // Account for added STOP energy (only if the dacds has a non-default multiplier)
-        let dacds_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacds_mul");
-        if dacds_mul != 1.0 {
-            let mut stop = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
-            if stop.abs() > 0.0 {
-                //println!("extra stop energy: {}", stop);
-                let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
-                let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
-                if !(min_speed..max_speed).contains(&stop.abs()) {
-                    stop = stop.abs().clamp(min_speed, max_speed) * PostureModule::lr(fighter.module_accessor);
+            let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            let min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.min_speed");
+            let max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dacus.max_speed");
+            let dacus_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "dacus_mul");
+
+            speed_x = speed_x * dacus_mul;
+
+            if min_speed > 0.0 {
+                if speed_x == 0.0 {
+                    speed_x = min_speed * PostureModule::lr(fighter.module_accessor);
                 }
-                stop = stop * dacds_mul;
-                sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, stop, 0.0);
+                else {
+                    speed_x = speed_x.abs().max(min_speed) * speed_x.signum();
+                }
             }
+
+            if max_speed > 0.0 {
+                speed_x = speed_x.abs().min(max_speed) * speed_x.signum();
+            }
+
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, speed_x, speed_y);
         }
         // let mut speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_MOTION);
         // println!("DACDS MOTION: {}", speed_x);
         // speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_STOP);
         // println!("DACDS STOP: {}", speed_x);
     }
+
     let log_attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if sha_frame == 1 && !fighter.global_table[8].get_bool() && log_attack_kind > 0 {
         FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log_attack_kind);

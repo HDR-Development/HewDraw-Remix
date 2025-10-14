@@ -1,6 +1,5 @@
 use super::*;
 use utils::ext::*;
-use std::arch::asm;
 
 extern "C" {
     #[link_name = "_ZN3app6camera13get_dead_areaEv"]

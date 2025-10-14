@@ -149,4 +149,10 @@ pub fn install() {
         hook_ko_meter_gain,
         littlemac_on_search
     );
+
+    // modifies the amount of slowdown applied during Slip Counter
+    // cmp w0, #0x23
+    let _ = skyline::patching::Patch::in_text(0xc46674).data(0x71008C1Fu32);
+    // mov w3, #0x24
+    let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x52800483u32);
 }

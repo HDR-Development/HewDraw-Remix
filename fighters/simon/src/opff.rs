@@ -32,16 +32,14 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
+
         if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::simon::status::SPECIAL_S_LAND_CANCEL) {
             VarModule::off_flag(fighter.battle_object, vars::simon::status::SPECIAL_S_LAND_CANCEL);
-            // Current FAF in motion list is 42, frame is 0 indexed so subtract a frame
-            let special_s1_cancel_frame_ground = 41.0;
-            // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+            
             let landing_lag = 11.0;
-            if MotionModule::frame(fighter.module_accessor) < (special_s1_cancel_frame_ground - landing_lag) {
-                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_s1_cancel_frame_ground - landing_lag, true, true, false);
-            }
-            LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, landing_lag);
+
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING, false);
         }
     }
 }

@@ -1,12 +1,5 @@
 use super::*;
 
-// shorthand for referencing steve's different MATERIAL_KIND constants
-const WOOD: i32 = 0x1;
-const STONE: i32 = 0x2;
-const IRON: i32 = 0x3;
-const GOLD: i32 = 0x4;
-const DIAMOND: i32 = 0x6;
-
 // this script is used for jab, forward tilt, and neutral air
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;

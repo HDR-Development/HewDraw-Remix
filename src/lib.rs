@@ -147,74 +147,41 @@ unsafe fn music_function2(arg: u64, arg2: u64);
 #[skyline::hook(offset = 0x14f99cc, inline)]
 unsafe fn training_reset_music2(ctx: &skyline::hooks::InlineCtx) {
     if !smash::app::smashball::is_training_mode() {
-        music_function2(*ctx.registers[0].x.as_ref(), *ctx.registers[1].x.as_ref());
+        music_function2(ctx.registers[0].x(), ctx.registers[1].x());
     }
 }
 
 #[skyline::hook(offset = 0x1509fd4, inline)]
 unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
     if !smash::app::smashball::is_training_mode() {
-        music_function1(*ctx.registers[0].x.as_ref());
+        music_function1(ctx.registers[0].x());
     }
 }
 
 #[skyline::hook(offset = 0x235cad0, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
+    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x300);
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
     let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
     slice.copy_from_slice(b"MenuSequenceScene\0");
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53040f0)
         as *const u64;
     // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
     println!("{:#x}", *mode);
 }
 
-#[skyline::from_offset(0x3540170)]
+#[skyline::from_offset(0x353ff00)]
 fn load_file_by_hash40(tables: u64, hash: u64);
 
 #[skyline::hook(offset = 0x1864e00, inline)]
 unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
     let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8)
-        .add(0x5332f20) as *const u64);
+        .add(0x5331f20) as *const u64);
     load_file_by_hash40(
         tables,
         smash::hash40("ui/layout/menu/main_menu/main_menu/layout.arc"),
     );
 }
-
-std::arch::global_asm!(
-    r#"
-    .section .nro_header
-    .global __nro_header_start
-    .word 0
-    .word _mod_header
-    .word 0
-    .word 0
-
-    .section .rodata.module_name
-        .word 0
-        .word 3
-        .ascii "hdr"
-    .section .rodata.mod0
-    .global _mod_header
-    _mod_header:
-        .ascii "MOD0"
-        .word __dynamic_start - _mod_header
-        .word __bss_start - _mod_header
-        .word __bss_end - _mod_header
-        .word __eh_frame_hdr_start - _mod_header
-        .word __eh_frame_hdr_end - _mod_header
-        .word __nx_module_runtime - _mod_header // runtime-generated module object offset
-    .global IS_NRO
-    IS_NRO:
-        .word 1
-
-    .section .bss.module_runtime
-    __nx_module_runtime:
-    .space 0xD0
-    "#
-);
 
 use skyline::hooks::InlineCtx;
 use smash::lib::lua_const::*;
@@ -273,8 +240,8 @@ unsafe fn push_hash(game_state: u64, hash: u64) {
 #[skyline::hook(offset = 0x14d6590)]
 unsafe fn game_end(game_state: u64) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c41b2);
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53040f0)
         as *const u64;
     if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
@@ -292,8 +259,8 @@ unsafe fn game_end(game_state: u64) {
 #[skyline::hook(offset = 0x14d7ef0)]
 unsafe fn game_exit(game_state: u64, arg: u64) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c41b2);
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53040f0)
         as *const u64;
     if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
@@ -326,13 +293,13 @@ impl FuckingAssStringStructureShit {
 
 #[skyline::hook(offset = 0x23357f8, inline)]
 unsafe fn sss_to_css(ctx: &InlineCtx) {
-    let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
+    let thing = ctx.registers[1].x() as *mut FuckingAssStringStructureShit;
     (*thing).set("CharaSelectScene");
 }
 
 #[skyline::hook(offset = 0x2335184, inline)]
 unsafe fn css_to_sss(ctx: &InlineCtx) {
-    let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
+    let thing = ctx.registers[1].x() as *mut FuckingAssStringStructureShit;
     (*thing).set("StageSelectScene");
 }
 
@@ -348,7 +315,7 @@ static mut IS_LOADING: bool = false;
 // OFFSET IS WRONG, IT'S FROM 13.0.1 but it don't fuckin work
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53040f0)
         as *const u64;
     IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
@@ -369,7 +336,7 @@ unsafe fn copy_fighter_info(
     src: &mut UnknownFighterInfoStruct,
 ) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c41b2);
     if src.hash1 & 0xFF_FFFFFFFF == smash::hash40("ui_chara_random") && one == 0 && IS_LOADING {
         dst.hash1 = 0xC1FFFF00_00000000;
         dst.hash2 = 0xC1FFFF00_00000000;
@@ -379,8 +346,8 @@ unsafe fn copy_fighter_info(
     call_original!(dst, src);
 }
 
-#[no_mangle]
-pub extern "C" fn main() {
+#[skyline::main(name = "hdr")]
+pub fn main() {
     #[cfg(feature = "main_nro")]
     {
         quick_validate_install();

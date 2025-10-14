@@ -30,10 +30,14 @@
     <struct index="0">
       <float hash="p1_y">25.5</float>
     </struct>
+    <!-- UP SPECIAL JUMP -->
     <struct index="1">
+      <float hash="p1_x">13</float>
       <float hash="p1_y">26</float>
     </struct>
+    <!-- UP SPECIAL END -->
     <struct index="2">
+      <float hash="p1_x">13</float>
       <float hash="p1_y">26</float>
     </struct>
   </list>

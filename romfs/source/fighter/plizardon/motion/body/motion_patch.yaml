@@ -25,6 +25,9 @@ attack_air_n:
 attack_dash:
   extra:
     cancel_frame: 49
+attack_hi3:
+  extra:
+    cancel_frame: 36
 attack_lw3:
   flags:
     move: false

@@ -17,20 +17,6 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn refresh_flare(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::get_int(boma.object(), vars::edge::instance::FIRE_ID) != -1
-    && ArticleModule::get_active_num(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE) < 1 {
-        VarModule::set_int(boma.object(), vars::edge::instance::FIRE_ID, -1);
-    }
-}
-
-unsafe fn up_special_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        // allows ledgegrab during upB startup
-        fighter.sub_transition_group_check_air_cliff();
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -50,8 +36,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     sword_length(boma);
-    refresh_flare(boma);
-    up_special_startup_ledgegrab(fighter);
     fastfall_specials(fighter);
 }
 

@@ -1,28 +1,5 @@
 use super::*;
 
-pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommon) {
-    // [v] this is likely a leniency check so that if you accidentally double tap
-    //      the special button you aren't forced into spreadbullet. it should be
-    //      noted how here it requires the `trigger` instead of holding it, so if you
-    //      hold the button it also doesn't trigger until right before the move would come out
-    let frame = fighter.get_int(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
-
-    if frame <= 0 {
-        return;
-    }
-
-    if fighter.get_param_int("param_special_hi", "attack_input_frame") <= frame {
-        return;
-    }
-
-    // [h] instead of checking for either and setting a flag, we will reserve different actions
-    //      depending on the button
-    if fighter.is_button_trigger(Buttons::Special) {
-        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
-    } else if fighter.is_button_trigger(Buttons::Attack) {
-        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
-    }
-}
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
@@ -32,7 +9,7 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_MOTION_CLIFF_MOVE,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -67,9 +44,6 @@ unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_GROUND_START);
     }
 
-    // [h] Initialize our reserved action to the default (fall)
-    VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL);
-
     fighter.main_shift(special_hi_main_loop)
 }
 
@@ -79,13 +53,10 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_hi"));
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_hi_start"), L2CValue::Hash40s("special_air_hi_start"), true.into());
 
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
-    }
-
     // [v] check if you are doing the input for spreadbullet, and if the animation is over (this is the initial swipe)
     //      transition into the jump
     special_hi_common_check_spreadbullet(fighter);
+
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP.into(), false.into());
     }
@@ -93,24 +64,27 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // [v] if you aren't going into jump then this is an interruption
-    if fighter.global_table[globals::STATUS_KIND] != FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP {
-        MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
-        MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
-    }
-    0.into()
-}
+pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommon) {
+    // [v] this is likely a leniency check so that if you accidentally double tap
+    //      the special button you aren't forced into spreadbullet. it should be
+    //      noted how here it requires the `trigger` instead of holding it, so if you
+    //      hold the button it also doesn't trigger until right before the move would come out
+    let frame = fighter.get_int(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
 
-unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // [v] increment the frame counter so that the input leniency check works properly
-    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
-    0.into()
+    if frame <= 0 {
+        return;
+    }
+
+    if fighter.get_param_int("param_special_hi", "attack_input_frame") <= frame {
+        return;
+    }
+
+    if fighter.is_button_trigger(Buttons::Special) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET);
+    }
 }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_end);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_exec);
 }

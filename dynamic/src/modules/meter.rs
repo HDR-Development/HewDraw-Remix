@@ -39,6 +39,9 @@ extern "Rust" {
     #[link_name = "MeterModule__drain_direct"]
     fn MeterModule__drain_direct(object: *mut BattleObject, amount: f32);
 
+    #[link_name = "MeterModule__drain_direct_clamp_to_level"]
+    fn MeterModule__drain_direct_clamp_to_level(object: *mut BattleObject, amount: f32);
+
     #[link_name = "MeterModule__add"]
     fn MeterModule__add(object: *mut BattleObject, amount: f32);
 
@@ -116,6 +119,11 @@ pub mod MeterModule {
     pub fn drain_direct(object: *mut BattleObject, amount: f32) {
         unsafe {
             MeterModule__drain_direct(object, amount)
+        }
+    }
+    pub fn drain_direct_clamp_to_level(object: *mut BattleObject, amount: f32) {
+        unsafe {
+            MeterModule__drain_direct_clamp_to_level(object, amount)
         }
     }
     pub fn add(object: *mut BattleObject, amount: f32) {

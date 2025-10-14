@@ -69,7 +69,7 @@ pub unsafe fn init_css_hook(ctx: &InlineCtx) {
     };
     
     // get the original vector of fighter entries to be loaded
-    let chara_vec = &mut *(*ctx.registers[4].x.as_ref() as *mut smash2::cpp::Vector<u64>);
+    let chara_vec = &mut *(ctx.registers[4].x() as *mut smash2::cpp::Vector<u64>);
 
     if !config.enabled {
         for char in CharaSchema::default().order.iter() {

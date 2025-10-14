@@ -93,7 +93,36 @@ attack_hi3:
     cancel_frame: 54
 attack_lw3:
   extra:
-    cancel_frame: 31
+    cancel_frame: 30
+attack_lw3_2:
+  game_script: game_attacklw32
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c02attacklw32.nuanmb
+  scripts:
+    - expression_attacklw32
+    - sound_attacklw32
+    - effect_attacklw32
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 21
+    freeze_during_hitstop: false
 attack_dash:
   extra:
     cancel_frame: 44

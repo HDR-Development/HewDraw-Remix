@@ -16,15 +16,15 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::from_offset(0x37782e0)]
+#[skyline::from_offset(0x37786c0)]
 unsafe fn replace_texture(pane: u64, index: &u32);
 
-#[skyline::from_offset(0x353d6f0)]
+#[skyline::from_offset(0x353d480)]
 unsafe fn get_filepath_index_by_hash40(index: &mut u32, hash40: u64);
 
 #[skyline::hook(offset = 0x1ee9edc, inline)]
 unsafe fn among_us_baby(ctx: &InlineCtx) {
-    let layout_view = *ctx.registers[0].x.as_ref();
+    let layout_view = ctx.registers[0].x();
 
     let pane = get_pane_from_layout(layout_view, "perry\0").unwrap();
     let mut index = 0u32;
@@ -63,7 +63,7 @@ const DLC: &[&'static str] = &[
 #[skyline::hook(offset = 0x25fdf58, inline)]
 unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     let search = FilesystemInfo::instance().unwrap().search();
-    let Ok(path) = search.get_path_list_entry_from_hash(*ctx.registers[8].x.as_ref()) else {
+    let Ok(path) = search.get_path_list_entry_from_hash(ctx.registers[8].x()) else {
         return;
     };
 
@@ -92,7 +92,7 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
 
 static mut SHOULD_PLAY: bool = false;
 
-#[skyline::from_offset(0x3777750)]
+#[skyline::from_offset(0x3777b30)]
 unsafe fn play_animation(layout: u64, anim: *const u8);
 
 #[skyline::hook(offset = 0x2310b68, inline)]
@@ -115,7 +115,7 @@ unsafe fn should_play_out_anim(ctx: &mut InlineCtx) {
         return;
     }
 
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 extern "C" {

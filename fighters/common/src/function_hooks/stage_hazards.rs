@@ -41,25 +41,14 @@ unsafe fn area_manager_process(manager: *const u64) {
     call_original!(manager)
 }
 
-static HAZARDLESS_STAGE_IDS: &[u32] = &[
-    0x3b,  // venom
-    0x3e,  // brinstar
-    0x62,  // skyworld
-    0x77,  // summit
-    0xcb,  // find mii (StreetPass)
-    0xb9,  // reset bomb forest
-    0xec,  // skyloft,
-    0x107, // wrecking crew
-    0x10d, // wuhu island
-];
 
 #[skyline::hook(offset = 0x178ab60, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
-    let stage_id = *ctx.registers[1].w.as_ref();
+    let stage_id = ctx.registers[1].w();
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
         || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
-        *ctx.registers[3].w.as_mut() = 0;
+    if is_alt_haz_off {
+        ctx.registers[3].set_w(0);
     }
 }
 
@@ -67,25 +56,25 @@ unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
     let battle_object_world = *(((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text)
         as u64)
-        + 0x52b8558) as *const u64);
+        + 0x52b7558) as *const u64);
     *(battle_object_world as *mut u8).add(0x59) = 0x1;
 }
 
 #[skyline::hook(offset = 0x25fc644, inline)]
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
-    let ptr = *ctx.registers[1].x.as_ref();
+    let ptr = ctx.registers[1].x();
     let stage_id = *(ptr as *const u16) as u32;
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
         || (stage_id == 0x68 && get_current_stage_alt() == 0);
-    if HAZARDLESS_STAGE_IDS.contains(&stage_id) || is_alt_haz_off {
+    if is_alt_haz_off {
         *(ptr as *mut bool).add(0x10) = false;
     }
 }
 
 #[skyline::hook(offset = 0x2981EDC, inline)]
 unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
-    if *ctx.registers[8].x.as_ref() == 3 {
-        *ctx.registers[8].x.as_mut() = 5;
+    if ctx.registers[8].x() == 3 {
+        ctx.registers[8].set_x(5);
     }
 }
 
@@ -97,15 +86,15 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x297D6AC, inline)]
 unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
     if get_current_stage_alt() == 0 {
-        *ctx.registers[8].x.as_mut() = 0x2;
+        ctx.registers[8].set_x(0x2);
     } else {
-        *ctx.registers[8].x.as_mut() = 0x4;
+        ctx.registers[8].set_x(0x4);
     }
 }
 
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port
-    // NOTE: The 0xc80 is from the 13.0.2 -> 13.0.3 port
+    // NOTE: The 0x20  is from the 13.0.2 -> 13.0.3 port
     skyline::patching::Patch::in_text(0x298236c + 0xc80 + 0x20).data(0x52800008u32);
     skyline::patching::Patch::in_text(0x28444cc + 0xc80 + 0x20).data(0x52800009u32);
     skyline::patching::Patch::in_text(0x28440f4 + 0xc80 + 0x20).data(0x52800009u32);

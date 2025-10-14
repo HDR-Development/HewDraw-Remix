@@ -75,8 +75,11 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             }
             EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_sp_flash"), true, true);
-            WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            
+            let landing_lag = 10.0;
+            VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, landing_lag);
+            
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
             return 1.into();
         }
         else {

@@ -78,10 +78,10 @@ unsafe fn get_button_label_by_operation_kind(
 
 #[skyline::hook(offset = 0x1d334e8, inline)]
 unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
-    let button = *ctx.registers[25].w.as_ref();
+    let button = ctx.registers[25].w();
     if ![0x3, 0x4, 0x5, 0x8].contains(&button) {
         let input_list_vector =
-            &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
+            &mut *((ctx.registers[24].x() + 0x148) as *mut CppVector<u8>);
 
         if input_list_vector.len() < 9 {
             input_list_vector.push(utils::ext::InputKind::Parry as u8);
@@ -95,11 +95,11 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1D331F8, inline)]
 unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
-    let button = *ctx.registers[25].w.as_ref();
+    let button = ctx.registers[25].w();
     if [0x4, 0x5, 0x6, 0x9].contains(&button) {
         return;
     }
-    let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
+    let input_list_vector = &mut *((ctx.registers[24].x() + 0x148) as *mut CppVector<u8>);
 
     if input_list_vector.len() < 9 {
         input_list_vector.push(utils::ext::InputKind::Parry as u8);
@@ -112,7 +112,7 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1D33CD8, inline)]
 unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
-    let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
+    let input_list_vector = &mut *((ctx.registers[24].x() + 0x148) as *mut CppVector<u8>);
 
     if input_list_vector.len() < 9 {
         input_list_vector.push(utils::ext::InputKind::Parry as u8);
@@ -125,9 +125,9 @@ unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1D3594C, inline)]
 unsafe fn add_more_buttons(ctx: &mut skyline::hooks::InlineCtx) {
-    let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
+    let input_list_vector = &mut *((ctx.registers[24].x() + 0x148) as *mut CppVector<u8>);
     // panic!("{}", input_list_vector.len());
-    *ctx.registers[25].x.as_mut() = input_list_vector.len() as u64;
+    ctx.registers[25].set_x(input_list_vector.len() as u64);
 }
 
 unsafe fn calc_nnsdk_offset() -> u64 {
@@ -138,7 +138,7 @@ unsafe fn calc_nnsdk_offset() -> u64 {
 
 static mut DUMMY_BLOCK: [u8; 0x100] = [0; 0x100];
 
-#[skyline::hook(offset = 0x374779C, inline)]
+#[skyline::hook(offset = 0x3747b7c, inline)]
 unsafe fn run_scene_update(_: &skyline::hooks::InlineCtx) {
     while !RUN.swap(false, Ordering::SeqCst) {
         skyline::nn::hid::GetNpadFullKeyState(DUMMY_BLOCK.as_mut_ptr() as _, &0);
@@ -152,12 +152,12 @@ unsafe fn set_interval_1(window: u64, _: i32) {
 
 #[skyline::hook(replace = OFFSET2, inline)]
 unsafe fn set_interval_2(ctx: &mut InlineCtx) {
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 static mut RUN: AtomicBool = AtomicBool::new(false);
 
-#[skyline::hook(offset = 0x3810684, inline)]
+#[skyline::hook(offset = 0x3810a64, inline)]
 unsafe fn vsync_count_thread(_: &skyline::hooks::InlineCtx) {
     RUN.store(true, Ordering::SeqCst);
 }

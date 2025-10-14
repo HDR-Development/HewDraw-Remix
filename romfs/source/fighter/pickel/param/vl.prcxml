@@ -4,6 +4,7 @@
     <struct index="0">
       <float hash="p1_y">21</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="1">
       <float hash="p1_y">10.5</float>
     </struct>
@@ -95,12 +96,12 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_pickelobject">
-    <float hash="hp_grade_1">7</float>
-    <float hash="hp_wood">10</float>
-    <float hash="hp_stone">13</float>
-    <float hash="hp_iron">16</float>
-    <float hash="fighter_landing_damage_mul">7.0</float>
-    <int hash="fighter_landing_damage_mul_frame">24</int>
+    <float hash="hp_grade_1">8</float>
+    <float hash="hp_wood">12</float>
+    <float hash="hp_stone">16</float>
+    <float hash="hp_iron">20</float>
+    <float hash="fighter_landing_damage_mul">4.0</float>
+    <int hash="fighter_landing_damage_mul_frame">12</int>
   </struct>
   <list hash="param_table">
     <struct index="0">

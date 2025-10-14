@@ -233,6 +233,9 @@ hash40 = "1.2.0"
 smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
 smash2 = { git = "https://github.com/blu-dev/smash-rs", package = "smash"}
 
+[patch.crates-io]
+nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs" }
+
 [features]
 default = [
     "bayonetta",

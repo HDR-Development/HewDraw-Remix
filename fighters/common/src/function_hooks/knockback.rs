@@ -1,12 +1,13 @@
 use super::*;
 use super::knockback_util::*;
 use utils::ext::*;
-use std::arch::asm;
 
 pub fn install() {
     skyline::install_hooks!(
         process_knockback,
-        calculate_knockback
+        calculate_knockback,
+        set_thrown_lr,
+        set_damage_lr
     );
 }
 
@@ -28,9 +29,9 @@ static mut IS_CALCULATING: Option<(u32, u32)> = None;
 
 #[skyline::hook(offset = 0x402f00, inline)]
 unsafe fn calculate_knockback(ctx: &skyline::hooks::InlineCtx) {
-    let damage_module = *ctx.registers[19].x.as_ref();
+    let damage_module = ctx.registers[19].x();
     let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
-    let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
+    let ptr = ctx.registers[20].x() as *mut u8;
     let id = *(ptr.add(0x24) as *const u32);
     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
 
@@ -44,10 +45,10 @@ unsafe fn calculate_knockback(ctx: &skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x403950, inline)]
 unsafe fn process_knockback(ctx: &skyline::hooks::InlineCtx) {
     if let Some((defender, attacker)) = IS_CALCULATING {
-        let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
+        let boma = ctx.registers[20].x() as *mut smash::app::BattleObjectModuleAccessor;
         if (*boma).battle_object_id == defender {
             process_item_on_collision(defender, attacker);
-            calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref() as *const f32);
+            calculate_finishing_hit(defender, attacker, ctx.registers[19].x() as *const f32);
         }
     }
 }
@@ -117,12 +118,17 @@ pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32)
                 TeamModule::set_hit_team(defender_boma, attacker_team_no);
             }
             else if attacker_boma.is_item() {
-                if attacker_boma.kind() == *ITEM_KIND_MECHAKOOPA { return; }
-                let owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32;
-                //println!("owner id: {}", owner_id);
+                let owner_id;
+                if LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_CREATEOWNER) {
+                    owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_CREATEOWNER, true) as u32;
+                } else if !LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_TEAMOWNER) {
+                    owner_id = LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32;
+                } else {
+                    return; // this item somehow isn't able to have its team found, get out of here
+                }
                 let owner_boma = &mut *(*utils::util::get_battle_object_from_id(owner_id));
                 // failsafe in case this somehow isn't a fighter
-                if !owner_boma.is_fighter(){ return };
+                if !owner_boma.is_fighter() { return };
                 let attacker_team_no = TeamModule::hit_team_no(owner_boma) as i32;
                 //println!("swapping barrel team to {} and owner id to {}", attacker_team_no, owner_id);
                 TeamModule::set_team_owner_id(defender_boma, owner_id);
@@ -300,4 +306,68 @@ pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleOb
         EffectModule::set_disable_render_offset_last(defender_boma);
         EffectModule::set_rate_last(defender_boma, 2.5);
     }
+}
+
+// This runs immediately before PostureModule::set_lr is called on throw release
+// which determines the facing direction of the receiver when thrown
+// 
+// We override this to allow throw receiver direction to always be determined by
+// which side the attacker was on
+#[skyline::hook(offset = 0x6c59cc, inline)]
+unsafe fn set_thrown_lr(ctx: &mut skyline::hooks::InlineCtx) {
+    let opponent_battle_object_id = *(ctx.registers[20].x() as *const u32).add(0x44 / 4);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+
+    if !opponent_boma.is_fighter() {
+        return;
+    }
+
+    let boma = ctx.registers[19].x() as *mut smash::app::BattleObjectModuleAccessor;
+    let fighter = util::get_fighter_common_from_accessor(&mut *boma);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("speed_vec_x") as u64);
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let damage_speed_x = fighter.pop_lua_stack(1).get_f32();
+
+    let lr: f32 = if damage_speed_x < 0.0 {
+        1.0
+    } else if damage_speed_x > 0.0 {
+        -1.0
+    } else {
+        PostureModule::lr(boma)
+    };
+
+    ctx.registers_f[0].set_s(lr)
+}
+
+// This runs immediately before FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR is set
+// which determines whether or not to turn the receiver around on hit
+// 
+// We override this to allow receiver turnaround to always be determined by
+// which side the attacker was on
+#[skyline::hook(offset = 0x6c5980, inline)]
+unsafe fn set_damage_lr(ctx: &mut skyline::hooks::InlineCtx) {
+    let opponent_battle_object_id = *(ctx.registers[20].x() as *const u32).add(0x44 / 4);
+    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
+    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+
+    if !opponent_boma.is_fighter() {
+        return;
+    }
+    
+    let opponent_pos_x = PostureModule::pos_x(opponent_boma);
+
+    let boma = ctx.registers[19].x() as *mut smash::app::BattleObjectModuleAccessor;
+    let pos_x = PostureModule::pos_x(boma);
+    let lr = PostureModule::lr(boma);
+
+    let damage_lr: f32 = if opponent_pos_x >= pos_x {
+        1.0
+    } else {
+        -1.0
+    };
+
+    ctx.registers_f[0].set_s(damage_lr)
 }

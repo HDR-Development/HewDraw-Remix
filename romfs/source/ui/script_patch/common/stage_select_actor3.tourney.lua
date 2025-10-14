@@ -1078,7 +1078,7 @@ local change_sub_page = function(target_page)
         end
 
         -- set the preview
-        UiScriptPlayer.invoke("set_stage_preview_from_panel", 0, i - 1)
+        UiScriptPlayer.invoke("set_stage_preview_from_panel", 0, target_page * PANELS_PER_PAGE + i - 1)
         -- use the set preview to check if this preview is the training stage
         local is_random = UiScriptPlayer.invoke("is_training_stage_preview", 0)
 
@@ -1107,6 +1107,7 @@ local change_sub_page = function(target_page)
             -- print("setting root pane parent pane position")
             -- panel:get_root_pane():get_parent_pane():set_position(positions[offset].x, positions[offset].y)
             print("bringing to front panel")
+            panel:get_root_pane():set_position(positions[i].x, positions[i].y)
             panel:set_visible(true)
         end
     end
@@ -1386,6 +1387,7 @@ local setup_from_environment = function()
     UiScriptPlayer.invoke("setup_bgm")
 
     change_sub_page(0)
+    set_stage_preview_from_stage_panel(0, 0)
 end
 
 -- Cancels, presumably a part of the exit sequence

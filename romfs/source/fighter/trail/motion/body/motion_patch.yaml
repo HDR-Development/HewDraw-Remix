@@ -119,10 +119,10 @@ catch_attack:
     cancel_frame: 0
 special_s_end:
   extra:
-    cancel_frame: 31
+    cancel_frame: 33
 special_air_s_end:
   extra:
-    cancel_frame: 24
+    cancel_frame: 28
 special_lw_start:
   extra:
     cancel_frame: 64

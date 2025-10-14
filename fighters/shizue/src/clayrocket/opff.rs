@@ -65,7 +65,8 @@ unsafe extern "C" fn lloid_callback(weapon : &mut L2CFighterBase) {
             *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
             *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
             *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
-            *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,]) {
+            *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+            *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD]) {
             VarModule::on_flag(shizue, vars::shizue::instance::SPECIAL_LW_LLOID_ASYNC);
             VarModule::set_int(shizue, vars::shizue::instance::SPECIAL_LW_LLOID_TIMER, 10);
             EFFECT(&mut weapon.agent_base, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);

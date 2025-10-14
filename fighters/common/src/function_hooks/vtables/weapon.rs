@@ -1,7 +1,7 @@
 use super::*;
 
 // Used for when generic weapons hit something else.
-#[skyline::hook(offset = 0x33a8280)]
+#[skyline::hook(offset = 0x33a8010)]
 unsafe extern "C" fn weapon_attack_callback(weapon: *mut BattleObject, arg: u64) {
     if (*weapon).kind == *WEAPON_KIND_PICKEL_FISHINGROD as u32 {
         *(weapon as *mut bool).add(0x90) = true;
@@ -10,9 +10,9 @@ unsafe extern "C" fn weapon_attack_callback(weapon: *mut BattleObject, arg: u64)
 }
 
 // Resets projectile lifetime on parry
-#[skyline::hook(offset = 0x33bdff8, inline)]
+#[skyline::hook(offset = 0x33bdd88, inline)]
 unsafe extern "C" fn force_reflect_full_lifetime(ctx: &mut skyline::hooks::InlineCtx) {
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 pub fn install() {

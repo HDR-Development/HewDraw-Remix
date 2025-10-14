@@ -48,6 +48,10 @@ unsafe fn up_special_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         // allows ledgegrab during upB startup
         fighter.sub_transition_group_check_air_cliff();
+
+        if fighter.status_frame() == 12 {
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES.into());
+        }
     }
 }
 

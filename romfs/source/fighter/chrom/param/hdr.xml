@@ -2,8 +2,8 @@
 <struct>
     <struct hash="cliff_hang_data">
         <struct hash="special_hi">
-            <float hash="p1_x">18</float>
-            <float hash="p1_y">31</float>
+            <float hash="p1_x">14</float>
+            <float hash="p1_y">19</float>
             <float hash="p2_x">-10.8</float>
             <float hash="p2_y">9</float>
         </struct>
@@ -17,8 +17,8 @@
         <float hash="rise_speed_x_mul">0.5</float>
         <float hash="rise_angle_base">2.5</float>
         <float hash="rise_angle_mul">5.0</float>
-        <float hash="rise_angle_min">-5.0</float>
-        <float hash="rise_angle_max">7.5</float>
+        <float hash="rise_angle_min">-6.0</float>
+        <float hash="rise_angle_max">9.0</float>
         <float hash="flip_accel_x_mul">0.375</float>
         <float hash="flip_speed_x_max_mul">0.5</float>
         <float hash="flip_accel_y_mul">1.1</float>

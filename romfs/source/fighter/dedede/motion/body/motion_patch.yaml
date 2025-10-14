@@ -77,7 +77,7 @@ attack_12:
   flags:
     move: false
   extra:
-    cancel_frame: 21
+    cancel_frame: 25
 guard_off:
   blend_frames: 4
   extra:
@@ -112,7 +112,7 @@ attack_13:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 33
+    cancel_frame: 30
     freeze_during_hitstop: true
 attack_hi4:
   extra:
@@ -140,7 +140,7 @@ fall_special:
   blend_frames: 3
 attack_air_f:
   extra:
-    cancel_frame: 39
+    cancel_frame: 38
 attack_air_b:
   extra:
     cancel_frame: 34

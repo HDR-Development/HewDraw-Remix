@@ -4,6 +4,7 @@
     <struct index="0">
       <float hash="p1_y">22</float>
     </struct>
+    <!-- SIDE SPECIAL 2 -->
     <struct index="1">
       <float hash="p1_y">22.75</float>
     </struct>

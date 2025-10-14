@@ -14,17 +14,17 @@ use globals::*;
 
 #[skyline::hook(offset = 0xf13ddc, inline)]
 unsafe fn steve_parry_stuff_fix(ctx: &mut skyline::hooks::InlineCtx) {
-    if *ctx.registers[0].x.as_ref() == 0x1D {
-        *((ctx as *mut _ as *mut u8).add(0x100).add(0x98) as *mut u32) = 0x1;
+    if ctx.registers[0].x() == 0x1D {
+        *((ctx as *mut _ as *mut u8).add(0x300).add(0x98) as *mut u32) = 0x1;
     }
 }
 
 // #[skyline::hook(offset = 0x641814, inline)]
 // unsafe fn shield_damage_analog(ctx: &skyline::hooks::InlineCtx) {
 //     let boma =
-//         *(*ctx.registers[0].x.as_ref() as *const u64).add(1) as *mut BattleObjectModuleAccessor;
+//         *(ctx.registers[0].x() as *const u64).add(1) as *mut BattleObjectModuleAccessor;
 //     let current_shield = WorkModule::get_float(boma, 6);
-//     let attack_power = *(*ctx.registers[19].x.as_ref() as *const f32).add(0xf730 / 4);
+//     let attack_power = *(ctx.registers[19].x() as *const f32).add(0xf730 / 4);
 //     let analog = InputModule::get_analog_for_guard((*boma).object());
 //     let damage_mul = WorkModule::get_param_float(
 //         boma,
@@ -41,7 +41,7 @@ unsafe fn steve_parry_stuff_fix(ctx: &mut skyline::hooks::InlineCtx) {
 
 // #[skyline::hook(offset = 0x6285f0, inline)]
 // unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
-//     let fighter = *ctx.registers[19].x.as_ref();
+//     let fighter = ctx.registers[19].x();
 //     let boma = *(fighter as *const u64).add(4);
 //     let attack_module: u64 = *(boma as *const u64).add(0xa0 / 8);
 //     let transactor_count: u64 = *(attack_module as *const u64).add(0x20 / 8);
@@ -71,14 +71,14 @@ unsafe fn steve_parry_stuff_fix(ctx: &mut skyline::hooks::InlineCtx) {
 //                 } else {
 //                     mul
 //                 };
-//                 std::arch::asm!("fmov s0, w8", in("w8") mul);
+//                 ctx.registers_f[0].set_s(mul);
 //                 return;
 //             }
 
 //             current = *(current as *const u64);
 //         }
 //     }
-//     std::arch::asm!("fmov s0, w8", in("w8") mul);
+//     ctx.registers_f[0].set_s(mul);
 // }
 
 pub fn install() {

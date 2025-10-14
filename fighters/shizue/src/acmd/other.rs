@@ -6,10 +6,10 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.4);
     }
-	frame(lua_state, 11.0); // Effectively F15
+    frame(lua_state, 11.0); // Effectively F15
     if is_excute(agent) {
-		FT_MOTION_RATE(agent, 1.0);
-		WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+        FT_MOTION_RATE(agent, 1.0);
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
 }
 
@@ -29,11 +29,11 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.2);
-		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
     }
     frame(lua_state, 13.0); // Effectively F15
     if is_excute(agent) {
-		FT_MOTION_RATE(agent, 1.0);
+        FT_MOTION_RATE(agent, 1.0);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
 }
@@ -114,7 +114,6 @@ unsafe extern "C" fn sound_furafura(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn sound_passive(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -122,14 +121,17 @@ unsafe extern "C" fn sound_passive(agent: &mut L2CAgentBase) {
         STOP_SE(agent, Hash40::new("se_common_blowaway_s"));
         STOP_SE(agent, Hash40::new("se_common_blowaway_m"));
         STOP_SE(agent, Hash40::new("se_common_blowaway_l"));
-        let damage_vc: [&str;5] = [ // damage voice lines
+        let damage_vc: [&str; 5] = [
+            // damage voice lines
             "vc_shizue_damage01",
             "vc_shizue_damage02",
             "vc_shizue_damage03",
             "vc_shizue_damagefly01",
-            "vc_shizue_damagefly02"
+            "vc_shizue_damagefly02",
         ];
-        for clip in damage_vc { STOP_SE(agent, Hash40::new(clip)) };
+        for clip in damage_vc {
+            STOP_SE(agent, Hash40::new(clip))
+        }
         PLAY_LANDING_SE(agent, Hash40::new("se_shizue_landing01"));
         let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_passive"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
@@ -239,29 +241,13 @@ unsafe extern "C" fn sound_damage(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_damagefly(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
-        if !StopModule::is_stop(boma) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_damagefly02"), true, false, false, false, app::enSEType(0));
-                SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
-            }
-            else {
-                SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
-            }
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(agent) {
-        if !SoundModule::is_playing(boma, Hash40::new("vc_shizue_damagefly01"))
-        && !SoundModule::is_playing(boma, Hash40::new("vc_shizue_damagefly02")) {
-            if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
-                let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_damagefly02"), true, false, false, false, app::enSEType(0));
-                SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
-            }
-            else {
-                SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
-            }
+        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_KILLING_BLOW) {
+            let handle = SoundModule::play_se(boma, Hash40::new("vc_shizue_damagefly02"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(boma, handle as i32, 0.75, 0);
+        } else {
+            SHIZUE_VC_SEQUENCE_DAMAGEFLY(agent);
         }
     }
 }

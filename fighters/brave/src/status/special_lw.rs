@@ -135,6 +135,8 @@ unsafe extern "C" fn special_lw_set_index(fighter: &mut L2CFighterCommon) {
 
 unsafe extern "C" fn special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Pre, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)(fighter);
+    let mp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP);
+    VarModule::set_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP, mp);
     let mut start_turn = *FIGHTER_STATUS_ATTR_START_TURN as u32;
     let facing = PostureModule::lr(fighter.module_accessor);
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::SPECIAL_LW_CSTICK_BUFFER) {
@@ -184,6 +186,19 @@ unsafe extern "C" fn special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2C
     ret
 }
 
+unsafe extern "C" fn special_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)(fighter);
+    // refund MP during a special roll
+    if VarModule::is_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU) {
+        let mp = VarModule::get_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP);
+        let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+        FighterSpecializer_Brave::set_sp(&mut brave_fighter, mp, false);
+        VarModule::off_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU);
+    }
+
+    ret
+}
+
 unsafe extern "C" fn special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let brave = fighter.global_table[0x4].get_ptr() as *mut Fighter;
     FighterSpecializer_Brave::special_lw_close_window(brave, true, false, false);
@@ -227,8 +242,23 @@ unsafe extern "C" fn special_lw_steel_start_pre(fighter: &mut L2CFighterCommon) 
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
+    let mp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP);
+    VarModule::set_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP, mp);
 
     return 0.into()
+}
+
+unsafe extern "C" fn special_lw_steel_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START)(fighter);
+    // refund MP during a special roll
+    if VarModule::is_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU) {
+        let mp = VarModule::get_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP);
+        let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+        FighterSpecializer_Brave::set_sp(&mut brave_fighter, mp, false);
+        VarModule::off_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU);
+    }
+
+    ret
 }
 
 unsafe extern "C" fn special_lw_failure_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -265,8 +295,11 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 
     agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, special_lw_start_pre);
+    agent.status(Main, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, special_lw_start_main);
     agent.status(End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, special_lw_start_end);
+
     agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START, special_lw_steel_start_pre);
+    agent.status(Main, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START, special_lw_steel_start_main);
 
     agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_FAILURE, special_lw_failure_pre);
 }

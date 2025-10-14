@@ -139,28 +139,31 @@ special_air_hi_turn:
   blend_frames: 10
 special_air_lw:
   extra:
-    cancel_frame: 30
+    cancel_frame: 27
 special_air_lw_start:
   extra:
     cancel_frame: 62
 special_air_lw_turn:
   extra:
-    cancel_frame: 30
+    cancel_frame: 27
 special_air_s_start:
   extra:
     cancel_frame: 57
 special_lw:
   extra:
-    cancel_frame: 30
+    cancel_frame: 27
 special_lw_start:
   extra:
     cancel_frame: 62
 special_lw_turn:
   extra:
-    cancel_frame: 30
+    cancel_frame: 27
 step_pose_back:
   extra:
     cancel_frame: 6
+throw_b:
+  extra:
+    cancel_frame: 48
 throw_f:
   extra:
     cancel_frame: 76

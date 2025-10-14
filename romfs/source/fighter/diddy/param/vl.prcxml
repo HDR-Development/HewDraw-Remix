@@ -5,7 +5,9 @@
       <float hash="p1_y">20</float>
       <float hash="p2_y">10</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="1">
+      <float hash="p1_x">11</float>
       <float hash="p1_y">19.5</float>
     </struct>
   </list>

@@ -61,7 +61,7 @@ unsafe extern "C" fn throw_kirby_end(fighter: &mut L2CFighterCommon) -> L2CValue
     return fighter.status_end_ThrowKirby();
 }
 
-unsafe extern "C" fn throw_kirby_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
     let FRAME_FALL = 48.0;
     let FRAME_FALLLOOP = FRAME_FALL+2.0;
     let FRAME_LAND = 55.0;
@@ -89,13 +89,19 @@ unsafe extern "C" fn throw_kirby_exec(fighter: &mut L2CFighterCommon) -> L2CValu
         let speed = Vector3f { x: 0.0, y: -0.425, z: 0.0 };
         KineticModule::add_speed(fighter.module_accessor, &speed);
     }
+
     //Groundcast to see if we touched the ground (only after falling), then cut to the landing frame
     if currentFrame >= FRAME_FALL
     {
-        if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
+        let should_land = GroundModule::ray_check(fighter.module_accessor, 
+                                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                                &Vector2f{ x: 0.0, y: -1.5}, true) == 1;
+
+        if should_land
         {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, FRAME_LAND, true,true,false);
             MotionModule::set_rate(fighter.module_accessor, 1.0);
+            KineticModule::clear_speed_all(fighter.module_accessor);
             KineticModule::resume_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             
             //Spawn effects//
@@ -120,5 +126,5 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_main);
     agent.status(Exit, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_exit);
     agent.status(End, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_end);
-    agent.status(Exec, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_exec);
+    agent.status(MapCorrection, *FIGHTER_STATUS_KIND_THROW_KIRBY, throw_kirby_map_correction);
 }

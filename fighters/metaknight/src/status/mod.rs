@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 
 mod special_s;
+mod special_lw;
 mod attack_100;
 
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -30,7 +31,9 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
-            *FIGHTER_STATUS_KIND_ENTRY
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_LANDING,
+            *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP
         ])) {
             VarModule::off_flag(fighter.object(), vars::metaknight::instance::SPECIAL_S_HIT);
         }
@@ -50,5 +53,6 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_s::install(agent);
+    special_lw::install(agent);
     attack_100::install(agent);
 }
