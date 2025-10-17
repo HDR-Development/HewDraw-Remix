@@ -101,40 +101,6 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if app::smashball::is_training_mode() && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            app::FighterSpecializer_Jack::add_rebel_gauge(boma, app::FighterEntryID(boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)), 100.0);
-        }
-    }
-}
-
-unsafe extern "C" fn effect_appealhi(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if !WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_LOW_MODE) {
-        frame(lua_state, 4.0);
-        if is_excute(agent) {
-            let facing = agent.lr();
-            LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), -6.0 * facing, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        if app::smashball::is_training_mode() && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), -5, 16, 5, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-        }
-    }
-    frame(lua_state, 76.0);
-    if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("knife"), 0, 3, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(agent, 1.2);
-    }
-}
-
 unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     frame(lua_state, 8.0);
@@ -174,11 +140,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
-
-    agent.acmd("game_appealhil", game_appealhi, Priority::Low);
-    agent.acmd("effect_appealhil", effect_appealhi, Priority::Low);
-    agent.acmd("game_appealhir", game_appealhi, Priority::Low);
-    agent.acmd("effect_appealhir", effect_appealhi, Priority::Low);
 
     agent.acmd("sound_attacklw3", sound_attacklw3, Priority::Low);
     agent.acmd("sound_attacklw3_ex", sound_attacklw3_ex, Priority::Low);

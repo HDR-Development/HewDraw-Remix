@@ -11,6 +11,7 @@ pub mod status;
 
 mod axe;
 mod whip;
+mod holywater;
 
 use smash::{
     lib::{

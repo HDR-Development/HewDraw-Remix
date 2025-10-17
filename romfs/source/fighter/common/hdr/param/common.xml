@@ -52,4 +52,13 @@
     <float hash="hitstun_gravity_max">0.17</float>
     <float hash="asdi_stick">0.8</float>
     <int hash="footstool_lockout_frame">40</int>
+    <float hash="spike_tumble_threshold">26.88</float>
+    <float hash="grounded_spike_knockback_mul">1.25</float>
+    <struct hash="ditcit">
+        <int hash="start_frame">3</int>
+        <int hash="end_frame">6</int>
+        <float hash="min_speed">2.0</float>
+        <float hash="max_speed">4.5</float>
+    </struct>
+    <float hash="fall_special_cliff_hangdata_p1x_reduction_dist">4.0</float>
 </struct>

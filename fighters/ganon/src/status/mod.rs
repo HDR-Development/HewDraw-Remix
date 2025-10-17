@@ -8,6 +8,7 @@ mod special_n_float;
 mod special_lw;
 mod special_s;
 mod special_air_s_catch;
+mod special_hi;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -47,4 +48,5 @@ pub fn install(agent: &mut Agent) {
     special_lw::install(agent);
     special_s::install(agent);
     special_air_s_catch::install(agent);
+    special_hi::install(agent);
 }

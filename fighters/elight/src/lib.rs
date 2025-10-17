@@ -9,6 +9,7 @@ pub mod status;
 
 // articles
 
+mod exprosiveshot;
 mod bunshin;
 
 use skyline::nro::NroInfo;
@@ -51,6 +52,7 @@ pub fn install() {
     status::install(agent);
     agent.install();
 
+    exprosiveshot::install();
     bunshin::install();
 
     // Disables Foresight

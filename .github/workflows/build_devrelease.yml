@@ -55,7 +55,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }} name=hdr-private && cd ..
+        cd scripts && NO_RUST_NIGHTLY=1 python3 make_dist.py build version=${{ steps.bump-semver.outputs.new_version }}-private name=hdr-private && cd ..
         du -sh *
         rm -rf target
         du -sh *
@@ -145,7 +145,7 @@ jobs:
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-DevReleases
-        release_name: ${{ steps.bump-semver.outputs.new_version }}
+        release_name: ${{ steps.bump-semver.outputs.new_version }}-private
         tag: ${{ steps.bump-semver.outputs.new_version }}
         body: Built from commit ${{ github.sha }}
         overwrite: true

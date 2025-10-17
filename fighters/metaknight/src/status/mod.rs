@@ -3,6 +3,7 @@ use globals::*;
 // status script import
 
 mod special_s;
+mod special_lw;
 mod attack_100;
 
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -52,5 +53,6 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
     special_s::install(agent);
+    special_lw::install(agent);
     attack_100::install(agent);
 }

@@ -29,6 +29,14 @@ unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
+pub unsafe extern "C" fn special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
+        ColorBlendModule::cancel_main_color(fighter.module_accessor, 0);
+    }
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter)
+}
+
 unsafe extern "C" fn special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -155,9 +163,42 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
+pub unsafe extern "C" fn special_s_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
+        ColorBlendModule::cancel_main_color(fighter.module_accessor, 0);
+    }
+    smashline::original_status(End, fighter, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH)(fighter)
+}
+
+unsafe extern "C" fn ike_special_s_attack_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    original_status(Init, fighter, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK)(fighter);
+    if fighter.global_table[globals::SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y * 0.6
+        );
+    }
+    0.into()
+}
+
+pub unsafe extern "C" fn ike_special_s_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
+    ColorBlendModule::cancel_main_color(fighter.module_accessor, 0);
+    smashline::original_status(End, fighter, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_end);
 
     agent.status(Pre, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_pre);
     agent.status(Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_main);
+    agent.status(End, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, special_s_dash_end);
+
+    agent.status(Init, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, ike_special_s_attack_init);
+    agent.status(End, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, ike_special_s_attack_end);
 }

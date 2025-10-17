@@ -4,105 +4,35 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 
 // Side Special Cancels
 unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_status_one_of(&[*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4])
-    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || fighter.is_in_hitlag()
-    {
-        return;
+    // skip SSpecial1, because new SSpecial is just 3 hits
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        fighter.change_status(FIGHTER_ROY_STATUS_KIND_SPECIAL_S2.into(), false.into());
     }
-
-    let transition_air = match MotionModule::motion_kind(fighter.module_accessor) {
-        utils::hash40!("special_s3_hi") | utils::hash40!("special_air_s3_hi") if fighter.is_cat_flag(Cat1::AttackHi3) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s3_hi") | utils::hash40!("special_air_s3_hi") if fighter.is_cat_flag(Cat1::AttackHi4) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s3_s") | utils::hash40!("special_air_s3_s") if fighter.is_cat_flag(Cat1::AttackS3) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s3_s") | utils::hash40!("special_air_s3_s") if fighter.is_cat_flag(Cat1::AttackS4) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s3_lw") | utils::hash40!("special_air_s3_lw") if fighter.is_cat_flag(Cat1::AttackLw3) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW3, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s3_lw") | utils::hash40!("special_air_s3_lw") if fighter.is_cat_flag(Cat1::AttackLw4) => {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
-                return;
-            }
-            fighter.is_situation(*SITUATION_KIND_AIR)
-        },
-
-        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if !fighter.is_in_hitlag() => {
-            false
-        }
-        _ => false
-    };
-
-    if transition_air {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+    // Disallow SpecialAirS4Lw because we dont have an animation for it lol
+    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_S4)
+    && fighter.is_motion(Hash40::new("special_air_s4_lw")) {
+        fighter.set_int64(hash40("special_s4_s") as i64, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
+        fighter.set_int64(hash40("special_air_s4_s") as i64, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
+        fighter.off_flag(*FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
+        fighter.off_flag(*FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s4_s"), 0.0, 1.0, false, 0.0, false, false);
     }
-}
-
-pub unsafe fn double_edge_dance_during_hitlag(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3]) {
-        return;
-    }
-    if fighter.global_table[globals::SUB_STATUS].get_bool() {
-        // disables the original substatus - I'd rather not run it twice.
-        fighter.global_table[globals::SUB_STATUS].assign(&L2CValue::Void());
-    }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS) {
-            return;
-        }
-        if !ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            return;
-        }
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_CHECK) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_FAILURE);
-        }
-        else {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_SUCCESS);
-            let enable_hi_lw = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("enable_input_hi_lw"));
-            if enable_hi_lw == 0 {
-                return;
-            }
-            let stick_y = fighter.global_table[globals::STICK_Y].get_f32();
-            let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
-            if stick_y > -squat_stick_y {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
-            }
-            else if stick_y < squat_stick_y {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
-            }
+    // SSpecial's Low Dash cancels directly into tilts
+    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_S4)
+    && fighter.is_motion(Hash40::new("special_s4_lw"))
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.is_flag(*FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE)
+    && !CancelModule::is_enable_cancel(fighter.module_accessor)
+    && !fighter.is_in_hitlag() {
+        let next_status = match () {
+            _ if fighter.is_cat_flag(Cat1::AttackS3) => *FIGHTER_STATUS_KIND_ATTACK_S3,
+            _ if fighter.is_cat_flag(Cat1::AttackHi3) => *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            _ if fighter.is_cat_flag(Cat1::AttackLw3) => *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            _ => *FIGHTER_STATUS_KIND_NONE
+        };
+        if next_status != *FIGHTER_STATUS_KIND_NONE {
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.5, 1.0, 1.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, false);
         }
     }
 }
@@ -120,10 +50,27 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_LOOP,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_TURN,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT
         ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
+    }
+}
+
+unsafe fn sspecial_ledgegrab_fix(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4,
+    ])
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_transition_group_check_air_cliff();
     }
 }
 
@@ -137,6 +84,7 @@ pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFi
     common::opff::fighter_common_opff(fighter);
     side_special_cancels(fighter);
     fastfall_specials(fighter);
+    sspecial_ledgegrab_fix(fighter);
     sword_length(&mut *(fighter.module_accessor));
 }
 

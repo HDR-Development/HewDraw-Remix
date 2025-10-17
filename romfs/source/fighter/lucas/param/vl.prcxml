@@ -5,13 +5,16 @@
       <float hash="p1_y">17</float>
       <float hash="p2_y">5</float>
     </struct>
+    <!-- ZAIR TETHER -->
     <struct index="1">
       <float hash="p1_x">37</float>
       <float hash="p1_y">32</float>
       <float hash="p2_x">10</float>
       <float hash="p2_y">-20</float>
     </struct>
+    <!-- ZAIR TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
+    <!-- UP SPECIAL -->
     <struct index="3">
       <float hash="p1_y">12.5</float>
     </struct>

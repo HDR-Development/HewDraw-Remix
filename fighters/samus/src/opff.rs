@@ -7,10 +7,8 @@ unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2A]) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            fighter.set_float(6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());   
-        }
+        let landing_lag = 6.0;
+        fighter.check_land_cancel(Some(landing_lag));
     }
 }
 

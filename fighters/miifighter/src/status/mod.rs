@@ -7,6 +7,7 @@ mod special_lw2;
 mod special_lw3;
 mod special_n2;
 mod special_s1;
+mod special_hi3;
 
 unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) {
     if fighter.global_table["move_customizer_set"].get_bool() {
@@ -68,6 +69,12 @@ unsafe extern "C" fn move_customizer(fighter: &mut L2CFighterCommon) -> L2CValue
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
             std::mem::transmute(special_lw3::special_lw3_pre as *const ())
+        );
+    } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_HI_3 {
+        fighter.sv_set_status_func(
+            FIGHTER_STATUS_KIND_SPECIAL_HI.into(),
+            LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
+            std::mem::transmute(special_hi3::special_hi3_pre as *const ())
         );
     }
     

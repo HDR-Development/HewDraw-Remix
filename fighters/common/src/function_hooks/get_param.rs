@@ -1,6 +1,5 @@
 use super::*;
 use globals::*;
-use std::arch::asm;
 // Addresses, offsets, and inline hooking
 use skyline::hooks::{getRegionAddress, Region, InlineCtx};
 use utils::game_modes::CustomMode;
@@ -542,7 +541,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
 // #[skyline::hook(replace=EXPLOSIONBOMB_ADDRESS, inline)]
 // pub unsafe fn get_explosionbomb_hook(ctx: &InlineCtx) {
-//     let agent = (*ctx.registers[21].x.as_ref()) as *mut L2CAgentBase;
+//     let agent = (ctx.registers[21].x()) as *mut L2CAgentBase;
 //     //println!("Agent: {}", (*agent).kind());
 //     let lua_state = (*agent).lua_state_agent;
 //     let item_boma = sv_system::battle_object_module_accessor(lua_state);
@@ -553,6 +552,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 //         VarModule::set_int(sheik, vars::sheik::status::GRENADE_OBJECT_ID, item_id as i32);
 //         //let sheik_boma = &mut *(*zelda).module_accessor;
 //         //let value = VarModule::get_float(sheik, vars::sheik::status::GRENADE_GRAVITY);
-//         //asm!("fmov s0, w8", in("w8") value);
+//         //ctx.registers_f[0].set_s(value);
 //     }
 // }

@@ -1,7 +1,6 @@
 use super::*;
 use interpolation::Lerp;
 use utils::ext::*;
-use std::arch::asm;
 
 #[skyline::hook(offset = 0xc5c010)]
 pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {
@@ -99,23 +98,7 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 }
 
 #[skyline::hook(offset = 0xc5ce40)]
-pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {
-    original!()(vtable, fighter);
-    let object = &mut fighter.battle_object;
-    let module_accessor = object.module_accessor;
-    let effect = WorkModule::get_int64(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_KIND);
-    if effect != hash40("null") && VarModule::is_flag(object, vars::lucario::instance::METER_BURNOUT) {
-        let left = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_LHADOU) as u32;
-        let right = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_RHADOU) as u32;
-        let scale = 0.0;
-        if left != 0 {
-            EffectModule::set_scale(module_accessor, left, &Vector3f{x: scale, y: scale, z: scale});
-        }
-        if right != 0 {
-            EffectModule::set_scale(module_accessor, right, &Vector3f{x: scale, y: scale, z: scale});
-        }
-    }
-}
+pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {}
 
 pub fn install() {
     skyline::install_hooks!(

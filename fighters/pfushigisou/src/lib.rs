@@ -65,6 +65,7 @@ impl PokeExt for app::BattleObjectModuleAccessor {
 }
 
 pub fn install() {
+    smashline::update_weapon_count(*WEAPON_KIND_PFUSHIGISOU_SEED, 4);
     let agent = &mut Agent::new("pfushigisou");
     acmd::install(agent);
     opff::install(agent);

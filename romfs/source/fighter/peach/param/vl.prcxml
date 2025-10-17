@@ -27,7 +27,9 @@
     <struct index="0">
       <float hash="p1_y">21</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="1">
+      <float hash="p1_x">11</float>
       <float hash="p1_y">19</float>
     </struct>
   </list>

@@ -38,9 +38,8 @@ unsafe fn samus_nspecial_cancels(fighter: &mut L2CFighterCommon) {
 // Fox
 unsafe fn fox_drift_laser_landcancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING, false);
-        }
+        fighter.check_land_cancel(None);
+
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -108,23 +107,22 @@ unsafe fn koopa_fireball_cooldown(fighter: &mut L2CFighterCommon) {
 
 // Zelda
 unsafe fn nayru_drift_land_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_n")) 
-    && StatusModule::is_situation_changed(fighter.module_accessor)
-    && MotionModule::frame(fighter.module_accessor) < 55.0 {
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("zelda_nayru_l"), true, true);
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("zelda_nayru_r"), true, true);
-        MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_n"), 56.0, 1.0, 1.0);
-        AttackModule::clear_all(fighter.module_accessor);
-        fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_ZELDA_SPECIAL_N) {
+        let landing_lag = 8.0;
+        if fighter.check_land_cancel(Some(landing_lag)) {
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("zelda_nayru_l"), true, true);
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("zelda_nayru_r"), true, true);
+            AttackModule::clear_all(fighter.module_accessor);
+            fighter.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
+        }
     }
 }
 
 // Falco
 unsafe fn falco_drift_laser_landcancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING, false);
-        }
+        fighter.check_land_cancel(None);
+
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -155,14 +153,6 @@ unsafe fn sheik_nspecial_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Mewtwo
-unsafe fn mewtwo_nspecial_cancels(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("mewtwo_special_air_n_cancel")) 
-    && fighter.get_int(*FIGHTER_MEWTWO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_MEWTWO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
-    }
-}
-
 // Mr. Game and Watch
 unsafe fn chef_drift_land_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N) {
@@ -184,9 +174,9 @@ unsafe fn chef_drift_land_cancel(fighter: &mut L2CFighterCommon) {
                 }
             }
         }
-        if fighter.is_prev_situation(*SITUATION_KIND_AIR) && fighter.is_situation(*SITUATION_KIND_GROUND) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING, false);
-        }
+        let landing_lag = 6.0;
+        fighter.check_land_cancel(Some(landing_lag));
+
         if StatusModule::is_changing(fighter.module_accessor) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(fighter.module_accessor, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -207,9 +197,7 @@ unsafe fn pitb_bow_lc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_TURN
         ]) {
             if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT) {
-                if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING, false);
-                }
+                fighter.check_land_cancel(None);
             }
         }
     }
@@ -472,12 +460,24 @@ unsafe fn magic_series_lucario(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucario_nspecial_cancels(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL) {
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if fighter.get_int(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_INT_CANCEL_STATUS);
-            }
+// Lucario
+unsafe fn lucario_correct_jump_cancel_kind(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL) {
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FLY, false);
+        }
+    }
+}
+
+// Mewtwo
+unsafe fn mewtwo_correct_jump_cancel_kind(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_KIRBY_STATUS_KIND_MEWTWO_SPECIAL_N_CANCEL) {
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FLY, false);
         }
     }
 }
@@ -633,14 +633,14 @@ unsafe fn ken_air_hado_distinguish(fighter: &mut L2CFighterCommon) {
         Hash40::new("ken_special_air_n_empty"),
         Hash40::new("ken_special_n_empty"),
     ]))
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        if fighter.status_frame() < 70 { // the autocancel frame
-            fighter.set_float(11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    {
+        let landing_lag: Option<f32> = if fighter.motion_frame() < 70.0 { // the autocancel frame
+            Some(14.0)
         } else {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
-        }
+            None
+        };
+
+        fighter.check_land_cancel(landing_lag);
     }
 }
 
@@ -655,13 +655,9 @@ unsafe fn ken_hado_landcancel(fighter: &mut L2CFighterCommon) {
     ]) {
         return;
     }
-    if fighter.is_situation(*SITUATION_KIND_GROUND) 
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        if fighter.status_frame() < 70 { // the autocancel frame
-            fighter.set_float(14.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
-        }
-    }
+
+    let landing_lag = 14.0;
+    fighter.check_land_cancel(Some(landing_lag));
 }
 
 // Simon
@@ -747,22 +743,9 @@ unsafe fn brave_nspecial_cancels(fighter: &mut L2CFighterCommon) {
 
 // Banjo and Kazooie
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
-    {
-        // Current FAF in motion list is 50, frame is 0 indexed so subtract a frame
-        let special_n_fire_cancel_frame_ground = 49.0;
-        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N) {
         let landing_lag = 12.0;
-        if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
-        }
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+        fighter.check_land_cancel(Some(landing_lag));
     }
 }
 
@@ -834,15 +817,9 @@ unsafe fn trail_magic_handling(fighter: &mut L2CFighterCommon) {
         fighter.check_airdodge_cancel();
     }
     // thundaga land cancel
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        let special_n_fire_cancel_frame_ground = 69.0; // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3) {
         let landing_lag = 12.0; // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
-        if fighter.motion_frame() < (special_n_fire_cancel_frame_ground - landing_lag) {
-            VarModule::on_flag(fighter.battle_object, vars::trail::status::SPECIAL_N_THUNDER_LAND_CANCEL);
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
-        }
+        fighter.check_land_cancel(Some(landing_lag));
     }
     // blizzaga jump cancel
     if (fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2)
@@ -1042,7 +1019,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         // Sheik
         0x10 => sheik_nspecial_cancels(fighter),
         // Mewtwo
-        0x19 => mewtwo_nspecial_cancels(fighter),
+        0x19 => mewtwo_correct_jump_cancel_kind(fighter),
         // Mr. Game & Watch
         0x1C => chef_drift_land_cancel(fighter),
         // Dark Pit
@@ -1074,7 +1051,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         // Lucario
         0x2C => {
             magic_series_lucario(fighter);
-            lucario_nspecial_cancels(fighter);
+            lucario_correct_jump_cancel_kind(fighter);
         },
         // Toon Link
         0x2E => heros_bow_drift(fighter),
@@ -1088,6 +1065,8 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         0x35 => max_water_shuriken_dc(fighter),
         // Robin
         0x38 => reflet_nspecial_cancels(fighter),
+        // Shulk
+    //  0x39 => None
         // Bowser Jr.
         0x3A => clown_cannon_shield_cancel(fighter),
         // Ryu

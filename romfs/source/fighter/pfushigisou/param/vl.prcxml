@@ -4,12 +4,14 @@
     <struct index="0">
       <float hash="p1_y">16.5</float>
     </struct>
+    <!-- UP SPECIAL TETHER -->
     <struct index="1">
       <float hash="p1_x">50</float>
       <float hash="p1_y">60</float>
       <float hash="p2_x">-5</float>
       <float hash="p2_y">-25</float>
     </struct>
+    <!-- UP SPECIAL TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_seed">

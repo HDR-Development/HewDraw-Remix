@@ -532,17 +532,24 @@ pub trait BomaExt {
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
+    unsafe fn get_front_cliff_hangdata(&mut self) -> Vector2f;
+    unsafe fn get_back_cliff_hangdata(&mut self) -> Vector2f;
+    unsafe fn get_center_cliff_hangdata(&mut self) -> Vector2f;
+
 
     // Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
+    unsafe fn check_aerial_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
     unsafe fn check_dash_cancel(&mut self) -> bool;
     // Checks for status and enables transition to wall jump
     unsafe fn check_wall_jump_cancel(&mut self) -> bool;
     // Checks for parry
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
+    // Checks for situation kind and transitions to heavy landing
+    unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self) -> bool;
@@ -1207,6 +1214,16 @@ impl BomaExt for BattleObjectModuleAccessor {
         false
     }
 
+    unsafe fn check_aerial_cancel(&mut self) -> bool {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.is_situation(*SITUATION_KIND_AIR)
+        && fighter.get_aerial() != None {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
+            return true;
+        }
+        return false;
+    }
+
     unsafe fn check_dash_cancel(&mut self) -> bool {
         if self.is_situation(*SITUATION_KIND_GROUND) {
             if self.is_cat_flag(Cat1::Dash) {
@@ -1243,6 +1260,28 @@ impl BomaExt for BattleObjectModuleAccessor {
             return true.into();
         }
         return false.into();
+    }
+
+    // Uses an optional landing_lag parameter
+    // If landing_lag is None, we enter a true land cancel
+    // AKA incurred landing lag is equivalent to the character's specific heavy landing lag value
+    // (landing_frame in fighter_param PRC)
+    unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool {
+        if self.is_prev_situation(*SITUATION_KIND_AIR)
+        && self.is_situation(*SITUATION_KIND_GROUND) {
+            match landing_lag {
+                Some(landing_lag) => {
+                    VarModule::set_float(self.object(), vars::common::instance::LAND_CANCEL_LAG, landing_lag);
+                },
+                None => {}
+            }
+
+            StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_LANDING, false);
+
+            return true;
+        }
+
+        false
     }
 
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
@@ -1326,6 +1365,30 @@ impl BomaExt for BattleObjectModuleAccessor {
         self.set_front_cliff_hangdata(p1_x, p1_y - p2_y);
         self.set_back_cliff_hangdata(p2_x * -1.0, p1_y - p2_y);
         self.set_center_cliff_hangdata(0.0, p2_y);
+    }
+
+    unsafe fn get_front_cliff_hangdata(&mut self) -> Vector2f {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        let x = *ground_data.add(0x530 / 4);
+        let y = *ground_data.add(0x534 / 4);
+        Vector2f::new(x, y)
+    }
+
+    unsafe fn get_back_cliff_hangdata(&mut self) -> Vector2f {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        let x = *ground_data.add(0x540 / 4);
+        let y = *ground_data.add(0x544 / 4);
+        Vector2f::new(x, y)
+    }
+
+    unsafe fn get_center_cliff_hangdata(&mut self) -> Vector2f {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        let x = *ground_data.add(0x520 / 4);
+        let y = *ground_data.add(0x524 / 4);
+        Vector2f::new(x, y)
     }
 
     /// checks whether you should hitfall (call this once per frame)

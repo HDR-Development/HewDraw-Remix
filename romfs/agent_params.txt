@@ -56,3 +56,4 @@ pikachu: fighter/pikachu/param/hdr.xml
 ridley: fighter/ridley/param/hdr.xml
 robot: fighter/robot/param/hdr.xml
 shulk: fighter/shulk/param/hdr.xml
+metaknight: fighter/metaknight/param/hdr.xml

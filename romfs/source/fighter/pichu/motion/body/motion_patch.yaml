@@ -143,6 +143,6 @@ step_pose_back:
     cancel_frame: 6
 throw_hi:
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 cliff_wait:
   blend_frames: 2

@@ -35,7 +35,7 @@ attack_13:
     freeze_during_hitstop: true
 attack_air_b:
   extra:
-    cancel_frame: 40
+    cancel_frame: 37
 attack_air_f:
   extra:
     cancel_frame: 43

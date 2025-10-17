@@ -4,10 +4,13 @@
     <struct index="0">
       <float hash="p1_y">19</float>
     </struct>
+    <!-- SIDE SPECIAL -->
     <struct index="1">
       <float hash="p1_y">19</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="2">
+      <float hash="p1_x">12</float>
       <float hash="p1_y">17</float>
     </struct>
   </list>

@@ -118,19 +118,9 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 }
 
 unsafe fn dashattack_land_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) {
-        if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && boma.is_situation (*SITUATION_KIND_GROUND) {
-            // Current FAF in motion list is 43, frame is 0 indexed so subtract a frame
-            let dash_attack_cancel_frame_ground  = 42.0;
-            // 8F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
-            let landing_lag = 9.0;
-            if MotionModule::frame(boma) < (dash_attack_cancel_frame_ground - landing_lag) {
-                MotionModule::set_frame_sync_anim_cmd(boma, dash_attack_cancel_frame_ground - landing_lag, true, true, true);
-            }
-        }
+        let landing_lag = 9.0;
+        boma.check_land_cancel(Some(landing_lag));
     }
 }
 

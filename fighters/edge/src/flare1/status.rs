@@ -20,7 +20,20 @@ unsafe extern "C" fn fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     sv_kinetic_energy!(set_speed, weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, vec.x, 0.0);
     sv_kinetic_energy!(set_limit_speed, weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, vec.x, 0.0);
     AttackModule::set_base_offset(weapon.module_accessor, &Vector2f::new(-vec.x, 0.0));
+
+    if !StopModule::is_stop(weapon.module_accessor) {
+        fly_substatus(weapon, false.into());
+    }
+    weapon.global_table[globals::SUB_STATUS].assign(&L2CValue::Ptr(fly_substatus as *const () as _));
+
     weapon.fastshift(L2CValue::Ptr(fly_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn fly_substatus(weapon: &mut L2CWeaponCommon, param_1: L2CValue) -> L2CValue {
+    if param_1.get_bool() {
+        VarModule::countdown_int(weapon.battle_object, vars::edge_flare1::instance::REFRACT_COOLDOWN, 0);
+    }
+    0.into()
 }
 
 unsafe extern "C" fn fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
@@ -30,19 +43,18 @@ unsafe extern "C" fn fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if weapon.sub_ground_module_is_touch_all_consider_speed().get_bool() {
         weapon.change_status(WEAPON_EDGE_FLARE1_STATUS_KIND_END.into(), false.into())
     }
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
-    VarModule::set_float(edge, vars::edge::instance::FLARE1_POS_X, PostureModule::pos_x(weapon.module_accessor));
-    VarModule::set_float(edge, vars::edge::instance::FLARE2_POS_Y, PostureModule::pos_y(weapon.module_accessor));
-    if VarModule::is_flag(edge, vars::edge::instance::FLASH_REFRACT) {
-        EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_counteract_mark"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.7, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-        EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_muzzleflash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-        let sfx1 = SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_badge_reflection"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(weapon.module_accessor, sfx1 as i32, 0.75, 0);
-        let sfx2 = SoundModule::play_se(weapon.module_accessor, Hash40::new("se_roulette_stick_fire"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(weapon.module_accessor, sfx2 as i32, 1.25, 0);
-        weapon.change_status(WEAPON_EDGE_FLARE1_STATUS_KIND_FLY.into(), false.into());
-        VarModule::off_flag(edge, vars::edge::instance::FLASH_REFRACT);
+    if VarModule::is_flag(weapon.battle_object, vars::edge_flare1::status::REFRACT) {
+        VarModule::off_flag(weapon.battle_object, vars::edge_flare1::status::REFRACT);
+        if VarModule::get_int(weapon.battle_object, vars::edge_flare1::instance::REFRACT_COOLDOWN) == 0 {
+            VarModule::set_int(weapon.battle_object, vars::edge_flare1::instance::REFRACT_COOLDOWN, 3);
+            EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_counteract_mark"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.7, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_muzzleflash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            let sfx1 = SoundModule::play_se(weapon.module_accessor, Hash40::new("se_item_badge_reflection"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(weapon.module_accessor, sfx1 as i32, 0.75, 0);
+            let sfx2 = SoundModule::play_se(weapon.module_accessor, Hash40::new("se_roulette_stick_fire"), true, false, false, false, app::enSEType(0));
+            SoundModule::set_se_vol(weapon.module_accessor, sfx2 as i32, 1.25, 0);
+            weapon.change_status(WEAPON_EDGE_FLARE1_STATUS_KIND_FLY.into(), false.into());
+        }
     }
 
     return 0.into()
@@ -51,17 +63,17 @@ unsafe extern "C" fn fly_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
 unsafe extern "C" fn fly_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let edge = utils::util::get_battle_object_from_id(owner_id);
-    if !VarModule::is_flag(edge, vars::edge::instance::FLASH_REFRACT) {
+    if !VarModule::is_flag(weapon.battle_object, vars::edge_flare1::status::REFRACT) {
         WorkModule::dec_int(weapon.module_accessor, *WEAPON_EDGE_FLARE1_INSTANCE_WORK_ID_INT_LIFE);
     }
     return 0.into()
 }
 
 unsafe extern "C" fn fly_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let edge = utils::util::get_battle_object_from_id(owner_id);
-    VarModule::set_int(edge, vars::edge::instance::FLARE1_ID, -1);
-    VarModule::off_flag(edge, vars::edge::instance::FLASH_REFRACT);
+    VarModule::off_flag(weapon.battle_object, vars::edge_flare1::status::REFRACT);
+    if weapon.global_table[STATUS_KIND].get_i32() != *WEAPON_EDGE_FLARE1_STATUS_KIND_FLY {
+        VarModule::set_int(weapon.battle_object, vars::edge_flare1::instance::REFRACT_COOLDOWN, 0);
+    }
     return 0.into()
 }
 

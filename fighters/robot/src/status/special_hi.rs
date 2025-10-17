@@ -13,7 +13,7 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES), // changed from ALWAYS_BOTH_SIDES
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true, 
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -86,10 +86,6 @@ unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
-    }
-    
     let charge_frame = VarModule::get_int(fighter.battle_object, SPECIAL_HI_CHARGE_FRAME) as f32;
     VarModule::inc_int(fighter.battle_object, SPECIAL_HI_CHARGE_FRAME);
 
@@ -107,15 +103,15 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     // defines fuel consumption throughout the move
     let start_fuel = fighter.get_float(*FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
     let max_fuel = fighter.get_param_float("param_special_hi", "energy_max_frame");
-    let fuel_increment = 2.0; // how much fuel is consumed by the charge per frame
+    let fuel_increment = if fighter.is_situation(*SITUATION_KIND_AIR) {2.0} else {4.0}; // how much fuel is consumed by the charge per frame
     let min_cost = 20.0; // minimum amount of fuel consumed on use
     let required_fuel = (fuel_increment * charge_frame).clamp(min_cost, max_fuel);
     let remaining_fuel = (start_fuel - required_fuel).clamp(0.0, max_fuel);
 
     // handles rob's rotation during the charge
     let rot_x = VarModule::get_float(fighter.battle_object, SPECIAL_HI_ROT_X);
+    let rot_amount = if fighter.is_situation(*SITUATION_KIND_AIR) { 2.5 } else {3.75}; // how much rob rotates each frame
     if fighter.left_stick_x().abs() > 0.1 {   
-        let rot_amount = 2.5; // how much rob rotates each frame
         let reverse = if fighter.is_stick_backward() { -1.0 } else { 1.0 };
         let direction = fighter.lr() * reverse; // determines the direction to rotate
         let angle = (rot_x + (rot_amount * direction)).clamp(-60.0, 60.0);
@@ -128,15 +124,39 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
+
     // summon guide effect
     if rot_x != 0.0 { special_hi_guide_handler(fighter) };
 
     // default parameters for launch speed
-    let mut launch_speed = Vector3f{
-        x: 0.09 * rot_x.abs() * ((charge_frame - 18.0).clamp(0.0, 32.0) / 32.0),
-        y: 0.5 - (0.025 * rot_x.abs()),
-        z: 0.0
-    };
+    let mut launch_speed = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+
+    let airX = 0.15 * rot_x.abs() * (((charge_frame) - 18.0).clamp(0.0, 32.0) / 32.0);
+    let airY = ((1.65 + (0.05 * charge_frame)) - (0.025 * rot_x.abs())).min(3.75);
+    let groundX = 0.30 * rot_x.abs() * (((charge_frame * 2.0) - 18.0).clamp(0.0, 32.0) / 32.0);
+    let groundY = ((1.65 + (0.10 * charge_frame)) - (0.035 * rot_x.abs())).min(3.75);
+
+    // force the full launch ahead of time for grounded since it charges 2x fast
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && charge_frame > 28.0 {
+        sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        
+        KineticModule::resume_energy_all(fighter.module_accessor);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+
+        PLAY_SE(fighter, Hash40::new("se_common_bomb_l"));
+
+        launch_speed.x = groundX;
+        launch_speed.y = groundY;
+
+        KineticModule::add_speed(fighter.module_accessor, &launch_speed);
+        fighter.set_float(remaining_fuel, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
+
+        //println!("{}", launch_speed.x);
+        fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
+
+        return 1.into();
+    }
 
     // force the full launch when the motion completes
     if MotionModule::is_end(fighter.module_accessor) {
@@ -148,8 +168,14 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
         PLAY_SE(fighter, Hash40::new("se_common_bomb_ll"));
 
-        launch_speed.y = 3.75 - (0.025 * rot_x.abs());
-        // println!("launch speed: {}", launch_speed.y);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            launch_speed.x = groundX;
+            launch_speed.y = groundY;
+        } else {
+            launch_speed.x = airX;
+            launch_speed.y = airY;
+        }
+
         KineticModule::add_speed(fighter.module_accessor, &launch_speed);
         fighter.set_float(remaining_fuel, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
 
@@ -173,12 +199,19 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
 
     let sfx =
-        if charge_frame >= 20.0 { "se_common_bomb_l" }
+        if charge_frame >= 40.0 { "se_common_bomb_ll" }
+        else if charge_frame >= 25.0 { "se_common_bomb_l" }
         else if charge_frame >= 10.0 { "se_common_bomb_m" }
         else { "se_common_bomb_s" };
 
     if charge_frame >= 10.0 {
-        launch_speed.y = ((1.65 + (0.05 * charge_frame)) - (0.025 * rot_x.abs())).min(3.75);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            launch_speed.x = groundX;
+            launch_speed.y = groundY;
+        } else {
+            launch_speed.x = airX;
+            launch_speed.y = airY;
+        }
     }
 
     // launches/exits if rob ran out of fuel
@@ -219,6 +252,8 @@ unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     KineticModule::resume_energy_all(fighter.module_accessor);
+
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("robot_lamp_l"), true, true);
 
     let eff_handle = VarModule::get_int(fighter.battle_object, SPECIAL_HI_MARKER_EFFECT_HANDLE) as u32;
     if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {

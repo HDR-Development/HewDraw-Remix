@@ -60,29 +60,22 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
 }
 
 unsafe fn nayru_land_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("special_n")) 
-    && StatusModule::is_situation_changed(boma)
-    && MotionModule::frame(boma) < 55.0 {
-        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
-        EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
-        MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_n"), 56.0, 1.0, 1.0);
-        AttackModule::clear_all(boma);
-        boma.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        let landing_lag = 8.0;
+        if boma.check_land_cancel(Some(landing_lag)) {
+            EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_l"), true, true);
+            EffectModule::kill_kind(boma, Hash40::new("zelda_nayru_r"), true, true);
+            AttackModule::clear_all(boma);
+            boma.on_flag(*FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
+        }
     }
 }
 
 /// Handles land canceling when airborne
 unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
-        if boma.is_situation(*SITUATION_KIND_GROUND) && StatusModule::is_situation_changed(boma) {
-            let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new("special_s_end"), true);
-            let end_frame = MotionModule::end_frame_from_hash(boma, "landing_heavy".to_hash());
-            let landing_lag = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_s.landing_lag");
-            let motion_rate = (end_frame-3.0)/landing_lag;
-            if MotionModule::frame(boma) < cancel_frame-landing_lag { //lc if arm is moving and not actionable
-                MotionModule::change_motion(boma, "landing_heavy".to_hash(), 3.0, motion_rate, false, 0.0, false, false);
-            }
-        }
+        let landing_lag = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_s.landing_lag");
+        boma.check_land_cancel(Some(landing_lag));
     }
 }
 

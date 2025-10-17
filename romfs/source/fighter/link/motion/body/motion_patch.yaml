@@ -82,13 +82,13 @@ throw_f:
     cancel_frame: 35
 throw_b:
   extra:
-    cancel_frame: 32
+    cancel_frame: 33
 throw_lw:
   extra:
     cancel_frame: 48
 throw_hi:
   extra:
-    cancel_frame: 50
+    cancel_frame: 55
 attack_11:
   extra:
     cancel_frame: 21
@@ -136,7 +136,7 @@ attack_air_n:
     cancel_frame: 38
 attack_air_b:
   extra:
-    cancel_frame: 27
+    cancel_frame: 26
 attack_air_f:
   extra:
     cancel_frame: 43

@@ -189,12 +189,34 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     return false.into();
 }
 
+pub unsafe extern "C" fn dolly_check_super_special_command_wrapper(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let terms = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+    ];
+    let mut enableds = [false; 10];
+    for x in 0..terms.len() {
+        enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
+    }
+    fighter.enable_transition_term_many(&terms);
+    for val in terms.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+    }
+    let result = status::dolly_check_super_special_command(fighter);
+    for x in 0..terms.len() {
+        if !enableds[x] {
+            WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
+        }
+    }
+    return result;
+}
+
 pub const CHECK_SPECIAL_N_UNIQ:            i32 = 0x38;
 pub const CHECK_SPECIAL_S_UNIQ:            i32 = 0x39;
 pub const CHECK_SPECIAL_HI_UNIQ:           i32 = 0x3A;
 pub const CHECK_SPECIAL_LW_UNIQ:           i32 = 0x3B;
 
-pub unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
 

@@ -79,7 +79,11 @@ unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
         if charge_frame == 1 {
             MeterModule::drain_direct(boma.object(), 20.0);
         } else if charge_frame > 10 {
-            MeterModule::drain_direct(boma.object(), 2.0);
+            if boma.is_situation(*SITUATION_KIND_GROUND) { 
+                MeterModule::drain_direct(boma.object(), 4.0);
+            } else {
+                MeterModule::drain_direct(boma.object(), 2.0);
+            }
         }
     } else if MeterModule::meter(boma.object()) != burner_energy_value {
         if burner_energy_value == 10.0 {

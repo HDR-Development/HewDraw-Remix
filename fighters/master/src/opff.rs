@@ -26,7 +26,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        // *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_HOLD,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_TURN,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_SHOOT,
@@ -34,12 +34,36 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT_DASH,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_HI_WALL_JUMP,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_TURN,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_CANCEL
+        // *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_TURN,
+        // *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT,
+        // *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_CANCEL
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
+    }
+}
+
+unsafe fn special_lw_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_in_hitlag()
+    || StatusModule::is_changing(fighter.module_accessor)
+    || !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+    ]) {
+        return;
+    }
+
+    if !CancelModule::is_enable_cancel(fighter.module_accessor)
+    && VarModule::is_flag(fighter.battle_object, vars::master::status::SPECIAL_LW_ENABLE_CANCEL) {
+        let terms = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+        ];
+        fighter.enable_transition_term_many(&terms);
+        let ret = fighter.sub_transition_group_check_air_special().get_bool()
+            || fighter.sub_transition_group_check_ground_special().get_bool()
+            || fighter.sub_transition_group_check_air_jump_aerial().get_bool();
+        fighter.unable_transition_term_many(&terms);
     }
 }
 
@@ -47,6 +71,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     specialhi_reset(fighter);
     up_special_whiff_ledgegrab(fighter);
     fastfall_specials(fighter);
+    special_lw_cancel(fighter);
 }
 
 pub extern "C" fn master_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

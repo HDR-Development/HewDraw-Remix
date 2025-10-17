@@ -4,6 +4,17 @@ use super::*;
 
 pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::plizardon::instance::DISABLE_SPECIAL_S);
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        if speed_y < 0.0 {
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                speed_y * 0.2
+            );
+        }
+    }
     0.into()
 }
 

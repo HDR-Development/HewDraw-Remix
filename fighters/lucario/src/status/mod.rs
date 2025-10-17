@@ -45,8 +45,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
 unsafe extern "C" fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
-    MeterModule::set_meter_cap(fighter.object(), 2);
-    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::set_meter_cap(fighter.object(), 3);
+    MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
     VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY)(fighter)
@@ -57,8 +57,8 @@ unsafe extern "C" fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
-    MeterModule::set_meter_cap(fighter.object(), 2);
-    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::set_meter_cap(fighter.object(), 3);
+    MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_DEAD)(fighter)
 }
@@ -68,8 +68,8 @@ unsafe extern "C" fn dead_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MeterModule::reset(fighter.battle_object);
-    MeterModule::set_meter_cap(fighter.object(), 2);
-    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::set_meter_cap(fighter.object(), 3);
+    MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ENTRY)(fighter)
 }
@@ -96,8 +96,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     MeterModule::reset(fighter.battle_object);
-    MeterModule::set_meter_cap(fighter.object(), 2);
-    MeterModule::set_meter_per_level(fighter.object(), 100.0);
+    MeterModule::set_meter_cap(fighter.object(), 3);
+    MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
     VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
 }
 

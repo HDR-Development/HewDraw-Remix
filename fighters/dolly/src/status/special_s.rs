@@ -49,6 +49,41 @@ pub unsafe extern "C" fn special_s_command_init(fighter: &mut L2CFighterCommon) 
     return false.into();
 }
 
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK
+
+pub unsafe extern "C" fn special_f_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.on_flag(*FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+        fighter.on_flag(*FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_FLAG_AIR_ATTACK);
+    }
+
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    return false.into();
+}
+
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B
 
 pub unsafe extern "C" fn special_b_init(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -126,6 +161,7 @@ pub unsafe extern "C" fn special_b_command_init(fighter: &mut L2CFighterCommon) 
 pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
+    agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK, special_f_attack_pre);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, special_s_command_init);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, special_b_init);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, special_b_command_init);

@@ -9,23 +9,9 @@ const BEAKBOMB_END_FRAME: i32 = 25; // Dash timer is shared between ground and a
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
-    if StatusModule::is_changing(fighter.module_accessor) {
-        return;
-    }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-        // Current FAF in motion list is 50, frame is 0 indexed so subtract a frame
-        let special_n_fire_cancel_frame_ground = 49.0;
-        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
         let landing_lag = 12.0;
-        if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 49.0 - landing_lag, true, true, false);
-        }
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_LAND_CANCEL);
-        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_buddy_special_n01"), 0);
-        //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+        fighter.check_land_cancel(Some(landing_lag));
     }
 }
 
@@ -359,7 +345,7 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn up_special_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP]) {
+    if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP) {
         // allows ledgegrab during upB startup
         if fighter.sub_transition_group_check_air_cliff().get_bool()
         && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PAD) {

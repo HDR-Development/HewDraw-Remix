@@ -68,7 +68,7 @@ pub mod FighterSpecializer_Popo {
 
 #[skyline::hook(offset = 0xfb63e0, inline)]
 unsafe fn cheer_cancel(ctx: &mut skyline::hooks::InlineCtx) {
-    *ctx.registers[24].w.as_mut() = 0x11d;
+    ctx.registers[24].set_w(0x11d);
 }
 
 pub fn install() {

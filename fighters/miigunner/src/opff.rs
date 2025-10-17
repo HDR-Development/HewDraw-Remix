@@ -74,10 +74,9 @@ unsafe fn laser_blaze_ff_land_cancel(fighter: &mut L2CFighterCommon) {
         Hash40::new("special_n2_start"),
         Hash40::new("special_n2_loop"),
         Hash40::new("special_n2_end") ]) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            fighter.set_float(6.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-        }
+        let landing_lag = 6.0;
+        fighter.check_land_cancel(Some(landing_lag));
+
         if StatusModule::is_changing(fighter.module_accessor)
         && fighter.is_situation(*SITUATION_KIND_AIR) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -95,25 +94,16 @@ unsafe fn remove_homing_missiles(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn missile_land_cancel(boma: &mut BattleObjectModuleAccessor) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
     if boma.is_status_one_of(&[
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR ]) {
-        if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-            if boma.status_frame() > 23 {
-                MotionModule::set_frame(boma, 40.0, false);
-            }
-        }
+        boma.check_land_cancel(None);
     }
 }
 
 unsafe fn stealth_burst_land_cancel(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S2_END) {
-        if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-        }
+        boma.check_land_cancel(None);
     }
 }
 

@@ -6,7 +6,7 @@ pub extern "C" fn stub() -> u64 { 0 }
 
 #[skyline::hook(offset = 0x62ea88, inline)]
 unsafe fn final_breverse_0(ctx: &mut skyline::hooks::InlineCtx) {
-    let boma = *(*ctx.registers[0].x.as_ref() as *mut *mut BattleObjectModuleAccessor).add(1);
+    let boma = *(ctx.registers[0].x() as *mut *mut BattleObjectModuleAccessor).add(1);
     if ![
         *FIGHTER_KIND_RYU,
         *FIGHTER_KIND_KEN
@@ -27,12 +27,12 @@ unsafe fn final_breverse_0(ctx: &mut skyline::hooks::InlineCtx) {
     ]) {
         return;
     }
-    *ctx.registers[8].x.as_mut() = stub as *const () as u64;
+    ctx.registers[8].set_x(stub as *const () as u64);
 }
 
 #[skyline::hook(offset = 0x68f44c, inline)]
 unsafe fn final_breverse_1(ctx: &mut skyline::hooks::InlineCtx) {
-    let boma = *(*ctx.registers[0].x.as_ref() as *mut *mut BattleObjectModuleAccessor).add(1);
+    let boma = *(ctx.registers[0].x() as *mut *mut BattleObjectModuleAccessor).add(1);
     if ![
         *FIGHTER_KIND_RYU,
         *FIGHTER_KIND_KEN
@@ -53,7 +53,7 @@ unsafe fn final_breverse_1(ctx: &mut skyline::hooks::InlineCtx) {
     ]) {
         return;
     }
-    *ctx.registers[8].x.as_mut() = stub as *const () as u64;
+    ctx.registers[8].set_x(stub as *const () as u64);
 }
 
 pub fn install() {

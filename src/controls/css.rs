@@ -43,7 +43,7 @@ impl ControllerInfo {
 
 pub unsafe fn get_ptr_to_controls(entry: usize) -> ControllerInfo {
     let one = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5314510) as *const u64);
+        .add(0x5313510) as *const u64);
     let two = *(one as *const u64);
     let three = ***((two + 0x58) as *const *const *const u64);
 
@@ -75,22 +75,22 @@ static SUBMENU_STATES: Lazy<Mutex<HashMap<u64, WithCancel>>> =
 #[skyline::from_offset(0x19fa730)]
 fn init_layout(ptr: u64);
 
-#[skyline::from_offset(0x3777970)]
+#[skyline::from_offset(0x3777d50)]
 fn play_animation(layout_ptr: u64, name: *const u8, speed: f32);
 
-#[skyline::from_offset(0x37a18e0)]
+#[skyline::from_offset(0x37a1cc0)]
 fn create_text_pane(out_pane: u64, text: *const u16, color: u32, value: i32);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3775F80);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
 #[skyline::hook(offset = 0x19fbab8, inline)]
 unsafe fn set_layout_position(ctx: &mut InlineCtx) {
-    let ptr = *ctx.registers[19].x.as_ref();
+    let ptr = ctx.registers[19].x();
 
     // If we don't have a submenu state then we are just going to use the default position,
     // which should be the position for the name which the user currently has picked
@@ -99,15 +99,16 @@ unsafe fn set_layout_position(ctx: &mut InlineCtx) {
         return;
     };
 
-    *ctx.registers[21].x.as_mut() = state
-        .get_start_index()
-        .map(|index| index + 1)
-        .unwrap_or_default() as u64;
+    ctx.registers[21].set_x(
+        state.get_start_index()
+            .map(|index| index + 1)
+            .unwrap_or_default() as u64
+    );
 }
 
 #[skyline::hook(offset = 0x19fba2c, inline)]
 unsafe fn create_layout(ctx: &mut InlineCtx) {
-    let ptr = *ctx.registers[19].x.as_ref();
+    let ptr = ctx.registers[19].x();
 
     // If we don't have a submenu state then we are just going to use the default button count
     let states = SUBMENU_STATES.lock();
@@ -116,10 +117,10 @@ unsafe fn create_layout(ctx: &mut InlineCtx) {
     };
 
     // Add one button for the title button
-    *ctx.registers[1].x.as_mut() = state.get_button_count() as u64 + 1;
+    ctx.registers[1].set_x(state.get_button_count() as u64 + 1);
 }
 
-#[skyline::from_offset(0x37a1f10)]
+#[skyline::from_offset(0x37a22f0)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 #[skyline::hook(offset = 0x19f67b0)]
@@ -186,7 +187,7 @@ unsafe fn get_controls_id_from_button_id(root_layout: u64, button_id: i32) -> Op
 
 #[skyline::hook(offset = 0x19f9bb8, inline)]
 unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
-    let ptr = *ctx.registers[8].x.as_ref();
+    let ptr = ctx.registers[8].x();
     let virt = VIRTUAL_INPUT_MAPS.lock().get(&ptr).copied();
 
     let Some(virt) = virt else {
@@ -195,14 +196,14 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
 
     let mut states = SUBMENU_STATES.lock();
 
-    let root_layout = *ctx.registers[19].x.as_ref();
+    let root_layout = ctx.registers[19].x();
 
     let state = states.entry(root_layout).or_default();
     let currently_pressing = *(ptr as *const i32).add(0x2a0 / 4);
 
     if state.was_cancel_pressed_last {
-        state.was_cancel_pressed_last = *ctx.registers[9].x.as_ref() != 0;
-        *ctx.registers[9].x.as_mut() = 0;
+        state.was_cancel_pressed_last = ctx.registers[9].x() != 0;
+        ctx.registers[9].set_x(0);
     }
 
     let reinitialize = match &mut state.submenu {
@@ -230,9 +231,9 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
             let unwrapped = submenu.take().unwrap_unchecked();
             let picked = *((ptr + 0x2b4) as *const i32);
             *((ptr + 0x2b4) as *mut i32) = -1;
-            if *ctx.registers[9].x.as_ref() != 0 {
+            if ctx.registers[9].x() != 0 {
                 *submenu = unwrapped.cancel();
-                *ctx.registers[9].x.as_mut() = 0x0;
+                ctx.registers[9].set_x(0x0);
                 state.was_cancel_pressed_last = true;
                 true
             } else if picked < 0 {
@@ -268,10 +269,10 @@ unsafe fn check_for_input(mask: u32, ptr: u64) -> bool {
     false
 }
 
-#[skyline::hook(offset = 0x377ceb0, inline)]
+#[skyline::hook(offset = 0x377d290, inline)]
 unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
-    let ptr = *ctx.registers[0].x.as_ref();
-    let virtual_input = *(*ctx.registers[1].x.as_ref() as *const u64).add(1);
+    let ptr = ctx.registers[0].x();
+    let virtual_input = *(ctx.registers[1].x() as *const u64).add(1);
     let mut maps = VIRTUAL_INPUT_MAPS.lock();
     let last_frame = maps.get(&virtual_input).cloned().unwrap_or_default();
     let extra = ExtraInputDetection {

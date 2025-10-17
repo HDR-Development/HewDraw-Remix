@@ -5,12 +5,14 @@
       <float hash="p1_y">18</float>
       <float hash="p2_y">9</float>
     </struct>
+    <!-- ZAIR TETHER -->
     <struct index="1">
       <float hash="p1_x">50</float>
       <float hash="p1_y">44</float>
       <float hash="p2_x">10</float>
       <float hash="p2_y">-24</float>
     </struct>
+    <!-- ZAIR TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_gbeam">

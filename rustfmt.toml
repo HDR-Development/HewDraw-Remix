@@ -1,0 +1,6 @@
+hard_tabs = false
+tab_spaces = 4
+max_width = 9999
+wrap_comments = false
+use_small_heuristics = "Off"
+trailing_comma = "Vertical"

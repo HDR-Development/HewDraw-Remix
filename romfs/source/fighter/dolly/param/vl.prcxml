@@ -22,10 +22,12 @@
     <struct index="0">
       <float hash="command_power_mul">1.2</float>
       <float hash="start_brake_x_ground">0.165</float>
+      <int hash="attack_stop_cliff_frame">999</int>
     </struct>
     <struct index="1">
       <float hash="command_power_mul">1.2</float>
       <float hash="start_brake_x_ground">0.165</float>
+      <int hash="attack_stop_cliff_frame">999</int>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>

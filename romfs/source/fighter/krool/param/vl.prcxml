@@ -5,7 +5,9 @@
       <float hash="p1_y">32</float>
       <float hash="p2_x">-16</float>
     </struct>
+    <!-- UP SPECIAL -->
     <struct index="1">
+      <float hash="p1_x">12</float>
       <float hash="p1_y">28</float>
       <float hash="p2_x">-16</float>
     </struct>

@@ -9,6 +9,7 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
             return;
         }
         MeterModule::update(fighter.object(), false);
+        update_aura_visual(fighter);
         MeterModule::set_meter_cap(fighter.object(), 3);
         MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
         utils::ui::UiManager::set_aura_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
@@ -20,6 +21,25 @@ pub extern "C" fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
             (VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT))
         );
     }
+}
+
+unsafe fn update_aura_visual(fighter: &mut L2CFighterCommon) {
+    let effect = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_KIND);
+    let left = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_LHADOU) as u32;
+    let right = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_RHADOU) as u32;
+    if effect == hash40("null") || left == 0 || right == 0 {
+        return;
+    }
+
+    let scale = match(MeterModule::level(fighter.battle_object)) {
+        0 => 0.0,
+        1 => 0.65,
+        2 => 0.95,
+        3 => 1.25,
+        _ => 0.0
+    };
+    EffectModule::set_scale(fighter.module_accessor, left, &Vector3f{x: scale, y: scale, z: scale});
+    EffectModule::set_scale(fighter.module_accessor, right, &Vector3f{x: scale, y: scale, z: scale});
 }
 
 pub extern "C" fn lucario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -58,7 +78,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -76,7 +97,7 @@ pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
     && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
         VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT);
         PLAY_SE(agent, Hash40::new("se_common_spirits_critical_l_tail"));
-        MeterModule::add(agent.battle_object, -1.0 * meter);
+        MeterModule::drain_direct(agent.battle_object, meter);
     }
 }
 
@@ -212,14 +233,13 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         pause_meter_regen(fighter, 180);
     }
 
-    let meter = MeterModule::meter(fighter.object());
-    let meter_per_level = MeterModule::meter_per_level(fighter.object());
-    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
-    if meter >= meter_max
+    let meter = MeterModule::meter(fighter.battle_object);
+    let meter_per_level = MeterModule::meter_per_level(fighter.battle_object);
+    if meter >= meter_per_level
     && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
         PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
-        MeterModule::drain_direct(fighter.battle_object, meter_max);
+        MeterModule::drain_direct(fighter.battle_object, meter);
     }
     
     // guard clause

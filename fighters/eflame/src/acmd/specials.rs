@@ -1,5 +1,32 @@
 use super::*;
 
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if IS_EXIST_ARTICLE(agent, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
+        if is_excute(agent) {
+            ArticleModule::add_motion_partial(boma, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
+        }
+    }
+    if MotionModule::is_changing(boma) {
+        if is_excute(agent) {
+            WorkModule::on_flag(boma, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
+        }
+    }
+    if is_excute(agent) {
+        WorkModule::set_int64(boma, hash40("special_s") as i64, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+}
+
 unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -108,6 +135,11 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("game_specialsflick", game_specials, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("game_specialairsflick", game_specials, Priority::Low);
+
     agent.acmd("game_specialairhijump", game_specialairhijump, Priority::Low);
     agent.acmd("game_specialairhifall", game_specialairhifall, Priority::Low);
 
