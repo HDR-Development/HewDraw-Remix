@@ -109,6 +109,40 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_throwb(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_start"), Hash40::new("top"), 0, 5, 5, 0, -90, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_end"), Hash40::new("top"), 0, 5, 15, 0, -90, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(agent.lua_state_agent, 14.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_mantle_end"), false, false);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 16.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_throw_b_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -22, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 22.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -184,6 +218,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwf", game_throwf, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
+    agent.acmd("effect_throwb", effect_throwb, Priority::Low);
 
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
     

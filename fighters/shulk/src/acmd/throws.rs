@@ -90,6 +90,41 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword2"), Hash40::new("haver"), 0, 2.5, 0, 0, 0, 0, 1.05, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_circle"), Hash40::new("swordr"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_shulk_sword_jab"), Hash40::new("tex_shulk_sword2"), 3, Hash40::new("haver"), 0, 3, 1.1, Hash40::new("haver"), 0, 19.3, 1.1, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 0);
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword2_arc_2"), Hash40::new("haver"), 0, 2.5, 0, 0, 0, 0, 1.05, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword2_end"), Hash40::new("haver"), 0, 2.5, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("shulk_monad_sword2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("shulk_monad_circle"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -171,6 +206,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
 
     agent.acmd("game_throwf", game_throwf, Priority::Low);
+    agent.acmd("effect_throwf", effect_throwf, Priority::Low);
 
     agent.acmd("game_throwb", game_throwb, Priority::Low);
 

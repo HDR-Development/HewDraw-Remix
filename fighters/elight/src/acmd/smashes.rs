@@ -196,6 +196,41 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.75);
 }
 
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 8, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_open"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_beam_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, false);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_sword_hdr"), Hash40::new("tex_elight_sword2"), 7, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 15.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_smash_slash"), Hash40::new("top"), 0, 19.5, -1.5, 0, -90, -45, 1, true);
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_beam_m"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_close_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+}
+
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -259,11 +294,69 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 6, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_open"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_beam_s"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, false);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_sword_hdr"), Hash40::new("tex_elight_sword2"), 7, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 14.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_open"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_beam_s"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 0.97, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_smash_wind"), Hash40::new("top"), 0, 7.5, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_light"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.8, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_light"), false, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_smash_wind"), Hash40::new("top"), 0, 7.5, 0, 0, 180, 0, 0.93, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_light"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.8, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_light"), false, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_sword_beam_s"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_close_s"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
     agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
     
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
+    agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
 
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
+    agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);
 }

@@ -43,7 +43,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(agent, 1.25);
         EFFECT_FOLLOW(agent, Hash40::new("roy_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.8, true);
         LAST_EFFECT_SET_RATE(agent, 1.25);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword3"), Hash40::new("tex_roy_sword4"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_flame1"), Hash40::new("tex_roy_flame2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -147,7 +147,7 @@ unsafe extern "C" fn effect_specialnend2(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("roy_eruption_bomb_main"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
         EFFECT(agent, Hash40::new("roy_eruption_bomb_start_middle"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword3"), Hash40::new("tex_roy_sword4"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_flame1"), Hash40::new("tex_roy_flame2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -208,7 +208,7 @@ unsafe extern "C" fn effect_specialnend3(agent: &mut L2CAgentBase) {
         EFFECT(agent, Hash40::new("roy_eruption_bomb_start_high"), Hash40::new("top"), 0, 0, 15, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 0.7);
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword3"), Hash40::new("tex_roy_sword4"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_flame1"), Hash40::new("tex_roy_flame2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -291,6 +291,60 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("roy_blazer_slash"), Hash40::new("top"), 0, 10, 4, 110, 180, -10, 1.1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 2);
+    }
+    frame(agent.lua_state_agent, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("roy_fire1"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 0.9);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("roy_sword"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_blazer_sword"), Hash40::new("sword1"), 0, 0, 0, 90, 0, -90, 1, true);
+        EFFECT(agent, Hash40::new("roy_dolphin"), Hash40::new("top"), -0.0, 0, 3.8, 0, 0, 0, 0.97, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_sword"), false, true);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_flame1"), Hash40::new("tex_roy_flame2"), 15, Hash40::new("sword1"), 0, 0, 0, Hash40::new("sword1"), -0.0, -0.0, 14, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("roy_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.2);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_blazer_sword"), false, false);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 0, 0, 14, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
+    }
+    frame(agent.lua_state_agent, 21.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_fire1"), false, false);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(agent.lua_state_agent, 24.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_fire"), false, false);
+        AFTER_IMAGE_OFF(agent, 7);
+    }
+    for _ in 0..2 {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    wait(agent.lua_state_agent, 9.0);
+}
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -332,6 +386,57 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("sys_guard_mark"), true, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("roy_counter_success"), Hash40::new("top"), 0, 14.8, -1, 0, 90, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+    }
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT){
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("roy_counter_attack"), Hash40::new("top"), 0, 10, 6, 0, 0, 50, 1.5, true);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_flame1"), Hash40::new("tex_roy_flame2"), 30, Hash40::new("sword1"), 0, 0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if is_excute(agent) {
+        FLASH(agent, 1, 1, 1, 0);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_fire"), false, false);
+    }
+    frame(agent.lua_state_agent, 8.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+    }
+    frame(agent.lua_state_agent, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+        AFTER_IMAGE_OFF(agent, 10);
+    }
+    for _ in 0..2 {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 7, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    wait(agent.lua_state_agent, 7.0);
+}
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("effect_specialnend", effect_specialnend, Priority::Low);
@@ -358,10 +463,15 @@ pub fn install(agent: &mut Agent) {
     special_s4::install(agent);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhi", effect_specialhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
     agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
+    agent.acmd("effect_specialairlwhit", effect_speciallwhit, Priority::Low);
+
 }

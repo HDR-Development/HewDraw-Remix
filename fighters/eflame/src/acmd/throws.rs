@@ -144,6 +144,69 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_throwlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_sword_open"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_sword_beam_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_eflame_sword_hdr"), Hash40::new("tex_elight_sword2"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 15.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("eflame_attack_speedline"), Hash40::new("top"), 0, 23, 0, 90, 0, 0, 1.1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.3, 0.5, 1.3);
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_promrevolt_sword_firetrail"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_promrevolt_sword_fire"), Hash40::new("sword1"), 0, 0, 2, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("eflame_promrevolt_sword_fire2"), Hash40::new("sword1"), 0, 0, 18, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_promrevolt_speed_line"), Hash40::new("rot"), 0, 0, 1.5, 90, 0, 0, 1.5, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_hit_sting"), Hash40::new("top"), 0, 12, 0, 0, 0, -90, 0.9, 0, 0, 0, 0, 0, 0, false);
+        AFTER_IMAGE_OFF(agent, 3);
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_promrevolt_sword_firetrail"), false, true);
+        EFFECT(agent, Hash40::new("eflame_promrevolt_sword_stab"), Hash40::new("top"), -3, 0, 0.8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_promrevolt_sword_fire2"), false, true);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_promrevolt_speed_line"), false, true);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("eflame_promrevolt_sword_smoke"), Hash40::new("top"), -3, 0, 0.8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 66.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_promrevolt_sword_fire"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("eflame_sword_beam_m"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("eflame_sword_close"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 1.7);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
@@ -153,4 +216,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_throwhi", sound_throwhi, Priority::Low);
 
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
+    agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
 }

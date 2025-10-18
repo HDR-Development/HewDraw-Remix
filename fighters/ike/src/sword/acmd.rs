@@ -29,8 +29,22 @@ unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
         }
     }
 }
+
+unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 1.0);
+        if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_quickdraw"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("haver"), 0.0, 1.0, 0.0, Hash40::new("haver"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        }
+}
     
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_appeallw", game_appeallw, Priority::Low);
     agent.acmd("effect_appeallw", effect_appeallw, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
+    agent.acmd("effect_specialairhi2", effect_specialhi2, Priority::Low);
 }
