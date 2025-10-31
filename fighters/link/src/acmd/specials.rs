@@ -90,13 +90,13 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.25);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 4, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_spin1"), Hash40::new("tex_link_spin2"), 8, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.75, true);
         FLASH(agent, 1, 0.6, 0, 0.1);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 11, 0, -10, -120, 0, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_hdr"), Hash40::new("top"), 0, 11, 0, -10, -120, 0, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
@@ -104,7 +104,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 10, 180, 0, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_hdr"), Hash40::new("top"), 0, 10, 0, 10, 180, 0, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
@@ -112,7 +112,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, -250, 5, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_hdr"), Hash40::new("top"), 0, 10, 0, -10, -250, 5, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
@@ -120,7 +120,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, 0, 5, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_hdr"), Hash40::new("top"), 0, 10, 0, -10, 0, 5, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
@@ -128,7 +128,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 38.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 0, -100, 10, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_hdr"), Hash40::new("top"), 0, 10, 0, 0, -100, 10, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
         FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
@@ -138,7 +138,7 @@ unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FLASH_FRM(agent, 5, 0, 0, 0, 0);
         AFTER_IMAGE_OFF(agent, 6);
-        EFFECT_OFF_KIND(agent, Hash40::new("link_kaiten"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("link_kaiten_hdr"), false, false);
         LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 49.0);
@@ -276,28 +276,28 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 4, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_spin1"), Hash40::new("tex_link_spin2"), 10, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
         FLASH(agent, 1, 0.6, 0, 0.1);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 18, 0, 0, -90, 25, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air_hdr"), Hash40::new("top"), 0, 18, 0, 0, -90, 25, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, -20, -150, 30, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air_hdr"), Hash40::new("top"), 0, 16, 0, -20, -150, 30, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 17, 0, 0, -120, 20, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air_hdr"), Hash40::new("top"), 0, 17, 0, 0, -120, 20, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, 25, -170, 15, 0.75, true);
+        EFFECT_FOLLOW(agent, Hash40::new("link_kaiten_air_hdr"), Hash40::new("top"), 0, 16, 0, 25, -170, 15, 0.75, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 42.0);
@@ -306,7 +306,7 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 44.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 6, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_link_spin1"), Hash40::new("tex_link_sword2"), 6, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
     }
     frame(lua_state, 49.0);
     if is_excute(agent) {
@@ -316,7 +316,7 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 53.0);
     if is_excute(agent) {
         FLASH_FRM(agent, 5, 0, 0, 0, 0);
-        EFFECT_OFF_KIND(agent, Hash40::new("link_kaiten"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("link_kaiten_air_hdr"), false, false);
     }
     frame(lua_state, 54.0);
     if is_excute(agent) {

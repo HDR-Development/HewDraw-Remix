@@ -21,6 +21,28 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_throwhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2.5, 0, -1, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_toonlink_sword_hdr"), Hash40::new("toonlink_sword2"), 5, Hash40::new("sword1"), 0.5, 0, -0.5, Hash40::new("sword1"), 10.57, -0.13, -0.12, true, Hash40::new("toonlink_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwb", game_throwb, Priority::Low);
+
+    agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);
 }
