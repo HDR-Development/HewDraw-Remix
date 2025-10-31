@@ -263,7 +263,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="33">
       <hash40 hash="fighter_kind">WARIO</hash40>
@@ -295,7 +295,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="37">
       <hash40 hash="fighter_kind">PFUSHIGISOU</hash40>
@@ -303,7 +303,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="38">
       <hash40 hash="fighter_kind">PLIZARDON</hash40>
@@ -311,7 +311,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="39">
       <hash40 hash="fighter_kind">DIDDY</hash40>
@@ -327,7 +327,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="41">
       <hash40 hash="fighter_kind">SONIC</hash40>
@@ -343,7 +343,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="43">
       <hash40 hash="fighter_kind">PIKMIN</hash40>
@@ -351,7 +351,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="44">
       <hash40 hash="fighter_kind">LUCARIO</hash40>
@@ -711,7 +711,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <bool hash="use_entry_anim_on_respawn">true</bool>
+      <bool hash="use_entry_anim_on_respawn">false</bool>
     </struct>
     <struct index="89">
       <hash40 hash="fighter_kind">EDGE</hash40>
