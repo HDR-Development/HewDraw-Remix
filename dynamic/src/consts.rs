@@ -36,7 +36,7 @@ pub mod globals {
     pub const CMD_CAT4: i32 = 0x23;
     // 0x24
     // 0x25
-    // 0x26
+    // 0x26 transition handler, e.g. special resources and vegetable pull
     // 0x27
     // 0x28 some substatus
     pub const DASH_CALLBACK: i32 = 0x29;
@@ -811,9 +811,17 @@ pub mod vars {
     }
 
     pub mod kamui {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0100;
+        }
+
         pub mod status {
             // floats
             pub const ATTACK_AIR_B_CHARGE: i32 = 0x1100;
+
+            // flags
+            pub const SPECIAL_LW_ENABLE_FALL: i32 = 0x1101;
         }
     }
 
@@ -958,6 +966,8 @@ pub mod vars {
         pub mod status {
             // flags
             pub const HIT_CANCEL: i32 = 0x1102;
+            pub const SUPER_SPECIAL_A_PLUS_B: i32 = 0x1103;
+            pub const SUPER_SPECIAL_DECIDE: i32 = 0x1104;
 
             // ints
             pub const SPECIAL_S_ROT_ANGLE: i32 = 0x1100;
@@ -967,6 +977,7 @@ pub mod vars {
             // floats
             pub const SPECIAL_N_ANGLE: i32 = 0x1100;
             pub const AURA_OVERRIDE: i32 = 0x1101;
+            pub const SPECIAL_HI_START_LR: i32 = 0x1102;
         }
     }
 
@@ -1222,10 +1233,14 @@ pub mod vars {
         pub mod instance {
             //flags
             pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0101;
         }
         pub mod status {
             // flags
             pub const SPECIAL_HI_THUNDER_LOOSE: i32 = 0x1100;
+
+            // ints
+            pub const SPECIAL_LW_STOP_Y_FRAME: i32 = 0x1100;
         }
     }
 
@@ -1303,11 +1318,14 @@ pub mod vars {
     }
 
     pub mod peach {
+        pub mod status {
+            // ints
+            pub const EFFECT_HANDLER: i32 = 0x1100;
+        }
         pub mod instance {
             // flag
-            // Used to check if sideb wall bounce happens
-            pub const SPECIAL_S_WALL_BOUNCE: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+            pub const SPECIAL_N_AUTOFIRE: i32 = 0x0101;
         }
     }
 
@@ -1838,10 +1856,10 @@ pub mod vars {
             // flags
             pub const ATTACK_12_ENABLE_S3_COMBO: i32 = 0x0100;
             pub const ATTACK_LW4_REBOUND: i32 = 0x0101;
-            pub const DISABLE_SPECIAL_N: i32 = 0x102;
+            pub const DISABLE_SPECIAL_N: i32 = 0x0102;
 
             // ints
-            pub const SPECIAL_N_MAGIC_TIMER: i32 = 0x100;
+            pub const SPECIAL_N_MAGIC_TIMER: i32 = 0x0100;
 
             // floats
             pub const SPECIAL_S_JUMP_SPEED_X: i32 = 0x0100;
@@ -1994,6 +2012,10 @@ pub mod statuses {
 
     pub mod gekkouga {
         pub const SPECIAL_LW_JUMP: i32 = 0x1F1;
+    }
+
+    pub mod kamui {
+        pub const SPECIAL_LW: i32 = 0x1F5;
     }
 
     pub mod ken {

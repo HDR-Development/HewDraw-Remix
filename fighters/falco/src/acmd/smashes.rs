@@ -150,7 +150,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 4.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

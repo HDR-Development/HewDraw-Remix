@@ -39,7 +39,7 @@ attack_air_b:
     cancel_frame: 32
 attack_air_f:
   extra:
-    cancel_frame: 52
+    cancel_frame: 49
 attack_air_hi:
   extra:
     cancel_frame: 33
@@ -280,7 +280,7 @@ special_n_attack:
     no_stop_intp: false
 special_s_end:
   extra:
-    cancel_frame: 37
+    cancel_frame: 30
 special_s_hit_end:
   extra:
     cancel_frame: 23

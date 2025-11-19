@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">18</float>
+      <float hash="p1_y">20</float>
       <float hash="p2_y">9</float>
     </struct>
     <!-- ZAIR TETHER -->
@@ -14,6 +14,13 @@
     </struct>
     <!-- ZAIR TETHER (HANG) -->
     <hash40 index="2">dummy</hash40>
+    <!-- DOUBLE JUMP -->
+    <struct index="3">
+      <float hash="p1_x">15</float>
+      <float hash="p1_y">16</float>
+      <float hash="p2_x">-9</float>
+      <float hash="p2_y">9</float>
+    </struct>
   </list>
   <list hash="param_gbeam">
     <struct index="0">

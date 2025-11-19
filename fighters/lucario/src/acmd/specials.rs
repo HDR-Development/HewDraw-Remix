@@ -23,9 +23,19 @@ unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
             VarModule::on_flag(agent.battle_object, vars::lucario::instance::IS_POWERED_UP);
         }
     }
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 8.0);
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::status::SUPER_SPECIAL_DECIDE);
+    }
     frame(lua_state, 9.0);
     if is_excute(agent) {
         ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        // prevents double aura sphere
+        VarModule::set_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
+        VarModule::off_flag(agent.battle_object, vars::lucario::instance::IS_POWERED_UP);
     }
 }
 
@@ -122,6 +132,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::status::SUPER_SPECIAL_DECIDE);
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
             opff::check_burnout(agent);
@@ -167,6 +178,7 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::lucario::status::SUPER_SPECIAL_DECIDE);
         if VarModule::get_float(agent.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
             MeterModule::drain_direct(agent.battle_object, MeterModule::meter_per_level(agent.battle_object));
             opff::check_burnout(agent);
@@ -417,10 +429,14 @@ unsafe extern "C" fn expression_specialhimove(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    wait(lua_state, 1.0);
     if is_excute(agent) {
         MeterModule::watch_damage(agent.battle_object, true);
-        ATTACK(agent, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        if VarModule::is_flag(agent.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) {
+            // cancel-only hitbox that prevents Lucario players from spiking people with intentionally bad cancels
+            ATTACK(agent, 0, 1, Hash40::new("hip"), 0.5, 365, 100, 32, 0, 6.0, 0.0, 0.0, 0.0, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        } else {
+            ATTACK(agent, 0, 1, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {

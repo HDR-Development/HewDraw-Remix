@@ -60,12 +60,6 @@ unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon) {
-    let sideSpecial = fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH,
-        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL
-    ]);
-    
     // While in Beakbomb / Wonderwing
     if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE) {
         if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH) {
@@ -79,7 +73,11 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon) {
         else if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL) {
             beakbomb_wall(fighter);
         }
-        else if !sideSpecial {
+        else if !fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH,
+            *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL
+        ]) {
             // If out of SideSpecial, then set BEAKBOMB_ACTIVE to false
             VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
         }

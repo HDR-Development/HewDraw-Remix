@@ -56,6 +56,7 @@ unsafe extern "C" fn rockbuster_shoot_jump_main_loop(fighter: &mut L2CFighterCom
     }
     if sit == *SITUATION_KIND_GROUND {
         // fighter.change_status(FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING.into(), false.into());
+        VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, 6.0);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 1.into();
     }

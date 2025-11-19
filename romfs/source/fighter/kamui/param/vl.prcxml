@@ -39,8 +39,9 @@
     <struct index="0">
       <int hash="slow_mul">6</int>
       <int hash="slow_frame">25</int>
-      <float hash="special_air_lw_accel_y">0.05</float>
-      <float hash="special_air_lw_speed_max_y">1.75</float>
+      <float hash="special_air_lw_start_speed_mul_x">0.33</float>
+      <float hash="special_air_lw_accel_y">0.0125</float>
+      <float hash="special_air_lw_speed_max_y">0.26</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

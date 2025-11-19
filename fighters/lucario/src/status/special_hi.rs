@@ -26,11 +26,14 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
-    return 0.into();
+    return false.into();
 }
 
 unsafe extern "C" fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE, 1.0);
+    VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    VarModule::set_float(fighter.battle_object, vars::lucario::status::SPECIAL_HI_START_LR, lr);
     smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI)(fighter)
 }
 
@@ -45,7 +48,7 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR_ROT);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
             let rate = (0.6).lerp(&1.0, &((motion_frame - start_frame) / (end_frame - start_frame)));
-            if !fighter.is_button_on(Buttons::SpecialRaw) {
+            if !fighter.is_button_on(Buttons::SpecialAll) {
                 VarModule::set_float(fighter.battle_object, vars::lucario::instance::SPECIAL_HI_MOTION_RATE, rate);
                 MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, end_frame, true, true, false);
             }
@@ -116,9 +119,7 @@ unsafe extern "C" fn special_hi_guide_handler(fighter: &mut L2CFighterCommon, sc
 
 pub unsafe extern "C" fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(End, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND)(fighter);
-
     fighter.off_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
-    
     ret
 }
 
@@ -150,20 +151,16 @@ unsafe extern "C" fn special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CV
         0
     );
 
-    return 0.into();
+    return false.into();
 }
 
 unsafe extern "C" fn special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
     fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
     GroundModule::set_passable_check(fighter.module_accessor, true);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_move"), 0.0, 1.0, false, 0.0, false, false);
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_LUCARIO_CLIFF_HANG_DATA_SPECIAL_HI as u32);
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-    }
-    else {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-    }
+    fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_rush_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_rush_main_loop as *const () as _))
 }
@@ -172,32 +169,34 @@ unsafe extern "C" fn special_hi_rush_substatus(fighter: &mut L2CFighterCommon, p
     if param_1.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
     }
-    0.into()
+    return false.into();
 }
 
 unsafe extern "C" fn special_hi_rush_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            }
-            else {
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-            }
+            fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
         }
         // metered attack cancel
-        if special_hi_metered_cancel(fighter).get_bool() {
-            return 0.into();
+        if !CancelModule::is_enable_cancel(fighter.module_accessor) 
+        && !fighter.is_in_hitlag() 
+        && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT)
+        && VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL)
+        && fighter.is_situation(*SITUATION_KIND_AIR) 
+        && fighter.get_aerial() != None {
+            fighter.on_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
+            fighter.set_int(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
+            VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
         }
         opff::pause_meter_regen(fighter, 30);
     }
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
+        return true.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_air_check_fall_common().get_bool()
         || fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return 0.into();
+            return true.into();
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
@@ -238,20 +237,10 @@ unsafe extern "C" fn special_hi_rush_main_loop(fighter: &mut L2CFighterCommon) -
         fighter.off_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_STATUS_TRANS);
         fighter.set_int(-1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_NEXT_STATUS);
     }
-    0.into()
+    return false.into();
 }
 
 unsafe extern "C" fn special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let next_status = fighter.global_table[STATUS_KIND].get_i32();
-    if !CancelModule::is_enable_cancel(fighter.module_accessor)
-    && next_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-        let angle = (fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
-        let lr = if angle.abs() > 90.0 { -1.0 } else { 1.0 };
-        PostureModule::set_lr(fighter.module_accessor, lr);
-    } else {
-        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-    }
     smashline::original_status(End, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH)(fighter)
 }
 
@@ -279,6 +268,23 @@ unsafe extern "C" fn special_hi_rush_end_init(fighter: &mut L2CFighterCommon) ->
         let end_brake_x = fighter.get_param_float("param_special_hi", "end_brake_x");
         sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, end_brake_x, end_brake_x);
     }
+    // always face the direction you were traveling
+    let angle = fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees();
+    if angle.abs() > 95.0 {
+        PostureModule::set_lr(fighter.module_accessor, -1.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if angle.abs() < 85.0 {
+        PostureModule::set_lr(fighter.module_accessor, 1.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if fighter.left_stick_x() != 0.0 {
+        let lr = fighter.left_stick_x().signum();
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if VarModule::get_float(fighter.battle_object, vars::lucario::status::SPECIAL_HI_START_LR) != 0.0 {
+        let lr = VarModule::get_float(fighter.battle_object, vars::lucario::status::SPECIAL_HI_START_LR);
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
 
     return ret;
 }
@@ -305,30 +311,39 @@ unsafe extern "C" fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) ->
 unsafe extern "C" fn special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         // metered attack cancel
-        if special_hi_metered_cancel(fighter).get_bool() {
-            return 0.into();
+        if VarModule::is_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL) || (
+            !CancelModule::is_enable_cancel(fighter.module_accessor) 
+            && !fighter.is_in_hitlag() 
+            && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT)
+            && VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL)
+            && fighter.is_situation(*SITUATION_KIND_AIR) 
+            && fighter.get_aerial() != None
+        ) {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
+            return true.into();
         }
+
         opff::pause_meter_regen(fighter, 30);
     }
     let sit = fighter.get_int(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_END_SITUATION);
     if sit != *SITUATION_KIND_GROUND
     && fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
+        return true.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
-            return 0.into();
+            return true.into();
         }
     }
     if sit != *SITUATION_KIND_GROUND {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-            return 0.into();
+            return true.into();
         }
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            return 0.into();
+            return true.into();
         }
         if fighter.is_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
@@ -338,44 +353,47 @@ unsafe extern "C" fn special_hi_rush_end_main_loop(fighter: &mut L2CFighterCommo
     else {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            return 0.into();
+            return true.into();
         }
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-            return 0.into();
-        }
-    }
-    0.into()
-}
-
-unsafe extern "C" fn special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let next_status = fighter.global_table[STATUS_KIND].get_i32();
-    if !CancelModule::is_enable_cancel(fighter.module_accessor)
-    && next_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-        let angle = (fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees());
-        let lr = if angle.abs() > 90.0 { -1.0 } else { 1.0 };
-        PostureModule::set_lr(fighter.module_accessor, lr);
-    } else {
-        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
-    }
-    smashline::original_status(End, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END)(fighter)
-}
-
-unsafe extern "C" fn special_hi_metered_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) 
-    || fighter.is_in_hitlag() 
-    || VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT)
-    || !VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL) {
-        return false.into();
-    }
-    if fighter.is_situation(*SITUATION_KIND_AIR) {
-        if fighter.get_aerial() != None {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_AIR,true);
             return true.into();
         }
     }
     return false.into();
+}
+
+unsafe extern "C" fn special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(End, fighter, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END)(fighter);
+
+    // set SPECIAL_HI_ATTACK_CANCEL
+    let next_status = fighter.global_table[STATUS_KIND].get_i32();
+    if !CancelModule::is_enable_cancel(fighter.module_accessor)
+    && next_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        VarModule::on_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
+    } else {
+        VarModule::off_flag(fighter.object(), vars::lucario::instance::SPECIAL_HI_ATTACK_CANCEL);
+    }
+
+    // always face the direction you were traveling
+    let angle = fighter.get_float(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_RUSH_DIR_ROT).to_degrees();
+    if angle.abs() > 95.0 {
+        PostureModule::set_lr(fighter.module_accessor, -1.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if angle.abs() < 85.0 {
+        PostureModule::set_lr(fighter.module_accessor, 1.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if fighter.left_stick_x() != 0.0 {
+        let lr = fighter.left_stick_x().signum();
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    } else if VarModule::get_float(fighter.battle_object, vars::lucario::status::SPECIAL_HI_START_LR) != 0.0 {
+        let lr = VarModule::get_float(fighter.battle_object, vars::lucario::status::SPECIAL_HI_START_LR);
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+
+    ret
 }
 
 unsafe extern "C" fn special_hi_rush_touch_ground(fighter: &mut L2CFighterCommon, flag: L2CValue, some_bool: L2CValue, some_float: L2CValue) -> L2CValue {

@@ -35,6 +35,8 @@ unsafe extern "C" fn float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         0.0
     );
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    float_drift_common(fighter);
+
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
@@ -209,6 +211,11 @@ unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
     }
     float_end_common(fighter)
+}
+
+extern "Rust" {
+    #[link_name = "float_drift_common"]
+    fn float_drift_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 pub fn install(agent: &mut Agent) {

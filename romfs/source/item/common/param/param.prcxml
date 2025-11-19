@@ -60,7 +60,10 @@
     <hash40 index="47">dummy</hash40>
     <hash40 index="48">dummy</hash40>
     <hash40 index="49">dummy</hash40>
-    <hash40 index="50">dummy</hash40>
+    <struct index="50">  
+      <float hash="throw_speed_mul">0.85</float>
+      <float hash="air_brake_x">0.0025</float>
+    </struct>
     <hash40 index="51">dummy</hash40>
     <hash40 index="52">dummy</hash40>
     <hash40 index="53">dummy</hash40>
@@ -146,7 +149,9 @@
       <float hash="hitsize">4.2</float>
       <float hash="gravity_accel_max">2.5</float>
     </struct>
-    <hash40 index="121">dummy</hash40>
+    <struct index="121">
+      <hash40 hash="shield_kind">item_shield_kind_hop</hash40>
+    </struct>
     <hash40 index="122">dummy</hash40>
     <hash40 index="123">dummy</hash40>
     <hash40 index="124">dummy</hash40>

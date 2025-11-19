@@ -5,7 +5,9 @@ use globals::*;
 
 pub extern "C" fn flowerpot_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
-        if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) 
+        && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_PARRY) {
             weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
         }
     }

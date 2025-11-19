@@ -3,18 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- // Magnet Jump Cancel and Turnaround
-unsafe fn psi_magnet_turnaround(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status (*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD) {
-        let facing = PostureModule::lr(fighter.module_accessor);
-        let stick_x = fighter.stick_x();
-        if stick_x * facing < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-        }
-    }
-}   
-
+ // Magnet Jump Cancel
 unsafe fn psi_magnet_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[ 
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
@@ -169,7 +158,6 @@ unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    psi_magnet_turnaround(fighter);
     psi_magnet_jump_cancel(fighter);
     pk_thunder_cancel(fighter);
     //magnet_stall_prevention(boma, id, status_kind, situation_kind);

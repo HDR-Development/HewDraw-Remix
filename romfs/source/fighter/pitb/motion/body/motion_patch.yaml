@@ -97,7 +97,7 @@ attack_s3_s:
     cancel_frame: 36
 attack_hi3:
   extra:
-    cancel_frame: 34
+    cancel_frame: 37
 attack_lw3:
   flags:
     move: false

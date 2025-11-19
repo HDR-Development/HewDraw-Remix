@@ -8,6 +8,7 @@ mod special_s;
 mod special_hi;
 mod attack_s4;
 mod fall_special;
+mod squat;
  
 // AGENT INIT AND CALLBACKS
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -34,4 +35,5 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
     attack_s4::install(agent);
     fall_special::install(agent);
+    squat::install(agent);
 }

@@ -203,6 +203,11 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword"), true, true);
         EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_linear"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        
+        agent.clear_lua_stack();
+        lua_args!(agent, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_INT_EFFECT_ID);
+        sv_animcmd::LAST_EFFECT_SET_WORK_INT(agent.lua_state_agent);
+
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
     }
     frame(lua_state, 13.0);
@@ -248,6 +253,97 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     frame(lua_state, 36.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 4);
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_wind"), false, true);
+    }
+    frame(lua_state, 45.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_linear"), true, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword2"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_sword_close_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+}
+
+unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        WorkModule::set_float(boma, 17.0, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLOAT_EFFECT1_POS_X_MIN);
+        WorkModule::set_float(boma, 30.0, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLOAT_EFFECT1_POS_X_MAX);
+        WorkModule::set_float(boma, 1.0, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLOAT_EFFECT2_POS_X_MIN);
+        WorkModule::set_float(boma, 12.0, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_FLOAT_EFFECT2_POS_X_MAX);
+        EFFECT_DETACH_KIND(agent, Hash40::new("elight_buster_flash"), -1);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword2"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1.08, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_buster"), Hash40::new("tex_elight_sword5"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 18.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_light"), Hash40::new("sword1"), 2, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_linear"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        
+        agent.clear_lua_stack();
+        lua_args!(agent, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_INT_EFFECT_ID);
+        sv_animcmd::LAST_EFFECT_SET_WORK_INT(agent.lua_state_agent);
+        
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_buster"), Hash40::new("tex_elight_sword5"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 18.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_light"), Hash40::new("sword1"), 2, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_wind"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(boma);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_buster"), Hash40::new("tex_elight_sword5"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 18.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_light"), Hash40::new("sword1"), 2, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+        EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_buster"), Hash40::new("tex_elight_sword5"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 18.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_light"), Hash40::new("sword1"), 2, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {
@@ -501,6 +597,11 @@ unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_max"), true, true);
         EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_linear"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        
+        agent.clear_lua_stack();
+        lua_args!(agent, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_INT_EFFECT_ID);
+        sv_animcmd::LAST_EFFECT_SET_WORK_INT(agent.lua_state_agent);
+
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
     }
     frame(lua_state, 15.0);
@@ -814,7 +915,6 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("elight_buster_sword_lensflare"), Hash40::new("top"), 0, 10, 20, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -828,6 +928,11 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_max"), true, true);
         EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_linear"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        
+        agent.clear_lua_stack();
+        lua_args!(agent, *FIGHTER_ELIGHT_STATUS_SPECIAL_N_INT_EFFECT_ID);
+        sv_animcmd::LAST_EFFECT_SET_WORK_INT(agent.lua_state_agent);
+
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -0.3);
     }
     frame(lua_state, 15.0);
@@ -849,10 +954,6 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
     }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-    }
     frame(lua_state, 24.0);
     if is_excute(agent) {
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_elight_buster"), Hash40::new("tex_elight_sword5"), 4, Hash40::new("sword1"), 0, 0, -0.08, Hash40::new("sword1"), 18.5, 0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
@@ -869,10 +970,6 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("elight_buster_sword_light"), false, true);
         AFTER_IMAGE_OFF(agent, 3);
-    }
-    frame(lua_state, 31.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 33.0);
     if is_excute(agent) {
@@ -901,10 +998,6 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_lensflare"), Hash40::new("top"), 0, 10, 23, 0, 0, 0, 0.9, true);
         EFFECT_FOLLOW(agent, Hash40::new("elight_buster_sword_lensflare"), Hash40::new("top"), 0, 10, 23, 0, 0, 0, 1.3, true);
-    }
-    frame(lua_state, 46.0);
-    if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 47.0);
     if is_excute(agent) {
@@ -1191,7 +1284,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
 	agent.acmd("effect_specialn", effect_specialn, Priority::Low);
     agent.acmd("game_specialairn", game_specialn, Priority::Low);
-	agent.acmd("effect_specialairn", effect_specialn, Priority::Low);
+	agent.acmd("effect_specialairn", effect_specialairn, Priority::Low);
     agent.acmd("game_specialn2", game_specialn2, Priority::Low);
 	agent.acmd("effect_specialn2", effect_specialn2, Priority::Low);
     agent.acmd("game_specialairn2", game_specialairn2, Priority::Low);

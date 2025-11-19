@@ -2,7 +2,14 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
+      <float hash="p1_y">23</float>
+      <float hash="p2_y">8</float>
+    </struct>
+    <!-- DOUBLE JUMP -->
+    <struct index="1">
+      <float hash="p1_x">13</float>
       <float hash="p1_y">20</float>
+      <float hash="p2_x">-7.8</float>
       <float hash="p2_y">8</float>
     </struct>
   </list>

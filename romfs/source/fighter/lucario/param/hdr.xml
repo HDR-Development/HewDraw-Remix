@@ -9,9 +9,9 @@
         <float hash="rot_end_interpolate_end_frame">55.0</float>
     </struct>
     <struct hash="aura">
-        <float hash="penalty_aurapower">0.92</float>
-        <float hash="min_aurapower">0.96</float>
-        <float hash="max_aurapower">1.08</float>
+        <float hash="penalty_aurapower">0.84</float>
+        <float hash="min_aurapower">0.92</float>
+        <float hash="max_aurapower">1.16</float>
         <float hash="bonus_aurapower">1.5</float>
     </struct>
     <struct hash="meter">

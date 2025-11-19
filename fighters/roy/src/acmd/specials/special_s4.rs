@@ -25,6 +25,14 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword_blue"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("roy_sword_blue"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_hi"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -36,6 +44,7 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("roy_attack_fire"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_sword_blue"), false, true);
         AFTER_IMAGE_OFF(agent, 2);
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_mc_aura_hi"), false, true);
     }
 }
 
@@ -108,6 +117,14 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword_red"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -119,6 +136,7 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("roy_attack_fire"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_sword_red"), false, true);
         AFTER_IMAGE_OFF(agent, 2);
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_mc_aura_s"), false, true);
     }
 }
 
@@ -188,6 +206,14 @@ unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword_green"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("roy_sword_green"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_lw"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
@@ -201,6 +227,7 @@ unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("roy_fire"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_attack_fire"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_sword_green"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_mc_aura_lw"), false, true);
         AFTER_IMAGE_OFF(agent, 2);
         EFFECT(agent, Hash40::new("roy_smash_bomb"), Hash40::new("sword1"), 0, 0, 7, 90, 0, 0, 0.48, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
@@ -257,6 +284,14 @@ unsafe extern "C" fn effect_specials4back(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
         AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_roy_sword_red"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
         EFFECT_FOLLOW(agent, Hash40::new("roy_sword_red"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("roy_mc_aura_s"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -268,6 +303,7 @@ unsafe extern "C" fn effect_specials4back(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("roy_attack_fire"), false, false);
         EFFECT_OFF_KIND(agent, Hash40::new("roy_sword_red"), false, true);
         AFTER_IMAGE_OFF(agent, 2);
+        EFFECT_OFF_KIND(agent, Hash40::new("roy_mc_aura_s"), false, true);
     }
 }
 
