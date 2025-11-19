@@ -41,6 +41,48 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), -2, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, 0.5);
+        EFFECT_FOLLOW(agent, Hash40::new("cloud_smash_slash_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(boma);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, 1.5);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, 0.2);
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
+    }
+}
+
 unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -118,6 +160,32 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 17, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, 0.2);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_cloud_sword_hdr"), Hash40::new("tex_cloud_sword2"), 4, Hash40::new("haver"), 0, 1.5, -1.2, Hash40::new("haver"), 0, 20.5, -1.19, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 4);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND_WORK(agent, *FIGHTER_CLOUD_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, false, true);
+    }
+}
+
 unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -173,9 +241,11 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
+    agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
     agent.acmd("expression_attacks4", expression_attacks4, Priority::Low);
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
+    agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
     agent.acmd("expression_attackhi4", expression_attackhi4, Priority::Low);
     
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);

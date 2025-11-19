@@ -14,6 +14,25 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, 90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordl"), 0, 0, 0, 180, 90, 0, 1, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_s3_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_sword"), true, true);
+    }
+}
+
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -67,18 +86,19 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_wind"), Hash40::new("top"), -7, 6, 7, -12, -42, 168, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_wind_hdr"), Hash40::new("top"), -7, 6, 2.3, -12, -42, 168, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, 0, 0, 0, 90, 0, 1, true);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("pit_sword"), true, true);
-        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_wind"), true, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_wind_hdr"), true, true);
     }
 }
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
+    agent.acmd("effect_attacks3", effect_attacks3, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
     

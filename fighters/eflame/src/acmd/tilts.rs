@@ -50,7 +50,7 @@ unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(agent, Hash40::new("eflame_sword_open"), true, true);
         EFFECT_FOLLOW(agent, Hash40::new("eflame_sword_beam_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -3);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_eflame_sword1"), Hash40::new("tex_eflame_sword2"), 5, Hash40::new("sword1"), 0.3, 0.0, 0.0, Hash40::new("sword1"), 18.5, 0.0, -0.25, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_eflame_sword_hdr"), Hash40::new("tex_eflame_sword2"), 5, Hash40::new("sword1"), 0.3, 0.0, 0.0, Hash40::new("sword1"), 18.5, 0.0, -0.25, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -128,7 +128,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_eflame_sword1"), Hash40::new("tex_eflame_sword2"), 5, Hash40::new("sword1"), 0.3, 0.0, 0.0, Hash40::new("sword1"), 18.5, 0.0, -0.25, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_eflame_sword_hdr"), Hash40::new("tex_eflame_sword2"), 5, Hash40::new("sword1"), 0.3, 0.0, 0.0, Hash40::new("sword1"), 18.5, 0.0, -0.25, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         EFFECT_FOLLOW(agent, Hash40::new("eflame_sword_beam_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(agent, -3);
     }

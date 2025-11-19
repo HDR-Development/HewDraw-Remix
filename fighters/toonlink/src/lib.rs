@@ -7,6 +7,10 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+// articles
+
+mod boomerang;
+
 use smash::{
     lib::{
         L2CValue,
@@ -45,4 +49,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    boomerang::install();
 }

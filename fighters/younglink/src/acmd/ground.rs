@@ -16,6 +16,20 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_sword_hdr"), Hash40::new("younglink_sword2"), 3, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+}
+
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -37,6 +51,20 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_sword_hdr"), Hash40::new("younglink_sword2"), 3, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
+}
+
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 	let lua_state = agent.lua_state_agent;
 	let boma = agent.boma();
@@ -50,6 +78,29 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
 	}
+}
+
+unsafe extern "C" fn effect_attack100end(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("younglink_sword"), false, false);
+        AFTER_IMAGE_OFF(agent, 1);
+        EFFECT_OFF_KIND(agent, Hash40::new("younglink_atk100"), false, false);
+        EffectModule::set_disable_render_offset_last(boma);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_sword_hdr"), Hash40::new("younglink_sword2"), 3, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+    }
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
@@ -148,8 +199,11 @@ unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11, Priority::Low);
+    agent.acmd("effect_attack11", effect_attack11, Priority::Low);
     agent.acmd("game_attack12", game_attack12, Priority::Low);
+    agent.acmd("effect_attack12", effect_attack12, Priority::Low);
     agent.acmd("game_attack13", game_attack13, Priority::Low);
+    agent.acmd("effect_attack100end", effect_attack100end, Priority::Low);
 
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
     agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
