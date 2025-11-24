@@ -212,7 +212,7 @@ unsafe extern "C" fn effect_specialsattack(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 0.5);
         EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_sword6"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_quickdraw"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
@@ -293,7 +293,7 @@ unsafe extern "C" fn effect_specialairsattack(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, false);
         //LAST_EFFECT_SET_RATE(fighter, 0.5);
         EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_sword6"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_quickdraw"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
@@ -425,6 +425,23 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_tenku_start_hdr"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_tenku_start_hdr"), true, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -473,6 +490,23 @@ unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialairhi2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword"), true, true);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_tenku_start_hdr"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_tenku_start_hdr"), true, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -496,6 +530,15 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhi3(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_tenku_sword3_hdr"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+}
+
 unsafe extern "C" fn game_specialhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -505,6 +548,77 @@ unsafe extern "C" fn game_specialhi4(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn effect_specialhi4(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 4);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("ike_tenku_ground"), Hash40::new("top"), 10, 0, 0, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword"), true, true);
+    }
+}
+
+unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("ike_counter_success"), Hash40::new("top"), 0, 16, -1, 0, 90, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 16, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        FLASH(agent, 1, 1, 1, 0);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_flame1"), Hash40::new("tex_ike_flame2"), 5, Hash40::new("sword"), 0, 1, 0, Hash40::new("sword"), 0, 16.2, 0, true, Hash40::new("null"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.1);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_counter_attack"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 11.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword2"), false, true);
+        AFTER_IMAGE_OFF(agent, 4);
+        COL_NORMAL(agent);
+    }
+}
+
+unsafe extern "C" fn effect_specialairlwhit(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("ike_counter_success"), Hash40::new("top"), 0, 16, -1, 0, 90, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
+        if is_excute(agent) {
+            EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 16, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        FLASH(agent, 1, 1, 1, 0);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_flame1"), Hash40::new("tex_ike_flame2"), 5, Hash40::new("sword"), 0, 1, 0, Hash40::new("sword"), 0, 16.2, 0, true, Hash40::new("null"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.1);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_counter_attack"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 11.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword2"), false, true);
+        AFTER_IMAGE_OFF(agent, 4);
+        COL_NORMAL(agent);
     }
 }
 
@@ -532,8 +646,17 @@ pub fn install(agent: &mut Agent) {;
     
     agent.acmd("game_specialhi1", game_specialhi1, Priority::Low);
     agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
     agent.acmd("game_specialairhi2", game_specialairhi2, Priority::Low);
+    agent.acmd("effect_specialairhi2", effect_specialairhi2, Priority::Low);
     agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
+    agent.acmd("effect_specialhi3", effect_specialhi3, Priority::Low);
     agent.acmd("game_specialairhi3", game_specialhi3, Priority::Low);
+    agent.acmd("effect_specialairhi3", effect_specialhi3, Priority::Low);
     agent.acmd("game_specialhi4", game_specialhi4, Priority::Low);
+    agent.acmd("effect_specialhi4", effect_specialhi4, Priority::Low);
+
+    agent.acmd("effect_speciallwhit", effect_speciallwhit, Priority::Low);
+    agent.acmd("effect_specialairlwhit", effect_specialairlwhit, Priority::Low);
+
 }

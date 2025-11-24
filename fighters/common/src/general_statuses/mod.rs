@@ -36,6 +36,7 @@ mod slip;
 mod lasso;
 mod itemthrow;
 mod fallspecial;
+mod squat;
 
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
@@ -219,6 +220,8 @@ pub unsafe fn sub_landing_fall_special_init(fighter: &mut L2CFighterCommon, arg2
 pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
+    // <HDR>
+
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
@@ -255,7 +258,33 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
         }
     }
 
-    original!()(fighter)
+    // </HDR>
+
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER)
+    || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET)
+    || ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_ASSIST {
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            return 1.into();
+        }
+
+        return 0.into();
+    }
+
+    if fighter.sub_landing_ground_check_common().get_bool() {
+        return 1.into();
+    }
+
+    if fighter.sub_landing_uniq_check_strans().get_bool() {
+        return 1.into();
+    }
+
+    0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_attack)]
@@ -1217,6 +1246,7 @@ pub fn install() {
     lasso::install();
     itemthrow::install();
     fallspecial::install();
+    squat::install();
 
     skyline::nro::add_hook(nro_hook);
 }

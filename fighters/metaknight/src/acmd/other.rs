@@ -107,6 +107,190 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_cliffattack(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 23.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 14.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 25.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_cliff_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 26.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 30.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_downattackd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 16.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_down_d_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 23.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 24.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 31.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_downattacku(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 14.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 16.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_down_u_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 22.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 25.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 27.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_slipattack(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_slip_wind"), Hash40::new("top"), 0, 7, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_slip_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 22.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 23.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 26.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 28.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_slip_wind"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_win1(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 59.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, -9, 0, 20, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 62.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 63.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_win1_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 75.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 127.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), -15, 7.2, -5.263, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+    frame(agent.lua_state_agent, 135.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_slip_wind"), false, false);
+    }
+    frame(agent.lua_state_agent, 147.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_win1_wind"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 148.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+    frame(agent.lua_state_agent, 166.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("trans"), 0, 0, 0, 0, 90, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 168.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_win1_line"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 185.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_win1_wind"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_win3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 42.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 5, 0, 130, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 46.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 47.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_win3_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 130, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 48.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+    frame(agent.lua_state_agent, 107.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0.01, 10.0, -0.071, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -122,4 +306,12 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("effect_cliffattack", effect_cliffattack, Priority::Low);
+    agent.acmd("effect_downattackd", effect_downattackd, Priority::Low);
+    agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
+    agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
+
+    agent.acmd("effect_win1", effect_win1, Priority::Low);
+    agent.acmd("effect_win3", effect_win3, Priority::Low);
 }

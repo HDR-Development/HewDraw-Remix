@@ -95,20 +95,20 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_hi"), Hash40::new("top"), 0, 4, 0, 90, 0, 0, 0.9, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_hi_hdr"), Hash40::new("top"), 0, 4, 0, 90, 0, 0, 0.9, true);
         EffectModule::set_disable_render_offset_last(boma);
         EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 0.65));
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_hi"), Hash40::new("top"), 0, 6, 0, 90, 0, 180, 0.9, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_hi_hdr"), Hash40::new("top"), 0, 6, 0, 90, 0, 180, 0.9, true);
         EffectModule::set_disable_render_offset_last(boma);
         EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 0.65));
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_air_f"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_air_f_hdr"), false, false);
     }
 }
 
@@ -164,7 +164,7 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_trace"), Hash40::new("top"), 5, 7, 0, 0, -150, 58, 0.73, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_trace_hdr"), Hash40::new("top"), 5, 7, 0, 0, -150, 58, 0.73, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
         EffectModule::set_disable_render_offset_last(boma);
     }
@@ -233,7 +233,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_lw"), Hash40::new("top"), 0, 12, 0, 10, 0, 180, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_lw_hdr"), Hash40::new("top"), 0, 12, 0, 10, 0, 180, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);
@@ -272,7 +272,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_air_lw_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);

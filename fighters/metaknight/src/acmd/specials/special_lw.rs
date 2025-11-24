@@ -37,19 +37,19 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_hdr"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
             }
             else {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_air"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_air_hdr"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
             }
         }
         else {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle"), Hash40::new("top"), 0, -1.4, -0.5, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_hdr"), Hash40::new("top"), 0, -1.4, -0.5, 0, 0, 0, 0.9, true);
                 EffectModule::set_disable_render_offset_last(boma);
             }
             else {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_air"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_air_hdr"), Hash40::new("top"), 0, 1, 1, 0, 0, 0, 0.9, true);
                 EffectModule::set_disable_render_offset_last(boma);
             }
         }
@@ -146,14 +146,14 @@ unsafe extern "C" fn effect_speciallwf(agent: &mut L2CAgentBase) {
         }
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_f"), Hash40::new("top"), 0, 5.6, 11.9, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_f_hdr"), Hash40::new("top"), 0, 5.6, 11.9, 0, 0, 0, 0.9, true);
             }
             else {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airf"), Hash40::new("top"), 0, 2, 11, 0, 0, 0, 0.8, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airf_hdr"), Hash40::new("top"), 0, 2, 11, 0, 0, 0, 0.8, true);
             }
         }
         else {
-            EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_f"), Hash40::new("top"), 0, 2, 12.8, 0, 0, 0, 0.9, true);
+            EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_f_hdr"), Hash40::new("top"), 0, 2, 12.8, 0, 0, 0, 0.9, true);
             EffectModule::set_disable_render_offset_last(boma);
         }
     }
@@ -251,18 +251,18 @@ unsafe extern "C" fn effect_speciallwb(agent: &mut L2CAgentBase) {
         }
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_b"), Hash40::new("top"), 0, -1.4, -11.5, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_b_hdr"), Hash40::new("top"), 0, -1.4, -11.5, 0, 0, 0, 0.9, true);
             }
             else {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airb"), Hash40::new("top"), 0, -1.7, -12.5, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airb_hdr"), Hash40::new("top"), 0, -1.7, -12.5, 0, 0, 0, 0.9, true);
             }
         }
         else {
             if boma.is_situation(*SITUATION_KIND_GROUND) {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_b"), Hash40::new("top"), 0, -1, -15, 0, 0, 0, 0.8, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_b_hdr"), Hash40::new("top"), 0, -1, -15, 0, 0, 0, 0.8, true);
             }
             else {
-                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airb"), Hash40::new("top"), 0, -1, -13.5, 0, 0, 0, 0.8, true);
+                EFFECT_FOLLOW(agent, Hash40::new("metaknight_mantle_airb_hdr"), Hash40::new("top"), 0, -1, -13.5, 0, 0, 0, 0.8, true);
             }
             EffectModule::set_disable_render_offset_last(boma);
         }

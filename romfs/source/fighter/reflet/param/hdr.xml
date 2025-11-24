@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_float">
+      <float hash="float_stable">1.0</float>
+      <float hash="float_accel_add">0.01</float>
+      <float hash="float_accel_mul">0.04</float>
+    </struct>
+</struct>

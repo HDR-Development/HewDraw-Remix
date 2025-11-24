@@ -127,5 +127,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
 
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+
     agent.acmd("game_speciallwreturn", game_speciallwreturn, Priority::Low);
 }

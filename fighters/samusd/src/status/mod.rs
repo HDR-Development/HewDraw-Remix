@@ -27,7 +27,8 @@ unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2C
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[0x32].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
     fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
-    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, 50);
+    let float_duration = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_float.float_duration");
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, float_duration);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
     VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::samusd::FLOAT);
 }

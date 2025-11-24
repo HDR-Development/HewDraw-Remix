@@ -225,12 +225,60 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialairnloop(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        FLASH(agent, 1, 1, 1, 0.863);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if is_excute(agent) {
+        FLASH(agent, 0, 0.80, 0.50, 0);
+        FLASH_FRM(agent, 90, 0, 0.90, 0.70, 0.706);
+    }
+    wait(agent.lua_state_agent, 5.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("sword1"), 0, -0.0, 8, 0, 0, 0, 1, 2, 2, 8, 0, 0, 0, true);
+    }
+    wait(agent.lua_state_agent, 5.0);
+    EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("sword1"), 0, -0.0, 8, 0, 0, 0, 1, 2, 2, 8, 0, 0, 0, true);
+}
+
+unsafe extern "C" fn effect_specialnloop(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        FLASH(agent, 1, 1, 1, 0.863);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if is_excute(agent) {
+        FLASH(agent, 0, 0.80, 0.50, 0);
+        FLASH_FRM(agent, 90, 0, 0.90, 0.70, 0.706);
+    }
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, -2, 0, 0, 0, 0.8, 8, 0, 7, 0, 0, 0, true);
+    }
+    wait(agent.lua_state_agent, 5.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("sword1"), 0, -0.0, 8, 0, 0, 0, 1, 2, 2, 8, 0, 0, 0, true);
+    }
+    wait(agent.lua_state_agent, 5.0);
+    EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("sword1"), 0, -0.0, 8, 0, 0, 0, 1, 2, 2, 8, 0, 0, 0, true);
+}
+
 unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura_s"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
@@ -239,12 +287,13 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_1"), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_1_hdr"), Hash40::new("top"), 0, -1.5, -6.1, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_red"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_mc_aura_s"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -288,6 +337,75 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_swing"), Hash40::new("top"), 0, 12, -1, 14, -30, 37, 1, true);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_lucina_dolphin1"), Hash40::new("tex_lucina_dolphin2"), 6, Hash40::new("sword1"), 0, 0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_jump"), Hash40::new("top"), -0.0, 0, -5, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_DETACH_KIND(agent, Hash40::new("lucina_dolphin_jump"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("lucina_dolphin_swing"), -1);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 3.0);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 5);
+    }
+    frame(agent.lua_state_agent, 13.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_swing"), Hash40::new("top"), 0, 12, -1, 14, -30, 37, 1, true);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_lucina_dolphin1"), Hash40::new("tex_lucina_dolphin2"), 6, Hash40::new("sword1"), 0, 0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_jump"), Hash40::new("top"), -0.0, 0, -5, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("lucina_dolphin_jump"), -1);
+        EFFECT_DETACH_KIND(agent, Hash40::new("lucina_dolphin_swing"), -1);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 3.0);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 5);
+    }
+    frame(agent.lua_state_agent, 13.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -314,6 +432,27 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 64.0);
     FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("lucina_counter_flash"), Hash40::new("top"), 0, 11, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_mc_aura"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_mc_aura"), false, true);
+    }
 }
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
@@ -357,6 +496,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnendmaxhi", game_specialnendmaxhi, Priority::Low);
     agent.acmd("game_specialnendmaxlw", game_specialnendmaxlw, Priority::Low);
     agent.acmd("game_specialairnendmaxlw", game_specialnendmaxlw, Priority::Low);
+    agent.acmd("effect_specialairnloop", effect_specialairnloop, Priority::Low);
+    agent.acmd("effect_specialnloop", effect_specialnloop, Priority::Low);
 
     agent.acmd("game_specials1", game_specials1, Priority::Low);
     agent.acmd("game_specialairs1", game_specials1, Priority::Low);
@@ -368,7 +509,11 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
+    agent.acmd("effect_specialairhi", effect_specialairhi, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("effect_speciallw", effect_speciallw, Priority::Low);
     agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
 }

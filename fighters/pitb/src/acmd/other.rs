@@ -116,13 +116,13 @@ unsafe extern "C" fn effect_appealsl(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("pitb_atk_air_n"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("pitb_atk_air_n_hdr"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
         EFFECT_FOLLOW(agent, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, -90, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, -0.06, 0, 180, 90, 0, 1, true);
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("pitb_atk_air_n"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("pitb_atk_air_n_hdr"), false, false);
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
@@ -139,13 +139,13 @@ unsafe extern "C" fn effect_appealsr(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("pitb_atk_air_n"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("pitb_atk_air_n_hdr"), Hash40::new("swordr2"), 0, -1, 0, -90, -90, 0, 1, true, 0.3);
         EFFECT_FOLLOW(agent, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, -90, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, -0.06, 0, 180, 90, 0, 1, true);
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("pitb_atk_air_n"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("pitb_atk_air_n_hdr"), false, false);
     }
     frame(lua_state, 32.0);
     if is_excute(agent) {
@@ -154,6 +154,95 @@ unsafe extern "C" fn effect_appealsr(agent: &mut L2CAgentBase) {
     frame(lua_state, 58.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 5, 13, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn effect_downattackd(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pitb_sword_hdr"), Hash40::new("tex_pitb_sword2"), 4, Hash40::new("swordr1"), 0, 0, -0.2, Hash40::new("swordr1"), 0, 10.3, -1.2, true, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.6);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 2);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, 0, 0, 180, 90, 0, 1, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pitb_attack_d"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 2, 8, -10, 0, 180, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(agent, 1.6);
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn effect_downattacku(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pitb_sword_hdr"), Hash40::new("tex_pitb_sword2"), 4, Hash40::new("swordr1"), 0, 0, -0.2, Hash40::new("swordr1"), 0, 10.3, -1.2, true, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.6);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 1);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pitb_sword_hdr"), Hash40::new("tex_pitb_sword2"), 3, Hash40::new("swordl"), 0, 0, -0.2, Hash40::new("swordl"), 0, -10.3, -1.2, true, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, 0, 0, 180, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 1);
+    }
+}
+
+unsafe extern "C" fn effect_slipattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pitb_sword_hdr"), Hash40::new("tex_pitb_sword2"), 4, Hash40::new("swordr1"), 0, 0, -0.2, Hash40::new("swordr1"), 0, 10.3, -1.2, true, Hash40::new("pitb_sword"), Hash40::new("swordr1"), 0, 0, 0, 0, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.6);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 1);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pitb_sword_hdr"), Hash40::new("tex_pitb_sword2"), 3, Hash40::new("swordl"), 0, 0, -0.2, Hash40::new("swordl"), 0, -10.3, -1.2, true, Hash40::new("pitb_sword"), Hash40::new("swordl"), 0, 0, 0, 180, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 1);
     }
 }
 
@@ -175,4 +264,10 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("effect_appealsl", effect_appealsl, Priority::Low);
     agent.acmd("effect_appealsr", effect_appealsr, Priority::Low);
+
+    agent.acmd("effect_downattackd", effect_downattackd, Priority::Low);
+    agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
+    agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
+
+
 }

@@ -38,22 +38,22 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_air_n"), Hash40::new("swordr2"), 0, 0, 0, -90, 90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_air_n_hdr"), Hash40::new("swordr2"), 0, 0, 0, -90, 90, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, -0.8, 0, 180, -90, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, 0.8, 0, 0, 90, 0, 1, true);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_air_n"), true, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_air_n_hdr"), true, true);
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pit_sword1"), Hash40::new("tex_pit_sword2"), 3, Hash40::new("swordr1"), 0.0, 1.0, -0.2, Hash40::new("swordr1"), 0.0, 11.4, -1.2, true, Hash40::new("null"), Hash40::new("swordr1"), 0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pit_sword_hdr"), Hash40::new("tex_pit_sword2"), 3, Hash40::new("swordr1"), 0, 1, -0.2, Hash40::new("swordr1"), 0, 11.4, -1.2, true, Hash40::new("null"), Hash40::new("swordr1"), 0, 0, 0, 0, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("pit_sword"), false, false);
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 9, 5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 7, 8, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
     frame(lua_state, 27.0);
@@ -101,6 +101,22 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 36.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("pit_atk_air_n_hdr"), Hash40::new("swordr2"), 0, 0, 0, -90, 90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, -0.8, 0, 180, -90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, 0.8, 0, 0, 90, 0, 1, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_air_n_hdr"), true, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_sword"), false, false);
     }
 }
 
@@ -188,6 +204,25 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pit_atk_air_n_hdr"), Hash40::new("swordr2"), 0, 0, 0, -90, 90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, -0.8, 0, 180, -90, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("pit_sword"), Hash40::new("swordr2"), 0, 0.8, 0, 0, 90, 0, 1, true);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_atk_air_n_hdr"), false, false);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("pit_sword"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -226,10 +261,28 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("swordl"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_pit_sword_hdr"), Hash40::new("tex_pit_sword2"), 5, Hash40::new("swordl"), 0, 0, -0.2, Hash40::new("swordl"), 0, -10.4, -1.2, true, Hash40::new("pit_sword"), Hash40::new("swordl"), 0, 0, 0, 180, 90, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 2);
+    }
+}
+
 unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 8.0);
@@ -247,12 +300,15 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairn", effect_attackairn, Priority::Low);
 
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
 
     agent.acmd("game_attackairb", game_attackairb, Priority::Low);
     agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
+    agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
     
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
     agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);
 }

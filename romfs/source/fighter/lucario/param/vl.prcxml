@@ -65,10 +65,10 @@
   </list>
   <list hash="param_aurapower">
     <struct index="0">
-      <float hash="min_aurapower">0.92</float>
-      <float hash="max_aurapower">1.08</float>
+      <float hash="min_aurapower">0.84</float>
+      <float hash="max_aurapower">1.16</float>
       <float hash="se_middle_aurapower">1.0</float>
-      <float hash="se_high_aurapower">1.04</float>
+      <float hash="se_high_aurapower">1.08</float>
     </struct>
   </list>
 </struct>

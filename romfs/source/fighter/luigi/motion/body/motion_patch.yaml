@@ -85,10 +85,10 @@ catch_l:
     cancel_frame: 44
 special_n:
   extra:
-    cancel_frame: 41
+    cancel_frame: 40
 special_air_n:
   extra:
-    cancel_frame: 41
+    cancel_frame: 40
 attack_13:
   extra:
     cancel_frame: 23

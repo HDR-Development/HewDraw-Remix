@@ -333,7 +333,7 @@ unsafe extern "C" fn effect_attacks(agent: &mut L2CAgentBase) {
 		else{
 			EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_line"), Hash40::new("top"), 5, 10, -5, 0, 0, 0, 1, true);		
 		}
-		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword1"), Hash40::new("tex_zelda_phantomsword2"), 6, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("zelda_phantom_sword"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.5);
+		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword_flame"), Hash40::new("tex_zelda_phantomsword2"), 6, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("zelda_phantom_sword_fire"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.5);
 
 		//EFFECT_FOLLOW(agent, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
 		//LAST_EFFECT_SET_RATE(agent, 0.75);
@@ -461,8 +461,8 @@ unsafe extern "C" fn effect_attackl(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 4.0);
 	if is_excute(agent) {
-		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_sword"), Hash40::new("handr"), 1.85, 0.35, 0, 0, 0, 0, 1, true);
-		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword1"), Hash40::new("tex_zelda_phantomsword2"), 16, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("null"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.7);
+		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_sword_dark"), Hash40::new("handr"), 1.85, 0.35, 0, 0, 0, 0, 1, true);
+		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword_dark"), Hash40::new("tex_zelda_phantomsword2"), 16, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("null"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.7);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
 		}
@@ -479,7 +479,7 @@ unsafe extern "C" fn effect_attackl(agent: &mut L2CAgentBase) {
 	frame(lua_state, 8.0);
 	if is_excute(agent) {
 		AFTER_IMAGE_OFF(agent, 0);
-		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_sword_trace"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(agent, Hash40::new("zelda_phantom_sword_trace_dark"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
 	}
 	frame(lua_state, 12.0);
 	if is_excute(agent) {
@@ -498,7 +498,7 @@ unsafe extern "C" fn effect_attackl(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 17.0);
 	if is_excute(agent) {
-		EFFECT_OFF_KIND(agent, Hash40::new("zelda_phantom_sword"), true, true);
+		EFFECT_OFF_KIND(agent, Hash40::new("zelda_phantom_sword_dark"), true, true);
 	}
 	frame(lua_state, 64.0);
 	if is_excute(agent) {
@@ -581,7 +581,7 @@ unsafe extern "C" fn effect_attackmax(agent: &mut L2CAgentBase) {
 	frame(lua_state, 4.0);
 	if is_excute(agent) {
 		QUAKE(agent, *CAMERA_QUAKE_KIND_M);
-		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword1"), Hash40::new("tex_zelda_phantomsword2"), 9, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("zelda_phantom_sword"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.5);
+		AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_zelda_phantomsword_light"), Hash40::new("tex_zelda_phantomsword2"), 9, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("zelda_phantom_sword_light"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.5);
 	}
 	frame(lua_state, 20.0);
 	if is_excute(agent) {

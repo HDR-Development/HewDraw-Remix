@@ -14,7 +14,7 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         0.0
     );
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-
+    float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
@@ -162,6 +162,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
             speed_x,
             0.0
         );
+        float_drift_common(fighter);
     }
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -270,5 +271,18 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
             float_check_aerial(fighter);
         }
     }
+    0.into()
+}
+
+#[no_mangle]
+unsafe fn float_drift_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let float_stable = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_stable");
+    let float_accel_add = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_accel_add");
+    let float_accel_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_accel_mul");
+    sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, float_stable, float_stable);
+    lua_bind::FighterKineticEnergyController::set_accel_x_add(fighter.get_controller_energy(), float_accel_add);
+    lua_bind::FighterKineticEnergyController::set_accel_x_mul(fighter.get_controller_energy(), float_accel_mul);
+    lua_bind::FighterKineticEnergyController::set_accel_y_add(fighter.get_controller_energy(), float_accel_add);
+    lua_bind::FighterKineticEnergyController::set_accel_y_mul(fighter.get_controller_energy(), float_accel_mul);
     0.into()
 }

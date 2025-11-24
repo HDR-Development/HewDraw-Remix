@@ -52,6 +52,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="special_hi_start_air_accel_y">0.1</float>
       <float hash="special_hi_start_dir_mul">30</float>
       <float hash="special_hi_start_trans_speed_mul">0.8</float>
       <int hash="special_hi_parasol_limit_time">0</int>

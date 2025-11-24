@@ -31,7 +31,7 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_trace"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 0.9, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 0.9, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 25.0);
@@ -94,7 +94,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_u_trace"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_u_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1.0, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 18.0);
@@ -143,7 +143,7 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_d_trace"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 0.9, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_smash_d_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 0.9, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 9.0);

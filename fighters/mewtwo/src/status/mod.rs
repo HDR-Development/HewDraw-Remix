@@ -38,7 +38,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     fighter.global_table[0x32].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
     fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
-    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, 60);
+    let float_duration = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_float.float_duration");
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION, float_duration);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
     VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::mewtwo::FLOAT);
 }

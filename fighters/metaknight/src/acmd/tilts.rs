@@ -38,7 +38,7 @@ unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("metaknight_s1_trace"), Hash40::new("top"), -0.0, 0, -0.5, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_s1_trace_hdr"), Hash40::new("top"), -0.0, 0, -0.5, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 8.0);
@@ -74,6 +74,22 @@ unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacks3s2(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 2, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_s2_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
 unsafe extern "C" fn game_attacks3s3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -85,6 +101,26 @@ unsafe extern "C" fn game_attacks3s3(agent: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn effect_attacks3s3(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("metaknight_s3_trace_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 14, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 6.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("metaknight_sword"), false, false);
     }
 }
 
@@ -181,7 +217,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
     agent.acmd("effect_attacks3", effect_attacks3, Priority::Low);
     agent.acmd("game_attacks3s2", game_attacks3s2, Priority::Low);
+    agent.acmd("effect_attacks3s2", effect_attacks3s2, Priority::Low);
     agent.acmd("game_attacks3s3", game_attacks3s3, Priority::Low);
+    agent.acmd("effect_attacks3s3", effect_attacks3s3, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
     agent.acmd("expression_attackhi3", expression_attackhi3, Priority::Low);

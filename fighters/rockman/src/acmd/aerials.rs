@@ -195,9 +195,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 10.0/(9.0 - 1.0));
-    }
+    FT_MOTION_RATE(agent, 10.0/(9.0 - 1.0));
     frame(lua_state, 3.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -221,8 +219,9 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 17.0/(23.0-1.0));
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 17.0/(23.0-1.0));
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -230,10 +229,14 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     frame(lua_state, 23.0);
+    FT_MOTION_RATE(agent, 1.000);
     if is_excute(agent) {
-        FT_MOTION_RATE(agent, 1.000);
         ArticleModule::generate_article(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_HARDKNUCKLE, false, 0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 55.0);
     if is_excute(agent) {

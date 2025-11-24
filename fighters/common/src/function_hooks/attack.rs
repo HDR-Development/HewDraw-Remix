@@ -37,7 +37,11 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
             data.r_eff = 50;
             data.r_add = 70;
             data.sub_shield = 0;
-            data.lr_check = smash_rs::app::AttackLRCheck::Pos;
+
+            // ID 0:
+            // ground-only, cannot reverse hit
+            data.target_situation = smash_rs::app::CollisionSituationMask::Ground;
+            data.lr_check = smash_rs::app::AttackLRCheck::Forward;
         }
         if (*boma).is_status(*FIGHTER_STATUS_KIND_CATCH_ATTACK) {
             if !VarModule::is_flag((*boma).object(), vars::common::status::PUMMEL_OVERRIDE_GLOBAL_STATS) {
@@ -83,6 +87,15 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
     }
 
     call_original!(module, id, group, data);
+
+    if (*boma).is_status(*FIGHTER_STATUS_KIND_CLIFF_ATTACK) {
+        // ID 1:
+        // air-only, can reverse hit
+        data.target_situation = smash_rs::app::CollisionSituationMask::Air;
+        data.lr_check = smash_rs::app::AttackLRCheck::Pos;
+
+        call_original!(module, 1, group, data);
+    }
 }
 
 #[skyline::hook(offset = 0x403c3c, inline)]

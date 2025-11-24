@@ -178,6 +178,15 @@
 		"fighter/shulk/cmn": [
 			"fighter/shulk/param/hdr.xml"
 		],
+		"fighter/mewtwo/cmn": [
+			"fighter/mewtwo/param/hdr.xml"
+		],
+		"fighter/peach/cmn": [
+			"fighter/peach/param/hdr.xml"
+		],
+		"fighter/reflet/cmn": [
+			"fighter/reflet/param/hdr.xml"
+		],
 		"fighter/metaknight/cmn": [
 			"fighter/metaknight/param/hdr.xml"
 		]

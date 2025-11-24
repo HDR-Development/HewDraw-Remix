@@ -99,18 +99,20 @@ unsafe extern "C" fn special_n_h_main(fighter: &mut L2CFighterCommon) -> L2CValu
     fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *GROUND_CORRECT_KIND_AIR);
     fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_n_h"), L2CValue::Hash40s("special_air_n_h"), false.into());
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_NEXT);
-    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+    fighter.enable_transition_term_many(&[
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_NEXT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
+    ]);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
 
     fighter.main_shift(special_n_h_main_loop)
@@ -154,10 +156,18 @@ unsafe extern "C" fn special_n_h_main_loop(fighter: &mut L2CFighterCommon) -> L2
             fighter.change_status(FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_C.into(), true.into());
             return 1.into();
         }
-        if fighter.sub_check_jump_in_charging().get_bool() {
-            fighter.set_int(*FIGHTER_SAMUS_SPECIAL_N_CANCEL_TYPE_AIR_JUMP_AERIAL, *FIGHTER_SAMUS_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);
-            fighter.change_status(FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL.into(), true.into());
-            return 1.into();
+        if fighter.sub_check_jump_in_charging().get_bool() {//jc
+            let stick_y = fighter.left_stick_y();
+            let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOAT)//if inputting float do a neutral cancel
+            && stick_y <= squat_stick_y {
+                fighter.set_int(*FIGHTER_SAMUS_SPECIAL_N_CANCEL_TYPE_NONE, *FIGHTER_SAMUS_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);
+                fighter.change_status(FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_C.into(), true.into());
+            } else if fighter.get_num_used_jumps() < fighter.get_jump_count_max() { //if not inputting float do a jump cancel (no inf jump)
+                fighter.set_int(*FIGHTER_SAMUS_SPECIAL_N_CANCEL_TYPE_AIR_JUMP_AERIAL, *FIGHTER_SAMUS_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);
+                fighter.change_status(FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL.into(), true.into());
+            }
+            return 1.into()
         }
     }
     if !fighter.global_table[IS_STOPPING].get_bool() {

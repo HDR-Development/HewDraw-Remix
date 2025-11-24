@@ -852,6 +852,11 @@ pub fn install() {
 
         // Disables airdodge refresh on hit
         skyline::patching::Patch::in_text(0x632530).nop();
+
+        // Allows airtime counter (FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR)
+        // to increment when on ledge (SITUATION_KIND_CLIFF)
+        // Matches Melee behavior
+        skyline::patching::Patch::in_text(0x614fb4).data(0x54000060);
     }
     skyline::install_hooks!(
         before_collision,

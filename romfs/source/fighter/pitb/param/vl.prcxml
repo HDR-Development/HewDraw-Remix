@@ -35,7 +35,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="landing_frame_faile">31</float>
-      <float hash="0x1548c529ef">4</float>
+      <float hash="0x1548c529ef">31</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -57,6 +57,8 @@
   <list hash="param_special_lw">
     <struct index="0">
       <int hash="frame_min">20</int>
+      <float hash="end_scale">0.8</float>
+      <float hash="end_offset_z">7</float>
       <float hash="shield_max">2</float>
     </struct>
     <hash40 index="1">dummy</hash40>

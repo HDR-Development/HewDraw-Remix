@@ -37,6 +37,43 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_spin"), Hash40::new("younglink_kaitengiri2"), 3, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_kaiten_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("younglink_kaiten_air_s"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        FLASH(agent, 1, 0.667, 0, 0.15);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 2);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_spin"), Hash40::new("younglink_kaitengiri2"), 5, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_kaiten_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 8, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("younglink_kaiten_air_s"), false, true);
+    }
+    frame(lua_state, 54.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 3);
+        FLASH_FRM(agent, 10, 0, 0, 0, 0);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -65,6 +102,49 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
     }
+}
+
+unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_younglink_spin"), Hash40::new("younglink_kaitengiri2"), 3, Hash40::new("sword"), 0.5, 0, 0, Hash40::new("sword"), 9.7, 0, -0.25, true, Hash40::new("younglink_kaiten_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("younglink_kaiten_s"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        FLASH(agent, 1, 0.667, 0, 0.15);
+    }
+    frame(lua_state, 5.0);
+    for _ in 0..5 {
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
+    }
+    wait(lua_state, 7.0);
+}
+frame(lua_state, 37.0);
+if is_excute(agent) {
+    EFFECT_OFF_KIND(agent, Hash40::new("younglink_kaiten_s"), false, false);
+}
+frame(lua_state, 44.0);
+if is_excute(agent) {
+    LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+}
+frame(lua_state, 47.0);
+if is_excute(agent) {
+    AFTER_IMAGE_OFF(agent, 2);
+}
+frame(lua_state, 48.0);
+if is_excute(agent) {
+    EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 8, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+}
+frame(lua_state, 56.0);
+if is_excute(agent) {
+    FLASH_FRM(agent, 20, 0, 0, 0, 0);
+}
+frame(lua_state, 57.0);
+if is_excute(agent) {
+    COL_NORMAL(agent);
+}
 }
 
 unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
@@ -151,7 +231,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs1", game_specialairs1, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("effect_specialairhi", effect_specialairhi, Priority::Low);
     agent.acmd("expression_specialairhi", expression_specialairhi, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
