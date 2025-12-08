@@ -32,6 +32,7 @@
     </struct>
     <float hash="pass_stick_x">0.3</float>
     <float hash="moonwalk_disable_dashback_stick_y">-0.5</float>
+    <float hash="squat_disable_dashback_crouch_threshold_stick_y">-0.6</float> <!-- standard threshold from game for squat -->
     <float hash="wavedash_speed_mul">0.8945</float>
     <float hash="dashback_stick_x">-0.5673</float>
     <float hash="dash_end_speed_mul">0.225</float>

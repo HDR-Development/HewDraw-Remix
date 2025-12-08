@@ -74,7 +74,7 @@ unsafe fn decide_random(ctx: &mut skyline::hooks::InlineCtx) {
 
 unsafe fn generate_random(player_id: usize, main_data: u64, sub_data: u64) {
     let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    let mut rng_seed = StdRng::seed_from_u64((now.as_millis() as u64 + 1) * rand::thread_rng().gen::<u64>());
+    let mut rng_seed = StdRng::seed_from_u64((now.as_millis() as u64 + 1).overflowing_mul(rand::thread_rng().gen::<u64>()).0);
     let mut chara_string = decide_fighter_from_id(player_id, &mut rng_seed);
     let mut chara_hash = hash40(&format!("ui_chara_{}", chara_string)).0;
 

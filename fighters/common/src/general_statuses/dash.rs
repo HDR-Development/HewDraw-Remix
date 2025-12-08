@@ -485,8 +485,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
-    let is_backdash_input: bool = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= ParamModule::get_float(fighter.object(), ParamType::Common, "dashback_stick_x")
-                                && fighter.global_table[FLICK_X].get_i32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dash_flick_x"));
 
     if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)  // if after dash-to-run transition frame
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold
@@ -502,14 +500,22 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     // Disables dashbacks when stick falls below threshold
     // For ease of moonwalking
-    let moonwalk_disable_dashback_stick_y = ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
-    if fighter.global_table[STICK_Y].get_f32() <= moonwalk_disable_dashback_stick_y
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-    }
+    let stick_y_should_disable_dashback: bool = fighter.global_table[STICK_Y].get_f32() <= ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
+    let is_backdash_input: bool = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= ParamModule::get_float(fighter.object(), ParamType::Common, "dashback_stick_x")
+                                && fighter.global_table[FLICK_X].get_i32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dash_flick_x"));
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)  // if backdash transition term is enabled (it is by default)
-    && is_backdash_input {  // AND is a backdash input
+    // Note: Previously the moonwalk helper disabled dashback entirely for
+    //       the rest of the dash. Changed only check whether or not it
+    //       should apply as needed - rei wolf 2025-12-07
+
+    if (
+        WorkModule::is_enable_transition_term(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH // Turn dashes are allowed / enabled
+        )
+        && !stick_y_should_disable_dashback // AND the y stick is not implicating a moonwalk
+        && is_backdash_input // AND is a backdash input
+    ) {
         //println!("transition to backdash");
         let perfect_pivot_window = ParamModule::get_int(fighter.object(), ParamType::Common, "dash_perfect_pivot_window");
         if fighter.global_table[CURRENT_FRAME].get_i32() <= perfect_pivot_window {
