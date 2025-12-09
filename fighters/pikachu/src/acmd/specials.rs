@@ -20,6 +20,10 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::set_size(boma, 0, 3.0);
     }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
+    }
     wait(lua_state, 27.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_BRAKE_TRIGGER);

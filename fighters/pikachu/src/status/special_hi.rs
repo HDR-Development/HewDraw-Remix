@@ -45,6 +45,11 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
         return true.into();
     }
 
+    if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+    }
+
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if VarModule::is_flag(fighter.battle_object, vars::pikachu::status::SPECIAL_HI_QUICK_ATTACK_CANCEL)
         && fighter.is_cat_flag(Cat1::AirEscape) {
@@ -80,7 +85,7 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
             CancelModule::enable_cancel(fighter.module_accessor);
             // disable gravity and place pikachu in the air
             KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            PostureModule::add_pos(fighter.module_accessor, &Vector3f::new(0.0, 3.5, 0.0));
+            PostureModule::add_pos(fighter.module_accessor, &Vector3f::new(0.0, 2.5, 0.0));
             StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_AIR), false);
             fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
             fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));

@@ -27,19 +27,9 @@ unsafe fn skull_bash_edge_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn up_b_edge_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END) {
-        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND
-        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     fastfall_specials(fighter);
     skull_bash_edge_cancel(fighter);
-    up_b_edge_cancel(fighter);
 }
 
 pub extern "C" fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
