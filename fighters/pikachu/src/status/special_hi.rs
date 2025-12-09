@@ -80,7 +80,7 @@ unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon) ->
             CancelModule::enable_cancel(fighter.module_accessor);
             // disable gravity and place pikachu in the air
             KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            PostureModule::add_pos(fighter.module_accessor, &Vector3f::new(0.0, 1.5, 0.0));
+            PostureModule::add_pos(fighter.module_accessor, &Vector3f::new(0.0, 3.5, 0.0));
             StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_AIR), false);
             fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
             fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
