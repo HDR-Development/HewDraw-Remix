@@ -62,9 +62,8 @@ unsafe extern "C" fn special_s_attack_main_loop(fighter: &mut L2CFighterCommon) 
 
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_HIT);
         
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("head"), 0, 0, 0, 0, 0, 0, 0.8, true);
-        LAST_EFFECT_SET_RATE(fighter, 5.0);
-        EffectModule::set_scale_last(fighter.module_accessor, &Vector3f::new(1.75, 1.75, 1.0));
+        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EffectModule::set_scale_last(fighter.module_accessor, &Vector3f::new(1.25, 1.25, 1.0));
 
         SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_down_m_01"), true, false, false, false, enSEType(0));
         fighter.change_status(FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
