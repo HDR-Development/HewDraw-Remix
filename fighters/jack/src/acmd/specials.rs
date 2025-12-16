@@ -236,6 +236,10 @@ unsafe extern "C" fn game_specialairhiendf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
     wait(lua_state, 2.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
@@ -244,6 +248,10 @@ unsafe extern "C" fn game_specialairhiendf(agent: &mut L2CAgentBase) {
     wait(lua_state, 6.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 

@@ -59,7 +59,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_LOOP,
                 *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END_MAX,
             ])
-            || (fighter.is_motion(Hash40::new("special_air_hi3")) && fighter.motion_frame() > 49.0) )
+            || (fighter.is_motion(Hash40::new("special_air_hi3")) && fighter.motion_frame() > 59.0) )
         )
     )
     && fighter.is_situation(*SITUATION_KIND_AIR) {

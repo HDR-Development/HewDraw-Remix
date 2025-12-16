@@ -198,6 +198,188 @@ unsafe extern "C" fn game_specialnendmaxlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 9.7, 12, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), 0.7, 0, 12, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialnendhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 10.5, 15, -20, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, -20, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialnendlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 5.5, 15, 12, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, 12, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialnendmax(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 9.7, 12, 0, 0, 0, 1.2, true);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), 0.7, -0.0, 12, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 16, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialnendmaxhi(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 10.5, 15, -20, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, -20, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 18, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_specialnendmaxlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 5.5, 15, 12, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 5.0, 2.0);
+        EFFECT(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, 12, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.264, 1.3, 0.47);
+        LAST_EFFECT_SET_RATE(agent, 0.7);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 18, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
 unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -334,6 +516,11 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(agent) {
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 
@@ -496,6 +683,19 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnendmaxhi", game_specialnendmaxhi, Priority::Low);
     agent.acmd("game_specialnendmaxlw", game_specialnendmaxlw, Priority::Low);
     agent.acmd("game_specialairnendmaxlw", game_specialnendmaxlw, Priority::Low);
+    agent.acmd("effect_specialnend", effect_specialnend, Priority::Low);
+    agent.acmd("effect_specialnendhi", effect_specialnendhi, Priority::Low);
+    agent.acmd("effect_specialnendlw", effect_specialnendlw, Priority::Low);
+    agent.acmd("effect_specialairnend", effect_specialnend, Priority::Low);
+    agent.acmd("effect_specialairnendhi", effect_specialnendhi, Priority::Low);
+    agent.acmd("effect_specialairnendlw", effect_specialnendlw, Priority::Low);
+    agent.acmd("effect_specialnendmax", effect_specialnendmax, Priority::Low);
+    agent.acmd("effect_specialnendmaxhi", effect_specialnendmaxhi, Priority::Low);
+    agent.acmd("effect_specialnendmaxlw", effect_specialnendmaxlw, Priority::Low);
+    agent.acmd("effect_specialairnendmax", effect_specialnendmax, Priority::Low);
+    agent.acmd("effect_specialairnendmaxhi", effect_specialnendmaxhi, Priority::Low);
+    agent.acmd("effect_specialairnendmaxlw", effect_specialnendmaxlw, Priority::Low);
+
     agent.acmd("effect_specialairnloop", effect_specialairnloop, Priority::Low);
     agent.acmd("effect_specialnloop", effect_specialnloop, Priority::Low);
 

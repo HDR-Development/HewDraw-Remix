@@ -78,7 +78,8 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
             ].contains(&WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO))
             && fighter.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_N,
-                *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END
+                *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END,
+                *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_HI1_2
             ])
         )
         || ([*FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_N_2,

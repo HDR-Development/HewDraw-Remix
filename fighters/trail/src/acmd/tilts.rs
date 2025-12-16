@@ -126,6 +126,25 @@ unsafe extern "C" fn game_attacks3s3(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn effect_attacks33(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_trail_keyblade_hdr"), Hash40::new("tex_trail_keyblade2"), 7, Hash40::new("haver"), 0, 2, 0, Hash40::new("haver"), 0, 13.8, 0, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+        EFFECT_FOLLOW(agent, Hash40::new("trail_keyblade_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        AFTER_IMAGE_OFF(agent, 4);
+        EFFECT_OFF_KIND(agent, Hash40::new("trail_keyblade_flare"), false, true);
+    }
+}
+
 unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -268,6 +287,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attacks32", game_attacks3s2, Priority::Low);
     agent.acmd("game_attacks33", game_attacks3s3, Priority::Low);
+    agent.acmd("effect_attacks33", effect_attacks33, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
     agent.acmd("effect_attackhi3", effect_attackhi3, Priority::Low);

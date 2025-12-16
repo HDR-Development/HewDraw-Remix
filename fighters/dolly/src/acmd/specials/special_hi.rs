@@ -367,9 +367,17 @@ unsafe extern "C" fn game_specialhifall(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         MotionModule::set_rate(boma, 1.5);
     }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
     frame(lua_state, 2.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::dolly::status::INHERIT_FINAL_CANCEL_ON_END);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 

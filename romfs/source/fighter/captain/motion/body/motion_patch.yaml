@@ -140,6 +140,9 @@ special_air_n_turn:
 special_hi_throw:
   extra:
     cancel_frame: 38
+throw_b:
+  extra:
+    cancel_frame: 43
 throw_lw:
   extra:
     cancel_frame: 40

@@ -82,7 +82,7 @@ escape:
     move: false
 throw_lw:
   extra:
-    cancel_frame: 30
+    cancel_frame: 35
 special_n:
   extra:
     cancel_frame: 39

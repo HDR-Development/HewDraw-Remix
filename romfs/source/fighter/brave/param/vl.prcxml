@@ -46,7 +46,7 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <float hash="sp_special_n1">7</float>
+      <float hash="sp_special_n1">12</float>
       <float hash="sp_special_n2">18</float>
       <float hash="sp_special_n3">40</float>
     </struct>

@@ -179,7 +179,13 @@ unsafe fn dashgrab_position_fix(fighter: &mut L2CFighterCommon) {
 unsafe fn upspecialend(fighter: &mut L2CFighterCommon) {
     // I DO NOT KNOW WHY, BUT ACMD IS FUCKING NOT WORKING FOR THIS STATUS >:(
     if fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END) {
-        fighter.select_cliff_hangdata_from_name("special_air_hi_end");
+        if StatusModule::is_changing(fighter.module_accessor) {
+            fighter.select_cliff_hangdata_from_name("special_air_hi_end");
+            KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        }
+        else if fighter.status_frame() == 10 {
+            KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        }
     }
 }
 

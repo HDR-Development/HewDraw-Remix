@@ -17,14 +17,22 @@ use globals::*;
 //     }
 // }
 
-unsafe fn wizards_foot_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn special_hi_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && StatusModule::is_situation_changed(fighter.module_accessor)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+    }
+}
+
+unsafe fn wizards_foot_jump_refresh(fighter: &mut L2CFighterCommon) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END,
-        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END].contains(&boma.status())
-    && boma.is_situation(*SITUATION_KIND_AIR) {
-        let jump_count_max = boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
-        if boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == jump_count_max {
-            boma.set_int(jump_count_max - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END].contains(&fighter.status())
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        let jump_count_max = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
+        if fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == jump_count_max {
+            fighter.set_int(jump_count_max - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
     }
 }
@@ -35,7 +43,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN,
         *FIGHTER_GANON_STATUS_KIND_SPECIAL_HI_THROW,
         *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END
@@ -45,9 +52,10 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
     // dtaunt_counter(boma, motion_kind, frame);
-    wizards_foot_jump_refresh(boma);
+    special_hi_landing(fighter);
+    wizards_foot_jump_refresh(fighter);
     fastfall_specials(fighter);
 }
 
@@ -60,7 +68,7 @@ pub extern "C" fn ganon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCo
 
 pub unsafe fn ganon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter);
     }
 }
 

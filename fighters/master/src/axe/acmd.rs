@@ -230,7 +230,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
         EFFECT_FOLLOW(agent, Hash40::new("master_axeflare_sp2flare"), Hash40::new("blade2"), 0, 0, 0, 0, 0, 0, 1, true);
         // EFFECT_FOLLOW(agent, Hash40::new("master_axe_slash_edge"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         // EffectModule::set_disable_render_offset_last(boma);
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_master_sword1"), Hash40::new("tex_master_sword2"), 10, Hash40::new("haver"), 0, 6, 0, Hash40::new("haver"), 0, 19, 1, true, Hash40::new("null"), Hash40::new("invalid"), 0, 0, 0, 0, 0, -90, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_master_axe"), Hash40::new("tex_master_sword2"), 10, Hash40::new("haver"), 0, 6, 0, Hash40::new("haver"), 0, 19, 1, true, Hash40::new("null"), Hash40::new("invalid"), 0, 0, 0, 0, 0, -90, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 67.0);
     if is_excute(agent) {

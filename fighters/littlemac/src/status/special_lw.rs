@@ -83,7 +83,7 @@ unsafe extern "C" fn special_lw_hit_main_loop(fighter: &mut L2CFighterCommon) ->
             sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);
         }
         else {
-            let speed_mul = if fighter.is_motion(Hash40::new("special_air_lw_hit_f")) { 1.2 } else { -1.1 };
+            let speed_mul = if fighter.is_motion(Hash40::new("special_air_lw_hit_f")) { 1.5 } else { -1.1 };
             let feint_x_speed = fighter.get_param_float("param_special_lw", "special_air_lw_feint_x_speed_") * fighter.lr() * speed_mul;
             sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0, 0.0);
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, feint_x_speed, 0.0);

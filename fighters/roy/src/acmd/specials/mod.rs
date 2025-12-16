@@ -282,6 +282,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 33.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
@@ -289,6 +290,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 42.0);
+    if is_excute(agent) {
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
 }
 
 unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {

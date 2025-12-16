@@ -45,8 +45,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP,
-        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_FALL,
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();

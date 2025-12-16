@@ -275,7 +275,7 @@ bitflags! {
     #[derive(Copy, Clone)]
     pub struct CatHdr: i32 {
         const Wavedash = 0x1;
-        // const ShieldDrop = 0x2;
+        const TreadJump = 0x2;
         const WallJumpLeft = 0x4;
         const WallJumpRight = 0x8;
         const Parry = 0x10;

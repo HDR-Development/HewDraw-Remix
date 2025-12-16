@@ -383,6 +383,28 @@ pub unsafe fn check_plat_drop_oos(fighter: &mut L2CFighterCommon) -> L2CValue {
     return true.into();
 }
 
+pub unsafe fn check_plat_drop_for_guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // only enabled on the first few frames of guard_off
+    let shield_drop_valid_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "guard_off_pass_valid_frame");
+    if !GroundModule::is_passable_ground(fighter.module_accessor)
+    || fighter.status_frame() >= shield_drop_valid_frame
+    || fighter.is_button_on(Buttons::Guard) {
+        return false.into();
+    }
+
+    // input check
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+    let flick_y = fighter.global_table[FLICK_Y].get_i32();
+    let pass_stick_y = fighter.get_param_float("common", "pass_stick_y");
+    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;
+    if stick_y > pass_stick_y || flick_y + 1 >= buffer {
+        return false.into();
+    }
+
+    fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+    return true.into();
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
 pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     // TODO: document this

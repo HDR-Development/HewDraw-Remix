@@ -17,7 +17,7 @@ unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 24.0);
-    FT_MOTION_RATE_RANGE(agent, 24.0, 44.0, 14.0);
+    FT_MOTION_RATE_RANGE(agent, 24.0, 44.0, 9.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_REVERT_FALL_SPEED);
     }

@@ -37,9 +37,12 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
-    frame(lua_state, 16.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FT_SHEIK_STATUS_SPECIAL_HI_FLAG_FALL);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
         let fall_x_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_hi.fall_max_x_mul");

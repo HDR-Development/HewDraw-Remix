@@ -250,7 +250,6 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 0.75);
     frame(lua_state, THROWHI_FRAME_FALL);
     if is_excute(agent) {
-        DamageModule::add_damage(boma, 1.0, 0);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let speed = Vector3f{ x: 0.0, y: -3.75, z: 0.0 };

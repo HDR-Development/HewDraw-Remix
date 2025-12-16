@@ -27,6 +27,8 @@ pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CVa
         special_n_substatus(fighter);
     }
     fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(special_n_substatus as *const () as _));
+    VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
+
     fighter.main_shift(special_n_main_loop)
 }
 
@@ -84,11 +86,6 @@ unsafe extern "C" fn special_n_main_loop2(fighter: &mut L2CFighterCommon) -> L2C
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SONIC_INSTANCE_WORK_ID_FLOAT_SPECIAL_N_ADD_ATTACK_POWER);
             VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_N_BLAST_ATTACK);
             VarModule::on_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
-            fighter.change_status(FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START.into(), true.into());
-        }
-    }
-    if enable_attack_frame as f32 <= advance_counter {
-        if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
             fighter.change_status(FIGHTER_SONIC_STATUS_KIND_SPECIAL_N_HOMING_START.into(), true.into());
         }
     }

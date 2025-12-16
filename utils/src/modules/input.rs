@@ -629,6 +629,22 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         input_module.hdr_cat.valid_frames[parry_offset] -= 1;
     }
 
+    // Footstool cat flag
+    let footstool_input = unsafe {
+        (*input_module.owner).is_situation(*SITUATION_KIND_AIR)
+        && triggered_buttons.intersects(Buttons::JumpMini | Buttons::AppealAll) 
+    };
+
+    let footstool_offset = CatHdr::TreadJump.bits().trailing_zeros() as usize;
+    if footstool_input 
+    && input_module.hdr_cat.valid_frames[footstool_offset] == 0 {
+        input_module.hdr_cat.valid_frames[footstool_offset] = unsafe { ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8 };
+    }
+    if input_module.hdr_cat.valid_frames[footstool_offset] != 0
+    && !(footstool_input && input_module.hdr_cat.valid_frames[footstool_offset] == 1) {
+        input_module.hdr_cat.valid_frames[footstool_offset] -= 1;
+    }
+
     call_original();
 
     let cats = unsafe {

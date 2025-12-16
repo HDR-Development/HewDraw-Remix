@@ -24,7 +24,7 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="cancel_start_frame">10</int>
-      <int hash="cancel_end_frame">20</int>
+      <int hash="cancel_end_frame">43</int>
       <int hash="turn_disable_frame">4</int>
       <float hash="start_brake_x_air">0.0</float>
       <float hash="start_speed_x_mul_air">1.0</float>

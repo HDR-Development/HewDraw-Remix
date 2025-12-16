@@ -127,7 +127,7 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi_start");
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
@@ -145,6 +145,19 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);
         WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
         JostleModule::set_status(boma, true);
+    }
+}
+
+unsafe extern "C" fn game_specialairhiend(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 
@@ -192,6 +205,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("game_specialairhiend", game_specialairhiend, Priority::Low);
     
     agent.acmd("effect_speciallwstartl", effect_speciallwstartl, Priority::Low);
     agent.acmd("effect_speciallwstartr", effect_speciallwstartl, Priority::Low);

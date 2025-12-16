@@ -194,4 +194,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_downattackd", effect_downattackd, Priority::Low);
     agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
     agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
+
+    agent.acmd("game_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("effect_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("expression_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("game_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("effect_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("expression_fuwafuwa", acmd_stub, Priority::Low);
 }

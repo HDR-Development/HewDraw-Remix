@@ -142,7 +142,7 @@ special_s_front:
     cancel_frame: 48
 special_n_cancel:
   extra:
-    cancel_frame: 10
+    cancel_frame: 9
 special_air_hi:
   extra:
     cancel_frame: 60
@@ -154,7 +154,7 @@ special_s_front_dash:
     cancel_frame: 52
 special_air_n_cancel:
   extra:
-    cancel_frame: 10
+    cancel_frame: 9
 special_air_s_front_dash:
   extra:
     cancel_frame: 46

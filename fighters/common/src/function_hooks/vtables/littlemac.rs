@@ -151,8 +151,8 @@ pub fn install() {
     );
 
     // modifies the amount of slowdown applied during Slip Counter
-    // cmp w0, #0x23
-    let _ = skyline::patching::Patch::in_text(0xc46674).data(0x71008C1Fu32);
-    // mov w3, #0x24
-    let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x52800483u32);
+    // cmp w0, #0x35
+    let _ = skyline::patching::Patch::in_text(0xc46674).data(0x7100D41Fu32);
+    // mov w3, #0x36
+    let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x528006C3u32);
 }

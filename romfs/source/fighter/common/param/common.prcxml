@@ -158,7 +158,7 @@
   <int hash="damage_fly_escape_frame">999</int>
   <float hash="damage_fly_reflect_d_speed">2.5</float>
   <float hash="damage_fly_reflect_d_speed_mul">0.7</float>
-  <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
+  <float hash="damage_fly_reflect_reaction_frame_mul">0.66</float>
   <int hash="damage_fly_reflect_disable_escape_frame">999</int>
   <float hash="dead_down_damage_speed">999</float>
   <float hash="furafura_frame">150</float>
