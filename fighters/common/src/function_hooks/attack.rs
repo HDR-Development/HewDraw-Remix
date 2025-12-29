@@ -317,7 +317,7 @@ unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_i
 
     // Add Attack to Stale Move Log
     // TODO: Projectile Compatibility
-    if (rcv_has_var && atk_has_var) {
+    if (rcv_has_var && atk_has_var && attacker_boma.is_fighter() && receiver_boma.is_fighter()) {
         let attack_seed = VarModule::get_int(attacker_boma.object(), vars::common::instance::ATTACK_LOG_SEED);
         let attack_kind = smash::app::sv_battle_object::log_attack_kind(attacker_object_id);
         let frame = util::get_global_frame_count() as u32;
