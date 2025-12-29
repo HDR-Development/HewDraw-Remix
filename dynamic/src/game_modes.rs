@@ -11,6 +11,7 @@ pub enum CustomMode {
     Smash64Mode = 4,
     MagicSeriesMode = 5,
     ElementMode = 6,
+    //RainbowDI =
 }
 
 impl fmt::Display for CustomMode {
@@ -23,6 +24,7 @@ impl fmt::Display for CustomMode {
             CustomMode::Smash64Mode => write!(f, "Smash64"),
             CustomMode::MagicSeriesMode => write!(f, "MagicSeries"),
             CustomMode::ElementMode => write!(f, "Element"),
+            //CustomMode::ElementMode => write!(f, "RainbowDI"),
         }
     }
 }

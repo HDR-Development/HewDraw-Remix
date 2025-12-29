@@ -935,16 +935,34 @@ pub unsafe fn FighterStatusDamage__correctDamageVector(fighter: &mut L2CFighterC
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__correctDamageVectorEffect)]
 pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    //let rainbow_di = false;
     match utils::game_modes::get_custom_mode() {
         Some(modes) => {
             if modes.contains(&CustomMode::Smash64Mode) {
                 return 0.into();
             }
+            // if modes.contains(&CustomMode::RainbowDI) {
+            //     rainbow_di = true;
+            // }
         },
         _ => {}
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT] != FIGHTER_STATUS_KIND_DAMAGE_AIR {
-        return call_original!(fighter, param_1);
+        let ret = call_original!(fighter, param_1);
+        
+        // if rainbow_di {
+        //     let boma = fighter.boma();
+        //     let bo = fighter.battle_object;
+        //     let handle = fighter.get_int(*FIGHTER_STATUS_DAMAGE_WORK_INT_CORRECT_DAMAGE_VECTOR_EFFECT_ID) as u32;
+        //     let di_level = VarModule::get_int(bo, vars::common::instance::DI_STALE_LEVEL);
+        //     match di_level {
+        //         1 => EffectModule::set_rgb(boma, handle, 0.05, 0.65, 0.75), // Cyan
+        //         2 => EffectModule::set_rgb(boma, handle, 1.5, 0.1, 0.55), // Purple
+        //         _ => EffectModule::set_rgb(boma, handle, 0.1, 0.9, 0.1), // Green
+        //     }
+        // }
+    
+        return ret;
     }
     // This allows us to call the blue DI line effect on non-tumble knockback
     // Currently not able to be done by reimplementing this function
@@ -952,6 +970,17 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
     // which is not currently supported by skyline-smash
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_FLY));
     let ret = call_original!(fighter, param_1);
+    // if rainbow_di {
+    //     let boma = fighter.boma();
+    //     let bo = fighter.battle_object;
+    //     let handle = fighter.get_int(*FIGHTER_STATUS_DAMAGE_WORK_INT_CORRECT_DAMAGE_VECTOR_EFFECT_ID) as u32;
+    //     let di_level = VarModule::get_int(bo, vars::common::instance::DI_STALE_LEVEL);
+    //     match di_level {
+    //         1 => EffectModule::set_rgb(boma, handle, 0.05, 0.65, 0.75), // Cyan
+    //         2 => EffectModule::set_rgb(boma, handle, 1.5, 0.1, 0.55), // Purple
+    //         _ => EffectModule::set_rgb(boma, handle, 0.1, 0.9, 0.1), // Green
+    //     }
+    // }
     fighter.global_table[STATUS_KIND_INTERRUPT].assign(&L2CValue::I32(*FIGHTER_STATUS_KIND_DAMAGE_AIR));
     ret
 }

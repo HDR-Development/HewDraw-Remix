@@ -120,6 +120,27 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME) > 0 {
         VarModule::dec_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME);
     }
+
+    // Rainbow DI
+    // match utils::game_modes::get_custom_mode() {
+    //     Some(modes) => {
+    //         if modes.contains(&CustomMode::RainbowDI) {
+    //             // Stale Move Log Reset
+    //             if (boma.is_status_one_of(death_statuses)) {
+    //                 //println!("resetting stale moves");
+    //                 boma.reset_stale_move_log();
+    //             }
+            
+    //             // Max DI Correction Level Reset
+    //             if boma.is_situation(*SITUATION_KIND_GROUND) && (!boma.is_status_one_of(death_statuses) && !boma.is_status_one_of(damage_statuses) && !boma.is_in_hitlag() && boma.is_fighter()) {
+    //                 VarModule::set_int(boma.object(), vars::common::instance::DI_STALE_LEVEL, 0);
+    //             }
+    //         }
+    //     },
+    //     _ => {}
+    // }
+
+
 }
 
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {

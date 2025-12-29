@@ -815,7 +815,7 @@ pub fn install() {
     jumps::install();
     knockback::install();
     stage_hazards::install();
-    //set_fighter_status_data::install();
+    set_fighter_status_data::install();
     attack::install();
     collision::install();
     camera::install();

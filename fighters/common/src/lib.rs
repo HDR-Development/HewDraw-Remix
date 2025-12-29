@@ -34,10 +34,15 @@ pub mod acmd;
 
 // for storing what team color the last attacker had. used in a couple different common files
 pub static mut LAST_ATTACK_TEAM_COLOR: i32 = 0;
+// for stale move seeds upon state changes
+pub static mut GLOBAL_SEED: u32 = 0;
 
 extern "C" fn common_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_INIT);
+        unsafe {
+        GLOBAL_SEED = 0;
+    }
 }
 
 pub fn install() {

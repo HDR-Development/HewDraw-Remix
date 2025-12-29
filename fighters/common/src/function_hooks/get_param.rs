@@ -187,6 +187,20 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                         return 4.0;
                     }
                 }
+                // if modes.contains(&CustomMode::RainbowDI) {
+                //     // Correction based on Max DI Level
+                //     if x2 == hash40("damage_fly_correction_max") {
+                //         let bo = boma_reference.object();
+                //         let di_level = VarModule::get_int(bo, vars::common::instance::DI_STALE_LEVEL);
+                //         //println!("Real DI Correction: {} \n", di_level);
+                //         match di_level {
+                //             1 => return 17.0,
+                //             2 => return 19.0,
+                //             _ => return original!()(x0, x1, x2),
+                //         };
+                //         return original!()(x0, x1, x2);
+                //     }
+                // }
             },
             _ => {}
         }
@@ -206,6 +220,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             return 0.0;
         }
         */
+
 
         // handle reduction of the tumble threshold for DK when in barrel carry
         if x2 == hash40("damage_level3") 

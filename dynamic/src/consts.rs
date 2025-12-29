@@ -240,6 +240,10 @@ pub mod vars {
 
             pub const ATTACK_LR_CHECK: i32 = 0x0014;
 
+            // pub const DI_STALE_LEVEL: i32 = 0x0015;
+            pub const ATTACK_LOG_SEED: i32 = 0x0016;
+            pub const POWER_UP_BIT_LAST: i32 = 0x0017;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -282,6 +286,10 @@ pub mod vars {
             pub const LAST_RECEIVED_ATTACK_HIT_LOCATION_Y: i32 = 0x0024;
             pub const LAST_RECEIVED_ATTACK_HIT_LOCATION_Z: i32 = 0x0025;
             pub const LAND_CANCEL_LAG: i32 = 0x0026;
+
+            // int64
+            pub const ATTACK_LOG_ENTRIES: i32 = 0x0050; // Length(4) * int64
+            // Padding until 60
         }
         pub mod status {
             // flags

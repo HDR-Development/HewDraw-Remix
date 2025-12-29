@@ -1,4 +1,5 @@
 use super::*;
+use crate::attack_log::AttackPatternLogEntry;
 use smash_rs::app::CollisionSoundAttr;
 use utils::ext::*;
 use utils::game_modes::CustomMode;
@@ -305,11 +306,36 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_id: u32, receiver_object_id: u32, move_type: u64, arg5: u64, move_type_again: u64) -> u64 {
 	let attacker_boma = &mut *smash::app::sv_battle_object::module_accessor(attacker_object_id);
 	let receiver_boma = &mut *smash::app::sv_battle_object::module_accessor(receiver_object_id);
+    let atk_has_var = VarModule::has_var_module(attacker_boma.object());
+    let rcv_has_var = VarModule::has_var_module(receiver_boma.object());
 
-    if VarModule::has_var_module(attacker_boma.object())
+    if atk_has_var
     && VarModule::is_flag(attacker_boma.object(), vars::common::status::HIT_EFFECT_DROP_ITEM)
     && ItemModule::is_have_item(receiver_boma, 0) {
         ItemModule::drop_item(receiver_boma, 90.0, 0.0, 0);
+    }
+
+    // Add Attack to Stale Move Log
+    // TODO: Projectile Compatibility
+    if (rcv_has_var && atk_has_var && attacker_boma.is_fighter() && receiver_boma.is_fighter()) {
+        let attack_seed = VarModule::get_int(attacker_boma.object(), vars::common::instance::ATTACK_LOG_SEED);
+        let attack_kind = smash::app::sv_battle_object::log_attack_kind(attacker_object_id);
+        let frame = util::get_global_frame_count() as u32;
+        let log = AttackPatternLogEntry::new_entry(
+            attacker_boma.get_player_idx_from_boma() as u32,
+            attack_seed as u32,
+            frame,
+            attack_kind,
+        );
+
+        // Rainbow DI Staling
+        // if receiver_boma.check_stale_move_entry(log) {
+        //     let mut new_stale_level =
+        //         VarModule::get_int(receiver_boma.object(), vars::common::instance::DI_STALE_LEVEL) + 1;
+        //     new_stale_level = std::cmp::min(new_stale_level, 2);
+        //     VarModule::set_int(receiver_boma.object(), vars::common::instance::DI_STALE_LEVEL, new_stale_level);
+        // }
+        
     }
 
 	original!()(fighter_manager, attacker_object_id, receiver_object_id, move_type, arg5, move_type_again)

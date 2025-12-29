@@ -1,4 +1,5 @@
 use crate::consts::{globals::*, vars};
+use crate::attack_log::{AttackPatternLogEntry, StaleMoveQueue};
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
 use smash::app::{
@@ -550,6 +551,9 @@ pub trait BomaExt {
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
     // Checks for situation kind and transitions to heavy landing
     unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool;
+    // Checks for stale move queue
+    unsafe fn check_stale_move_entry(&mut self, entry: AttackPatternLogEntry) -> bool;
+    unsafe fn reset_stale_move_log(&mut self);
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self) -> bool;
@@ -1283,6 +1287,16 @@ impl BomaExt for BattleObjectModuleAccessor {
 
         false
     }
+
+    // Check if move is stale, adds entry if needed.
+    unsafe fn check_stale_move_entry(&mut self, entry: AttackPatternLogEntry) -> bool {
+        StaleMoveQueue::check_stale(self.object(), entry)
+    }
+
+    unsafe fn reset_stale_move_log(&mut self) {
+        StaleMoveQueue::clear(self.object());
+    }
+
 
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
     ///
