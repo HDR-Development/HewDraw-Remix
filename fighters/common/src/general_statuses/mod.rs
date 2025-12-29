@@ -830,7 +830,7 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
         match di_level {
             1 => EffectModule::set_rgb(boma, handle, 0.05, 0.65, 0.75),
             // Cyan
-            2 => EffectModule::set_rgb(boma, handle, 0.72, 0.4, 0.0),
+            2 => EffectModule::set_rgb(boma, handle, 0.78, 0.3, 0.05),
             // Orange
             _ => EffectModule::set_rgb(boma, handle, 0.1, 0.9, 0.1),
             // Green
@@ -851,7 +851,7 @@ pub unsafe fn FighterStatusDamage__correctDamageVectorEffect(fighter: &mut L2CFi
     match di_level {
         1 => EffectModule::set_rgb(boma, handle, 0.05, 0.65, 0.75),
         // Cyan
-        2 => EffectModule::set_rgb(boma, handle, 0.72, 0.4, 0.0),
+        2 => EffectModule::set_rgb(boma, handle, 0.78, 0.3, 0.05),
         // Orange
         _ => EffectModule::set_rgb(boma, handle, 0.1, 0.9, 0.1),
         // Green
