@@ -240,6 +240,10 @@ pub mod vars {
 
             pub const ATTACK_LR_CHECK: i32 = 0x0014;
 
+            pub const DI_STALE_LEVEL: i32 = 0x0015;
+            pub const ATTACK_LOG_SEED: i32 = 0x0016;
+            pub const POWER_UP_BIT_LAST: i32 = 0x0017;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -282,6 +286,10 @@ pub mod vars {
             pub const LAST_RECEIVED_ATTACK_HIT_LOCATION_Y: i32 = 0x0024;
             pub const LAST_RECEIVED_ATTACK_HIT_LOCATION_Z: i32 = 0x0025;
             pub const LAND_CANCEL_LAG: i32 = 0x0026;
+
+            // int64
+            pub const ATTACK_LOG_ENTRIES: i32 = 0x0050; //Needs Int64 * Length of Attack Log (4)
+                                                        // Padding until 60
         }
         pub mod status {
             // flags
@@ -391,7 +399,7 @@ pub mod vars {
             pub const SPELL_SLOT_USED_2_4: i32 = 0x0111;
             pub const CURSOR_SLOT: i32 = 0x0112;
             pub const MENU_TRAINING_MODE_INDEX: i32 = 0x0113;
-            
+
             // floats
             pub const SPECIAL_LW_CSTICK_BUFFER_DIR: i32 = 0x0100;
         }
@@ -447,7 +455,7 @@ pub mod vars {
     }
 
     pub mod cloud {
-        pub mod instance {   
+        pub mod instance {
             // flag
             pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0100;
         }
@@ -459,7 +467,7 @@ pub mod vars {
     }
 
     pub mod daisy {
-        pub mod instance {   
+        pub mod instance {
             // flag
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
             pub const SPECIAL_S_GROUND_START: i32 = 0x0101;
@@ -490,7 +498,7 @@ pub mod vars {
     }
 
     pub mod dedede {
-        pub mod instance{
+        pub mod instance {
             //flags
             pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
             pub const SPECIAL_LW_CONTINUE_JET_SPIN: i32 = 0x0101;
@@ -504,7 +512,7 @@ pub mod vars {
             pub const SPECIAL_N_STICK_Y: i32 = 0x0105;
             pub const SPECIAL_S_TOSS_LR: i32 = 0x0106;
         }
-        pub mod status{
+        pub mod status {
             //flags
             pub const SPECIAL_LW_CONTINUE_SPIN: i32 = 0x1100;
         }
@@ -565,7 +573,7 @@ pub mod vars {
             pub const INHERIT_FINAL_CANCEL_ON_END: i32 = 0x1150;
             pub const ATTACK_COMMAND_4_RELEASE_BUTTON: i32 = 0x1151;
 
-            pub const SPECIAL_LW_BREAK : i32 = 0x1152;
+            pub const SPECIAL_LW_BREAK: i32 = 0x1152;
             pub const SUPER_SPECIAL_TRIPLE: i32 = 0x1153;
 
             // ints
@@ -707,9 +715,7 @@ pub mod vars {
         }
     }
 
-    pub mod fox {
-
-    }
+    pub mod fox {}
 
     pub mod gamewatch {
         pub mod instance {
@@ -787,7 +793,6 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
-
         }
         pub mod status {
             // flags
@@ -840,7 +845,7 @@ pub mod vars {
             // ints
             pub const SPECIAL_N_PICKEL_MATERIAL_INDEX: i32 = 0x01F5;
             pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
-            pub const SPECIAL_N_PTRAINER_PLEDGE_STATE: i32 = 0x01F6;    // Unique var as it doesn't like borrowing from ptrainer
+            pub const SPECIAL_N_PTRAINER_PLEDGE_STATE: i32 = 0x01F6; // Unique var as it doesn't like borrowing from ptrainer
             pub use super::super::ptrainer::instance::SPECIAL_N_PLEDGE_TIMER;
             pub const SPECIAL_N_PTRAINER_PLEDGE_EFFECT_HANDLE: i32 = 0x01F7;
 
@@ -860,13 +865,13 @@ pub mod vars {
             pub const PURIN_SPECIAL_N_HIT_CANCEL_OK: i32 = 0x11F9;
             pub const PALUTENA_SPECIAL_N_HOLD: i32 = 0x11FA;
 
-            pub use super::super::mario::status::SPECIAL_N_FIREBRAND;
-            pub use super::super::luigi::status::SPECIAL_N_THUNDERHAND;
-            pub use super::super::mariod::status::SPECIAL_N_CHILL_PILL;
-            pub use super::super::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE;
             pub use super::super::daisy::status::SPECIAL_N_AIR_START;
-            pub use super::super::daisy::status::SPECIAL_N_DIVE;
             pub use super::super::daisy::status::SPECIAL_N_AUTOCANCEL;
+            pub use super::super::daisy::status::SPECIAL_N_CRYSTAL_ACTIVE;
+            pub use super::super::daisy::status::SPECIAL_N_DIVE;
+            pub use super::super::luigi::status::SPECIAL_N_THUNDERHAND;
+            pub use super::super::mario::status::SPECIAL_N_FIREBRAND;
+            pub use super::super::mariod::status::SPECIAL_N_CHILL_PILL;
         }
     }
 
@@ -917,9 +922,7 @@ pub mod vars {
         }
     }
 
-    pub mod link {
-
-    }
+    pub mod link {}
 
     pub mod littlemac {
         pub mod instance {
@@ -1025,7 +1028,7 @@ pub mod vars {
         pub mod instance {
             // flag
             pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
-            
+
             // int
             /// This int stores damage received from an attack during quick riposte
             pub const CURRENT_DAMAGE: i32 = 0x0100;
@@ -1073,16 +1076,16 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_N_FIREBRAND: i32 = 0x1100;
-            pub const SPECIAL_LW_ENABLE_LANDING : i32 = 0x1101;
+            pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x1101;
 
             // ints
-            pub const SPECIAL_LW_LONG_JUMP_KIND : i32 = 0x1103;
+            pub const SPECIAL_LW_LONG_JUMP_KIND: i32 = 0x1103;
         }
-    
-        pub const LONG_JUMP_W : i32 = 0;
-        pub const LONG_JUMP_M : i32 = 1;
-        pub const LONG_JUMP_S : i32 = 2;
-        pub const LONG_JUMP_B : i32 = 3;
+
+        pub const LONG_JUMP_W: i32 = 0;
+        pub const LONG_JUMP_M: i32 = 1;
+        pub const LONG_JUMP_S: i32 = 2;
+        pub const LONG_JUMP_B: i32 = 3;
     }
 
     pub mod mariod {
@@ -1097,9 +1100,7 @@ pub mod vars {
         }
     }
 
-    pub mod marth {
-
-    }
+    pub mod marth {}
 
     pub mod master {
         pub mod instance {
@@ -1375,7 +1376,7 @@ pub mod vars {
             pub const CYCLE_MATERIAL: i32 = 0x0101;
             pub const DAMAGE_FLY_RESET_ROT: i32 = 0x0102;
 
-            // ints 
+            // ints
             pub const MATERIAL_INDEX: i32 = 0x0100;
             pub const MATERIAL_EFFECT_HANDLE: i32 = 0x0101;
             pub const DAMAGE_RED_EFFECT_TIMER: i32 = 0x0102;
@@ -1388,7 +1389,7 @@ pub mod vars {
         pub mod status {
             // ints
             pub const MINING_TIMER: i32 = 0x1100;
-            
+
             // floats
             pub const SPECIAL_HI_GLIDE_TIMER: i32 = 0x1100;
 
@@ -1400,21 +1401,21 @@ pub mod vars {
 
     pub mod pickel_forge {
         pub mod instance {
-            // floats 
+            // floats
             pub const START_Y_POS: i32 = 0x0100;
         }
     }
 
     pub mod pickel_trolley {
         pub mod instance {
-            // ints 
+            // ints
             pub const PEARL_OWNER_ID: i32 = 0x0100;
         }
         pub mod status {
             // ints
             pub const REFLECT_COUNT: i32 = 0x1100;
             pub const TRAVEL_FRAMES: i32 = 0x1101;
-            
+
             // floats
             pub const PREV_LR: i32 = 0x1100;
         }
@@ -1423,7 +1424,7 @@ pub mod vars {
     pub mod pikachu {
         pub mod instance {
             // ints
-            
+
             // floats
 
             // flags
@@ -1431,7 +1432,7 @@ pub mod vars {
         }
         pub mod status {
             // ints
-            
+
             // floats
 
             // flags
@@ -1453,13 +1454,9 @@ pub mod vars {
         }
     }
 
-    pub mod pit {
+    pub mod pit {}
 
-    }
-
-    pub mod pitb {
-
-    }
+    pub mod pitb {}
 
     pub mod plizardon {
         pub mod instance {
@@ -1617,7 +1614,7 @@ pub mod vars {
             pub const SPECIAL_N_CHARGE_SHOT_PLAYED_SFX: i32 = 0x0101;
             pub const SPECIAL_N_CHARGE_SHOT_RELEASE: i32 = 0x0102;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0103;
-            
+
             // ints
             pub const SPECIAL_N_CHARGE_SHOT_FRAME: i32 = 0x0100;
             pub const SPECIAL_N_CHARGE_SHOT_EFFECT_HANDLE: i32 = 0x0101;
@@ -1850,9 +1847,7 @@ pub mod vars {
         }
     }
 
-    pub mod toonlink {
-
-    }
+    pub mod toonlink {}
 
     pub mod trail {
         pub mod instance {
@@ -1907,7 +1902,7 @@ pub mod vars {
             pub const RING_END_FRAME: i32 = 0x0102;
             pub const RING_START_SIZE: i32 = 0x0103;
             pub const RING_END_SIZE: i32 = 0x0104;
-            pub const RING_COLOR: i32 = 0x0105;     // this is a vector, so it needs three values (next value starts at 0x0108)
+            pub const RING_COLOR: i32 = 0x0105; // this is a vector, so it needs three values (next value starts at 0x0108)
             pub const RING_SECOND_COLOR: i32 = 0x108;
         }
     }
@@ -1921,14 +1916,10 @@ pub mod vars {
     }
 
     pub mod yoshi {
-        pub mod status {
-            
-        }
+        pub mod status {}
     }
 
-    pub mod younglink {
-
-    }
+    pub mod younglink {}
 
     pub mod zelda {
         pub mod instance {
@@ -2028,10 +2019,10 @@ pub mod statuses {
 
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0x3E6; //Weird value to avoid conflicts with copy ability values
-        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7; 
-        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
-        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
-        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
+        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7;
+        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8;
+        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9;
+        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA;
         pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
         pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
         pub const BUDDY_SPECIAL_N_BAYONET_END: i32 = 0x3ED;
@@ -2135,7 +2126,7 @@ pub mod articles {
         pub const ROCK: i32 = 0x3;
         pub const ROCKSTONE: i32 = 0x4;
     }
-    
+
     pub mod purin {
         pub const DISARMING_VOICE: i32 = 0x2;
     }

@@ -1,13 +1,12 @@
+use crate::attack_log::{self, AttackPatternLogEntry, StaleMoveQueue};
 use crate::consts::{globals::*, vars};
+use crate::{InputModule, VarModule};
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
-use smash::app::{
-    self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity, FighterKineticEnergyMotion, *,
-};
+use smash::app::{self, lua_bind::*, FighterKineticEnergyController, FighterKineticEnergyGravity, FighterKineticEnergyMotion, *};
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
-use crate::{InputModule, VarModule};
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -62,7 +61,10 @@ impl Hash40Ext for &str {
 
 impl Vec2Ext for Vector2f {
     fn new(x: f32, y: f32) -> Self {
-        Self { x, y }
+        Self {
+            x,
+            y,
+        }
     }
 
     fn zero() -> Self {
@@ -72,7 +74,11 @@ impl Vec2Ext for Vector2f {
 
 impl Vec3Ext for Vector3f {
     fn new(x: f32, y: f32, z: f32) -> Self {
-        Self { x, y, z }
+        Self {
+            x,
+            y,
+            z,
+        }
     }
 
     fn zero() -> Self {
@@ -95,7 +101,12 @@ impl Vec3Ext for Vector3f {
 
 impl Vec4Ext for Vector4f {
     fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
-        Self { x, y, z, w }
+        Self {
+            x,
+            y,
+            z,
+            w,
+        }
     }
 
     fn zero() -> Self {
@@ -367,33 +378,21 @@ pub enum AerialKind {
 }
 
 pub trait MainShift {
-    fn main_shift(
-        &mut self,
-        new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue,
-    ) -> L2CValue;
+    fn main_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue;
 }
 
 pub trait FastShift {
-    fn fast_shift(
-        &mut self,
-        new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
-    ) -> L2CValue;
+    fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue;
 }
 
 impl MainShift for L2CFighterCommon {
-    fn main_shift(
-        &mut self,
-        new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue,
-    ) -> L2CValue {
+    fn main_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue {
         unsafe { self.sub_shift_status_main(L2CValue::Ptr(new_main as *const () as _)) }
     }
 }
 
 impl FastShift for L2CFighterBase {
-    fn fast_shift(
-        &mut self,
-        new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue,
-    ) -> L2CValue {
+    fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue {
         unsafe { self.fastshift(L2CValue::Ptr(new_main as *const () as _)) }
     }
 }
@@ -497,24 +496,9 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
-    unsafe fn set_int_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    );
-    unsafe fn set_float_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    );
-    unsafe fn set_int64_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    );
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
 
     unsafe fn enable_transition_term(&mut self, arg2: i32);
     unsafe fn enable_transition_term_many(&mut self, arg2: &[i32]);
@@ -536,7 +520,6 @@ pub trait BomaExt {
     unsafe fn get_back_cliff_hangdata(&mut self) -> Vector2f;
     unsafe fn get_center_cliff_hangdata(&mut self) -> Vector2f;
 
-
     // Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool;
     // Checks for status and enables transition to airdodge
@@ -550,6 +533,10 @@ pub trait BomaExt {
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
     // Checks for situation kind and transitions to heavy landing
     unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool;
+    // Checks for stale move queue
+    unsafe fn check_stale_move_entry(&mut self, entry: AttackPatternLogEntry) -> bool;
+
+    unsafe fn reset_stale_move_log(&mut self);
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self) -> bool;
@@ -557,14 +544,13 @@ pub trait BomaExt {
     unsafe fn check_magicseries(&mut self);
 
     /// try to pickup an item nearby
-    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor>;
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 
     unsafe fn set_command_input_button(&mut self, command: usize, buttons: u8);
 
     unsafe fn clone_command_input(&mut self, command: usize, replace_command: usize);
-
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -662,11 +648,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn is_input_jump(&mut self) -> bool {
         if self.is_cat_flag(Cat1::Jump) && ControlModule::is_enable_flick_jump(self) {
-            WorkModule::set_int(
-                self,
-                1,
-                *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE,
-            );
+            WorkModule::set_int(self, 1, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
             return true;
         }
 
@@ -823,10 +805,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_in_hitlag(&mut self) -> bool {
-        let hitlag_frame = WorkModule::get_int(
-            self,
-            *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME,
-        );
+        let hitlag_frame = WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
         if hitlag_frame > 0 {
             return true;
         }
@@ -834,8 +813,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn status_frame(&mut self) -> i32 {
-        return crate::util::get_fighter_common_from_accessor(self).global_table[CURRENT_FRAME]
-            .get_i32();
+        return crate::util::get_fighter_common_from_accessor(self).global_table[CURRENT_FRAME].get_i32();
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
@@ -845,49 +823,85 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn set_status_kind_interrupt(&mut self, kind: i32) {
         StatusModule::set_status_kind_interrupt(self, kind);
         let status_module = *(self as *const BattleObjectModuleAccessor as *const u64).add(0x8);
-        *((status_module + 0x98) as *mut i32) = kind;  // StatusModule::status_kind
-        *((status_module + 0x9c) as *mut i32) = kind;  // StatusModule::status_kind_next
+        *((status_module + 0x98) as *mut i32) = kind; // StatusModule::status_kind
+        *((status_module + 0x9c) as *mut i32) = kind; // StatusModule::status_kind_next
         crate::util::get_fighter_common_from_accessor(self).global_table[STATUS_KIND].assign(&L2CValue::I32(kind));
     }
 
     unsafe fn get_status_by_situation(&mut self, ground_status: i32, air_status: i32) -> i32 {
-        return if self.is_situation(*SITUATION_KIND_GROUND) { ground_status } else { air_status };
+        return if self.is_situation(*SITUATION_KIND_GROUND) {
+            ground_status
+        } else {
+            air_status
+        };
     }
 
     unsafe fn change_status_by_situation(&mut self, ground_status: i32, air_status: i32, repeat: bool) -> i32 {
-        return if self.is_situation(*SITUATION_KIND_GROUND) { self.change_status_req(ground_status, repeat) } else { self.change_status_req(air_status, repeat) };
+        return if self.is_situation(*SITUATION_KIND_GROUND) {
+            self.change_status_req(ground_status, repeat)
+        } else {
+            self.change_status_req(air_status, repeat)
+        };
     }
 
     unsafe fn get_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str) -> Hash40 {
-        return if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        return if self.is_situation(*SITUATION_KIND_GROUND) {
+            Hash40::new(ground_motion)
+        } else {
+            Hash40::new(air_motion)
+        };
     }
 
     unsafe fn change_motion_by_situation(&mut self, ground_motion: &str, air_motion: &str, start_frame: f32, rate: f32, arg5: bool, arg6: f32, arg7: bool, arg8: bool) -> i32 {
-        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) {
+            Hash40::new(ground_motion)
+        } else {
+            Hash40::new(air_motion)
+        };
         return MotionModule::change_motion(self, motion, start_frame, rate, arg5, arg6, arg7, arg8) as i32;
     }
 
     unsafe fn change_motion_inherit_frame_by_situation(&mut self, ground_motion: &str, air_motion: &str, start_frame: f32, rate: f32, arg5: f32, arg6: bool, arg7: bool) -> i32 {
-        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) {
+            Hash40::new(ground_motion)
+        } else {
+            Hash40::new(air_motion)
+        };
         return MotionModule::change_motion_inherit_frame(self, motion, start_frame, rate, arg5, arg6, arg7) as i32;
     }
 
     unsafe fn change_motion_inherit_frame_keep_rate_by_situation(&mut self, ground_motion: &str, air_motion: &str, frame_offset: f32, rate: f32, arg5: f32) -> i32 {
-        let motion = if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_motion) } else { Hash40::new(air_motion) };
+        let motion = if self.is_situation(*SITUATION_KIND_GROUND) {
+            Hash40::new(ground_motion)
+        } else {
+            Hash40::new(air_motion)
+        };
         return MotionModule::change_motion_inherit_frame_keep_rate(self, motion, frame_offset, rate, arg5) as i32;
     }
 
     unsafe fn get_hash_by_situation(&mut self, ground_hash: &str, air_hash: &str) -> Hash40 {
-        return if self.is_situation(*SITUATION_KIND_GROUND) { Hash40::new(ground_hash) } else { Hash40::new(air_hash) };
+        return if self.is_situation(*SITUATION_KIND_GROUND) {
+            Hash40::new(ground_hash)
+        } else {
+            Hash40::new(air_hash)
+        };
     }
 
     unsafe fn change_kinetic_by_situation(&mut self, ground_kinetic_kind: i32, air_kinetic_kind: i32) -> i32 {
-        let kinetic = if self.is_situation(*SITUATION_KIND_GROUND) { ground_kinetic_kind } else { air_kinetic_kind };
+        let kinetic = if self.is_situation(*SITUATION_KIND_GROUND) {
+            ground_kinetic_kind
+        } else {
+            air_kinetic_kind
+        };
         return KineticModule::change_kinetic(self, kinetic);
     }
 
     unsafe fn ground_correct_by_situation(&mut self, ground_correct_type: i32, air_correct_type: i32) -> i32 {
-        let ground_correct = if self.is_situation(*SITUATION_KIND_GROUND) { GroundCorrectKind(ground_correct_type) } else { GroundCorrectKind(air_correct_type) };
+        let ground_correct = if self.is_situation(*SITUATION_KIND_GROUND) {
+            GroundCorrectKind(ground_correct_type)
+        } else {
+            GroundCorrectKind(air_correct_type)
+        };
         return GroundModule::correct(self, ground_correct) as i32;
     }
 
@@ -959,12 +973,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_int(self, value, what)
     }
 
-    unsafe fn set_int_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    ) {
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
         let int = WorkModule::get_param_int(self, object.to_hash().hash, param.to_hash().hash);
         WorkModule::set_int(self, int, what);
     }
@@ -973,12 +982,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_float(self, value, what)
     }
 
-    unsafe fn set_float_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    ) {
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
         let float = WorkModule::get_param_float(self, object.to_hash().hash, param.to_hash().hash);
         WorkModule::set_float(self, float, what);
     }
@@ -987,12 +991,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_int64(self, value, what)
     }
 
-    unsafe fn set_int64_from_param(
-        &mut self,
-        what: i32,
-        object: impl Hash40Ext,
-        param: impl Hash40Ext,
-    ) {
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
         let int = WorkModule::get_param_int64(self, object.to_hash().hash, param.to_hash().hash);
         WorkModule::set_int64(self, int as i64, what);
     }
@@ -1058,25 +1057,17 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     /// gets the FighterKineticEnergyMotion object
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion {
-        std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(
-            self,
-            *FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        ))
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_MOTION))
     }
 
     /// gets the FighterKineticEnergyGravity object
     unsafe fn get_gravity_energy(&mut self) -> &mut FighterKineticEnergyGravity {
-        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(KineticModule::get_energy(
-            self,
-            *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        ))
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyGravity>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY))
     }
 
     /// gets the FighterKineticEnergyController object
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
-        std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(
-            KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL),
-        )
+        std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
     }
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
@@ -1086,17 +1077,14 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
 
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
-        if !crate::VarModule::is_flag(
-            self.object(),
-            crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET,
-        ) {
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
             return false;
         }
 
         if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
             return false;
         }
-    
+
         // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
         let upper_bound_offset_y = if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
@@ -1106,23 +1094,20 @@ impl BomaExt for BattleObjectModuleAccessor {
         };
         let upper_bound_y = pos.y + upper_bound_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
-                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
-                upper_bound_offset_y
-            } else {
-                // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
-                (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
-            };
+            // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
+            upper_bound_offset_y
+        } else {
+            // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
+            (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+        };
         let lower_bound = Vector2f::new(pos.x, upper_bound_y - snap_leniency);
         let ground_pos_any = &mut Vector2f::zero();
         let ground_pos_stage = &mut Vector2f::zero();
         let is_touch_any = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_any, true);
         let is_touch_stage = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_stage, false);
-        let can_snap = !( 
-            is_touch_any == 0 as *const *const u64
-            || (is_touch_stage != 0 as *const *const u64
-                && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
-        );
-        if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+        let can_snap = !(is_touch_any == 0 as *const *const u64 || (is_touch_stage != 0 as *const *const u64 && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0));
+        if can_snap {
+            // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
             PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
             GroundModule::attach_ground(self, false);
@@ -1147,23 +1132,15 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn check_jump_cancel(&mut self, update_lr: bool, skip_other_checks: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
-            );
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
-            );
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
             if !skip_other_checks {
-                WorkModule::enable_transition_term(
-                    fighter.module_accessor,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-                );
+                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
             }
             if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() // buffered aerials
             || (!skip_other_checks && fighter.sub_transition_group_check_ground_attack().get_bool()) // up smash
-            || fighter.sub_transition_group_check_ground_jump().get_bool() // regular jumps
+            || fighter.sub_transition_group_check_ground_jump().get_bool()
+            // regular jumps
             {
                 if update_lr {
                     PostureModule::set_stick_lr(self, 0.0);
@@ -1172,30 +1149,12 @@ impl BomaExt for BattleObjectModuleAccessor {
                 return true;
             }
         } else {
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
-            );
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
-            );
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY,
-            );
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON,
-            );
-            WorkModule::enable_transition_term(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_NEXT,
-            );
-            if fighter
-                .sub_transition_group_check_air_jump_aerial()
-                .get_bool()
-            {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_NEXT);
+            if fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
                 return true;
             }
         }
@@ -1204,10 +1163,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn check_airdodge_cancel(&mut self) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
-        WorkModule::enable_transition_term(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR,
-        );
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         if fighter.sub_transition_group_check_air_escape().get_bool() {
             return true;
         }
@@ -1216,8 +1172,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn check_aerial_cancel(&mut self) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
-        if fighter.is_situation(*SITUATION_KIND_AIR)
-        && fighter.get_aerial() != None {
+        if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.get_aerial() != None {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
             return true;
         }
@@ -1252,8 +1207,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue {
-        if self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME) != 0
-        || self.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD) {
+        if self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME) != 0 || self.is_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD) {
             return false.into();
         }
         if self.is_cat_flag(CatHdr::Parry) {
@@ -1267,12 +1221,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     // AKA incurred landing lag is equivalent to the character's specific heavy landing lag value
     // (landing_frame in fighter_param PRC)
     unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool {
-        if self.is_prev_situation(*SITUATION_KIND_AIR)
-        && self.is_situation(*SITUATION_KIND_GROUND) {
+        if self.is_prev_situation(*SITUATION_KIND_AIR) && self.is_situation(*SITUATION_KIND_GROUND) {
             match landing_lag {
                 Some(landing_lag) => {
                     VarModule::set_float(self.object(), vars::common::instance::LAND_CANCEL_LAG, landing_lag);
-                },
+                }
                 None => {}
             }
 
@@ -1282,6 +1235,15 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
 
         false
+    }
+
+    // Check if move is stale, adds entry if needed.
+    unsafe fn check_stale_move_entry(&mut self, entry: AttackPatternLogEntry) -> bool {
+        StaleMoveQueue::check_stale(self.object(), entry)
+    }
+
+    unsafe fn reset_stale_move_log(&mut self) {
+        StaleMoveQueue::clear(self.object());
     }
 
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
@@ -1334,26 +1296,10 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn select_cliff_hangdata_from_name(&mut self, name: &str) {
-        let p1_x = crate::ParamModule::get_float(
-            self.object(),
-            crate::ParamType::Agent,
-            &format!("cliff_hang_data.{}.p1_x", name),
-        );
-        let p1_y = crate::ParamModule::get_float(
-            self.object(),
-            crate::ParamType::Agent,
-            &format!("cliff_hang_data.{}.p1_y", name),
-        );
-        let p2_x = crate::ParamModule::get_float(
-            self.object(),
-            crate::ParamType::Agent,
-            &format!("cliff_hang_data.{}.p2_x", name),
-        );
-        let p2_y = crate::ParamModule::get_float(
-            self.object(),
-            crate::ParamType::Agent,
-            &format!("cliff_hang_data.{}.p2_y", name),
-        );
+        let p1_x = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p1_x", name));
+        let p1_y = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p1_y", name));
+        let p2_x = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p2_x", name));
+        let p2_y = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p2_y", name));
 
         // Can uncomment and test hardcoded values here, while working on a character
         // so you don't have to rebuild hdr.prc every time
@@ -1400,9 +1346,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         if self.is_in_hitlag() {
             let dive_cont_value = self.get_param_float("common", "dive_cont_value");
             let dive_flick_frame_value = self.get_param_int("common", "dive_flick_frame_value");
-            if self.left_stick_y() <= dive_cont_value
-            && VarModule::get_int(self.object(), vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
-            && AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT) {
+            if self.left_stick_y() <= dive_cont_value && VarModule::get_int(self.object(), vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value && AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(self.object(), vars::common::status::SHOULD_HITFALL);
             }
         } else if VarModule::is_flag(self.object(), vars::common::status::SHOULD_HITFALL) {
@@ -1422,40 +1366,84 @@ impl BomaExt for BattleObjectModuleAccessor {
             let speed_x = KineticModule::get_sum_speed_x(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(self, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             // lets make sure not to divide by zero
-            let speed_x_adjust = if speed_x == 0.0 { 0.01 } else { 0.0 };
-            let angle = (speed_y/(speed_x + speed_x_adjust)).atan();
+            let speed_x_adjust = if speed_x == 0.0 {
+                0.01
+            } else {
+                0.0
+            };
+            let angle = (speed_y / (speed_x + speed_x_adjust)).atan();
 
-            let pos = Vector3f { x: 0., y: 3., z: 0.};
-            let mut rot = Vector3f { x:0., y:0., z: (90. + 180. * angle/3.14159)};
+            let pos = Vector3f {
+                x: 0.,
+                y: 3.,
+                z: 0.,
+            };
+            let mut rot = Vector3f {
+                x: 0.,
+                y: 0.,
+                z: (90. + 180. * angle / 3.14159),
+            };
 
             if speed_x > 0. {
-                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_r"), Hash40::new("top"),
-                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
-            }else{
-                rot = Vector3f { x:0., y:0., z: (-90. + 180. * angle/3.14159)};
-                EffectModule::req_on_joint(self, Hash40::new("sys_whirlwind_l"), Hash40::new("top"),
-                &pos, &rot, 0.75, &Vector3f{x:0.0, y:0.0, z:0.0}, &Vector3f{x:0.0, y:0.0, z:0.0}, false, 0, 0, 0);
+                EffectModule::req_on_joint(
+                    self,
+                    Hash40::new("sys_whirlwind_r"),
+                    Hash40::new("top"),
+                    &pos,
+                    &rot,
+                    0.75,
+                    &Vector3f {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    &Vector3f {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    false,
+                    0,
+                    0,
+                    0,
+                );
+            } else {
+                rot = Vector3f {
+                    x: 0.,
+                    y: 0.,
+                    z: (-90. + 180. * angle / 3.14159),
+                };
+                EffectModule::req_on_joint(
+                    self,
+                    Hash40::new("sys_whirlwind_l"),
+                    Hash40::new("top"),
+                    &pos,
+                    &rot,
+                    0.75,
+                    &Vector3f {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    &Vector3f {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    false,
+                    0,
+                    0,
+                    0,
+                );
             }
         }
 
         // if you have an escape_air_dash motion, change into it
-        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) 
-        && !self.is_motion(Hash40::new("escape_air_dash"))
-        && self.motion_frame() >= 1.0 {
-            MotionModule::change_motion(
-                self,
-                Hash40::new("escape_air_dash"),
-                self.motion_frame(),
-                1.0,
-                false,
-                0.0,
-                false,
-                false,
-            );
+        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) && !self.is_motion(Hash40::new("escape_air_dash")) && self.motion_frame() >= 1.0 {
+            MotionModule::change_motion(self, Hash40::new("escape_air_dash"), self.motion_frame(), 1.0, false, 0.0, false, false);
         }
 
-        if self.motion_frame() >= 6.0
-        && !CancelModule::is_enable_cancel(self) {
+        if self.motion_frame() >= 6.0 && !CancelModule::is_enable_cancel(self) {
             CancelModule::enable_cancel(self);
         }
 
@@ -1467,73 +1455,51 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn check_magicseries(&mut self) {
         // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
-        if CancelModule::is_enable_cancel(self) 
-        || self.is_in_hitlag() 
-        || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
+        if CancelModule::is_enable_cancel(self) || self.is_in_hitlag() || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
             return;
         }
 
         let status_kind = StatusModule::status_kind(self);
-        
+
         // Tilt cancels
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
-            *FIGHTER_STATUS_KIND_ATTACK_DASH,
-        ].contains(&status_kind) {
+        if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
             if self.is_cat_flag(Cat1::AttackS3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
             }
             if self.is_cat_flag(Cat1::AttackHi3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3, false);
             }
             if self.is_cat_flag(Cat1::AttackLw3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3, false);
             }
         }
-    
+
         // Smash cancels
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
-            *FIGHTER_STATUS_KIND_ATTACK_S3,
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        ].contains(&status_kind) {
+        if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3].contains(&status_kind) {
             if self.is_cat_flag(Cat1::AttackS4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START, true);
             }
             if self.is_cat_flag(Cat1::AttackHi4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
             }
             if self.is_cat_flag(Cat1::AttackLw4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
             }
         }
-    
+
         // Special cancels
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
-            *FIGHTER_STATUS_KIND_ATTACK_S3,
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW3,
-            *FIGHTER_STATUS_KIND_ATTACK_S4,
-            *FIGHTER_STATUS_KIND_ATTACK_HI4,
-            *FIGHTER_STATUS_KIND_ATTACK_LW4,
-            *FIGHTER_STATUS_KIND_ATTACK_AIR
-        ].contains(&status_kind) {
+        if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind) {
             if self.is_cat_flag(Cat1::SpecialN) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
             }
             if self.is_cat_flag(Cat1::SpecialS) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
             }
             if self.is_cat_flag(Cat1::SpecialHi) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
             }
             if self.is_cat_flag(Cat1::SpecialLw) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
             }
         }
     }
@@ -1557,9 +1523,13 @@ impl BomaExt for BattleObjectModuleAccessor {
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             return Some(item_boma);
         }
-        
+
         // get the global position of the bone, defaulting to "top"
-        let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        let fighter_pos = &mut Vector3f {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        };
         let bone_hash = bone.unwrap_or(Hash40::new("top"));
         ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
         // zero out the z axis
@@ -1568,10 +1538,10 @@ impl BomaExt for BattleObjectModuleAccessor {
             Some(offset) => {
                 fighter_pos.x += offset.x * PostureModule::lr(self);
                 fighter_pos.y += offset.y;
-            },
+            }
             None => {}
         }
-        
+
         let total = item_manager.get_num_of_active_item_all();
         for id in 0..total {
             // pointer to the item
@@ -1586,8 +1556,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             let item_pos = PostureModule::pos(item_boma);
 
-            if ((*item_pos).x - (*fighter_pos).x).abs() < range
-                && ((*item_pos).y - (*fighter_pos).y).abs() < range {
+            if ((*item_pos).x - (*fighter_pos).x).abs() < range && ((*item_pos).y - (*fighter_pos).y).abs() < range {
                 ItemModule::have_item_instance(self, item, 0, false, false, false, false);
                 return Some(item_boma);
             }
@@ -1685,9 +1654,7 @@ impl GetObjects for BattleObjectModuleAccessor {
     }
 
     unsafe fn get_object(this: &mut Self) -> &'static mut BattleObject {
-        std::mem::transmute(super::util::get_battle_object_from_id(
-            this.battle_object_id,
-        ))
+        std::mem::transmute(super::util::get_battle_object_from_id(this.battle_object_id))
     }
 }
 
@@ -1895,13 +1862,13 @@ pub struct CollisionLog {
     pub padding_0: u32,
     pub padding_1: u32,
     pub opponent_battle_object_id: u32,
-    pub padding_2: [u8;7],
+    pub padding_2: [u8; 7],
     pub collision_kind: u8,
     pub receiver_part_id: u8,
     pub collider_part_id: u8,
     pub receiver_id: u8,
     pub collider_id: u8,
-    pub padding_3: [u8;10]
+    pub padding_3: [u8; 10],
 }
 
 #[repr(C)]
