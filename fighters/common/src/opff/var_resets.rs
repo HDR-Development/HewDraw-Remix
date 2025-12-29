@@ -128,7 +128,7 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     }
 
     // Max DI Correction Level Reset
-    if boma.is_situation(*SITUATION_KIND_GROUND) && (!boma.is_status_one_of(death_statuses) && !boma.is_status_one_of(damage_statuses) && !boma.is_in_hitlag()) {
+    if boma.is_situation(*SITUATION_KIND_GROUND) && (!boma.is_status_one_of(death_statuses) && !boma.is_status_one_of(damage_statuses) && !boma.is_in_hitlag() && VarModule::has_var_module(boma.object())) {
         VarModule::set_int(boma.object(), vars::common::instance::DI_STALE_LEVEL, 0);
     }
 
