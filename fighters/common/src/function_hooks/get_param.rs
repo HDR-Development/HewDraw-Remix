@@ -207,6 +207,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         */
 
+        if x2 == hash40("damage_fly_correction_max") {
+            if VarModule::is_flag(boma_reference.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+                return 15.0;
+            }
+        }
+
         // handle reduction of the tumble threshold for DK when in barrel carry
         if x2 == hash40("damage_level3") 
         && boma_reference.kind() == *FIGHTER_KIND_DONKEY

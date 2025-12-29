@@ -221,21 +221,22 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
 pub unsafe extern "C" fn is_final_killing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     // special case for training mode
     if util::is_training_mode() {
-        if VarModule::is_flag(defender_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
-        }
+        // if VarModule::is_flag(defender_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+        //     return true;
+        // }
 
         let mut is_training_toggle = false;
         if attacker_boma.is_weapon() {
             let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let owner = util::get_battle_object_from_id(owner_id);
             let owner_boma = &mut *(*owner).module_accessor;
-            if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-                return true;
-            }
-        } else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
+            // if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+            //     return true;
+            // }
         }
+        // else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+        //     return true;
+        // }
         // println!("kill screen training mode is not enabled"); 
         return false;
     }

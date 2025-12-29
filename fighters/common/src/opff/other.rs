@@ -161,13 +161,30 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
         let boma = fighter.boma();
         if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) && fighter.status_frame() == 10 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                println!("toggling debug");
-                fighter.clear_lua_stack();
-                lua_args!(fighter, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
-                smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
-                fighter.pop_lua_stack(1);
                 let prev = VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG);
-                VarModule::set_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG, !prev);
+                if prev == true {
+                    // 15 -> 18
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+                    smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+                    fighter.pop_lua_stack(1);
+                }
+                else {
+                    // 18 -> 15
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+                    smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+                    fighter.pop_lua_stack(1);
+                }
+                let num_players = smash::app::Fighter::get_fighter_entry_count();
+                for i in 0..num_players {
+                    let opponent_boma = &mut *(smash::app::sv_battle_object::module_accessor(smash::app::Fighter::get_id_from_entry_id(i)));
+                    let object = opponent_boma.object();
+                    if VarModule::has_var_module(object) {
+                        VarModule::set_flag(object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG, !prev);
+                    }
+                }
+                println!("toggling debug");
                 VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
                 VarModule::off_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
             }
