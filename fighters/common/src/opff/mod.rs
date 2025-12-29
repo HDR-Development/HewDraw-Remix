@@ -1,21 +1,21 @@
 use super::*;
-use smash::lib::{lua_const::*, L2CAgent, L2CValue};
-use smash::lua2cpp::L2CFighterBase;
+use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::lua2cpp::L2CFighterCommon;
+use smash::lua2cpp::L2CFighterBase;
 
-pub mod cancels;
 pub mod ledges;
-pub mod momentum_transfer_line;
 pub mod physics;
-pub mod shotos;
 pub mod tech;
 pub mod tech_cleanup;
+pub mod cancels;
 pub mod var_resets;
+pub mod momentum_transfer_line;
+pub mod shotos;
 //pub mod magic;
-pub mod fe;
-pub mod floats;
 pub mod gimmick;
+pub mod floats;
 pub mod other;
+pub mod fe;
 pub mod pocket;
 
 use other::*;
@@ -25,7 +25,7 @@ pub fn install() {
     // acmd::add_custom_hooks!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_hook);
-
+    
 }
 */
 
@@ -90,7 +90,12 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CLIFF_XLU);
     }
 
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY]) || !sv_information::is_ready_go() {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY])
+    || !sv_information::is_ready_go()
+    {
         IS_SALTY_INPUT = false;
     }
 
@@ -131,12 +136,15 @@ pub unsafe fn sys_line_system_control_fighter_hook(fighter: &mut L2CFighterCommo
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
-        skyline::install_hooks!(sys_line_system_control_fighter_hook);
+        skyline::install_hooks!(
+            sys_line_system_control_fighter_hook
+        );
     }
 }
 
 pub fn install() {
-    Agent::new("fighter").install();
+    Agent::new("fighter")
+        .install();
 
     skyline::nro::add_hook(nro_hook);
 }

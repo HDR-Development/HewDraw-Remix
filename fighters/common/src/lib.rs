@@ -5,25 +5,29 @@
 #![allow(static_mut_refs)]
 #![feature(repr_simd)]
 #![feature(simd_ffi)]
-use smash::app;
 use smash::app::lua_bind::*;
-use smash::app::sv_animcmd::*;
-use smash::app::*;
-use smash::hash40;
-use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
+use smash::lib::{*, lua_const::*};
 use smash::phx::*;
+use smash::app::*;
+use smash::app;
+use smash::hash40;
+use smash::app::sv_animcmd::*;
+use utils::{
+    *,
+    util::*,
+    ext::*,
+    consts::*,
+};
 use smashline::*;
-use utils::{consts::*, ext::*, util::*, *};
 
-#[macro_use]
-extern crate smash_script;
+#[macro_use] extern crate smash_script;
 
 pub mod djc;
-pub mod function_hooks;
-pub mod general_statuses;
-pub mod misc;
 pub mod opff;
+pub mod misc;
+pub mod general_statuses;
+pub mod function_hooks;
 pub mod shoto_status;
 // pub mod tag;
 pub mod acmd;
@@ -36,7 +40,7 @@ pub static mut GLOBAL_SEED: u32 = 0;
 extern "C" fn common_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_INIT);
-    unsafe {
+        unsafe {
         GLOBAL_SEED = 0;
     }
 }
@@ -50,5 +54,7 @@ pub fn install() {
     opff::install();
     acmd::install();
 
-    Agent::new("fighter").on_start(common_init).install();
+    Agent::new("fighter")
+        .on_start(common_init)
+        .install();
 }

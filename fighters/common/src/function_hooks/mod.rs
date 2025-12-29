@@ -1,32 +1,32 @@
 use super::*;
 use crate::globals::*;
 
-pub mod attack;
-pub mod camera;
-pub mod collision;
-pub mod controls;
-pub mod djcancel;
-pub mod effect;
 pub mod energy;
-mod fighter_util;
-mod fighterspecializer;
+pub mod effect;
 pub mod finals;
 pub mod get_param;
+pub mod transition;
+pub mod djcancel;
+pub mod momentum_transfer;
 pub mod hitstun;
 pub mod iceclimber;
-mod item;
+pub mod controls;
+pub mod misc;
 pub mod jumps;
 pub mod knockback;
 pub mod knockback_util;
-mod lua_bind_hook;
-pub mod misc;
-pub mod momentum_transfer;
+pub mod stage_hazards;
 pub mod set_fighter_status_data;
+pub mod attack;
+pub mod collision;
+pub mod camera;
 pub mod shotos;
 pub mod sound;
-pub mod stage_hazards;
-pub mod transition;
+mod lua_bind_hook;
+mod fighterspecializer;
+mod fighter_util;
 mod vtables;
+mod item;
 
 #[repr(C)]
 pub struct TempModule {
@@ -85,20 +85,77 @@ pub struct ModuleAccessor {
     shadow_module: &'static TempModule,
     motion_animcmd_module: &'static TempModule,
     lua_module: &'static TempModule,
-    ink_paint_module: &'static TempModule,
+    ink_paint_module: &'static TempModule
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst; 15] = [WEAPON_KIND_PICKEL_PLATE, WEAPON_KIND_MASTER_SWORD, WEAPON_KIND_LUCAS_HIMOHEBI, WEAPON_KIND_SZEROSUIT_WHIP, WEAPON_KIND_SZEROSUIT_WHIP2, WEAPON_KIND_SAMUS_GBEAM, WEAPON_KIND_SAMUSD_GBEAM, WEAPON_KIND_SHIZUE_FISHINGLINE, WEAPON_KIND_TOONLINK_HOOKSHOT, WEAPON_KIND_YOUNGLINK_HOOKSHOT, WEAPON_KIND_JACK_DOYLE, WEAPON_KIND_PICKEL_FORGE, WEAPON_KIND_PICKEL_TROLLEY, WEAPON_KIND_MARIO_FIREBALL, WEAPON_KIND_SHIZUE_CLAYROCKET];
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
+    WEAPON_KIND_PICKEL_PLATE,
+    WEAPON_KIND_MASTER_SWORD,
+    WEAPON_KIND_LUCAS_HIMOHEBI,
+    WEAPON_KIND_SZEROSUIT_WHIP,
+    WEAPON_KIND_SZEROSUIT_WHIP2,
+    WEAPON_KIND_SAMUS_GBEAM,
+    WEAPON_KIND_SAMUSD_GBEAM,
+    WEAPON_KIND_SHIZUE_FISHINGLINE,
+    WEAPON_KIND_TOONLINK_HOOKSHOT,
+    WEAPON_KIND_YOUNGLINK_HOOKSHOT,
+    WEAPON_KIND_JACK_DOYLE,
+    WEAPON_KIND_PICKEL_FORGE,
+    WEAPON_KIND_PICKEL_TROLLEY,
+    WEAPON_KIND_MARIO_FIREBALL,
+    WEAPON_KIND_SHIZUE_CLAYROCKET
+];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
 // so they must be ran using vanilla's order of operations
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
-    if (*boma).is_fighter() && ([*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND, *FIGHTER_STATUS_KIND_ITEM_THROW, *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY, *FIGHTER_STATUS_KIND_FINAL].contains(&status_kind) || ((*boma).kind() == *FIGHTER_KIND_RICHTER && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_SIMON && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_MASTER && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_KIRBY && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_JACK && [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_KAMUI && [*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_INKLING && [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_DOLLY && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind))) {
+    if (*boma).is_fighter()
+    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REACH,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_HANG,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND,
+        *FIGHTER_STATUS_KIND_ITEM_THROW,
+        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY,
+        *FIGHTER_STATUS_KIND_FINAL].contains(&status_kind)
+
+        || ((*boma).kind() == *FIGHTER_KIND_RICHTER
+            && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_SIMON
+            && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MASTER
+            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_KIRBY
+            && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_JACK
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_KAMUI
+            && [*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_INKLING
+            && [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_DOLLY
+            && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_PICKEL
+            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER
+            && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC
+            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind)) )
+    {
         return true;
     }
 
-    if (*boma).is_weapon() && (EXCEPTION_WEAPON_KINDS.iter().any(|x| **x == (*boma).kind()) || ((*boma).kind() == *WEAPON_KIND_TANTAN_SPIRALLEFT && [*WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_SPECIAL_HI_AIR, *WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_REACH].contains(&status_kind))) {
+    if (*boma).is_weapon()
+    && ( EXCEPTION_WEAPON_KINDS.iter().any(|x| **x == (*boma).kind() )
+        || ((*boma).kind() == *WEAPON_KIND_TANTAN_SPIRALLEFT
+            && [*WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_SPECIAL_HI_AIR, *WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_REACH].contains(&status_kind)) )
+    {
         return true;
     }
 
@@ -112,9 +169,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
     let module_accessor: *mut ModuleAccessor = std::mem::transmute((*object).module_accessor);
     let module_accessor = *module_accessor;
 
-    if VarModule::has_var_module((*boma).object()) {
-        VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION);
-    }
+    if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
 
     if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
         return call_original!(object);
@@ -208,7 +263,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
                 let status_module__call_line_system: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x78) as *const u64));
                 status_module__call_line_system(module_accessor.status_module);
-            } else {
+            }
+            else {
                 let status_module__call_line_system_stop: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x80) as *const u64));
                 status_module__call_line_system_stop(module_accessor.status_module);
             }
@@ -219,7 +275,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
             if !is_slow {
                 let motion_module__update_motion: extern "C" fn(f32, *const TempModule, bool) = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0xd8) as *const u64));
                 motion_module__update_motion(1.0, module_accessor.motion_module, is_attacker_in_hitlag);
-            } else {
+            }
+            else {
                 let motion_module__update_motion_slow: extern "C" fn(*const TempModule, bool) = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0xd0) as *const u64));
                 motion_module__update_motion_slow(module_accessor.motion_module, is_attacker_in_hitlag);
             }
@@ -243,18 +300,28 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
                     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(motion_kind), true);
 
-                    if MotionModule::frame(boma) + 0.0001 < cancel_frame || MotionModule::prev_frame(boma) + 0.0001 >= cancel_frame {
+                    if MotionModule::frame(boma) + 0.0001 < cancel_frame
+                    || MotionModule::prev_frame(boma) + 0.0001 >= cancel_frame
+                    {
                         let motion_kind_partial = MotionModule::motion_kind_partial(boma, 1);
                         if motion_kind_partial != hash40("invalid") {
                             let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(motion_kind_partial), true);
-                            if MotionModule::frame_partial(boma, 1) + 0.0001 >= cancel_frame && MotionModule::prev_frame_partial(boma, 1) + 0.0001 < cancel_frame {
-                                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_ASSIST) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+                            if MotionModule::frame_partial(boma, 1) + 0.0001 >= cancel_frame
+                            && MotionModule::prev_frame_partial(boma, 1) + 0.0001 < cancel_frame {
+                                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER)
+                                && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_ASSIST)
+                                && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET)
+                                && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
                                     CancelModule::enable_cancel(boma);
                                 }
                             }
                         }
-                    } else {
-                        if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_ASSIST) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+                    }
+                    else {
+                        if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER)
+                        && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_ASSIST)
+                        && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET)
+                        && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
                             CancelModule::enable_cancel(boma);
                         }
                     }
@@ -282,8 +349,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let damage_speed_y = app::lua_bind::KineticEnergy::get_speed_y(damage_energy);
                 if damage_speed_x != 0.0
                 && StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
-                && (*boma).is_situation(*SITUATION_KIND_GROUND)
-                {
+                && (*boma).is_situation(*SITUATION_KIND_GROUND) {
                     let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
                     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
                     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
@@ -291,10 +357,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                     if speed_x.abs() >= max_walk {
                         let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergyNormal;
                         let extra_traction = -1.0 * ground_brake * damage_speed_x.signum();
-                        let vec2 = Vector2f {
-                            x: damage_speed_x + extra_traction,
-                            y: damage_speed_y,
-                        };
+                        let vec2 = Vector2f{x: damage_speed_x + extra_traction, y: damage_speed_y};
                         app::lua_bind::KineticEnergyNormal::set_speed(damage_energy, &vec2);
                     }
                 }
@@ -307,13 +370,22 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
                 // Prevents jostle from pushing you off of edges
                 // except if you are in knockdown (to allow for pratfall combos)
-                if (*boma).is_situation(*SITUATION_KIND_GROUND) && !(*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_CONTINUE, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE, *FIGHTER_STATUS_KIND_DOWN_DAMAGE]) && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
+                if (*boma).is_situation(*SITUATION_KIND_GROUND)
+                && !(*boma).is_status_one_of(&[
+                    *FIGHTER_STATUS_KIND_DOWN,
+                    *FIGHTER_STATUS_KIND_DOWN_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
+                && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+                && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
                     let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                     let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
                     let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
 
-                    if jostle_energy_x != 0.0 && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
+                    if jostle_energy_x != 0.0
+                    && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
                         // This check passes if the speed at which your character is moving due to general movement
                         // (dashing, running, walking, grounded knockback, shield pushback, etc.)
                         // is LESS than the speed at which jostle is pushing your character
@@ -321,11 +393,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
                         VarModule::on_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
                     }
                 }
-            } else if (*boma).is_weapon() {
+
+            }
+            else if (*boma).is_weapon() {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
-            } else {
+            }
+            else {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3a8f70);
                 let battle_object__update_movement: extern "C" fn(*mut BattleObject, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object, !is_receiver_in_hitlag);
@@ -333,7 +408,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             let damage_module__update: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.damage_module.vtable as u64) + 0x58) as *const u64));
             damage_module__update(module_accessor.damage_module);
-        } else {
+        }
+        else {
             let status_module__call_line_system_stop: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x80) as *const u64));
             status_module__call_line_system_stop(module_accessor.status_module);
 
@@ -357,17 +433,21 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x6212f0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
-            } else if (*boma).is_weapon() {
+
+            }
+            else if (*boma).is_weapon() {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
-            } else {
+            }
+            else {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3a8f70);
                 let battle_object__update_movement: extern "C" fn(*mut BattleObject, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object, !is_receiver_in_hitlag);
             }
         }
-    } else {
+    }
+    else {
         let slow_module__update: extern "C" fn(*const TempModule, u64) -> bool = std::mem::transmute(*(((module_accessor.slow_module.vtable as u64) + 0x48) as *const u64));
         slow_module__update(module_accessor.slow_module, 0);
 
@@ -396,11 +476,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
             let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x6212f0);
             let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object as *mut app::Fighter, false);
-        } else if (*boma).is_weapon() {
+
+        }
+        else if (*boma).is_weapon() {
             let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
             let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object as *mut app::Weapon, false);
-        } else {
+        }
+        else {
             let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3a8f70);
             let battle_object__update_movement: extern "C" fn(*mut BattleObject, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object, false);
@@ -413,12 +496,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let motion_module__update_slow: extern "C" fn(f32, *const TempModule) = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0xc8) as *const u64));
                 motion_module__update_slow(slow_rate, module_accessor.motion_module);
             }
-        } else if *battle_object_slow == 1 {
+        }
+        else if *battle_object_slow == 1 {
             if !is_receiver_in_hitlag {
                 let motion_module__update_motion: extern "C" fn(f32, *const TempModule, bool) = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0xd8) as *const u64));
                 motion_module__update_motion(slow_rate, module_accessor.motion_module, true);
             }
-        } else if *battle_object_slow == 0 {
+        }
+        else if *battle_object_slow == 0 {
             if !is_receiver_in_hitlag {
                 let motion_module__something: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.motion_module.vtable as u64) + 0xc0) as *const u64));
                 motion_module__something(module_accessor.motion_module);
@@ -499,7 +584,8 @@ unsafe fn after_collision(object: *mut BattleObject) {
     }
 
     // Resets flag which prevents jostle edge slipoffs for next frame
-    if (*boma).is_fighter() && VarModule::is_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP) {
+    if (*boma).is_fighter()
+    && VarModule::is_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP) {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         VarModule::off_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
     }
@@ -515,30 +601,41 @@ unsafe fn after_collision(object: *mut BattleObject) {
 
     if !is_slow || *battle_object_slow == 2 {
         // <HDR>
-        if (*boma).is_fighter() && VarModule::is_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0) && skip_early_main_status(boma, StatusModule::status_kind_next(boma)) {
+        if (*boma).is_fighter()
+        && VarModule::is_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0)
+        && skip_early_main_status(boma, StatusModule::status_kind_next(boma))
+        {
             VarModule::off_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
 
             let status_module__changeStatus: extern "C" fn(*const TempModule, i32) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x1f0) as *const u64));
 
-            *(((module_accessor.status_module as *const TempModule as u64) + 0xf4) as *mut bool) = true; // StatusModule::is_changing = true
+            *(((module_accessor.status_module as *const TempModule as u64) + 0xf4) as *mut bool) = true;  // StatusModule::is_changing = true
             status_module__changeStatus(module_accessor.status_module, StatusModule::status_kind_next(boma));
-            *(((module_accessor.status_module as *const TempModule as u64) + 0xf4) as *mut bool) = false; // StatusModule::is_changing = false
+            *(((module_accessor.status_module as *const TempModule as u64) + 0xf4) as *mut bool) = false;  // StatusModule::is_changing = false
 
             let unk1_module__unk: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.unk1_module.vtable as u64) + 0x48) as *const u64));
             unk1_module__unk(module_accessor.unk1_module, is_receiver_in_hitlag, is_skip);
 
             let effect_module__unk: extern "C" fn(*const TempModule, u64) = std::mem::transmute(*(((module_accessor.effect_module.vtable as u64) + 0x58) as *const u64));
             effect_module__unk(module_accessor.effect_module, 1);
-        } else {
+        }
+        else {
             // Reset airtime counter when your situation kind is changed, rather than when entering a landing status
-            if (*boma).is_fighter() && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+            if (*boma).is_fighter()
+            && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
+            && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+            {
                 WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
             }
 
             // No need to check for motion kind changes if we are:
             //   1. Not currently detecting surface collision
             //   2. Neither on the ground nor in the air
-            if GroundModule::get_correct(boma) != *GROUND_CORRECT_KIND_NONE && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma)) && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma)) {
+            if GroundModule::get_correct(boma) != *GROUND_CORRECT_KIND_NONE
+            && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
+            && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma))
+            {
+
                 let ground_module = *(boma as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
                 let ground_collision_info = *((ground_module + 0x28) as *mut *mut f32);
 
@@ -554,12 +651,19 @@ unsafe fn after_collision(object: *mut BattleObject) {
 
                 // This check passes only on the first frame you come into contact with/leave a surface (ground/wall/ceiling)
                 // except when jumping, as the game already changes motion earlier on
-                if ((*(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0) || (*(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0) || (*(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0) || (*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64)) || (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma))) && !((*boma).is_fighter() && (*boma).status_frame() == 0 && ((*boma).is_status(*FIGHTER_STATUS_KIND_JUMP) || (*boma).is_prev_status(*FIGHTER_STATUS_KIND_JUMP)) && ((*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64)) != (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma)))) {
+                if ( (*(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0)
+                ||   (*(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0)
+                ||   (*(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0)
+                ||   (*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64))
+                ||   (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma)) )
+                && !( (*boma).is_fighter()
+                    && (*boma).status_frame() == 0
+                    && ((*boma).is_status(*FIGHTER_STATUS_KIND_JUMP) || (*boma).is_prev_status(*FIGHTER_STATUS_KIND_JUMP))
+                    && ((*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64)) != (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma))) )
+                {
                     // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
                     // Otherwise, our motion kind will update a frame late (e.g. landing animation)
-                    if VarModule::has_var_module((*boma).object()) {
-                        VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
-                    }
+                    if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
                     let status_module__run_lua_status: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x68) as *const u64));
                     status_module__run_lua_status(module_accessor.status_module);
                     if VarModule::has_var_module((*boma).object()) {
@@ -584,7 +688,8 @@ unsafe fn after_collision(object: *mut BattleObject) {
 
         let slope_module__unk: extern "C" fn(*const TempModule, u64) = std::mem::transmute(*(((module_accessor.slope_module.vtable as u64) + 0x60) as *const u64));
         slope_module__unk(module_accessor.slope_module, 1);
-    } else {
+    }
+    else {
         let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
         physics_module__update_rope_matrix(module_accessor.physics_module, false, false);
 
@@ -616,9 +721,11 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
         JostleModule::set_overlap_rate_mul(boma, 1.0);
     }
 
-    if (*boma).is_fighter() && skip_early_main_status(boma, status_kind_next) && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
+    if (*boma).is_fighter()
+    && skip_early_main_status(boma, status_kind_next)
+    && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
         VarModule::on_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
-        *(((status_module as u64) + 0x9c) as *mut i32) = status_kind_next; // setting StatusModule::status_kind_next
+        *(((status_module as u64) + 0x9c) as *mut i32) = status_kind_next;  // setting StatusModule::status_kind_next
         return;
     }
     call_original!(status_module, status_kind_next);
@@ -658,8 +765,8 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     skyline::nn::os::LockMutex(DATA_ACCESS_LOCK.as_mut_ptr().cast());
 
     if index == 8 {
-        data[0xAC as usize..0xB0 as usize].copy_from_slice(&vec![0x00, 0x00, 0x00, 0x3F]);
-        // 0x00, 0x00, 0x00, 0x3F = 0.5 floating point
+        data[0xAC as usize..0xB0 as usize]
+            .copy_from_slice(&vec![0x00, 0x00, 0x00, 0x3F]);  // 0x00, 0x00, 0x00, 0x3F = 0.5 floating point
     }
 
     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
@@ -683,7 +790,8 @@ unsafe fn phantom_hit_check(ctx: &mut skyline::hooks::InlineCtx) {
     if opponent_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE]) {
         // threshold while shielding
         phantom_threshold = 1.0;
-    } else {
+    }
+    else {
         // normal threshold
         // 0.0 = phantom hits disabled
         phantom_threshold = 0.0;
@@ -730,6 +838,7 @@ pub fn install() {
         // Disables spark gfx/sfx on phantom hits
         skyline::patching::Patch::in_text(0x4ceae8).data(0x140000D1u32);
         skyline::patching::Patch::in_text(0x3fd360).nop();
+        
 
         // The following handles disabling the "Weapon Catch" animation for those who have it.
         // You will only enter the weapon catch animation if you are completely idle.
@@ -749,5 +858,12 @@ pub fn install() {
         // Matches Melee behavior
         skyline::patching::Patch::in_text(0x614fb4).data(0x54000060);
     }
-    skyline::install_hooks!(before_collision, after_collision, status_module__change_status, change_elec_hitlag_for_attacker, set_uniform_buffer, phantom_hit_check);
+    skyline::install_hooks!(
+        before_collision,
+        after_collision,
+        status_module__change_status,
+        change_elec_hitlag_for_attacker,
+        set_uniform_buffer,
+        phantom_hit_check
+    );
 }

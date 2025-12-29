@@ -151,6 +151,7 @@ impl<const N: usize> AttackLog<N> {
 
             // Check player
             if e.player_id() != entry_player {
+                //println!("Skipping!");
                 continue;
             }
 
