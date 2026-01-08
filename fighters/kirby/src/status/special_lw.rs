@@ -145,13 +145,24 @@ unsafe extern "C" fn special_lw_check_mtrans_2(fighter: &mut L2CFighterCommon) -
 
 unsafe extern "C" fn special_lw_stone_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_STONE_END)(fighter);
+    VarModule::on_flag(fighter.battle_object, vars::kirby::instance::DISABLE_SPECIAL_LW);
     let jumps = VarModule::get_int(fighter.battle_object, vars::kirby::instance::SPECIAL_LW_USED_JUMPS);
     fighter.set_int(jumps.max(1), *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     ret
 }
 
+// Original Script
+//unsafe extern "C" fn special_lw_stone_stone_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+//    if !fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_END) {
+//        fighter.change_motion_by_situation("fall", "wait", 0.0, 1.0, false, 0.0, false, false);
+//    }
+//
+//    return 0.into();
+//}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main);
 
     agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_STONE_END, special_lw_stone_end_main);
+    //agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_STONE_STONE, special_lw_stone_stone_end);
 }
