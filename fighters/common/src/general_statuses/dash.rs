@@ -577,12 +577,10 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     // baby dash
-    if modes.contains(&game_modes::CustomMode::RivalsOfAetherMode) {
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 2  // if you are on f3 of current dash
-        && !fighter.is_stick_backward() // AND stick is not backwards
-        && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
-            interrupt!(fighter, FIGHTER_STATUS_KIND_WAIT, true);
-        }
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 2  // if you are on f3 of current dash
+    && !fighter.is_stick_backward() // AND stick is not backwards
+    && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
+        interrupt!(fighter, FIGHTER_STATUS_KIND_WAIT, true);
     }
 
     ok!()
