@@ -596,8 +596,16 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S]);
+        
+        interrupt_if!(
+            fighter,
+            FIGHTER_STATUS_KIND_GUARD_OFF,
+            false,
+            fighter.sub_check_command_parry().get_bool()
+        );
+        
     }
-
+    
     ok!()
 }
 
