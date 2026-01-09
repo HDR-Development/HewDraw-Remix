@@ -33,6 +33,7 @@
     <float hash="pass_stick_x">0.3</float>
     <float hash="moonwalk_disable_dashback_stick_y">-0.5</float>
     <float hash="wavedash_speed_mul">0.8945</float>
+    <float hash="stutter_step_speed_mul">0.925</float>
     <float hash="dashback_stick_x">-0.5673</float>
     <float hash="dash_end_speed_mul">0.225</float>
     <float hash="escape_air_slide_speed_mul">0.9</float>

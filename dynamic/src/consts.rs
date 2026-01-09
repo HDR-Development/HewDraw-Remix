@@ -327,6 +327,8 @@ pub mod vars {
             pub const NO_POCKET: i32 = 0x1052;
 
             pub const IS_DASH_CANCEL: i32 = 0x1055;
+            
+            pub const APPLY_INIT_DASH_SPEED: i32 = 0x1056;
 
             // ints
 

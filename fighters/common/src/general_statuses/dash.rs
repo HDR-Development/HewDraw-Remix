@@ -565,7 +565,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     interrupt_if!(fighter.sub_ground_check_stop_wall().get_bool());
 
     // f3 perfect pivots
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 1  // if you are on f2 of current dash
+    if (fighter.global_table[CURRENT_FRAME].get_i32() == 1 || fighter.global_table[CURRENT_FRAME].get_i32() == 2)  
     && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN
     && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // AND you are in a backdash
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
@@ -577,10 +577,25 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     // baby dash
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 2  // if you are on f3 of current dash
+    if (fighter.global_table[CURRENT_FRAME].get_i32() == 3
+        || fighter.global_table[CURRENT_FRAME].get_i32() == 2)
     && !fighter.is_stick_backward() // AND stick is not backwards
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
-        interrupt!(fighter, FIGHTER_STATUS_KIND_WAIT, true);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_INIT_DASH_SPEED);
+        fighter.enable_transition_term_many(&[
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S]);
     }
 
     ok!()
@@ -737,6 +752,17 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped * dash_end_speed_mul);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
     }
+    
+    // Stutter Step Speed Reduction
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_INIT_DASH_SPEED) {
+        let stutter_step_speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "stutter_step_speed_mul");
+        
+        fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, initial_speed * stutter_step_speed_mul);
+		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+    }
+
+    
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_RUN {
