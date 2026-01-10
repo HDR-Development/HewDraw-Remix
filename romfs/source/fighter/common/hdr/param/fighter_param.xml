@@ -7,7 +7,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="1">
       <hash40 hash="fighter_kind">DONKEY</hash40>
@@ -15,7 +15,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="2">
       <hash40 hash="fighter_kind">LINK</hash40>
@@ -23,7 +23,7 @@
       <float hash="dacus_mul">0.85</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="3">
       <hash40 hash="fighter_kind">SAMUS</hash40>
@@ -31,7 +31,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="4">
       <hash40 hash="fighter_kind">SAMUSD</hash40>
@@ -39,7 +39,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="5">
       <hash40 hash="fighter_kind">YOSHI</hash40>
@@ -47,7 +47,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="6">
       <hash40 hash="fighter_kind">KIRBY</hash40>
@@ -55,7 +55,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="7">
       <hash40 hash="fighter_kind">FOX</hash40>
@@ -63,7 +63,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="8">
       <hash40 hash="fighter_kind">PIKACHU</hash40>
@@ -71,7 +71,7 @@
       <float hash="dacus_mul">0.85</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="9">
       <hash40 hash="fighter_kind">LUIGI</hash40>
@@ -79,7 +79,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">2.65</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="10">
       <hash40 hash="fighter_kind">NESS</hash40>
@@ -87,7 +87,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="11">
       <hash40 hash="fighter_kind">CAPTAIN</hash40>
@@ -95,7 +95,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="12">
       <hash40 hash="fighter_kind">PURIN</hash40>
@@ -103,7 +103,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="13">
       <hash40 hash="fighter_kind">PEACH</hash40>
@@ -111,7 +111,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="14">
       <hash40 hash="fighter_kind">DAISY</hash40>
@@ -119,7 +119,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="15">
       <hash40 hash="fighter_kind">KOOPA</hash40>
@@ -127,7 +127,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="16">
       <hash40 hash="fighter_kind">SHEIK</hash40>
@@ -135,7 +135,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="17">
       <hash40 hash="fighter_kind">ZELDA</hash40>
@@ -143,7 +143,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="18">
       <hash40 hash="fighter_kind">MARIOD</hash40>
@@ -151,7 +151,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="19">
       <hash40 hash="fighter_kind">PICHU</hash40>
@@ -159,7 +159,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="20">
       <hash40 hash="fighter_kind">FALCO</hash40>
@@ -167,7 +167,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="21">
       <hash40 hash="fighter_kind">MARTH</hash40>
@@ -175,7 +175,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="22">
       <hash40 hash="fighter_kind">LUCINA</hash40>
@@ -183,7 +183,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="23">
       <hash40 hash="fighter_kind">YOUNGLINK</hash40>
@@ -191,7 +191,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="24">
       <hash40 hash="fighter_kind">GANON</hash40>
@@ -199,7 +199,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="25">
       <hash40 hash="fighter_kind">MEWTWO</hash40>
@@ -207,7 +207,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="26">
       <hash40 hash="fighter_kind">ROY</hash40>
@@ -215,7 +215,7 @@
       <float hash="dacus_mul">0.85</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="27">
       <hash40 hash="fighter_kind">CHROM</hash40>
@@ -223,7 +223,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="28">
       <hash40 hash="fighter_kind">GAMEWATCH</hash40>
@@ -231,7 +231,7 @@
       <float hash="dacus_mul">0.8</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="29">
       <hash40 hash="fighter_kind">METAKNIGHT</hash40>
@@ -239,7 +239,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="30">
       <hash40 hash="fighter_kind">PIT</hash40>
@@ -247,7 +247,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="31">
       <hash40 hash="fighter_kind">PITB</hash40>
@@ -255,7 +255,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="32">
       <hash40 hash="fighter_kind">SZEROSUIT</hash40>
@@ -263,7 +263,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="33">
       <hash40 hash="fighter_kind">WARIO</hash40>
@@ -271,7 +271,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="34">
       <hash40 hash="fighter_kind">SNAKE</hash40>
@@ -279,7 +279,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.75</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="35">
       <hash40 hash="fighter_kind">IKE</hash40>
@@ -287,7 +287,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="36">
       <hash40 hash="fighter_kind">PZENIGAME</hash40>
@@ -295,7 +295,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="37">
       <hash40 hash="fighter_kind">PFUSHIGISOU</hash40>
@@ -303,7 +303,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="38">
       <hash40 hash="fighter_kind">PLIZARDON</hash40>
@@ -311,7 +311,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="39">
       <hash40 hash="fighter_kind">DIDDY</hash40>
@@ -319,7 +319,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">3.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="40">
       <hash40 hash="fighter_kind">LUCAS</hash40>
@@ -327,7 +327,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="41">
       <hash40 hash="fighter_kind">SONIC</hash40>
@@ -335,7 +335,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="42">
       <hash40 hash="fighter_kind">DEDEDE</hash40>
@@ -343,7 +343,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="43">
       <hash40 hash="fighter_kind">PIKMIN</hash40>
@@ -351,7 +351,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="44">
       <hash40 hash="fighter_kind">LUCARIO</hash40>
@@ -359,7 +359,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="45">
       <hash40 hash="fighter_kind">ROBOT</hash40>
@@ -367,7 +367,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="46">
       <hash40 hash="fighter_kind">TOONLINK</hash40>
@@ -375,7 +375,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">3.25</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="47">
       <hash40 hash="fighter_kind">WOLF</hash40>
@@ -383,7 +383,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="48">
       <hash40 hash="fighter_kind">MURABITO</hash40>
@@ -391,7 +391,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.75</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="49">
       <hash40 hash="fighter_kind">ROCKMAN</hash40>
@@ -399,7 +399,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.75</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="50">
       <hash40 hash="fighter_kind">WIIFIT</hash40>
@@ -407,7 +407,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="51">
       <hash40 hash="fighter_kind">ROSETTA</hash40>
@@ -415,7 +415,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="52">
       <hash40 hash="fighter_kind">LITTLEMAC</hash40>
@@ -423,7 +423,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="53">
       <hash40 hash="fighter_kind">GEKKOUGA</hash40>
@@ -431,7 +431,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="54">
       <hash40 hash="fighter_kind">PALUTENA</hash40>
@@ -439,7 +439,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="55">
       <hash40 hash="fighter_kind">PACMAN</hash40>
@@ -447,7 +447,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="56">
       <hash40 hash="fighter_kind">REFLET</hash40>
@@ -455,7 +455,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">3.0</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="57">
       <hash40 hash="fighter_kind">SHULK</hash40>
@@ -463,7 +463,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="58">
       <hash40 hash="fighter_kind">KOOPAJR</hash40>
@@ -471,7 +471,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.0</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="59">
       <hash40 hash="fighter_kind">DUCKHUNT</hash40>
@@ -479,7 +479,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="60">
       <hash40 hash="fighter_kind">RYU</hash40>
@@ -487,7 +487,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="61">
       <hash40 hash="fighter_kind">KEN</hash40>
@@ -495,7 +495,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="62">
       <hash40 hash="fighter_kind">CLOUD</hash40>
@@ -503,7 +503,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="63">
       <hash40 hash="fighter_kind">KAMUI</hash40>
@@ -511,7 +511,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="64">
       <hash40 hash="fighter_kind">BAYONETTA</hash40>
@@ -519,7 +519,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="65">
       <hash40 hash="fighter_kind">INKLING</hash40>
@@ -527,7 +527,7 @@
       <float hash="dacus_mul">0.9</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="66">
       <hash40 hash="fighter_kind">RIDLEY</hash40>
@@ -535,7 +535,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="67">
       <hash40 hash="fighter_kind">SIMON</hash40>
@@ -543,7 +543,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="68">
       <hash40 hash="fighter_kind">RICHTER</hash40>
@@ -551,7 +551,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="69">
       <hash40 hash="fighter_kind">KROOL</hash40>
@@ -559,7 +559,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">2.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="70">
       <hash40 hash="fighter_kind">SHIZUE</hash40>
@@ -567,7 +567,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="71">
       <hash40 hash="fighter_kind">GAOGAEN</hash40>
@@ -575,7 +575,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="72">
       <hash40 hash="fighter_kind">MIIFIGHTER</hash40>
@@ -583,7 +583,7 @@
       <float hash="dacus_mul">0.8</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="73">
       <hash40 hash="fighter_kind">MIISWORDSMAN</hash40>
@@ -591,7 +591,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="74">
       <hash40 hash="fighter_kind">MIIGUNNER</hash40>
@@ -599,7 +599,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="75">
       <hash40 hash="fighter_kind">POPO</hash40>
@@ -607,7 +607,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="76">
       <hash40 hash="fighter_kind">NANA</hash40>
@@ -615,7 +615,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="77">
       <hash40 hash="fighter_kind">KOOPAG</hash40>
@@ -623,7 +623,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="78">
       <hash40 hash="fighter_kind">MIIENEMYF</hash40>
@@ -631,7 +631,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="79">
       <hash40 hash="fighter_kind">MIIENEMYS</hash40>
@@ -639,7 +639,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="80">
       <hash40 hash="fighter_kind">MIIENEMYG</hash40>
@@ -647,7 +647,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="81">
       <hash40 hash="fighter_kind">PACKUN</hash40>
@@ -655,7 +655,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="82">
       <hash40 hash="fighter_kind">JACK</hash40>
@@ -663,7 +663,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="83">
       <hash40 hash="fighter_kind">BRAVE</hash40>
@@ -671,7 +671,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="84">
       <hash40 hash="fighter_kind">BUDDY</hash40>
@@ -679,7 +679,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="85">
       <hash40 hash="fighter_kind">DOLLY</hash40>
@@ -687,7 +687,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="86">
       <hash40 hash="fighter_kind">MASTER</hash40>
@@ -695,7 +695,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="87">
       <hash40 hash="fighter_kind">TANTAN</hash40>
@@ -703,7 +703,7 @@
       <float hash="dacus_mul">0.95</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="88">
       <hash40 hash="fighter_kind">PICKEL</hash40>
@@ -711,7 +711,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="89">
       <hash40 hash="fighter_kind">EDGE</hash40>
@@ -719,7 +719,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="90">
       <hash40 hash="fighter_kind">EFLAME</hash40>
@@ -727,7 +727,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="91">
       <hash40 hash="fighter_kind">ELIGHT</hash40>
@@ -735,7 +735,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.7</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="92">
       <hash40 hash="fighter_kind">DEMON</hash40>
@@ -743,7 +743,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
     <struct index="93">
       <hash40 hash="fighter_kind">TRAIL</hash40>
@@ -751,7 +751,7 @@
       <float hash="dacus_mul">1.0</float>
       <float hash="ditcit_mul">1.5</float>
       <float hash="pass_air_speed_x_max_mul">1.8</float>
-      <float hash="baby_dash_speed">1.2</float>
+      <float hash="baby_dash_speed">1.125</float>
     </struct>
   </list>
 </struct>
