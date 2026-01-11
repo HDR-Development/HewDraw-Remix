@@ -49,10 +49,11 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
     if !should_end {
         let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
         let stick_x = fighter.global_table[STICK_X].get_f32();
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
         let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
 
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && stick_x * -1.0 * turn_work_lr < dash_stick_x  // if left stick is below dash threshold
+        && (stick_x * -1.0 * turn_work_lr < dash_stick_x || stick_y.abs() > 0.6)  // if left stick is below dash threshold or y is not center
         && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN)  // AND you are currently in a smash turn
         && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH  // AND your previous status was a dash (not turn)
         && MotionModule::frame(fighter.module_accessor) == 1.0  // AND you are on frame 2 of your smash turn

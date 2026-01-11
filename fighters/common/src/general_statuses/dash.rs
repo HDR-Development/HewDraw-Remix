@@ -565,7 +565,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     interrupt_if!(fighter.sub_ground_check_stop_wall().get_bool());
 
     // f3 perfect pivots
-    if (fighter.global_table[CURRENT_FRAME].get_i32() == 1 || fighter.global_table[CURRENT_FRAME].get_i32() == 2)  
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 1  // if frame 2
     && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN
     && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // AND you are in a backdash
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
@@ -576,7 +576,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
-    // baby dash
+    // baby dash window frame 3 and 4
     if (fighter.global_table[CURRENT_FRAME].get_i32() == 3
         || fighter.global_table[CURRENT_FRAME].get_i32() == 2)
     && !fighter.is_stick_backward() // AND stick is not backwards
@@ -590,8 +590,10 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            // These do not work as they conflict with Fsmash leniency window
+            // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4,
+            // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_HOLD,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
