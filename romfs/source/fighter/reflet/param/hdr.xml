@@ -5,4 +5,8 @@
       <float hash="float_accel_add">0.01</float>
       <float hash="float_accel_mul">0.04</float>
     </struct>
+        <struct hash="param_special_hi">
+        <float hash="run_angle_mul_x">1.25</float>
+        <float hash="run_angle_mul_y">1.1</float>
+    </struct>
 </struct>

@@ -1,9 +1,10 @@
 // opff import
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
+use super::status::*;
 use globals::*;
  
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
     if boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL) {
         if boma.is_situation(*SITUATION_KIND_AIR) {
@@ -16,8 +17,14 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Allow charge jump cancel even when left stick is down
     if boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_HOLD) {
         if boma.is_input_jump() && boma.get_num_used_jumps() < boma.get_jump_count_max() {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_JUMP_CANCEL, false);
-            WorkModule::set_int(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
+            let mut float_check = 0.into();
+            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) > 0 {
+                float_check = float_check_air_jump(fighter, statuses::reflet::FLOAT.into());
+            }
+            if float_check != 1 {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_JUMP_CANCEL, false);
+                WorkModule::set_int(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
+            }
         }
     }
 }
@@ -103,7 +110,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    nspecial_cancels(boma);
+    nspecial_cancels(boma, fighter);
     elwind_cost(fighter);
     levin_leniency(fighter, boma);
     sword_length(boma);

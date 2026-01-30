@@ -10,7 +10,7 @@ mod float;
 
 extern "Rust" {
     #[link_name = "float_check_air_jump"]
-    fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    pub fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
     #[link_name = "float_check_air_jump_aerial"]
     fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }

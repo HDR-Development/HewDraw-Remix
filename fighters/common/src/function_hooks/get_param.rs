@@ -278,6 +278,24 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
         
+        else if fighter_kind == *FIGHTER_KIND_REFLET {
+            // Increased Elwind Angle out of run
+            if x1 == hash40("param_special_hi") {
+            if (StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_RUN || 
+                StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_TURN_RUN ||
+                StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_RUN_BRAKE) {
+                if x2 == hash40("special_hi_shoot_store_x_initial_velocity_mul"){
+                    return ParamModule::get_float(boma_reference.object(), ParamType::Agent, "param_special_hi.run_angle_mul_x");
+                }
+                if x2 == hash40("special_hi_shoot_store_y_initial_velocity_mul"){
+                    return ParamModule::get_float(boma_reference.object(), ParamType::Agent, "param_special_hi.run_angle_mul_y");
+                }
+            } else {
+                return original!()(x0, x1, x2);
+                }
+            }
+        }
+        
         else if fighter_kind == *FIGHTER_KIND_MIIGUNNER {
             if x1 == hash40("param_special_hi") && x2 == hash40("hi1_first_jump_y_speed") {
                 return 3.5 + (2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::ATTACK_CHARGE)) / 29.0;
