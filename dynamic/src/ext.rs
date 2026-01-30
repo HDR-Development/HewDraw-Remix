@@ -550,6 +550,8 @@ pub trait BomaExt {
     unsafe fn sub_check_command_parry(&mut self) -> L2CValue;
     // Checks for situation kind and transitions to heavy landing
     unsafe fn check_land_cancel(&mut self, landing_lag: Option<f32>) -> bool;
+    // Checks for empty cancel
+    unsafe fn check_empty_cancel(&mut self) -> bool;
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self) -> bool;
@@ -1283,6 +1285,16 @@ impl BomaExt for BattleObjectModuleAccessor {
 
         false
     }
+    
+    // Checks conditions for empty cancel.
+    unsafe fn check_empty_cancel(&mut self) -> bool {
+        if !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT)
+        && !self.is_in_hitlag() 
+        && VarModule::is_flag(self.object(), vars::common::status::CAN_EMPTY_CANCEL) {
+            return true;
+        }
+        false
+    }
 
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
     ///
@@ -1464,7 +1476,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             fighter.sub_air_check_fall_common();
         }
     }
-
+    
     unsafe fn check_magicseries(&mut self) {
         // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
         if CancelModule::is_enable_cancel(self) 
@@ -1481,15 +1493,20 @@ impl BomaExt for BattleObjectModuleAccessor {
             *FIGHTER_STATUS_KIND_ATTACK, 
             *FIGHTER_STATUS_KIND_ATTACK_DASH,
         ].contains(&status_kind) {
-            if self.is_cat_flag(Cat1::AttackS3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
-            }
-            if self.is_cat_flag(Cat1::AttackHi3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
-            }
-            if self.is_cat_flag(Cat1::AttackLw3) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
-            }
+            check_input_trans!(self, [
+                *FIGHTER_STATUS_KIND_ATTACK_S3,
+                *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            ]);
+            // if self.is_cat_flag(Cat1::AttackS3) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
+            // }
+            // if self.is_cat_flag(Cat1::AttackHi3) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
+            // }
+            // if self.is_cat_flag(Cat1::AttackLw3) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
+            // }
         }
     
         // Smash cancels
@@ -1500,15 +1517,20 @@ impl BomaExt for BattleObjectModuleAccessor {
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
         ].contains(&status_kind) {
-            if self.is_cat_flag(Cat1::AttackS4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
-            }
-            if self.is_cat_flag(Cat1::AttackHi4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
-            }
-            if self.is_cat_flag(Cat1::AttackLw4) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
-            }
+            check_input_trans!(self, [
+                *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+                *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+                *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+            ]);
+            // if self.is_cat_flag(Cat1::AttackS4) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
+            // }
+            // if self.is_cat_flag(Cat1::AttackHi4) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
+            // }
+            // if self.is_cat_flag(Cat1::AttackLw4) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
+            // }
         }
     
         // Special cancels
@@ -1523,18 +1545,24 @@ impl BomaExt for BattleObjectModuleAccessor {
             *FIGHTER_STATUS_KIND_ATTACK_LW4,
             *FIGHTER_STATUS_KIND_ATTACK_AIR
         ].contains(&status_kind) {
-            if self.is_cat_flag(Cat1::SpecialN) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
-            }
-            if self.is_cat_flag(Cat1::SpecialS) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
-            }
-            if self.is_cat_flag(Cat1::SpecialHi) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
-            }
-            if self.is_cat_flag(Cat1::SpecialLw) {
-                StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
-            }
+            check_input_trans!(self, [
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            ]);
+            // if self.is_cat_flag(Cat1::SpecialN) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+            // }
+            // if self.is_cat_flag(Cat1::SpecialS) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+            // }
+            // if self.is_cat_flag(Cat1::SpecialHi) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+            // }
+            // if self.is_cat_flag(Cat1::SpecialLw) {
+            //     StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+            // }
         }
     }
 

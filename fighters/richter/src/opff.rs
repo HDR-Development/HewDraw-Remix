@@ -35,9 +35,36 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn walljump_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    let boma_obj = boma.object();
+    if boma.is_situation(*SITUATION_KIND_AIR) &&
+       VarModule::is_flag(boma_obj, vars::common::status::ENABLE_SPECIAL_WALLJUMP) &&
+       !crate::VarModule::is_flag(boma_obj, vars::common::instance::SPECIAL_WALL_JUMP) {
+           if fighter.sub_transition_group_check_air_wall_jump().get_bool() {
+               crate::VarModule::on_flag(boma_obj, vars::common::instance::SPECIAL_WALL_JUMP);
+           }
+     }
+}
+
+unsafe fn kara_divekick(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if  fighter.is_motion(Hash40::new("attack_air_lw")) {    
+        if fighter.check_empty_cancel() {
+            check_input_trans!(boma, [
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            ]);
+        }
+    }
+}
+
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     whip_angling(fighter, boma, frame, stick_y);
     fastfall_specials(fighter);
+    walljump_cancel(fighter, boma);
+    kara_divekick(fighter, boma);
 }
 
 pub extern "C" fn richter_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

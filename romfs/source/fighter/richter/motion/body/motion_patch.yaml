@@ -250,12 +250,12 @@ special_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 42
+    cancel_frame: 44
 special_air_s1:
   flags:
     move: true
   extra:
-    cancel_frame: 42
+    cancel_frame: 44
 special_lw:
   flags:
     move: true

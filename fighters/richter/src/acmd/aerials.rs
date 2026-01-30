@@ -395,10 +395,12 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::richter::instance::ATTACK_AIR_LW_REBOUND);
+        VarModule::on_flag(agent.battle_object, vars::common::status::CAN_EMPTY_CANCEL);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        VarModule::on_flag(agent.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -409,6 +411,7 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, vars::common::status::CAN_EMPTY_CANCEL);
         ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 80, 46, 0, 88, 5.5, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 2.0);
@@ -434,6 +437,7 @@ unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(agent.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP);
         if VarModule::is_flag(agent.battle_object, vars::richter::instance::ATTACK_AIR_LW_REBOUND) {
             SET_SPEED_EX(agent, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         } else {

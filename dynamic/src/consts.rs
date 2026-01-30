@@ -327,6 +327,12 @@ pub mod vars {
             pub const NO_POCKET: i32 = 0x1052;
 
             pub const IS_DASH_CANCEL: i32 = 0x1055;
+            
+            pub const CAN_EMPTY_CANCEL: i32 = 0x1056;
+            
+            pub const ON_HIT_SHIELD: i32 = 0x1057;
+            
+            pub const ON_HIT_DAMAGE: i32 = 0x1058;
 
             // ints
 

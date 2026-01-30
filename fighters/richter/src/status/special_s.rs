@@ -28,6 +28,12 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::status::ON_HIT_SHIELD) {
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.75, 1.0, 1.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::ON_HIT_SHIELD);
+        }
+    }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
