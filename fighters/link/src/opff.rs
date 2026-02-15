@@ -18,8 +18,34 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn bomb_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon)  { 
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_LINKBOMB)
+    && fighter.is_cat_flag(Cat1::SpecialLw) 
+    && !fighter.is_in_hitlag() {
+        // let bomb_exists = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_LINKBOMB);
+        // println!("Bomb Exists: {}", bomb_exists);
+    if (fighter.is_motion(Hash40::new("attack_13")) && fighter.motion_frame() > 12.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) && fighter.motion_frame() > 16.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR))
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S3) && fighter.motion_frame() > 18.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI3) && fighter.motion_frame() > 16.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW3) && fighter.motion_frame() > 17.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4) && fighter.motion_frame() > 22.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4) && fighter.motion_frame() > 45.0)
+    || (fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW4) && fighter.motion_frame() > 13.0)  
+    || (fighter.is_motion(Hash40::new("throw_f")) && fighter.motion_frame() > 21.0) 
+    || (fighter.is_motion(Hash40::new("throw_b")) && fighter.motion_frame() > 21.0) 
+    || (fighter.is_motion(Hash40::new("throw_lw")) && fighter.motion_frame() > 28.0) 
+    || (fighter.is_motion(Hash40::new("throw_hi")) && fighter.motion_frame() > 34.0) { 
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true); 
+    }
+}
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     fastfall_specials(fighter);
+    bomb_cancel(fighter);
 }
 
 pub extern "C" fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
