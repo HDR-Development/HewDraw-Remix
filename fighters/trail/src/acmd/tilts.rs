@@ -209,14 +209,12 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let mut handle = 0;
     frame(lua_state, 11.0);
     if is_excute(agent) {
         FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        handle = EffectModule::req_follow(boma, Hash40::new_raw(0x12542f686b), Hash40::new("top"), &Vector3f::new(0.0, 22.0, 0.0), &Vector3f::new(-70.0, -90.0, 0.0), 1.05, true, 0, 0, 0, 0, 0, false, false);
         EFFECT_FOLLOW(agent, Hash40::new("trail_keyblade_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 14.0);

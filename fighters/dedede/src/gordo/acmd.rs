@@ -171,13 +171,16 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase){
     let boma = agent.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent){
+        WHOLE_HIT(agent, *HIT_STATUS_OFF);
         if WorkModule::is_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_GORDO_GET){
             WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+            WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
         }
     }
     frame(lua_state, 7.0);
     if is_excute(agent){
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
 }
 
@@ -187,13 +190,16 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
     if is_excute(agent){
+        WHOLE_HIT(agent, *HIT_STATUS_OFF);
         if WorkModule::is_flag(owner_module_accessor, *FIGHTER_DEDEDE_INSTANCE_WORK_ID_FLAG_GORDO_GET){
             WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+            WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
         }
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
+        WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
 }
 

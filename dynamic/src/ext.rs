@@ -319,7 +319,7 @@ bitflags! {
         const Parry = 0x100000;
         const CStickOverride = 0x200000;
         const RivalsWallJump = 0x400000;
-        const ParryManual = 0x800000;
+        const TreadJump = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
