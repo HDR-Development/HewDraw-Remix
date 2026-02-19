@@ -250,7 +250,7 @@ unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
 
 // This runs immediately before hitlag is set for the receiver
 #[skyline::hook(offset = 0x404658, inline)]
-unsafe fn set_fighter_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe fn set_receiver_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let boma = &mut *(ctx.registers[19].x() as *mut BattleObjectModuleAccessor);
     if !boma.is_item() {
         let hitlag = ctx.registers[0].w();
@@ -376,22 +376,43 @@ unsafe extern "C" fn attack_module_set_power_hook_pattern(ctx: &mut skyline::hoo
 
 // reimplements staling by directly manipulating the damage value
 #[skyline::hook(offset = 0x46ba9c, inline)]
-unsafe fn apply_damage(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe fn hit_module__on_attack__set_damage(ctx: &mut skyline::hooks::InlineCtx) {
     let attacker_boma = &mut *(*(ctx.registers[19].x() as *mut *mut BattleObjectModuleAccessor).add(1));
-    let defender_boma = &mut *(*(ctx.registers[20].x() as *mut *mut BattleObjectModuleAccessor).add(1));
 
     let current_damage = ctx.registers_f[0].s();
-    // println!("DEBUG >>>>>> current_damage is currently set to: {}", current_damage);
+    let mul = calc_non_knockback_damage_mul(attacker_boma);
 
-    let final_damage = current_damage * calc_non_knockback_damage_mul(attacker_boma, defender_boma);
-    // println!("DEBUG >>>>>> final_damage after muls: {}", final_damage);
+    let final_damage = current_damage * mul;
 
-    // NOTE that this also affects hitlag for the DEFENDER ONLY
-    // TODO: store the result of calc_non_knockback_damage_mul, and use it to adjust defender hitlag separately
+    // NOTE: this also affects hitlag for the RECEIVER ONLY
     ctx.registers_f[0].set_s(final_damage);
 }
 
-unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAccessor, defender_boma: &mut BattleObjectModuleAccessor) -> f32 {
+// This runs sometime after HitModule::on_attack
+// and before set_receiver_hitlag
+//
+// Here, damage is stored in some DamageModule struct
+// which then gets passed to receiver hitlag calculations
+// among other places
+#[skyline::hook(offset = 0x402920, inline)]
+unsafe fn damage_module__unk__set_damage(ctx: &mut skyline::hooks::InlineCtx) {
+    let attacker_battle_object_id = *(ctx.registers[25].x() as *const u32).add(0x24 / 4);
+    let attacker_battle_object = utils::util::get_battle_object_from_id(attacker_battle_object_id);
+    let attacker_boma = (&mut *(*attacker_battle_object).module_accessor);
+
+    let damage_with_damage_mul = ctx.registers_f[10].s();
+    let mul = calc_non_knockback_damage_mul(attacker_boma);
+
+    // Un-apply the stale move damage multiplier
+    // to the damage value which is used to calculate receiver hitlag
+    //
+    // Prevents reduced damage on stale moves from affecting hitlag
+    let raw_damage = damage_with_damage_mul / mul;
+
+    ctx.registers_f[10].set_s(raw_damage);
+}
+
+unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAccessor) -> f32 {
     // stale attack multiplier
     let pattern_mul = AttackModule::get_attack_power_mul_pattern(attacker_boma);
     // dbg!(pattern_mul);
@@ -435,7 +456,7 @@ pub fn install() {
         get_hitstop_mul,
         post_calc_reaction,
         set_weapon_hitlag,
-        set_fighter_hitlag,
+        set_receiver_hitlag,
         handle_on_attack_event,
         set_parry_hitlag,
         x03df93c,
@@ -444,6 +465,8 @@ pub fn install() {
         post_spike_check,
         // attack_module_set_power_hook_5th,
         attack_module_set_power_hook_pattern,
-        apply_damage
+        hit_module__on_attack__set_damage,
+        damage_module__unk__set_damage
     );
 }
+
