@@ -83,7 +83,6 @@ pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
-    // ControlModule::set_command_life_extend(fighter.module_accessor, 5);
     if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
     }
@@ -126,7 +125,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_fighter_pre_end_status,
             sub_is_dive,
             sub_calc_landing_motion_rate,
-            sub_landing_cancel_damage_face,
+            sub_landing_uniq_process_exit,
             sub_air_check_fall_common,
             check_damage_fall_transition
         );
@@ -135,13 +134,20 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_LandingStiffness)]
 pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR
-    && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE) {
-        // halve hitstun on non-tumble landing if CC'd
-        // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
-        let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-        WorkModule::set_float(fighter.module_accessor, hitstun * 0.5, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE) {
+            // halve hitstun on non-tumble landing if CC'd
+            // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
+            let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            WorkModule::set_float(fighter.module_accessor, hitstun * 0.5, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+        }
+        else {
+            // Reduce buffer out of non-CCd non-tumble hitstun landing
+            let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
+            InputModule::set_command_life_count_max(fighter.battle_object, damage_level3_precede as u32);
+        }
     }
+
     original!()(fighter)
 }
 
@@ -226,19 +232,6 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_B);
-    }
-
-
-    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR {
-        let cancel_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_LANDING_WORK_FLOAT_STIFFNESS_FRAME);
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE)
-        && MotionModule::frame(fighter.module_accessor) >= cancel_frame - 1.0 {
-            // Reduce buffer out of non-CCd non-tumble hitstun landing
-            let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
-            let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
-            let dif = precede - damage_level3_precede;
-            ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
-        }
     }
 
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN {
@@ -1070,11 +1063,10 @@ unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_fram
     ratio.into()
 }
 
-// This runs within FIGHTER_STATUS_KIND_LANDING's end status
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_cancel_damage_face)]
-pub unsafe fn sub_landing_cancel_damage_face(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_uniq_process_exit)]
+pub unsafe fn sub_landing_uniq_process_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    InputModule::reset_command_life_count_max(fighter.battle_object);
     
     original!()(fighter)
 }

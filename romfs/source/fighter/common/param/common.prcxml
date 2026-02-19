@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <!-- THIS 'precede' PARAM IS NOW IGNORED BY THE GAME -->
+  <!-- To change global tap buffer length, use the one defined in hdr/param/common.xml instead -->
   <int hash="precede">5</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
