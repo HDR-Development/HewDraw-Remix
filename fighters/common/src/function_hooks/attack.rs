@@ -359,6 +359,73 @@ unsafe fn post_spike_check(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+// #[skyline::hook(offset = 0x3dd658, inline)]
+// unsafe extern "C" fn attack_module_set_power_hook_5th(ctx: &mut skyline::hooks::InlineCtx) {
+//     let attack_module = ctx.registers[19].x() as *mut u64;
+//     let mul = *(attack_module as *const f32).add(0x20c / 0x4);
+//     // println!("mul: {}", mul);
+//     let mul_5th = ctx.registers_f[1].s();
+//     ctx.registers_f[1].set_s(mul * mul_5th);
+// }
+
+// removes the effect of staling by setting the multiplier to 1.0
+#[skyline::hook(offset = 0x3dd688, inline)]
+unsafe extern "C" fn attack_module_set_power_hook_pattern(ctx: &mut skyline::hooks::InlineCtx) {
+    ctx.registers_f[2].set_s(1.0);
+}
+
+// reimplements staling by directly manipulating the damage value
+#[skyline::hook(offset = 0x46ba9c, inline)]
+unsafe fn apply_damage(ctx: &mut skyline::hooks::InlineCtx) {
+    let attacker_boma = &mut *(*(ctx.registers[19].x() as *mut *mut BattleObjectModuleAccessor).add(1));
+    let defender_boma = &mut *(*(ctx.registers[20].x() as *mut *mut BattleObjectModuleAccessor).add(1));
+
+    let current_damage = ctx.registers_f[0].s();
+    // println!("DEBUG >>>>>> current_damage is currently set to: {}", current_damage);
+
+    let final_damage = current_damage * calc_non_knockback_damage_mul(attacker_boma, defender_boma);
+    // println!("DEBUG >>>>>> final_damage after muls: {}", final_damage);
+
+    // NOTE that this also affects hitlag for the DEFENDER ONLY
+    // TODO: store the result of calc_non_knockback_damage_mul, and use it to adjust defender hitlag separately
+    ctx.registers_f[0].set_s(final_damage);
+}
+
+unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAccessor, defender_boma: &mut BattleObjectModuleAccessor) -> f32 {
+    // stale attack multiplier
+    let pattern_mul = AttackModule::get_attack_power_mul_pattern(attacker_boma);
+    // dbg!(pattern_mul);
+
+    // aura multiplier for Lucario's attacks
+    let aura_mul = if attacker_boma.is_fighter() && attacker_boma.kind() == *FIGHTER_KIND_LUCARIO
+    && !attacker_boma.is_status_one_of(&[
+        // these statuses still use the old aurapower multiplier
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT,
+    ]) {
+        WorkModule::get_float(attacker_boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER)
+    } else {
+        1.0
+    };
+    // dbg!(aura_mul);
+
+    // final multiplier
+    return pattern_mul * aura_mul;
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x641d84).nop();
     skyline::install_hooks!(
@@ -374,6 +441,9 @@ pub fn install() {
         x03df93c,
         notify_log_event_collision_hit,
         disable_attacker_parry_pushback,
-        post_spike_check
+        post_spike_check,
+        // attack_module_set_power_hook_5th,
+        attack_module_set_power_hook_pattern,
+        apply_damage
     );
 }
