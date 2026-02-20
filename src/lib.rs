@@ -365,31 +365,29 @@ unsafe fn copy_fighter_info(
     call_original!(dst, src);
 }
 
-fn disable_ssbusync_hook(info: &skyline::nro::NroInfo) {
-    if info.name != "common" {
-        return;
-    }
 
-    unsafe fn install() {
-        ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default());
-    }
+// static mut OVERRIDE_STATE: ssbusync::compatibility::OverrideState =
+//     ssbusync::compatibility::OverrideState::new();
 
-    fn log_line(msg: &'static str) {
-        println!("{msg}");
-    }
+// fn disable_ssbusync_hook(info: &skyline::nro::NroInfo) {
+//     let action = unsafe {
+//         ssbusync::compatibility::observe_and_decide_override(info, &mut OVERRIDE_STATE)
+//     };
 
-    ssbusync::compatibility::spawn_disable_handshake(
-        install,
-        Some(log_line),
-    );
-}
+//     if action == ssbusync::compatibility::OverrideAction::InstallCustom {
+//         println!("Installing HDR SSBU Sync");
+//         unsafe {
+//             ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default());
+//         }
+//     }
+// }
 
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
         quick_validate_install();
-        skyline::nro::add_hook(disable_ssbusync_hook);
+        //skyline::nro::add_hook(disable_ssbusync_hook);
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
         controls::install();

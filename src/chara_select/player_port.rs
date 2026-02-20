@@ -1,17 +1,14 @@
 use super::*;
-use locks::Mutex;
 use ninput::*;
-use once_cell::sync::Lazy;
 use parking_lot::RwLock;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
 static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(|| 
     RwLock::new(PortData::default())
 );
-static TRIPLE_BUFFER_ON: Lazy<Mutex<bool>> = Lazy::new(||
-    Mutex::new(false)
-);
+static TRIPLE_BUFFER_ON: AtomicBool = AtomicBool::new(false);
 
 struct PortData {
     enable_swap: bool,
@@ -215,9 +212,10 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
 
         let player_count = count_active_players(instance);
         let should_use_triple_buffer = player_count > 2;
-        let mut triple_buffer_on = TRIPLE_BUFFER_ON.lock();
-        if *triple_buffer_on != should_use_triple_buffer {
-            *triple_buffer_on = crate::set_doubles_delay(player_count);
+        let last_triple = TRIPLE_BUFFER_ON.load(Ordering::Relaxed);
+        if last_triple != should_use_triple_buffer {
+            let new_triple = crate::set_doubles_delay(player_count);
+            TRIPLE_BUFFER_ON.store(new_triple, Ordering::Relaxed);
         }
 
         if !data.enable_swap || instance.ready_state != 0 {
