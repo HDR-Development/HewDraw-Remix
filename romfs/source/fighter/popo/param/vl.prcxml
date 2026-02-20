@@ -34,7 +34,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="landing_frame">27</float>
+      <float hash="landing_frame">25</float>
       <float hash="couple_distance">50</float>
     </struct>
     <hash40 index="1">dummy</hash40>

@@ -285,11 +285,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON {   
                 VarModule::on_flag(boma.object(), vars::common::instance::DOWN_DISABLE_PASSIVE);
             }
-
-            if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-            || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
-                VarModule::on_flag(boma.object(), vars::common::instance::DOWN_DISABLE_A_LAND);
-            }
         }
 
         // Tether trump logic
