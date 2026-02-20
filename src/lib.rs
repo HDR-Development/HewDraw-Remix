@@ -370,22 +370,18 @@ fn disable_ssbusync_hook(info: &skyline::nro::NroInfo) {
         return;
     }
 
-    match ssbusync::compatibility::try_disable_ssbusync() {
-        ssbusync::compatibility::DisableResult::Disabled => {
-            let _ = ssbusync::compatibility::wait_for_common();
-            println!("ssbusync disabled: installing");
-            unsafe{ ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default()); }
-        }
-        ssbusync::compatibility::DisableResult::NotPresent => {
-            let _ = ssbusync::compatibility::wait_for_common();
-            println!("ssbusync not found: installing");
-            unsafe{ ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default()); }
-        }
-        ssbusync::compatibility::DisableResult::TooLate => {
-            println!("could not disable ssbusync");
-            // ssbusync already took over; skip custom install.
-        }
+    unsafe fn install() {
+        ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default());
     }
+
+    fn log_line(msg: &'static str) {
+        println!("{msg}");
+    }
+
+    ssbusync::compatibility::spawn_disable_handshake(
+        install,
+        Some(log_line),
+    );
 }
 
 #[skyline::main(name = "hdr")]
