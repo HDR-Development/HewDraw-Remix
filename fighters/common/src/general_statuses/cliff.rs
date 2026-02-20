@@ -341,8 +341,15 @@ unsafe fn status_end_CliffJump3(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_cliff_uniq_process_exit_Common)]
 unsafe fn sub_cliff_uniq_process_exit_Common(fighter: &mut L2CFighterCommon, is_leave_cliff: L2CValue) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF) {
-        let cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_no_catch_frame"));
-        WorkModule::set_int(fighter.module_accessor, cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
+        if ![*FIGHTER_STATUS_KIND_CLIFF_ATTACK,
+            *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
+            *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP1].contains(&fighter.global_table[STATUS_KIND_INTERRUPT].get_i32())
+        {
+            let cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_no_catch_frame"));
+            WorkModule::set_int(fighter.module_accessor, cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
+        }
+
         // Allows lingering ledge intan on ledgedrop
         if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_FALL {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
