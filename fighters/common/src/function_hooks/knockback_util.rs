@@ -57,6 +57,19 @@ pub struct KnockbackCalcContext {
     pub is_tech_possible: bool,
 }
 
+pub unsafe fn rotate_vector2f(
+    vec: Vector2f,
+    degrees: f32
+) -> Vector2f {
+    let mag = (vec.x.powi(2) + vec.y.powi(2)).sqrt();
+    let curr_radians = vec.y.atan2(vec.x);
+    let new_radians = curr_radians + degrees.to_radians();
+    return Vector2f::new(
+        new_radians.cos() * mag,
+        new_radians.sin() * mag
+    );
+}
+
 // number of DI angles checked
 const NUM_ANGLES_CHECKED: i32 = 12;
 const NUM_ANGLES_CHECKED_FINAL: i32 = 12;
@@ -78,8 +91,8 @@ impl KnockbackCalcContext {
         launch_speed: Vector2f,
         is_tumble: bool,
     ) -> Self {
-        let fly_top_angle_lw= WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_lw"));
-        let fly_top_angle_hi= WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_hi"));
+        let fly_top_angle_lw = WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_lw"));
+        let fly_top_angle_hi = WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_hi"));
         let ecb_bottom = *GroundModule::get_rhombus(defender_boma, true).add(1);
         let ecb_left =   *GroundModule::get_rhombus(defender_boma, true).add(2);
         let ecb_right =  *GroundModule::get_rhombus(defender_boma, true).add(3);
