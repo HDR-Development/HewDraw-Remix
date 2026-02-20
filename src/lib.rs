@@ -70,6 +70,11 @@ pub fn is_on_ryujinx() -> bool {
     }
 }
 
+#[no_mangle]
+pub extern "C" fn hdr_disable_ssbusync() -> u32 {
+    1 // 1 = Disables SSBUSync plugin so it can be managed manually.
+}
+
 #[cfg(feature = "main_nro")]
 use once_cell::sync::OnceCell;
 
@@ -274,6 +279,19 @@ unsafe fn game_exit(game_state: u64, arg: u64) {
     }
 
     call_original!(game_state, arg);
+}
+
+// Work-around for setting input delay in doubles/FFAs
+pub unsafe fn set_doubles_delay(playercount: i32) -> bool {
+    if (playercount > 2) {
+        ssbusync::Enable_Triple_Buffer();
+        println!("Player Amount {}: Triple Buffer Enabled \n", playercount);
+        return true;
+    } else {
+        ssbusync::Enable_Double_Buffer();
+        println!("Player Amount {}: Double Buffer Enabled \n", playercount);
+        return false;
+    }
 }
 
 #[repr(C)]

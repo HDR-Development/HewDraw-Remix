@@ -1,5 +1,6 @@
 use skyline::hooks::InlineCtx;
 use std::sync::atomic::{AtomicBool, Ordering};
+use ssbusync::*;
 
 mod css;
 mod submenu;
@@ -136,6 +137,7 @@ pub fn install() {
     }
 
     css::install();
+    ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default());
 
     skyline::install_hooks!(
         get_button_label_by_operation_kind,

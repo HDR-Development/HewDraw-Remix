@@ -7,6 +7,9 @@ static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(|| 
     RwLock::new(PortData::default())
 );
+static mut TRIPLE_BUFFER_ON: LazyLock<RwLock<bool>> = LazyLock::new(||
+    RwLock::new(false)
+);
 
 struct PortData {
     enable_swap: bool,
@@ -161,6 +164,32 @@ impl ControllerExt for PortController {
     }
 }
 
+unsafe fn count_active_players(instance: CharaSelect) -> i32 {
+    let mut active_players = 0;
+
+    // Walk the known player-info array; 
+    let mut addr = instance.player_base;
+    for i in 0..8 {
+        if addr as u64 == instance.player_max as u64 {
+            break;
+        }
+        let player = (instance.player_base as u64 + (i * 0x10)) as *const PlayerInfo;
+        if player.is_null() {
+            break;
+        }
+        let card = (*player).card;
+        if !card.is_null() {
+            let is_player_or_cpu = (*card).player_kind == 0 || (*card).player_kind == 1;
+            if is_player_or_cpu {
+                active_players += 1;
+            }
+        }
+        addr = (addr as u64 + 0x10) as *const PlayerInfo;
+    }
+
+    active_players
+}
+
 // this function loops while the css is active, allowing for runtime operations
 #[skyline::hook(offset = 0x1a2b570)]
 unsafe fn css_main_loop(arg: *const CharaSelect) {
@@ -177,10 +206,16 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
                 println!("Port swapping is disabled.");
                 return original!()(arg);
             }
-
             println!("Port swapping is enabled!");
             data.enable_swap = true;
             data.root_card = instance.first_player as u64;
+        }
+
+        let player_count = count_active_players(instance);
+        let should_use_triple_buffer = player_count > 2;
+        let mut triple_buffer_on = TRIPLE_BUFFER_ON.write();
+        if *triple_buffer_on != should_use_triple_buffer {
+            *triple_buffer_on = crate::set_doubles_delay(player_count);
         }
 
         if !data.enable_swap || instance.ready_state != 0 {

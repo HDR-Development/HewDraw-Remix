@@ -15,3 +15,4 @@ ninput = { git = "https://github.com/blu-dev/ninput" }
 interpolation = "0.2.0" # for f32::lerp
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 rand = { git = "https://github.com/skyline-rs/rand" }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync", default-features = false }
