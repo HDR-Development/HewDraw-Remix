@@ -239,6 +239,7 @@ pub mod vars {
             pub const PREV_STATUS_TRANSITION_FRAME: i32 = 0x0013;
 
             pub const ATTACK_LR_CHECK: i32 = 0x0014;
+            // pub const PREVIOUS_FRAME_FRAMES_IN_AIR: i32 = 0x0015;
 
             // floats
 

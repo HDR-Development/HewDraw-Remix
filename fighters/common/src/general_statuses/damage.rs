@@ -6,6 +6,9 @@ use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+    // NOPs fighter_handle_damage setting the airtime counter to 0 frames on hit in air.
+    // This is so the ECB diamond will not reset when getting hit in the air (same as melee)
+    skyline::patching::Patch::in_text(0x63251c).nop();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
