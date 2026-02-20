@@ -188,6 +188,7 @@ unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
     );
 }
 
+use ssbusync::SsbuSyncConfig;
 use skyline::hooks::InlineCtx;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
@@ -364,11 +365,35 @@ unsafe fn copy_fighter_info(
     call_original!(dst, src);
 }
 
+fn disable_ssbusync_hook(info: &skyline::nro::NroInfo) {
+    if info.name != "common" {
+        return;
+    }
+
+    match ssbusync::compatibility::try_disable_ssbusync() {
+        ssbusync::compatibility::DisableResult::Disabled => {
+            let _ = ssbusync::compatibility::wait_for_common();
+            println!("ssbusync disabled: installing");
+            unsafe{ ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default()); }
+        }
+        ssbusync::compatibility::DisableResult::NotPresent => {
+            let _ = ssbusync::compatibility::wait_for_common();
+            println!("ssbusync not found: installing");
+            unsafe{ ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default()); }
+        }
+        ssbusync::compatibility::DisableResult::TooLate => {
+            println!("could not disable ssbusync");
+            // ssbusync already took over; skip custom install.
+        }
+    }
+}
+
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
         quick_validate_install();
+        skyline::nro::add_hook(disable_ssbusync_hook);
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
         controls::install();
