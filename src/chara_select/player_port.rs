@@ -1,5 +1,7 @@
 use super::*;
+use locks::Mutex;
 use ninput::*;
+use once_cell::sync::Lazy;
 use parking_lot::RwLock;
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
@@ -7,8 +9,8 @@ static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(|| 
     RwLock::new(PortData::default())
 );
-static mut TRIPLE_BUFFER_ON: LazyLock<RwLock<bool>> = LazyLock::new(||
-    RwLock::new(false)
+static TRIPLE_BUFFER_ON: Lazy<Mutex<bool>> = Lazy::new(||
+    Mutex::new(false)
 );
 
 struct PortData {
@@ -213,7 +215,7 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
 
         let player_count = count_active_players(instance);
         let should_use_triple_buffer = player_count > 2;
-        let mut triple_buffer_on = TRIPLE_BUFFER_ON.write();
+        let mut triple_buffer_on = TRIPLE_BUFFER_ON.lock();
         if *triple_buffer_on != should_use_triple_buffer {
             *triple_buffer_on = crate::set_doubles_delay(player_count);
         }
