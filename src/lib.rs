@@ -390,7 +390,7 @@ pub fn main() {
     #[cfg(feature = "main_nro")]
     {
         quick_validate_install();
-        unsafe{disable_ssbusync_hook();}
+        //unsafe{disable_ssbusync_hook();}
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
         controls::install();

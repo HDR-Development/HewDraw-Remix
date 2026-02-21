@@ -135,7 +135,8 @@ pub fn install() {
     unsafe {
     skyline::patching::Patch::in_text(0x1D3594C).nop();
     css::install();
-    //ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default());
+    println!("[HDR] installing custom ssbusync path via Main \n");
+    ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default());
     }
 
     skyline::install_hooks!(
