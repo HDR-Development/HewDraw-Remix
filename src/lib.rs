@@ -389,8 +389,9 @@ fn on_nro_load(info: &skyline::nro::NroInfo) {
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
+        println!("[HDR] installing custom ssbusync path via Main \n");
+        ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default());
         quick_validate_install();
-        //unsafe{disable_ssbusync_hook();}
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
         controls::install();
