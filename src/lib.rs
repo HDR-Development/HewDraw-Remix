@@ -365,25 +365,25 @@ unsafe fn copy_fighter_info(
     call_original!(dst, src);
 }
 
-static mut OVERRIDE_STATE: ssbusync::compatibility::OverrideState =
-    ssbusync::compatibility::OverrideState::new();
+// static mut OVERRIDE_STATE: ssbusync::compatibility::OverrideState =
+//     ssbusync::compatibility::OverrideState::new();
 
-fn disable_ssbusync_hook() {
-    let _ = unsafe { ssbusync::compatibility::try_claim_external_disabler() };
+// fn disable_ssbusync_hook() {
+//     let _ = unsafe { ssbusync::compatibility::try_claim_external_disabler() };
 
-    skyline::nro::add_hook(on_nro_load).expect("nro hook unavailable \n");
-}
+//     skyline::nro::add_hook(on_nro_load).expect("nro hook unavailable \n");
+// }
 
-fn on_nro_load(info: &skyline::nro::NroInfo) {
-    let action = unsafe {
-        ssbusync::compatibility::observe_and_claim_override(info, &mut OVERRIDE_STATE)
-    };
+// fn on_nro_load(info: &skyline::nro::NroInfo) {
+//     let action = unsafe {
+//         ssbusync::compatibility::observe_and_claim_override(info, &mut OVERRIDE_STATE)
+//     };
 
-    if action == ssbusync::compatibility::OverrideAction::InstallCustom {
-        println!("[HDR] installing custom ssbusync path \n");
-        unsafe { ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default()) };
-    }
-}
+//     if action == ssbusync::compatibility::OverrideAction::InstallCustom {
+//         println!("[HDR] installing custom ssbusync path \n");
+//         unsafe { ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default()) };
+//     }
+// }
 
 #[skyline::main(name = "hdr")]
 pub fn main() {

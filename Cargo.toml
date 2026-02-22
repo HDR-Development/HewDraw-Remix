@@ -228,7 +228,7 @@ runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false, features = ["disabler-symbol"] }
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
 hash40 = "1.2.0"
