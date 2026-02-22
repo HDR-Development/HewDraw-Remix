@@ -73,7 +73,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             if VarModule::is_flag(fighter.battle_object, vars::daisy::status::SPECIAL_N_DIVE) {
                 fighter.check_wall_jump_cancel();
             }
-            if fighter.status_frame() == 20 {
+            if fighter.status_frame() == 18 {
                 special_n_physics(fighter, true, false);
             }
         }

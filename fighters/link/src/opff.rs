@@ -12,7 +12,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_S2,
         ])
-        || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 50.0) )
+        || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 60.0) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }

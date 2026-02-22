@@ -53,12 +53,15 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     FT_MOTION_RATE(agent, 0.8);
     if is_excute(agent) {
-        agent.on_flag(*FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_IS_ENABLE_CONTROL);
         agent.on_flag(*FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_FALL);
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {
         agent.off_flag(*FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_SHIFT);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(agent) {
+        agent.on_flag(*FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_IS_ENABLE_CONTROL);
     }
 }
 

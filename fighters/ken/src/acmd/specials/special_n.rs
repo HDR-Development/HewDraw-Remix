@@ -157,7 +157,7 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
                 EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
             } else {
-                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ken_syakunetsu_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
             }
             if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
                 FLASH(agent, 0.95, 0.522, 0.051, 1.7);
@@ -190,7 +190,7 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
                 EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 11.5, 14.5, 0, 0, 0, 1, true);
             } else {
-                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_shot"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ken_syakunetsu_shot"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, true);
             }
         }
         frame(lua_state, 12.0);
@@ -248,7 +248,7 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
                 EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
             } else {
-                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ken_syakunetsu_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
             if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
                 FLASH(agent, 0.95, 0.522, 0.051, 1.7);
@@ -280,7 +280,7 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
             if agent.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
                 EFFECT_FOLLOW(agent, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 50, 0, 0, 1, true);
             } else {
-                EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_shot"), Hash40::new("top"), 0, 6, 11, 50, 0, 0, 1, true);
+                EFFECT_FOLLOW(agent, Hash40::new("ken_syakunetsu_shot"), Hash40::new("top"), 0, 6, 11, 50, 0, 0, 1, true);
             }
         }
         frame(lua_state, 12.0);

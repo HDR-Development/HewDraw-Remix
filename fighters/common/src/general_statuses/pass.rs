@@ -75,16 +75,23 @@ unsafe fn status_Pass_Main_sub(fighter: &mut L2CFighterCommon, arg1: L2CValue) -
         return 0.into();
     }
 
-    // skip direct cancels from restricted statuses
-    let skip_cancels = fighter.is_prev_status_one_of(&[
+    // skip direct cancels for these statuses
+    if fighter.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_GUARD,
         *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
         *FIGHTER_STATUS_KIND_GUARD_ON,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
-    ]);
-    if skip_cancels {
-        return 0.into();
+    ]) {
+        return false.into();
+    }
+
+    // and these statuses, if done before actionable
+    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::WAS_PREV_STATUS_CANCELABLE)
+    && fighter.is_prev_status_one_of(&[
+        *FIGHTER_STATUS_KIND_GUARD_OFF
+    ]) {
+        return false.into();
     }
 
     // idk what this does

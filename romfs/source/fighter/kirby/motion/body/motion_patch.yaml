@@ -1383,6 +1383,15 @@ special_hi_h:
 special_lw2:
   extra:
     cancel_frame: 28
+special_s:
+  extra:
+    cancel_frame: 60
+special_ss:
+  extra:
+    cancel_frame: 60
+special_s_max:
+  extra:
+    cancel_frame: 65
 step_pose_back:
   extra:
     cancel_frame: 6

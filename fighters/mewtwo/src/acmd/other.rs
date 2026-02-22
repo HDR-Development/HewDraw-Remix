@@ -128,4 +128,13 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("effect_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("expression_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("game_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("effect_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("expression_fuwafuwa", acmd_stub, Priority::Low);
 }

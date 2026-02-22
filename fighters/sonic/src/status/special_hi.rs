@@ -8,7 +8,7 @@ pub unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_SONIC_SPECIAL_HI_COMP,
         *GROUND_CORRECT_KIND_NONE as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_HI_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_HI_INT,

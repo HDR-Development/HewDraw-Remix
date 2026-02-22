@@ -132,7 +132,7 @@ pub unsafe extern "C" fn special_hi_rush_end_pre(fighter: &mut L2CFighterCommon)
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *FIGHTER_KINETIC_TYPE_FALL,
         *GROUND_CORRECT_KIND_KEEP as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,

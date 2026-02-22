@@ -181,7 +181,7 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
     if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
     
         // parry, force instant transition even during hitstop for chained parries
-        if (fighter.is_button_trigger(Buttons::Parry) || fighter.is_button_trigger(Buttons::ParryManual))
+        if fighter.is_button_trigger(Buttons::Parry)
         && fighter.is_cat_flag(CatHdr::Parry) {
             VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
             StopModule::cancel_hit_stop(fighter.module_accessor);

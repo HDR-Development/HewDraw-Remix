@@ -238,6 +238,8 @@ pub mod vars {
 
             pub const PREV_STATUS_TRANSITION_FRAME: i32 = 0x0013;
 
+            pub const ATTACK_LR_CHECK: i32 = 0x0014;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -831,6 +833,7 @@ pub mod vars {
             //pub const DISABLE_SPECIAL_HI: i32 = 0x01FF; //Weird value to avoid conflicts with copy ability values
             pub const SPECIAL_N_PICKEL_CYCLE_MATERIAL: i32 = 0x01F4;
             pub const SPECIAL_LW_USED_JUMPS: i32 = 0x01F5;
+            pub const DISABLE_SPECIAL_LW: i32 = 0x01F8;
             pub use super::super::bayonetta::instance::WAS_CANCEL;
             pub use super::super::ridley::instance::SPECIAL_N_EXPLODE;
 

@@ -188,6 +188,10 @@ unsafe extern "C" fn special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)(fighter);
+    // persist rng
+    VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
+    fighter.set_int(0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
+    VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, 0);
     // refund MP during a special roll
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU) {
         let mp = VarModule::get_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP);
@@ -250,6 +254,10 @@ unsafe extern "C" fn special_lw_steel_start_pre(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn special_lw_steel_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Main, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START)(fighter);
+    // persist rng
+    VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
+    fighter.set_int(0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
+    VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, 0);
     // refund MP during a special roll
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::SPECIAL_MENU) {
         let mp = VarModule::get_float(fighter.battle_object, vars::brave::status::SPECIAL_MENU_MP);

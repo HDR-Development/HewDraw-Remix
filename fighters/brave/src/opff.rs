@@ -17,28 +17,18 @@ unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
         let index = fighter.get_int(*FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
         VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, index);
     }
-    if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
-    || fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START) {
-        if StatusModule::is_changing(fighter.module_accessor) {
-            VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
-            fighter.set_int(0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
-            VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, 0);
-        }
-    }
 }
 
 unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE) {
-        if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) <= 0 {
+        if VarModule::countdown_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0) {
             EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 18, -4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
         }
-        else {
-            VarModule::dec_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-        }
         // turn off crits after landing an attack
-        if (fighter.is_motion_one_of(&[
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && fighter.is_motion_one_of(&[
             Hash40::new("attack_13"),
             Hash40::new("attack_s3_s2"),
             Hash40::new("attack_hi3"),
@@ -50,25 +40,10 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_air_f"),
             Hash40::new("attack_air_b"),
             Hash40::new("attack_air_lw")
-        ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
+        ]) {
             EFFECT_OFF_KIND(fighter, Hash40::new("brave_charge_hold"), false, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-        }
-    }
-}
-
-// Hero dash cancel Frizz
-unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_motion(Hash40::new("special_n1"))
-    && fighter.motion_frame() > 20.0 && fighter.motion_frame() < 44.0 // after F20 and before the FAF
-    && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0) {
-        if fighter.check_dash_cancel() {
-            let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
-            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -10.0);
-            EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         }
     }
 }
@@ -110,7 +85,6 @@ pub unsafe extern "C" fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     persist_rng(fighter);
     psych_up_crit(fighter);
     dspecial_cancels(fighter);
-    dash_cancel_frizz(fighter);
     kaclang_jc(fighter);
     fastfall_specials(fighter);
 

@@ -20,6 +20,7 @@
       <float hash="hulahoop_jump_stick_x_speed_rate">0.1</float>
       <float hash="hulahoop_jump_restart_add_speed_y">0.3</float>
       <float hash="0x1d57d7b043">0.08</float>
+      <float hash="hulahoop_end_landing_frame">26</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

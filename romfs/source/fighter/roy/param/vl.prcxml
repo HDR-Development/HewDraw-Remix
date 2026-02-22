@@ -19,6 +19,7 @@
       <int hash="critical_frame">36</int>
 	    <int hash="critical_slow_rate">8</int>
 	    <int hash="critical_zoom_in_frame">999</int>
+      <int hash="special_n_attack_power_min">9</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -46,7 +47,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="air_hi_pass_mul">1</float>
-      <float hash="dir_mul_value">20</float>
+      <float hash="dir_mul_value">30</float>
       <float hash="accel_y">0.05</float>
       <float hash="fall_x_mul_value">0.66</float>
       <float hash="landing_frame">25</float>

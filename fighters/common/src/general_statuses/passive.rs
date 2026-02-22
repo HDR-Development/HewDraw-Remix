@@ -16,11 +16,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_Passive_Main,
             status_pre_passivefb,
             status_PassiveFB_Main,
-            sub_AirChkPassiveWallJump,
             status_PassiveWallJump_Main,
-            sub_AirChkPassiveWall,
             status_PassiveWall_Main,
-            sub_AirChkPassiveCeil,
             status_PassiveCeil_Main
         );
     }
@@ -207,17 +204,6 @@ pub unsafe fn status_PassiveFB_Main(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_AirChkPassiveWallJump)]
-pub unsafe fn sub_AirChkPassiveWallJump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Disallow wall teching after frame 2 of connecting with a wall
-    if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-    && fighter.global_table[CURRENT_FRAME].get_i32() > 2 {
-        return false.into();
-    }
-
-    call_original!(fighter)
-}
-
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_PassiveWallJump_Main)]
 pub unsafe fn status_PassiveWallJump_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_down_soil_s")) {
@@ -227,32 +213,10 @@ pub unsafe fn status_PassiveWallJump_Main(fighter: &mut L2CFighterCommon) -> L2C
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_AirChkPassiveWall)]
-pub unsafe fn sub_AirChkPassiveWall(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Disallow wall teching after frame 2 of connecting with a wall
-    if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-    && fighter.global_table[CURRENT_FRAME].get_i32() > 2 {
-        return false.into();
-    }
-
-    call_original!(fighter)
-}
-
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_PassiveWall_Main)]
 pub unsafe fn status_PassiveWall_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_down_soil_s")) {
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_down_soil_s"), 0);
-    }
-
-    call_original!(fighter)
-}
-
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_AirChkPassiveCeil)]
-pub unsafe fn sub_AirChkPassiveCeil(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Disallow ceiling teching after frame 2 of connecting with a ceiling
-    if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
-    && fighter.global_table[CURRENT_FRAME].get_i32() > 2 {
-        return false.into();
     }
 
     call_original!(fighter)

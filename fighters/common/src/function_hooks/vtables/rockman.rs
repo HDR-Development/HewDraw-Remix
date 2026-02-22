@@ -3,7 +3,7 @@ use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
 
 pub const CHARGE_SHOT_CLEAR_INPUT_FRAME : i32 = 6;
 pub const CHARGE_SHOT_DELAY_CHARGE_FRAME : i32 = 50;
-pub const CHARGE_SHOT_MAX_FRAME : i32 = 160;
+pub const CHARGE_SHOT_MAX_FRAME : i32 = 180;
 pub const CHARGE_SHOT_RELEASE_FRAME : i32 = 6;
 
 #[skyline::hook(offset = 0x107e970)]
@@ -133,13 +133,19 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
 }
 
 unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    let status = StatusModule::status_kind(module_accessor);
+    // explicitly disabled statuses
+    if [
+        *FIGHTER_STATUS_KIND_REBIRTH
+    ].contains(&status) {
+        return false;
+    }
+
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
 
-    // Explicitly enables charging during certain statuses, instead of
-    // explicitly disabling charging.
-    let status = StatusModule::status_kind(module_accessor);
+    // explicitly enabled statuses
     if [
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,

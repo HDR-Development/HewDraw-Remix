@@ -11,9 +11,9 @@ pub unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     fighter.sub_status_pre_SpecialNCommon();
     
     // Fails to pluck another Pikmin if there are 2 in play or in the air.
-    if ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN) >= 2
+    if ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_PIKMIN_GENERATE_ARTICLE_PIKMIN) >= 3
     || fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        // println!("there are 2 or more or is in the air so welp");
+        // println!("there are 3 or more or is in the air so welp");
         fighter.change_status(statuses::kirby::PIKMIN_SPECIAL_N_FAILURE.into(), true.into());
     }
 
@@ -36,7 +36,7 @@ pub unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CVal
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_NONE | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
         (*FIGHTER_STATUS_ATTR_START_TURN) as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0

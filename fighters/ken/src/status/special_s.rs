@@ -211,13 +211,13 @@ unsafe extern "C" fn special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CV
     };
     MotionModule::change_motion(fighter.module_accessor, Hash40::new(special_s_mot_name), 0.0, 1.0, false, 0.0, false, false);
 
-    let ryu_tatsumaki_wind = if !MotionModule::is_flip(fighter.module_accessor) {
-        hash40("ryu_tatsumaki_wind_r")
+    let ken_tatsumaki_wind = if !MotionModule::is_flip(fighter.module_accessor) {
+        hash40("ken_tatsumaki_wind_r")
     } else {
-        hash40("ryu_tatsumaki_wind_l")
+        hash40("ken_tatsumaki_wind_l")
     };
     fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, ryu_tatsumaki_wind, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
+    lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, ken_tatsumaki_wind, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
     sv_module_access::effect(fighter.lua_state_agent);
 
     let spineffect = fighter.pop_lua_stack(1).get_u32();

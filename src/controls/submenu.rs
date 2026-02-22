@@ -108,7 +108,7 @@ impl<F: Fn(&mut ControllerMapping, InputKind)> TagSubMenu for ButtonSelector<F> 
             Self::GRAB => b"Grab",
             Self::PARRY => b"Parry",
             Self::TAUNT => b"Taunt/Footstool",
-            Self::SHORT_HOP => b"Short Hop",
+            Self::SHORT_HOP => b"ShortHop",
             Self::TILT_ATTACK => b"Tilt",
             Self::SMASH_ATTACK => b"Smash",
             _ => return None,
