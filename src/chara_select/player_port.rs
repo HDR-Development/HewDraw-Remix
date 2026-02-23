@@ -1,14 +1,12 @@
 use super::*;
 use ninput::*;
 use parking_lot::RwLock;
-use std::sync::atomic::{AtomicBool, Ordering};
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
 static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(|| 
     RwLock::new(PortData::default())
 );
-static TRIPLE_BUFFER_ON: AtomicBool = AtomicBool::new(false);
 
 struct PortData {
     enable_swap: bool,
@@ -209,13 +207,11 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             data.enable_swap = true;
             data.root_card = instance.first_player as u64;
         }
-
-        let player_count = count_active_players(instance);
-        let should_use_triple_buffer = player_count > 2;
-        let last_triple = TRIPLE_BUFFER_ON.load(Ordering::Relaxed);
-        if last_triple != should_use_triple_buffer {
-            let new_triple = crate::set_doubles_delay(player_count);
-            TRIPLE_BUFFER_ON.store(new_triple, Ordering::Relaxed);
+        
+        if ssbusync::is_doubles_fix_enabled() {
+            let player_count = count_active_players(instance);
+            crate::set_doubles_delay(player_count);
+            ssbusync::Check_Buffer_Swap();
         }
 
         if !data.enable_swap || instance.ready_state != 0 {

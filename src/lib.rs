@@ -189,6 +189,7 @@ unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
 }
 
 use ssbusync::SsbuSyncConfig;
+use ssbusync::render::buffer_swap::{BufferMode};
 use skyline::hooks::InlineCtx;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
@@ -282,17 +283,33 @@ unsafe fn game_exit(game_state: u64, arg: u64) {
     call_original!(game_state, arg);
 }
 
+fn setup_ssbu_sync() {
+    println!("[HDR] installing custom ssbusync path via Main \n");
+    let mut sync_config = SsbuSyncConfig::default();
+    sync_config.doubles_fix = false;
+    sync_config.enable_triple_buffer = true;
+    sync_config.slow_pacer_bias = true;
+    ssbusync::Install_SSBU_Sync(sync_config);
+    if ssbusync::render::buffer_swap::subscribe_buffer_mode_change(on_buffer_switch) {
+        println!("[HDR] Subscribed to buffer switch \n");
+    } else {
+        println!("[HDR] Failed to subscribe to buffer switch \n");
+    }
+}
+
 // Work-around for setting input delay in doubles/FFAs
-pub unsafe fn set_doubles_delay(playercount: i32) -> bool {
+pub fn set_doubles_delay(playercount: i32) -> bool {
     if (playercount > 2) {
         ssbusync::Enable_Triple_Buffer();
-        println!("Player Amount {}: Triple Buffer Enabled \n", playercount);
         return true;
     } else {
         ssbusync::Enable_Double_Buffer();
-        println!("Player Amount {}: Double Buffer Enabled \n", playercount);
         return false;
     }
+}
+
+fn on_buffer_switch(mode: ssbusync::render::buffer_swap::BufferMode) {
+    println!("Buffer Successfully Switched: {:?} \n", mode)
 }
 
 #[repr(C)]
@@ -365,32 +382,11 @@ unsafe fn copy_fighter_info(
     call_original!(dst, src);
 }
 
-// static mut OVERRIDE_STATE: ssbusync::compatibility::OverrideState =
-//     ssbusync::compatibility::OverrideState::new();
-
-// fn disable_ssbusync_hook() {
-//     let _ = unsafe { ssbusync::compatibility::try_claim_external_disabler() };
-
-//     skyline::nro::add_hook(on_nro_load).expect("nro hook unavailable \n");
-// }
-
-// fn on_nro_load(info: &skyline::nro::NroInfo) {
-//     let action = unsafe {
-//         ssbusync::compatibility::observe_and_claim_override(info, &mut OVERRIDE_STATE)
-//     };
-
-//     if action == ssbusync::compatibility::OverrideAction::InstallCustom {
-//         println!("[HDR] installing custom ssbusync path \n");
-//         unsafe { ssbusync::Install_SSBU_Sync(ssbusync::SsbuSyncConfig::default()) };
-//     }
-// }
-
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
-        println!("[HDR] installing custom ssbusync path via Main \n");
-        ssbusync::Install_SSBU_Sync(SsbuSyncConfig::default());
+        setup_ssbu_sync();
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
