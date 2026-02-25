@@ -280,9 +280,9 @@ unsafe fn game_exit(game_state: u64, arg: u64) {
 fn setup_ssbu_sync() {
     println!("[HDR] installing custom ssbusync path via Main \n");
     let mut sync_config = SsbuSyncConfig::default();
-    sync_config.doubles_fix = false;
+    sync_config.allow_buffer_swap = true;
     sync_config.enable_triple_buffer = true;
-    sync_config.slow_pacer_bias = false;
+    sync_config.slow_pacer_bias = true;
     ssbusync::Install_SSBU_Sync(sync_config);
     // if ssbusync::render::buffer_swap::subscribe_buffer_mode_change(on_buffer_switch) {
     //     println!("[HDR] Subscribed to buffer switch \n");
