@@ -70,11 +70,6 @@ pub fn is_on_ryujinx() -> bool {
     }
 }
 
-#[no_mangle]
-pub extern "C" fn hdr_disable_ssbusync() -> u32 {
-    1 // 1 = Disables SSBUSync plugin so it can be managed manually.
-}
-
 #[cfg(feature = "main_nro")]
 use once_cell::sync::OnceCell;
 
@@ -189,7 +184,6 @@ unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
 }
 
 use ssbusync::SsbuSyncConfig;
-use ssbusync::render::buffer_swap::{BufferMode};
 use skyline::hooks::InlineCtx;
 use smash::lib::lua_const::*;
 use smash::lua2cpp::*;
@@ -288,16 +282,16 @@ fn setup_ssbu_sync() {
     let mut sync_config = SsbuSyncConfig::default();
     sync_config.doubles_fix = false;
     sync_config.enable_triple_buffer = true;
-    sync_config.slow_pacer_bias = true;
+    sync_config.slow_pacer_bias = false;
     ssbusync::Install_SSBU_Sync(sync_config);
-    if ssbusync::render::buffer_swap::subscribe_buffer_mode_change(on_buffer_switch) {
-        println!("[HDR] Subscribed to buffer switch \n");
-    } else {
-        println!("[HDR] Failed to subscribe to buffer switch \n");
-    }
+    // if ssbusync::render::buffer_swap::subscribe_buffer_mode_change(on_buffer_switch) {
+    //     println!("[HDR] Subscribed to buffer switch \n");
+    // } else {
+    //     println!("[HDR] Failed to subscribe to buffer switch \n");
+    // }
 }
 
-// Work-around for setting input delay in doubles/FFAs
+// Work-around for setting input delay during doubles/FFAs
 pub fn set_doubles_delay(playercount: i32) -> bool {
     if (playercount > 2) {
         ssbusync::Enable_Triple_Buffer();
@@ -308,9 +302,9 @@ pub fn set_doubles_delay(playercount: i32) -> bool {
     }
 }
 
-fn on_buffer_switch(mode: ssbusync::render::buffer_swap::BufferMode) {
-    println!("Buffer Successfully Switched: {:?} \n", mode)
-}
+// fn on_buffer_switch(mode: ssbusync::render::buffer_swap::BufferMode) {
+//     println!("Buffer Successfully Switched: {:?} \n", mode)
+// }
 
 #[repr(C)]
 pub struct FuckingAssStringStructureShit {
