@@ -1,6 +1,7 @@
 use super::*;
 use ninput::*;
 use parking_lot::RwLock;
+use crate::vsync::SsbuSync;
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
@@ -201,6 +202,7 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             if instance.max_players_allowed != 8 || instance.local_wireless != 0 {
                 data.enable_swap = false;
                 println!("Port swapping is disabled.");
+                
                 return original!()(arg);
             }
             println!("Port swapping is enabled!");
@@ -208,10 +210,15 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             data.root_card = instance.first_player as u64;
         }
         
-        if ssbusync::is_doubles_fix_enabled() {
-            let player_count = count_active_players(instance);
-            crate::set_doubles_delay(player_count);
-            ssbusync::Check_Buffer_Swap();
+        // if SsbuSync::ALLOW_BUFFER_SWAP() {
+        //     let player_count = count_active_players(instance);
+        //     crate::set_doubles_delay(player_count);
+        //     ssbusync::Check_Buffer_Swap();
+        // }
+        
+        let is_online = (instance.max_players_allowed != 8 || instance.local_wireless != 0);
+        if  SsbuSync::SyncEnv::online_only() {
+            SsbuSync::online::ToggleOnlineFix(is_online);
         }
 
         if !data.enable_swap || instance.ready_state != 0 {
