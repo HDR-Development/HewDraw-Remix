@@ -5,7 +5,7 @@ use super::*;
 
 unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
-        fighter.module_accessor, 
+        fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
@@ -29,7 +29,7 @@ unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
     );
-    
+
     0.into()
 }
 
@@ -112,7 +112,7 @@ unsafe extern "C" fn trail_special_s_set_angle_guide(fighter: &mut L2CFighterCom
         EffectModule::set_rot(fighter.module_accessor, effect, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
         let team_color = FighterUtil::get_team_color(fighter.module_accessor);
         let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
         WorkModule::set_int(fighter.module_accessor, effect as i32, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE);
     }
 }

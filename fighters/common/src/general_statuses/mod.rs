@@ -150,7 +150,7 @@ pub unsafe fn FL_get_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValu
     let land_cancel_lag = VarModule::get_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG);
     if land_cancel_lag != 0.0 {
         VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, 0.0);
-        
+
         // "landing stiffness" logic does not support values greater than your landing_heavy animation length
         // so we must manually extend your landing animation
         // if our defined landing lag value > landing_heavy animation length
@@ -164,7 +164,7 @@ pub unsafe fn FL_get_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValu
         // Coupled with "landing_heavy" change in change_motion hook
         // Because we start heavy landing anims on f3 rather than f1, we need to increase this value by 2 frames so it is accurate to the defined landing lag value
         let landing_lag = land_cancel_lag + 2.0;
-        
+
         return landing_lag.into();
     }
 
@@ -248,9 +248,9 @@ pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue
             Hash40::new("se_common_down_l_01"),
             Hash40::new("se_demon_down"),
             Hash40::new("se_dolly_down01"),
-    
+
         ];
-    
+
         for x in down_sfx.iter() {
             if SoundModule::is_playing(fighter.module_accessor, *x) {
                 SoundModule::stop_se(fighter.module_accessor, *x, 3);
@@ -624,7 +624,7 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
             if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
             && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-            && MotionModule::trans_move_speed(fighter.module_accessor).value[1] < 0.0
+            && MotionModule::trans_move_speed(fighter.module_accessor).y() < 0.0
             {
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
             }
@@ -657,7 +657,7 @@ pub unsafe fn super_jump_punch_uniq(fighter: &mut L2CFighterCommon, arg2: L2CVal
                 if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS)
                 && KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_AIR_STOP {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-                    
+
                     let speed_x_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_MOVE_TRANS_END_SPEED_X_MUL);
                     let speed_y_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_MOVE_TRANS_END_SPEED_Y_MUL);
 
@@ -855,9 +855,9 @@ unsafe extern "C" fn check_damage_speed_up_fail(fighter: &mut L2CFighterCommon) 
         return true;
     }
     let log = log as *mut u8;
-    return *log.add(0x8f) != 0 
+    return *log.add(0x8f) != 0
         || *log.add(0x92) != 0
-        || *log.add(0x93) != 0 
+        || *log.add(0x93) != 0
         || *log.add(0x98) != 0;
 }
 
@@ -1048,7 +1048,7 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
         app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-        
+
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -1075,7 +1075,7 @@ unsafe fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_fram
 pub unsafe fn sub_landing_cancel_damage_face(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
     ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    
+
     original!()(fighter)
 }
 
@@ -1163,7 +1163,7 @@ pub unsafe fn sub_air_check_fall_common(fighter: &mut L2CFighterCommon) -> L2CVa
                 WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
                 WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
                 WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
-                
+
                 fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
                 if fighter.sub_squat_common_Main().get_bool() {
                     let last_grounded_pos = VarModule::get_vec3(fighter.battle_object, vars::common::instance::LAST_GROUNDED_POS);
@@ -1192,7 +1192,7 @@ pub unsafe fn sub_air_check_fall_common(fighter: &mut L2CFighterCommon) -> L2CVa
             }
         }
     }
-    
+
     original!()(fighter)
 }
 
