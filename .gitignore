@@ -25,3 +25,5 @@ scripts/artifacts/deletions.json
 **/upgrade_artifacts/
 .DS_Store
 **/Cargo.lock
+sym.log
+.symbaker
