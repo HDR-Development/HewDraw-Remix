@@ -3,8 +3,10 @@
 #![allow(non_snake_case)]
 #![allow(improper_ctypes)]
 #![allow(static_mut_refs)]
+#![allow(internal_features)]
 #![feature(repr_simd)]
 #![feature(simd_ffi)]
+#![feature(core_intrinsics)]
 use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};

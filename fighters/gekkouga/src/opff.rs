@@ -62,7 +62,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_ATTACK,
         *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_BOUND
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -123,17 +123,20 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
                 EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0});
             }
             EffectModule::set_rot(fighter.module_accessor, eff_handle, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
-    
+
             if can_teleport {
                 let team_color = FighterUtil::get_team_color(fighter.module_accessor);
-                let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+                let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+                let mut r = effect_team_color.x();
+                let mut g = effect_team_color.y();
+                let mut b = effect_team_color.z();
                 if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
                 || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_SAVE_SPEED) {
-                    effect_team_color.value[0] += 0.22;
-                    effect_team_color.value[1] += 0.22;
-                    effect_team_color.value[2] += 0.22;
+                    r += 0.22;
+                    g += 0.22;
+                    b += 0.22;
                 }
-                EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+                EffectModule::set_rgb(fighter.module_accessor, eff_handle, r, g, b);
             }
             else {
                 EffectModule::set_rgb(fighter.module_accessor, eff_handle, 0.7, 0.7, 0.7);
