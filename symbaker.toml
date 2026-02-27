@@ -1,0 +1,6 @@
+prefix = "hdr"
+sep = "__"
+priority = ["attr", "env_prefix", "config", "top_package", "workspace", "package", "crate"]
+
+[overrides]
+# ssbusync = "hdr"

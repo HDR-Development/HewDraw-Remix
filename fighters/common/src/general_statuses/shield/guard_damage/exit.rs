@@ -11,7 +11,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
     if !fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         fighter.clear_commands(CatHdr::Parry);
         
-        ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+        InputModule::reset_command_life_count_max(fighter.battle_object);
 
         return;
     }
@@ -28,7 +28,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
     }
     fighter.off_flag(*FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
 
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    InputModule::reset_command_life_count_max(fighter.battle_object);
     InputModule::disable_persist(fighter.battle_object);
 }
 

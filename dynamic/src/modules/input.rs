@@ -71,6 +71,12 @@ extern "Rust" {
 
     #[link_name = "InputModule__get_analog_for_guard"]
     fn InputModule__get_analog_for_guard(object: *mut BattleObject) -> f32;
+
+    #[link_name = "InputModule__set_command_life_count_max"]
+    fn InputModule__set_command_life_count_max(object: *mut BattleObject, lifetime: u32);
+
+    #[link_name = "InputModule__reset_command_life_count_max"]
+    fn InputModule__reset_command_life_count_max(object: *mut BattleObject);
 }
 
 /// An additional module to be used with Smash's `BattleObject` class. This handles manipulating and adjusting hold buffer
@@ -257,5 +263,18 @@ pub mod InputModule {
     /// The frame count until the input will no longer be valid
     pub fn get_command_life(object: *mut BattleObject, category: i32, flag: i32) -> u8 {
         unsafe { InputModule__get_command_life(object, category, flag) }
+    }
+
+    /// Sets the global tap buffer lifetime
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `lifetime` - The maximum number of frames tap buffer is enabled for.
+    pub fn set_command_life_count_max(object: *mut BattleObject, lifetime: u32) {
+        unsafe { InputModule__set_command_life_count_max(object, lifetime) }
+    }
+
+    /// Resets the global tap buffer lifetime to its default value (`precede` param defined in common.prc)
+    pub fn reset_command_life_count_max(object: *mut BattleObject) {
+        unsafe { InputModule__reset_command_life_count_max(object) }
     }
 }

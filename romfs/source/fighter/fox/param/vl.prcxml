@@ -44,7 +44,7 @@
       <float hash="fire_rush_brake">0.114</float>
       <float hash="fire_crush_x_mul">0.8</float>
       <float hash="fire_fall_x_mul">0.85</float>
-      <int hash="fire_landing_frame">22</int>
+      <int hash="fire_landing_frame">20</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

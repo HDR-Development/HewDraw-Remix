@@ -77,7 +77,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="sjump_ar_vy0">2.5</float>
-      <float hash="sjump_landing_frame">26</float>
+      <float hash="sjump_landing_frame">24</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

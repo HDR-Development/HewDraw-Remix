@@ -193,7 +193,7 @@ pub mod vars {
 
             pub const DOWN_DISABLE_PASSIVE: i32 = 0x006B;
 
-            pub const DOWN_DISABLE_A_LAND: i32 = 0x006C;
+            // pub const DOWN_DISABLE_A_LAND: i32 = 0x006C;
 
             pub const IS_KILLING_BLOW: i32 = 0x006D;
 
@@ -239,6 +239,7 @@ pub mod vars {
             pub const PREV_STATUS_TRANSITION_FRAME: i32 = 0x0013;
 
             pub const ATTACK_LR_CHECK: i32 = 0x0014;
+            // pub const PREVIOUS_FRAME_FRAMES_IN_AIR: i32 = 0x0015;
 
             // floats
 

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nxo64"
+version = "0.0.2"
+authors = [
+    { name = "ReSwitched Team" },
+    { name = "TSRBerry" },
+]
+description = "Library for reading NSO / NRO files"
+readme = "README.md"
+requires-python = ">=2.7"
+license = "ISC"
+dependencies = [
+    "lz4~=2.2.1; python_version < '3'",
+    "lz4~=4.0.2; python_version >= '3'",
+    "aenum~=3.1.15; python_version < '3.4'"
+]
+classifiers = [
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://codeberg.org/TSRBerry/nxo64"
+ReSwitched = "https://github.com/reswitched"
+
+[tool.hatch.build]
+only-packages = true
+include = [
+  "nxo64/",
+]

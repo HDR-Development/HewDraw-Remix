@@ -53,7 +53,7 @@
     <struct index="0">
       <float hash="speed_y">3.0</float>
       <float hash="warp_speed_add">1</float>
-      <float hash="special_hi_landing_frame">32</float>
+      <float hash="special_hi_landing_frame">30</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

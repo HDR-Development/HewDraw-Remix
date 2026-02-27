@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <int hash="precede">5</int>
+  <!-- THIS 'precede' PARAM IS NOW IGNORED BY THE GAME -->
+  <!-- To change global tap buffer length, use the one defined in hdr/param/common.xml instead -->
+  <int hash="precede">3</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
   <float hash="stop_over_speed_brake_mul">1</float>
@@ -68,17 +70,25 @@
   <float hash="hit_stop_delay_auto_mul">2.5</float>
   <float hash="damage_reaction_mul_max">1</float>
   <list hash="pattern_power_mul">
-    <hash40 index="0">dummy</hash40>
-    <hash40 index="1">dummy</hash40>
-    <float index="2">0.075</float>
-    <float index="3">0.060</float>
-    <float index="4">0.045</float>
-    <float index="5">0.030</float>
-    <float index="6">0.015</float>
-    <float index="7">0.00</float>
-    <float index="8">0.00</float>
-    <float index="9">0.00</float>
+    <!-- the mul at index 0 is the freshness bonus multiplier minus one -->
+    <!-- for example, <float index="0">0.05</float> denotes a 1.05x freshness bonus -->
+    <!-- set to zero to disable the freshness bonus -->
+    <float index="0">0.05</float>
+    <!-- these are the stale move reduction factors -->
+    <!-- all slots in total = 0.54, meaning a move in all 9 slots has its damage reduced by 54% -->
+    <float index="1">0.10</float>
+    <float index="2">0.09</float>
+    <float index="3">0.08</float>
+    <float index="4">0.07</float>
+    <float index="5">0.06</float>
+    <float index="6">0.05</float>
+    <float index="7">0.04</float>
+    <float index="8">0.03</float>
+    <float index="9">0.02</float>
   </list>
+  <!-- shield_pattern_power_mul is an additional scalar to the stale queue position when a move is used on shield -->
+  <!-- we set it to 1.0x so that hitting a shield is no less punishing than hitting a fighter, for parity -->
+  <float hash="shield_pattern_power_mul">1.0</float> 
   <float hash="attack_s3_stick_x">0.2</float>
   <float hash="attack_s3_stick_dir_hi">0.2</float>
   <float hash="attack_s3_stick_dir_lw">-0.2</float>

@@ -59,7 +59,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="accel_y">0.00035</float>
-      <float hash="landing_frame">22</float>
+      <float hash="landing_frame">20</float>
       <float hash="start_xmul">0.5</float>
       <float hash="attack_speed">3.5</float>
       <float hash="attack_brake">0.08</float>
