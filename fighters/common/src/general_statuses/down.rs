@@ -45,7 +45,7 @@ unsafe fn status_pre_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
         true,
         *FIGHTER_TREADED_KIND_DISABLE,
         false,
-        false,  // false = can be grabbed
+        true,
         false,
         0,
         *FIGHTER_STATUS_ATTR_SLOPE_TOP_UNLIMIT as u32,
@@ -78,42 +78,11 @@ unsafe fn status_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
 
-    // Input lag forgiveness mechanic:
-    // Allow teching during first 2 frames of knockdown
-    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_PASSIVE) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB);
-    }
-
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_Down_Main as *const () as _))
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Down_Main)]
 unsafe fn status_Down_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
-        // Input lag forgiveness mechanic:
-        // Allow teching during first 2 frames of knockdown
-        if fighter.sub_AirChkPassive_for_damage().get_bool() {
-            return 1.into();
-        }
-
-        // Input lag forgiveness mechanic:
-        // Allow A-landing during first 2 frames of knockdown
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FALL
-        && !VarModule::is_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_A_LAND) {
-            if fighter.is_button_trigger(Buttons::AttackAll)
-            || fighter.is_button_trigger(Buttons::TiltAttack) {
-                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
-                return 1.into();
-            }
-        }
-    }
-    else {
-        // Ignore grabs after f2
-        HitModule::set_check_catch(fighter.module_accessor, false, 0);
-    }
-
     fighter.sub_down_common();
 
     0.into()
@@ -125,25 +94,7 @@ unsafe fn status_end_Down(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PIT_FALL_TO_DOWN);
     }
 
-    if [*FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_PASSIVE,
-        *FIGHTER_STATUS_KIND_PASSIVE_FB,
-        *FIGHTER_STATUS_KIND_PASSIVE_WALL,
-        *FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP,
-        *FIGHTER_STATUS_KIND_PASSIVE_CEIL,
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED
-    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_crown"), true, true);
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_down_smoke"), true, true);
-
-        ControlModule::stop_rumble_kind(fighter.module_accessor, Hash40::new("rbkind_down"), *BATTLE_OBJECT_ID_INVALID as u32);
-        ControlModule::stop_rumble_kind(fighter.module_accessor, Hash40::new("rbkind_collide"), *BATTLE_OBJECT_ID_INVALID as u32);
-        CameraModule::stop_quake(fighter.module_accessor, *CAMERA_QUAKE_KIND_S);
-        CameraModule::stop_quake(fighter.module_accessor, *CAMERA_QUAKE_KIND_M);
-    }
-
     VarModule::off_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_PASSIVE);
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::DOWN_DISABLE_A_LAND);
 
     0.into()
 }

@@ -6,6 +6,9 @@ use utils::game_modes::CustomMode;
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+    // NOPs fighter_handle_damage setting the airtime counter to 0 frames on hit in air.
+    // This is so the ECB diamond will not reset when getting hit in the air (same as melee)
+    skyline::patching::Patch::in_text(0x63251c).nop();
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -487,7 +490,7 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
             if fighter.sub_DamageFlyChkUniq().get_bool() {
                 return true.into();
             }
-            if fighter.global_table[CURRENT_FRAME].get_i32() > 3 && !VarModule::is_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER) {
+            if fighter.global_table[CURRENT_FRAME].get_i32() > 1 && !VarModule::is_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER) {
                 ControlModule::reset_trigger(fighter.module_accessor);
                 VarModule::on_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER);
             }
@@ -673,13 +676,11 @@ unsafe fn ftStatusUniqProcessDamage_init(fighter: &mut L2CFighterCommon, arg2: L
     // Reduce buffer during non-tumble kb
     if level == *DAMAGE_LEVEL_2 {
         let damage_level2_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level2_precede");
-        let dif = precede - damage_level2_precede;
-        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        InputModule::set_command_life_count_max(fighter.battle_object, damage_level2_precede as u32);
     }
     else if level == *DAMAGE_LEVEL_3 {
         let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
-        let dif = precede - damage_level3_precede;
-        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        InputModule::set_command_life_count_max(fighter.battle_object, damage_level3_precede as u32);
     }
 }
 
@@ -717,13 +718,11 @@ unsafe fn ftStatusUniqProcessDamageAir_init(fighter: &mut L2CFighterCommon, arg2
     // Reduce buffer during non-tumble kb
     if level == *DAMAGE_LEVEL_2 {
         let damage_level2_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level2_precede");
-        let dif = precede - damage_level2_precede;
-        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        InputModule::set_command_life_count_max(fighter.battle_object, damage_level2_precede as u32);
     }
     else if level == *DAMAGE_LEVEL_3 {
         let damage_level3_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "damage_level3_precede");
-        let dif = precede - damage_level3_precede;
-        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        InputModule::set_command_life_count_max(fighter.battle_object, damage_level3_precede as u32);
     }
 }
 
@@ -749,7 +748,7 @@ unsafe fn status_DamageAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_damage_uniq_process_exit)]
 unsafe fn sub_damage_uniq_process_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    InputModule::reset_command_life_count_max(fighter.battle_object);
 
     original!()(fighter)
 }

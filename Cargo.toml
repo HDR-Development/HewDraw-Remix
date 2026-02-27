@@ -8,11 +8,15 @@ version = "0.0.0-dev"
 authors = ["HDR Development Team"]
 edition = "2021"
 
+[workspace.metadata.symbaker]
+prefix = "hdr"
+
 [workspace.dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -227,6 +231,7 @@ runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false, features = ["disabler-symbol"] }
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
 hash40 = "1.2.0"

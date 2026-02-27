@@ -127,6 +127,8 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 pub unsafe fn sys_line_system_control_fighter_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Reserved for common OPFF to be placed on exec status
     // rather than main status (default behavior)
+    // other::fighter_frame_in_air_inc_ensure(fighter); // fighter_common_opff runs multiple times per frame when
+    //                                                  // transitioning between states, so this is placed here instead.
     decrease_knockdown_bounce_heights(fighter);
     left_stick_flick_counter(fighter);
     right_stick_flick_counter(fighter);

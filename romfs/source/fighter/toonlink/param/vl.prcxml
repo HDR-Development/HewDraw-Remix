@@ -37,7 +37,7 @@
       <float hash="rslash_air_gravity_y_mul">0.53</float>
       <float hash="rslash_air_accel_x_mul">0.01</float>
       <float hash="rslash_air_max_x_mul">0.6</float>
-      <int hash="rslash_landing_frame">32</int>
+      <int hash="rslash_landing_frame">30</int>
       <float hash="rslash_end_air_accel_x_mul">0.05</float>
       <float hash="rslash_end_air_max_x">0.6</float>
       <float hash="rslash_fall_special_accel_x_mul">0.05</float>

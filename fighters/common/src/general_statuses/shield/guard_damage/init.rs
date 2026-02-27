@@ -78,10 +78,9 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         
         ShieldModule::set_status(boma, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
         ControlModule::clear_command(boma, false);
-        let precede = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("precede"));
+
         let guard_damage_precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "guard_damage_precede");
-        let dif = precede - guard_damage_precede;
-        ControlModule::set_command_life_extend(fighter.module_accessor, u8::MAX - dif as u8);
+        InputModule::set_command_life_count_max(fighter.battle_object, guard_damage_precede as u32);
     } 
 
     let setoff_speed_mul = fighter.get_param_float("common","shield_setoff_speed_mul");

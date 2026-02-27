@@ -393,19 +393,26 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK) {
                 return;
             }
-        } else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK) {
-            return;
         }
-        let unables = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW
-        ];
-        for x in unables.iter() {
-            WorkModule::unable_transition_term(fighter.module_accessor, *x);
+        else {
+            // Ensures tapping Attack button at any point during jumpsquat
+            // will buffer an aerial
+            FighterControlModuleImpl::reserve_on_attack_button(fighter.module_accessor);
+
+            if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK) {
+                return;
+            }
+            let unables = [
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW
+            ];
+            for x in unables.iter() {
+                WorkModule::unable_transition_term(fighter.module_accessor, *x);
+            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
         }
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     }
 }
 

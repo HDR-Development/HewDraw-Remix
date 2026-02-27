@@ -36,7 +36,7 @@
       <float hash="special_hi_jet_ang_f_max">0.75</float>
       <float hash="special_hi_jet_start_spd_y">3.05</float>
       <float hash="special_hi_jet_start_spd_y_mul">0.021</float>
-      <int hash="special_hi_landing_frame">26</int>
+      <int hash="special_hi_landing_frame">24</int>
       <float hash="special_hi_ground_hit_explosion_gap">50</float>
       <float hash="special_hi_ground_hit_explosion_gap_wall">100</float>
     </struct>

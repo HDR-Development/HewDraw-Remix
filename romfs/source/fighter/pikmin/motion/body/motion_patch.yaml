@@ -47,68 +47,68 @@ guard_off:
 passive:
   extra:
     xlu_end: 21
-    cancel_frame: 29
+    cancel_frame: 27
 passive_stand_f:
   extra:
     xlu_end: 21
-    cancel_frame: 43
+    cancel_frame: 41
 passive_stand_b:
   extra:
     xlu_end: 21
-    cancel_frame: 43
+    cancel_frame: 41
 down_stand_u:
   extra:
     xlu_end: 23
-    cancel_frame: 33
+    cancel_frame: 31
 down_stand_d:
   extra:
     xlu_end: 23
-    cancel_frame: 33
+    cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 52
+    cancel_frame: 50
 down_attack_d:
   extra:
-    cancel_frame: 52
+    cancel_frame: 50
 down_forward_u:
   extra:
-    cancel_frame: 38
+    cancel_frame: 36
 down_forward_d:
   extra:
-    cancel_frame: 38
+    cancel_frame: 36
 down_back_u:
   extra:
-    cancel_frame: 38
+    cancel_frame: 36
 down_back_d:
   extra:
-    cancel_frame: 38
+    cancel_frame: 36
 cliff_climb_quick:
   extra:
-    xlu_end: 35
-    cancel_frame: 37
+    xlu_end: 33
+    cancel_frame: 35
 cliff_attack_quick:
   extra:
-    cancel_frame: 58
+    cancel_frame: 56
 cliff_escape_quick:
   extra:
     xlu_end: 31
-    cancel_frame: 52
+    cancel_frame: 50
 cliff_jump_quick1:
   extra:
     xlu_end: 17
 slip_stand:
   extra:
     xlu_end: 18
-    cancel_frame: 24
+    cancel_frame: 22
 slip_attack:
   extra:
-    cancel_frame: 52
+    cancel_frame: 50
 slip_escape_f:
   extra:
-    cancel_frame: 31
+    cancel_frame: 29
 slip_escape_b:
   extra:
-    cancel_frame: 31
+    cancel_frame: 29
 jump_squat:
   blend_frames: 0
   animations:
