@@ -9,7 +9,7 @@ unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.625);
+    FT_MOTION_RATE(agent, 0.5);
     frame(lua_state, 9.0);
     FT_MOTION_RATE(agent, 2.5);
     if is_excute(agent) {

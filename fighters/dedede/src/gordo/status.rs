@@ -1,6 +1,13 @@
 use super::*;
 use globals::*;
 
+unsafe extern "C" fn fall_pre(weapon: &mut L2CWeaponCommon) -> L2CValue{
+    KineticModule::change_kinetic(weapon.module_accessor, *WEAPON_KINETIC_TYPE_DEDEDE_GORDO_THROW); //enables gravity
+    StatusModule::change_status_force(weapon.module_accessor, *WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP, true); 
+
+    0.into()
+}
+
 unsafe extern "C" fn dead_end(weapon: &mut L2CWeaponCommon) -> L2CValue{
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_DEDEDE{
@@ -11,5 +18,7 @@ unsafe extern "C" fn dead_end(weapon: &mut L2CWeaponCommon) -> L2CValue{
 }
 
 pub fn install(agent: &mut Agent){
+    agent.status(Pre, *WEAPON_DEDEDE_GORDO_STATUS_KIND_FALL, fall_pre);
+
     agent.status(End, *WEAPON_DEDEDE_GORDO_STATUS_KIND_DEAD, dead_end);
 }

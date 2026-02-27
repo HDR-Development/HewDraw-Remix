@@ -85,7 +85,7 @@ throw_f:
     cancel_frame: 31
 throw_b:
   extra:
-    cancel_frame: 40
+    cancel_frame: 35
 throw_lw:
   extra:
     cancel_frame: 41
@@ -182,7 +182,7 @@ attack_s3_lw:
       no_stop_intp: false
 attack_air_f:
   extra:
-    cancel_frame: 37
+    cancel_frame: 38
 catch:
   flags:
     move: false
