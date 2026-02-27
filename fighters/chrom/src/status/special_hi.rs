@@ -21,7 +21,7 @@ pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, 
     let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
     let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
     let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-    
+
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, 
     sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * speed_x_max_mul, 0.0);
     WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
     WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
-    
+
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_FALL_SPECIAL]) {
         return;
     }
@@ -60,7 +60,7 @@ pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, 
     let max_y_param = if (status_kind == statuses::chrom::SPECIAL_HI_DIVE) { hash40("air_speed_y_stable") } else { hash40("dive_speed_y") };
     let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, max_y_param, 0);
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[1];
+    let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).y();
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let flip_speed_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_speed_y_mul");
@@ -168,7 +168,7 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
             fighter.sub_change_kinetic_type_by_situation(FIGHTER_KINETIC_TYPE_MOTION.into(), FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE.into());
             fighter.sub_set_ground_correct_by_situation(true.into());
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        }        
+        }
         if MotionModule::is_end(fighter.module_accessor) {
             let new_status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL } else { FIGHTER_STATUS_KIND_FALL_SPECIAL };
             let accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
@@ -198,7 +198,7 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
     // && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
     //     VarModule::on_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_AERIAL_CANCEL_ENABLE);
     // }
-    
+
     return 0.into();
 }
 
@@ -206,7 +206,7 @@ pub unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CV
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE_CHROM) {
         let move_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as *mut smash::app::KineticEnergy;
         let move_speed_y = lua_bind::KineticEnergy::get_speed_y(move_energy);
-        let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).value[1];
+        let motion_y: f32 = MotionModule::trans_move_speed(fighter.module_accessor).y();
 
         //If rising via motion, or triggered via acmd...
         if motion_y > 0.0 || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_TRANS_JUMP) {
@@ -324,7 +324,7 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
     if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE) {
         // Aerial cancels
         // if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_AERIAL_CANCEL_ENABLE)
-        // && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR 
+        // && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR
         // && !fighter.is_in_hitlag()
         // && fighter.get_aerial() != None {
         //     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
@@ -376,7 +376,7 @@ pub unsafe extern "C" fn special_hi_3_attack(fighter: &mut L2CFighterCommon, par
 }
 
 pub unsafe extern "C" fn special_hi_3_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_CONTINUE_MOT);  
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_CONTINUE_MOT);
     special_hi_common_init(fighter, statuses::chrom::SPECIAL_HI_DIVE);
     0.into()
 }
@@ -386,7 +386,7 @@ pub unsafe extern "C" fn special_hi_3_main(fighter: &mut L2CFighterCommon) -> L2
     let landing_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.dive_landing_frame");
     WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     fighter.select_cliff_hangdata_from_name("special_hi");
-    
+
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_3_main_loop as *const () as _))
 }
 
@@ -399,7 +399,7 @@ pub unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) 
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             // Don't transition to Hi4 if Chrom used his spin final hit
             let dive_hi4_max_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.dive_hi4_max_frame");
-            let new_status = if is_spinning || MotionModule::frame(fighter.module_accessor) < dive_hi4_max_frame 
+            let new_status = if is_spinning || MotionModule::frame(fighter.module_accessor) < dive_hi4_max_frame
             { FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_4 } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL };
             fighter.change_status(new_status.into(), false.into());
             return 1.into();
@@ -417,7 +417,7 @@ pub unsafe extern "C" fn special_hi_3_main_loop(fighter: &mut L2CFighterCommon) 
         && motion_frame >= end_frame - 2.0;
 
         if manual_transition || auto_transition {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_CONTINUE_MOT); 
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_CONTINUE_MOT);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_2"), 0.0, 1.0, false, 0.0, false, false);
         }
     }
