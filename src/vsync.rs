@@ -40,11 +40,11 @@ pub fn setup_ssbu_sync() {
 // }
 
 // if ssbusync::SyncEnv::ALLOW_BUFFER_SWAP() {
-        //     let player_count = count_active_players(instance);
-        //     crate::set_doubles_delay(player_count);
-        //     ssbusync::Check_Buffer_Swap();
-        // }
-        
-        // if  ssbusync::SyncEnv::online_only() {
-        //     EmuNetplay::check_online_fix_emu();
-        // }
+//     let player_count = count_active_players(instance);
+//     crate::set_doubles_delay(player_count);
+//     ssbusync::Check_Buffer_Swap();
+// }
+
+// if  ssbusync::SyncEnv::online_only() {
+//     EmuNetplay::check_online_fix_emu();
+// }
