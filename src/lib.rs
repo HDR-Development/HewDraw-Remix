@@ -39,6 +39,8 @@ mod online;
 #[cfg(feature = "main_nro")]
 mod matchup;
 
+pub mod vsync;
+
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -160,7 +162,7 @@ unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x235cad0, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x300);
+    let sp = ctx.sp.x() as *mut u8;
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
     let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
     slice.copy_from_slice(b"MenuSequenceScene\0");
@@ -350,6 +352,7 @@ unsafe fn copy_fighter_info(
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
+        vsync::setup_ssbu_sync();
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();

@@ -49,7 +49,7 @@
       <float hash="end_brake_x">0.1</float>
       <float hash="end_accel_y">0.1</float>
       <float hash="crush_angle">999.0</float>
-      <int hash="landing_frame">32</int>
+      <int hash="landing_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

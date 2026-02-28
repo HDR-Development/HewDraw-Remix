@@ -34,8 +34,8 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="landing_frame_faile">31</float>
-      <float hash="0x1548c529ef">31</float>
+      <float hash="landing_frame_faile">29</float>
+      <float hash="0x1548c529ef">29</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -47,7 +47,7 @@
       <int hash="rush_brake_frame">12</int>
       <float hash="rush_end_speed_rate_x">0.15</float>
       <float hash="rush_end_speed_rate_y">0.15</float>
-      <int hash="landing_frame">42</int>
+      <int hash="landing_frame">40</int>
       <float hash="rush_angle">170</float>
     </struct>
     <hash40 index="1">dummy</hash40>

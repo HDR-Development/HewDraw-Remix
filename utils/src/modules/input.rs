@@ -140,6 +140,7 @@ pub struct InputModule {
     hold_all_frame_max: i32,
     trigger_count: [usize; 32],
     release_count: [usize; 32],
+    command_life_count_max: i32,
 }
 
 impl InputModule {
@@ -164,7 +165,8 @@ impl InputModule {
             hold_all: false,
             hold_all_frame_max: -1,
             trigger_count: [usize::MAX; 32],
-            release_count: [usize::MAX; 32]
+            release_count: [usize::MAX; 32],
+            command_life_count_max: -1
         }
     }
 
@@ -414,6 +416,21 @@ impl InputModule {
         };
         return cats[category as usize].lifetimes_mut()[flag.trailing_zeros() as usize];
     }
+
+    /// Sets the global tap buffer lifetime
+    /// # Arguments
+    /// * `object` - Owning `BattleObject` instance
+    /// * `lifetime` - The maximum number of frames tap buffer is enabled for
+    #[export_name = "InputModule__set_command_life_count_max"]
+    pub fn set_command_life_count_max(object: *mut BattleObject, lifetime: u32) {
+        require_input_module!(object).command_life_count_max = lifetime as i32;
+    }
+
+    /// Resets the global tap buffer lifetime to its default value (`precede` param defined in common.prc)
+    #[export_name = "InputModule__reset_command_life_count_max"]
+    pub fn reset_command_life_count_max(object: *mut BattleObject) {
+        require_input_module!(object).command_life_count_max = -1;
+    }
 }
 
 #[repr(C)]
@@ -515,6 +532,21 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             (*input_module.owner).module_accessor,
         ))
     };
+
+    // Allows us to control the length of tap buffer situationally
+    let control_module =
+        unsafe { *((*input_module.owner).module_accessor as *const u64).add(0x48 / 8) };
+    let inner_object = unsafe { *(control_module as *const u64).add(0x140 / 8) };
+    let command_life_max = unsafe { &mut *(inner_object as *mut u32).add(2) };
+    let tap_buffer = input_module.command_life_count_max;
+    let precede = unsafe {
+        if tap_buffer == -1 {
+            ParamModule::get_int(&mut (*input_module.owner), ParamType::Common, "precede")
+        } else {
+            tap_buffer
+        }
+    };
+    *command_life_max = precede as u32;
 
     unsafe {
         // Allow Aidou with only A button held

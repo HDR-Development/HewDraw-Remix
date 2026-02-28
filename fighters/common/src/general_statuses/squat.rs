@@ -25,6 +25,6 @@ pub unsafe fn fl_get_squat_walk_max_speed_hook(fighter: &mut L2CFighterCommon) -
     };
 
     let unique_speed_max_mul = if fighter.kind() == *FIGHTER_KIND_KOOPA { 0.75 } else { 1.0 };
-    let speed_max = squat_walk_speed_max * squat_walk_speed_max * unique_speed_max_mul;
+    let speed_max = squat_walk_speed_max * squat_walk_speed_max_mul * unique_speed_max_mul;
     return speed_max.into();
 }

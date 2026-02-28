@@ -19,7 +19,7 @@ unsafe extern "C" fn move_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     || (zelda_boma.is_button_trigger(Buttons::Attack) && !zelda_boma.is_button_trigger(Buttons::CStickOn))
     {
         weapon.change_status(WEAPON_ZELDA_DEIN_STATUS_KIND_TAME.into(), false.into())
-    } 
+    }
     //hold to keep dins out w/o moving
     if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32)
     || weapon.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_LIFE) < 0.0 {
@@ -61,7 +61,7 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
     let dein2_boma = &mut *(*dein2_battle_object).module_accessor;
     //Dins existence checks, applicable refreshes and variable settings
     if sv_battle_object::is_active(dein as u32) && dein != 0 {
-        if sv_battle_object::is_active(dein2 as u32) && dein2 != 0{ 
+        if sv_battle_object::is_active(dein2 as u32) && dein2 != 0{
             //if both dins slots are full, shuffle slots and kill first dins
             VarModule::set_int(zelda, vars::zelda::instance::SPECIAL_S_DEIN_OBJECT_ID, dein2);
             VarModule::set_int(zelda, vars::zelda::instance::SPECIAL_S_DEIN_OBJECT_ID_2, thisdins);
@@ -99,7 +99,7 @@ pub unsafe extern "C" fn dein_remove(weapon: &mut smash::lua2cpp::L2CFighterBase
     LAST_EFFECT_SET_SCALE_W(weapon, 0.67, 0.4, 0.67);
     let team_color = FighterUtil::get_team_color(zelda_boma);
     let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-    EffectModule::set_rgb_partial_last(weapon.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+    EffectModule::set_rgb_partial_last(weapon.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
 }
 
 unsafe extern "C" fn dins_detonate(weapon: &mut L2CWeaponCommon) -> L2CValue {
@@ -156,7 +156,7 @@ pub unsafe extern "C" fn detonate_conditions(weapon: &mut smash::lua2cpp::L2CFig
     let dein2_pos = *PostureModule::pos(dein2_boma);
     //calc distance
     let diff_dein1: &Vector2f = &Vector2f::new( dein2_pos.x - dein1_pos.x, dein2_pos.y - dein1_pos.y);
-    //dins size, hold frames 
+    //dins size, hold frames
     let hold_frame_max = zelda_boma.get_param_float("param_dein", "count");
     let hold_frame = dein1_boma.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
     let base_detonate_range = ParamModule::get_float(zelda, ParamType::Agent, "param_special_s.base_detonate_range");
@@ -165,7 +165,7 @@ pub unsafe extern "C" fn detonate_conditions(weapon: &mut smash::lua2cpp::L2CFig
     //explode timer && current frame
     let mine_timer = zelda_boma.get_param_float("param_dein", "bang_time");
     let frame = dein1_boma.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_LIFE); //frames till explosion
-    if diff_dein1.x.abs() <= pop_distance 
+    if diff_dein1.x.abs() <= pop_distance
     && diff_dein1.y.abs() <= pop_distance
     && frame > (mine_timer - 146.0) {
         //if conditions satisfied for detonate

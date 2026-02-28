@@ -114,6 +114,38 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// TODO: enable if needed
+// Fixes an issue where airtime can be undercounted by 1 frame in certain situations, such as during hitlag
+// pub unsafe fn fighter_frame_in_air_inc_ensure(fighter: &mut L2CFighterCommon) {
+//     let mut current_air_frames: i32 = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+//     let previous_air_frames: i32 = VarModule::get_int(fighter.battle_object, vars::common::instance::PREVIOUS_FRAME_FRAMES_IN_AIR);
+//     // println!("[{}] AIRTIME: {}", (*fighter.battle_object).get_player_idx_from_boma(), current_air_frames);
+//     // println!("[{}] PREV AIRTIME: {}", (*fighter.battle_object).get_player_idx_from_boma(), previous_air_frames);
+//     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+//         // see: fighters/common/src/function_hooks/lua_bind_hook/status.rs
+//         if !(*fighter.module_accessor).is_prev_status_one_of(&[
+//             *FIGHTER_STATUS_KIND_DEMO,
+//             *FIGHTER_STATUS_KIND_ENTRY,
+//             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+//             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+//             *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+//             *FIGHTER_STATUS_KIND_THROWN,
+//             *FIGHTER_STATUS_KIND_CATCHED_GANON,
+//             *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+//             *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+//             *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+//             *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+//             *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD]) {
+//             if (previous_air_frames == current_air_frames) {
+//                 current_air_frames += 1;
+//                 // println!("[{}] INCREMENTING MISSED AIRTIME! NEW AIRTIME: {}", (*fighter.battle_object).get_player_idx_from_boma(), current_air_frames);
+//                 WorkModule::set_int(fighter.module_accessor, current_air_frames, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+//             }
+//         }
+//     }
+//     VarModule::set_int(fighter.battle_object, vars::common::instance::PREVIOUS_FRAME_FRAMES_IN_AIR, current_air_frames);
+// }
+
 pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     if ( (fighter.kind() == *FIGHTER_KIND_KIRBY
             && fighter.is_motion(Hash40::new("throw_f")))

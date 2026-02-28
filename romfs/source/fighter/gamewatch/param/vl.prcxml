@@ -59,7 +59,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="landing_frame">42</float>
+      <float hash="landing_frame">40</float>
       <float hash="pass_speed_mul">0.75</float>
     </struct>
     <hash40 index="1">dummy</hash40>

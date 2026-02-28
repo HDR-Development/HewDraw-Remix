@@ -1,6 +1,7 @@
 use super::*;
 use ninput::*;
 use parking_lot::RwLock;
+use crate::vsync::SsbuSync;
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
@@ -161,6 +162,32 @@ impl ControllerExt for PortController {
     }
 }
 
+unsafe fn count_active_players(instance: CharaSelect) -> i32 {
+    let mut active_players = 0;
+
+    // Walk the known player-info array; 
+    let mut addr = instance.player_base;
+    for i in 0..8 {
+        if addr as u64 == instance.player_max as u64 {
+            break;
+        }
+        let player = (instance.player_base as u64 + (i * 0x10)) as *const PlayerInfo;
+        if player.is_null() {
+            break;
+        }
+        let card = (*player).card;
+        if !card.is_null() {
+            let is_player_or_cpu = (*card).player_kind == 0 || (*card).player_kind == 1;
+            if is_player_or_cpu {
+                active_players += 1;
+            }
+        }
+        addr = (addr as u64 + 0x10) as *const PlayerInfo;
+    }
+
+    active_players
+}
+
 // this function loops while the css is active, allowing for runtime operations
 #[skyline::hook(offset = 0x1a2b570)]
 unsafe fn css_main_loop(arg: *const CharaSelect) {
@@ -175,12 +202,25 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             if instance.max_players_allowed != 8 || instance.local_wireless != 0 {
                 data.enable_swap = false;
                 println!("Port swapping is disabled.");
+                
                 return original!()(arg);
             }
-
             println!("Port swapping is enabled!");
             data.enable_swap = true;
             data.root_card = instance.first_player as u64;
+        }
+        
+        // TODO: implement buffer swap for >2 players
+        // if SsbuSync::ALLOW_BUFFER_SWAP() {
+        //     let player_count = count_active_players(instance);
+        //     crate::set_doubles_delay(player_count);
+        //     ssbusync::Check_Buffer_Swap();
+        // }
+        
+        // TODO: is this really the best way to check for online gamemodes?
+        let is_online = (instance.max_players_allowed != 8 || instance.local_wireless != 0);
+        if  SsbuSync::SyncEnv::online_only() {
+            SsbuSync::online::ToggleOnlineFix(is_online);
         }
 
         if !data.enable_swap || instance.ready_state != 0 {

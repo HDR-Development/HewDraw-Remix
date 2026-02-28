@@ -7,17 +7,17 @@ use vars::robot::{
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI
 
-unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue { 
+unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true, 
+        true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT, 
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
         0
     );
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -99,7 +99,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -start_accel_y);
         }
     }
-    
+
     // defines fuel consumption throughout the move
     let start_fuel = fighter.get_float(*FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
     let max_fuel = fighter.get_param_float("param_special_hi", "energy_max_frame");
@@ -111,7 +111,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     // handles rob's rotation during the charge
     let rot_x = VarModule::get_float(fighter.battle_object, SPECIAL_HI_ROT_X);
     let rot_amount = if fighter.is_situation(*SITUATION_KIND_AIR) { 2.5 } else {3.75}; // how much rob rotates each frame
-    if fighter.left_stick_x().abs() > 0.1 {   
+    if fighter.left_stick_x().abs() > 0.1 {
         let reverse = if fighter.is_stick_backward() { -1.0 } else { 1.0 };
         let direction = fighter.lr() * reverse; // determines the direction to rotate
         let angle = (rot_x + (rot_amount * direction)).clamp(-60.0, 60.0);
@@ -140,7 +140,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if fighter.is_situation(*SITUATION_KIND_GROUND) && charge_frame > 28.0 {
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        
+
         KineticModule::resume_energy_all(fighter.module_accessor);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
 
@@ -162,7 +162,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if MotionModule::is_end(fighter.module_accessor) {
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        
+
         KineticModule::resume_energy_all(fighter.module_accessor);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
 
@@ -216,7 +216,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
     // launches/exits if rob ran out of fuel
     if fuel_depleted {
-        if start_fuel > 0.0 { 
+        if start_fuel > 0.0 {
             // println!("launch speed: {}", launch_speed.y);
             KineticModule::add_speed(fighter.module_accessor, &launch_speed);
         }
@@ -227,7 +227,7 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
 
         return 1.into();
-    } 
+    }
 
     // otherwise, launch with the amount of consumed fuel at the time of releasing the button
     if charge_frame >= 10.0 { // 10 frame minimum before launching
@@ -235,16 +235,16 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::add_speed(fighter.module_accessor, &launch_speed);
         fighter.set_float(remaining_fuel, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
         PLAY_SE(fighter, Hash40::new(sfx));
-    
+
         //println!("{}", launch_speed.x);
         fighter.change_status(FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP.into(), true.into());
-    
+
         return 1.into();
     }
 
     return 0.into();
 }
- 
+
 
 unsafe extern "C" fn special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_ROBOT_STATUS_BURNER_FLAG_TRANSFORM_COMP);
@@ -303,7 +303,7 @@ pub unsafe fn special_hi_guide_handler(fighter: &mut L2CFighterCommon) { // than
 
     let team_color = FighterUtil::get_team_color(fighter.module_accessor);
     let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-    EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+    EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
 }
 
 // FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP

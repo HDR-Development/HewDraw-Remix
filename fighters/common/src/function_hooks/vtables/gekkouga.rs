@@ -46,7 +46,7 @@ unsafe extern "C" fn gekkouga_on_init(vtable: u64, fighter: &mut Fighter) {
 // }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x4fbf2d8).data(gekkouga_on_init as u64);
+    let _ = skyline::patching::Patch::in_text(0x4fbf2d8).data(gekkouga_on_init as *const () as u64);
 
     // let _ = skyline::patching::Patch::in_text(0x4fbf438).data(gekkouga_on_search as u64);
 

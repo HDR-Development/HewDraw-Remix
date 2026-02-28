@@ -1107,7 +1107,8 @@ impl BomaExt for BattleObjectModuleAccessor {
         let upper_bound_y = pos.y + upper_bound_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
                 // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
-                upper_bound_offset_y
+                // plus 0.01 so an ECB perfectly parallel with ground can still snap
+                upper_bound_offset_y + 0.01
             } else {
                 // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
                 (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))

@@ -40,7 +40,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="speed_coef">0.95</float>
-      <int hash="landing_frame">32</int>
+      <int hash="landing_frame">30</int>
       <float hash="speed_x_mul">1.5</float>
       <float hash="fall_x_mul">0.6</float>
     </struct>

@@ -100,7 +100,7 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 #[skyline::hook(offset = 0xc5ce40)]
 pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {}
 
-// replace aurapower damage mul with set_power_mul_5th, to avoid influencing knockback
+// conditionally disable the lucario aurapower multiplier for collision_attr_aura, so it only affects the knockback of his specials
 #[skyline::from_offset(0x646180)]
 extern "C" fn FUN_7100646180(module_accessor: *mut BattleObjectModuleAccessor, data: &mut smash_rs::app::AttackData, param_3: u32) -> f32;
 #[skyline::hook(offset = 0xc5bac0)]
@@ -114,9 +114,8 @@ pub unsafe extern "C" fn disable_collision_attr_aura_power_mul(module_accessor: 
     };
 
     let other_mul = FUN_7100646180(module_accessor, data, param_3);
-
-    // don't disable knockback scaling for lucario's specials
     if boma.is_status_one_of(&[
+        // these statuses still use the old aurapower multiplier
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
@@ -133,11 +132,9 @@ pub unsafe extern "C" fn disable_collision_attr_aura_power_mul(module_accessor: 
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT,
     ]) {
-        AttackModule::set_power_mul_5th(module_accessor, 1.0);
         return other_mul * aurapower_mul;
     }
 
-    AttackModule::set_power_mul_5th(module_accessor, aurapower_mul);
     return other_mul;
 }
 

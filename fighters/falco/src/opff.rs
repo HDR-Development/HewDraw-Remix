@@ -17,6 +17,24 @@ unsafe fn firebird_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
+    let frame = boma.motion_frame();
+    let lr = PostureModule::lr(boma);
+
+    if boma.is_motion(Hash40::new("throw_hi"))
+    && 13.0 <= frame
+    && frame < 23.0 {
+        let rot = Vector3f::new(0.0, boma.stick_x() * lr * -20.0, 0.0);
+        boma.set_joint_rotate("clavicler", rot);
+    }
+    else if boma.is_motion(Hash40::new("throw_b"))
+    && 9.0 <= frame
+    && frame < 21.0 {
+        let rot = Vector3f::new(0.0, boma.stick_y() * -20.0, 0.0);
+        boma.set_joint_rotate("shoulderr", rot);
+    }
+}
+
 unsafe fn check_special_lw_hit(fighter: &mut L2CFighterCommon) {
     if fighter.is_flag(0x200000e0) // FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_REFLECTOR
     && (!fighter.is_status(statuses::falco::SPECIAL_LW_HIT) || fighter.motion_frame() > 10.0) {
@@ -42,6 +60,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     laser_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     firebird_startup_ledgegrab(fighter);
+    aim_throw_lasers(boma);
     check_special_lw_hit(fighter);
     fastfall_specials(fighter);
 }
