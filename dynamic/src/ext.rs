@@ -1,3 +1,5 @@
+use std::fmt;
+
 use crate::consts::{globals::*, vars};
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
@@ -7,7 +9,8 @@ use smash::app::{
 use smash::lib::{lua_const::*, *};
 use smash::lua2cpp::*;
 use smash::phx::*;
-use crate::{InputModule, VarModule};
+use crate::{InputModule, ParamModule, ParamType, VarModule};
+use crate::types::BufferSettings;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self
@@ -295,36 +298,42 @@ bitflags! {
 
     #[derive(Copy, Clone)]
     pub struct Buttons: i32 {
-        const Attack      = 0x1;
-        const Special     = 0x2;
-        const Jump        = 0x4;
-        const Guard       = 0x8;
-        const Catch       = 0x10;
-        const Smash       = 0x20;
-        const JumpMini    = 0x40;
-        const CStickOn    = 0x80;
-        const StockShare  = 0x100;
-        const AttackRaw   = 0x200;
-        const AppealHi    = 0x400;
-        const SpecialRaw  = 0x800;
-        const AppealLw    = 0x1000;
-        const AppealSL    = 0x2000;
-        const AppealSR    = 0x4000;
-        const FlickJump   = 0x8000;
-        const GuardHold   = 0x10000;
-        const SpecialRaw2 = 0x20000;
-        // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
-        // would get mapped to TiltAttack (issue #776)
-        const TiltAttack  = 0x80000;
-        const Parry = 0x100000;
-        const CStickOverride = 0x200000;
-        const RivalsWallJump = 0x400000;
-        const TreadJump = 0x800000;
-
-        const SpecialAll  = 0x20802;
-        const AttackAll   = 0x201;
-        const AppealAll   = 0x7400;
+        const Attack          = 0b_0000_0000_0000_0000_0000_0000_0000_0001;
+        const Special         = 0b_0000_0000_0000_0000_0000_0000_0000_0010;
+        const Jump            = 0b_0000_0000_0000_0000_0000_0000_0000_0100;
+        const Guard           = 0b_0000_0000_0000_0000_0000_0000_0000_1000;
+        const Catch           = 0b_0000_0000_0000_0000_0000_0000_0001_0000;
+        const Smash           = 0b_0000_0000_0000_0000_0000_0000_0010_0000;
+        const JumpMini        = 0b_0000_0000_0000_0000_0000_0000_0100_0000;
+        const CStickOn        = 0b_0000_0000_0000_0000_0000_0000_1000_0000;
+        const StockShare      = 0b_0000_0000_0000_0000_0000_0001_0000_0000;
+        const AttackRaw       = 0b_0000_0000_0000_0000_0000_0010_0000_0000;
+        const AppealHi        = 0b_0000_0000_0000_0000_0000_0100_0000_0000;
+        const SpecialRaw      = 0b_0000_0000_0000_0000_0000_1000_0000_0000;
+        const AppealLw        = 0b_0000_0000_0000_0000_0001_0000_0000_0000;
+        const AppealSL        = 0b_0000_0000_0000_0000_0010_0000_0000_0000;
+        const AppealSR        = 0b_0000_0000_0000_0000_0100_0000_0000_0000;
+        const FlickJump       = 0b_0000_0000_0000_0000_1000_0000_0000_0000;
+        const GuardHold       = 0b_0000_0000_0000_0001_0000_0000_0000_0000;
+        const SpecialRaw2     = 0b_0000_0000_0000_0010_0000_0000_0000_0000;
+        // ----------------   = 0b_0000_0000_0000_0100_0000_0000_0000_0000; // We leave a blank here because the internal control mapping will
+        const TiltAttack      = 0b_0000_0000_0000_1000_0000_0000_0000_0000; // map 1 << InputKind to the button bitfield, and so our shorthop button
+        const Parry           = 0b_0000_0000_0001_0000_0000_0000_0000_0000; // would get mapped to TiltAttack (issue #776) */
+        const CStickOverride  = 0b_0000_0000_0010_0000_0000_0000_0000_0000;
+        const RivalsWallJump  = 0b_0000_0000_0100_0000_0000_0000_0000_0000;
+        const TreadJump       = 0b_0000_0000_1000_0000_0000_0000_0000_0000;
+        const BufferStandard  = 0b_0000_0000_0000_0000_0000_0000_0000_0000; // 0x24
+        const BufferLow       = 0b_0000_0001_0000_0000_0000_0000_0000_0000;
+        const BufferNone      = 0b_0000_0010_0000_0000_0000_0000_0000_0000;
+        const SpecialAll      = 0b_0000_0000_0000_0010_0000_1000_0000_0010;
+        const AttackAll       = 0b_0000_0000_0000_0000_0000_0010_0000_0001;
+        const AppealAll       = 0b_0000_0000_0000_0000_0111_0100_0000_0000;
     }
+}
+
+pub unsafe fn get_buffer_from_controls(boma: *mut BattleObjectModuleAccessor) -> u8 {
+    let buttons: usize = (((ControlModule::get_button(boma) as u32) >> 0x24) & 0b00) as usize;
+    return BufferSettings[buttons];
 }
 
 impl Cat1 {
@@ -578,7 +587,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::CatHdr(cat) => (4, cat.bits()),
         };
 
-        crate::modules::InputModule::clear_commands(self.object(), cat, bits);
+        InputModule::clear_commands(self.object(), cat, bits);
     }
 
     unsafe fn get_command_life<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> u8 {
@@ -591,7 +600,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::CatHdr(cat) => (4, cat.bits()),
         };
 
-        return crate::modules::InputModule::get_command_life(self.object(), cat, bits);
+        return InputModule::get_command_life(self.object(), cat, bits);
     }
 
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
@@ -1086,7 +1095,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
 
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
-        if !crate::VarModule::is_flag(
+        if !VarModule::is_flag(
             self.object(),
             crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET,
         ) {
@@ -1100,9 +1109,9 @@ impl BomaExt for BattleObjectModuleAccessor {
         // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
         let upper_bound_offset_y = if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
-            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET)
+            VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET)
         } else {
-            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET)
+            VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET)
         };
         let upper_bound_y = pos.y + upper_bound_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
@@ -1110,7 +1119,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                 upper_bound_offset_y
             } else {
                 // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
-                (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+                (upper_bound_offset_y).max(ParamModule::get_float(self.object(), ParamType::Common, "waveland_distance_threshold"))
             };
         let lower_bound = Vector2f::new(pos.x, upper_bound_y - snap_leniency);
         let ground_pos_any = &mut Vector2f::zero();
@@ -1123,7 +1132,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                 && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
         );
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
-            crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
+            VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
             PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
             GroundModule::attach_ground(self, false);
             true
@@ -1238,16 +1247,16 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn check_wall_jump_cancel(&mut self) -> bool {
-        if crate::VarModule::is_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
+        if VarModule::is_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
             return false;
         }
-        crate::VarModule::on_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        VarModule::on_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.sub_transition_group_check_air_wall_jump().get_bool() {
-            crate::VarModule::on_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+            VarModule::on_flag(self.object(), vars::common::instance::SPECIAL_WALL_JUMP);
             return true;
         }
-        crate::VarModule::off_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        VarModule::off_flag(self.object(), vars::common::status::ENABLE_SPECIAL_WALLJUMP);
         false
     }
 
@@ -1334,24 +1343,24 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn select_cliff_hangdata_from_name(&mut self, name: &str) {
-        let p1_x = crate::ParamModule::get_float(
+        let p1_x = ParamModule::get_float(
             self.object(),
-            crate::ParamType::Agent,
+            ParamType::Agent,
             &format!("cliff_hang_data.{}.p1_x", name),
         );
-        let p1_y = crate::ParamModule::get_float(
+        let p1_y = ParamModule::get_float(
             self.object(),
-            crate::ParamType::Agent,
+            ParamType::Agent,
             &format!("cliff_hang_data.{}.p1_y", name),
         );
-        let p2_x = crate::ParamModule::get_float(
+        let p2_x = ParamModule::get_float(
             self.object(),
-            crate::ParamType::Agent,
+            ParamType::Agent,
             &format!("cliff_hang_data.{}.p2_x", name),
         );
-        let p2_y = crate::ParamModule::get_float(
+        let p2_y = ParamModule::get_float(
             self.object(),
-            crate::ParamType::Agent,
+            ParamType::Agent,
             &format!("cliff_hang_data.{}.p2_y", name),
         );
 
@@ -1691,6 +1700,41 @@ impl GetObjects for BattleObjectModuleAccessor {
     }
 }
 
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[repr(u8)]
+pub enum MappedOption {
+    AbSmash,
+    Buffer,
+}
+
+impl ControllerMapping {
+    pub fn get_option(
+        &self,
+        which: MappedOption,
+    ) -> u8 {
+        match which {
+            MappedOption::AbSmash => { self.extras[0] & 0b0000_0001 }
+            MappedOption::Buffer => { 
+                let option = (self.extras[0] & 0b0000_0110) >> 1;
+                println!("Input buffer option was requested! -> {}", option);
+                return option;
+            }
+        }
+    }
+
+    pub fn set_option(&mut self, which: MappedOption, value: u8) {
+        match which {
+            MappedOption::AbSmash => {
+                self.extras[0] = (self.extras[0] & !0b0000_0001) | (value & 0b0000_0001);
+            }
+            MappedOption::Buffer => {
+                self.extras[0] = (self.extras[0] & !0b0000_0110) | ((value << 1) & 0b0000_0110);
+            }
+        }
+    }
+}
+
 /// Enum for the kinds of controls that are mapped
 /// Can map any of these over any button
 #[repr(u8)]
@@ -1709,68 +1753,79 @@ pub enum InputKind {
     JumpMini = 0x12,   // this is ours :), also start at 0x12 to avoid masking errors
     TiltAttack = 0x13, // also custom, this one is for tilts!
     Parry = 0x14,      // The H man was here
+    // assuming 0x20+ will not be used in the future for the overload table below
+    // if this changes, make sure this is accounted for in relevant places.
 }
 
 /// 0x50 Byte struct containing the information for controller mappings
+/// Controls are mapped in `fighters\common\src\function_hooks\controls.rs`
+/// The menu for setting these controls are in `src\controls\submenu.rs`
 #[derive(Debug)]
 #[repr(C)]
-pub struct ControllerMapping {
-    pub gc_l: InputKind,
-    pub gc_r: InputKind,
-    pub gc_z: InputKind,
-    pub gc_dup: InputKind,
-    pub gc_dlr: InputKind,
-    pub gc_ddown: InputKind,
-    pub gc_a: InputKind,
-    pub gc_b: InputKind,
-    pub gc_cstick: InputKind,
-    pub gc_y: InputKind,
-    pub gc_x: InputKind,
-    pub gc_rumble: bool,
-    pub gc_absmash: u8,
-    pub gc_tapjump: bool,
-    pub gc_sensitivity: u8,
-    // 0xF
-    pub pro_l: InputKind,
-    pub pro_r: InputKind,
-    pub pro_zl: InputKind,
-    pub pro_zr: InputKind,
-    pub pro_dup: InputKind,
-    pub pro_dlr: InputKind,
-    pub pro_ddown: InputKind,
-    pub pro_a: InputKind,
-    pub pro_b: InputKind,
-    pub pro_cstick: InputKind,
-    pub pro_x: InputKind,
-    pub pro_y: InputKind,
-    pub pro_rumble: bool,
-    pub pro_absmash: u8,
-    pub pro_tapjump: bool,
-    pub pro_sensitivity: u8,
-    // 0x1F
-    pub joy_shoulder: InputKind,
-    pub joy_zshoulder: InputKind,
-    pub joy_sl: InputKind,
-    pub joy_sr: InputKind,
-    pub joy_up: InputKind,
-    pub joy_right: InputKind,
-    pub joy_left: InputKind,
-    pub joy_down: InputKind,
-    pub joy_rumble: bool,
-    pub joy_absmash: u8,
-    pub joy_tapjump: bool,
-    pub joy_sensitivity: u8,
-    // 0x2B
-    pub _2b: u8,
-    pub _2c: u8,
-    pub _2d: u8,
-    pub _2e: u8,
-    pub _2f: u8,
-    pub _30: u8,
-    pub _31: u8,
-    pub _32: u8,
-    pub is_absmash: bool,
-    pub _34: [u8; 0x1C],
+pub struct ControllerMapping { //     BIT OVERLOAD TABLE - what bits are used for what (and what bits are free to use)
+    //                           0x00 .=== GAMECUBE ==================================================================================================================.
+    //                                |       7       |       6       |       5       |       4       |       3       |       2       |       1       |       0       |
+    pub gc_l: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_r: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_z: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_dup: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_dlr: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_ddown: InputKind, //       |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_a: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_b: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_cstick: InputKind, //      |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_y: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_x: InputKind, //           |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub gc_rumble: bool, //           |               |               |               |               |               |               |               | gc rumble     |
+    pub gc_absmash: u8, //            |               |               |               |               |               | gc rivals wj  | gc parryinput | gc absmash    |
+    pub gc_tapjump: bool, //          |               |               |               |               |               |               |               | gc tapjump    |
+    pub gc_sensitivity: u8, //        |               |               |               |               |               |               | ------ gc sensitivity ------- |
+    //                           0x0F |=== PRO CONTROLLER ============================================================================================================|
+    //                                |       7       |       6       |       5       |       4       |       3       |       2       |       1       |       0       |
+    pub pro_l: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_r: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_zl: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_zr: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_dup: InputKind, //        |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_dlr: InputKind, //        |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_ddown: InputKind, //      |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_a: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_b: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_cstick: InputKind, //     |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_x: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_y: InputKind, //          |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub pro_rumble: bool, //          |               |               |               |               |               |               |               | pro rumble    |
+    pub pro_absmash: u8, //           |               |               |               |               |               | pro rivals wj | pro parryinpt | pro ab smash  |
+    pub pro_tapjump: bool, //         |               |               |               |               |               |               |               | pro tapjump   |
+    pub pro_sensitivity: u8, //       |               |               |               |               |               |               | ------ pro sensitivity ------ |
+    //                           0x1F |=== JOYCONS ===================================================================================================================|
+    //                                |       7       |       6       |       5       |       4       |       3       |       2       |       1       |       0       |
+    pub joy_shoulder: InputKind, //   |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_zshoulder: InputKind, //  |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_sl: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_sr: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_up: InputKind, //         |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_right: InputKind, //      |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_left: InputKind, //       |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_down: InputKind, //       |               |               |               | ----------------------------------- InputKind ------------------------------- |
+    pub joy_rumble: bool, //          |               |               |               |               |               |               |               | joy rumble    |
+    pub joy_absmash: u8, //           |               |               |               |               |               | joy rivals wj | joy parryinpt | joy ab smash  |
+    pub joy_tapjump: bool, //         |               |               |               |               |               |               |               | joy tapjump   |
+    pub joy_sensitivity: u8, //       |               |               |               |               |               |               | ------ joy sensitivity ------ |
+    //                           0x2B |=== UNKNOWN / UNUSED ? ========================================================================================================|
+    //                                |       7       |       6       |       5       |       4       |       3       |       2       |       1       |       0       |
+    pub _2b: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _2c: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _2d: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _2e: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _2f: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _30: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _31: u8, //                   |               |               |               |               |               |               |               |               |
+    pub _32: u8, //                   |               |               |               |               |               |               |               |               |
+    pub extras: [u8; 0x01], //        |               |               |               |               |               | ------- buffer option ------- | real ab smash |
+    pub _34: [u8; 0x1C], /* Note: _34.last_mut is used for the currently
+                          * commented out analog shield functionality.
+                          * See: fighters/common/src/function_hooks/controls.rs */
 }
 
 /// Controller class used internally by the game

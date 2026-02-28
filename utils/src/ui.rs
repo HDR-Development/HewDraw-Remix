@@ -344,7 +344,7 @@ fn set_vertex_colors(pane: u64, tl: [f32; 4], tr: [f32; 4], bl: [f32; 4], br: [f
 }
 
 unsafe fn get_pane_by_name(layout_view: u64, name: &str) -> [u64; 4] {
-    let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(
+    let func: extern "C" fn(u64, *const u8) -> [u64; 4] = std::mem::transmute(
         (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360),
     );
     func(layout_view, name.as_ptr())
