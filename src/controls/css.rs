@@ -212,7 +212,7 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
                 get_controls_id_from_button_id(root_layout, currently_pressing)
             {
                 if virt.pressed_y {
-                    *submenu = Some(Box::new(TopLevel { controls_id, start_button: None }));
+                    *submenu = Some(Box::new(TopLevel { controls_id }));
                     true
                 // } else if virt.pressed_x {
                 //     let mut controls = get_ptr_to_controls(controls_id as usize);

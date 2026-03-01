@@ -1,5 +1,5 @@
 use super::css::get_ptr_to_controls;
-use dynamic::ext::{ControllerMapping, InputKind, MappedOption};
+use dynamic::ext::{ControllerMapping, InputKind};
 
 /// Trait for the custom tag-based submenu navigation systems
 pub trait TagSubMenu {
@@ -14,7 +14,6 @@ pub trait TagSubMenu {
 /// Controls the top-level of the submenu navigation
 pub struct TopLevel {
     pub controls_id: usize,
-    pub start_button: Option<usize>,
 }
 
 // Constants to represent each potential button index
@@ -23,8 +22,7 @@ impl TopLevel {
     const GAMECUBE: usize = 1;
     const PRO_CONTROLLER: usize = 2;
     const JOY_CONS: usize = 3;
-    const INPUT_BUFFER: usize = 4;
-    const COUNT: usize = 5;
+    const COUNT: usize = 4;
 }
 
 impl TagSubMenu for TopLevel {
@@ -46,14 +44,6 @@ impl TagSubMenu for TopLevel {
                 controls_id: self.controls_id,
                 start_button: None,
             })),
-            Self::INPUT_BUFFER => {
-                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                controls.controls_mut().set_option(MappedOption::Buffer, (controls.controls_mut().get_option(MappedOption::Buffer) + 1) % 3);
-                Some(Box::new(Self {
-                    controls_id: self.controls_id,
-                    start_button: Some(index),
-                }))
-            }
             _ => None,
         }
     }
@@ -76,24 +66,6 @@ impl TagSubMenu for TopLevel {
             Self::GAMECUBE => b"GameCube",
             Self::PRO_CONTROLLER => b"Pro Controller",
             Self::JOY_CONS => b"Joy-Cons",
-            Self::INPUT_BUFFER => {
-                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                let buffer = controls.controls_mut().get_option(MappedOption::Buffer);
-                match buffer {
-                    0 => {
-                        b"Buffer: Standard"
-                    }
-                    1 => {
-                        b"Buffer: Low"
-                    }
-                    2 => {
-                        b"Buffer: None"
-                    }
-                    _ => {
-                        b"Buffer: Standard"
-                    }
-                }
-            }
             _ => return None,
         };
 
@@ -101,7 +73,7 @@ impl TagSubMenu for TopLevel {
     }
 
     fn get_start_index(&self) -> Option<usize> {
-        self.start_button
+        None
     }
 }
 
@@ -232,7 +204,6 @@ impl TagSubMenu for GamecubeMenu {
     fn cancel(&self) -> Option<Box<dyn TagSubMenu>> {
         Some(Box::new(TopLevel {
             controls_id: self.controls_id,
-            start_button: None
         }))
     }
 
@@ -492,7 +463,6 @@ impl TagSubMenu for ProControllerMenu {
     fn cancel(&self) -> Option<Box<dyn TagSubMenu>> {
         Some(Box::new(TopLevel {
             controls_id: self.controls_id,
-            start_button: None
         }))
     }
 
@@ -755,7 +725,6 @@ impl TagSubMenu for JoyConMenu {
     fn cancel(&self) -> Option<Box<dyn TagSubMenu>> {
         Some(Box::new(TopLevel {
             controls_id: self.controls_id,
-            start_button: None
         }))
     }
 
@@ -821,7 +790,7 @@ impl TagSubMenu for JoyConMenu {
             })),
             Self::TAP_JUMP => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                controls.controls_mut().joy_tapjump = !controls.controls_mut().joy_tapjump;
+                controls.controls_mut().pro_tapjump = !controls.controls_mut().pro_tapjump;
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
                     start_button: Some(index),
@@ -829,10 +798,10 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::PARRY_INPUT => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 2 != 0 {
-                    controls.controls_mut().joy_absmash &= !2;
+                if controls.controls_mut().pro_absmash & 2 != 0 {
+                    controls.controls_mut().pro_absmash &= !2;
                 } else {
-                    controls.controls_mut().joy_absmash |= 2;
+                    controls.controls_mut().pro_absmash |= 2;
                 }
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
@@ -841,10 +810,10 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::RIVALS_WJ => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 4 != 0 {
-                    controls.controls_mut().joy_absmash &= !4;
+                if controls.controls_mut().pro_absmash & 4 != 0 {
+                    controls.controls_mut().pro_absmash &= !4;
                 } else {
-                    controls.controls_mut().joy_absmash |= 4;
+                    controls.controls_mut().pro_absmash |= 4;
                 }
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
@@ -853,8 +822,8 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::STICK_SENS => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                controls.controls_mut().joy_sensitivity =
-                    (controls.controls_mut().joy_sensitivity + 1) % 3;
+                controls.controls_mut().pro_sensitivity =
+                    (controls.controls_mut().pro_sensitivity + 1) % 3;
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
                     start_button: Some(index),
@@ -862,7 +831,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::RUMBLE => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                controls.controls_mut().joy_rumble = !controls.controls_mut().joy_rumble;
+                controls.controls_mut().pro_rumble = !controls.controls_mut().pro_rumble;
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
                     start_button: Some(index),
@@ -870,10 +839,10 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::AB_SMASH => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 1 != 0 {
-                    controls.controls_mut().joy_absmash &= !1;
+                if controls.controls_mut().pro_absmash & 1 != 0 {
+                    controls.controls_mut().pro_absmash &= !1;
                 } else {
-                    controls.controls_mut().joy_absmash |= 1;
+                    controls.controls_mut().pro_absmash |= 1;
                 }
                 Some(Box::new(Self {
                     controls_id: self.controls_id,
@@ -900,7 +869,7 @@ impl TagSubMenu for JoyConMenu {
             Self::TRIGGER => b"Trigger",
             Self::TAP_JUMP => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_tapjump {
+                if controls.controls_mut().pro_tapjump {
                     b"Tap Jump: On"
                 } else {
                     b"Tap Jump: Off"
@@ -908,7 +877,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::PARRY_INPUT => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 2 != 0 {
+                if controls.controls_mut().pro_absmash & 2 != 0 {
                     b"Parry Input: Taunt"
                 } else {
                     b"Parry Input: Special"
@@ -916,7 +885,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::RIVALS_WJ => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 4 != 0 {
+                if controls.controls_mut().pro_absmash & 4 != 0 {
                     b"Walljump: Button"
                 } else {
                     b"Walljump: Flick"
@@ -924,7 +893,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::STICK_SENS => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                match controls.controls_mut().joy_sensitivity {
+                match controls.controls_mut().pro_sensitivity {
                     0 => b"Sensitivity: Low",
                     1 => b"Sensitivity: Med",
                     _ => b"Sensitivity: High",
@@ -932,7 +901,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::RUMBLE => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_rumble {
+                if controls.controls_mut().pro_rumble {
                     b"Rumble: On"
                 } else {
                     b"Rumble: Off"
@@ -940,7 +909,7 @@ impl TagSubMenu for JoyConMenu {
             }
             Self::AB_SMASH => {
                 let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
-                if controls.controls_mut().joy_absmash & 1 != 0 {
+                if controls.controls_mut().pro_absmash & 1 != 0 {
                     b"A+B Smash: On"
                 } else {
                     b"A+B Smash: Off"
@@ -1016,7 +985,6 @@ impl TagSubMenu for ShortcutsMenu {
     fn cancel(&self) -> Option<Box<dyn TagSubMenu>> {
         Some(Box::new(TopLevel {
             controls_id: self.controls_id,
-            start_button: None
         }))
     }
 

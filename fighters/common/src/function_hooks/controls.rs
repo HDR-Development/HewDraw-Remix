@@ -2,7 +2,6 @@ use super::*;
 use rand::prelude::SliceRandom;
 use rand::Rng;
 use utils::ext::*;
-use utils::types::BufferSettings;
 
 #[skyline::hook(offset = 0x16d85dc, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
@@ -125,17 +124,6 @@ unsafe fn map_controls_hook(
     // If shorthop button is pressed before we mapped shorthop_map, then we know two buttons are pressed
     if (*out).buttons.intersects(Buttons::JumpMini) {
         (*out).buttons |= Buttons::TreadJump;
-    }
-
-    // User-set buffer
-    let buffer = (*mappings).get_option(MappedOption::Buffer);
-
-    if buffer == BufferSettings[0b00] {
-        (*out).buttons |= Buttons::BufferStandard;
-    } else if buffer == BufferSettings[0b01] {
-        (*out).buttons |= Buttons::BufferLow;
-    } else if buffer == BufferSettings[0b10] {
-        (*out).buttons |= Buttons::BufferNone; 
     }
 
     if controller.style == ControllerStyle::GCController {
@@ -276,13 +264,13 @@ unsafe fn map_controls_hook(
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings).set_option(MappedOption::AbSmash, 1);
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings).set_option(MappedOption::AbSmash, 0);
-            } else if (*mappings).get_option(MappedOption::AbSmash) == 1 {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
@@ -632,13 +620,13 @@ unsafe fn map_controls_hook(
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings).set_option(MappedOption::AbSmash, 1);
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings).set_option(MappedOption::AbSmash, 0);
-            } else if (*mappings).get_option(MappedOption::AbSmash) == 1 {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
@@ -804,13 +792,13 @@ unsafe fn map_controls_hook(
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings).set_option(MappedOption::AbSmash, 1);
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings).set_option(MappedOption::AbSmash, 0);
-            } else if (*mappings).get_option(MappedOption::AbSmash) == 1 {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
