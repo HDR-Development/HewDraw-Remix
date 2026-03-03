@@ -16,7 +16,7 @@ skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -231,7 +231,7 @@ runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false, features = ["disabler-symbol"] }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false, features = ["disabler-symbol"] }
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
 hash40 = "1.2.0"
