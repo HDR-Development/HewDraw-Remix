@@ -133,7 +133,7 @@ appeal_hi_r:
     cancel_frame: 90
 attack_air_n:
   extra:
-    cancel_frame: 38
+    cancel_frame: 39
 attack_air_b:
   extra:
     cancel_frame: 26
