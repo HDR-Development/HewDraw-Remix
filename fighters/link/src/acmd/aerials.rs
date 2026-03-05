@@ -237,7 +237,6 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_hit_ice"), Hash40::new("sword1"), 13, -7.5, -4.8, 15, 0, 0, 0.33, true);
         EFFECT_FOLLOW(agent, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1.0, true);
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 12.5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.5);
     }
     frame(agent.lua_state_agent, 64.0);
