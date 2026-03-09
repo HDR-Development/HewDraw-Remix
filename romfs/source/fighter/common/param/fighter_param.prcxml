@@ -877,6 +877,7 @@
       <int hash="attack_100_enable_cnt">2</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
+      <float hash="passive_wall_jump_y_speed">2.65</float>
       <float hash="passive_wall_jump_x_speed">1.1</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
