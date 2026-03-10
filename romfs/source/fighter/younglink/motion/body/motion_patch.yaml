@@ -88,10 +88,10 @@ catch_turn:
     cancel_frame: 61
 throw_lw:
   extra:
-    cancel_frame: 50
+    cancel_frame: 48
 throw_hi:
   extra:
-    cancel_frame: 42
+    cancel_frame: 41
 throw_f:
   extra:
     cancel_frame: 32
