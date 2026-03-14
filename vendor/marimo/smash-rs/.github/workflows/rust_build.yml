@@ -1,0 +1,45 @@
+# Thanks to jugeeya for the GH action
+# https://github.com/ultimate-research/skyline-rs-template/blob/master/.github/workflows/rust_build.yml
+name: Rust
+
+on:
+  push:
+    branches: [ master ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container: 
+      image: jugeeya/cargo-skyline:2.1.0
+    steps:
+    - uses: actions/checkout@v2
+    - name: Perform size checks
+      run: |
+        PATH=$PATH:/root/.cargo/bin /root/.cargo/bin/cargo +skyline test --features type_assert
+      env:
+        HOME: /root
+# UNCOMMENT THE SECTION BELOW TO GET BETA RELEASES ON EVERY NEW COMMIT TO THE MAIN BRANCH
+#   upload:
+#     runs-on: ubuntu-latest
+#     if: github.ref == 'refs/heads/master'
+#     needs:
+#       - plugin
+#     steps:
+#     - name: Download all artifacts
+#       uses: actions/download-artifact@v2
+#     - name: Update Release
+#       uses: meeDamian/github-release@2.0
+#       with:
+#         token: ${{ secrets.GITHUB_TOKEN }}
+#         prerelease: true
+#         allow_override: true
+#         gzip: false
+#         tag: beta
+#         name: beta
+#         body: >
+#           Beta built off of the latest code in the repository. 
+#         files: >
+#           plugin/* 

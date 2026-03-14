@@ -1,0 +1,22 @@
+[package]
+name = "smash"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
+smash_macro = { path = "./smash-macro" }
+bitflags = "1.3.2"
+hash40 = { git = "https://github.com/BenHall-7/hash40-rs" }
+memoffset = { version = "0.6.5", optional = true }
+num_enum = "0.5.7"
+sealed = "0.4.0"
+thiserror = "1.0.37"
+
+[features]
+default = ["type_assert"]
+type_assert = ["memoffset"]
+extras = [
+] # This feature is for exposing extra information based on research, not symbols

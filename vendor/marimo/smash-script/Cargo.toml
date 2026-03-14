@@ -1,0 +1,13 @@
+[package]
+name = "smash_script"
+version = "0.1.0"
+authors = ["blujay <the.blu.dev@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
+skyline_smash = { path = "../skyline-smash", features = ["weak_l2cvalue"] }
+# skyline = { path = "../skyline-rs" }
+# skyline_smash = { path = "../skyline-smash" }
+# lua_macro = { path = "./lua-macro" }
+# num-traits = "0.2.14"

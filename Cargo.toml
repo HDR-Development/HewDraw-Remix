@@ -13,10 +13,10 @@ prefix = "hdr"
 
 [workspace.dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
-skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
+skyline_smash = { git =  "https://github.com/marimo/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -222,24 +222,81 @@ dynamic.workspace = true
 locks = { git = "https://github.com/HDR-Development/smashline" }
 hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["warnings"] }
 once_cell = "1"
-ninput = { git = "https://github.com/blu-dev/ninput" }
+ninput = { git = "https://github.com/marimo/ninput" }
 rand = { git = "https://github.com/skyline-rs/rand" }
 serde = { version = "1", features = ["derive"] }
 toml = "0.8.20"
 parking_lot = "0.12.3"
-runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
+runtime-motion-patcher.git = "https://github.com/marimo/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false, features = ["disabler-symbol"] }
+ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", default-features = false, features = ["disabler-symbol"] }
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
 hash40 = "1.2.0"
 smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
-smash2 = { git = "https://github.com/blu-dev/smash-rs", package = "smash"}
+smash2 = { git = "https://github.com/marimo/smash-rs", package = "smash"}
 
 [patch.crates-io]
 nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs" }
+
+[patch."https://github.com/marimo/skyline-smash"]
+skyline_smash = { path = "vendor/marimo/skyline-smash" }
+
+[patch."https://github.com/marimo/skyline-smash.git"]
+skyline_smash = { path = "vendor/marimo/skyline-smash" }
+
+[patch."https://github.com/marimo/ninput"]
+ninput = { path = "vendor/marimo/ninput" }
+
+[patch."https://github.com/marimo/ninput.git"]
+ninput = { path = "vendor/marimo/ninput" }
+
+[patch."https://github.com/marimo/runtime-motion-patcher"]
+runtime-motion-patcher = { path = "vendor/marimo/runtime-motion-patcher" }
+
+[patch."https://github.com/marimo/runtime-motion-patcher.git"]
+runtime-motion-patcher = { path = "vendor/marimo/runtime-motion-patcher" }
+
+[patch."https://github.com/marimo/motion-patch"]
+motion-patch = { path = "vendor/marimo/motion-patch" }
+
+[patch."https://github.com/marimo/motion-patch.git"]
+motion-patch = { path = "vendor/marimo/motion-patch" }
+
+[patch."https://github.com/marimo/smash-rs"]
+smash = { path = "vendor/marimo/smash-rs" }
+
+[patch."https://github.com/marimo/smash-rs.git"]
+smash = { path = "vendor/marimo/smash-rs" }
+
+[patch."https://github.com/marimo/smash-script"]
+smash_script = { path = "vendor/marimo/smash-script" }
+
+[patch."https://github.com/marimo/smash-script.git"]
+smash_script = { path = "vendor/marimo/smash-script" }
+
+[patch."https://github.com/blu-dev/skyline-smash"]
+skyline_smash = { path = "vendor/marimo/skyline-smash" }
+
+[patch."https://github.com/blu-dev/ninput"]
+ninput = { path = "vendor/marimo/ninput" }
+
+[patch."https://github.com/blu-dev/runtime-motion-patcher"]
+runtime-motion-patcher = { path = "vendor/marimo/runtime-motion-patcher" }
+
+[patch."https://github.com/blu-dev/motion-patch"]
+motion-patch = { path = "vendor/marimo/motion-patch" }
+
+[patch."https://github.com/blu-dev/smash-rs"]
+smash = { path = "vendor/marimo/smash-rs" }
+
+[patch."https://github.com/blu-dev/smash-script"]
+smash_script = { path = "vendor/marimo/smash-script" }
+
+[patch."https://github.com/blu-dev/smash-script.git"]
+smash_script = { path = "vendor/marimo/smash-script" }
 
 [features]
 default = [

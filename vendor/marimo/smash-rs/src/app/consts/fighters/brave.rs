@@ -1,0 +1,83 @@
+#[repr(u32)]
+pub enum FighterBraveSpecialLwCommand {
+    None = 0xFFFFFFFF,
+    Cure = 0x0,
+    Flash1 = 0x1,
+    Flash2 = 0x2,
+    Explosion1 = 0x3,
+    Explosion2 = 0x4,
+    Deathball1 = 0x5,
+    Deathball2 = 0x6,
+    Fullburst = 0x7,
+    Crash = 0x8,
+    Steel = 0x9,
+    SpeedUp = 0xA,
+    AttackUp = 0xB,
+    Reflect = 0xC,
+    Sleep = 0xD,
+    Various = 0xE,
+    Flying = 0xF,
+    Firesword = 0x10,
+    Icesword = 0x11,
+    Ironsword = 0x12,
+    Devilsword = 0x13,
+    Charge = 0x14,
+    Num = 0x15,
+}
+
+impl FighterBraveSpecialLwCommand {
+    pub const LIST_MAX: u8 = 0x4;
+}
+
+#[repr(u32)]
+pub enum FighterBraveSpecialLwVariousKind {
+    None = 0xFFFFFFFF,
+    Sleep = 0x0,
+    Spycloak = 0x1,
+    Flower = 0x2,
+    Poison = 0x3,
+    Slow = 0x4,
+    Invincible = 0x5,
+    Big = 0x6,
+    Small = 0x7,
+    SpEmpty = 0x8,
+    SpFull = 0x9,
+    CommandCure = 0xA,
+    CommandFlash1 = 0xB,
+    CommandFlash2 = 0xC,
+    CommandExplosion1 = 0xD,
+    CommandExplosion2 = 0xE,
+    CommandDeathball1 = 0xF,
+    CommandDeathball2 = 0x10,
+    CommandFullburst = 0x11,
+    CommandCrash = 0x12,
+    CommandSteel = 0x13,
+    CommandSpeedUp = 0x14,
+    CommandAttackUp = 0x15,
+    CommandReflect = 0x16,
+    CommandSleep = 0x17,
+    CommandFlying = 0x18,
+    CommandFiresword = 0x19,
+    CommandIcesword = 0x1A,
+    CommandIronsword = 0x1B,
+    CommandDevilsword = 0x1C,
+    CommandCharge = 0x1D,
+}
+
+#[repr(u32)]
+pub enum FighterBraveFinalModuleCall {
+    StartInit = 0x0,
+    StartExit = 0x1,
+    ReadyInit = 0x2,
+    ReadyExec = 0x3,
+    ReadyExitPre = 0x4,
+    ReadyExit = 0x5,
+    Scene01InitPre = 0x6,
+    Scene01Init = 0x7,
+    Scene01Exec = 0x8,
+    Scene01Exit = 0x9,
+    EndInit = 0xA,
+    EndExec = 0xB,
+    EndExit = 0xC,
+    Num = 0xD,
+}

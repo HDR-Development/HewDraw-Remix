@@ -1,0 +1,17 @@
+pub mod brave;
+pub mod buddy;
+pub mod cloud;
+pub mod dedede;
+pub mod demon;
+pub mod diddy;
+pub mod dolly;
+pub mod donkey;
+pub mod edge;
+pub mod eflame;
+pub mod elight;
+pub mod falco;
+pub mod fox;
+pub mod gamewatch;
+pub mod gaogaen;
+pub mod gekkouga;
+pub mod ike;

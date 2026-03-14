@@ -1,0 +1,20 @@
+#[repr(u32)]
+pub enum FighterJackFinalModuleCall {
+    StartInit = 0x0,
+    StartExit = 0x1,
+    ReadyInit = 0x2,
+    ReadyExec = 0x3,
+    ReadyExitPre = 0x4,
+    ReadyExit = 0x5,
+    Scene01InitPre = 0x6,
+    Scene01Init = 0x7,
+    Scene01Exec = 0x8,
+    Scene01Exit = 0x9,
+    Scene02Init = 0xA,
+    Scene02Exec = 0xB,
+    Scene02Exit = 0xC,
+    EndInit = 0xD,
+    EndExec = 0xE,
+    EndExit = 0xF,
+    Num = 0x10,
+}
