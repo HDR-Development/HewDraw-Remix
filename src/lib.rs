@@ -39,7 +39,7 @@ mod online;
 #[cfg(feature = "main_nro")]
 mod matchup;
 
-pub mod vsync;
+pub mod spin;
 
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
@@ -352,8 +352,8 @@ unsafe fn copy_fighter_info(
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
-        vsync::setup_ssbu_sync();
         quick_validate_install();
+        spin::check_root();
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
         controls::install();
