@@ -98,6 +98,10 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		AttackModule::clear_all(boma);
 	}
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
@@ -151,6 +155,10 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_WAIT_SHIELD);
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
 }
 

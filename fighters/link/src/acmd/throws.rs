@@ -90,6 +90,10 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
     FT_MOTION_RATE_RANGE(agent, 15.0, 34.0, 14.0);
     frame(lua_state, 34.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -114,6 +118,10 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
 		ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
 		AttackModule::clear_all(boma);
 	}
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
     FT_MOTION_RATE_RANGE(agent, 15.0, 30.0, 9.0);
     frame(lua_state, 30.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -147,6 +155,10 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 43.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
 }
 
@@ -199,6 +211,10 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
     frame(lua_state, 48.0);
     FT_MOTION_RATE(agent, 1.0);

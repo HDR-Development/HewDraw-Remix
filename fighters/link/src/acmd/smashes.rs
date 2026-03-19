@@ -33,6 +33,10 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
+    frame(lua_state, 35.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
@@ -139,6 +143,10 @@ unsafe extern "C" fn game_attacks4s2(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 29.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attacks4s2(agent: &mut L2CAgentBase) {
@@ -215,6 +223,10 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 55.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
     frame(lua_state, 56.0);
     FT_MOTION_RATE_RANGE(agent, 56.0, 70.0, 10.0);  
@@ -362,7 +374,11 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-    }  
+    }
+    frame(lua_state, 31.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
     frame(lua_state, 32.0);
     FT_MOTION_RATE_RANGE(agent, 32.0, 56.0, 12.0);
     frame(lua_state, 56.0);

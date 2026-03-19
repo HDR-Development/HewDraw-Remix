@@ -25,6 +25,10 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 27.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
@@ -102,6 +106,10 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
+    }
 }
 
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
@@ -156,6 +164,10 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 4);
         EFFECT_OFF_KIND(agent, Hash40::new("link_sword"), false, false);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
 }
 

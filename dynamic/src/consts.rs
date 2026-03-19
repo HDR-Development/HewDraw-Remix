@@ -919,7 +919,10 @@ pub mod vars {
     }
 
     pub mod link {
-
+        pub mod status {
+            // flags
+            pub const ENABLE_SPECIAL_LW_CANCEL: i32 = 0x1000;
+        }
     }
 
     pub mod littlemac {
