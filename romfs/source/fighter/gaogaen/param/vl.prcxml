@@ -50,8 +50,9 @@
 	    <int hash="critical_zoom_in_frame">999</int>
       <float hash="special_lw_hit_damage_mul">0.1</float>
       <float hash="special_lw_revenge_rate_base_add">0.2</float>
-      <float hash="special_lw_revenge_rate_max">5</float>
-      <float hash="special_lw_revenge_rate_max_team">5</float>
+      <float hash="special_lw_revenge_rate_attack_mul_add">0.05</float>
+      <float hash="special_lw_revenge_rate_max">3.5</float>
+      <float hash="special_lw_revenge_rate_max_team">3.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
