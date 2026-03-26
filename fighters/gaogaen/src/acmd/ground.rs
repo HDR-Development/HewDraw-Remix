@@ -3,7 +3,7 @@ use super::*;
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    FT_MOTION_RATE_RANGE(agent, 1.0, 5.0, 3.0);
+    //FT_MOTION_RATE_RANGE(agent, 1.0, 5.0, 3.0);
     frame(lua_state, 5.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
@@ -19,11 +19,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        } else {
-            ComboModule::reset(boma);
-        }
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
 
@@ -49,11 +45,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        } else {
-            ComboModule::reset(boma);
-        }
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
 }
 

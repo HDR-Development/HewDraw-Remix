@@ -2574,7 +2574,7 @@
     <!-- INCINEROAR -->
     <struct index="66">
       <float hash="walk_speed_max">0.87</float>
-      <float hash="ground_brake">0.083</float>
+      <float hash="ground_brake">0.08</float>
       <float hash="dash_speed">1.6</float>
       <float hash="run_accel_mul">0.05571</float>
       <float hash="run_speed_max">1.43</float>
