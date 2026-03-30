@@ -31,6 +31,7 @@ pub unsafe extern "C" fn special_n_hit_main(fighter: &mut L2CFighterCommon) -> L
     } else {
       VarModule::set_int(fighter.battle_object, vars::sonic::instance::SPECIAL_N_POSE, 0);
     }
+    VarModule::off_flag(fighter.battle_object, vars::sonic::instance::SPECIAL_AIR_ACTION_USED);
 
     ret
 }

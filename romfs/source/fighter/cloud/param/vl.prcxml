@@ -53,7 +53,7 @@
       <float hash="special_hi_dir_stick_x">0.625</float>
       <float hash="special_hi_dir_mul">16</float>
       <float hash="special_hi_fall_x_mul">0.8</float>
-      <int hash="special_hi_landing_frame">20</int>
+      <int hash="special_hi_landing_frame">22</int>
       <int hash="hi2_hit_fall_frame">50</int>
       <float hash="hi2_hit_accel_y">0.07</float>
       <float hash="hi2_hit_fall_speed_y">-4.2</float>
@@ -72,9 +72,9 @@
       <float hash="special_hi_dir_stick_x">0.625</float>
       <float hash="special_hi_dir_mul">16</float>
       <float hash="special_hi_fall_x_mul">0.8</float>
-      <int hash="special_hi_landing_frame">20</int>
+      <int hash="special_hi_landing_frame">22</int>
       <int hash="hi2_hit_fall_frame">50</int>
-      <int hash="lb_landing_frame">20</int>
+      <int hash="lb_landing_frame">22</int>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>

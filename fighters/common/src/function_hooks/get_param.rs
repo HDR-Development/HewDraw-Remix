@@ -287,14 +287,10 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         else if fighter_kind == *FIGHTER_KIND_SHEIK {
             if x1 == hash40("param_special_s") {
                 if x2 == hash40("throw_angle") {
-                    if ControlModule::get_stick_y(boma) > 0.0 {
-                        return 10.0 + ControlModule::get_stick_y(boma) * 40.0;
-                    }
+                    return 30.0 + ControlModule::get_stick_y(boma) * 20.0;
                 }
                 if x2 == hash40("throw_speed") {
-                    if ControlModule::get_stick_y(boma) > 0.0 {
-                        return 4.0 - ControlModule::get_stick_y(boma) * 1.0;
-                    }
+                    return 3.5 - ControlModule::get_stick_y(boma) * 0.5;
                 }
             }
         }

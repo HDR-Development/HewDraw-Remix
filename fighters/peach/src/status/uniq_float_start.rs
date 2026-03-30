@@ -2,6 +2,7 @@ use super::*;
 
 #[no_mangle]
 unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_TRANS_ID_FALL_CONTROL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_TRANS_ID_ATTACK_AIR_CONTROL);
@@ -230,6 +231,11 @@ pub unsafe fn peach_float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn uniq_float_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     peach_float_start_main_common(fighter)
+}
+
+extern "Rust" {
+    #[link_name = "float_drift_common"]
+    fn float_drift_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 pub fn install(agent: &mut Agent) {

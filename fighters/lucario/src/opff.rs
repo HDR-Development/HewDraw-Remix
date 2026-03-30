@@ -112,40 +112,57 @@ unsafe fn training_mode_max_meter(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+    // guard clause
+    if status_kind != *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT {
+        return;
+    }
+
+    // air stall in aura bomb
+    if fighter.is_motion_one_of(&[Hash40::new("special_n_bomb"), Hash40::new("special_air_n_bomb")]) {
+        if situation_kind == *SITUATION_KIND_AIR
+        && frame < 37.0 {
+            KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        return;
+    }
+
+    // transition into aura bomb
+    if VarModule::is_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_DECIDE) {
+        if VarModule::get_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
+            fighter.change_motion_inherit_frame_by_situation("special_n_bomb", "special_air_n_bomb", -1.0, 1.0, 0.0, false, false);
+        }
+        return;
+    }
+
+    // A plus B check
+    if fighter.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+    && fighter.is_button_on(Buttons::SpecialAll) {
+        VarModule::on_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_A_PLUS_B)
+    }
+
     // button hold check
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
-    && fighter.motion_frame() < 8.0 
-    && !fighter.is_button_on(Buttons::SpecialRaw){
+    if !fighter.is_button_on(Buttons::SpecialAll)
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_A_PLUS_B) {
         VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
-    }
-
-    // super transition
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT
-    && frame == 8.0
-    && VarModule::get_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE) > 0.0 {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
-            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_n_bomb"), -1.0, 1.0, 0.0, false, false);
-        } else {
-            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_n_bomb"), -1.0, 1.0, 0.0, false, false);
-        }
-
-    }
-
-    // float during air aura bomb
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT 
-    && MotionModule::motion_kind(boma) == hash40("special_air_n_bomb")
-    && frame < 37.0 {
-        KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
 unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
-    && fighter.motion_frame() < 9.0 
-    && !fighter.is_button_on(Buttons::SpecialRaw){
-        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_DECIDE) {
+        // A plus B check
+        if fighter.is_button_on(Buttons::AttackAll | Buttons::Catch | Buttons::AppealAll)
+        && fighter.is_button_on(Buttons::SpecialAll) {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_A_PLUS_B)
+        }
+        
+        // hold button check
+        if !fighter.is_button_on(Buttons::SpecialRaw)
+        && !VarModule::is_flag(fighter.battle_object, vars::lucario::status::SUPER_SPECIAL_A_PLUS_B) {
+            VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, 0.0);
+        }
     }
 }
 

@@ -13,10 +13,10 @@ unsafe extern "C" fn effect_shoot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("poke_meloetta_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 727, true);
+        EFFECT_FOLLOW(agent, Hash40::new("purin_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 727, true);
     }
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("rosetta_ring_erase"), Hash40::new("top"), 0, 0, 0, 0, 0, 25, 727, false);
+        EFFECT_FOLLOW(agent, Hash40::new("purin_ring_erase"), Hash40::new("top"), 0, 0, 0, 0, 0, 25, 727, false);
         LAST_EFFECT_SET_RATE(agent, 0.33);
     }
 }

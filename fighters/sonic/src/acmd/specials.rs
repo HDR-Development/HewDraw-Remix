@@ -49,8 +49,16 @@ unsafe extern "C" fn game_specialnhit(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
+         KineticUtility::reset_enable_energy(
+        *FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        boma,
+        *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+        &Vector2f{x: 0.0, y: 0.0},
+        &Vector3f{x: 0.0, y: 0.0, z: 0.0}
+         );    
+        let temp = Vector3f { x: 0.3, y: 1.0, z: 0.0 };
 		KineticModule::add_speed(boma, &temp);
+        
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -90,9 +98,9 @@ unsafe extern "C" fn game_specialsboost(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 25, 120, 0, 50, 3.0, 0.0, 4.0, -0.5, Some(0.0), Some(9.0), Some(-0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
-    }
+         ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 25, 120, 0, 50, 3.0, 0.0, 4.0, -0.5, Some(0.0), Some(9.0), Some(-0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+         VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
+        }
     frame(lua_state, 14.0);
     FT_MOTION_RATE(agent, 0.25);
 }
@@ -137,7 +145,7 @@ unsafe extern "C" fn game_specialsboostend(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 8.0);
-    FT_MOTION_RATE(agent, 1.6);
+    FT_MOTION_RATE(agent, 2.0);
 }
 
 unsafe extern "C" fn effect_specialsboostend(agent: &mut L2CAgentBase) {
@@ -184,6 +192,8 @@ unsafe extern "C" fn game_specialairsboostend(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
+        frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.3);
     }
 }
 
@@ -203,9 +213,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 2);
         ArticleModule::shoot_exist(boma, *FIGHTER_SONIC_GENERATE_ARTICLE_GIMMICKJUMP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
-    frame(lua_state, 23.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }   
@@ -229,7 +240,7 @@ unsafe extern "C" fn game_speciallwhold(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 11.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, false);
     }
@@ -238,7 +249,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairlwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 11.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, false);
     }

@@ -91,7 +91,7 @@ unsafe extern "C" fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) 
     }
 
     //Groundcast to see if we touched the ground (only after falling), then cut to the landing frame
-    if currentFrame >= FRAME_FALL
+    if currentFrame >= FRAME_FALL - 1.0
     {
         let should_land = GroundModule::ray_check(fighter.module_accessor, 
                                 &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor)}, 

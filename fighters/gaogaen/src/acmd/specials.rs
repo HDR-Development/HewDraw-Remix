@@ -857,6 +857,7 @@ unsafe extern "C" fn game_specialairhiturn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi_rise");
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(lua_state, 1.0);
     if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END) {
@@ -878,6 +879,7 @@ unsafe extern "C" fn game_specialairhiturn(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END) {
             VarModule::off_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             let accel_x_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_hi.fall_special_accel_x_mul");
             let speed_x_max_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
             WorkModule::set_float(boma, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);

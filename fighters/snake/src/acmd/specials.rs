@@ -26,9 +26,7 @@ unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 10.0);
-    if is_excute(agent) {
-        FT_MOTION_RATE(agent, 0.333);
-    }
+    FT_MOTION_RATE(agent, 0.333);
 }
 
 unsafe extern "C" fn game_specialsstart(agent : &mut L2CAgentBase) {

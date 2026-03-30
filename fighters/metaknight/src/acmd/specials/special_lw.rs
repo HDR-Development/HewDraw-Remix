@@ -63,6 +63,8 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 5.0, 0.0, 5.0);
+        LAST_EFFECT_SET_ALPHA(agent, 0.25);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
@@ -166,6 +168,8 @@ unsafe extern "C" fn effect_speciallwf(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 5.0, 0.0, 5.0);
+        LAST_EFFECT_SET_ALPHA(agent, 0.25);
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("trans"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         }
@@ -276,6 +280,8 @@ unsafe extern "C" fn effect_speciallwb(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 5.0, 0.0, 5.0);
+        LAST_EFFECT_SET_ALPHA(agent, 0.25);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {

@@ -18,6 +18,19 @@ unsafe fn guardian_orbitar_jc(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn electroshock_land_cancel_on_hit(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END)
+    && fighter.get_int(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_INT_START_SITUATION) == *SITUATION_KIND_AIR
+    && StatusModule::is_situation_changed(fighter.module_accessor)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.is_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+        
+        fighter.set_int(*SITUATION_KIND_GROUND, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_INT_START_SITUATION);
+    }
+}
+
 extern "Rust" {
     fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32);
 }
@@ -25,6 +38,7 @@ extern "Rust" {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma);
     guardian_orbitar_jc(fighter);
+    electroshock_land_cancel_on_hit(fighter);
     pits_common(fighter, boma, status_kind);
 }
 

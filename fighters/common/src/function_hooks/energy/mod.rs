@@ -2,9 +2,9 @@
 
 use super::*;
 mod control;
+mod damage;
 mod motion;
 mod stop;
-mod damage;
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -19,10 +19,9 @@ pub struct KineticEnergyVTable {
     pub setup_energy: extern "C" fn(&mut KineticEnergy, u32, &Vector3f, u64, &mut BattleObjectModuleAccessor),
     pub clear_energy: extern "C" fn(&mut KineticEnergy),
     pub unk2: extern "C" fn(&mut KineticEnergy),
-    pub set_speed: extern "C" fn (&mut KineticEnergy, &Vector2f),
+    pub set_speed: extern "C" fn(&mut KineticEnergy, &Vector2f),
     pub mul_accel: extern "C" fn(&mut KineticEnergy, &Vector2f),
     // ...
-
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -30,7 +29,7 @@ pub struct KineticEnergyVTable {
 pub struct PaddedVec2 {
     pub x: f32,
     pub y: f32,
-    pub padding: u64
+    pub padding: u64,
 }
 
 impl PaddedVec2 {
@@ -38,7 +37,7 @@ impl PaddedVec2 {
         Self {
             x,
             y,
-            padding: 0
+            padding: 0,
         }
     }
 
@@ -46,7 +45,7 @@ impl PaddedVec2 {
         Self {
             x: 0.0,
             y: 0.0,
-            padding: 0
+            padding: 0,
         }
     }
 
@@ -62,7 +61,7 @@ pub struct KineticEnergy {
     pub speed: PaddedVec2,
     pub rot_speed: PaddedVec2,
     pub enable: bool,
-    pub unk2: [u8; 0xF], // probably padding 
+    pub unk2: [u8; 0xF], // probably padding
     pub accel: PaddedVec2,
     pub speed_max: PaddedVec2,
     pub speed_brake: PaddedVec2,
@@ -76,12 +75,17 @@ pub struct KineticEnergy {
 
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, boma: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
-        #[skyline::from_offset(0x47b4f0)]        
+        #[skyline::from_offset(0x47b4f0)]
         extern "C" fn adjust_speed_for_ground_normal_internal(speed: smash_rs::cpp::simd::Vector2, boma: &mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector2;
 
         unsafe {
-            let result = adjust_speed_for_ground_normal_internal(smash_rs::cpp::simd::Vector2 { vec: [speed.x, speed.y] }, boma);
-            PaddedVec2::new(result.vec[0], result.vec[1])
+            let result = adjust_speed_for_ground_normal_internal(
+                smash_rs::cpp::simd::Vector2 {
+                    vec: [speed.x, speed.y],
+                },
+                boma,
+            );
+            PaddedVec2::new(result.x(), result.y())
         }
     }
 
@@ -95,63 +99,43 @@ impl KineticEnergy {
     }
 
     pub fn update(&mut self, boma: &mut BattleObjectModuleAccessor) {
-        unsafe {
-            (self.vtable.update)(self, boma)
-        }
+        unsafe { (self.vtable.update)(self, boma) }
     }
 
     pub fn get_speed<'a>(&'a mut self) -> &'a mut PaddedVec2 {
-        unsafe {
-            std::mem::transmute((self.vtable.get_speed)(self))
-        }
+        unsafe { std::mem::transmute((self.vtable.get_speed)(self)) }
     }
 
     pub fn initialize(&mut self, boma: &mut BattleObjectModuleAccessor) {
-        unsafe {
-            (self.vtable.initialize)(self, boma)
-        }
+        unsafe { (self.vtable.initialize)(self, boma) }
     }
 
     pub fn get_some_flag(&mut self) -> bool {
-        unsafe {
-            (self.vtable.get_some_flag)(self)
-        }
+        unsafe { (self.vtable.get_some_flag)(self) }
     }
 
     pub fn set_some_flag(&mut self, flag: bool) {
-        unsafe {
-            (self.vtable.set_some_flag)(self, flag)
-        }
+        unsafe { (self.vtable.set_some_flag)(self, flag) }
     }
 
     pub fn setup_energy(&mut self, reset_type: u32, incoming_speed: &Vector3f, some: u64, boma: &mut BattleObjectModuleAccessor) {
-        unsafe {
-            (self.vtable.setup_energy)(self, reset_type, incoming_speed, some, boma)
-        }
+        unsafe { (self.vtable.setup_energy)(self, reset_type, incoming_speed, some, boma) }
     }
 
     pub fn clear_energy(&mut self) {
-        unsafe {
-            (self.vtable.clear_energy)(self)
-        }
+        unsafe { (self.vtable.clear_energy)(self) }
     }
 
     pub fn unk2(&mut self) {
-        unsafe {
-            (self.vtable.unk2)(self)
-        }
+        unsafe { (self.vtable.unk2)(self) }
     }
 
     pub fn set_speed(&mut self, speed: &Vector2f) {
-        unsafe {
-            (self.vtable.set_speed)(self, speed)
-        }
+        unsafe { (self.vtable.set_speed)(self, speed) }
     }
 
     pub fn mul_accel(&mut self, mul: &Vector2f) {
-        unsafe {
-            (self.vtable.mul_accel)(self, mul)
-        }
+        unsafe { (self.vtable.mul_accel)(self, mul) }
     }
 }
 

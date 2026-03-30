@@ -1,5 +1,27 @@
 use super::*;
 
+unsafe extern "C" fn special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
+        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::KineticEnergy;
+        let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let y_speed = fighter.get_param_float("param_special_hi", "speed_y");
+        // set momentum
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_SHEIK_SPECIAL_HI_AIR);
+        lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &Vector2f{x: x_speed, y: 0.0}, &Vector3f::zero(), fighter.module_accessor);
+        lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &Vector2f{x: 0.0, y: y_speed}, &Vector3f::zero(), fighter.module_accessor);
+        lua_bind::KineticEnergy::enable(stop_energy);
+        lua_bind::KineticEnergy::enable(gravity_energy);
+        // should make startup naturally decel?
+        let air_brake_x = fighter.get_param_float("air_brake_x", "");
+        let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
+        sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, air_brake_x, 0.0);
+        sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, air_speed_x_stable, 0.0);
+        sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+    }
+    0.into()
+}
+
 unsafe extern "C" fn special_hi_move_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,5 +52,6 @@ unsafe extern "C" fn special_hi_move_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_init);
     agent.status(Pre, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE, special_hi_move_pre);
 }

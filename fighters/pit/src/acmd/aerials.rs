@@ -282,6 +282,7 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 8.0);

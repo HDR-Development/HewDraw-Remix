@@ -275,7 +275,7 @@ bitflags! {
     #[derive(Copy, Clone)]
     pub struct CatHdr: i32 {
         const Wavedash = 0x1;
-        // const ShieldDrop = 0x2;
+        const TreadJump = 0x2;
         const WallJumpLeft = 0x4;
         const WallJumpRight = 0x8;
         const Parry = 0x10;
@@ -319,7 +319,7 @@ bitflags! {
         const Parry = 0x100000;
         const CStickOverride = 0x200000;
         const RivalsWallJump = 0x400000;
-        const ParryManual = 0x800000;
+        const TreadJump = 0x800000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -1114,7 +1114,8 @@ impl BomaExt for BattleObjectModuleAccessor {
         let upper_bound_y = pos.y + upper_bound_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
                 // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
-                upper_bound_offset_y
+                // plus 0.01 so an ECB perfectly parallel with ground can still snap
+                upper_bound_offset_y + 0.01
             } else {
                 // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
                 (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))

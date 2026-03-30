@@ -111,10 +111,20 @@ unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
         // cycles and enables magic on the last frame of the cooldown window
         if VarModule::get_int(boma.object(), vars::trail::instance::SPECIAL_N_MAGIC_TIMER) == 1 {
-            WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
             let trail = fighter.global_table[0x4].get_ptr() as *mut Fighter;
-            FighterSpecializer_Trail::change_magic(trail);
+
+            WorkModule::off_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+
+            // 0x2100000C is needed by FighterSpecializer_Trail::change_magic
+            // for it to work properly
+            if WorkModule::is_flag(boma,  0x2100000C) {
+                FighterSpecializer_Trail::change_magic(trail);
+            }
+            else {
+                WorkModule::on_flag(boma,  0x2100000C);
+                FighterSpecializer_Trail::change_magic(trail);
+                WorkModule::off_flag(boma,  0x2100000C);
+            }
 
             VarModule::off_flag(boma.object(), vars::trail::instance::DISABLE_SPECIAL_N);
         }

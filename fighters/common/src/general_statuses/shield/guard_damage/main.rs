@@ -96,14 +96,14 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
                 app::EColorKind(team_color as i32),
                 Hash40::new("shield_effect_color")
             );
-            let color = Vector3f {x: color.value[0], y: color.value[1], z: color.value[2]};
+            let color = Vector3f {x: color.x(), y: color.y(), z: color.z()};
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_shield_damage3"), Hash40::new("throw"), &ZERO_VEC, &ZERO_VEC, 0.1, false, *EFFECT_SUB_ATTRIBUTE_NONE as u32, 0, -1, *EFFECT_FLIP_NONE, 1, false, false);
             EffectModule::set_rgb_partial_last(fighter.module_accessor, color.x, color.y, color.z);
-            
+
             let effect2_handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_shield_damage2"), Hash40::new("throw"), &ZERO_VEC, &ZERO_VEC, 0.1, false, *EFFECT_SUB_ATTRIBUTE_NONE as u32, 0, -1, *EFFECT_FLIP_NONE, 1, false, false) as u32;
             EffectModule::set_rgb_partial_last(fighter.module_accessor, color.x, color.y, color.z);
             fighter.set_int(effect2_handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
-            
+
             let effect_handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_shield_damage"), Hash40::new("throw"), &ZERO_VEC, &ZERO_VEC, 1.0, false, *EFFECT_SUB_ATTRIBUTE_NONE as u32, 0, -1, *EFFECT_FLIP_NONE, 1, false, false) as u32;
             EffectModule::set_rgb_partial_last(fighter.module_accessor, color.x, color.y, color.z);
             fighter.set_int(effect_handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
@@ -173,15 +173,15 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
     }
     let special_stick_y = fighter.get_param_float("common", "special_stick_y");
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    if special_stick_y <= fighter.global_table[STICK_Y].get_f32() 
+    if special_stick_y <= fighter.global_table[STICK_Y].get_f32()
     && (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI);
     }
 
     if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-    
+
         // parry, force instant transition even during hitstop for chained parries
-        if (fighter.is_button_trigger(Buttons::Parry) || fighter.is_button_trigger(Buttons::ParryManual))
+        if fighter.is_button_trigger(Buttons::Parry)
         && fighter.is_cat_flag(CatHdr::Parry) {
             VarModule::on_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF);
             StopModule::cancel_hit_stop(fighter.module_accessor);
@@ -195,7 +195,7 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
             return true.into();
         }
         // end animation, wait transition
-        if MotionModule::is_end(fighter.module_accessor) 
+        if MotionModule::is_end(fighter.module_accessor)
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             return false.into();

@@ -52,6 +52,8 @@
     <struct index="0">
       <float hash="special_hi_pass_mul">0.9</float>
       <float hash="special_air_hi_pass_mul">0.9</float>
+      <int hash="special_hi_landing_frame">30</int>
+      <int hash="add_hit_landing_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

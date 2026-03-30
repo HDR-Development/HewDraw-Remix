@@ -26,9 +26,9 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="special_n_hold_count">17</int>
-      <float hash="special_n_damage_drop_prob">0.667</float>
-      <int hash="special_n_no_cancel_frame">600</int>
+      <int hash="special_n_hold_count">12</int>
+      <float hash="special_n_damage_drop_prob">0.6</float>
+      <int hash="special_n_no_cancel_frame">300</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -54,7 +54,10 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
+      <int hash="special_lw_hold_frame">90</int>
       <int hash="special_lw_enable_cancel_frame">18</int>
+      <float hash="special_lw_stone_fall_max_speed">3.9</float>
+      <float hash="special_lw_max_2nd_damage">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

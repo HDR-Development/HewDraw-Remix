@@ -16,14 +16,13 @@ unsafe fn can_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_F,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F])
     && frame > 12.0
-    && boma.is_button_on(Buttons::Guard) {
-        if situation_kind == *SITUATION_KIND_AIR {
+    && boma.is_cat_flag(Cat2::CommonGuard) {
+        if situation_kind == *SITUATION_KIND_GROUND {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        } else {
             WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
             ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-        }
-        if situation_kind == *SITUATION_KIND_GROUND {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
         }
     }
 }

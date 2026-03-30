@@ -3,8 +3,10 @@
 #![allow(non_snake_case)]
 #![allow(improper_ctypes)]
 #![allow(static_mut_refs)]
+#![allow(internal_features)]
 #![feature(repr_simd)]
 #![feature(simd_ffi)]
+#![feature(core_intrinsics)]
 use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};
@@ -37,6 +39,7 @@ pub static mut LAST_ATTACK_TEAM_COLOR: i32 = 0;
 
 extern "C" fn common_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.battle_object, vars::common::instance::LEDGE_ID, -1);
+    // VarModule::set_int(fighter.battle_object, vars::common::instance::PREVIOUS_FRAME_FRAMES_IN_AIR, -1);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_INIT);
 }
 

@@ -19,7 +19,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_CatchDash_common)]
 unsafe fn status_pre_CatchDash_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);  // 0.3 (base overlap rate) * 6.666 = 2.0 overlap rate
+    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 5.0);  // 0.3 (base overlap rate) * 5.0 = 1.5 overlap rate
     call_original!(fighter)
 }
 

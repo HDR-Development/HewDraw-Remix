@@ -29,7 +29,14 @@ unsafe extern "C" fn effect_specials3hi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 0, 0.24, 1, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_hi"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -38,12 +45,13 @@ unsafe extern "C" fn effect_specials3hi(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3hi_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("marth_sword_blue"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("marth_mc_aura_hi"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -80,18 +88,26 @@ unsafe extern "C" fn effect_specials3s(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_s"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(agent, Hash40::new("marth_sword_red"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3s"), Hash40::new("top"), 0, 0, 7.5, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3s_hdr"), Hash40::new("top"), 0, 0, 7.5, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("marth_sword_red"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("marth_mc_aura_s"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -127,7 +143,14 @@ unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 0, 0.93, 0.03, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 2.5, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_aura_lw"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -136,12 +159,13 @@ unsafe extern "C" fn effect_specials3lw(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3lw"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("marth_mc_3lw_hdr"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("marth_sword_green"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("marth_mc_aura_lw"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {

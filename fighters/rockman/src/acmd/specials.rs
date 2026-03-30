@@ -61,10 +61,11 @@ unsafe extern "C" fn game_busterchargeshot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 11.0);
-    FT_MOTION_RATE(agent, 1.0 / 7.0);
+    FT_MOTION_RATE(agent, 4.0 / 7.0);
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
+        SET_SPEED_EX(agent, -0.2, 0.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         ArticleModule::generate_article(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CHARGESHOT, false, -1);
         VarModule::off_flag(agent.battle_object, vars::rockman::status::SPECIAL_N_CHARGE_SHOT_KEEP_CHARGE);
     }

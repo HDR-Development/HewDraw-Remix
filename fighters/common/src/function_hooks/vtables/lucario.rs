@@ -100,6 +100,44 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 #[skyline::hook(offset = 0xc5ce40)]
 pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {}
 
+// conditionally disable the lucario aurapower multiplier for collision_attr_aura, so it only affects the knockback of his specials
+#[skyline::from_offset(0x646180)]
+extern "C" fn FUN_7100646180(module_accessor: *mut BattleObjectModuleAccessor, data: &mut smash_rs::app::AttackData, param_3: u32) -> f32;
+#[skyline::hook(offset = 0xc5bac0)]
+pub unsafe extern "C" fn disable_collision_attr_aura_power_mul(module_accessor: *mut BattleObjectModuleAccessor, data: &mut smash_rs::app::AttackData, param_3: u32) -> f32 {
+    let boma = &mut *module_accessor;
+    let aurapower_mul = if data.attr == smash_rs::phx::Hash40::new("collision_attr_aura") 
+    || WorkModule::is_flag(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL) {
+        WorkModule::get_float(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER)
+    } else {
+        1.0
+    };
+
+    let other_mul = FUN_7100646180(module_accessor, data, param_3);
+    if boma.is_status_one_of(&[
+        // these statuses still use the old aurapower multiplier
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT,
+    ]) {
+        return other_mul * aurapower_mul;
+    }
+
+    return other_mul;
+}
+
 pub fn install() {
     skyline::install_hooks!(
         lucario_check_aura,
@@ -107,6 +145,7 @@ pub fn install() {
         lucario_handle_aura,
         lucario_handle_aura2,
         // lucario_on_grab,
-        lucario_set_effect_scale
+        lucario_set_effect_scale,
+        disable_collision_attr_aura_power_mul,
     );
 }

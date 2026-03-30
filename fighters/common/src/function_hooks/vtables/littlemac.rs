@@ -55,7 +55,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
             let team_color = FighterUtil::get_team_color(boma);
             let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
             let effect = EffectModule::req_on_joint(opponent_boma, Hash40::new("sys_hit_dead"), Hash40::new("hip"), &Vector3f::new(0.0, 2.0, 0.0), &Vector3f::new(0.0, 0.0, 90.0), 0.6, &Vector3f::zero(), &Vector3f::zero(), true, 0, 0, 0);
-            EffectModule::set_rgb(boma, effect as u32, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+            EffectModule::set_rgb(boma, effect as u32, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
             SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_appeal05"), true, true);
             SoundModule::play_se_no3d(boma, Hash40::new("vc_littlemac_missfoot02"), true, true);
             meter_gain = 100.0;
@@ -151,8 +151,8 @@ pub fn install() {
     );
 
     // modifies the amount of slowdown applied during Slip Counter
-    // cmp w0, #0x23
-    let _ = skyline::patching::Patch::in_text(0xc46674).data(0x71008C1Fu32);
-    // mov w3, #0x24
-    let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x52800483u32);
+    // cmp w0, #0x35
+    let _ = skyline::patching::Patch::in_text(0xc46674).data(0x7100D41Fu32);
+    // mov w3, #0x36
+    let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x528006C3u32);
 }

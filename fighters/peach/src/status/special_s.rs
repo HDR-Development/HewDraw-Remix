@@ -33,13 +33,6 @@ unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-// FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP
-
-unsafe extern "C" fn special_s_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, vars::daisy::instance::DISABLE_SPECIAL_S);
-    smashline::original_status(Main, fighter, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP)(fighter)
-}
-
 // FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END
 
 unsafe extern "C" fn special_s_away_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -74,6 +67,5 @@ unsafe extern "C" fn special_s_away_end_pre(fighter: &mut L2CFighterCommon) -> L
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
-    agent.status(Main, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP, special_s_jump_main);
     agent.status(Pre, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END, special_s_away_end_pre);
 }

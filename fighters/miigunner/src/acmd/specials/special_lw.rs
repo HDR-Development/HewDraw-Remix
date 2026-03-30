@@ -97,7 +97,6 @@ unsafe extern "C" fn game_speciallw3hold(agent: &mut L2CAgentBase) {
 	if is_excute(agent) {
 		let offset_y = if agent.is_situation(*SITUATION_KIND_GROUND) { 6.5 } else { 9.5 };
 		ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 367, 100, 25, 0, 9.0, 0.0, offset_y, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        //ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3.0);
     }
 	frame(lua_state, 3.0);
 	if is_excute(agent) {

@@ -42,7 +42,8 @@ unsafe extern "C" fn special_hi_air_end_main(fighter: &mut L2CFighterCommon) -> 
 }
 
 unsafe extern "C" fn special_hi_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR)
+    if fighter.status_frame() >= 1
+    && fighter.is_situation(*SITUATION_KIND_AIR)
     && param_1.get_bool() {
         fighter.sub_air_check_dive();
     }

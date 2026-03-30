@@ -1,4 +1,5 @@
 #![allow(non_upper_case_globals)]
+#![allow(integer_to_ptr_transmutes)]
 #![allow(unused)]
 pub mod offsets;
 pub mod util;

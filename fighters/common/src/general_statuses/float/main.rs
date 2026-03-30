@@ -2,66 +2,29 @@ use super::*;
 
 #[no_mangle]
 unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    );
+    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-
+    float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
 
-    // let uniq_float_float_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_float_frame"));
     let float_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_FRAME, float_frame);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 1);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOAT);
 
     if !VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("fall"),
-            0.0,
-            0.5, // purposefully run the animation slower because it might look nicer
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, 1.0, false, 0.0, false, false);
     }
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
     let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
     AttackModule::set_shield_stiff_mul(fighter.module_accessor, shield_stiff_mul_attack_air);
     float_check_aerial(fighter);
-    // if VarModule::is_flag(fighter.battle_object, vars::common::instance::FLOAT_RAY_CHECK) {
-        let pos_x = PostureModule::pos_x(fighter.module_accessor);
-        let pos_y = PostureModule::pos_y(fighter.module_accessor);
-        let pos_z = PostureModule::pos_z(fighter.module_accessor);
-        let result = &mut Vector2f{x: 0.0, y: 0.0};
-        let ray_check = GroundModule::ray_check_hit_pos(
-            fighter.module_accessor,
-            &Vector2f{x: pos_x, y: pos_y},
-            &Vector2f{x: 0.0, y: -6.0},
-            result,
-            true
-        );
-        if ray_check {
-            let ray_check_y = result.y;
-            // let uniq_float_start_y = WorkModule::get_float(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_start_y"));
-            let uniq_float_start_y = 1.5;
-            PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos_x, y: ray_check_y + uniq_float_start_y, z: pos_z});
-        }
-    // }
+    float_ray_check(fighter);
+
     fighter.sub_shift_status_main(L2CValue::Ptr(float_main_loop_common as *const () as _))
 }
 
@@ -162,6 +125,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
             speed_x,
             0.0
         );
+        float_drift_common(fighter);
     }
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -249,16 +213,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
                     check_aerial = true;
                 }
                 if MotionModule::is_end(fighter.module_accessor) {
-                    MotionModule::change_motion(
-                        fighter.module_accessor,
-                        Hash40::new("fall"),
-                        0.0,
-                        0.5, // purposefully run the animation slower because it might look nicer
-                        false,
-                        0.0,
-                        false,
-                        false
-                    );
+                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa"), 0.0, 1.0, false, 0.0, false, false);
                 }
             }
         }
@@ -271,4 +226,37 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     0.into()
+}
+
+#[no_mangle]
+unsafe fn float_drift_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let float_stable = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_stable");
+    let float_accel_add = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_accel_add");
+    let float_accel_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.float_accel_mul");
+    sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, float_stable, float_stable);
+    lua_bind::FighterKineticEnergyController::set_accel_x_add(fighter.get_controller_energy(), float_accel_add);
+    lua_bind::FighterKineticEnergyController::set_accel_x_mul(fighter.get_controller_energy(), float_accel_mul);
+    lua_bind::FighterKineticEnergyController::set_accel_y_add(fighter.get_controller_energy(), float_accel_add);
+    lua_bind::FighterKineticEnergyController::set_accel_y_mul(fighter.get_controller_energy(), float_accel_mul);
+    0.into()
+}
+
+unsafe fn float_ray_check(fighter: &mut L2CFighterCommon) {
+    let pos_x = PostureModule::pos_x(fighter.module_accessor);
+    let pos_y = PostureModule::pos_y(fighter.module_accessor);
+    let pos_z = PostureModule::pos_z(fighter.module_accessor);
+    let result = &mut Vector2f{x: 0.0, y: 0.0};
+    let ray_check = GroundModule::ray_check_hit_pos(
+        fighter.module_accessor,
+        &Vector2f{x: pos_x, y: pos_y},
+        &Vector2f{x: 0.0, y: -6.0},
+        result,
+        true
+    );
+    if ray_check {
+        let ray_check_y = result.y;
+        // let uniq_float_start_y = WorkModule::get_float(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_start_y"));
+        let uniq_float_start_y = 1.5;
+        PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos_x, y: ray_check_y + uniq_float_start_y, z: pos_z});
+    }
 }

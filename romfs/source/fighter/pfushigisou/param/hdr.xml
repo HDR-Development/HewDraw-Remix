@@ -3,7 +3,7 @@
     <struct hash="param_special_hi">
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.8</float>
-      <float hash="landing_frame">32</float>
+      <float hash="landing_frame">30</float>
     </struct>
     <struct hash="param_special_lw">
       <!-- these are duplicated for each pokemon -->

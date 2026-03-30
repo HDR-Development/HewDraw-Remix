@@ -24,7 +24,7 @@ pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log:
     if kind == *FIGHTER_KIND_IKE {
         if status == *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK
         && VarModule::is_flag(battle_object, vars::ike::status::SPECIAL_S_INSTAKILL) {
-            let collision_log: &mut CollisionLog = std::mem::transmute(log);
+            let collision_log: &mut CollisionLog = std::mem::transmute(log as *mut u64);
             let kind = collision_log.collision_kind;
             if kind == *COLLISION_KIND_HIT as u8 {
                 VarModule::on_flag(battle_object, vars::ike::status::SPECIAL_S_INSTAKILL_HIT);

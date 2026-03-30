@@ -5,7 +5,36 @@ use globals::*;
 mod special_lw;
 mod special_hi;
 
+unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::kamui::instance::DISABLE_SPECIAL_LW) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // re-enable DSpecial when landing or hit
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
+        VarModule::off_flag(fighter.battle_object, vars::kamui::instance::DISABLE_SPECIAL_LW);
+    }
+
+    return false.into();
+}
+
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+}
+
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
     special_lw::install(agent);
     special_hi::install(agent);
 }

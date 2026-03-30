@@ -44,25 +44,34 @@ unsafe extern "C" fn effect_specials4hi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 0, 0.24, 1, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_hi"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new_raw(0x10636824af), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new_raw(0x0c62a543fc), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_4hi_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new_raw(0x10636824af), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         COL_NORMAL(agent);
+        EFFECT_OFF_KIND(agent, Hash40::new("chrom_mc_aura_hi"), false, true);
     }
 }
 
@@ -155,25 +164,33 @@ unsafe extern "C" fn effect_specials4s(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        FLASH(agent, 1, 0, 0.05, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_s"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new_raw(0x0fc6763e95), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_red"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(agent, Hash40::new_raw(0x0bfd519aff), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1, true);
-        EffectModule::set_disable_render_offset_last(boma);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_4s_hdr"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new_raw(0x0fc6763e95), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("chrom_sword_red"), false, true);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         COL_NORMAL(agent);
+        EFFECT_OFF_KIND(agent, Hash40::new("chrom_mc_aura_s"), false, true);
     }
 }
 
@@ -234,7 +251,15 @@ unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        FLASH(agent, 0, 0.93, 0.03, 0.7);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("clavicler"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("claviclel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("hip"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("kneer"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("kneel"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("footr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("footl"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("armr"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("chrom_mc_aura_lw"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 14, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 2.0);
     }
@@ -249,6 +274,7 @@ unsafe extern "C" fn effect_specials4lw(agent: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(agent) {
         COL_NORMAL(agent);
+        EFFECT_OFF_KIND(agent, Hash40::new("chrom_mc_aura_lw"), false, true);
     }
 }
 

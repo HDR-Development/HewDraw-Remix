@@ -137,11 +137,11 @@ unsafe extern "C" fn effect_movespwms(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("ryu_syakunetsu_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
+        EFFECT_FOLLOW(agent, Hash40::new("ken_syakunetsu_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
         if VarModule::is_flag(agent.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
-            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 3.0, false);
-            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 0.5, false);
-            EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_hit2"), Hash40::new("top"), 0, 0, -1.0, 180, 0, 0, 1.0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_aura"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 3.0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_impact"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 0.5, false);
+            EFFECT_FOLLOW(agent, Hash40::new("ken_savingattack_hit2"), Hash40::new("top"), 0, 0, -1.0, 180, 0, 0, 1.0, false);
         }
     }
 }

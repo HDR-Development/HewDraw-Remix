@@ -5,6 +5,7 @@ use globals::*;
 
 unsafe fn wings_of_rebellion_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END
     ])
     && fighter.is_situation(*SITUATION_KIND_AIR)
@@ -14,6 +15,7 @@ unsafe fn wings_of_rebellion_cancel(fighter: &mut L2CFighterCommon) {
         if fighter.check_aerial_cancel()
         || fighter.check_airdodge_cancel() {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.7, y: 0.7, z: 0.7}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             return;
         }
     }
