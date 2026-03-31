@@ -336,10 +336,6 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     let lr = PostureModule::lr(fighter.module_accessor);
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
 
-    if !ParamModule::is_flag(fighter.object(), ParamType::Shared, "use_entry_anim_on_respawn") {
-        return original!()(fighter);
-    }
-
     CameraModule::reset_all(fighter.module_accessor);
 
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -414,8 +410,9 @@ unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("respawn"), 0.0, 1.0, false, 0.0, false, false);
     }
-    else if [*FIGHTER_KIND_PIKMIN].contains(&kind) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("wait"), 0.0, 1.0, false, 0.0, false, false);
+    else if !ParamModule::is_flag(fighter.object(), ParamType::Shared, "use_entry_anim_on_respawn")
+    || [*FIGHTER_KIND_PIKMIN].contains(&kind) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("down_stand_d"), 0.0, 0.0, false, 0.0, false, false);
     }
     else {
         if lr == -1.0 {
@@ -696,7 +693,14 @@ unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CV
         return 1.into();
     }
 
-    if fighter.is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r")]) {
+    let rebirth_move_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("rebirth_move_frame"));
+    let down_stand_d_end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("down_stand_d")) as i32;
+    if fighter.is_motion(Hash40::new("down_stand_d"))
+    && fighter.global_table[CURRENT_FRAME].get_i32() == (rebirth_move_frame - 10) - down_stand_d_end_frame {
+        MotionModule::set_rate(fighter.module_accessor, 1.0);
+    }
+
+    if fighter.is_motion_one_of(&[Hash40::new("entry_l"), Hash40::new("entry_r"), Hash40::new("down_stand_d")]) {
         rebirth_motion_handler(fighter);
     }
     else {
