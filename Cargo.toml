@@ -13,10 +13,10 @@ prefix = "hdr"
 
 [workspace.dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
-skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
+skyline_smash = { git =  "https://github.com/ultimate-research/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false }
+# ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false }
 
 dynamic = { path = "dynamic" }
 hdr-macros = { path = "hdr-macros" }
@@ -222,21 +222,21 @@ dynamic.workspace = true
 locks = { git = "https://github.com/HDR-Development/smashline" }
 hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = ["warnings"] }
 once_cell = "1"
-ninput = { git = "https://github.com/blu-dev/ninput" }
+ninput = { git = "https://github.com/HDR-Development/ninput" }
 rand = { git = "https://github.com/skyline-rs/rand" }
 serde = { version = "1", features = ["derive"] }
 toml = "0.8.20"
 parking_lot = "0.12.3"
-runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
+runtime-motion-patcher.git = "https://github.com/WuBoytH/runtime-motion-patcher"
 skyline.workspace = true
 skyline_smash.workspace = true
 smashline.workspace = true
-ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false, features = ["disabler-symbol"] }
+# ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false, features = ["disabler-symbol"] }
 skyline-web = { workspace = true, optional = true }
 utils.workspace = true
 hash40 = "1.2.0"
 smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
-smash2 = { git = "https://github.com/blu-dev/smash-rs", package = "smash"}
+smash2 = { git = "https://github.com/WuBoytH/smash-rs", package = "smash"}
 
 [patch.crates-io]
 nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs" }
