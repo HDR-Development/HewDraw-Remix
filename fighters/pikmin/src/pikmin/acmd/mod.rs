@@ -1,5 +1,6 @@
 use super::*;
 use smash::lib::lua_const::*;
+use smash_script::macros::ATTACK_ABS;
 
 mod aerials;
 mod other;
