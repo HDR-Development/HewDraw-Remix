@@ -11,12 +11,12 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
         }
     }
-    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL)
-    && StatusModule::is_changing(fighter.module_accessor) {
-        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
-            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-    }
+    //if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL)
+    //&& StatusModule::is_changing(fighter.module_accessor) {
+    //    if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+    //        WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    //    }
+    //}
 }
 
 // Incineroar Fthrow Movement
@@ -116,7 +116,7 @@ unsafe fn command_grab_joint_rotate(boma: &mut BattleObjectModuleAccessor, rotat
 }
 
 unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_s_start")) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_s_start"), Hash40::new("special_air_s_start")]) {
         if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_ALTERNATE_GRAB) {
             // OTG Grab
             if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::SPECIAL_S_LOW_GRAB) {
