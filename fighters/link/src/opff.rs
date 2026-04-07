@@ -18,8 +18,21 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn bomb_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon)  { 
+    if VarModule::is_flag(fighter.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_LINKBOMB)
+    && fighter.is_cat_flag(Cat1::SpecialLw) {
+        // let bomb_exists = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_LINKBOMB);
+        // println!("Bomb Exists: {}", bomb_exists);
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true); {
+    }
+}
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     fastfall_specials(fighter);
+    bomb_cancel(fighter);
 }
 
 pub extern "C" fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

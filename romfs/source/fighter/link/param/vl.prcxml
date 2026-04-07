@@ -53,6 +53,10 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <struct hash="param_private">
+    <float hash="air_lw_blank_time">30</float>
+    <int hash="air_lw_max_hit">99</int>
+  </struct>
   <list hash="param_Dair">
     <struct index="0">
       <float hash="air_lw_blank_time">1.0</float>
