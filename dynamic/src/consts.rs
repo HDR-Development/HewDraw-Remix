@@ -919,7 +919,10 @@ pub mod vars {
     }
 
     pub mod link {
-
+        pub mod status {
+            // flags
+            pub const ENABLE_SPECIAL_LW_CANCEL: i32 = 0x1000;
+        }
     }
 
     pub mod littlemac {
@@ -1831,6 +1834,7 @@ pub mod vars {
             // flags
             pub const ATTACK_AIR_LW_REBOUND: i32 = 0x1100;
             pub const SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL: i32 = 0x1101;
+            pub const YOURE_MINE: i32 = 0x1102;
         }
     }
 

@@ -39,6 +39,16 @@ unsafe fn dair_rebound(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Down Smash taunt input
+unsafe fn youre_mine(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("attack_lw4")) && (20..24).contains(&(fighter.motion_frame() as u32)) {
+        if !VarModule::is_flag(fighter.object(), vars::szerosuit::status::YOURE_MINE) && fighter.is_button_on(Buttons::AppealAll) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            PLAY_SE(fighter, Hash40::new("vc_szerosuit_appeal03"));
+            VarModule::on_flag(fighter.object(), vars::szerosuit::status::YOURE_MINE);
+        }
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -57,6 +67,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     flip_jump_jc_flipstool(boma);
     dair_rebound(fighter);
+    youre_mine(fighter);
     fastfall_specials(fighter);
 }
 
