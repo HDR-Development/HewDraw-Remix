@@ -17,6 +17,8 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="special_s_tame_time_">60</float>
+      <float hash="special_s_power_min_">4.0</float>
+      <float hash="special_s_power_tame_">29.0</float>
       <float hash="special_s_move_spd_x_">1.4</float>
       <float hash="special_s_tame_spd_x_">2.25</float>
     </struct>
@@ -29,6 +31,22 @@
       <float hash="special_hi_warp_spd_add_">11</float>
       <float hash="special_hi_warp_xmax_">0.8</float>
       <float hash="special_hi_landing_frame_">24</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="special_lw_offset_y_">17.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_kaminari">
+    <struct index="0">
+      <float hash="speed_">-6.48</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

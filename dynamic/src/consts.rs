@@ -1429,6 +1429,7 @@ pub mod vars {
 
             // flags
             pub const ATTACK_AIR_LANDING_HIT: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
         }
         pub mod status {
             // ints
