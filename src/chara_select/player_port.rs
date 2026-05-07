@@ -454,6 +454,10 @@ unsafe fn controller_something_off(wireless_state: u32, player: *const PlayerInf
 unsafe fn controller_token_off(css_instance: *const CharaSelect, player: *const PlayerInfo);
 
 pub fn install() {
+    
+    //*Install only menu hooks to run without custom overclocker.
+    //sync::runtime::install_menu_hooks();
+    
     sync::runtime::install_auto_profile_switcher();
     skyline::install_hooks!(
         css_main_loop,
