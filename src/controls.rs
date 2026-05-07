@@ -1,6 +1,5 @@
 use skyline::hooks::InlineCtx;
 use std::sync::atomic::{AtomicBool, Ordering};
-// use ssbusync::*;
 
 mod css;
 mod submenu;

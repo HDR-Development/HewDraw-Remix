@@ -8,8 +8,6 @@ version = "0.0.0-dev"
 authors = ["HDR Development Team"]
 edition = "2021"
 
-[workspace.metadata.symbaker]
-prefix = "hdr"
 
 [workspace.dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
@@ -237,8 +235,10 @@ utils.workspace = true
 hash40 = "1.2.0"
 smash-arc = { version = "0.6.0", features = ["rust-zstd", "smash-runtime"] }
 smash2 = { git = "https://github.com/WuBoytH/smash-rs", package = "smash"}
+ultelier = { git = "https://github.com/BlankMauser/smash-ultelier.git", default-features = false, features = ["sync-guest"] }
 
 [patch.crates-io]
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs" }
 
 [features]
