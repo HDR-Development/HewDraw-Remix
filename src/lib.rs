@@ -39,8 +39,6 @@ mod online;
 #[cfg(feature = "main_nro")]
 mod matchup;
 
-pub mod vsync;
-
 use skyline::libc::c_char;
 use std::os::raw::c_void;
 #[cfg(feature = "main_nro")]
@@ -421,7 +419,6 @@ fn save_report_stub(uid: *mut u8) { }
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
-        // vsync::setup_ssbu_sync();
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
         chara_select::install();
