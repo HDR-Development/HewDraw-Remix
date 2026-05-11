@@ -1,7 +1,6 @@
 use super::*;
 use ninput::*;
 use parking_lot::RwLock;
-use ultelier::sync_guest::{self as sync, BufferMode};
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
@@ -13,9 +12,7 @@ struct PortData {
     enable_swap: bool,
     root_card: u64,
     active_controllers: Vec<PortController>,
-    swap_target: Option<PortController>,
-    sync_guest_missing: bool,
-    last_buffer_mode: Option<BufferMode>,
+    swap_target: Option<PortController>
 }
 impl Default for PortData {
     fn default() -> Self {
@@ -23,9 +20,7 @@ impl Default for PortData {
             enable_swap: false,
             root_card: 0x0,
             active_controllers: Vec::new(),
-            swap_target: None,
-            sync_guest_missing: false,
-            last_buffer_mode: None,
+            swap_target: None
         }
     }
 }
@@ -192,47 +187,6 @@ unsafe fn count_active_players(instance: CharaSelect) -> i32 {
     active_players
 }
 
-fn update_css_buffer_mode(data: &mut PortData, player_count: i32) {
-    if data.sync_guest_missing {
-        return;
-    }
-
-    let desired_mode = if player_count <= 2 {
-        BufferMode::Double
-    } else {
-        BufferMode::Triple
-    };
-
-    let current_mode = match sync::env_flags() {
-        Some(flags) => {
-            if flags.contains(sync::EnvironmentFlags::TRIPLE_ENABLED) {
-                BufferMode::Triple
-            } else {
-                BufferMode::Double
-            }
-        }
-        None => {
-            data.sync_guest_missing = true;
-            return;
-        }
-    };
-
-    if current_mode == desired_mode {
-        data.last_buffer_mode = Some(desired_mode);
-        return;
-    }
-
-    match sync::set_buffer_mode(desired_mode) {
-        Some(true) => {
-            data.last_buffer_mode = Some(desired_mode);
-        }
-        Some(false) => {}
-        None => {
-            data.sync_guest_missing = true;
-        }
-    }
-}
-
 static mut IS_UNPRESSED : bool = false;
 // this function loops while the css is active, allowing for runtime operations
 #[skyline::hook(offset = 0x1a2b570)]
@@ -265,9 +219,6 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             data.enable_swap = true;
             data.root_card = instance.first_player as u64;
         }
-
-        let player_count = count_active_players(instance);
-        update_css_buffer_mode(&mut data, player_count);
 
         if !data.enable_swap || instance.ready_state != 0 {
             return original!()(arg);
@@ -465,10 +416,6 @@ unsafe fn controller_something_off(wireless_state: u32, player: *const PlayerInf
 unsafe fn controller_token_off(css_instance: *const CharaSelect, player: *const PlayerInfo);
 
 pub fn install() {
-    //*Install only menu hooks to run without custom overclocker.
-    //sync::runtime::install_menu_hooks();
-
-    sync::runtime::install_auto_profile_switcher();
     skyline::install_hooks!(
         css_main_loop,
         init_css_player

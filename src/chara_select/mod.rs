@@ -16,6 +16,7 @@ use crate::NEW_CSS_SFX;
 mod layout;
 mod random;
 mod player_port;
+mod match_load;
 
 pub const KEY_MASK: u64 = 0xFFFFFF_0000000000;
 
@@ -268,6 +269,7 @@ pub fn install() {
     layout::install();
     random::install();
     player_port::install();
+    match_load::install();
 
     // These patches are required to "undo" a stacked CSS
 

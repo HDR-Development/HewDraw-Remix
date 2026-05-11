@@ -7,32 +7,6 @@ use utils_dyn::util::MATCH_EXITING;
 
 pub static IS_RULE_TIME: AtomicBool = AtomicBool::new(false);
 
-#[skyline::hook(offset = 0x1b7b814, inline)]
-unsafe fn match_load(ctx: &mut InlineCtx) {
-    if !one_player_entry() {
-        return;
-    }
-
-    let result_ptr = ctx.registers[22].x() as *const u64;
-    let pane = *result_ptr.add(1);
-    if pane == 0 {
-        return;
-    }
-
-    let internal = *(pane as *const u64);
-    if internal == 0 {
-        return;
-    }
-
-    let parent = *((internal as *const u8).add(0x18) as *const u64);
-    if parent == 0 {
-        return;
-    }
-
-    // hide timer
-    *(parent as *mut u8).add(0x58) &= 0xFE;
-}
-
 // Set the match timer to 99 minutes every frame in 1P mode so it never expires.
 #[skyline::hook(offset = 0x15812b8, inline)]
 unsafe fn once_per_frame(ctx: &mut InlineCtx) {
@@ -93,7 +67,6 @@ pub fn install() {
         game_over_declare,
         prevent_match_end_transition,
         once_per_frame,
-        match_load,
     );
 
     // Allow 0 CPUs in Training Mode menu
