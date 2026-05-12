@@ -1,6 +1,4 @@
 use skyline::hooks::InlineCtx;
-use std::sync::atomic::Ordering;
-use utils::consts::{melee_mode, smash_mode};
 
 mod css;
 mod submenu;
@@ -148,21 +146,6 @@ unsafe fn get_missing_button_count_hook(
     0
 }
 
-#[skyline::hook(offset = 0x1a2fecc, inline)]
-fn override_min_players(ctx: &mut InlineCtx) {
-    let param_1 = ctx.registers[24].x() as *const u8;
-    let game_mode = unsafe { *(param_1.add(0x16c) as *const u32) } as i32;
-    let ruleset = unsafe { *(param_1.add(0x158) as *const u8) } as i32;
-
-    // Set rule type for 1P mode
-    utils::one_player::IS_RULE_TIME.store(ruleset == smash_mode::TIME, Ordering::Relaxed);
-
-    // set minimum required "ready" players to 1
-    if game_mode == melee_mode::SMASH {
-        ctx.registers[11].set_w(1);
-    }
-}
-
 pub fn install() {
     unsafe {
         skyline::patching::Patch::in_text(0x1D3594C).nop();
@@ -176,6 +159,5 @@ pub fn install() {
         add_footstool_to_jc,
         add_more_buttons,
         get_missing_button_count_hook,
-        override_min_players,
     );
 }

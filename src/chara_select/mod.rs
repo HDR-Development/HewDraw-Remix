@@ -1,8 +1,9 @@
 use std::{
     collections::HashMap,
+    ffi::c_char,
     fs::*,
     path::{ Path, PathBuf },
-    sync::{ LazyLock, RwLock }
+    sync::{ LazyLock, RwLock, atomic::Ordering }
 };
 use skyline::hooks::InlineCtx;
 use smash2::{
@@ -11,7 +12,8 @@ use smash2::{
 };
 use serde::Deserialize;
 use utils::modules::TourneyConfig;
-use crate::NEW_CSS_SFX;
+use utils::consts::{melee_mode, smash_mode};
+use crate::CSS_FIRST;
 
 mod layout;
 mod random;
@@ -225,13 +227,13 @@ unsafe fn css_advance_sfx_hook(ctx: &mut skyline::hooks::InlineCtx) {
     // 0x18d72a665a = hash40("se_system_amiibo_write_2") // original sound
     // 0x13d3b19adc = hash40("se_system_r2f_fixed") // original sound
     let param_1 = ctx.registers[0].x() as *mut u32;
-    let sfx = if NEW_CSS_SFX { 0x18d72a665a as u64 } else { 0x13d3b19adc as u64 };
+    let sfx = if CSS_FIRST { 0x18d72a665a as u64 } else { 0x13d3b19adc as u64 };
     play_se(param_1, sfx);
 }
 
 #[skyline::hook(offset = 0x1a2d594, inline)]
 unsafe fn css_advance_sfx2_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    if !NEW_CSS_SFX {
+    if !CSS_FIRST {
         // 0x17a3061361 = hash40("se_audience_suddendeath")
         let sfx = 0x17a3061361 as u64;
         let param_1 = ctx.registers[0].x() as *mut u32;
@@ -253,12 +255,48 @@ unsafe fn echo_swap_hook(
     1
 }
 
+// Kills the "Rules" button on the CSS when the CSS is first because it
+// actually goes all the way to the main menu
+#[skyline::hook(offset = 0x3771220)]
+unsafe fn register_panel_button(
+    panel: *mut u64,
+    event_code: i32,
+    name: *const c_char,
+    arg4: u64,
+    arg5: u64,
+    arg6: u64,
+    arg7: u64,
+    arg8: u64,
+) {
+    if CSS_FIRST && !name.is_null() && skyline::from_c_str(name as *const u8) == "set_btn_03_rule" {
+        return;
+    }
+    call_original!(panel, event_code, name, arg4, arg5, arg6, arg7, arg8);
+}
+
+#[skyline::hook(offset = 0x1a2fecc, inline)]
+fn override_min_players(ctx: &mut InlineCtx) {
+    let param_1 = ctx.registers[24].x() as *const u8;
+    let game_mode = unsafe { *(param_1.add(0x16c) as *const u32) } as i32;
+    let ruleset = unsafe { *(param_1.add(0x158) as *const u8) } as i32;
+
+    // Set rule type for 1P mode
+    utils::one_player::IS_RULE_TIME.store(ruleset == smash_mode::TIME, Ordering::Relaxed);
+
+    // set minimum required "ready" players to 1
+    if game_mode == melee_mode::SMASH {
+        ctx.registers[11].set_w(1);
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         update_player_tag,
         css_advance_sfx_hook,
         css_advance_sfx2_hook,
         echo_swap_hook,
+        register_panel_button,
+        override_min_players,
     );
 
     // Prevent the game from playing any CSS advance sound effects by default

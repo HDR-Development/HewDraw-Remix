@@ -283,7 +283,10 @@ impl HashedString {
     }
 }
 
-pub static mut NEW_CSS_SFX: bool = false;
+pub static mut CSS_FIRST: bool = false;
+pub static mut SSS_CANCEL_TO_CSS: bool = false;
+pub static mut CSS_CANCEL_TO_LOCAL: bool = false;
+pub static mut IN_LOCAL_WIRELESS: bool = false;
 
 #[skyline::hook(offset = 0x23357f8, inline)]
 unsafe fn sss_to_css(ctx: &InlineCtx) {
@@ -291,8 +294,9 @@ unsafe fn sss_to_css(ctx: &InlineCtx) {
     let current_scene = (*hashed_string).as_str();
 
     if current_scene == "StageSelectScene" {
-        NEW_CSS_SFX = true;
+        CSS_FIRST = true;
         (*hashed_string).set("CharaSelectScene");
+        CSS_CANCEL_TO_LOCAL = IN_LOCAL_WIRELESS;
     }
 }
 
@@ -314,9 +318,10 @@ unsafe fn css_to_sss(ctx: &InlineCtx) {
         // add them as they're found.
         if flag == 0 {
             (*hashed_string).set("StageSelectScene");
+            SSS_CANCEL_TO_CSS = IN_LOCAL_WIRELESS;
         }
         else {
-            NEW_CSS_SFX = false;
+            CSS_FIRST = false;
         }
     }
 }
@@ -382,20 +387,40 @@ unsafe fn scene_transition(
     factory: *mut c_void
 ) {
     if !key_struct.is_null() {
-        let len = (*key_struct).length;
-        let hash = (*key_struct).hash;
-
         let str_ptr = (key_struct as *const u8).add(8) as *const c_char;
-        let key_str = skyline::from_c_str(str_ptr);
-        println!("Transitioning to scene: '{}'", key_str);
+        let initial_key = skyline::from_c_str(str_ptr);
+        println!("Transitioning to scene: '{}'", initial_key);
+
+        // Catch Local Wireless transitions
+        if SSS_CANCEL_TO_CSS && initial_key == "MeleeRuleScene" {
+            (*(key_struct as *mut HashedString)).set("CharaSelectScene");
+            SSS_CANCEL_TO_CSS = false;
+        } else if CSS_CANCEL_TO_LOCAL && initial_key == "MeleeRuleScene" {
+            (*(key_struct as *mut HashedString)).set("LocalTopScene");
+            CSS_CANCEL_TO_LOCAL = false;
+        }
+
+        let key_str = skyline::from_c_str((key_struct as *const u8).add(8) as *const c_char);
 
         if key_str == "MeleeRuleScene" || key_str == "MainMenuScene" {
             // Clear perma-strikes when going to main menu or the rules screen
             let mut mgr = STAGE_MANAGER.lock().unwrap();
             mgr.perma_striked_stages.clear();
 
-            // Make sure new CSS SFX don't carry over to other modes unintentionally
-            NEW_CSS_SFX = false;
+            // Make sure CSS-first state doesn't carry over to other modes unintentionally
+            CSS_FIRST = false;
+        }
+
+        // Set Local Wireless (because get_match_mode doesn't always work in some scenes)
+        if key_str.starts_with("Local") {
+            IN_LOCAL_WIRELESS = true;
+        } else if key_str == "MainMenuScene" || key_str == "MenuSequenceScene" {
+            IN_LOCAL_WIRELESS = false;
+        }
+
+        if key_str != "StageSelectScene" && key_str != "CharaSelectScene" && key_str != "MeleeRuleScene" {
+            SSS_CANCEL_TO_CSS = false;
+            CSS_CANCEL_TO_LOCAL = false;
 
             // Clear custom game modes so they don't carry over accidentally
             utils::game_modes::reset_custom_mode();

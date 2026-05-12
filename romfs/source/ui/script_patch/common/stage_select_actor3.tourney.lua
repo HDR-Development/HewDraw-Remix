@@ -637,6 +637,7 @@ local set_stage_preview_from_stage_panel = function(preview_index, panel_index)
 
     UiScriptPlayer.invoke("set_stage_preview_from_panel", preview_index, panel_index)
     set_stage_preview_form(preview_index, stage_previews[preview_index + 1].form_type_)
+    Alts.write_alt_field_to_bgm_id(preview_index, stage_previews[preview_index + 1].selected_alt_)
 end
 
 -- Sets the stage preview based on the selected custom stage panel
@@ -2915,6 +2916,7 @@ main = function()
     root_view:play_animation("in", 1.0)
     IS_SIMPLE_CANCEL = IS_SIMPLE_CANCEL or HDR.is_css_first()
     if IS_SIMPLE_CANCEL == true then
+        BACK_POPUP_ID = nil
         local parts = root_view:get_parts("set_parts_txt_head_00")
         if IS_RETURN_MENU == false then
             parts:play_animation("in", 1.0)
@@ -2954,18 +2956,21 @@ main = function()
         first.alt_ = stage_previews[1].selected_alt_
         first.panel_ = stage_previews[1].panel_id_
         first.form_ = stage_previews[1].form_type_
+        Alts.write_alt_field_to_bgm_id(0, first.alt_)
     end
 
     if USE_STAGE_NUM > 1 then
         second.alt_ = stage_previews[2].selected_alt_
         second.panel_ = stage_previews[2].panel_id_
         second.form_ = stage_previews[2].form_type_
+        Alts.write_alt_field_to_bgm_id(1, second.alt_)
     end
 
     if USE_STAGE_NUM > 2 then
         third.alt_ = stage_previews[3].selected_alt_
         third.panel_ = stage_previews[3].panel_id_
         third.form_ = stage_previews[3].form_type_
+        Alts.write_alt_field_to_bgm_id(2, third.alt_)
     end
 
     Alts.set_alts(

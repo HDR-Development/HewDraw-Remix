@@ -5,7 +5,7 @@ use rlua_lua53_sys as lua;
 use std::ffi::CString;
 use utils::modules::stage_mgr::STAGE_MANAGER;
 
-use crate::NEW_CSS_SFX;
+use crate::CSS_FIRST;
 
 macro_rules! lua_gettop {
     ($state:ident) => {{
@@ -746,7 +746,7 @@ extern "C" fn get_dsr(state: *mut lua::lua_State) -> i32 {
 
 extern "C" fn is_css_first(state: *mut lua::lua_State) -> i32 {
     unsafe {
-        lua::lua_pushboolean(state, if NEW_CSS_SFX { 1 } else { 0 });
+        lua::lua_pushboolean(state, if CSS_FIRST { 1 } else { 0 });
         1
     }
 }
