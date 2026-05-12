@@ -240,7 +240,6 @@ ultelier = { git = "https://github.com/BlankMauser/smash-ultelier.git", default-
 [patch.crates-io]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs" }
-libc = { git="https://github.com/rust-lang/libc", rev = "0.2.166"}
 
 [features]
 default = [
