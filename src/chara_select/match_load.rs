@@ -91,10 +91,6 @@ unsafe fn match_load(ctx: &mut InlineCtx) {
 }
 
 pub fn install() {
-    //*Install only menu hooks to run without custom overclocker.
-    //sync::runtime::install_menu_hooks();
-    sync::runtime::install_auto_profile_switcher();
-
     skyline::install_hooks!(
         match_load,
     );
