@@ -409,6 +409,9 @@ unsafe fn scene_transition(
 
             // Make sure CSS-first state doesn't carry over to other modes unintentionally
             CSS_FIRST = false;
+
+            // Clear custom game modes so they don't carry over accidentally
+            utils::game_modes::reset_custom_mode();
         }
 
         // Set Local Wireless (because get_match_mode doesn't always work in some scenes)
@@ -421,9 +424,6 @@ unsafe fn scene_transition(
         if key_str != "StageSelectScene" && key_str != "CharaSelectScene" && key_str != "MeleeRuleScene" {
             SSS_CANCEL_TO_CSS = false;
             CSS_CANCEL_TO_LOCAL = false;
-
-            // Clear custom game modes so they don't carry over accidentally
-            utils::game_modes::reset_custom_mode();
         }
     }
 
