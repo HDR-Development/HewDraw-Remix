@@ -42,7 +42,9 @@ unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 12.0);
 	if is_excute(agent) {
-		LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+		if boma.is_situation(*SITUATION_KIND_GROUND) {
+			LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+		}
 	}
 	frame(lua_state, 38.0);
 	if is_excute(agent) {

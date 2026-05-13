@@ -126,13 +126,13 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "armr", dmg:  9.0, angle:  40, kbg:  91, bkb: 22, size: 3.0, x: 0.0, y: 0.0, z: 0.0, });
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 1, bone: "top",  dmg:  9.0, angle:  40, kbg:  91, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 10.0 });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 2, bone: "top",  dmg: 11.0, angle: 361, kbg: 104, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 22.0 });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 2, bone: "top",  dmg: 11.0, angle: 361, kbg: 104, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 21.0 });
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "armr", dmg: 9.0, angle: 40, kbg: 91, bkb: 22, size: 3.0, x: 0.0, y: 0.0, z: 0.0, });
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 1, bone: "top",  dmg: 9.0, angle: 40, kbg: 91, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 10.0 });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 2, bone: "top",  dmg: 9.0, angle: 40, kbg: 91, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 22.0 });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 2, bone: "top",  dmg: 9.0, angle: 40, kbg: 91, bkb: 22, size: 3.0, x: 0.0, y: 5.0, z: 7.0, x2: 0.0, y2: 5.0, z2: 21.0 });
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -177,12 +177,13 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 10.0, angle: 43, kbg: 100, bkb: 28, size: 3.5, x: 0.0, y: 6.2, z: -11.0, x2: 0.0, y2: 6.2, z2:  -6.0, });
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 1, bone: "top", dmg: 13.0, angle: 43, kbg: 101, bkb: 31, size: 3.7, x: 0.0, y: 6.2, z: -18.9, x2: 0.0, y2: 6.2, z2: -15.0, });
     }
-    frame(lua_state, 11.0);
-    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 10.66);
     if is_excute(agent) {
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 8.0, angle: 43, kbg: 100, bkb: 30, size: 3.5, x: 0.0, y: 6.2, z: -16.4, x2: 0.0, y2: 6.2, z2: -6.0, });
         AttackModule::clear(boma, 1, false);
     }
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 18.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);

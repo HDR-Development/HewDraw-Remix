@@ -110,7 +110,7 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -8, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        FOOT_EFFECT(agent, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {

@@ -1,5 +1,5 @@
 use super::*;
-use smash_rs;
+use smash2;
 
 unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_SPECIAL_S_PREV_KIND);
@@ -109,7 +109,7 @@ unsafe extern "C" fn special_s_check_attack(fighter: &mut L2CFighterCommon, para
             }
         }
     }
-    
+
     return 0.into();
 }
 

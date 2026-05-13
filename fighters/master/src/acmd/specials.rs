@@ -662,7 +662,9 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
         EFFECT_FOLLOW(agent, Hash40::new("master_axe_hold"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
     }
     frame(lua_state, 40.0);

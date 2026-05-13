@@ -317,7 +317,7 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -3, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        // EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -3, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {

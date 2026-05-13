@@ -68,7 +68,7 @@ unsafe extern "C" fn effect_superspecialtriple(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(agent) {
         let lr = PostureModule::lr(boma);
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 8.0 * lr, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 8.0 * lr, 10, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.831, 0.686, 0.216);
     }
     frame(lua_state, 12.0);

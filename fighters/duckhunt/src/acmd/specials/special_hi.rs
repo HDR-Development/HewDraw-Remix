@@ -3,6 +3,9 @@ use super::*;
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 2);
+    }
     frame(lua_state, 8.0);
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::duckhunt::status::SPECIAL_HI_JUMP);
@@ -77,6 +80,11 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        // Uses special fall ledgegrab box
+        // due to similarity of animations
+        GroundModule::select_cliff_hangdata(boma, 4);
+    }
     frame(lua_state, 8.0);
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::duckhunt::status::SPECIAL_HI_JUMP);
@@ -155,6 +163,9 @@ unsafe extern "C" fn expression_specialhi2(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 3);
+    }
     frame(lua_state, 6.0);
     if is_excute(agent) {
         DamageModule::add_damage(boma, 2.0, 0);

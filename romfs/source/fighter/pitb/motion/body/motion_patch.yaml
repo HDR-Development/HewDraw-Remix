@@ -132,6 +132,9 @@ attack_air_lw:
 special_air_s_start:
   extra:
     cancel_frame: 0
+special_s_end:
+  extra:
+    cancel_frame: 52
 special_hi_start:
   extra:
     intangible_start_frame: 0

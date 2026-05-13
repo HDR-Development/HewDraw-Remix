@@ -65,7 +65,9 @@ pub unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false);
+        }
         EFFECT_FOLLOW(agent, Hash40::new("chrom_tenku_line"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.95);
         EffectModule::enable_sync_init_pos_last(boma);

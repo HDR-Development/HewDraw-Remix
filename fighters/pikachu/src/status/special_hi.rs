@@ -36,7 +36,6 @@ unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CV
     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_SPECIALUPDUMMY, Hash40::new("special_air_hi_end"), false, -1.0);
     ArticleModule::set_frame(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_SPECIALUPDUMMY, 0.0);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_end"), 0.0, 1.0, false, 0.0, false, false);
-    ControlModule::clear_command(fighter.module_accessor, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_end_main_loop as *const () as _))
 }
 

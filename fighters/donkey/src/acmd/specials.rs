@@ -180,7 +180,9 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 1.5, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 1.5, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
@@ -402,7 +404,7 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 5, 16, 9, 0, 0, 0, 0.8, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 16, 9, 0, 0, 0, 0.8, true);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -454,7 +456,7 @@ unsafe extern "C" fn effect_specialairlwlanding(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 5, 16, 9, 0, 0, 0, 0.8, true);
+        EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 5, 16, 9, 0, 0, 0, 0.8, true);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {

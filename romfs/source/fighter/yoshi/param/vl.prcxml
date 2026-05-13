@@ -16,8 +16,11 @@
   </struct>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="dash_x_spd">0.7</float>
+      <float hash="x_spd_min">1.0</float>
+      <float hash="x_spd_max">1.4</float>
       <float hash="start_y_spd">0</float>
-      <float hash="turn_frame_rate">59</float>
+      <float hash="turn_frame_rate">90</float>
       <float hash="start_air_x_spd">0.5</float>
       <float hash="end_x_deccel_ground">0.3</float>
     </struct>
@@ -38,7 +41,7 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
-   <list hash="param_tamago">
+  <list hash="param_tamago">
     <struct index="0">
       <int hash="life">52</int>
     </struct>

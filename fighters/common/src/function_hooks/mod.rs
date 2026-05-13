@@ -838,7 +838,14 @@ unsafe fn req_sys_falling_smoke(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = ctx.registers[19].x() as *mut Fighter;
     let object = &mut (*fighter).battle_object as *mut BattleObject;
     let entry_stand_scale = WorkModule::get_param_float((*object).module_accessor, hash40("entry_stand_scale"), 0);
-    let smoke_scale: f32 = entry_stand_scale * 1.5;
+    let kind = (*object).kind as i32;
+    let smoke_scale: f32 =
+    if kind == *FIGHTER_KIND_POPO
+    || kind == *FIGHTER_KIND_NANA {
+        entry_stand_scale
+    } else {
+        entry_stand_scale * 1.5
+    };
 
     // Increase the scale of sys_falling_smoke
     ctx.registers_f[0].set_s(smoke_scale);

@@ -219,6 +219,29 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handr"), 6.5, 0, -2, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("inkling_attack_arc"), Hash40::new("top"), 0, 6, 0, 91, -6, -48, 0.95, true);
+    }
+    if is_excute(agent) {
+        LAST_PARTICLE_SET_COLOR(agent, WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_R), WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_G), WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_B));
+    }
+    if is_excute(agent) {
+        LAST_EFFECT_SET_RATE(agent, 2);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, -3, 1.5, 0, 0, 0, 1.45, true);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
@@ -231,4 +254,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attackairhi", expression_attackairhi, Priority::Low);
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
 }

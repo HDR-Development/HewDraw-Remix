@@ -104,6 +104,24 @@ unsafe extern "C" fn effect_fallspecial(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_jumpaerialfront(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+    if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 1);
+    }
+}
+
+unsafe extern "C" fn game_jumpaerialback(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+
+    if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 1);
+    }
+}
+
 unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -150,6 +168,9 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("effect_fallspecial", effect_fallspecial, Priority::Low);
 
+    agent.acmd("game_jumpaerialfront", game_jumpaerialfront, Priority::Low);
+    agent.acmd("game_jumpaerialback", game_jumpaerialback, Priority::Low);
+    
     agent.acmd("effect_appealsl", acmd_stub, Priority::Low);
     agent.acmd("effect_appealsr", acmd_stub, Priority::Low);
     agent.acmd("sound_appealsl", sound_appeals, Priority::Low);

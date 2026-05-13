@@ -22,7 +22,7 @@ jobs:
       image: wuboyth/skyline-plugin-builder:latest
     steps:
     - name: checkout version
-      uses: actions/checkout@v4.1.4
+      uses: actions/checkout@v6.0.2
 
     # get the most recent latest full release
     - id: package_latest
@@ -90,7 +90,7 @@ jobs:
     # upload the upgrade data to the previous release for auto updater
     # - name: Upload upgrade data to previous release
     #   if: steps.package_latest.outcome != 'failure'
-    #   uses: svenstaro/upload-release-action@v2
+    #   uses: svenstaro/upload-release-action@2.11.5
     #   with:
     #     repo_token: ${{ secrets.RELEASE_TOKEN }}
     #     file: upgrade_artifacts/upgrade.zip
@@ -105,7 +105,7 @@ jobs:
     # upload the upgrade deletions to the previous release for auto updater
     # - name: Upload upgrade deletions to previous release
     #   if: steps.package_latest.outcome != 'failure'
-    #   uses: svenstaro/upload-release-action@v2
+    #   uses: svenstaro/upload-release-action@2.11.5
     #   with:
     #     repo_token: ${{ secrets.RELEASE_TOKEN }}
     #     file: upgrade_artifacts/deletions.json
@@ -121,7 +121,7 @@ jobs:
     #   run: ls -R && cp hdr_version.txt artifacts
 
     - name: Upload full package to devreleases
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: artifacts/*

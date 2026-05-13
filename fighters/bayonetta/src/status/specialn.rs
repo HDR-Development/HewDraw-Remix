@@ -52,6 +52,7 @@ unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter, true);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_charge_main_loop as *const () as _))
 }
 
@@ -258,9 +259,15 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         return true.into()
     } else {
-        fighter.check_jump_cancel(false, false, false);
         if fighter.is_cat_flag(Cat1::AirEscape) {
             VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE, 0);
+            return true.into()
+        }
+        else if ( fighter.is_cat_flag(Cat1::JumpButton)
+            || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)) )
+        && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+        {
+            VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE, *FIGHTER_STATUS_KIND_JUMP_AERIAL);
             return true.into()
         }
     }

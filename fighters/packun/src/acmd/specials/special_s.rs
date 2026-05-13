@@ -286,10 +286,12 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     let stance = VarModule::get_int(agent.battle_object, vars::packun::instance::CURRENT_STANCE);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        }
         match stance {
             STANCE_PIRANHA => {
-                EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, false);
+                EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
                 EFFECT_FOLLOW(agent, Hash40::new("sys_hit_fire"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 0.6, true);
             },
             STANCE_PUTRID => {
