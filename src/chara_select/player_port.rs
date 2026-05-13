@@ -458,7 +458,7 @@ pub fn install() {
     //*Install only menu hooks to run without custom overclocker.
     //sync::runtime::install_menu_hooks();
     
-    sync::runtime::install_auto_profile_switcher();
+    //sync::runtime::install_auto_profile_switcher();
     skyline::install_hooks!(
         css_main_loop,
         init_css_player
