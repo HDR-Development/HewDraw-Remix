@@ -11,7 +11,7 @@ pub unsafe extern "C" fn demon_on_attack(vtable: u64, fighter: &mut Fighter, log
         *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2S,
     ].contains(&status)
     && VarModule::is_flag(battle_object, vars::demon::status::CHECK_STEP_CANCEL) {
-        let collision_log: &mut CollisionLog = std::mem::transmute(log);
+        let collision_log: &CollisionLog = &*std::ptr::with_exposed_provenance::<CollisionLog>(log as usize);
         if [
             *COLLISION_KIND_ATTACK as u8,
             *COLLISION_KIND_HIT as u8,
