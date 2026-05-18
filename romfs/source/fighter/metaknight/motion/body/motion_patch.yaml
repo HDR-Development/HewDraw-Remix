@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -93,7 +93,7 @@ fall_aerial:
   blend_frames: 3
 attack_dash:
   extra:
-    cancel_frame: 42
+    cancel_frame: 40
 attack_s4_s:
   extra:
     cancel_frame: 46

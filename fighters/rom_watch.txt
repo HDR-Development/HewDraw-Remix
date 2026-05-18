@@ -57,5 +57,13 @@ fighter/zelda/param/hdr.xml
 fighter/pikachu/param/hdr.xml
 fighter/ridley/param/hdr.xml
 fighter/robot/param/hdr.xml
+fighter/rockman/param/hdr.xml
 fighter/shulk/param/hdr.xml
 fighter/metaknight/param/hdr.xml
+fighter/brave/param/hdr.xml
+fighter/elight/param/hdr.xml
+fighter/murabito/param/hdr.xml
+fighter/shizue/param/hdr.xml
+fighter/buddy/param/hdr.xml
+fighter/trail/param/hdr.xml
+fighter/roy/param/hdr.xml

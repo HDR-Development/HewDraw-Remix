@@ -1,0 +1,47 @@
+name: Reminder to update airdodge FAF when fallspeed params are edited
+
+on:
+  pull_request:
+    branches:
+      - pre-release
+    types: [opened, reopened, synchronize]
+
+jobs:
+  scan-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Search for air_accel_y/air_speed_y_stable param edits
+        id: param_change_search
+        run: |
+          FILE_PATH="romfs/source/fighter/common/param/fighter_param.prcxml"
+          
+          BEFORE=${{ github.event.before }}
+          AFTER=${{ github.event.after }}
+
+          # If 'before' is all zeros (initial push), compare against the parent of HEAD
+          if [ "${{ github.event.action }}" == "opened" ] || [ "${{ github.event.action }}" == "reopened" ]; then
+            BEFORE="HEAD^"
+          fi
+          
+          if git diff --unified=0 $BEFORE $AFTER -- "$FILE_PATH" | grep -qE "(air_accel_y|air_speed_y_stable)"; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post Comment
+        if: steps.param_change_search.outputs.found == 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            I see you have edited either the `air_accel_y` or `air_speed_y_stable` params for a character. Did you remember to update their airdodge FAF params accordingly? :)
+            
+            You can use the airdodge FAF calculator here: https://www.desmos.com/calculator/8rgzdgk19v
+
+            Airdodge FAF params (`escape_air_cancel_frame` and `escape_air_slide_cancel_frame`) are found in *fighter_param_motion.prcxml*.

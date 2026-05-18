@@ -111,6 +111,14 @@ unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_speciallwattack(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_FOLLOW(agent, Hash40::new("sheik_chougyo_arc"), Hash40::new("top"), 0, 2, -0.5, 180, -45, 90, 1.05, true);
+    }
+}
+
 unsafe extern "C" fn game_speciallwreturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -130,6 +138,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
 
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack, Priority::Low);
 
     agent.acmd("game_speciallwreturn", game_speciallwreturn, Priority::Low);
 }

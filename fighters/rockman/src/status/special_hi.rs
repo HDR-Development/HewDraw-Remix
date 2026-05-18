@@ -5,6 +5,7 @@ use super::*;
 
 pub unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::rockman::instance::SPECIAL_HI_ENABLE_FREEFALL);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_LAG);
 
     0.into()
 }

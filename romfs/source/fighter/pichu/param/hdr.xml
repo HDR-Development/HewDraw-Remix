@@ -5,4 +5,7 @@
     <float hash="charge_state_recoil_mul">1.25</float>
     <float hash="discharge_min_power_mul">0.5</float>
     <float hash="discharge_min_size_mul">0.75</float>
+    <struct hash="param_special_s">
+        <float hash="shield_hit_end_speed_x">0.4</float>
+    </struct>
 </struct>

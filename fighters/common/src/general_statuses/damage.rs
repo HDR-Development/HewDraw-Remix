@@ -3,6 +3,7 @@ use super::*;
 use globals::*;
 use interpolation::Lerp;
 use utils::game_modes::CustomMode;
+use crate::function_hooks::camera::{REDUCED_CAMERA_TRACKING_SPEED, DEFAULT_TARGET_INTERPOLATION_RATE, ReducedCameraTrackingSpeed};
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
@@ -28,7 +29,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             ftStatusUniqProcessDamageAir_init,
             status_DamageAir_Main,
             sub_damage_uniq_process_exit,
-            sub_thrown_uniq_process_init
+            sub_thrown_uniq_process_init,
+            sub_FighterStatusDamage_correctDamageVectorExecStop,
+            sub_damage_uniq_process_init
         );
     }
 }
@@ -177,13 +180,8 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
 }
 
 unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
-    match utils::game_modes::get_custom_mode() {
-        Some(modes) => {
-            if modes.contains(&CustomMode::Smash64Mode) {
-                return;
-            }
-        },
-        _ => {}
+    if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+        return;
     }
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR // prevents ASDI on wall bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U // prevents ASDI on ceiling bounces
@@ -490,6 +488,7 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
             if fighter.sub_DamageFlyChkUniq().get_bool() {
                 return true.into();
             }
+
             if fighter.global_table[CURRENT_FRAME].get_i32() > 1 && !VarModule::is_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER) {
                 ControlModule::reset_trigger(fighter.module_accessor);
                 VarModule::on_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER);
@@ -750,6 +749,11 @@ unsafe fn status_DamageAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn sub_damage_uniq_process_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     InputModule::reset_command_life_count_max(fighter.battle_object);
 
+    if fighter.kind() != *FIGHTER_KIND_NANA {
+        let id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+        REDUCED_CAMERA_TRACKING_SPEED[id] = ReducedCameraTrackingSpeed{target_interpolation_rate: DEFAULT_TARGET_INTERPOLATION_RATE, normalize_increment: 0.0};
+    }
+
     original!()(fighter)
 }
 
@@ -758,4 +762,33 @@ unsafe fn sub_thrown_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CVal
     ControlModule::reset_trigger(fighter.module_accessor);
 
     original!()(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_FighterStatusDamage_correctDamageVectorExecStop)]
+pub unsafe fn sub_FighterStatusDamage_correctDamageVectorExecStop(fighter: &mut L2CFighterCommon) {
+    if !FighterStopModuleImpl::is_damage_stop(fighter.module_accessor)
+    || !FighterControlModuleImpl::is_enable_hit_stop_delay_life(fighter.module_accessor) {
+        return;
+    }
+
+    // Prevents C-stick from overriding your DI angle
+    // on hits
+    let stick_x = fighter.left_stick_x();
+    let stick_y = fighter.left_stick_y();
+    WorkModule::set_float(fighter.module_accessor, stick_x, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_VECOR_CORRECT_STICK_X);
+    WorkModule::set_float(fighter.module_accessor, stick_y, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_VECOR_CORRECT_STICK_Y);
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_damage_uniq_process_init)]
+unsafe fn sub_damage_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!()(fighter);
+
+    // Prevents C-stick from overriding your DI angle
+    // on throws
+    let stick_x = fighter.left_stick_x();
+    let stick_y = fighter.left_stick_y();
+    WorkModule::set_float(fighter.module_accessor, stick_x, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_VECOR_CORRECT_STICK_X);
+    WorkModule::set_float(fighter.module_accessor, stick_y, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_VECOR_CORRECT_STICK_Y);
+
+    ret
 }

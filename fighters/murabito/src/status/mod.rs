@@ -7,6 +7,7 @@ mod jump;
 mod special_hi;
 mod special_lw;
 mod special_s;
+mod landing;
  
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -40,4 +41,5 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
     special_lw::install(agent);
     special_s::install(agent);
+    landing::install(agent);
 }

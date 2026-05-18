@@ -3,6 +3,7 @@ use super::*;
 unsafe extern "C" fn game_ready(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    CameraModule::set_enable_camera(boma, false, 0);
     if is_excute(agent) {
         VarModule::off_flag(agent.battle_object, vars::duckhunt_can::instance::KILLSHOT_EXPLODE);
     }

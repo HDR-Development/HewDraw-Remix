@@ -118,27 +118,40 @@ pub unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
     if StatusModule::is_changing(fighter.module_accessor) {
         return 0.into();
     }
+    fighter.sub_air_check_dive();
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_failure"), -1.0, 1.0, 0.0, false, false);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
+            // empty hydrant physics
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 26.0, true, false, false);
             }
             else {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
         else {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_failure"), -1.0, 1.0, 0.0, false, false);
+            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
+                    MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw_failure"), -1.0, 1.0, 0.0, false, false);
+                }
+                else {
+                    MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
+                }
             }
             else {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0, false, false);
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_LW_FLAG_FAILURE) {
+                    MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw_failure"), -1.0, 1.0, 0.0, false, false);
+                }
+                else {
+                    MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0, false, false);
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ mod attack_s3;
 mod attack_s4;
 mod attack_air;
 mod ladder_attack;
+mod landing;
 
 mod special_n;
 mod rockbuster;
@@ -79,4 +80,5 @@ pub fn install(agent: &mut Agent) {
     special_s::install(agent);
     special_lw::install(agent);
     special_hi::install(agent);
+    landing::install(agent);
 }

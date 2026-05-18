@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="param_special_s">
+      <float hash="add_per_frame">0.27</float>
+      <float hash="move_end_frame">43.0</float>
+      <float hash="angle_max">25.0</float>
+    </struct>
+    <struct hash="param_special_hi">
+      <float hash="hi3_brake_y_mul">0.9</float>
+      <float hash="empty_landing">14.0</float>
+    </struct>
     <struct hash="param_float">
       <int hash="float_duration">60</int>
       <float hash="float_stable">1.2</float>

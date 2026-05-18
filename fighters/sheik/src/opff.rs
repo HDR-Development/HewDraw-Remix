@@ -17,7 +17,7 @@ unsafe fn bouncing_fish_transitions(fighter: &mut L2CFighterCommon) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SHEIK_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
         VarModule::on_flag(fighter.object(), vars::sheik::instance::SPECIAL_LW_HIT);
         if fighter.status_frame() > 14 {
-            fighter.check_jump_cancel(false, false);
+            fighter.check_jump_cancel(false, false, false);
             fighter.check_airdodge_cancel();
         }
     }
@@ -63,40 +63,6 @@ extern "Rust" {
 //     }
 // }
 
-pub unsafe fn vanish_wall_ride(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    // Wall Ride momentum fixes
-    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE) {
-        let init_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_X);
-        let init_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32)
-        || (!GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_ID_NONE as u32) && init_speed_x.abs() <= 0.01)
-        { //now only bypasses floor-ride if angle is vertical
-            if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
-                VarModule::on_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE);
-            }
-        }
-        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
-            if init_speed_y > 0.0 {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            }
-        } else if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_TELEPORT_WALL_RIDE) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, init_speed_x, init_speed_y);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
-    }
-    else if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END) {
-        if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_SIDE as u32) {
-            if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
-                let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                KineticModule::mul_speed(fighter.module_accessor, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            }
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -121,7 +87,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     vanish_landing_lag(fighter);
     fastfall_specials(fighter);
-    vanish_wall_ride(fighter);
 }
 
 pub extern "C" fn sheik_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

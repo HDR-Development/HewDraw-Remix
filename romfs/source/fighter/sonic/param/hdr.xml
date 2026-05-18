@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="param_special_s">
+      <float hash="dash_speed_x">3.5</float>
+      <float hash="dash_hop_speed_y">1.85</float>
+      <float hash="dash_air_speed_y_stable_mul">0.7</float>
+      <float hash="dash_ground_brake_x">0.1</float>
+      <float hash="dash_air_brake_x">0.1</float>
+      <float hash="dash_ground_end_brake_x">0.1</float>
+      <float hash="dash_air_end_brake_x">0.05</float>
+      <float hash="shield_hit_end_speed_x">0.5</float>
+    </struct>
     <struct hash="param_special_hi">
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.6</float>

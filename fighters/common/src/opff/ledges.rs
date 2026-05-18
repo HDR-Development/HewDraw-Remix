@@ -38,12 +38,12 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         
         if cancel_frame > 0.0 {
             if MotionModule::frame(boma) > (cancel_frame * 0.9) {
-                VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, -1);
+                VarModule::set_int(boma.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
             }
         }
         else {
             if MotionModule::frame(boma) > (MotionModule::end_frame(boma) * 0.9) {
-                VarModule::set_int(boma.object(), vars::common::instance::LEDGE_ID, -1);
+                VarModule::set_int(boma.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
             }
         }
     }
@@ -71,7 +71,7 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
     // Increased landing lag (special fall landing) if landing right after being tether hogged
     if /*prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED &&*/ VarModule::is_flag(boma.object(), vars::common::instance::TETHER_HOGGED) && situation_kind == *SITUATION_KIND_GROUND {
         VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
-        let landing_lag = ParamModule::get_int(boma.object(), ParamType::Common, "tether_trump_landing_lag");
+        let landing_lag = ParamModule::get_int(boma.object(), ParamType::Common, "cliff_robbed_landing_frame");
         WorkModule::set_float(boma, landing_lag as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
     }

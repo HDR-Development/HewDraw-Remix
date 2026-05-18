@@ -37,7 +37,7 @@
     <struct index="0">
       <float hash="air_hi_pass_mul">0.9</float>
       <float hash="dir_mul_value">30</float>
-      <float hash="landing_frame">29</float>
+      <float hash="landing_frame">34</float>
       <float hash="hi_pass_mul">0.9</float>
     </struct>
     <hash40 index="1">dummy</hash40>

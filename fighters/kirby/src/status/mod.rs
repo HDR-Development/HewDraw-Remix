@@ -205,19 +205,20 @@ unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommo
                 return 1.into();
             }
         }
-        if copy_kind != *FIGHTER_KIND_PIT {
-            if copy_kind != *FIGHTER_KIND_PITB {
-                if copy_kind == *FIGHTER_KIND_INKLING {
-                    let inkling_ink = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLOAT_INKLING_SPECIAL_N_INK);
-                    if inkling_ink > 0.0 {
-                        return 1.into();
-                    }
-                    else {
-                        return 0.into();
-                    }
-                }
+        if copy_kind == *FIGHTER_KIND_INKLING {
+            let inkling_ink = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLOAT_INKLING_SPECIAL_N_INK);
+            if inkling_ink > 0.0 {
                 return 1.into();
             }
+            else {
+                return 0.into();
+            }
+        }
+        if copy_kind == *FIGHTER_KIND_PFUSHIGISOU {
+            if VarModule::is_flag(fighter.battle_object, vars::kirby::instance::SPECIAL_N_PFUSHIGISOU_SEED_FIRED) {
+                return 0.into();
+            }
+            return 1.into();
         }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY_STRANS_OFF) {
             return 1.into();
@@ -282,6 +283,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
     VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
     VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+    VarModule::off_flag(fighter.battle_object, vars::kirby::instance::SPECIAL_N_PFUSHIGISOU_SEED_FIRED);
 }
 
 unsafe extern "C" fn entry_main(fighter: &mut L2CFighterCommon) -> L2CValue {

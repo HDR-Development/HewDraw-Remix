@@ -119,88 +119,6 @@ unsafe fn double_shield_button_airdodge(
     }
 }
 
-unsafe fn drift_di(
-    fighter: &mut L2CFighterCommon,
-    boma: &mut BattleObjectModuleAccessor,
-    status_kind: i32,
-    situation_kind: i32,
-) {
-    if boma.is_situation(*SITUATION_KIND_AIR)
-        && !StopModule::is_stop(boma)
-        && boma.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        ])
-    {
-        let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-
-        let mut initial_speed_x = VarModule::get_float(
-            fighter.battle_object,
-            vars::common::status::INITIAL_KNOCKBACK_VEL_X,
-        );
-        let mut initial_speed_y = VarModule::get_float(
-            fighter.battle_object,
-            vars::common::status::INITIAL_KNOCKBACK_VEL_Y,
-        );
-
-        // if these floats are both exactly zero, its because
-        // status change reset them to zero. Thus, we should set them.
-        if initial_speed_x == 0.0 && initial_speed_y == 0.0 {
-            VarModule::set_float(
-                fighter.battle_object,
-                vars::common::status::INITIAL_KNOCKBACK_VEL_X,
-                damage_speed_x,
-            );
-            VarModule::set_float(
-                fighter.battle_object,
-                vars::common::status::INITIAL_KNOCKBACK_VEL_Y,
-                damage_speed_y,
-            );
-
-            initial_speed_x = VarModule::get_float(
-                fighter.battle_object,
-                vars::common::status::INITIAL_KNOCKBACK_VEL_X,
-            );
-            initial_speed_y = VarModule::get_float(
-                fighter.battle_object,
-                vars::common::status::INITIAL_KNOCKBACK_VEL_Y,
-            );
-        }
-
-        let mut speed_mul = ParamModule::get_float(
-            fighter.battle_object,
-            ParamType::Common,
-            "drift_di.speed_mul_base",
-        );
-        let speed_mul_add_max = ParamModule::get_float(
-            fighter.battle_object,
-            ParamType::Common,
-            "drift_di.speed_mul_add_max",
-        );
-
-        let lerp_max_speed = ParamModule::get_float(
-            fighter.battle_object,
-            ParamType::Common,
-            "drift_di.speed_lerp_max",
-        );
-
-        let ratio = 1.0 - (initial_speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
-        speed_mul = (speed_mul + speed_mul_add_max) * ratio;
-
-        let drift_value = boma.left_stick_x() * speed_mul;
-
-        fighter.set_speed(
-            Vector2f::new(damage_speed_x + drift_value, damage_speed_y),
-            *FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
-        );
-    }
-}
 
 extern "C" {
     #[link_name = "\u{1}_ZN3app14sv_information8stage_idEv"]
@@ -299,7 +217,6 @@ pub unsafe fn run(
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
-    //drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);

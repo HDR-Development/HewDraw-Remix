@@ -1,5 +1,5 @@
 use super::*;
-use smash_rs;
+use smash2;
 
 unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_SPECIAL_S_PREV_KIND);
@@ -88,7 +88,7 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_motion_one_of(&[Hash40::new("special_s_4"), Hash40::new("special_air_s_4")]) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
-            fighter.check_jump_cancel(false, false);
+            fighter.check_jump_cancel(false, false, false);
         }
     }
 
@@ -103,13 +103,13 @@ unsafe extern "C" fn special_s_check_attack(fighter: &mut L2CFighterCommon, para
                 let opponent_boma = sv_battle_object::module_accessor(object_id);
                 if StatusModule::situation_kind(opponent_boma) == *SITUATION_KIND_AIR {
                     let opponent_object = utils::util::get_battle_object_from_accessor(opponent_boma);
-                    VarModule::on_flag(opponent_object, vars::common::instance::IS_KNOCKDOWN_THROW);
+                    VarModule::on_flag(opponent_object, vars::common::instance::FORCE_TUMBLE_NO_BOUNCE);
                     StatusModule::set_status_kind_interrupt(opponent_boma, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
                 }
             }
         }
     }
-    
+
     return 0.into();
 }
 

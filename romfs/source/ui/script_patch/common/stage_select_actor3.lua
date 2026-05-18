@@ -194,7 +194,8 @@ local StagePanel = { -- R46
             frame_ = 0,
             target_scale_ = 0.0,
             scale_value_ = 0.0,
-            is_striked_ = false
+            is_striked_ = false,
+            is_perma_striked_ = false,
         }
     end
 }
@@ -486,7 +487,6 @@ local set_tab_form_text = function(stage_form)
     }
 
     tab_layout:play_animation(string.format("stage_%s", form_names[stage_form + 1]), 1.0)
-    tab_form_button_pane:set_text_message(string.format("mel_stage_select_%s", form_names[stage_form + 1]))
 end
 
 -- Plays the looping long-cancel sound effect (when you are holding B to exit)
@@ -1030,6 +1030,22 @@ local change_sub_page = function(target_page)
     local current_page_ = pages[current_page + 1]
     local target_page_ = pages[target_page + 1]
 
+    local page_back = target_page
+    if target_page < 1 then
+        page_back = #pages
+    end
+
+    local page_current = target_page + 1
+
+    local page_forward = target_page + 2
+    if page_forward > #pages then
+        page_forward = 1
+    end
+
+    root_view:get_pane("txt_page_back"):set_text_string("Page " .. page_back)
+    root_view:get_pane("txt_page_forward"):set_text_string("Page " .. page_forward)
+    tab_form_button_pane:set_text_string("Page " .. page_current)
+
     local positions = {}
 
     for i = 1, PANELS_PER_PAGE, 1 do
@@ -1069,7 +1085,16 @@ local setup = function()
         stage_panels[i] = StagePanel.new()
 
         local strike_panel = root_view:get_parts(get_stage_panel_name(i - 1)):get_pane("set_rep_strike")
+        local perma_strike_panel = root_view:get_parts(get_stage_panel_name(i - 1)):get_pane("set_rep_perma")
         strike_panel:set_visible(false)
+        perma_strike_panel:set_visible(false)
+
+        local is_perma_strike = HDR.is_perma_strike_stage(i)
+        if is_perma_strike then
+            stage_panels[i].is_striked_ = true
+            stage_panels[i].is_perma_striked_ = true
+            perma_strike_panel:set_visible(true)
+        end
     end
 
     for i = 0, USE_STAGE_NUM - 1, 1 do
@@ -1332,6 +1357,23 @@ local setup_from_environment = function()
     end
 
     UiScriptPlayer.invoke("setup_bgm")
+    
+    local selected_panel_id = HDR.get_selected_panel()
+    local selected_preview_id = HDR.get_selected_preview()
+
+    local page = 0
+    local panel = 0
+    local preview = 0
+
+    if selected_panel_id ~= UI_INVALID_INDEX then
+        page = selected_panel_id // PANELS_PER_PAGE
+        panel = selected_panel_id
+        preview = selected_preview_id
+    end
+
+    change_sub_page(page)
+    set_stage_preview_from_stage_panel(preview, panel)
+    set_alt_panel_textures(nil)
 end
 
 -- Cancels, presumably a part of the exit sequence
@@ -1492,12 +1534,43 @@ local check_for_cancel = function()
 end
 
 local strike_stage = function(panel_id, is_strike)
-    if panel_id ~= UI_INVALID_INDEX and stage_panels[panel_id + 1].is_striked_ ~= is_strike then
-        stage_panels[panel_id + 1].is_striked_ = is_strike
+    if panel_id ~= UI_INVALID_INDEX then
         UiSoundManager.play_se_label("se_system_plate_catch")
-        local parts = root_view:get_parts(get_stage_panel_name(panel_id))
-        local strike_pane = parts:get_pane("set_rep_strike")
-        strike_pane:set_visible(is_strike)
+        if is_strike then
+            if stage_panels[panel_id + 1].is_perma_striked_ then
+                stage_panels[panel_id + 1].is_striked_ = false
+                stage_panels[panel_id + 1].is_perma_striked_ = false
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                local perma_strike_pane = parts:get_pane("set_rep_perma")
+                strike_pane:set_visible(false)
+                perma_strike_pane:set_visible(false)
+                HDR.set_perma_strike_stage(panel_id + 1, false)
+            elseif stage_panels[panel_id + 1].is_striked_ then
+                stage_panels[panel_id + 1].is_perma_striked_ = true
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                local perma_strike_pane = parts:get_pane("set_rep_perma")
+                strike_pane:set_visible(false)
+                perma_strike_pane:set_visible(true)
+                HDR.set_perma_strike_stage(panel_id + 1, true)
+            else
+                stage_panels[panel_id + 1].is_striked_ = true
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                strike_pane:set_visible(true)
+                HDR.set_perma_strike_stage(panel_id + 1, false)
+            end
+        else
+            stage_panels[panel_id + 1].is_striked_ = false
+            stage_panels[panel_id + 1].is_perma_striked_ = false
+            local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+            local strike_pane = parts:get_pane("set_rep_strike")
+            local perma_strike_pane = parts:get_pane("set_rep_perma")
+            strike_pane:set_visible(false)
+            perma_strike_pane:set_visible(false)
+            HDR.set_perma_strike_stage(panel_id + 1, false)
+        end
     end
 end
 
@@ -1652,6 +1725,8 @@ local decide_normal_stage = function()
         return false
     end
 
+    HDR.set_selected_panel_and_preview(current_selected_panel, current_selected_preview)
+
     UiScriptPlayer.invoke("set_medal_visible", current_selected_preview, true)
     UiScriptPlayer.invoke("set_medal_collect_range_from_panel", current_selected_preview, current_selected_panel)
     if UiScriptPlayer.invoke("is_hand_interpolated_moving") == false then
@@ -1752,9 +1827,16 @@ local handle_panel_decide = function()
         UiScriptPlayer.invoke("play_rumble_input_device")
     end
 
-    UiSoundManager.play_se_label("se_system_plate_off_stageselect")
-    if IS_DECIDE_SE_AUDIENCE == true then
+    if IS_MY_MUSIC == false and HDR.is_css_first() then
+        -- the CSS used to play these when going to a match, so now
+        -- the SSS does
+        UiSoundManager.play_se_label("se_system_r2f_fixed")
         UiSoundManager.play_se_label("se_audience_suddendeath")
+    else
+        UiSoundManager.play_se_label("se_system_plate_off_stageselect")
+        if IS_DECIDE_SE_AUDIENCE then
+            UiSoundManager.play_se_label("se_audience_suddendeath")
+        end
     end
 
     if check_all_previews_enabled() == true then
@@ -2007,6 +2089,7 @@ end
 
 -- CLOSURE_74, R134
 local update_stage_previews = function()
+    ENABLE_STAGE_FORM_TYPE = false
     prev_highlighed_preview = highlighed_preview
 
     highlighed_preview = UiScriptPlayer.invoke("get_hand_on_stage_preview_id")
@@ -2371,6 +2454,7 @@ local try_handle_exiting_scene = function()
     update_panel_scalings()
 
     if scene_state == SCENE_STATE_SHOULD_EXIT then
+        HDR.stage_loading();
         next_scene_animation:play(1.0)
         scene_state = SCENE_STATE_EXITING
     elseif scene_state == SCENE_STATE_EXITING then
@@ -2573,7 +2657,14 @@ local regular_main_update = function()
                             end
                         end
                         if is_valid_stage == true and prepare_scene_exit() == true then
-                            UiSoundManager.play_se_label("se_system_fixed_s")
+                            if IS_MY_MUSIC == false and HDR.is_css_first() then
+                                -- the CSS used to play these when going to a match, so now
+                                -- the SSS does
+                                UiSoundManager.play_se_label("se_system_r2f_fixed")
+                                UiSoundManager.play_se_label("se_audience_suddendeath")
+                            else
+                                UiSoundManager.play_se_label("se_system_fixed_s")
+                            end
                             local off_preview_index = -1
                             if check_all_previews_enabled() == false then
                                 play_off_preview_animation(current_selected_preview)
@@ -2686,7 +2777,9 @@ main = function()
     stage_select_bgm:setup()
     setup_from_environment()
     root_view:play_animation("in", 1.0)
+    IS_SIMPLE_CANCEL = IS_SIMPLE_CANCEL or HDR.is_css_first()
     if IS_SIMPLE_CANCEL == true then
+        BACK_POPUP_ID = nil
         local parts = root_view:get_parts("set_parts_txt_head_00")
         if IS_RETURN_MENU == false then
             parts:play_animation("in", 1.0)
@@ -2765,4 +2858,4 @@ end
 -- here begins The Great Buffer of empty string data, so that
 -- arcropolis will correctly allocate the necessary space for
 -- loading the (larger) tourney mode version of this file.
--- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding --
+-- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding -- padding --

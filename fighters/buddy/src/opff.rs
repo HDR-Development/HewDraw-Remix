@@ -1,9 +1,9 @@
 use super::*;
 use globals::*;
 
-const HUD_DISPLAY_TIME_MAX: i32 = 90;
+pub const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
-const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
+pub const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
 const BEAKBOMB_END_FRAME: i32 = 25; // Dash timer is shared between ground and air in vl.prc
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
@@ -12,14 +12,6 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
         let landing_lag = 12.0;
         fighter.check_land_cancel(Some(landing_lag));
-    }
-}
-
-// Banjo Grenade Airdodge Cancel
-unsafe fn grenade_ac(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_LW])
-    && fighter.motion_frame() > 16.0 {
-        fighter.check_airdodge_cancel();
     }
 }
 
@@ -40,7 +32,7 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
         else if MotionModule::frame(fighter.module_accessor) >= 27.0 {
-            fighter.check_jump_cancel(false, false);
+            fighter.check_jump_cancel(false, false, true);
         }
     }
 }
@@ -65,8 +57,8 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon) {
         if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH) {
             beakbomb_control(fighter);
             //beakbomb_checkForHit(fighter,boma);
-            beakbomb_checkForGround(fighter);
-            beakbomb_checkForCancel(fighter);
+            beakbomb_checkforground(fighter);
+            beakbomb_checkforcancel(fighter);
             GroundModule::set_attach_ground(fighter.module_accessor, false);
             VarModule::add_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME, 1);
         }
@@ -123,7 +115,7 @@ unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon) {
 }
 
 // Check if landed on the ground
-unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon) {
+unsafe fn beakbomb_checkforground(fighter: &mut L2CFighterCommon) {
     if !fighter.is_situation(*SITUATION_KIND_GROUND) { return; }
 
     let fail_safeFrames = 5;
@@ -142,7 +134,7 @@ unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon) {
+unsafe fn beakbomb_checkforcancel(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
     || !fighter.is_situation(*SITUATION_KIND_AIR) { return; }
@@ -154,6 +146,7 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon) {
 
 // Recoil for bouncing off walls/shields
 unsafe fn beakbomb_wall(fighter: &mut L2CFighterCommon) {
+    /*
     if fighter.is_motion(Hash40::new("special_air_s_wall"))
     && fighter.motion_frame() < 7.0
     && fighter.motion_frame() > 0.0 {
@@ -166,14 +159,45 @@ unsafe fn beakbomb_wall(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         SET_SPEED_EX(fighter, x_bounce, y_bounce, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
-    }
+    } 
+    */
 }
 
 unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE) {
+    //special_n_shoot_fire
+    //special_air_n_shoot_fire
+    let motion = MotionModule::motion_kind(fighter.module_accessor);
+    let motion_partial = MotionModule::motion_kind_partial(fighter.module_accessor,*FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+    if fighter.is_status_one_of(&[
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_WALK_F,
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_WALK_B,
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_TURN,
+        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT_LANDING
+    ]) && fighter.is_situation(*SITUATION_KIND_GROUND) {
+
+        if motion_partial == hash40("special_n_shoot_upper_fire") {
+            let frame_partial = MotionModule::frame_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+            let disable_frame = 3.0; //frame before egg fires
+            let disable_bayonet = (!CancelModule::is_enable_cancel(fighter.module_accessor) && frame_partial >= disable_frame);
+            VarModule::set_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE,disable_bayonet);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
+        }
+        let is_csticking = ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+        if (is_csticking && !VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE)) {
+            //println!("Bayonet");
+            //VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
+            //VarModule::set_int(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_EGGS_FIRED,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+            fighter.change_status(statuses::buddy::SPECIAL_N_BAYONET.into(), false.into());
+        }
+    }
+    /* 
+    if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE) {
         if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S3) {
             if fighter.motion_frame() < 21.0 { return; }
-            fighter.change_status(statuses::buddy::SPECIAL_N_BAYONET_END.into(), false.into());
+            fighter.change_status(statuses::buddy::SPECIAL_N_BAYONET.into(), false.into());
 
             let entry = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
             let currentEggs = BAYONET_EGGS[entry]; // VarModule::get_int(fighter.battle_object, vars::buddy::instance::BAYONET_EGGS);
@@ -182,7 +206,7 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT
             );
 
-            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
         }
     }
     else if fighter.is_status_one_of(&[
@@ -197,6 +221,7 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon) {
         // VarModule::set_int(fighter.battle_object, vars::buddy::instance::BAYONET_EGGS, currentEggs);
         BAYONET_EGGS[entry] = currentEggs;
     }
+    */
 }
 
 unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon) {
@@ -222,15 +247,11 @@ unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon) {
         }
     }
     // Refund cooldown if immediately caught ledge
-    if fighter.motion_frame() <= 3.0 && in_Air {
-        if fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH)
-        && VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN) > FEATHERS_RED_COOLDOWN_MAX - 5.0 {
-            VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, 1.0);
-        }
-        else if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH]) {
-            VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, FEATHERS_RED_COOLDOWN_MAX);
-        }
-	}
+    if fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH)
+    && fighter.motion_frame() <= 3.0
+    && VarModule::get_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN) > FEATHERS_RED_COOLDOWN_MAX - 5.0 {
+        VarModule::set_float(fighter.battle_object, vars::buddy::instance::SPECIAL_S_RED_FEATHER_COOLDOWN, 1.0);
+    }
 
 	buddy_meter_display(fighter, in_Air);
 }
@@ -240,7 +261,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, RedFeather: bool) 
 	if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH,
-        *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL,
+        //*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL,
         //*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL,
 		*FIGHTER_STATUS_KIND_REBIRTH
     ])
@@ -256,7 +277,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, RedFeather: bool) 
 	}
 }
 
-unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, RedFeather: bool) {
+pub unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, RedFeather: bool) {
 	EffectModule::kill_kind(fighter.module_accessor, Hash40::new("buddy_special_s_count"), false, true);
 
     let FEATHERS_GOLD_COUNT = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
@@ -302,7 +323,7 @@ unsafe fn reset_vars(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH])
     && StatusModule::is_changing(fighter.module_accessor) {
         VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
-        VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
+        VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
         
         VarModule::set_int(fighter.battle_object, vars::buddy::instance::HUD_DISPLAY_TIME, 60);
         VarModule::set_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME, 0);
@@ -328,6 +349,7 @@ unsafe fn up_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP) {
         if StatusModule::is_changing(fighter.module_accessor) {
             VarModule::on_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_HI_ENABLE_FREEFALL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_LAG);
         }
     }
     if fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_HI_JUMP) {
@@ -375,7 +397,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
     blue_eggs_land_cancels(fighter);
     dair_bounce(fighter);
-    grenade_ac(fighter);
     dash_attack_jump_cancels(fighter);
     indicator_breegull_fatigue(fighter);
     beakbomb_update(fighter);

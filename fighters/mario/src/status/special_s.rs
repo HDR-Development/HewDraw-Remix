@@ -2,7 +2,6 @@ use super::*;
 
 unsafe extern "C" fn special_s_kinetic_helper(fighter: &mut L2CFighterCommon) {
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
@@ -23,7 +22,6 @@ unsafe extern "C" fn special_s_kinetic_helper(fighter: &mut L2CFighterCommon) {
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable, 0.0);
         sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add);
         sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, speed_x);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
         // FIGHTER_KINETIC_ENERGY_ID_STOP
@@ -33,9 +31,8 @@ unsafe extern "C" fn special_s_kinetic_helper(fighter: &mut L2CFighterCommon) {
         
         // FIGHTER_KINETIC_ENERGY_ID_GRAVITY
         let special_s_attack_acl_y = fighter.get_param_float("param_special_s", "special_s_attack_acl_y");
-        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+        sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -special_s_attack_acl_y * 0.2);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
@@ -158,6 +155,10 @@ unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
     } else {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         if fighter.is_flag(*FIGHTER_MARIO_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL) {
+            let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
+            sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable, 0.0);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable, 0.0);
+
             let air_accel_y = fighter.get_param_float("air_accel_y", "");
             let air_speed_y_stable = fighter.get_param_float("air_speed_y_stable", "");
             sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);

@@ -122,9 +122,6 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             return 0.into();
         }
     }
-    if fighter.status_frame() > 16 {
-        fighter.check_airdodge_cancel();
-    }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = if sit == *SITUATION_KIND_GROUND {
             FIGHTER_STATUS_KIND_WAIT

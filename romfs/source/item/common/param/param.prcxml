@@ -152,7 +152,9 @@
     <struct index="121">
       <hash40 hash="shield_kind">item_shield_kind_hop</hash40>
     </struct>
-    <hash40 index="122">dummy</hash40>
+    <struct index="122">
+      <float hash="pickup_range_sizew">2.5</float>
+    </struct>
     <hash40 index="123">dummy</hash40>
     <hash40 index="124">dummy</hash40>
     <hash40 index="125">dummy</hash40>
@@ -171,8 +173,12 @@
       <float hash="ground_brake_x">0.04</float>
       <bool hash="enemy_can_attack">false</bool>
     </struct>
-    <hash40 index="131">dummy</hash40>
-    <hash40 index="132">dummy</hash40>
+    <struct index="131">  
+      <float hash="throw_speed_mul">0.85</float>
+    </struct>
+    <struct index="132">  
+      <float hash="throw_speed_mul">0.85</float>
+    </struct>
     <hash40 index="133">dummy</hash40>
     <hash40 index="134">dummy</hash40>
     <hash40 index="135">dummy</hash40>

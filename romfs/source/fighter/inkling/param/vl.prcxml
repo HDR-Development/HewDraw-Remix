@@ -38,9 +38,14 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="start_y_mul_on_air">0.0</float>
       <float hash="max_run_speed_x_on_ground">2.0</float>
       <float hash="max_run_speed_x_on_air">1.7</float>
-      <float hash="end_jump_speed_y">2.0</float>
+      <float hash="max_speed_y_mul">1.0</float>
+      <float hash="accel_y_mul">1.0</float>
+      <int hash="enable_finish_frame">1</int>
+      <int hash="enable_no_ink_finish_frame">1</int>
+      <float hash="end_jump_speed_y">2.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

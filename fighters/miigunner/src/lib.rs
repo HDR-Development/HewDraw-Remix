@@ -11,6 +11,7 @@ pub mod status;
 
 mod attackairf_bullet;
 mod bottomshoot;
+mod flamepillar;
 mod fullthrottle;
 mod grenadelauncher;
 mod groundbomb;
@@ -62,6 +63,7 @@ pub fn install() {
 
     attackairf_bullet::install();
     bottomshoot::install();
+    flamepillar::install();
     fullthrottle::install();
     grenadelauncher::install();
     groundbomb::install();

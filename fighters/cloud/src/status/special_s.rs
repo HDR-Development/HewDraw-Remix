@@ -30,6 +30,7 @@ unsafe extern "C" fn special_s3_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = smashline::original_status(Exec, fighter, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S3)(fighter);
+
     // no gravity while using this stall flag
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::cloud::status::SPECIAL_S_STALL)
@@ -37,6 +38,7 @@ unsafe extern "C" fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
         fighter.on_flag(*FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_SPECIAL_FALL);
         sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
+    
     ret
 }
 
@@ -53,7 +55,5 @@ pub fn install(agent: &mut Agent) {
     agent.status(Exec, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S2, special_s_exec);
     agent.status(End, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S2, special_s2_end);
 
-    agent.status(CheckAttack, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S3, special_s_check_attack);
-    agent.status(Exec, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S3, special_s_exec);
     agent.status(End, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_S3, special_s3_end);
 }

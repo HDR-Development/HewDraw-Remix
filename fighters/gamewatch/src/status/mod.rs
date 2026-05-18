@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-mod landing_fall_special;
+mod landing;
 mod special_hi;
 mod special_hi_open;
 //mod special_n;
@@ -98,7 +98,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
-    landing_fall_special::install(agent);
+    landing::install(agent);
     special_hi::install(agent);
     special_hi_open::install(agent);
     //special_n::install(agent);

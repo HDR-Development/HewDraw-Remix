@@ -5,14 +5,27 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::pikachu::instance::DISABLE_SPECIAL_S);
         boma.select_cliff_hangdata_from_name("special_s");
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
+        let min_power = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("special_s_power_min_"));
+        let max_power = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("special_s_power_tame_"));
+        let max_charge = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("special_s_tame_time_"));
+
+        let mut charge_frames = WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_SKULL_BASH_HOLD_COUNT).to_f32();
+        if charge_frames == 20.0 {
+            charge_frames = 8.0;
+        }
+        let range = max_power - min_power;
+        let power_per_frame = range / max_charge;
+        let real_power = min_power + (power_per_frame * charge_frames);
+
         JostleModule::set_status(boma, false);
         WorkModule::on_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_ATTACK_TRIGGER);
-        ATTACK(agent, 0, 0, Hash40::new("rot"), 1.0, 361, 78, 0, 40, 3.0, 0.0, -0.7, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
+        ATTACK(agent, 0, 0, Hash40::new("rot"), real_power, 361, 78, 0, 40, 3.0, 0.0, -0.7, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         WorkModule::on_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_CALC_ATTACK_POWER);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
     }
@@ -33,7 +46,7 @@ unsafe extern "C" fn game_specialairsmissend(agent: &mut L2CAgentBase) {
         boma.select_cliff_hangdata_from_name("special_s");
         JostleModule::set_status(boma, true);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 22.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }

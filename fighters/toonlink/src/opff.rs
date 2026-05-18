@@ -4,11 +4,11 @@ use super::*;
 use globals::*;
 
  
-unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+unsafe fn heros_bow_drift(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -16,8 +16,17 @@ unsafe fn heros_bow_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
-	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
+	let mut long_sword_scale = Vector3f{x: 1.175, y: 1.0, z: 1.0};
+    if boma.is_motion_one_of(&[
+        Hash40::new("attack_air_hi"),
+        //Hash40::new("attack_s4"),
+        Hash40::new("special_air_hi"),
+        Hash40::new("special_hi"),
+        Hash40::new("special_hi_start")])
+    { // match sword size better w/o ton of extra range
+        long_sword_scale.x = 1.1375;
+    }
+	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword1"), &long_sword_scale);
 }
 
 // Prevents Toon Link from being able to use both aerial jumps immediately after one another
@@ -45,34 +54,17 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_S2,
         *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST
         ])
-        || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 59.0) )
+        || (fighter.is_motion(Hash40::new("special_air_hi")) && fighter.motion_frame() > 63.0) )
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    heros_bow_drift(boma, status_kind, situation_kind, cat[1], stick_y);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    heros_bow_drift(fighter);
 	sword_length(boma);
     triple_jump_lockout(fighter);
     fastfall_specials(fighter);
-    
-
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
-        if motion_kind == hash40("attack_11") {
-            if frame < 6.0 {
-                MotionModule::set_rate(boma, 1.667);
-            }
-            if frame >= 6.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-    }
 }
 
 pub extern "C" fn toonlink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -84,7 +76,7 @@ pub extern "C" fn toonlink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighte
 
 pub unsafe fn toonlink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
 

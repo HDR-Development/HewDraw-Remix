@@ -3,7 +3,7 @@ use super::*;
 mod special_n;
 mod special_hi;
 
-unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 6.0);
@@ -34,6 +34,19 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 64.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    }
+}
+
+unsafe extern "C" fn game_specialscatch(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
 }
 
@@ -161,8 +174,10 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     special_n::install(agent);
 
-    agent.acmd("game_specialsthrow", game_specials, Priority::Low);
-    agent.acmd("game_specialairsthrow", game_specials, Priority::Low);
+    agent.acmd("game_specialsthrow", game_specialsthrow, Priority::Low);
+    agent.acmd("game_specialairsthrow", game_specialsthrow, Priority::Low);
+    agent.acmd("game_specialscatch", game_specialscatch, Priority::Low);
+    agent.acmd("game_specialairscatch", game_specialscatch, Priority::Low);
 
     special_hi::install(agent);
 

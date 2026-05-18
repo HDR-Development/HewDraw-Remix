@@ -216,6 +216,7 @@ unsafe fn CUT_IN_CENTER_hook(lua_state: u64) {
             if effect_name.hash == hash40("sys_bg_finishhit") {
                 // determines which effect will play based on the team color of the last attack
                 // println!("effect being set to team color {}", LAST_ATTACK_TEAM_COLOR);
+                // TODO: check attacker player tag to display custom effects for developers
                 hash = match LAST_ATTACK_TEAM_COLOR {
                     0 => hash40("sys_bg_finishhit_r"),
                     1 => hash40("sys_bg_finishhit_b"),
@@ -408,6 +409,7 @@ unsafe fn module_access_effect_hook(lua_state: u64) {
             if effect_name.hash == hash40("sys_hit_dead") {
                 // determines which effect will play based on the team color of the last attack
                 // println!("effect being set to team color {}", LAST_ATTACK_TEAM_COLOR);
+                // TODO: check attacker player tag to display custom effects for developers
                 hash = match LAST_ATTACK_TEAM_COLOR {
                     0 => hash40("sys_hit_dead_r"),
                     1 => hash40("sys_hit_dead_b"),

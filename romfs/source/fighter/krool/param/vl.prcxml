@@ -2,14 +2,17 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
+      <float hash="p1_x">16</float>
       <float hash="p1_y">32</float>
       <float hash="p2_x">-16</float>
+      <float hash="p2_y">10</float>
     </struct>
     <!-- UP SPECIAL -->
     <struct index="1">
-      <float hash="p1_x">12</float>
+      <float hash="p1_x">18</float>
       <float hash="p1_y">28</float>
-      <float hash="p2_x">-16</float>
+      <float hash="p2_x">-14</float>
+      <float hash="p2_y">10</float>
     </struct>
   </list>
   <struct hash="param_waist">
@@ -35,7 +38,7 @@
     <struct index="0">
       <float hash="special_n_start_air_mul_spd_x">0.85</float>
       <float hash="special_n_start_air_mul_spd_y">1.0</float>
-      <int hash="special_n_suction_frame_min">10</int>
+      <int hash="special_n_suction_frame_min">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -44,6 +47,7 @@
   <list hash="param_ironball">
     <struct index="0">
       <int hash="life">150</int>
+      <float hash="hop_acl_y">0.075</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -68,7 +72,7 @@
       <float hash="special_hi_fly_max_spd_x">1.0</float>
       <float hash="special_hi_fly_stick_mul_max_spd_x">1.0</float>
       <int hash="special_hi_fly_brake_after_frame">25</int>
-      <float hash="special_hi_fall_max_spd_x">0.75</float>
+      <float hash="special_hi_fall_max_spd_x">1.0</float>
       <float hash="special_hi_fall_acl_y">0.118</float>
       <float hash="special_hi_fall_max_spd_y">2.3</float>
       <int hash="special_hi_landing_frame">26</int>

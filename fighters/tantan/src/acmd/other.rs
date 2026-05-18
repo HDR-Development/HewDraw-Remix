@@ -79,16 +79,12 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -99,10 +95,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 //Ram Ram attacks//
@@ -110,11 +103,30 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackshortendr1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let armType = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
 
     frame(lua_state, 8.0);
-    if (armType == 2) && !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_BOUND) {
-        VarModule::on_flag(agent.battle_object, vars::tantan::status::ARMS_ATTACK_CANCEL);
+    if WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 2
+    && !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_BOUND) {
+        VarModule::on_flag(agent.battle_object, vars::tantan::instance::ARMS_ATTACK_CANCEL);
+    }
+}
+
+unsafe extern "C" fn effect_attacklegsjumpaerialfb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("tantan_jump_line_s"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("tantan_jump_line_l"), false, true);
+    }
+}
+
+unsafe extern "C" fn effect_attacklegstwjumpaerialfb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("tantan_jump_line_s"), false, true);
+        EFFECT_OFF_KIND(agent, Hash40::new("tantan_jump_line_l"), false, true);
     }
 }
 
@@ -143,4 +155,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacklongendr1", game_attackshortendr1, Priority::Low);
     agent.acmd("game_attacklongendrb1", game_attackshortendr1, Priority::Low);
     agent.acmd("game_attacklongendrb3", game_attackshortendr1, Priority::Low);
+
+    agent.acmd("effect_attacklegsjumpaerialf", effect_attacklegsjumpaerialfb, Priority::Low);
+    agent.acmd("effect_attacklegsjumpaerialb", effect_attacklegsjumpaerialfb, Priority::Low);
+    agent.acmd("effect_attacklegstwjumpaerialf", effect_attacklegstwjumpaerialfb, Priority::Low);
+    agent.acmd("effect_attacklegstwjumpaerialb", effect_attacklegstwjumpaerialfb, Priority::Low);
 }

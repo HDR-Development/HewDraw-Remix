@@ -23,10 +23,6 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _)); 
-    VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
-    VarModule::set_float(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_DAMAGE_MUL, 1.0);
-    VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_SMOKE_EFFECT_HANDLE, -1);
-    VarModule::set_int(fighter.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, -1);
     super::reset_misfire_queue(fighter);
 }
 

@@ -22,10 +22,10 @@ unsafe extern "C" fn effect_specialno(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
         LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 12.0, 6.0, 0, 0, 0, 0.7, true);
     }
@@ -35,7 +35,7 @@ unsafe extern "C" fn effect_specialno(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight_grey"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
         LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
     }
     frame(lua_state, 13.0);
@@ -45,8 +45,8 @@ unsafe extern "C" fn effect_specialno(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace_grey"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2_grey"), false, false);
     }
 }
 

@@ -91,7 +91,7 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *GROUND_CORRECT_KIND_AIR);
         fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        fighter.sub_change_motion_by_situation(Hash40::new("special_n_hold").into(), Hash40::new("special_air_n_hold").into(), false.into());
+        fighter.change_motion_inherit_frame_by_situation("special_n_hold", "special_air_n_hold", -1.0, 1.0, 0.0, false, false);
     }
     if !fighter.global_table[IS_STOPPING].get_bool() {
         if StatusModule::is_situation_changed(fighter.module_accessor) {

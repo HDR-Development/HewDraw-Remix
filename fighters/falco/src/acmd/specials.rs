@@ -114,8 +114,8 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) { }
 }
- 
- unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
+
+unsafe extern "C" fn game_specialhihold(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 5.0);

@@ -2,6 +2,7 @@ use super::*;
 
 #[no_mangle]
 unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_jump_leniency(fighter);
     float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_TRANS_ID_FALL_CONTROL);
@@ -16,6 +17,7 @@ unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CVa
     WorkModule::set_int(fighter.module_accessor, uniq_float_float_frame, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_FLOAT_FRAME);
     WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_ENABLE_UNIQ);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
 
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -156,22 +158,6 @@ pub unsafe fn peach_float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2
         return 0.into();
     }
 
-    let mut daikon = *ITEM_KIND_PEACHDAIKON;
-    if fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_DAISY {
-        daikon = *ITEM_KIND_DAISYDAIKON;
-    }
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_PEACH_STATUS_TRANS_ID_SPECIAL_LW_ITEM_THROW) {
-        if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
-            let stick_y = fighter.left_stick_y();
-            let special_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("special_stick_y"));
-            if stick_y <= -special_stick_y
-            && ItemModule::get_have_item_kind(fighter.module_accessor, 0) == daikon {
-                fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), true.into());
-                return 0.into();
-            }
-        }
-    }
-
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_ENABLE_UNIQ) == 1 {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_FLOAT_FRAME) > 0 {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_FLOAT_FRAME);
@@ -234,6 +220,8 @@ unsafe extern "C" fn uniq_float_start_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 extern "Rust" {
+    #[link_name = "float_jump_leniency"]
+    fn float_jump_leniency(fighter: &mut L2CFighterCommon) -> L2CValue;
     #[link_name = "float_drift_common"]
     fn float_drift_common(fighter: &mut L2CFighterCommon) -> L2CValue;
 }

@@ -2,9 +2,17 @@ use super::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_N
 
+unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        return smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
+    }
+    air_stall(fighter);
+    0.into()
+}
+
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE, 0);
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_N_FOOT);
         fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT);
         fighter.set_int64(hash40("special_n_start_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
@@ -44,6 +52,7 @@ unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter, true);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_charge_main_loop as *const () as _))
 }
 
@@ -121,9 +130,7 @@ unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2
             fighter.set_int(special_lag, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME);
         }
     } else {
-        let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut smash::app::KineticEnergy;
-        let start_y = fighter.get_param_float("param_special_n", "air_start_speed_mul_y");
-        smash::app::lua_bind::KineticEnergy::mul_speed(gravity, &Vector3f::new(1.0, start_y, 1.0)); 
+        air_stall(fighter);
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter, false);
@@ -189,10 +196,23 @@ unsafe extern "C" fn special_n_cancel_end(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+unsafe extern "C" fn air_stall(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let y_speed = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let air_start_speed_mul_x = fighter.get_param_float("param_special_n", "air_start_speed_mul_x");
+    let air_start_speed_mul_y = fighter.get_param_float("param_special_n", "air_start_speed_mul_y");
+    let stall_min_y = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_n.stall_min_y");
+    sv_kinetic_energy!(set_speed, fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+    sv_kinetic_energy!(set_speed, fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, x_speed * air_start_speed_mul_x, 0.0);
+    sv_kinetic_energy!(set_speed, fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, (y_speed * air_start_speed_mul_y).max(stall_min_y));
+    0.into()
+}
+
 unsafe extern "C" fn motion_handling(fighter: &mut L2CFighterCommon, drift: bool) -> L2CValue {
     let mot_gr = fighter.get_int64(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
     let mot_air = fighter.get_int64(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     let air = if drift {*FIGHTER_KINETIC_TYPE_MOTION_FALL} else {*FIGHTER_KINETIC_TYPE_AIR_STOP};
+    fighter.sub_air_check_dive();
     if StatusModule::is_changing(fighter.module_accessor) {
         fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
         fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, air);
@@ -239,24 +259,19 @@ unsafe extern "C" fn cancel_check(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         return true.into()
     } else {
-        fighter.check_jump_cancel(false, false);
         if fighter.is_cat_flag(Cat1::AirEscape) {
             VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE, 0);
             return true.into()
         }
+        else if ( fighter.is_cat_flag(Cat1::JumpButton)
+            || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)) )
+        && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+        {
+            VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE, *FIGHTER_STATUS_KIND_JUMP_AERIAL);
+            return true.into()
+        }
     }
     return false.into();
-}
-
-unsafe extern "C" fn var_reset(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.set_float(0.0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);
-    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT);
-    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_REUSE_FRAME);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
-    fighter.set_int(0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_HI_USED_COUNT);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI);
-    fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AFTER_ACTION);
-    return 0.into();
 }
 
 unsafe extern "C" fn special_n_fire_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -270,6 +285,7 @@ unsafe extern "C" fn special_n_fire_end(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut Agent) {
+        agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init);
         agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
         
         agent.status(Init, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_init);

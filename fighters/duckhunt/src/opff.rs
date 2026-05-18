@@ -3,41 +3,42 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW
-        ]) 
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-    }
-}
-
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
 unsafe fn gunman_timer(fighter: &mut L2CFighterCommon) {
-    let timer = VarModule::get_int(fighter.object(), vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER);
-    if  timer != 0 {
-        VarModule::set_int(fighter.object(), vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER, (timer-1));
-    }
-    if timer == 1 {
+    if VarModule::countdown_int(fighter.battle_object, vars::duckhunt::instance::SPECIAL_LW_GUNMAN_TIMER, 0) {
         gimmick_flash(fighter);
     }
 }
 
-pub extern "C" fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    unsafe {
-        common::opff::fighter_common_opff(fighter);
-        gunman_timer(fighter);
-        fastfall_specials(fighter);
+unsafe fn fall_special_ledgegrab_box(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL) {
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, 4);
     }
+}
+
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    gunman_timer(fighter);
+}
+
+pub unsafe extern "C" fn duckhunt_frame_wrapper(fighter: &mut L2CFighterCommon) {
+    common::opff::fighter_common_opff(fighter);
+    duckhunt_frame(fighter);
+}
+
+pub unsafe fn duckhunt_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
+        moveset(fighter);
+    }
+}
+
+pub unsafe extern "C" fn duckhunt_frame_wrapper_exec(fighter: &mut L2CFighterCommon) {
+    fall_special_ledgegrab_box(fighter);
 }
 
 pub fn install(agent: &mut Agent) {
     agent.on_line(Main, duckhunt_frame_wrapper);
+    agent.on_line(Exec, duckhunt_frame_wrapper_exec);
 }

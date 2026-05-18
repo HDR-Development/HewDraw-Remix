@@ -6,13 +6,14 @@
     </struct>
   </list>
   <struct hash="param_private">
+    <int hash="thunder_sword_usage_count_max">6</int>
     <int hash="grimoire_thunder_usage_count_max">8</int>
-    <int hash="grimoire_giga_fire_usage_count_max">5</int>
+    <int hash="grimoire_giga_fire_usage_count_max">4</int>
     <int hash="grimoire_el_window_usage_count_max">20</int>
     <int hash="grimoire_rizaia_usage_count_max">3</int>
     <int hash="thunder_sword_revival_time">600</int>
-    <int hash="grimoire_thunder_revival_time">540</int>
-    <int hash="grimoire_giga_fire_revival_time">540</int>
+    <int hash="grimoire_thunder_revival_time">600</int>
+    <int hash="grimoire_giga_fire_revival_time">480</int>
     <int hash="grimoire_el_window_revival_time">480</int>
     <int hash="grimoire_rizaia_revival_time">780</int>
     <int hash="thunder_sword_smash_attack_revival_time">0</int>
@@ -24,7 +25,7 @@
       <int hash="special_n_giga_thunder_consume_point">4</int>
       <int hash="special_n_tron_consume_point">8</int>
       <int hash="special_n_tron_shoot_duration_min">12</int>
-      <int hash="special_n_tron_shoot_duration_max">16</int>
+      <int hash="special_n_tron_shoot_duration_max">18</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -32,8 +33,18 @@
   </list>
   <list hash="param_thunder">
     <struct index="0">
-      <int hash="special_n_thunder_life">20</int>
-      <int hash="special_n_giga_thunder_ground_stay">26</int>
+      <float hash="special_n_thunder_speed">4.5</float>
+      <int hash="special_n_thunder_life">16</int>
+      <int hash="special_n_giga_thunder_ground_stay">31</int>
+      <float hash="special_n_tron_speed">6.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="special_s_consume_point">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -41,7 +52,8 @@
   </list>
   <list hash="param_gigafire">
     <struct index="0">
-      <int hash="pillar_frame_life">15</int>
+      <int hash="pillar_frame_life">21</int>
+      <float hash="pillar_speed_y">0.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -63,6 +75,7 @@
       <float hash="special_hi_next_jump_y_speed">2.8</float>
       <float hash="special_hi_shoot_store_x_second_velocity_mul">1.0875</float>
       <float hash="special_hi_shoot_store_y_second_velocity_mul">0.4</float>
+      <int hash="special_hi_hundred_attack_point">15</int>
       <float hash="special_hi_landing_frame">25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -73,8 +86,12 @@
     <struct index="0">
       <float hash="special_lw_damage_recovery_basic">90</float>
       <float hash="special_lw_damage_recovery">0.03</float>
-      <float hash="start_y_speed_mul">0.5</float>
-      <float hash="start_x_speed_mul">0.8</float>
+      <float hash="start_y_speed_mul">0.45</float>
+      <float hash="start_x_speed_mul">0.55</float>
+      <float hash="special_lw_appearance_pos_offset_x">29.5</float>
+      <float hash="special_lw_appearance_pos_offset_y">-0.5</float>
+      <int hash="0x2855067d54">6</int>
+      <float hash="special_lw_air_catch_fall_max">0.1</float>
       <float hash="special_lw_damage_recovery_base">0.0</float>
       <float hash="special_lw_damage_recovery">0.0</float>
       <float hash="special_lw_damage_recovery_upper_limit">0.0</float>

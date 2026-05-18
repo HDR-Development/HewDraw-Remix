@@ -5,31 +5,13 @@ use super::*;
 pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_air_n"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_n"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n"), 0.0, 1.0, false, 0.0, false, false);
     }
     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_RETICLE, Hash40::new("special_n"), true, -1.0);
     if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CAN) {
@@ -58,12 +40,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
-        }
-        else {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
-        }
+        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
         return 0.into();
     }
     if !StatusModule::is_changing(fighter.module_accessor) {
@@ -75,12 +52,13 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             }
             else {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n"), -1.0, 1.0, 0.0, false, false);
             }
         }
     }
-    0.into()
+    
+    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {

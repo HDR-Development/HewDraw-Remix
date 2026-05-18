@@ -27,22 +27,23 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
 
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT)
-    && (
-        !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
-        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    )
-    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK) {
-        let frame = fighter.global_table[CURRENT_FRAME].get_i32();
-        let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME);
-
-        if frame == cancel_frame - 30 {
-            // Skip to wake-up animation, 30 frames before on-hit FAF
-            // Wake-up anim lasts 30 frames
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 179.0, true, true, false);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK);
-        }
-    }
+    // Handles separate FAF when hitting the move
+    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT)
+    // && (
+    //     !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+    //     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    // )
+    // && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK) {
+    //     let frame = fighter.global_table[CURRENT_FRAME].get_i32();
+    //     let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME);
+    //
+    //     if frame == cancel_frame - 30 {
+    //         // Skip to wake-up animation, 30 frames before on-hit FAF
+    //         // Wake-up anim lasts 30 frames
+    //         MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 179.0, true, true, false);
+    //         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK);
+    //     }
+    // }
 
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {

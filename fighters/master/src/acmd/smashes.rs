@@ -133,15 +133,16 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         if PostureModule::lr(boma) > 0.0 {
-            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -20, 18, 13.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -20, 15, 9.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
-        else{
-            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 17, 13.25, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        else {
+            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -8, 15, 9.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, ATTACK_S4_SPECIAL) {
+            EFFECT_FOLLOW(agent, Hash40::new("sys_unblockable_flash"), Hash40::new("top"), 0, 12, 9.5, 0, 0, 0, 0.85, true);
             EFFECT_FOLLOW(agent, Hash40::new("master_spear_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FLW_POS(agent, Hash40::new("master_spear_aura_particle"), Hash40::new("haver"), -8, 6, 0, 0, 0, 0, 1, true);

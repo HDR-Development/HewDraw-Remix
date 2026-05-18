@@ -48,7 +48,11 @@ unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 unsafe extern "C" fn jump_aerial_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
+    // prevent held-float from activating during dip of jump..
+    let stick_y = fighter.left_stick_y();
+    let squat_stick_y = fighter.get_param_float("common", "squat_stick_y");
+    if stick_y > squat_stick_y
+    && KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0 {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
     } else {

@@ -28,7 +28,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_end_CliffJump2,
             status_end_CliffJump3,
             sub_cliff_uniq_process_exit_Common,
-            get_cliff_wait_hit_xlu_frame
+            get_cliff_wait_hit_xlu_frame,
+            sub_transition_group_check_air_cliff
         );
     }
 }
@@ -44,7 +45,8 @@ unsafe fn status_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffCatchMove)]
 unsafe fn status_end_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_CATCH {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
         HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
     }
     call_original!(fighter)
@@ -53,7 +55,8 @@ unsafe fn status_end_CliffCatchMove(fighter: &mut L2CFighterCommon) -> L2CValue 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffCatch)]
 unsafe fn status_end_CliffCatch(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_WAIT {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     }
     call_original!(fighter)
 }
@@ -182,8 +185,9 @@ unsafe fn status_end_CliffWait(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
         *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
-            VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+            VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     }
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     call_original!(fighter)
 }
 
@@ -213,7 +217,7 @@ unsafe fn status_CliffAttack_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffAttack)]
 unsafe fn status_end_CliffAttack(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     call_original!(fighter)
 }
 
@@ -243,7 +247,7 @@ unsafe fn status_CliffClimb_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffClimb)]
 unsafe fn status_end_CliffClimb(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     call_original!(fighter)
 }
 
@@ -273,7 +277,7 @@ unsafe fn status_CliffEscape_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffEscape)]
 unsafe fn status_end_CliffEscape(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     call_original!(fighter)
 }
 
@@ -301,7 +305,7 @@ unsafe fn status_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump1)]
 unsafe fn status_end_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP2 {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     }
     InputModule::disable_persist(fighter.battle_object);
     call_original!(fighter)
@@ -327,14 +331,14 @@ unsafe fn status_CliffJump2_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump2)]
 unsafe fn status_end_CliffJump2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP3 {
-        VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     }
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump3)]
 unsafe fn status_end_CliffJump3(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.object(), vars::common::instance::LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
     call_original!(fighter)
 }
 
@@ -372,5 +376,19 @@ unsafe fn sub_cliff_uniq_process_exit_Common(fighter: &mut L2CFighterCommon, is_
 unsafe fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cliff_xlu_frame = call_original!(fighter).get_i32();
     VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, cliff_xlu_frame);
+    call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_cliff)]
+unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // in RoA mode, players can wall jump in all ledge-grabbable statuses
+    if utils::game_modes::check_custom_mode(game_modes::CustomMode::RivalsOfAetherMode) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_SPECIAL_WALLJUMP);
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if speed_y < 0.0 {
+            fighter.sub_transition_group_check_air_wall_jump();
+        }
+        return false.into(); // they also cannot grab ledge
+    }
     call_original!(fighter)
 }

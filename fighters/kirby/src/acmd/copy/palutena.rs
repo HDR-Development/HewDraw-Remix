@@ -11,9 +11,9 @@ unsafe extern "C" fn effect_palutenaspecialn(agent: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(boma);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("havel"), 0, 6.5, 0, 0, 0, 0, 1, true);
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -1.5, 13.5, -1, 0, 90, 0, 1, true, 0.7);
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {

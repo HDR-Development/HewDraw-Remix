@@ -86,7 +86,7 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
     }
     if !CancelModule::is_enable_cancel(fighter.module_accessor)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOAT)
+    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
         let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
         let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));

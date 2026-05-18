@@ -61,10 +61,10 @@ cliff_wait:
   blend_frames: 2
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_back_d:
   extra:
     cancel_frame: 36

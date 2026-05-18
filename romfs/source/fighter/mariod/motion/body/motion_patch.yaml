@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -85,7 +85,7 @@ attack_12:
     cancel_frame: 18
 attack_13:
   extra:
-    cancel_frame: 25
+    cancel_frame: 24
 attack_s3_s:
   flags:
     move: false
@@ -126,13 +126,9 @@ attack_air_lw:
   extra:
     cancel_frame: 43
 special_n:
-  animations:
-  - name: d00specialntoss.nuanmb
   extra:
     cancel_frame: 47
 special_air_n:
-  animations:
-  - name: d00specialairntoss.nuanmb
   extra:
     cancel_frame: 47
 special_n_chill:

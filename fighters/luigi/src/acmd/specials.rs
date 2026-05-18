@@ -165,7 +165,6 @@ unsafe extern "C" fn effect_specialshold(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(boma) as u32;
-        VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(agent, 0.0, 0.8, 0.0);
         }
@@ -174,7 +173,6 @@ unsafe extern "C" fn effect_specialshold(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 00, 4, 0, 0, 0, false);
             let handle = EffectModule::get_last_handle(boma) as u32;
-            VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_SMOKE_EFFECT_HANDLE, handle as i32);
             if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
                 LAST_EFFECT_SET_COLOR(agent, 0.0, 0.7, 0.3);
             }
@@ -190,7 +188,6 @@ unsafe extern "C" fn effect_specialairshold(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(boma) as u32;
-        VarModule::set_int(agent.battle_object, vars::luigi::instance::SPECIAL_S_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(agent, 0.0, 0.8, 0.0);
         }
@@ -237,9 +234,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialsdischarge(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    let misfire_multiplier = VarModule::get_float(agent.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_DAMAGE_MUL);
-    VarModule::set_float(agent.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_DAMAGE_MUL, 1.0);
+    let boma: &mut BattleObjectModuleAccessor = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
         SA_SET(agent, *SITUATION_KIND_AIR);
@@ -248,7 +243,7 @@ unsafe extern "C" fn game_specialsdischarge(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("neck"), 20.0 * misfire_multiplier, 361, 100, 0, 20, 4.8, -1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
+        ATTACK(agent, 0, 0, Hash40::new("neck"), 20.0, 361, 100, 0, 20, 4.8, -1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
         JostleModule::set_status(boma, false);
     }
@@ -258,7 +253,7 @@ unsafe extern "C" fn game_specialsdischarge(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("neck"), 20.0 * misfire_multiplier, 361, 100, 0, 20, 4.8, -1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
+        ATTACK(agent, 0, 0, Hash40::new("neck"), 20.0, 361, 100, 0, 20, 4.8, -1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {

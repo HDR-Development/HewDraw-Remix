@@ -1,12 +1,36 @@
 use super::*;
 
+hitbox_templates!(
+    pub KROOL_PROPELLER = {
+        extends: BASE_HITBOX,
+        effect: "collision_attr_cutup",
+        hit_sound: CollisionSound::Cutup,
+        region: AttackRegion::Object,
+        clank: SetOff::Off,
+    };
+    pub KROOL_PROPELLER_S = {
+        extends: KROOL_PROPELLER,
+        sound_level: SoundLevel::S,
+        hitlag: 0.5,
+    };
+    pub KROOL_PROPELLER_M = {
+        extends: KROOL_PROPELLER,
+        sound_level: SoundLevel::M,
+        hitlag: 0.5,
+    };
+    pub KROOL_PROPELLER_L = {
+        extends: KROOL_PROPELLER,
+        sound_level: SoundLevel::L,
+    };
+);
+
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 12.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("head"), 3.0, 90, 100, 90, 0, 5.0, 4.5, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 100, 100, 90, 0, 3.5, 0.0, 16.5, -6.0, Some(0.0), Some(16.5), Some(6.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 10, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        hitbox!(agent, { extends: KROOL_PROPELLER_M, id: 0, bone: "top",  dmg: 3.0, angle: 100, kbg: 100, fkb: 85, bkb: 0, size: 3.5, x: 0.0, y: 16.5, z: -6.0, x2: 0.0, y2: 16.5, z2: 6.0, rehit: 10, set_weight: true, });
+        hitbox!(agent, { extends: KROOL_PROPELLER_S, id: 1, bone: "head", dmg: 3.0, angle:  90, kbg: 100, fkb: 50, bkb: 0, size: 5.0, x: 0.0, y:  0.0, z:  0.0, rehit: 10, set_weight: true, });
     }
 }
 
@@ -42,13 +66,8 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         if ArticleModule::is_exist(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK) {
             ArticleModule::change_motion(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK, Hash40::new("fly"), false, 0.0);
         }
-        ATTACK(agent, 0, 1, Hash40::new("head"), 3.0, 90, 100, 90, 0, 5.0, 4.5, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 1, 1, Hash40::new("top"), 3.0, 100, 100, 110, 0, 3.5, 0.0, 18.0, -6.0, Some(0.0), Some(18.0), Some(6.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 1, Hash40::new("head"), 3.0, 90, 100, 80, 0, 5.0, 4.5, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 1, 1, Hash40::new("top"), 3.0, 100, 100, 100, 0, 3.5, 0.0, 18.0, -6.0, Some(0.0), Some(18.0), Some(6.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        hitbox!(agent, { extends: KROOL_PROPELLER_M, id: 0, part: 1, bone: "top",  dmg: 3.0, angle: 100, kbg: 100, fkb: 85, bkb: 0, size: 3.5, x: 0.0, y: 16.5, z: -6.0, x2: 0.0, y2: 16.5, z2: 6.0, rehit: 8, set_weight: true, });
+        hitbox!(agent, { extends: KROOL_PROPELLER_S, id: 1, part: 1, bone: "head", dmg: 3.0, angle:  90, kbg: 100, fkb: 50, bkb: 0, size: 5.0, x: 0.0, y:  0.0, z:  0.0, rehit: 8, set_weight: true, });
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -91,10 +110,14 @@ unsafe extern "C" fn game_specialhiairend(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let charge = VarModule::get_int(agent.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32;
         let damage =  4.0 + if charge > 0.0 { (charge * 4.0/charge).clamp(0.0, 4.0) } else { 0.0 };
-        ATTACK(agent, 0, 2, Hash40::new("head"), damage, 90, 100, 0, 60, 5.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        ATTACK(agent, 1, 2, Hash40::new("top"), damage, 90, 100, 0, 60, 4.5, 0.0, 17.0, -6.0, Some(0.0), Some(17.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        let mut hitbox1 = decl_hitbox!{extends: KROOL_PROPELLER_L, id: 0, part: 2, bone: "top",  dmg: 0.0, angle: 90, kbg: 100, bkb: 60, size: 4.5, x: 0.0, y: 16.0, z: -6.0, x2: 0.0, y2: 16.0, z2: 6.0 };
+        let mut hitbox0 = decl_hitbox!{extends: KROOL_PROPELLER_L, id: 1, part: 2, bone: "head", dmg: 0.0, angle: 90, kbg: 100, bkb: 60, size: 6.0, x: 0.0, y:  0.0, z:  0.0, };
+        hitbox0.dmg = damage;
+        hitbox1.dmg = damage;
+        create_hitbox(agent, &hitbox0);
+        create_hitbox(agent, &hitbox1);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }

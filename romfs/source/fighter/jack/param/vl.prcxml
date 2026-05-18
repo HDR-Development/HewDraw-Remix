@@ -2,6 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
+      <float hash="p2_x">-9.6</float>
       <float hash="p1_y">24</float>
     </struct>
     <!-- UP SPECIAL TETHER (LATE) -->
@@ -17,7 +18,7 @@
     <struct index="3">
       <float hash="p1_x">20</float>
       <float hash="p1_y">85</float>
-      <float hash="p2_x">-5</float>
+      <float hash="p2_x">-9.6</float>
       <float hash="p2_y">18</float>
     </struct>
   </list>
@@ -45,33 +46,45 @@
       <float hash="start_speed_mul_x">1</float>
       <float hash="air_start_speed_mul_y">0.5</float>
       <float hash="air_accel_y">0.05</float>
-      <float hash="air_speed_y_stable">1.2</float>
+      <float hash="air_speed_y_stable">2.45</float>
       <int hash="jump_barrage_landing_frame">14</int>
       <int hash="air_barrage_lw_landing_frame">12</int>
       <int hash="barrage_landing_frame">12</int>
-      <int hash="landing_frame">4</int>
+      <int hash="landing_frame">6</int>
       <float hash="escape_f_penalty_motion_rate">1.0</float>
-      <int hash="escape_f_penalty_hit_xlu_frame">3</int>
-      <int hash="escape_f_penalty_hit_normal_frame">10</int>
       <float hash="escape_b_penalty_motion_rate">1.0</float>
-      <int hash="escape_b_penalty_hit_xlu_frame">4</int>
-      <int hash="escape_b_penalty_hit_normal_frame">10</int>
-      <int hash="escape_air_penalty_hit_xlu_frame">4</int>
-      <int hash="escape_air_penalty_hit_normal_frame">12</int>
       <float hash="escape_air_penalty_motion_rate">1.0</float>
+      <int hash="escape_f_hit_xlu_frame">0</int>
+      <int hash="escape_f_hit_normal_frame">0</int>
+      <int hash="escape_f_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_f_penalty_hit_normal_frame">0</int>
+      <int hash="escape_b_hit_xlu_frame">0</int>
+      <int hash="escape_b_hit_normal_frame">0</int>
+      <int hash="escape_b_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_b_penalty_hit_normal_frame">0</int>
+      <int hash="escape_air_hit_xlu_frame">0</int>
+      <int hash="escape_air_hit_normal_frame">0</int>
+      <int hash="escape_air_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_air_penalty_hit_normal_frame">0</int>
     </struct>
     <struct index="1">
       <float hash="start_speed_mul_x">1</float>
       <int hash="landing_frame">9</int>
       <float hash="escape_f_penalty_motion_rate">1.0</float>
-      <int hash="escape_f_penalty_hit_xlu_frame">3</int>
-      <int hash="escape_f_penalty_hit_normal_frame">10</int>
       <float hash="escape_b_penalty_motion_rate">1.0</float>
-      <int hash="escape_b_penalty_hit_xlu_frame">4</int>
-      <int hash="escape_b_penalty_hit_normal_frame">10</int>
-      <int hash="escape_air_penalty_hit_xlu_frame">4</int>
-      <int hash="escape_air_penalty_hit_normal_frame">12</int>
       <float hash="escape_air_penalty_motion_rate">1.0</float>
+      <int hash="escape_f_hit_xlu_frame">0</int>
+      <int hash="escape_f_hit_normal_frame">0</int>
+      <int hash="escape_f_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_f_penalty_hit_normal_frame">0</int>
+      <int hash="escape_b_hit_xlu_frame">0</int>
+      <int hash="escape_b_hit_normal_frame">0</int>
+      <int hash="escape_b_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_b_penalty_hit_normal_frame">0</int>
+      <int hash="escape_air_hit_xlu_frame">0</int>
+      <int hash="escape_air_hit_normal_frame">0</int>
+      <int hash="escape_air_penalty_hit_xlu_frame">0</int>
+      <int hash="escape_air_penalty_hit_normal_frame">0</int>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>

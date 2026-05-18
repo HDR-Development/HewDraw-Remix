@@ -1,5 +1,6 @@
 #![feature(proc_macro_hygiene)]
 
+use chrono::Datelike;
 use skyline::{hook, install_hook};
 
 extern "C" {
@@ -92,6 +93,38 @@ unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+#[skyline::hook(offset = 0x3098AFC, inline)]
+unsafe fn yoshis_island_seasonal(ctx: &mut skyline::hooks::InlineCtx) {
+    let now = chrono::Utc::now();
+    let month = now.month();
+    let season = match month {
+        12 | 1 | 2 => 0x4, // winter
+        3 | 4 | 5 => 0x1, // spring
+        6 | 7 | 8 => 0x2, // summer
+        9 | 10 | 11 => 0x3, // autumn
+        _ => panic!("Yoshis Island - chrono::Utc::now().month() returned an invalid month value: {}", month),
+    };
+    ctx.registers[9].set_w(season);
+}
+
+// 0x1 - spring
+// 0x2 - summer
+// 0x3 - autumn
+// 0x4 - winter
+#[skyline::hook(offset = 0x3097AE8, inline)]
+unsafe fn yoshis_island_seasonal_omega(ctx: &mut skyline::hooks::InlineCtx) {
+    let now = chrono::Utc::now();
+    let month = now.month();
+    let season = match month {
+        12 | 1 | 2 => 0x4, // winter
+        3 | 4 | 5 => 0x1, // spring
+        6 | 7 | 8 => 0x2, // summer
+        9 | 10 | 11 => 0x3, // autumn
+        _ => panic!("Yoshis Island - chrono::Utc::now().month() returned an invalid month value: {}", month),
+    };
+    ctx.registers[9].set_w(season);
+}
+
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port
     // NOTE: The 0x20  is from the 13.0.2 -> 13.0.3 port
@@ -117,6 +150,8 @@ pub fn install() {
         handle_movement_grav_update,
         fix_hazards_for_online,
         lylat_no_rot,
-        // lylat_set_form_hazards_off
+        // lylat_set_form_hazards_off,
+        yoshis_island_seasonal,
+        yoshis_island_seasonal_omega,
     );
 }

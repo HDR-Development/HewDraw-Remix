@@ -140,12 +140,13 @@ unsafe extern "C" fn game_specialsboostend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.5);
-    frame(lua_state, 4.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 2.0);
+    frame(lua_state, 20.0);
+    FT_MOTION_RATE(agent, 0.75);
 }
 
 unsafe extern "C" fn effect_specialsboostend(agent: &mut L2CAgentBase) {
@@ -184,16 +185,18 @@ unsafe extern "C" fn game_specialairsboostend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
-    frame(lua_state, 2.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.3);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
-        frame(lua_state, 8.0);
-    FT_MOTION_RATE(agent, 1.3);
+    }
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE(agent, 0.5);
+    if is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
     }
 }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_attack_hi3">
+        <float hash="jump_stable_speed_x_mul">0.5</float>
+    </struct>
+</struct>

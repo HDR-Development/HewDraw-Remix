@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn special_n_color_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -8,9 +8,9 @@ unsafe extern "C" fn special_n_color_pre(fighter: &mut L2CFighterCommon) -> L2CV
         *GROUND_CORRECT_KIND_KEEP as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_PALUTENA_SPECIAL_S_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_PALUTENA_SPECIAL_S_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_PALUTENA_SPECIAL_S_FLOAT,
         0
     );
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -20,9 +20,9 @@ unsafe extern "C" fn special_n_color_pre(fighter: &mut L2CFighterCommon) -> L2CV
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
         *FIGHTER_STATUS_ATTR_START_TURN as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
     );
     0.into()
@@ -90,8 +90,8 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_s_momentum_helper(fighter: &mut L2CFighterCommon, start: L2CValue) {
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if start.get_bool() {
-        let special_n_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_speed_x_mul"));
-        speed_x *= special_n_speed_x_mul;
+        let special_s_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_speed_x_mul"));
+        speed_x *= special_s_speed_x_mul;
     }
 
     let reset_type = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -160,7 +160,8 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
     }
 
-    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x37b6ecdcec));
+    //notify_event_msc_cmd!(fighter, Hash40::new_raw(0x37b6ecdcec));
+    ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME, false, -1);
 
     fighter.main_shift(special_s_main_loop)
 }
@@ -200,6 +201,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
 }

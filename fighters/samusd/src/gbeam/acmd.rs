@@ -39,8 +39,19 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    FT_MOTION_RATE_RANGE(agent, 2.0, 8.0, 12.0);
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
+
+    agent.acmd("game_throwb", game_throwb, Priority::Low);
 }

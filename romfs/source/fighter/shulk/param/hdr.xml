@@ -8,4 +8,7 @@
             <float hash="p2_y">11</float>
         </struct>
     </struct>
+    <struct hash="param_special_s">
+        <float hash="shield_hit_speed_x_mul">0.01</float>
+    </struct>
 </struct>

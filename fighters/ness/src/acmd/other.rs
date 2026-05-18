@@ -72,15 +72,11 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -90,10 +86,16 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
+}
+
+unsafe extern "C" fn game_jumpaerialfront(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let start_motion_rate = ParamModule::get_float(agent.object(), ParamType::Agent, "param_jump_aerial.start_motion_rate");
+    FT_MOTION_RATE(agent, 1.0 / start_motion_rate);
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_jumpaerialfront(agent: &mut L2CAgentBase) {
@@ -102,10 +104,19 @@ unsafe extern "C" fn effect_jumpaerialfront(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     for _ in 0..4 {
         if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.75, 10, 10, 10, 0, 0, 0, false);
         }
         wait(lua_state, 6.0);
     }
+}
+
+unsafe extern "C" fn game_jumpaerialback(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let start_motion_rate = ParamModule::get_float(agent.object(), ParamType::Agent, "param_jump_aerial.start_motion_rate");
+    FT_MOTION_RATE(agent, 1.0 / start_motion_rate);
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_jumpaerialback(agent: &mut L2CAgentBase) {
@@ -114,7 +125,7 @@ unsafe extern "C" fn effect_jumpaerialback(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     for _ in 0..4 {
         if is_excute(agent) {
-            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 10, 10, 10, 0, 0, 0, false);
+            EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.75, 10, 10, 10, 0, 0, 0, false);
         }
         wait(lua_state, 6.0);
     }
@@ -143,6 +154,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
+    agent.acmd("game_jumpaerialfront", game_jumpaerialfront, Priority::Low);
+    agent.acmd("game_jumpaerialback", game_jumpaerialback, Priority::Low);
     agent.acmd("effect_jumpaerialfront", effect_jumpaerialfront, Priority::Low);
     agent.acmd("effect_jumpaerialback", effect_jumpaerialback, Priority::Low);
 

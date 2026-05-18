@@ -2,9 +2,9 @@
 
 use super::*;
 mod control;
-mod damage;
 mod motion;
 mod stop;
+mod damage;
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -29,7 +29,7 @@ pub struct KineticEnergyVTable {
 pub struct PaddedVec2 {
     pub x: f32,
     pub y: f32,
-    pub padding: u64,
+    pub padding: u64
 }
 
 impl PaddedVec2 {
@@ -37,7 +37,7 @@ impl PaddedVec2 {
         Self {
             x,
             y,
-            padding: 0,
+            padding: 0
         }
     }
 
@@ -45,7 +45,7 @@ impl PaddedVec2 {
         Self {
             x: 0.0,
             y: 0.0,
-            padding: 0,
+            padding: 0
         }
     }
 

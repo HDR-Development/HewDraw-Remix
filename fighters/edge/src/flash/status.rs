@@ -13,7 +13,7 @@ unsafe extern "C" fn wait_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     }
     let life = ParamModule::get_int(edge, ParamType::Agent, "param_flash.life");
     VarModule::set_int(weapon.battle_object, vars::edge_flash::status::LIFE, life);
-    if VarModule::is_flag(edge, vars::edge::status::FLASH_HOLD) {
+    if VarModule::is_flag(edge, vars::edge::status::SPECIAL_LW_HOLD) {
         let pos_x = PostureModule::pos_x(weapon.module_accessor);
         let pos_y = PostureModule::pos_y(weapon.module_accessor);
         let offset_x = ParamModule::get_float(edge, ParamType::Agent, "param_flash.hold_offset_x");

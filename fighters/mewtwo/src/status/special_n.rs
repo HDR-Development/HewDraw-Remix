@@ -139,10 +139,6 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
         return 0.into();
     }
 
-    // if fighter.check_jump_cancel(false) {
-    //     return 0.into();
-    // }
-
     if special_n_check_cancel(fighter).get_bool() {
         fighter.change_status(FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());
         return 0.into();
@@ -183,10 +179,6 @@ unsafe extern "C" fn special_n_max_main_loop(fighter: &mut L2CFighterCommon) -> 
         fighter.change_status(FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
         return 0.into();
     }
-
-    // if fighter.check_jump_cancel(false) {
-    //     return 0.into();
-    // }
 
     if special_n_check_cancel(fighter).get_bool() {
         fighter.change_status(FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());

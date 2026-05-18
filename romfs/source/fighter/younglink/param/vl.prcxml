@@ -58,7 +58,7 @@
     <struct index="0">
       <int hash="rslash_hold_frame">1</int>
       <float hash="rslash_air_start_spd_y">2.5</float>
-      <float hash="rslash_air_gravity_y_mul">0.7</float>
+      <float hash="rslash_air_gravity_y_mul">0.582</float>
       <float hash="rslash_air_accel_x_mul">0.025</float>
       <float hash="rslash_air_max_x_mul">0.8</float>
       <int hash="rslash_landing_frame">26</int>

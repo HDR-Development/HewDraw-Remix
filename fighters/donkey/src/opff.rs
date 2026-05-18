@@ -7,7 +7,7 @@ unsafe fn dash_attack_air_cancel(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     && boma.is_situation(*SITUATION_KIND_AIR)
     && MotionModule::frame(boma) >= 26.0 {
-        boma.check_jump_cancel(false, false);
+        boma.check_jump_cancel(false, false, true);
     }
 }
 

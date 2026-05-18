@@ -2,20 +2,22 @@ use super::*;
 
 // BUDDY_BUDDY_BAYONET_END
 
-/// pre status for bayonet
-/// handles initialization
-pub unsafe extern "C" fn bayonet_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn bayonet_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE) {
+        return smashline::original_status(Pre, fighter, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT)(fighter);
+    }
+
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_MOTION_BIND,
+        *FIGHTER_KINETIC_TYPE_MOTION,
         *GROUND_CORRECT_KIND_GROUND as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
-        0
+        *FIGHTER_BUDDY_STATUS_WORK_KEEP_FLAG_SPECIAL_N_FLAG,
+        *FIGHTER_BUDDY_STATUS_WORK_KEEP_FLAG_SPECIAL_N_INT,
+        *FIGHTER_BUDDY_STATUS_WORK_KEEP_FLAG_SPECIAL_N_FLOAT,
+        (*FS_SUCCEEDS_KEEP_SLOPE | *FS_SUCCEEDS_KEEP_VISIBILITY) as i32
     );
 
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -25,58 +27,101 @@ pub unsafe extern "C" fn bayonet_end_pre(fighter: &mut L2CFighterCommon) -> L2CV
         false,
         false,
         false,
-        0,
-        0,
-        0,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        *FIGHTER_STATUS_ATTR_DISABLE_JUMP_BOARD_EFFECT as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0
     );
 
     0.into()
 }
 
-/// main status loop for bayonet_end
-unsafe extern "C" fn bayonet_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn bayonet_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+
+    let original = smashline::original_status(Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT)(fighter);
+    if !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE) {
+        return original;
+    }
+
+    let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
+    let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
+    ControlModule::clear_command(fighter.module_accessor, false);
+
+    let mot = hash40("buddy_special_n_attack_s");
+    FighterMotionModuleImpl::change_motion_kirby_copy(
+        fighter.module_accessor,
+        Hash40::new_raw(mot),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+
+    let mut motion = hash40("buddy_special_n_attack_s");
+    if (stick_y >= attack_hi3_stick_y) {
+        motion = hash40("buddy_special_n_attack_hi");
+    }
+    else if (stick_y <= attack_lw3_stick_y) {
+        motion = hash40("buddy_special_n_attack_lw");
+    }
+    MotionModule::remove_motion_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
+
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_START_PRECEDE_CHECK);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_TURN);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_SHOOT);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_SHOOT_TURN);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_RESERVED_SHOOT_TURN);
+
+    fighter.sub_shift_status_main(L2CValue::Ptr(bayonet_main_loop as *const () as _))
+}
+
+/// main status loop for bayonet
+unsafe extern "C" fn bayonet_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // exit if the animation is not done yet
-    if !MotionModule::is_end(fighter.module_accessor) {
-        return 0.into();
+    if MotionModule::motion_kind(fighter.module_accessor) != hash40("buddy_special_n_attack_end") {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END) {
+            let start_frame = 26.0;
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_END);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("buddy_special_n_attack_end"), start_frame, 1.0, false, 0.0, false, false);
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAT) {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAT, Hash40::new("special_n_start"), false, start_frame);
+            }
+            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER) {
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, start_frame);
+            }
+        }
     }
-
-    // if the animation is over, transition to shoot
-    fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT.into(), false.into());
-    1.into()
-}
-
-pub unsafe extern "C" fn bayonet_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // change summon anim depending on LR
-    let frame = 26.0;
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("buddy_special_n_shoot_start"), frame, 1.0, false, 0.0, false, false);
-    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, frame);
-
-    fighter.main_shift(bayonet_end_main_loop)
-}
-
-pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // re-enable energies and remove the screenwide effect
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-
-    let next_status = StatusModule::status_kind_next(fighter.module_accessor);
-    let is_still_blasting = [*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_F,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_B,
-    *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_TURN,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_LANDING,
-    *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_AERIAL,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_AIR,
-    *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_FALL,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_AIR_TURN,*FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_END].contains(&next_status);
-
-    if !is_still_blasting {
-        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(0));
-        ItemModule::set_change_status_event(fighter.module_accessor, true);
-        WorkModule::set_int(fighter.module_accessor, 0,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT.into(), false.into());
+        return 1.into();
     }
-
     0.into()
 }
 
+pub unsafe extern "C" fn bayonet_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE);
+    return smashline::original_status(End, fighter, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT)(fighter);
+}
+
+pub unsafe extern "C" fn bayonet_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE);
+    return smashline::original_status(Exit, fighter, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT)(fighter);
+}
+
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, statuses::kirby::BUDDY_BUDDY_BAYONET_END, bayonet_end_pre);
-    agent.status(Main, statuses::kirby::BUDDY_BUDDY_BAYONET_END, bayonet_end_main);
-    agent.status(End, statuses::kirby::BUDDY_BUDDY_BAYONET_END, bayonet_end_end);
+    /*
+    agent.status(Pre, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_pre);
+    agent.status(Main, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_main);
+    agent.status(End, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_end);
+    agent.status(Exit, statuses::kirby::BUDDY_SPECIAL_N_BAYONET, bayonet_exit); 
+    */
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_end);
+    agent.status(Exit, *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT, bayonet_exit); 
 }

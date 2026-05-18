@@ -11,14 +11,14 @@
     <float hash="recover_sp">1</float>
     <float hash="sp_recover_damage_mul">0.5</float>
     <float hash="sp_recover_shield_mul">0.5</float>
-    <float hash="sp_special_n1">7</float>
-    <float hash="sp_special_n2">18</float>
-    <float hash="sp_special_n3">40</float>
+    <float hash="sp_special_n1">12</float>
+    <float hash="sp_special_n2">22</float>
+    <float hash="sp_special_n3">42</float>
     <float hash="sp_special_s1">12</float>
-    <float hash="sp_special_s2">20</float>
+    <float hash="sp_special_s2">22</float>
     <float hash="sp_special_s3">42</float>
-    <float hash="sp_special_hi1">10</float>
-    <float hash="sp_special_hi2">16</float>
+    <float hash="sp_special_hi1">12</float>
+    <float hash="sp_special_hi2">20</float>
     <float hash="sp_special_hi3">25</float>
   </struct>
   <list hash="param_critical">
@@ -47,8 +47,8 @@
   <list hash="param_special_n">
     <struct index="0">
       <float hash="sp_special_n1">12</float>
-      <float hash="sp_special_n2">18</float>
-      <float hash="sp_special_n3">40</float>
+      <float hash="sp_special_n2">22</float>
+      <float hash="sp_special_n3">42</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -64,6 +64,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="hold_frame_l">22</int>
       <float hash="offset_y_m">5.0</float>
       <float hash="start_max_speed_y_mul_air">0.2</float>
       <float hash="jump_distance_m">60</float>
@@ -84,6 +85,7 @@
       <float hash="start_control_max_speed_x_mul_air">0.85</float>
       <float hash="start_accel_y_mul_air">0.5</float>
       <float hash="start_max_speed_y_mul_air">0.8</float>
+      <int hash="command_window_closing_frame">60</int>
       <int hash="cure_limit_num">3</int>
       <float hash="deathball1_offset_y">15</float>
       <int hash="speed_up_frame">600</int>
@@ -134,13 +136,13 @@
       <float hash="sp">10</float>
     </struct>
     <struct index="2">
-      <float hash="sp">26</float>
+      <float hash="sp">30</float>
     </struct>
     <struct index="3">
-      <float hash="sp">12</float>
+      <float hash="sp">8</float>
     </struct>
     <struct index="4">
-      <float hash="sp">48</float>
+      <float hash="sp">50</float>
     </struct>
     <struct index="5">
       <float hash="sp">13</float>
@@ -158,13 +160,13 @@
       <float hash="sp">6</float>
     </struct>
     <struct index="10">
-      <float hash="sp">17</float>
+      <float hash="sp">25</float>
     </struct>
     <struct index="11">
-      <float hash="sp">21</float>
+      <float hash="sp">25</float>
     </struct>
     <struct index="12">
-      <float hash="sp">18</float>
+      <float hash="sp">15</float>
     </struct>
     <struct index="13">
       <float hash="sp">21</float>

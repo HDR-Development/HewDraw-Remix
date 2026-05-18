@@ -31,13 +31,71 @@ unsafe extern "C" fn special_lw1_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 
 // Forces Grounded Earthquake punch on the ground
 unsafe extern "C" fn special_lw1_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = smashline::original_status(Main, fighter, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND)(fighter);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw1"), 0.0, 1.0, false, 0.0, false, false);
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_10) + -1);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_10) + -1);
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_GROUND), false);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
-    ret
+    VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, 0);
+    VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, 0.0);
+
+    fighter.main_shift(special_lw1_ground_main_loop)
+}
+
+unsafe extern "C" fn special_lw1_ground_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        return 1.into();
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_HOLD) {
+        let charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "earthquake_fist_ground.charge_end_frame");
+        
+        if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, charge_end_frame, true, true, false);
+        }
+        if fighter.motion_frame() >= charge_end_frame {
+            VarModule::off_flag(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_HOLD);
+        }
+        else {
+            let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
+            let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE) as f32;
+            let charge_distance_mod = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "earthquake_fist_ground.charge_distance_mod");
+            let max_charge_distance = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "earthquake_fist_ground.max_charge_distance");
+            let mut eff_pos_offset = (charge as f32/charge_distance_mod) + charge_distance + (max_charge_distance/charge_distance_mod);
+            let lr = PostureModule::lr(fighter.module_accessor);
+
+            let is_ground = GroundModule::ray_check(
+                fighter.module_accessor, 
+                &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor) + ((charge_distance + 12.0) * lr), y: PostureModule::pos_y(fighter.module_accessor)}, 
+                &Vector2f{ x: 0.0, y: -6.0}, true
+            ) == 1;
+            if is_ground {
+                let pos_offset = charge_distance + (max_charge_distance/charge_distance_mod);
+
+                VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, pos_offset);
+                eff_pos_offset = (10.0 - 10.0 * (charge as f32/charge_distance_mod)) + charge_distance + (max_charge_distance/charge_distance_mod);
+            }
+
+            let eff_handle = VarModule::get_int64(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_QUAKE_EFFECT_HANDLE);
+
+            EffectModule::set_pos(fighter.module_accessor, eff_handle as u32, &Vector3f::new(0.0, 0.0, eff_pos_offset));
+            VarModule::set_int64(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_QUAKE_EFFECT_HANDLE, eff_handle as u64);
+            VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, (charge + 1) as i32);
+        }
+    }
+
+    return 0.into();
 }
 
 unsafe extern "C" fn special_lw1_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -61,14 +119,6 @@ unsafe extern "C" fn special_lw1_air_main(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn special_lw1_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Idk why this has to be done every frame to prevent ledgegrabbing
-    // but it do rn
-    GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE));
-
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
-    }
-
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -108,16 +158,19 @@ unsafe extern "C" fn special_lw1_air_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
 
-    //Allows EQF to be cancelled into freefall with second B press
-    if fighter.is_motion(Hash40::new("special_lw1_loop"))
-    && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || fighter.status_frame() >= 40) {
-        EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_smash_flash"), Hash40::new("top"), &Vector3f::new(1.0, 7.0, 5.0), &Vector3f::zero(), 0.5, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_miifighter_final06"), 0);
-        let handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_miifighter_appeal_h01"), true, false, false, false, enSEType(0));
-        SoundModule::set_se_vol(fighter.module_accessor, handle as i32, 1.5, 0);
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-        return 1.into();
+    if fighter.is_motion(Hash40::new("special_lw1_loop")) {
+        // Allows EQF to be cancelled into freefall with second B press
+        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || fighter.status_frame() >= 40) {
+            EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_smash_flash"), Hash40::new("top"), &Vector3f::new(1.0, 7.0, 5.0), &Vector3f::zero(), 0.5, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+            SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_miifighter_final06"), 0);
+            let handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_miifighter_appeal_h01"), true, false, false, false, enSEType(0));
+            SoundModule::set_se_vol(fighter.module_accessor, handle as i32, 1.5, 0);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+            return 1.into();
+        }
+        fighter.check_wall_jump_cancel();
     }
+    
 
     return 0.into();
 }

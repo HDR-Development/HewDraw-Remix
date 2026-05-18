@@ -5,28 +5,43 @@ use globals::*;
 
  // Magnet Jump Cancel
 unsafe fn psi_magnet_jump_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[ 
-        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
+    // disables jump cancels when parried between statuses
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
-        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]) {
-        if fighter.status_frame() > 0 { // Allows for jump cancel on frame 6 in game (this is dictated by how long game_speciallw_start takes)
-            if !fighter.is_in_hitlag() {
-                fighter.check_jump_cancel(false, false);
-            }
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
+    ])
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        VarModule::on_flag(fighter.battle_object, vars::ness::instance::SPECIAL_LW_DISABLE_JC);
+        if !fighter.is_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END)
+        && !fighter.is_in_hitlag() {
+            fighter.change_status(FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
         }
+    }
+
+    if fighter.is_status_one_of(&[
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
+    ])
+    && fighter.status_frame() > 0 // Allows for jump cancel on frame 6 in game (this is dictated by how long game_speciallw_start takes)
+    && !fighter.is_in_hitlag()
+    && !VarModule::is_flag(fighter.battle_object, vars::ness::instance::SPECIAL_LW_DISABLE_JC){
+        fighter.check_jump_cancel(false, false, false);
     }
 }
 
-// Ness PK Fire drift
-unsafe fn pk_fire_drift(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
-        if boma.is_situation(*SITUATION_KIND_AIR) {
-            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            }
-        }
-    }
-}
+// // Ness PK Fire drift
+// unsafe fn pk_fire_drift(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
+//     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+//         if boma.is_situation(*SITUATION_KIND_AIR) {
+//             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+//                 KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+//             }
+//         }
+//     }
+// }
 
 unsafe fn magnet_stall_prevention(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END
@@ -84,13 +99,13 @@ unsafe fn pk_thunder_cancel(fighter: &mut L2CFighterCommon) {
         && StatusModule::is_situation_changed(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
         }
-        if MotionModule::is_end(fighter.module_accessor) {
-            if (fighter.is_prev_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD) && VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI))
-            || !fighter.is_prev_status_one_of(&[*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_AGAIN, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD]) {
-                let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { *FIGHTER_STATUS_KIND_WAIT } else { *FIGHTER_STATUS_KIND_FALL };
-                fighter.change_status(status.into(), false.into());
-            }
-        }
+        // if MotionModule::is_end(fighter.module_accessor) {
+        //     if (fighter.is_prev_status(*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD) && VarModule::is_flag(fighter.object(), vars::ness::instance::DISABLE_SPECIAL_HI))
+        //     || !fighter.is_prev_status_one_of(&[*FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_AGAIN, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD]) {
+        //         let status = if fighter.is_situation(*SITUATION_KIND_GROUND) { *FIGHTER_STATUS_KIND_WAIT } else { *FIGHTER_STATUS_KIND_FALL };
+        //         fighter.change_status(status.into(), false.into());
+        //     }
+        // }
     }
 }
 
@@ -164,7 +179,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     //pk_fire_ff(boma, stick_y);
     upspecialend_cliff(fighter);
-    pk_fire_drift(boma, stick_y);
+    // pk_fire_drift(boma, stick_y);
     uair_scaling(boma);
     fastfall_specials(fighter);
     pkt2_edgeslipoff(fighter);

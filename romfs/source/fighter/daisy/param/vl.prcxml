@@ -37,7 +37,9 @@
     <struct index="0">
       <float hash="special_s_jump_speed_x">2.9</float>
       <float hash="special_s_jump_speed_flick_x">2.9</float>
-      <float hash="special_s_jump_speed_y">0.15</float>
+      <float hash="special_s_start_speed_y">1.1</float>
+      <float hash="special_s_jump_speed_y">0.4</float>
+      <float hash="special_s_jump_stable_y">1.1</float>
       <float hash="special_s_hit_speed_x">-0.25</float>
       <float hash="special_s_hit_speed_y">2.0</float>
       <float hash="special_s_jump_dec_accel_y">0.4</float>
@@ -52,7 +54,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_start_air_accel_y">0.1</float>
+      <float hash="special_hi_start_air_accel_y">0.2</float>
       <float hash="special_hi_start_dir_mul">30</float>
       <float hash="special_hi_start_trans_speed_mul">0.8</float>
       <int hash="special_hi_parasol_limit_time">0</int>

@@ -3,7 +3,7 @@ use globals::*;
 // status script import
 
 mod bayonetta_special_n_cancel;
-// mod buddy_bayonet_end;
+mod buddy_bayonet_end;
 mod captain_special_n;
 mod daisy_special_n;
 mod diddy_special_n_cancel;
@@ -13,6 +13,7 @@ mod ganon_special_n;
 mod ganon_special_n_float;
 mod gaogaen_special_n;
 mod koopa_special_n;
+mod krool_special_n;
 mod littlemac_special_n;
 mod lucario_special_n;
 mod lucas_special_n;
@@ -21,6 +22,7 @@ mod mario_special_n;
 mod mariod_special_n;
 mod master_special_n;
 mod mewtwo_special_n;
+mod miifighter_special_n;
 mod miigunner_special_n;
 mod pacman_special_n;
 mod palutena_special_n;
@@ -39,7 +41,7 @@ mod wario_special_n;
 
 pub fn install(agent: &mut Agent) {
     bayonetta_special_n_cancel::install(agent);
-    // buddy_bayonet_end::install(agent);
+    buddy_bayonet_end::install(agent);
     captain_special_n::install(agent);
     daisy_special_n::install(agent);
     diddy_special_n_cancel::install(agent);
@@ -49,6 +51,7 @@ pub fn install(agent: &mut Agent) {
     ganon_special_n_float::install(agent);
     gaogaen_special_n::install(agent);
     koopa_special_n::install(agent);
+    krool_special_n::install(agent);
     littlemac_special_n::install(agent);
     lucario_special_n::install(agent);
     lucas_special_n::install(agent);
@@ -57,6 +60,7 @@ pub fn install(agent: &mut Agent) {
     mariod_special_n::install(agent);
     master_special_n::install(agent);
     mewtwo_special_n::install(agent);
+    miifighter_special_n::install(agent);
     miigunner_special_n::install(agent);
     pacman_special_n::install(agent);
     palutena_special_n::install(agent);

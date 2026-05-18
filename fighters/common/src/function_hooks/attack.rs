@@ -50,40 +50,79 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         }
     }
 
-    match utils::game_modes::get_custom_mode() {
-        Some(modes) => {
-            if modes.contains(&CustomMode::ElementMode) {
-                let rand = sv_math::rand(hash40("fighter"), 21);
-                match rand { 
-                    0 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_aura");          data.sound_attr = CollisionSoundAttr::Fire; },
-                    1 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_bury");          data.sound_attr = CollisionSoundAttr::Heavy; },
-                    2 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_bind_extra");    data.sound_attr = CollisionSoundAttr::Elec; },
-                    3 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_cutup");         data.sound_attr = CollisionSoundAttr::CutUp; },
-                    4 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_coin");          data.sound_attr = CollisionSoundAttr::Coin; },
-                    5 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal_poison"); data.sound_attr = CollisionSoundAttr::Fire; },
-                    6 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_elec");          data.sound_attr = CollisionSoundAttr::Elec; },
-                    7 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_fire");          data.sound_attr = CollisionSoundAttr::Fire; },
-                    8 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_flower");        data.sound_attr = CollisionSoundAttr::Kick; },
-                    9 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_ice");           data.sound_attr = CollisionSoundAttr::Freeze; },
-                    10 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_magic");         data.sound_attr = CollisionSoundAttr::Magic; },
-                    11 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal");        data.sound_attr = CollisionSoundAttr::Punch; },
-                    12 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_paralyze");      data.sound_attr = CollisionSoundAttr::Elec; },
-                    13 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_purple");        data.sound_attr = CollisionSoundAttr::Fire; },
-                    14 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sleep");         data.sound_attr = CollisionSoundAttr::Magic; },
-                    15 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_slip");          data.sound_attr = CollisionSoundAttr::Slap; },
-                    16 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sting");         data.sound_attr = CollisionSoundAttr::CutUp; },
-                    17 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_turn");          data.sound_attr = CollisionSoundAttr::Harisen; },
-                    _ => {} // (slightly larger) chance for the attack to not be randomized
-                }
+    if utils::game_modes::check_custom_mode(CustomMode::RandomAngleMode)
+    && data.vector >= 0
+    && data.vector <= 361 {
+        // replace sakurai angle, so that we can randomize it
+        if (data.vector == 361) {
+            data.vector = 45;
+        }
 
-                let ret = call_original!(module, id, group, data);
-                if rand == 5 {
-                    AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
-                }
-                return ret;
-            }
-        },
-        _ => {}
+        // seed inputs
+        let input_angle = data.vector as u32;
+        let battle_object_id = (*boma).battle_object_id;
+        let status_kind = (*boma).status() as u32;
+
+        // seed generation
+        let angle_seed = {
+            // magic bullshit go
+            let mut h = input_angle;
+            h ^= battle_object_id.wrapping_add(0x9e3779b9).wrapping_add(h << 6).wrapping_add(h >> 2);
+            h ^= status_kind.wrapping_add(0x9e3779b9).wrapping_add(h << 6).wrapping_add(h >> 2);
+            h ^= MATCH_SCOPED_RANDOM_U32.wrapping_add(0x9e3779b9).wrapping_add(h << 6).wrapping_add(h >> 2);
+            h
+        };
+
+        // psuedorandom angle offset from -90 to 90
+        // when applied, results in a random angle in the same hemisphere as the original
+        // and the result persists for the same attack of the same fighter throught a match
+        let offset = ((angle_seed).wrapping_mul(2654435761) % 181) as i32 - 90;
+        data.vector = (data.vector + offset).rem_euclid(361);
+
+        let spike_kb_mul = 1.5;
+        let was_spike_before = input_angle < 30 || input_angle > 150;
+        let is_spike_after = data.vector < 30 || data.vector > 150;
+        // reduce the knockback of moves that have become spikes but were not previously
+        if !was_spike_before && is_spike_after {
+            data.r_eff = (data.r_eff as f32 / spike_kb_mul).round() as i32;
+            data.r_add = (data.r_add as f32 / spike_kb_mul).round() as i32;
+        }
+        // increase the knockback of moves that are no longer spikes but were previously
+        else if was_spike_before && !is_spike_after {
+            data.r_eff = (data.r_eff as f32 * spike_kb_mul).round() as i32;
+            data.r_add = (data.r_add as f32 * spike_kb_mul).round() as i32;
+        }
+    }
+
+    if utils::game_modes::check_custom_mode(CustomMode::ElementMode) {
+        let rand = sv_math::rand(hash40("fighter"), 21);
+        match rand { 
+            0 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_aura");          data.sound_attr = CollisionSoundAttr::Fire; },
+            1 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_bury");          data.sound_attr = CollisionSoundAttr::Heavy; },
+            2 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_bind_extra");    data.sound_attr = CollisionSoundAttr::Elec; },
+            3 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_cutup");         data.sound_attr = CollisionSoundAttr::CutUp; },
+            4 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_coin");          data.sound_attr = CollisionSoundAttr::Coin; },
+            5 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal_poison"); data.sound_attr = CollisionSoundAttr::Fire; },
+            6 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_elec");          data.sound_attr = CollisionSoundAttr::Elec; },
+            7 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_fire");          data.sound_attr = CollisionSoundAttr::Fire; },
+            8 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_flower");        data.sound_attr = CollisionSoundAttr::Kick; },
+            9 =>  { data.attr = smash_rs::phx::Hash40::new("collision_attr_ice");           data.sound_attr = CollisionSoundAttr::Freeze; },
+            10 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_magic");         data.sound_attr = CollisionSoundAttr::Magic; },
+            11 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_normal");        data.sound_attr = CollisionSoundAttr::Punch; },
+            12 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_paralyze");      data.sound_attr = CollisionSoundAttr::Elec; },
+            13 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_purple");        data.sound_attr = CollisionSoundAttr::Fire; },
+            14 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sleep");         data.sound_attr = CollisionSoundAttr::Magic; },
+            15 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_slip");          data.sound_attr = CollisionSoundAttr::Slap; },
+            16 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_sting");         data.sound_attr = CollisionSoundAttr::CutUp; },
+            17 => { data.attr = smash_rs::phx::Hash40::new("collision_attr_turn");          data.sound_attr = CollisionSoundAttr::Harisen; },
+            _ => {} // (slightly larger) chance for the attack to not be randomized
+        }
+
+        let ret = call_original!(module, id, group, data);
+        if rand == 5 {
+            AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
+        }
+        return ret;
     }
 
     call_original!(module, id, group, data);
@@ -100,34 +139,24 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
 
 #[skyline::hook(offset = 0x403c3c, inline)]
 unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
-    match utils::game_modes::get_custom_mode() {
-        Some(modes) => {
-            let damage_frame_mul: f32 = if modes.contains(&CustomMode::Smash64Mode) {
-                0.533
-            }
-            else {
-                0.42
-            };
-            ctx.registers_f[0].set_s(damage_frame_mul)
-        },
-        _ => {}
+    let damage_frame_mul: f32 = if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+        0.533
     }
+    else {
+        0.42 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+    };
+    ctx.registers_f[0].set_s(damage_frame_mul)
 }
 
 #[skyline::hook(offset = 0x406bf4, inline)]
 unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
-    match utils::game_modes::get_custom_mode() {
-        Some(modes) => {
-            let hitstop_frame_add: f32 = if modes.contains(&CustomMode::Smash64Mode) {
-                5.0
-            }
-            else {
-                4.0
-            };
-            ctx.registers_f[0].set_s(hitstop_frame_add)
-        },
-        _ => {}
+    let hitstop_frame_add: f32 = if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+        5.0
     }
+    else {
+        4.0 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+    };
+    ctx.registers_f[0].set_s(hitstop_frame_add)
 }
 
 // Only applies 0.67 crouch cancel hitlag multiplier to receiver
@@ -168,16 +197,11 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
         let angle = (*attack_data).vector;
         let meteor_vector_min = WorkModule::get_param_int(receiver_boma, hash40("battle_object"), hash40("meteor_vector_min"));
         let meteor_vector_max = WorkModule::get_param_int(receiver_boma, hash40("battle_object"), hash40("meteor_vector_max"));
-        let spike_tumble_threshold = ParamModule::get_float(receiver_boma.object(), ParamType::Common, "spike_tumble_threshold");
-        let damage_frame_mul = WorkModule::get_param_float(receiver_boma, hash40("battle_object"), hash40("damage_frame_mul"));
         let grounded_spike_knockback_mul = ParamModule::get_float(receiver_boma.object(), ParamType::Common, "grounded_spike_knockback_mul");
-
-        let spike_tumble_threshold_kb = spike_tumble_threshold / damage_frame_mul;
 
         if receiver_boma.is_situation(*SITUATION_KIND_GROUND)
         && angle >= meteor_vector_min
-        && angle <= meteor_vector_max
-        && kb >= spike_tumble_threshold_kb {
+        && angle <= meteor_vector_max {
             kb *= grounded_spike_knockback_mul;
         }
 
@@ -280,13 +304,13 @@ unsafe fn set_parry_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
 // set parry AttackModule inflict flag
 #[skyline::hook(offset = 0x03df93c, inline)]
 unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
-    let opponent_battle_object_id = *(ctx.registers[22].x() as *const u32).add(0x24 / 4);
-    let opponent_battle_object = utils::util::get_battle_object_from_id(opponent_battle_object_id);
-    let opponent_boma = (&mut *(*opponent_battle_object).module_accessor);
+    let defender_battle_object_id = *(ctx.registers[22].x() as *const u32).add(0x24 / 4);
+    let defender_battle_object = utils::util::get_battle_object_from_id(defender_battle_object_id);
+    let defender_boma = (&mut *(*defender_battle_object).module_accessor);
 
-    if opponent_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
-    && VarModule::is_flag(opponent_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
-    && opponent_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
+    if defender_boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF)
+    && VarModule::is_flag(defender_battle_object, vars::common::instance::IS_PARRY_FOR_GUARD_OFF)
+    && defender_boma.get_int(*FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) > 0 {
         ctx.registers[8].set_w(ctx.registers[8].w() | *COLLISION_KIND_MASK_PARRY as u32);
         let attack_module = ctx.registers[19].x();
         let attacker_boma = &mut *(*(attack_module as *mut *mut BattleObjectModuleAccessor).add(1));
@@ -296,6 +320,11 @@ unsafe fn x03df93c(ctx: &mut skyline::hooks::InlineCtx) {
             VarModule::set_int(attacker_boma.object(), vars::common::instance::CLIFF_XLU_FRAME, 0);
             HitModule::set_xlu_frame_global(attacker_boma, 0, 0);
             HitModule::set_invincible_frame_global(attacker_boma, 0, false, 0);  // sub_rebirth_uniq_process_exit
+        }
+
+        // invuln on parry success for RoA mode
+        if utils::game_modes::check_custom_mode(game_modes::CustomMode::RivalsOfAetherMode) {
+            HitModule::set_xlu_frame_global(defender_boma, 60, 0);
         }
     }
 }
@@ -310,6 +339,37 @@ unsafe fn notify_log_event_collision_hit(fighter_manager: u64, attacker_object_i
     && VarModule::is_flag(attacker_boma.object(), vars::common::status::HIT_EFFECT_DROP_ITEM)
     && ItemModule::is_have_item(receiver_boma, 0) {
         ItemModule::drop_item(receiver_boma, 90.0, 0.0, 0);
+    }
+
+    if app::smashball::is_training_mode() {
+        if ControlModule::check_button_on(attacker_boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+        || ControlModule::check_button_on(attacker_boma, *CONTROL_PAD_BUTTON_APPEAL_LW)
+        || ControlModule::check_button_on(attacker_boma, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+        || ControlModule::check_button_on(attacker_boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+            if VarModule::has_var_module(receiver_boma.object()) {
+                let fighter = utils::util::get_fighter_common_from_accessor(attacker_boma);
+                let prev = VarModule::is_flag(receiver_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG);
+                println!("prev: {}", prev);
+                if prev == true {
+                    println!("15 -> 18");
+                    // 15 -> 18
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, Hash40::new("sys_hit_dead"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+                    smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+                    fighter.pop_lua_stack(1);
+                }
+                else {
+                    println!("18 -> 15");
+                    // 18 -> 15
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+                    smash::app::sv_animcmd::EFFECT_FOLLOW(fighter.lua_state_agent);
+                    fighter.pop_lua_stack(1);
+                }
+                println!("setting to {}", !prev);
+                VarModule::set_flag(receiver_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG, !prev);
+            }
+        }
     }
 
 	original!()(fighter_manager, attacker_object_id, receiver_object_id, move_type, arg5, move_type_again)
@@ -342,7 +402,13 @@ unsafe fn post_spike_check(ctx: &mut skyline::hooks::InlineCtx) {
     if is_spike {
         let mut kb = ctx.registers_f[11].s();
 
-        let spike_tumble_threshold = ParamModule::get_float((*boma).object(), ParamType::Common, "spike_tumble_threshold");
+        let mut spike_tumble_threshold = ParamModule::get_float((*boma).object(), ParamType::Common, "spike_tumble_threshold");
+        // Ensures grounded spikes do not trigger tumble earlier
+        // despite their knockback multiplier
+        if (*boma).is_situation(*SITUATION_KIND_GROUND) {
+            let grounded_spike_knockback_mul = ParamModule::get_float((*boma).object(), ParamType::Common, "grounded_spike_knockback_mul");
+            spike_tumble_threshold *= grounded_spike_knockback_mul;
+        }
 
         if kb >= spike_tumble_threshold {
             // Set damage level to 3 (tumble)
@@ -352,8 +418,27 @@ unsafe fn post_spike_check(ctx: &mut skyline::hooks::InlineCtx) {
         ctx.registers_f[11].set_s(kb)
     }
 
-    // Forces tumble for knockdown throws
-    if VarModule::is_flag((*boma).object(), vars::common::instance::IS_KNOCKDOWN_THROW) {
+    // Forces tumble for throws
+    let fighter = util::get_fighter_common_from_accessor(&mut (*boma));
+    if VarModule::is_flag((*boma).object(), vars::common::instance::FORCE_TUMBLE_NO_BOUNCE)
+    || [ // THROWN statuses
+        *FIGHTER_STATUS_KIND_BITTEN_WARIO_END,
+        *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON,
+        *FIGHTER_STATUS_KIND_CLUNG_THROWN_BLANK_DIDDY,
+        *FIGHTER_STATUS_KIND_CLUNG_THROWN_DIDDY,
+        *FIGHTER_STATUS_KIND_DEMON_DIVED,
+        *FIGHTER_STATUS_KIND_DRAGGED_RIDLEY,
+        *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_THROWN,
+        *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY_THROWN,
+        *FIGHTER_STATUS_KIND_SWALLOWED_THROWN,
+        *FIGHTER_STATUS_KIND_SWALLOWED_THROWN_STAR,
+        // *FIGHTER_STATUS_KIND_SWING_GAOGAEN_FAILURE,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_LARIAT,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_SHOULDER,
+        *FIGHTER_STATUS_KIND_THROWN,
+    ].contains(&(fighter.global_table[STATUS_KIND].get_i32())) {
         // Set damage level to 3 (tumble)
         ctx.registers[24].set_w(3);
     }
@@ -443,8 +528,26 @@ unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAc
     };
     // dbg!(aura_mul);
 
+    // damage multiplier for pikmin
+    let pikmin_mul = if attacker_boma.is_weapon() && attacker_boma.kind() == *WEAPON_KIND_PIKMIN_PIKMIN {
+        let variation = WorkModule::get_int(attacker_boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
+        let param = format!("param_pikmin_particular.{}.damage_mul", variation);
+        let battle_object = attacker_boma.get_owner_boma().object(); // olimar's battle object
+        ParamModule::get_float(battle_object, ParamType::Agent, &param)
+    } else {
+        1.0
+    };
+    // dbg!(pikmin_mul);
+
+    // damage multiplier for nana
+    let nana_mul = if attacker_boma.is_fighter() && attacker_boma.kind() == *FIGHTER_KIND_NANA {
+        0.75
+    } else {
+        1.0
+    };
+
     // final multiplier
-    return pattern_mul * aura_mul;
+    return pattern_mul * aura_mul * pikmin_mul * nana_mul;
 }
 
 pub fn install() {

@@ -8,13 +8,16 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 5.5, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("armr"), 3.0, 80, 40, 0, 10, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 1, 0, Hash40::new("bowr"), 3.0, 80, 40, 0, 10, 3.0, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 2, 0, Hash40::new("bowr"), 3.0, 80, 40, 0, 10, 3.0, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        // Locking hitboxes
-        ATTACK(agent, 3, 0, Hash40::new("armr"), 3.0, 361, 15, 0, 30, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 4, 0, Hash40::new("bowr"), 3.0, 361, 15, 0, 30, 3.0, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 5, 0, Hash40::new("bowr"), 3.0, 361, 15, 0, 30, 3.0, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "armr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 0.0, y: 7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        // Jab lock hitboxes
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 3, bone: "armr", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 4, bone: "bowr", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 5, bone: "bowr", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 0.0, y: 7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        AttackModule::set_down_only(boma, 3, true);
+        AttackModule::set_down_only(boma, 4, true);
+        AttackModule::set_down_only(boma, 5, true);
     }
     frame(lua_state, 5.5);
     FT_MOTION_RATE_RANGE(agent, 5.5, 7.0, 1.0);
@@ -49,13 +52,16 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 5.5, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("arml"), 3.0, 60, 40, 70, 0, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 1, 0, Hash40::new("bowl"), 3.0, 90, 40, 70, 0, 3.2, 0.0, -2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 2, 0, Hash40::new("bowl"), 3.0, 145, 40, 85, 0, 3.2, 0.0, -7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        // Locking hitbox
-        ATTACK(agent, 3, 0, Hash40::new("arml"), 3.0, 361, 15, 0, 30, 3.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 4, 0, Hash40::new("bowl"), 3.0, 361, 15, 0, 30, 3.2, 0.0, -2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 5, 0, Hash40::new("bowl"), 3.0, 361, 15, 0, 30, 3.2, 0.0, -7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "arml", dmg: 3.0, angle:  60, kbg: 40, fkb: 70, bkb: 0, size: 3.0, x: 2.0, y:  0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowl", dmg: 3.0, angle:  90, kbg: 40, fkb: 70, bkb: 0, size: 3.2, x: 0.0, y: -2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowl", dmg: 3.0, angle: 145, kbg: 40, fkb: 85, bkb: 0, size: 3.2, x: 0.0, y: -7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        // Jab lock hitboxes
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 3, bone: "arml", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 2.0, y:  0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 4, bone: "bowl", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.2, x: 0.0, y: -2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 5, bone: "bowl", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.2, x: 0.0, y: -7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
+        AttackModule::set_down_only(boma, 3, true);
+        AttackModule::set_down_only(boma, 4, true);
+        AttackModule::set_down_only(boma, 5, true);
     }
     frame(lua_state, 5.5);
     FT_MOTION_RATE_RANGE(agent, 5.5, 7.0, 1.0);
@@ -95,9 +101,9 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     FT_MOTION_RATE_RANGE(agent, 3.0, 4.0, 3.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("armr"), 4.0, 70, 100, 0, 60, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 1, 0, Hash40::new("bowr"), 4.0, 70, 100, 0, 60, 4.0, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 2, 0, Hash40::new("bowr"), 4.0, 70, 100, 0, 60, 4.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "armr", dmg: 4.0, angle: 70, kbg: 100, bkb: 60, size: 4.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 1, bone: "bowr", dmg: 4.0, angle: 70, kbg: 100, bkb: 60, size: 4.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 2, bone: "bowr", dmg: 4.0, angle: 70, kbg: 100, bkb: 60, size: 4.0, x: 0.0, y: 6.0, z: 0.0, facing: LrCheck::F, });
     }
     frame(lua_state, 4.0);
     FT_MOTION_RATE_RANGE(agent, 4.0, 32.0, 25.0);
@@ -166,7 +172,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 7.0, 8.0, 3.0);
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85 * 3.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 70, 113, 0, 30, 3.5, 0.0, 4.0, 11.5, Some(0.0), Some(7.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, part: 0, bone: "top", dmg: 8.0, angle: 64, kbg: 124, bkb: 29, size: 3.5, x: 0.0, y: 4.0, z: 11.5, x2: 0.0, y2: 7.0, z2: 4.0, facing: LrCheck::F, });
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.0);

@@ -94,11 +94,11 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
         LAST_EFFECT_SET_COLOR(agent, 3.0, 0.15, 0.15);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
     }
     frame(lua_state, 27.0);
     if is_excute(agent) {

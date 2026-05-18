@@ -223,6 +223,10 @@ unsafe extern "C" fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2C
     special_hi_set_physics(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_movement_helper as *const () as _));
     GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_KROOL_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    let front_cliff_hang_data = fighter.get_front_cliff_hangdata();
+    let p1_x = front_cliff_hang_data.x;
+    let fall_special_cliff_hangdata_p1x_reduction_dist = ParamModule::get_float(fighter.battle_object, ParamType::Shared, "fall_special_cliff_hangdata_p1x_reduction_dist");
+    fighter.set_front_cliff_hangdata(p1_x - fall_special_cliff_hangdata_p1x_reduction_dist, front_cliff_hang_data.y);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_fall_main_loop as *const () as _))
 }
 

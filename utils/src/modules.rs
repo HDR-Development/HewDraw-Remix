@@ -2,6 +2,7 @@ mod input;
 mod meter;
 mod param;
 mod var;
+pub mod stage_mgr;
 
 use std::sync::Once;
 
@@ -9,6 +10,7 @@ pub use input::*;
 pub use meter::*;
 pub use param::*;
 pub use var::*;
+pub use stage_mgr::*;
 
 use skyline::hooks::*;
 use crate::offsets;

@@ -8,7 +8,7 @@ unsafe extern "C" fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2
     }
     else {
         CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_charge"), 0.0, 1.0, false, 0.0, false, false);
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
@@ -52,7 +52,12 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
         }
         else {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 0 {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+            else {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            }
             MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s_charge"), -1.0, 1.0, 0.0, false, false);
         }
     }
@@ -87,6 +92,7 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
             special_s_charge_set_kinetic(fighter);
         }
     }
+    stance_head(fighter);
     
     return 0.into();
 }
@@ -97,6 +103,53 @@ unsafe extern "C" fn special_s_charge_set_kinetic(fighter: &mut L2CFighterCommon
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, reset_type, 0.0, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, sum_speed_x, 0.0);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+}
+
+unsafe extern "C" fn special_s_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+    }
+    else {
+        if !(VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 0
+        && fighter.get_int(*FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_COUNT) < 60) {    // do not apply physics to uncharged Fiery Breath
+            let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            let start_air_speed_x_mul = fighter.get_param_float("param_special_s", "start_air_speed_x_mul");
+            let start_air_speed_y = fighter.get_param_float("param_special_s", "start_air_speed_y");
+            let accel_y = fighter.get_param_float("param_special_s", "accel_y");
+            
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * start_air_speed_x_mul, 0.0);
+            if !fighter.is_flag(*FIGHTER_PACKUN_INSTANCE_WORK_ID_FLAG_SPECIAL_S_LANDING) {
+                sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, start_air_speed_y);
+            }
+            sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -accel_y);
+
+            sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, 0.0, 0.0, 0.0, 0.0);
+            let stable_speed_x = fighter.get_param_float("air_speed_x_stable", "");
+            let facing = PostureModule::lr(fighter.module_accessor);
+            let speed_x = sum_speed_x.abs().min(stable_speed_x) * facing;
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, speed_x * 0.5, 0.0);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, stable_speed_x * 0.5, 0.0);
+            sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, stable_speed_x * 0.5, 0.0);
+            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.03);
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+    }
+
+    EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
+    let handle = fighter.get_int(*FIGHTER_PACKUN_INSTANCE_WORK_ID_INT_SPECIAL_S_CHARGE_MAX_EFFECT_HANDLE);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, MA_MSC_EFFECT_REMOVE, handle);
+    sv_module_access::effect(fighter.lua_state_agent);
+    fighter.pop_lua_stack(1);
+
+    return 0.into();
 }
 
 unsafe extern "C" fn special_s_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -140,7 +193,16 @@ unsafe extern "C" fn special_s_shoot_main_loop(fighter: &mut L2CFighterCommon) -
             }
             else {
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 0 {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                    WorkModule::off_flag(fighter.module_accessor,*FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_CHANGE_KINETIC);
+                }
+                else {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                }
+                let motion = if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 
+                    { Hash40::new("special_air_s_shoot_s") } else { Hash40::new("special_air_s_shoot") };
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
                 if WorkModule::is_flag(fighter.module_accessor,*FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_CHANGE_KINETIC) {
                     // let accel_y = -1.0 * WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("accel_y"));
                     // sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, accel_y);
@@ -162,38 +224,12 @@ unsafe extern "C" fn special_s_shoot_main_loop(fighter: &mut L2CFighterCommon) -
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PACKUN_STATUS_SPECIAL_S_FLAG_CHANGE_KINETIC_DONE);
                 }
             }
-            let motion = if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 
-                { Hash40::new("special_air_s_shoot_s") } else { Hash40::new("special_air_s_shoot") };
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, motion, -1.0, 1.0, 0.0, false, false);
-        }
-        // monch
-        if //fighter.is_motion_one_of(&[Hash40::new("special_s_shoot_s"), Hash40::new("special_air_s_shoot_s")]) &&
-        VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag()
-            && fighter.is_situation(*SITUATION_KIND_GROUND) {
-                if fighter.is_cat_flag(Cat2::AppealHi) {
-                    let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_hi_l") } else { Hash40::new("appeal_hi_r") };
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
-                    MotionModule::change_motion(fighter.module_accessor, hash, 0.0, -1.0, false, 0.0, false, false);
-                    return 1.into();
-                }
-                else if fighter.is_cat_flag(Cat2::AppealSL | Cat2::AppealSR) {
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_2"), 0.0, -1.0, false, 0.0, false, false);
-                    return 1.into();
-                }
-                else if fighter.is_cat_flag(Cat2::AppealLw) {
-                    let hash = if PostureModule::lr(fighter.module_accessor) < 0.0 { Hash40::new("appeal_lw_l") } else { Hash40::new("appeal_lw_r") };
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_APPEAL, false);
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 0.0, -1.0, false, 0.0, false, false);
-                    return 1.into();
-                }
-            }
         }
     }
     if !fighter.global_table[IS_STOPPING].get_bool() {
         special_s_shoot_helper(fighter);
     }
+    stance_head(fighter);
     
     return 0.into();
 }
@@ -216,7 +252,39 @@ unsafe fn special_s_shoot_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe extern "C" fn special_s_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    stance_head(fighter);
+    return 0.into();
+}
+
+unsafe fn stance_head(fighter: &mut L2CFighterCommon) {
+    match VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) {
+        0 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), false);
+        },
+        1 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), false);
+        },
+        2 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), false);
+        },
+        _ => {}
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_CHARGE, special_s_charge_main);
+
+    agent.status(Init, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, special_s_shoot_init);
     agent.status(Main, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_SHOOT, special_s_shoot_main);
+
+    agent.status(Exec, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_CANCEL, special_s_end_exec);
+    agent.status(Exec, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_JUMP_CANCEL, special_s_end_exec);
+    agent.status(Exec, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_S_END, special_s_end_exec);
 }

@@ -18,7 +18,7 @@ unsafe extern "C" fn sound_pfushigisouspecialnstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_pfushigisouspecialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         EFFECT_FLW_POS(agent, Hash40::new("pfushigisou_tanemg"), Hash40::new("top"), 0, 12, 1, 0, 0, 0, 1.3, true);
         if agent.is_situation(*SITUATION_KIND_GROUND) {
@@ -26,9 +26,17 @@ unsafe extern "C" fn effect_pfushigisouspecialnend(agent: &mut L2CAgentBase) {
             LAST_EFFECT_SET_ALPHA(agent, 0.8);
         }
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("pfushigisou_leaf"), Hash40::new("top"), 0, 12, 1, 0, 0, -90, 1, 0, 0, 0, 0, 360, 0, true);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("pfushigisou_tanemg"), Hash40::new("top"), 0, 12, 1, 0, 0, 0, 1.3, true);
+        if agent.is_situation(*SITUATION_KIND_GROUND) {
+            FOOT_EFFECT(agent, Hash40::new("sys_v_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_ALPHA(agent, 0.8);
+        }
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {

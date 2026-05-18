@@ -24,7 +24,6 @@ unsafe fn training_mode_misfire(fighter: &mut L2CFighterCommon) {
             LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);
         } else {
             VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_TRAINING_MISFIRE);
-            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
         }
     }
 }
@@ -63,7 +62,6 @@ unsafe fn luigi_missile_edge_cancel(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     training_mode_misfire(fighter);
     luigi_missle_ledgegrab(fighter);
-    special_s_charge_init(fighter, status_kind);
     special_hi_proper_landing(fighter);
     fastfall_specials(fighter);
     luigi_missile_edge_cancel(fighter);
@@ -79,12 +77,6 @@ pub extern "C" fn luigi_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCo
 pub unsafe fn luigi_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
-}
-
-unsafe fn special_s_charge_init(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind)  || !sv_information::is_ready_go() {
-        VarModule::off_flag(fighter.object(), vars::luigi::instance::SPECIAL_S_MISFIRE_STORED);
     }
 }
 

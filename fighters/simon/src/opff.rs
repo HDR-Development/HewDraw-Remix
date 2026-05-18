@@ -3,15 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if frame > 20.0 {
-            boma.check_airdodge_cancel();
-        }
-    }
-}
-
 unsafe fn axe_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
@@ -47,7 +38,7 @@ unsafe fn cross_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 // allow fair and bair to transition into their angled variants when the stick is angled up/down
 unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32, stick_y: f32) {
     if fighter.is_motion_one_of(&[Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hi"), Hash40::new("attack_air_f_lw")])
-    && (11.0..12.0).contains(&frame) {
+    && (5.0..6.0).contains(&frame) {
         let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             ControlModule::get_sub_stick_y(fighter.module_accessor)
         }
@@ -61,7 +52,7 @@ unsafe fn whip_angling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         }
     } 
     else if fighter.is_motion_one_of(&[Hash40::new("attack_air_b"), Hash40::new("attack_air_b_hi"), Hash40::new("attack_air_b_lw")])
-    && (11.0..12.0).contains(&frame) {
+    && (5.0..6.0).contains(&frame) {
         let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             ControlModule::get_sub_stick_y(fighter.module_accessor)
         }
@@ -89,7 +80,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    holy_water_ac(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     axe_drift(boma, status_kind, situation_kind, cat[1], stick_y);
     cross_land_cancel(fighter, boma, cat[2], stick_y);
     whip_angling(fighter, boma, frame, stick_y);

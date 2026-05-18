@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -108,7 +108,7 @@ attack_lw3:
     cancel_frame: 36
 attack_lw4:
   extra:
-    cancel_frame: 50
+    cancel_frame: 56
 attack_hi4:
   extra:
     cancel_frame: 52
@@ -180,7 +180,7 @@ attack_s3_s:
   flags:
     move: false
   extra:
-    cancel_frame: 30
+    cancel_frame: 35
 attack_squat_s3:
   game_script: game_attacksquats3
   flags:
@@ -208,7 +208,7 @@ attack_squat_s3:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 30
+    cancel_frame: 32
     freeze_during_hitstop: false
 fall_leaning_c:
   extra:
@@ -269,6 +269,15 @@ special_air_lw:
 attack_air_n:
   extra:
     cancel_frame: 36
+attack_air_f:
+  extra:
+    cancel_frame: 40
+attack_air_f_hi:
+  extra:
+    cancel_frame: 40
+attack_air_f_lw:
+  extra:
+    cancel_frame: 40
 attack_air_hi:
   extra:
     cancel_frame: 28
@@ -278,7 +287,7 @@ attack_air_lw2:
     cancel_frame: 25
 throw_hi:
   extra:
-    cancel_frame: 35
+    cancel_frame: 33
 special_hi:
   flags:
     move: true

@@ -1,6 +1,7 @@
 use super::*;
 
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL);
     VarModule::off_flag(fighter.battle_object, vars::miigunner::instance::BOOSTED_AERIAL_LANDING);
     fighter.sub_attack_air();
     fighter.main_shift(attack_air_main_loop)
@@ -16,8 +17,14 @@ unsafe extern "C" fn attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
     // transition to boosted aerial motions
     if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
-        VarModule::off_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL);
-        if fighter.is_button_on(Buttons::Attack) {
+        // cancel boosted aerial input if not holding the button until the check frame
+        if fighter.is_button_release(Buttons::Attack) {
+            VarModule::off_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL);
+        }
+        if VarModule::is_flag(fighter.battle_object, vars::miigunner::status::CHECK_BOOSTED_AERIAL)
+        && VarModule::is_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL) {
+            VarModule::off_flag(fighter.battle_object, vars::miigunner::status::CHECK_BOOSTED_AERIAL);
+            VarModule::off_flag(fighter.battle_object, vars::miigunner::status::BOOSTED_AERIAL);
             VarModule::on_flag(fighter.battle_object, vars::miigunner::instance::BOOSTED_AERIAL_LANDING);
             let motion = if fighter.is_motion(Hash40::new("attack_air_f")) { Hash40::new("attack_air_f_boost") }
             else if fighter.is_motion(Hash40::new("attack_air_b")) { Hash40::new("attack_air_b_boost") }

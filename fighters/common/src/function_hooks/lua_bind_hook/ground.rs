@@ -72,8 +72,6 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
                                                            *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_LW_KICK,
                                                            *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_LW_LANDING,
                                                            *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_LW_KICK_LANDING].contains(&status_kind))
-           || (fighter_kind == *FIGHTER_KIND_BAYONETTA && [*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
-                                                           *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING].contains(&status_kind))
            || (fighter_kind == *FIGHTER_KIND_DOLLY && [*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK,
                                                        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_LANDING,
                                                        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_LANDING,
@@ -186,12 +184,6 @@ unsafe fn check_fighter_edge_slipoffs(boma: &mut BattleObjectModuleAccessor) -> 
     if (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) { return true.into(); }
     if (fighter_kind == *FIGHTER_KIND_KIRBY && status_kind == *FIGHTER_KIRBY_STATUS_KIND_LUIGI_SPECIAL_N) { return true.into(); }
 
-    // PEACH
-    if (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) { return true.into(); }
-
-    // DAISY
-    if (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) { return true.into(); }
-
     // SEPHIROTH
     if (fighter_kind == *FIGHTER_KIND_EDGE && status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH) { return true.into(); }
     
@@ -287,7 +279,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let status_kind = StatusModule::status_kind(boma);
     let fighter_kind = boma.kind();
 
-    let rising: f32 = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN); // Rising while jumping/airdodging
+    let rising: bool = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) >= 0.0; // Rising while jumping/airdodging
 
     let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
@@ -302,7 +294,9 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                           || (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
     let tether_aerial = boma.is_fighter()
-                        && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) );
+                        && ( fighter_kind == *FIGHTER_KIND_SIMON && WorkModule::is_flag(boma, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LASSO_FLAG_CHECK) );
+
+    let lasso_check = WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
 
     // Ledgehog code
     let cliff_id = GroundModule::get_cliff_id_uint32(boma);
@@ -313,9 +307,9 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                 continue;
             }
-
-            if VarModule::get_int(object, vars::common::instance::LEDGE_ID) == cliff_id as i32 {
-                if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
+            
+            if VarModule::get_int(object, vars::common::instance::OCCUPIED_LEDGE_ID) == cliff_id as i32 {
+                if !((tether_zair || tether_special || tether_aerial) && lasso_check) {
                     return 0;
                 }
             }
@@ -326,12 +320,12 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         if !run_vanilla_check(boma) {
             // Disable grabbing ledge while rising during an airborne state
             if situation_kind == *SITUATION_KIND_AIR {
-                if rising >= 0.0 && !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
+                if !tether_aerial && (rising && !((tether_zair || tether_special) && lasso_check)) {
                     return 0;
                 }
             }
         }
-
+        
         // Unable to grab ledge during runfall/walkfall (the first few frames after you run off an edge)
         if boma.is_motion_one_of(&[Hash40::new("run_fall_l"), Hash40::new("run_fall_r"), Hash40::new("walk_fall_l"), Hash40::new("walk_fall_r")]) {
             return 0;

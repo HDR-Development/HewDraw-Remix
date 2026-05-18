@@ -382,11 +382,6 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 1.0);
-    if is_excute(agent) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            VarModule::on_flag(agent.object(), vars::edge::status::FLASH_HOLD);
-        }
-    }
     frame(lua_state, 7.0);
     FT_MOTION_RATE_RANGE(agent, 7.0, 20.0, 7.0);
     if is_excute(agent) {

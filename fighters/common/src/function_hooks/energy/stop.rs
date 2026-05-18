@@ -1,6 +1,6 @@
 use super::*;
-use crate::consts::globals::*;
 use crate::consts::*;
+use crate::consts::globals::*;
 use std::ops::{Deref, DerefMut};
 
 #[repr(C)]
@@ -22,7 +22,8 @@ pub struct FighterKineticEnergyStop {
     _xBA: bool,
     _xBB: bool,
     _xBC: u32,
-    _xC0: PaddedVec2, // ...
+    _xC0: PaddedVec2
+    // ...
 }
 
 impl Deref for FighterKineticEnergyStop {
@@ -95,8 +96,7 @@ unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleOb
     // Double traction while above max walk speed
     if StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
     && boma.is_situation(*SITUATION_KIND_GROUND)
-    && !boma.is_prev_situation(*SITUATION_KIND_AIR)
-    {
+    && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
         let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
         let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
         // If our speed is being influenced by knockback, we handle double traction elsewhere
@@ -124,7 +124,12 @@ unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleOb
 
 #[skyline::hook(offset = 0x6d8560)]
 pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, reset_type: EnergyStopResetType, initial_speed: &PaddedVec2, unk: u64, boma: &mut BattleObjectModuleAccessor) {
-    if (boma.is_fighter() && (boma.kind() == *FIGHTER_KIND_MEWTWO && boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2)) || (boma.kind() == *FIGHTER_KIND_PALUTENA && boma.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2)) || (boma.kind() == *FIGHTER_KIND_SHEIK && boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE)) || (boma.kind() == *FIGHTER_KIND_ZELDA && boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2))) {
+    if ( boma.is_fighter()
+    &&     (boma.kind() == *FIGHTER_KIND_MEWTWO && boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2))
+        || (boma.kind() == *FIGHTER_KIND_PALUTENA && boma.is_status(*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2))
+        || (boma.kind() == *FIGHTER_KIND_SHEIK && boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE))
+        || (boma.kind() == *FIGHTER_KIND_ZELDA && boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2)) )
+    {
         VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_X, initial_speed.x);
         VarModule::set_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y, initial_speed.y);
     }
@@ -132,5 +137,8 @@ pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, re
 }
 
 pub fn install() {
-    skyline::install_hooks!(update_stop, setup_stop);
+    skyline::install_hooks!(
+        update_stop,
+        setup_stop
+    );
 }

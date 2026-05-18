@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -112,12 +112,12 @@ attack_air_f:
     cancel_frame: 38
 special_n:
   extra:
-    xlu_start: 5
-    xlu_end: 8
+    xlu_start: 0
+    xlu_end: 0
 special_air_n:
   extra:
-    xlu_start: 5
-    xlu_end: 8
+    xlu_start: 0
+    xlu_end: 0
 special_s_throw_lw:
   extra:
     cancel_frame: 31

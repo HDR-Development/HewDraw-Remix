@@ -36,7 +36,7 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
     extract(asset, extract_directory)
 
 def extract(asset: str, extract_directory = None):
-    with zipfile.ZipFile(asset, 'r') as zip_ref: 
+    with zipfile.ZipFile(asset, 'r') as zip_ref:
         if extract_directory:
             extract_home = extract_directory
             os.makedirs("switch-package" + extract_home, exist_ok=True)
@@ -54,8 +54,8 @@ else:
 
 if hdr_version == "devrelease":
     os.chdir('switch-package/ultimate/mods/')
-    os.rename('hdr-assets', 'hdr-assets-private')
-    os.rename('hdr-stages', 'hdr-stages-private')
+    # os.rename('hdr-assets', 'hdr-assets-private')
+    # os.rename('hdr-stages', 'hdr-stages-private')
     # move hdr files into correct dir
     source_dir = '../../../build/hdr-switch/ultimate/mods/hdr-private/'
     target_dir = 'hdr-private/'
@@ -66,7 +66,7 @@ else:
 
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
-download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
+# download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
 download_and_extract("ThatNintendoNerd", "stage_config", "latest", "release.zip")
 
 print("getting libnro_hook.nro")

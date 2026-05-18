@@ -11,8 +11,8 @@
     <float hash="hi2_limit_speed_x">0.9</float>
     <float hash="hi2_start_speed_y">0.25</float>
     <float hash="hi2_start_accel_y">0.044</float>
-    <float hash="hi2_jump_speed_y">2.75</float>
-    <float hash="hi2_jump_accel_y">0.088</float>
+    <float hash="hi2_jump_speed_y">3.025</float>
+    <float hash="hi2_jump_accel_y">0.1056</float>
     <float hash="hi2_end_speed_x_mul">0.9</float>
     <float hash="hi2_end_accel_x_mul">0.9</float>
     <float hash="hi3_start_speed_y">0.15</float>
@@ -20,5 +20,6 @@
     <float hash="hi3_end_accel_x_mul">0.8</float>
     <int hash="hi1_can_angle">72</int>
     <int hash="hi2_can_angle">80</int>
+    <float hash="actionable_landing_frame">14</float>
   </struct>
 </struct>

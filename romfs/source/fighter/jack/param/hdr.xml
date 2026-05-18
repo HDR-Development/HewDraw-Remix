@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="param_doyle">
+      <float hash="landing_attack_air_n_add">3.0</float>
+      <float hash="landing_attack_air_f_add">5.0</float>
+      <float hash="landing_attack_air_b_add">5.0</float>
+      <float hash="landing_attack_air_hi_add">3.0</float>
+      <float hash="landing_attack_air_lw_add">5.0</float>
+    </struct>
     <struct hash="param_special_hi">
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.6</float>

@@ -124,6 +124,16 @@ unsafe fn hit_cancel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
+unsafe fn burn_knuckle_end_on_shield(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK) {
+        // Skip to end on shield
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)
+        && !fighter.is_in_hitlag() {
+            fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END.into(), false.into());
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     inherit_final_cancel(fighter);
     disable_special_cancels_on_parry(fighter);
@@ -132,6 +142,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     specials_ledgegrab_fix(fighter);
     super_special_cancels(fighter, boma, status_kind, situation_kind, motion_kind, frame);
     hit_cancel_timer(fighter, boma);
+    burn_knuckle_end_on_shield(fighter);
 }
 
 pub extern "C" fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

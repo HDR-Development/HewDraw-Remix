@@ -19,6 +19,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, vars::pfushigisou::instance::SPECIAL_N_SEED_FIRED);
     special_n_mot_helper(fighter, Hash40::new("special_n_end"), Hash40::new("special_air_n_end"), false);
     fighter.main_shift(special_n_end_main_loop)
 }

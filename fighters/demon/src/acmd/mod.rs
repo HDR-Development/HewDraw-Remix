@@ -6,6 +6,9 @@ mod tilts;
 mod smashes;
 mod aerials;
 mod specials;
+mod stand;
+mod step;
+mod squat;
 mod throws;
 mod other;
 
@@ -16,6 +19,9 @@ pub fn install(agent: &mut Agent) {
     smashes::install(agent);
     aerials::install(agent);
     specials::install(agent);
+    stand::install(agent);
+    step::install(agent);
+    squat::install(agent);
     throws::install(agent);
     other::install(agent);
 }

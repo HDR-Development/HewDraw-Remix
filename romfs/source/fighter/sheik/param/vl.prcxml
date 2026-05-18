@@ -31,7 +31,8 @@
   </list>
   <list size="4" hash="param_special_s">
     <struct index="0">
-      <float hash="throw_speed">4.0</float>
+      <float hash="throw_angle">30.0</float>
+      <float hash="throw_speed">3.5</float>
       <int hash="hold_max_frame">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -52,7 +53,8 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="speed_y">3.0</float>
-      <float hash="warp_speed_add">1</float>
+      <float hash="warp_speed_add">2</float>
+      <float hash="warp_speed_mul">0</float>
       <float hash="special_hi_landing_frame">30</float>
     </struct>
     <hash40 index="1">dummy</hash40>

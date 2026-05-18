@@ -144,6 +144,7 @@ pub unsafe extern "C" fn special_hi_loop_main(fighter: &mut L2CFighterCommon) ->
     }
     AttackModule::set_power_mul(fighter.module_accessor, attack_mul);
     AttackModule::set_attack_scale(fighter.module_accessor, attack_size_mul, true);
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
 
     if !StopModule::is_stop(fighter.module_accessor) { special_hi_loop_substatus(fighter, false.into()); }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_hi_loop_substatus as *const () as _));
@@ -241,11 +242,17 @@ pub unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+
+        // Allows you to land out of upB before reaching end of animation (weird vanilla behavior)
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        return 1.into();
+    }
+    else {
+        fighter.sub_air_check_dive();
     }
     special_hi_check_aerial(fighter);
     if MotionModule::is_end(fighter.module_accessor) {
-        let new_status = if fighter.is_situation(*SITUATION_KIND_GROUND) { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL } else { FIGHTER_STATUS_KIND_FALL_SPECIAL };
-        fighter.change_status(new_status.into(), false.into());
+        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
         return 1.into();
     }
 
@@ -253,9 +260,8 @@ pub unsafe extern "C" fn special_hi_end_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub unsafe extern "C" fn special_hi_check_aerial(fighter: &mut L2CFighterCommon) {
-    // Only allow aerial canceling on first bounce
-    let jump_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_HI_JUMP_NUM);
-    if jump_num > 0 {
+    // Only allow aerial canceling once per airtime
+    if VarModule::is_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_DISABLE_AERIAL) {
         return;
     }
 
@@ -266,6 +272,7 @@ pub unsafe extern "C" fn special_hi_check_aerial(fighter: &mut L2CFighterCommon)
         if fighter.sub_transition_group_check_air_attack().get_bool() {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_FALL);
             VarModule::on_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_AERIAL_USED);
+            VarModule::on_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_DISABLE_AERIAL);
         }
     }
     else {

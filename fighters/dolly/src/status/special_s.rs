@@ -84,6 +84,30 @@ pub unsafe extern "C" fn special_f_attack_pre(fighter: &mut L2CFighterCommon) ->
     return false.into();
 }
 
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END
+
+unsafe extern "C" fn special_f_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Reduce speed on shield
+    let prev_inflict_status = VarModule::get_int(fighter.battle_object, vars::common::instance::PREV_STATUS_INFLICT_STATUS);
+    if prev_inflict_status & *COLLISION_KIND_MASK_SHIELD != 0 || prev_inflict_status & *COLLISION_KIND_MASK_PARRY != 0 {
+        let shield_hit_end_speed_x = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_f.shield_hit_ground_end_speed_x")
+        } else {
+            ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_f.shield_hit_air_end_speed_x")
+        };
+        let lr = PostureModule::lr(fighter.module_accessor);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            shield_hit_end_speed_x * lr,
+            0.0
+        );
+    }
+    
+    smashline::original_status(Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END)(fighter)
+}
+
 // FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B
 
 pub unsafe extern "C" fn special_b_init(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -162,6 +186,7 @@ pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
     agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK, special_f_attack_pre);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, special_f_end_main);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, special_s_command_init);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, special_b_init);
     agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, special_b_command_init);

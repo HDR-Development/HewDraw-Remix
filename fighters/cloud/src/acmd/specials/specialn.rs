@@ -3,19 +3,15 @@ use super::*;
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD) {
-            MotionModule::set_rate(boma, 0.25);
-        }
-    }
-    frame(lua_state, 12.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_CLOUD_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
-        MotionModule::set_rate(boma, 2.0);
+        if VarModule::is_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD) {
+            MotionModule::set_rate(boma, 0.375);
+        }
+        else {
+            MotionModule::set_rate(boma, 1.5);
+        }
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -85,19 +81,15 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialn_lb(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD) {
-            MotionModule::set_rate(boma, 0.25);
-        }
-    }
-    frame(lua_state, 12.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_CLOUD_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
-        MotionModule::set_rate(boma, 2.0);
+        if VarModule::is_flag(agent.battle_object, vars::cloud::status::SPECIAL_N_HOLD) {
+            MotionModule::set_rate(boma, 0.375);
+        }
+        else {
+            MotionModule::set_rate(boma, 1.5);
+        }
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {

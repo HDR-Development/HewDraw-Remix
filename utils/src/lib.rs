@@ -5,12 +5,14 @@
 #![feature(simd_ffi)]
 #[macro_use]
 extern crate lazy_static;
+extern crate smash2;
 
 pub mod offsets;
 pub mod modules;
 
-mod game_modes;
+pub mod game_modes;
 mod ui;
+pub mod one_player;
 
 pub use utils_dyn::ext;
 pub use utils_dyn::consts;
@@ -28,6 +30,7 @@ pub fn init() {
     singletons::init();
     game_modes::install();
     ui::install();
+    one_player::install();
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

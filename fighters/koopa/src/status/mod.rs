@@ -19,11 +19,17 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_EFFECT_ID, 0);
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::SPECIAL_N_FIREBALL_COOLDOWN, MAX_COOLDOWN);
     }
+    if [*SITUATION_KIND_GROUND, *SITUATION_KIND_CLIFF].contains(&fighter.global_table[SITUATION_KIND].get_i32())
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
+        VarModule::off_flag(fighter.battle_object, vars::koopa::instance::SPECIAL_S_DISABLE_STALL);
+    }
     true.into()
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+
+    VarModule::off_flag(fighter.battle_object, vars::koopa::instance::SPECIAL_S_DISABLE_STALL);
 }
 
 pub fn install(agent: &mut Agent) {

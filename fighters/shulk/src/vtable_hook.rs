@@ -2,13 +2,14 @@ use super::*;
 
 // disables art wheel during hitstun, and enables it during jab, tilts and aerials
 
-#[skyline::hook(offset = 0x116a3d0)]
-pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) -> u64 {
+#[no_mangle]
+pub unsafe extern "C" fn shulk_check_valid_arts_statuses_inner(fighter: &mut Fighter) -> bool {
     let module_accessor = (fighter.battle_object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let object = &mut fighter.battle_object;
-    if VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT) {
-        u64::from([
+    if WorkModule::is_flag(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE)
+    && VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT) {
+        [
             *FIGHTER_STATUS_KIND_WAIT,
             *FIGHTER_STATUS_KIND_WALK,
             *FIGHTER_STATUS_KIND_DASH,
@@ -40,10 +41,10 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
             *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP,
             *FIGHTER_STATUS_KIND_ITEM_ROCKETBELT_HOVER_KEEP,
             *FIGHTER_STATUS_KIND_KILLER_JUMP,
-        ].contains(&status))
+        ].contains(&status)
     }
-    else {    
-        u64::from([
+    else {
+        [
             *FIGHTER_STATUS_KIND_WAIT,
             *FIGHTER_STATUS_KIND_WALK,
             *FIGHTER_STATUS_KIND_DASH,
@@ -69,12 +70,6 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: &mut Fighter) 
             *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP,
             *FIGHTER_STATUS_KIND_ITEM_ROCKETBELT_HOVER_KEEP,
             *FIGHTER_STATUS_KIND_KILLER_JUMP,
-        ].contains(&status))
+        ].contains(&status)
     }
-}
-
-pub fn install(agent: &mut Agent) {
-    skyline::install_hooks!(
-        shulk_check_valid_arts_statuses,
-    );
 }

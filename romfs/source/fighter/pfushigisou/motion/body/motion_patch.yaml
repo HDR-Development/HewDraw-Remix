@@ -35,7 +35,7 @@ attack_13:
     freeze_during_hitstop: true
 attack_air_b:
   extra:
-    cancel_frame: 37
+    cancel_frame: 34
 attack_air_f:
   extra:
     cancel_frame: 43
@@ -93,10 +93,10 @@ cliff_wait:
   blend_frames: 2
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_back_d:
   extra:
     cancel_frame: 36

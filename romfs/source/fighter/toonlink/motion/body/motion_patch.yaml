@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -82,13 +82,13 @@ attack_12:
     cancel_frame: 17
 attack_13:
   extra:
-    cancel_frame: 34
+    cancel_frame: 36
 attack_11:
   extra:
     cancel_frame: 20
 attack_hi4:
   extra:
-    cancel_frame: 46
+    cancel_frame: 48
 attack_lw3:
   extra:
     cancel_frame: 25
@@ -106,10 +106,13 @@ attack_s4_s:
     cancel_frame: 54
 attack_air_b:
   extra:
-    cancel_frame: 23
+    cancel_frame: 30
 attack_air_hi:
   extra:
-    cancel_frame: 58
+    cancel_frame: 57
+special_hi:
+  extra:
+    cancel_frame: 81
 item_light_throw_b:
   extra:
     cancel_frame: 21
@@ -133,7 +136,7 @@ catch_attack:
     cancel_frame: 0
 air_catch_landing:
   extra:
-    cancel_frame: 16
+    cancel_frame: 17
 furafura_end:
   extra:
     cancel_frame: 34

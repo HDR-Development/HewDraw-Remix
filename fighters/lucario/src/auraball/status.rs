@@ -86,6 +86,11 @@ unsafe extern "C" fn auraball_set_scale(fighter: &mut L2CFighterCommon) {
     let charge_ratio = (charge_frame as f32) / (max_charge_frame as f32);
     //println!("charge_ratio: {}", charge_ratio);
 
+    if fighter.is_status(*WEAPON_LUCARIO_AURABALL_STATUS_KIND_CHARGE)
+    && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP) {
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("lucario_hadoudan_hold"), true, true);
+    }
+
     let mut hvar4 = "";
     let mut min_scale = 0.0;
     let mut max_scale = 0.0;

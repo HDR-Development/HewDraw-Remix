@@ -15,7 +15,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags')
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-    outputs: 
+    outputs:
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
 
@@ -36,16 +36,16 @@ jobs:
       run: |
         echo ${{ steps.get_last_beta.outputs.tag_name }}
 
-    
+
     - name: checkout version
-      uses: actions/checkout@v4.1.4
-      with: 
+      uses: actions/checkout@v6.0.2
+      with:
         fetch-depth: 0
 
     # github changelog
     - name: "Generate release changelog"
       id: github_changelog
-      uses: heinrichreimer/github-changelog-generator-action@v2.4
+      uses: janheinrichmerker/action-github-changelog-generator@v2.4
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         token: ${{ secrets.GITHUB_TOKEN  }}
@@ -58,7 +58,7 @@ jobs:
         simpleList: true
 
     - name: Upload changelog
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: changelog
         path: CHANGELOG.md
@@ -68,16 +68,16 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-24.04
     needs: version_and_changelog
-    container: 
+    container:
       image: wuboyth/skyline-plugin-builder:latest
-    outputs: 
+    outputs:
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
     # - name: setup python
-    #   uses: actions/setup-python@v5.1.0
+    #   uses: actions/setup-python@v6.2.0
     #   with:
     #     python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-    
+
     - id: trimmed_tag
       shell: bash
       run: |
@@ -88,7 +88,7 @@ jobs:
         echo "##[set-output name=tag;]$TRIMMED";
 
     - name: checkout version
-      uses: actions/checkout@v4.1.4
+      uses: actions/checkout@v6.0.2
 
     # build the project
     - run: |
@@ -103,7 +103,7 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload version
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: version
         path: hdr_version.txt
@@ -122,7 +122,7 @@ jobs:
 
     # upload asset
     - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: distributions/*
@@ -139,7 +139,7 @@ jobs:
     needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
-      uses: actions/checkout@v4.1.4
+      uses: actions/checkout@v6.0.2
 
     - id: romfs_latest
       uses: pozetroninc/github-action-get-latest-release@master
@@ -195,7 +195,7 @@ jobs:
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade data to previous release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/upgrade.zip
@@ -208,7 +208,7 @@ jobs:
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade deletions to previous release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: upgrade_artifacts/deletions.json
@@ -219,20 +219,20 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    - uses: actions/download-artifact@v4.1.7
+    - uses: actions/download-artifact@v8.0.1
       with:
         name: changelog
-        
+
     - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
 
-    - uses: actions/download-artifact@v4.1.7
+    - uses: actions/download-artifact@v8.0.1
       with:
         name: version
-        
+
     # build the lvd files
     # - id: lvd_files
-    #  uses: robinraju/release-downloader@v1.7
+    #  uses: robinraju/release-downloader@v1.13
     #  with:
     #    repository: "techyCoder81/SSBU-LVD-data-dump"
     #    tag: release
@@ -265,7 +265,7 @@ jobs:
     #    destination_branch: 'gh-pages'
 
     - name: Upload full package to betas
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: artifacts/*
@@ -284,11 +284,11 @@ jobs:
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
-      uses: actions/checkout@v4.1.4
+      uses: actions/checkout@v6.0.2
 
     # download the prerelease
     - id: latest_prerelease
-      uses: robinraju/release-downloader@v1.7
+      uses: robinraju/release-downloader@v1.13
       with:
         repository: "HDR-Development/HDR-PreReleases"
         latest: true
@@ -318,7 +318,7 @@ jobs:
 
     # upload the to-prerelease.zip to the beta for the launcher
     - name: Upload to-prerelease.zip to beta
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: to-prerelease.zip
@@ -331,7 +331,7 @@ jobs:
 
     # upload the to_prerelease_deletions.json to the beta for the launcher
     - name: Upload to_prerelease_deletions.json to beta
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@2.11.5
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: to_prerelease_deletions.json

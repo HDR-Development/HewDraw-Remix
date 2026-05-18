@@ -3,20 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-/*unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_TURN].contains(&status_kind)
-    {
-        boma.check_airdodge_cancel();
-    }
-
-    if status_kind == *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_END {
-        boma.check_jump_cancel(true, false);
-    }
-}
-*/
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)

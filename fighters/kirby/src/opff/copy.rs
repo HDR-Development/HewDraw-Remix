@@ -197,7 +197,8 @@ unsafe fn pitb_bow_lc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_TURN
         ]) {
             if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_PIT_SPECIAL_N_SHOOT) {
-                fighter.check_land_cancel(None);
+                let landing_lag = 7.0;
+                fighter.check_land_cancel(Some(landing_lag));
             }
         }
     }
@@ -545,6 +546,8 @@ unsafe fn reflet_nspecial_cancels(fighter: &mut L2CFighterCommon) {
                 fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
                 ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }
+        } else if fighter.get_int(*FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+            fighter.set_int(*STATUS_KIND_NONE, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
         }
     }
 }
@@ -660,6 +663,15 @@ unsafe fn ken_hado_landcancel(fighter: &mut L2CFighterCommon) {
     fighter.check_land_cancel(Some(landing_lag));
 }
 
+// Cloud
+unsafe fn cloud_special_n_hold(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_CLOUD_SPECIAL_N) {
+        if fighter.check_hold_input(0, 10, Buttons::SpecialAll) {
+            VarModule::on_flag(fighter.battle_object, vars::cloud::status::SPECIAL_N_HOLD);
+        }
+    }
+}
+
 // Simon
 unsafe fn axe_drift(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N) {
@@ -693,26 +705,11 @@ unsafe fn miigunner_nspecial_cancels(fighter: &mut L2CFighterCommon) {
 // Piranha Plant
 unsafe fn packun_ptooie_stance(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_N_SWALLOW_WAIT) {
-        let boma = fighter.boma();
-        let opponent_boma = boma.get_grabbed_opponent_boma();
-        let grabbed_fighter = smash::app::utility::get_kind(opponent_boma);
-        if grabbed_fighter == *FIGHTER_KIND_PACKUN {
-            let old_stance = VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE);
+        let opponent_boma = fighter.get_grabbed_opponent_boma();
+        if opponent_boma.kind() == *FIGHTER_KIND_PACKUN {
             let new_stance = VarModule::get_int(opponent_boma.object(), vars::packun::instance::CURRENT_STANCE);
-            if new_stance != old_stance {
-                // println!("Copying Pirahna Plant's Current Stance, which is {}", new_stance);
-                VarModule::set_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE, new_stance);
-            }
+            VarModule::set_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE, new_stance);
         }
-    }
-}
-
-unsafe fn packun_ptooie_scale(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 {
-        VarModule::set_float(fighter.battle_object, vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.3);
-    }
-    else {
-        VarModule::set_float(fighter.battle_object, vars::packun::instance::SPECIAL_N_PTOOIE_SCALE, 1.0);
     }
 }
 
@@ -749,6 +746,36 @@ unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon) {
 			EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_sweat"), Hash40::new("top"), 0, 8.5, 7.5, 0, 0, 0, sweatSize, true);
 		}
 	}
+}
+
+unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon) {
+    let motion = MotionModule::motion_kind(fighter.module_accessor);
+    let motion_partial = MotionModule::motion_kind_partial(fighter.module_accessor,*FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+    if fighter.is_status_one_of(&[
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_F,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_WALK_B,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_TURN,
+        *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_LANDING
+    ]) 
+    && fighter.is_situation(*SITUATION_KIND_GROUND) 
+    && !VarModule::is_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE) {
+        if motion_partial == hash40("buddy_special_n_shoot_upper_fire") {
+            let frame_partial = MotionModule::frame_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_UPPER_BODY);
+            let disable_frame = 3.0; //frame before egg fires
+            let disable_bayonet = (!CancelModule::is_enable_cancel(fighter.module_accessor) && frame_partial >= disable_frame);
+            VarModule::set_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE,disable_bayonet);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
+        }
+        let is_csticking = ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+        if (is_csticking && !VarModule::is_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE)) {
+            VarModule::on_flag(fighter.battle_object, vars::kirby::instance::BUDDY_SPECIAL_N_BAYONET_ACTIVE);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_PRECEDE_SHOOT);
+            fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT.into(), false.into());            
+        }
+    }
 }
 
 // Steve
@@ -797,7 +824,7 @@ unsafe fn trail_magic_handling(fighter: &mut L2CFighterCommon) {
     // blizzaga jump cancel
     if (fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N2)
     && fighter.motion_frame() > 12.0) {
-        fighter.check_jump_cancel(false, false);
+        fighter.check_jump_cancel(false, false, false);
     }
 
     // handles the cooldown timer between casting spells
@@ -896,6 +923,7 @@ unsafe extern "C" fn pledge_init(fighter: &mut L2CFighterCommon) {
             if LinkModule::is_link(opponent_boma, *FIGHTER_POKEMON_LINK_NO_PTRAINER) {
                 let parent_id = LinkModule::get_parent_id(opponent_boma, *FIGHTER_POKEMON_LINK_NO_PTRAINER, true) as u32;
                 let object = utils::util::get_battle_object_from_id(parent_id);
+                VarModule::off_flag(fighter.battle_object, vars::pfushigisou::instance::SPECIAL_N_SEED_FIRED);
                 let pledge = VarModule::get_int(object, vars::ptrainer::instance::SPECIAL_N_PLEDGE_STATE);
                 if pledge != *PLEDGE_STATE_NONE {
                     VarModule::set_int(fighter.battle_object, vars::kirby::instance::SPECIAL_N_PTRAINER_PLEDGE_STATE, pledge);
@@ -907,6 +935,7 @@ unsafe extern "C" fn pledge_init(fighter: &mut L2CFighterCommon) {
             // The pokemon has no active pledge or the trainer was somehow not found, so Kirby will not get a pledge
             VarModule::set_int(fighter.battle_object, vars::kirby::instance::SPECIAL_N_PTRAINER_PLEDGE_STATE, *PLEDGE_STATE_NONE);
             VarModule::set_int(fighter.battle_object, vars::ptrainer::instance::SPECIAL_N_PLEDGE_TIMER, 0);
+            VarModule::off_flag(fighter.battle_object, vars::pfushigisou::instance::SPECIAL_N_SEED_FIRED);
         }
     }
 }
@@ -937,26 +966,16 @@ unsafe extern "C" fn plant_meter(fighter: &mut L2CFighterCommon) {
 
 
 unsafe fn bayo_air_special_cancels(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) //dont cancel on shield
-    && !fighter.is_in_hitlag() { //dont cancel during hitstop
-        let mut new_status = 0;
-        if fighter.is_cat_flag(Cat1::SpecialN) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::WAS_CANCEL);
-        } else if fighter.is_cat_flag(Cat1::SpecialHi) {
-            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
-            }
-        } else if fighter.is_cat_flag(Cat1::SpecialS) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-        } else if fighter.is_cat_flag(Cat1::SpecialLw) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW;
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
         }
-        fighter.check_airdodge_cancel();
-        if new_status != 0 {
-            StatusModule::change_status_force(fighter.module_accessor, new_status, true);
-        } //special cancel
+        if !fighter.is_in_hitlag() 
+        && !StopModule::is_stop(fighter.module_accessor) {
+            fighter.sub_transition_group_check_air_special();
+            fighter.sub_transition_group_check_air_escape();
+        }
     }
 }
 
@@ -1060,6 +1079,10 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
             ken_air_hado_distinguish(fighter);
             ken_hado_landcancel(fighter)
         },
+        // Cloud
+        0x3E => {
+            cloud_special_n_hold(fighter);
+        }
         // Simon
         0x43 => axe_drift(fighter),
         // Incineroar
@@ -1069,7 +1092,6 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         // Piranha Plant
         0x51 => {
             packun_ptooie_stance(fighter);
-            packun_ptooie_scale(fighter);
         },
         // Hero
         0x53 => {
@@ -1079,6 +1101,7 @@ pub unsafe fn kirby_copy_handler(fighter: &mut L2CFighterCommon) {
         0x54 => {
             blue_eggs_land_cancels(fighter);
             indicator_breegull_fatigue(fighter);
+            breegull_bayonet(fighter);
         },
         // Terry
         0x55 => check_special_cancels(fighter),

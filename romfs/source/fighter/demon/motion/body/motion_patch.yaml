@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -77,19 +77,6 @@ guard_off:
   blend_frames: 4
   extra:
     cancel_frame: 12
-attack_rage_drive:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-attack_air_rage_drive:
-  extra:
-    xlu_start: 0
-    xlu_end: 0
-landing_air_lw:
-  flags:
-    move: true
-  extra:
-    cancel_frame: 0
 catch:
   extra:
     cancel_frame: 38
@@ -110,3 +97,147 @@ step_pose_back:
     cancel_frame: 6
 cliff_wait:
   blend_frames: 2
+
+attack_dash:
+  animations:
+    - name: c06attackstand1.nuanmb
+  extra:
+    cancel_frame: 40
+
+attack_s3_hi:
+  game_script: game_attackstand5
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c06attackstand5.nuanmb
+      unk: 0
+  scripts:
+    - expression_attackstand5
+    - sound_attackstand5
+    - effect_attackstand5
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 34
+    no_stop_intp: false
+
+attack_s3_lw:
+  game_script: game_attackstand4
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c06attackstand4.nuanmb
+      unk: 0
+  scripts:
+    - expression_attackstand4
+    - sound_attackstand4
+    - effect_attackstand4
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 39
+    no_stop_intp: false
+
+attack_lw3:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+attack_lw3_cancel:
+  extra:
+    cancel_frame: 14
+attack_step:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+attack_step_2f:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+attack_step_2s:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+
+attack_squat_1:
+  extra:
+    xlu_start: 9
+    xlu_end: 14
+
+landing_air_lw:
+  flags:
+    move: true
+  extra:
+    cancel_frame: 0
+
+attack_rage_drive:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+attack_air_rage_drive:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+
+special_s:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+
+cancel_step:
+  game_script: game_cancelstep
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: c08attackstep.nuanmb
+      unk: 0
+  scripts:
+    - expression_cancelstep
+    - sound_cancelstep
+    - effect_cancelstep
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false

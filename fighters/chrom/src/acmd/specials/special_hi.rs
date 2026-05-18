@@ -65,7 +65,9 @@ pub unsafe extern "C" fn effect_specialhi1(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false);
+        }
         EFFECT_FOLLOW(agent, Hash40::new("chrom_tenku_line"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_ALPHA(agent, 0.95);
         EffectModule::enable_sync_init_pos_last(boma);
@@ -136,6 +138,14 @@ pub unsafe extern "C" fn effect_specialhi3start(agent: &mut L2CAgentBase) {
     }
 }
 
+pub unsafe extern "C" fn game_specialhi3start(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
+    }
+}
+
 pub unsafe extern "C" fn sound_specialhi3start(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -149,17 +159,20 @@ pub unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
+        // doesn't hit ground. this hitbox is exclusively to catch aerial opponents that got hit by the rising hitbox
         ATTACK(agent, 0, 0, Hash40::new("rot"), 1.1, 366, 100, 50, 0, 10.0, 0.0, 2.0, 2.25, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
-        ATTACK(agent, 1, 0, Hash40::new("rot"), 1.1, 20, 50, 125, 50, 10.0, 0.0, 2.0, 2.25, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
         AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-        AttackModule::set_no_finish_camera_ex(boma, 1, true, false);
     }
     frame(lua_state, 5.0); 
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-        AttackModule::set_size(boma, 0, 8.0);
-        AttackModule::set_size(boma, 1, 8.0);
+        ATTACK(agent, 0, 0, Hash40::new("rot"), 1.1, 366, 100, 50, 0, 8.0, 0.0, 2.0, 2.25, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
+        ATTACK(agent, 1, 0, Hash40::new("rot"), 1.1, 20, 50, 125, 50, 8.0, 0.0, 2.0, 2.25, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
+        AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
+        AttackModule::set_no_finish_camera_ex(boma, 1, true, false);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
 }
 
@@ -288,7 +301,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhi2", acmd_stub, Priority::Low);
     agent.acmd("expression_specialhi2", acmd_stub, Priority::Low);
 
-    agent.acmd("game_specialhi3start", acmd_stub, Priority::Low);
+    agent.acmd("game_specialhi3start", game_specialhi3start, Priority::Low);
     agent.acmd("sound_specialhi3start", sound_specialhi3start, Priority::Low);
     agent.acmd("effect_specialhi3start", effect_specialhi3start, Priority::Low);
     agent.acmd("expression_specialhi3start", acmd_stub, Priority::Low);

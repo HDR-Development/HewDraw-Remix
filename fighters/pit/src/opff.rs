@@ -10,20 +10,11 @@ pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &m
     fastfall_specials(fighter);
 }
 
-// Pits Power of Flight cancel
-// unsafe fn power_of_flight_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-//     if status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH {
-//         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-//             StatusModule::change_status_request_from_script(boma, *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END, false);
-//         }
-//     }
-// }
- 
 unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) || (boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END) && boma.status_frame() > 6) {
         if (boma.is_situation(*SITUATION_KIND_GROUND) || WorkModule::is_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF))
         && boma.status_frame() > 28 {
-            boma.check_jump_cancel(true, false);
+            boma.check_jump_cancel(true, false, true);
         }
     }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {

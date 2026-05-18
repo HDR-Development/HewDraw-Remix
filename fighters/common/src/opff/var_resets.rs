@@ -9,6 +9,7 @@ use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 
+// TODO: this has got to be expensive?
 unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     let death_statuses = &[*FIGHTER_STATUS_KIND_DEAD,
                                         *FIGHTER_STATUS_KIND_REBIRTH,
@@ -67,25 +68,19 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 
-    // Up Special Interrupt
-    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
+    // Up Special Landing Lag
+    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_LAG)
+    && !StatusModule::is_situation_changed(boma)
+    && !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL])
+    {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
         || boma.is_status_one_of(death_statuses)
-        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
         {
-            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
-        }
-    }
-
-    // Up Special Intterupt Airtime
-    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-        if !boma.is_situation(*SITUATION_KIND_AIR)
-        || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses)
-        || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
-        {
-            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
+            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_LAG);
         }
     }
 
@@ -96,14 +91,6 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     {
         VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
         VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
-    }
-
-    // Aerial Glide Toss Reset
-    if !boma.is_situation(*SITUATION_KIND_AIR)
-    || boma.is_status_one_of(death_statuses)
-    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
-    {
-        VarModule::set_int(boma.object(), vars::common::instance::AGT_USED_COUNTER, 0);
     }
 
     // Wall Jump Reset
@@ -119,6 +106,28 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
     // Successive aerial jump timer for multijump characters
     if VarModule::get_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME) > 0 {
         VarModule::dec_int(boma.object(), vars::common::instance::FLY_NEXT_FRAME);
+    }
+
+    // Reset total damage dealt this stock
+    if boma.is_status_one_of(death_statuses) {
+        VarModule::set_float(boma.object(), vars::common::instance::DAMAGE_DEALT_THIS_STOCK, 0.0);
+    }
+
+    // Clear last attacker when grounded (used by War mode)
+    if !boma.is_situation(*SITUATION_KIND_AIR)
+    && !boma.is_status_one_of(damage_statuses)
+    && !boma.is_status_one_of(death_statuses)
+    {
+        VarModule::set_int(boma.object(), vars::common::instance::LAST_ATTACKER_ENTRY_ID, -1);
+    }
+
+    // Zair once-per-airtime reset
+    if VarModule::is_flag(boma.object(), vars::common::instance::DISABLE_AIR_LASSO)
+    && (!boma.is_situation(*SITUATION_KIND_AIR)
+    || boma.is_status_one_of(death_statuses))
+    || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP])
+    {
+        VarModule::off_flag(boma.object(), vars::common::instance::DISABLE_AIR_LASSO);
     }
 }
 

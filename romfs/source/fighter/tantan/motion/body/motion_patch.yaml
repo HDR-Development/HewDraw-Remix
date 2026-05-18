@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -85,10 +85,10 @@ throw_f:
     cancel_frame: 27
 throw_b:
   extra:
-    cancel_frame: 47
+    cancel_frame: 55
 throw_lw:
   extra:
-    cancel_frame: 40
+    cancel_frame: 42
 throw_hi:
   extra:
     cancel_frame: 31
@@ -252,7 +252,7 @@ attack_air_b:
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
-    cancel_frame: 40
+    cancel_frame: 38
     freeze_during_hitstop: false
 attack_air_f:
   extra:
@@ -812,7 +812,7 @@ special_air_hi_short_end:
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 21
+    cancel_frame: 20
     no_stop_intp: false
 catch_attack:
   extra:

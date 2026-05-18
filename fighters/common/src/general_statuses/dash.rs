@@ -576,6 +576,19 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
+    // RoA mode babydash
+    if utils::game_modes::check_custom_mode(CustomMode::RivalsOfAetherMode) {
+        let is_backdash = StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN
+            && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH;
+
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 2  // if you are on f3 of current dash
+        && !is_backdash  // AND you are not in a backdash
+        && !fighter.is_stick_backward() // AND stick is not backwards
+        && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
+            interrupt!(fighter, FIGHTER_STATUS_KIND_RUN_BRAKE, true);
+        }
+    }
+
     ok!()
 }
 
@@ -720,6 +733,17 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else {
         VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+    }
+
+    // baby dashing for RoA mode
+    if utils::game_modes::check_custom_mode(CustomMode::RivalsOfAetherMode) {
+        if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_RUN_BRAKE {
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let baby_dash_speed = ParamModule::get_float(fighter.battle_object, ParamType::Shared, "baby_dash_speed");
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, baby_dash_speed * lr);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        }
     }
 
     if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL) {

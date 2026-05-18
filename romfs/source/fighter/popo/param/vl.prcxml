@@ -10,8 +10,10 @@
   <struct hash="param_private">
     <float hash="nana_damage_mul">1</float>
     <float hash="nana_damage_reaction_mul">1</float>
-    <float hash="nana_opt_dst">40</float>
-    <float hash="nana_opt_near_dst">40</float>
+    <float hash="nana_opt_dst">45</float>
+    <float hash="nana_partner_comp_rate_x">0.05</float>
+    <float hash="nana_opt_near_dst">5</float>
+    <float hash="nana_partner_near_comp_rate_x">0.0025</float>
     <int hash="nana_cp_rank_for_2">100</int>
     <int hash="nana_cp_rank_for_3">100</int>
     <int hash="nana_cp_rank_for_4">100</int>
@@ -22,6 +24,7 @@
   </struct>
   <list hash="param_special_s">
     <struct index="0">
+      <float hash="couple_distance">45</float>
       <float hash="air_stick_accel_mul_x">0.05</float>
       <float hash="start_air_speed_single_y">0.8</float>
       <float hash="start_air_speed_couple_y">1.2</float>
@@ -34,8 +37,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="couple_distance">60</float>
       <float hash="landing_frame">25</float>
-      <float hash="couple_distance">50</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

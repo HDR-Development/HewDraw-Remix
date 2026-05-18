@@ -64,16 +64,12 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -84,43 +80,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         agent.on_flag(*FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-}
 
-unsafe extern "C" fn game_itemlightthrowf(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            agent.clear_lua_stack();
-            lua_args!(agent, 12, 10, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_ANGLE, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_SPEED, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER);
-            sv_animcmd::THROW_ITEM_OFFSET(agent.lua_state_agent);
-        }
-    }
-    frame(lua_state, 9.0);//match anim to trajectory better
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            let have_item = ItemModule::get_have_item_id(boma, 0) as u32;
-            let have_item_boma = sv_battle_object::module_accessor(have_item);
-            ItemModule::throw_item(boma, 53.0, 2.0, 1.0, 0, true, agent.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));
-            PostureModule::add_pos_2d(have_item_boma, &Vector2f {x: (4.0 * agent.lr()), y: 1.3});
-        }
-    }
-}
-
-unsafe extern "C" fn sound_itemlightthrowf(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            PLAY_SE(agent, Hash40::new("se_item_item_throw"));
-        }
-    }
 }
 
 pub fn install(agent: &mut Agent) {
@@ -137,9 +97,4 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
-
-    agent.acmd("game_itemlightthrowf", game_itemlightthrowf, Priority::Low);
-    agent.acmd("sound_itemlightthrowf", sound_itemlightthrowf, Priority::Low);
-    agent.acmd("game_itemlightthrowairf", game_itemlightthrowf, Priority::Low);
-    agent.acmd("sound_itemlightthrowairf", sound_itemlightthrowf, Priority::Low);
 }

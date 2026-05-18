@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+pub mod agent_init;
+
 // articles
 
 mod blaster;
@@ -49,6 +51,7 @@ pub fn install() {
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
+    agent_init::install(agent);
     agent.install();
 
     blaster::install();

@@ -64,16 +64,12 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -83,10 +79,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn sound_run(agent: &mut L2CAgentBase) {
@@ -203,6 +196,21 @@ unsafe extern "C" fn effect_slipattack(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_cliffjump2(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        if VarModule::is_flag(agent.battle_object, vars::trail::instance::ATTACK_LW4_REBOUND) {
+            VarModule::off_flag(agent.battle_object, vars::trail::instance::ATTACK_LW4_REBOUND);
+            MotionModule::set_rate(boma, 1.65);
+            KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.5, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        else {
+            PostureModule::add_pos(boma, &Vector3f::new(0.0, -1.2, 0.0));
+        }
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -225,4 +233,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_downattackd", effect_downattackd, Priority::Low);
     agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
     agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
+
+    agent.acmd("game_cliffjump2", game_cliffjump2, Priority::Low);
 }

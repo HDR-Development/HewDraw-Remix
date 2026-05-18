@@ -59,6 +59,22 @@ unsafe extern "C" fn mario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn mario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // uncomment to enable a limited b-reverse that allows approaching backwards with aerials but without crazy momentum mixups
+    // if fighter.status_frame() == 3 {
+    //     let lr = PostureModule::lr(fighter.module_accessor);
+    //     let turn_stick_x = fighter.get_param_float("common", "turn_stick_x");
+    //     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    //     if fighter.left_stick_x() * lr <= turn_stick_x // stick backwards
+    //     && speed_x * lr >= 0.0 // but traveling forwards
+    //     && !fighter.is_prev_status_one_of(&[ // except during the self-cancel
+    //         *FIGHTER_STATUS_KIND_SPECIAL_LW,
+    //         *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE,
+    //         *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT
+    //     ]) {
+    //         PostureModule::reverse_lr(fighter.module_accessor);
+    //         PostureModule::update_rot_y_lr(fighter.module_accessor);
+    //     }
+    // }
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT.into(), true.into());
         return false.into();

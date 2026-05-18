@@ -73,15 +73,11 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -91,9 +87,49 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
+
+}
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        if app::smashball::is_training_mode()
+        && agent.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_CUSTOMIZE_SPECIAL_LW_NO) == 2
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+            gimmick_flash(boma);
+            let stage = VarModule::get_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_STAGE);
+            match stage {
+                0 => {
+                    let handle = EffectModule::req_follow(boma, Hash40::new("sys_steam1"), Hash40::new("head"), &Vector3f::new(3.0, 0.0, 0.0), &Vector3f::zero(), 0.8, false, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::set_alpha(boma, handle as u32, 3.0);
+                    VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_1, handle as i32);
+                    VarModule::inc_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_STAGE);
+                },
+                1 => {
+                    //let handle = EffectModule::req_follow(boma, Hash40::new("sys_steam2"), Hash40::new("head"), &Vector3f::new(3.0, 0.0, 0.0), &Vector3f::zero(), 0.8, false, 0, 0, 0, 0, 0, false, false);
+                    //EffectModule::set_alpha(boma, handle as u32, 3.0);
+                    //VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_2, handle as i32);
+                    VarModule::inc_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_STAGE);
+                    VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_TIMER, 300);
+                }
+                _ => {
+                    VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_STAGE, 0);
+                    let handle = VarModule::get_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_1) as u32;
+                    EffectModule::kill(boma, handle, false, false);
+                    //let handle2 = VarModule::get_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_2) as u32;
+                    //EffectModule::kill(boma, handle2, false, false);
+                    VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_1, -1);
+                    //VarModule::set_int(agent.battle_object, vars::miifighter::instance::SPECIAL_LW3_EFFECT_HANDLE_2, -1);
+                    ColorBlendModule::cancel_main_color(boma, 0);
+                }
+            }
+        }
     }
 }
 
@@ -112,4 +148,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
 }

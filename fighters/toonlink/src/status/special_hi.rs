@@ -6,9 +6,9 @@ pub unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CVa
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let start_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_x_mul");
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(mul_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_x_mul);
+        let start_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_y_mul");
+        sv_kinetic_energy!(mul_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, start_y_mul);
     }
     let mask_flag = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64
@@ -39,6 +39,86 @@ pub unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
+    0.into()
+}
+
+pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+    fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_hi_start"), L2CValue::Hash40s("special_air_hi"), false.into());
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        fighter.enable_transition_term(*FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD);
+        fighter.enable_transition_term(*FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END);
+    } else {
+        // prevent entering charge/grspin when started in air
+        fighter.off_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND);
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 1.into());
+    }
+    WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+    let rslash_landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_landing_frame"));
+    WorkModule::set_float(fighter.module_accessor, rslash_landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let rslash_charge_spd = fighter.get_param_float("param_special_hi", "rslash_charge_spd_div");
+
+    MotionModule::set_rate(fighter.module_accessor, rslash_charge_spd);
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        // check if charging or instant releasing
+        if fighter.is_motion(Hash40::new("special_hi_start")) {
+            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+            && fighter.is_button_on(Buttons::Special) {
+                fighter.change_status(FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD.into(), true.into());
+                return 1.into();
+            }
+            fighter.change_status(FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END.into(), true.into());
+            return 1.into();
+        }
+        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+        return 1.into();
+    }
+    // enable landing after rise begins
+    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI {
+        fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 0.into());
+    }
+    // cut speed on aerial endlag, now increases gravity
+    if fighter.is_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X) {
+        // gravity
+        let air_accel_y = fighter.get_param_float("air_accel_y", "");
+        let end_accel_y_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.end_accel_y_mul");
+        sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y * end_accel_y_mul);
+        // drift mul
+        let rslash_end_air_accel_x_mul = fighter.get_param_float("param_special_hi", "rslash_end_air_accel_x_mul");
+        sv_kinetic_energy!(set_accel_x_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, rslash_end_air_accel_x_mul);
+        let rslash_air_max_x_mul = fighter.get_param_float("param_special_hi", "rslash_air_max_x_mul");
+        let air_speed_x_stable = fighter.get_param_float("air_speed_x_stable", "");
+        let rslash_end_air_max_x = fighter.get_param_float("param_special_hi", "rslash_end_air_max_x");
+        let mul_x_speed_max = ((rslash_end_air_max_x / air_speed_x_stable) / rslash_air_max_x_mul);
+        // max speed mul
+        sv_kinetic_energy!(mul_x_speed_max, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, mul_x_speed_max);
+        fighter.off_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
+    }
+    // check if grounded during startup
+    if !fighter.is_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND)
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND 
+    && !fighter.is_motion(Hash40::new("special_air_hi")) {
+        fighter.on_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND);
+    }
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        // land cancel if started in air
+        if !fighter.is_flag(*FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND) {
+            fighter.change_status(L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL), L2CValue::Bool(false))
+        }
+        // if sliding during startup go into normal aerial version
+        fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+        fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_UNIQ);
+    }
+
     0.into()
 }
 
@@ -89,8 +169,8 @@ pub unsafe extern "C" fn special_hi_end_pre(fighter: &mut L2CFighterCommon) -> L
 }
 
 pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
+    fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
@@ -101,8 +181,8 @@ pub unsafe extern "C" fn special_hi_end_main(fighter: &mut L2CFighterCommon) -> 
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
         }
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
+        fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+        fighter.unable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(specialhi_end_Main as *const () as _))
 }
@@ -136,8 +216,8 @@ unsafe extern "C" fn specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L2CVa
                     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
                 }
-                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+                fighter.enable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
+                fighter.unable_transition_term(*FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
                 fighter.shift(L2CValue::Ptr(sub_specialhi_end_Main as *const () as _));
                 return 0.into()
             }
@@ -219,6 +299,8 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+
     agent.status(Pre, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, special_hi_end_pre);
     agent.status(Main, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, special_hi_end_main);
 }

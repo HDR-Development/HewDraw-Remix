@@ -26,6 +26,7 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("footl"), 1.0, 70, 10, 0, 90, 5.5, 1.0, -1.0, 0.0, None, None, None, 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
+        AttackModule::set_no_finish_camera(boma, 0, true, false);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
@@ -36,11 +37,19 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
         ATTACK(agent, 5, 0, Hash40::new("footl"), 1.0, 86, 10, 0, 90, 4.5, 3.0, 6.5, 0.0, None, None, None, 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         ATTACK(agent, 6, 0, Hash40::new("hip"), 1.0, 25, 10, 0, 65, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         AttackModule::clear(boma, 0, false);
+        AttackModule::set_no_finish_camera(boma, 1, true, false);
+        AttackModule::set_no_finish_camera(boma, 2, true, false);
+        AttackModule::set_no_finish_camera(boma, 3, true, false);
+        AttackModule::set_no_finish_camera(boma, 4, true, false);
+        AttackModule::set_no_finish_camera(boma, 5, true, false);
+        AttackModule::set_no_finish_camera(boma, 6, true, false);
     }
     frame(lua_state, 19.0);
     if is_excute(agent) {
         ATTACK(agent, 2, 0, Hash40::new("footl"), 1.0, 36, 10, 0, 60, 1.5, 1.7, -3.8, -2.0, Some(8.0), Some(-6.2), Some(-2.0), 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         ATTACK(agent, 3, 0, Hash40::new("footl"), 1.0, 36, 10, 0, 60, 1.5, 1.7, -3.8, 2.0, Some(8.0), Some(-6.2), Some(2.0), 0.75, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
+        AttackModule::set_no_finish_camera(boma, 2, true, false);
+        AttackModule::set_no_finish_camera(boma, 3, true, false);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {

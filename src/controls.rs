@@ -1,5 +1,4 @@
 use skyline::hooks::InlineCtx;
-use std::sync::atomic::{AtomicBool, Ordering};
 // use ssbusync::*;
 
 mod css;
@@ -131,10 +130,27 @@ unsafe fn add_more_buttons(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[25].set_x(input_list_vector.len() as u64);
 }
 
+// The function this hook replaces gets the number of missing required buttons
+// (or some other type of error code)
+// Returning 0 bypasses the check entirely
+#[skyline::hook(offset = 0x1d2c8d0)] 
+unsafe fn get_missing_button_count_hook(
+    _context: u64,
+    mode: i32,
+    _p3: u64,
+    _p4: u64,
+    _p5: u64,
+    _p6: u64,
+    _p7: u64,
+    _p8: u64
+) -> i32 {
+    0
+}
+
 pub fn install() {
     unsafe {
-    skyline::patching::Patch::in_text(0x1D3594C).nop();
-    css::install();
+        skyline::patching::Patch::in_text(0x1D3594C).nop();
+        css::install();
     }
 
     skyline::install_hooks!(
@@ -142,6 +158,7 @@ pub fn install() {
         add_footstool_to_gc,
         add_footstool_to_fk,
         add_footstool_to_jc,
-        add_more_buttons
+        add_more_buttons,
+        get_missing_button_count_hook,
     );
 }

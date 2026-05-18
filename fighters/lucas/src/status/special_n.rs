@@ -4,12 +4,20 @@ use super::*;
 
 unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-        fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
-        return 0.into();
+        fighter.set_status_kind_interrupt(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into());
+        return 1.into();
     }
     else {
         smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
     }
+}
+
+unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stop_y_time = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("stop_y_time"));
+    WorkModule::set_int(fighter.module_accessor, stop_y_time, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_STOP_Y_TIME);
+
+    let main_loop = smashline::api::get_target_function("lua2cpp_lucas.nrs", 0x21180).unwrap();
+    fighter.sub_shift_status_main(L2CValue::Ptr(main_loop as *const () as _))
 }
 
 // FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD
@@ -135,6 +143,7 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
             VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, charge_time);
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
             fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
             return 1.into();
         }
@@ -146,7 +155,7 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
     if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
         // else block
         special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE,
-            *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"),
+            *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP, Hash40::new("special_n_hold"),
             Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     }
     1.into()
@@ -186,5 +195,6 @@ unsafe extern "C" fn special_n_hold_transition_g2a_kind(
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     agent.status(Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
 }

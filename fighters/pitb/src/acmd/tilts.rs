@@ -9,8 +9,8 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 361, 100, 0, 40, 4.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 9.0, 361, 100, 0, 40, 4.0, 0.0, 7.5, 15.0, Some(0.0), Some(7.5), Some(6.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 7.0, angle: 361, kbg: 100, bkb: 40, size: 4.0, x: 0.0, y: 7.5, z:  8.0, x2: 0.0, y2: 7.5, z2: 6.0 });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 1, bone: "top", dmg: 9.0, angle: 361, kbg: 100, bkb: 40, size: 4.0, x: 0.0, y: 7.5, z: 14.0, x2: 0.0, y2: 7.5, z2: 6.0, hitlag: 1.1, });
     }
     wait(lua_state, 5.0);
     if is_excute(agent) {
@@ -42,7 +42,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 368, 100, 45, 0, 4.0, 0.0, 24.0, 2.4, Some(0.0), Some(10.0), Some(8.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        hitbox!(agent, { extends: PITB_KICK_HITBOX_S, id: 0, bone: "top", dmg: 4.0, angle: 368, kbg: 100, fkb: 45, bkb: 0, size: 4.0, x: 0.0, y: 24.0, z: 2.4, x2: 0.0, y2: 10.0, z2: 8.0, sdi: 0.5, facing: LrCheck::F, set_weight: true, });
         let hitVec = Vector2f { x: 5.5, y: 21.75 };
         AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hitVec, 10, false);
     }
@@ -52,7 +52,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 69, 44, 0, 71, 6.0, 0.0, 23.5, 6.0, Some(0.0), Some(20.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        hitbox!(agent, { extends: PITB_KICK_HITBOX_L, id: 0, bone: "top", dmg: 6.0, angle: 69, kbg: 44, bkb: 71, size: 6.0, x: 0.0, y: 23.5, z: 6.0, x2: 0.0, y2: 20.0, z2: 5.0, facing: LrCheck::F, });
     }
     frame(lua_state, 17.0);
     FT_MOTION_RATE_RANGE(agent, 17.0, 34.0, 11.0);
@@ -68,7 +68,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 69, 48, 0, 61, 3.5, 0.0, 3.0, 19.5, Some(0.0), Some(5.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 7.0, angle: 69, kbg: 53, bkb: 60, size: 3.5, x: 0.0, y: 3.0, z: 19.5, x2: 0.0, y2: 5.0, z2: 9.0, });
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     frame(lua_state, 8.0);

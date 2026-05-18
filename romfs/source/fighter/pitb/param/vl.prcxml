@@ -21,12 +21,24 @@
       <int hash="shoot_fly_next_frame">25</int>
     </struct>
   </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="charge_frame">40</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_bowarrow">
     <struct index="0">
-      <float hash="speed_add">0.115</float>
-      <float hash="control_angle">1.5</float>
-      <float hash="power">6</float>
-      <float hash="power_add">0.1717</float>
+      <float hash="speed">4.8</float>
+      <float hash="speed_add">0.12</float>
+      <float hash="control_angle">1.2</float>
+      <float hash="power">4</float>
+      <float hash="power_add">0.2</float>
+      <int hash="life">45</int>
+      <float hash="life_add">0.0</float>
+      <int hash="is_penetration">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -44,7 +56,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="rush_speed">2.75</float>
-      <int hash="rush_brake_frame">12</int>
+      <int hash="rush_brake_frame">8</int>
       <float hash="rush_end_speed_rate_x">0.15</float>
       <float hash="rush_end_speed_rate_y">0.15</float>
       <int hash="landing_frame">40</int>
