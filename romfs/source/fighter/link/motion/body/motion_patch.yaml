@@ -79,7 +79,7 @@ guard_off:
     cancel_frame: 12
 throw_f:
   extra:
-    cancel_frame: 35
+    cancel_frame: 31
 throw_b:
   extra:
     cancel_frame: 33
@@ -101,6 +101,21 @@ attack_13:
 attack_lw3:
   extra:
     cancel_frame: 33
+special_s1:
+  extra:
+    cancel_frame: 44
+special_s1_blank:
+  extra:
+    cancel_frame: 44
+special_air_s1_blank:
+  extra:
+    cancel_frame: 44
+special_s2:
+  extra:
+    cancel_frame: 1
+special_airs2:
+  extra:
+    cancel_frame: 1
 special_hi:
   extra:
     cancel_frame: 80
@@ -124,7 +139,7 @@ appeal_hi_l:
     cancel_frame: 90
 attack_dash:
   extra:
-    cancel_frame: 42
+    cancel_frame: 40
 attack_s3_s:
   extra:
     cancel_frame: 39

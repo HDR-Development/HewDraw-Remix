@@ -201,7 +201,6 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(agent, -2, 0);
     }
     frame(lua_state, 24.0);
-    FT_MOTION_RATE_RANGE(agent, 24.0, 48.0, 22.0);
     if is_excute(agent) {
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
@@ -209,12 +208,10 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 28.0);
     if is_excute(agent) {
         VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
-    frame(lua_state, 48.0);
-    FT_MOTION_RATE(agent, 1.0);
 }
 
 pub fn install(agent: &mut Agent) {

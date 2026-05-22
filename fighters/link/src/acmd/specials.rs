@@ -1,5 +1,37 @@
 use super::*;
 
+// Hand hitbox when Boomerang is used while out
+unsafe extern "C" fn game_specials1blank(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("armr"), 4.0, 45, 100, 0, 16, 2.5, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+// Hand hitbox when Boomerang is used while out
+unsafe extern "C" fn game_specialairs1blank(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("armr"), 4.0, 45, 100, 0, 16, 2.5, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -326,6 +358,9 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials1blank", game_specials1blank, Priority::Low);
+    agent.acmd("game_specialairs1blank", game_specialairs1blank, Priority::Low);
+
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
