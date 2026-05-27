@@ -93,7 +93,7 @@ pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon
         if hold_frame >= thoron_frame {
             fighter.set_int(*FIGHTER_REFLET_MAGIC_KIND_TRON, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_N_THUNDER_KIND);
             fighter.change_status(FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into())
-        }//thoron fx moved to end stat
+        } // thoron fx moved to end stat
     } else if stage == *FIGHTER_REFLET_MAGIC_KIND_EL_THUNDER {
         if hold_frame >= arc_frame {
             fighter.set_int(*FIGHTER_REFLET_MAGIC_KIND_GIGA_THUNDER, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_N_THUNDER_KIND);

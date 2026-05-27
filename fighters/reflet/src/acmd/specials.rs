@@ -311,6 +311,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
     agent.acmd("game_specialairhi2", game_specialhi2, Priority::Low);
 
+    agent.acmd("game_specialhifail", game_specialhifail, Priority::Low);
     agent.acmd("game_specialairhifail", game_specialhifail, Priority::Low);
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);

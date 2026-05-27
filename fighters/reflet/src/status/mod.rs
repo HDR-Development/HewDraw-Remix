@@ -49,7 +49,7 @@ unsafe extern "C" fn reflet_on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[0x33].assign(&L2CValue::Ptr(reflet_air_jump_aerial_uniq as *const () as _));
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::reflet::FLOAT);
-    VarModule::set_int(fighter.battle_object, vars::reflet::instance::DISCARD_TYPE, -1);//0 is thunder
+    VarModule::set_int(fighter.battle_object, vars::reflet::instance::DISCARD_TYPE, -1); // 0 is thunder
 }
 
 unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
@@ -57,9 +57,9 @@ unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
     if discard_type > -1 
     && !VarModule::is_flag(fighter.battle_object, vars::reflet::instance::DISCARD_SKIP_STATUS) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            ItemModule::throw_item(fighter.module_accessor, 110.0, 1.6, 1.0, 0, true, fighter.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));//should have no hitbox maybe?
-            //ItemModule::drop_item(fighter.module_accessor, 90.0, 0.0, 0);
-            //could copy vanilla and just make new item be the one to toss/drop
+            ItemModule::throw_item(fighter.module_accessor, 110.0, 1.6, 1.0, 0, true, fighter.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));// should have no hitbox maybe?
+            // ItemModule::drop_item(fighter.module_accessor, 90.0, 0.0, 0);
+            // could copy vanilla and just make new item be the one to toss/drop
         }
         if discard_type != *FIGHTER_REFLET_MAGIC_KIND_SWORD {
             ItemModule::have_item(fighter.module_accessor, app::ItemKind(*ITEM_KIND_BOOK), 0, 0, false, false);
@@ -74,7 +74,7 @@ unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn mot_handler(fighter: &mut L2CFighterCommon) -> L2CValue {//van handling
+pub unsafe extern "C" fn mot_handler(fighter: &mut L2CFighterCommon) -> L2CValue { // van handling
     let mot_gr = fighter.get_int64(*FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
     let mot_air = fighter.get_int64(*FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     let kin_gr = fighter.get_int(*FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);
