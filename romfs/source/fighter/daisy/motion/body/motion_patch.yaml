@@ -391,3 +391,7 @@ throw_lw:
     cancel_frame: 60
 cliff_wait:
   blend_frames: 2
+fuwafuwa_start:
+  blend_frames: 7
+fuwafuwa:
+  blend_frames: 1

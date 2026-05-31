@@ -83,6 +83,13 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 }
 
+unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+        PLAY_STATUS(agent, Hash40::new("se_peach_jump04"));
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -97,4 +104,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
+
+    agent.acmd("sound_fuwafuwa", sound_fuwafuwa, Priority::Low);
 }

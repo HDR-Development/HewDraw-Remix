@@ -48,7 +48,8 @@ pub mod globals {
     // 0x2F
     // 0x30
     // 0x31
-    // 0x32 some substatus
+    pub const CHECK_AIR_JUMP_UNIQ: i32 = 0x32;
+    pub const CHECK_AIR_JUMP_AERIAL_UNIQ: i32 = 0x33;
     pub const USE_SPECIAL_N_CALLBACK: i32 = 0x38;
     pub const USE_SPECIAL_S_CALLBACK: i32 = 0x39;
     pub const USE_SPECIAL_HI_CALLBACK: i32 = 0x3A;
@@ -203,7 +204,7 @@ pub mod vars {
 
             pub const DISABLE_AIR_LASSO: i32 = 0x0070;
             
-            pub const DISABLE_FLOAT: i32 = 0x0071;
+            pub const ENABLE_FLOAT: i32 = 0x0071;
 
             // ints
 
@@ -211,7 +212,7 @@ pub mod vars {
 
             pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
 
-            pub const FLOAT_DURATION: i32 = 0x0002;
+            //pub const FLOAT_DURATION: i32 = 0x0002;
             pub const FLOAT_STATUS_KIND: i32 = 0x0003;
 
             pub const HITFALL_BUFFER: i32 = 0x0004;

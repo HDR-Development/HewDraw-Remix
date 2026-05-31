@@ -180,10 +180,10 @@ unsafe extern "C" fn effect_slipattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
     if is_excute(agent) {
         let sfx_handle = SoundModule::play_status_se(boma, Hash40::new("se_common_spirits_wind_loop"), true, false, false);
-        SoundModule::set_se_vol(boma, sfx_handle as i32, 0.1325, 0);
+        SoundModule::set_se_vol(boma, sfx_handle as i32, 0.25, 0);
+        SoundModule::set_se_speed(boma, sfx_handle as i32, 5.0);
     }
 }
 

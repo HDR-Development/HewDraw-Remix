@@ -84,21 +84,13 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
         StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_GROUND), false);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
     }
-    if !CancelModule::is_enable_cancel(fighter.module_accessor)
-    && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING)
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
-        let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
-        if fighter.left_stick_y() <= dive_cont_value
-        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value 
-        {
-            let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
-            if status_kind != 0 {
-                VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
-                fighter.change_status(status_kind.into(), true.into());
-                return 0.into();
-            }
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
+        if float_checks(fighter, status_kind.into()) {
+            VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
+            return 1.into();
         }
     }
     original!()(fighter)
@@ -110,6 +102,11 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_attackair_main_common
         );
     }
+}
+
+extern "Rust" {
+    #[link_name = "float_checks"]
+    fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> bool;
 }
 
 pub fn install() {

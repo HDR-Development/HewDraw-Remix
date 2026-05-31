@@ -11,13 +11,15 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
 
-    let float_duration = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION);
+    let float_duration = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_float.float_duration");
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_FRAME, float_duration);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 1);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
 
     if !VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, 1.0, false, 0.0, false, false);
+        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("fuwafuwa_start"));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, end_frame/15.0, false, 0.0, false, false);
     }
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
@@ -101,16 +103,21 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 1);
+    MotionAnimcmdModule::flush(fighter.module_accessor, false);
+    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_fuwafuwa"), -1);
+    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_fuwafuwa"), -1);
+    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_fuwafuwa"), -1);
 }
 
 #[no_mangle]
 unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_mewtwo = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_MEWTWO;
+    let is_reflet = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_REFLET;
     let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;
-    let float_duration = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION);
+    let float_duration = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_float.float_duration");
     let float_frame = VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME); // dec at end of loop
 
-    if (float_frame - float_duration).abs() == 4
+    if (float_frame - float_duration).abs() == 2
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
         let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         sv_kinetic_energy!(
@@ -144,14 +151,6 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 1.into();
     }
 
-    // if StatusModule::is_changing(fighter.module_accessor)
-    // && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_AIR
-    // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-    //     FighterControlModuleImpl::update_attack_air_kind(fighter.module_accessor, true);
-    //     float_set_aerial(fighter);
-    //     return 0.into();
-    // }
-
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR)
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING) {
@@ -175,7 +174,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 2
-    && float_frame <= 0 {
+    && VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ) <= 0 {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N);
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
@@ -184,7 +183,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 1
-    && float_frame <= 0 {
+    && VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ) <= 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
         return 0.into();
     }
@@ -192,7 +191,8 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Unique Down Special stuff is usually here but we don't want it
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ) == 1 {
-        if float_frame > 0 {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            if is_reflet {reflet_resource(fighter, float_frame.abs());}
             VarModule::dec_int(fighter.battle_object, vars::common::status::FLOAT_FRAME);
             if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) == 0 {
                 VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 0);
@@ -215,6 +215,13 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
                     check_aerial = true;
                 }
                 if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                    // try to be less snappy going from end frame to float pose
+                    let trans_frame = MotionModule::end_frame(fighter.module_accessor) - 10.0;
+                    if !fighter.is_motion(Hash40::new("fuwafuwa_start"))
+                    && fighter.motion_frame() >= trans_frame {
+                        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("fuwafuwa_start"));
+                        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, end_frame/22.0, false, 0.0, false, false);
+                    }
                     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
                         check_aerial = true;
                     }
@@ -225,7 +232,7 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
                     check_aerial = true;
                 }
                 if MotionModule::is_end(fighter.module_accessor) {
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa"), 0.0, 1.0, false, 0.0, false, false);
+                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa"), 1.0, 1.0, false, 0.0, false, false);
                 }
             }
         }
@@ -281,7 +288,28 @@ unsafe fn float_ray_check(fighter: &mut L2CFighterCommon) {
     if ray_check {
         let ray_check_y = result.y;
         // let uniq_float_start_y = WorkModule::get_float(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_start_y"));
-        let uniq_float_start_y = 1.5;
+        let mut uniq_float_start_y = 1.5;
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {uniq_float_start_y += 0.5}
         PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos_x, y: ray_check_y + uniq_float_start_y, z: pos_z});
     }
+}
+
+unsafe extern "C" fn reflet_resource(fighter: &mut L2CFighterCommon, frame: i32) -> L2CValue {
+    if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) % 30 == 0 {
+        let mut reflet_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+        app::FighterSpecializer_Reflet::change_hud_kind(&mut reflet_fighter, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+        app::FighterSpecializer_Reflet::change_grimoire(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+        fighter.set_int(*FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
+    }
+    if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) % 10 == 0 {
+        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 0);
+        }
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            //VarModule::set_int(fighter.battle_object, vars::reflet::instance::DISCARD_TYPE, magic);
+            FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+        }
+    }
+    0.into()
 }

@@ -218,7 +218,7 @@ fuwafuwa:
     unk_800: false
     unk_1000: false
     unk_2000: false
-  blend_frames: 5
+  blend_frames: 1
   animations:
     - name: l00fuwafuwa.nuanmb
       unk: 0
