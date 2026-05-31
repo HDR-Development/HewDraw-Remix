@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
     <struct hash="param_float">
+      <float hash="start_frame">7.0</float>
+      <float hash="start_frame_normal">4.0</float>
+      <float hash="return_frame">9.0</float>
       <int hash="float_duration">0</int>
       <float hash="float_stable">1.0</float>
       <float hash="float_accel_add">0.01</float>

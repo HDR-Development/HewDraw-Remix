@@ -11,9 +11,11 @@ unsafe fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -
         return false.into();
     }
     
-    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    && fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT)
-    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 { 
+    // remove floating with buffered jump+aerials
+    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    && StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status(*FIGHTER_STATUS_KIND_JUMP) { 
         return false.into();
     }
 

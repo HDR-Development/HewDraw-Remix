@@ -106,6 +106,14 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 }
 
+unsafe extern "C" fn game_fuwafuwastart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let start_frame_normal = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_float.start_frame_normal");
+    frame(lua_state, start_frame_normal);
+    MotionModule::set_rate(boma, 1.0);
+}
+
 unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -140,7 +148,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("game_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("game_fuwafuwastart", game_fuwafuwastart, Priority::Low);
     agent.acmd("effect_fuwafuwastart", acmd_stub, Priority::Low);
     agent.acmd("sound_fuwafuwastart", sound_fuwafuwa, Priority::Low);
     agent.acmd("expression_fuwafuwastart", expression_fuwafuwa, Priority::Low);

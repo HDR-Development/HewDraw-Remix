@@ -18,8 +18,9 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
 
     if !VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("fuwafuwa_start"));
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, end_frame/15.0, false, 0.0, false, false);
+        let start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame");
+        let start_frame_normal = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_normal");
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, start_frame_normal/start_frame, false, 0.0, false, false);
     }
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
@@ -103,7 +104,6 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 1);
-    MotionAnimcmdModule::flush(fighter.module_accessor, false);
     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_fuwafuwa"), -1);
     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_fuwafuwa"), -1);
     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_fuwafuwa"), -1);
@@ -212,17 +212,15 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 
             if mtrans == 1 {
                 if MotionModule::is_end(fighter.module_accessor) {
+                    let return_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame");
+                    let start_frame_normal = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_normal");
+                    if return_frame > 0.0 {
+                        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, start_frame_normal/return_frame, false, 0.0, false, false);
+                    }
                     check_aerial = true;
                 }
                 if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                    // try to be less snappy going from end frame to float pose
-                    let trans_frame = MotionModule::end_frame(fighter.module_accessor) - 10.0;
-                    if !fighter.is_motion(Hash40::new("fuwafuwa_start"))
-                    && fighter.motion_frame() >= trans_frame {
-                        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("fuwafuwa_start"));
-                        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, end_frame/22.0, false, 0.0, false, false);
-                    }
-                    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
                         check_aerial = true;
                     }
                 }

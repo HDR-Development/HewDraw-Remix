@@ -84,9 +84,9 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
         StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_GROUND), false);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
     }
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && (VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    || CancelModule::is_enable_cancel(fighter.module_accessor)) {
         let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
         if float_checks(fighter, status_kind.into()) {
             VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
