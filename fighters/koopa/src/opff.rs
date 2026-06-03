@@ -24,7 +24,7 @@ unsafe fn bowser_bomb(boma: &mut BattleObjectModuleAccessor) {
         }
         if boma.status_frame() >= 20 && boma.status_frame() < 30 {
             if boma.is_situation(*SITUATION_KIND_AIR) {
-                boma.check_jump_cancel(false, false);
+                boma.check_jump_cancel(false, false, true);
             }
         }
     }

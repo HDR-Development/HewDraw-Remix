@@ -158,7 +158,8 @@ pub unsafe extern "C" fn special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
     }
 
     // use hashes to get loop num and speed_x
-    let loop_num = fighter.get_param_int("param_special_s", loop_count_hash);
+    let mut loop_num = fighter.get_param_int("param_special_s", loop_count_hash);
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED) { loop_num = 3; }
     fighter.set_int(loop_num, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
     let speed_x = if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND { 1.8 } else { 1.5 }
@@ -287,7 +288,7 @@ unsafe extern "C" fn special_s_loop_main_loop(fighter: &mut L2CFighterCommon) ->
 
 pub unsafe extern "C" fn special_s_loop_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     // reduce speed on hitting shield
-    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
         let strength = fighter.get_int(*FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
         let speed_x = if fighter.is_situation(*SITUATION_KIND_GROUND) {
             if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::EX_SPECIAL_USED) {

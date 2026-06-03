@@ -121,6 +121,15 @@ unsafe fn trajectory_manager_hook(
     *knockback_info.add(blue_line) = launch_speed_min.x;
     *knockback_info.add(blue_line + 1) = launch_speed_min.y;
 
+    // force validity flags to true to make sure the line draws correctly
+    // this may have unintended consequences...?
+    let red_line_is_valid_ptr = (knockback_info.add(red_line + 6)) as *mut u8;
+    *red_line_is_valid_ptr = 1;
+    let green_line_is_valid_ptr = (knockback_info.add(green_line + 6)) as *mut u8;
+    *green_line_is_valid_ptr = 1;
+    let blue_line_is_valid_ptr = (knockback_info.add(red_line + 6)) as *mut u8;
+    *blue_line_is_valid_ptr = 1;
+
     let hitstun = *knockback_info.add(0x48 / 4) as u64;
 
     let mut buffer_0: [u64; 2] = [0; 2];

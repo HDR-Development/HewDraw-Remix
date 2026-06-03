@@ -14,7 +14,7 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         if meter != 100.0 {
             let size = if meter < 40.0 { 0.5 } else { 0.7 };
             EffectModule::req_on_joint(boma, Hash40::new("sys_hit_normal_l"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.8, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
-            return 1
+            return 1;
         }
     }
 
@@ -71,10 +71,14 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
         *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START,
         *FIGHTER_STATUS_KIND_ATTACK]) {
         if !VarModule::is_flag(boma.object(), vars::littlemac::status::LIMIT_METER_GAIN) {
+            // turn on so the subsequent hits gain less meter
             VarModule::on_flag(boma.object(), vars::littlemac::status::LIMIT_METER_GAIN);
         }
         else {
-            meter_gain *= if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_100) { 0.1 }
+            meter_gain *= if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_100) {
+                if opponent_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
+                { 0.0 } else { 0.05 }
+            }
             else if boma.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_HI,
                 *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP,

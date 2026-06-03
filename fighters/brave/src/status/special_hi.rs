@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_HI
+
 unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -28,6 +30,8 @@ unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     return 0.into();
 }
+
+// FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_HOLD
 
 unsafe extern "C" fn special_hi_hold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -58,6 +62,8 @@ unsafe extern "C" fn special_hi_hold_pre(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
+// FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP
+
 unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -87,8 +93,21 @@ unsafe extern "C" fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CV
     return 0.into();
 }
 
+unsafe extern "C" fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(End, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP)(fighter);
+
+    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1")]) {
+        VarModule::on_flag(fighter.battle_object, vars::brave::instance::SPECIAL_HI_ENABLE_FREEFALL);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_LAG);
+    }
+
+    ret
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_HOLD, special_hi_hold_pre);
     agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_pre);
+    agent.status(End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP, special_hi_jump_end);
 }

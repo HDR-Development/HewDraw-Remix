@@ -82,13 +82,9 @@ unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
     if fighter.is_cat_flag(CatHdr::Wavedash) {
-        match utils::game_modes::get_custom_mode() {
-            Some(modes) => {
-                if !modes.contains(&CustomMode::Smash64Mode) {
-                    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-                }
-            },
-            _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+        // disabled for smash64 mode
+        if !utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
         }
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
@@ -278,13 +274,9 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
-            match utils::game_modes::get_custom_mode() {
-                Some(modes) => {
-                    if !modes.contains(&CustomMode::Smash64Mode) {
-                        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-                    }
-                },
-                _ => { VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT); }
+            // disabled for smash64 mode
+            if !utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
             }
         }
     }

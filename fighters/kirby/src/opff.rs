@@ -55,6 +55,16 @@ unsafe fn inhale_forced_end(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Adds landing detection during the Stone reappearance animation
+// (missing from vanilla script)
+unsafe fn down_special_reappear_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_STONE_END)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     let copystatus = StatusModule::status_kind(fighter.module_accessor);
     if !fighter.is_in_hitlag()
@@ -89,6 +99,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
     final_cutter_landing_bugfix(fighter);
     hammer_swing_drift_landcancel(fighter);
     inhale_forced_end(fighter);
+    down_special_reappear_proper_landing(fighter);
     fastfall_specials(fighter);
 
     copy::kirby_copy_handler(fighter);

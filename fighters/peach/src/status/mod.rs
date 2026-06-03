@@ -3,7 +3,6 @@ use globals::*;
 // status script import
 
 mod attack_air;
-mod item_throw;
 mod jump_aerial;
 mod special_n;
 mod special_hi;
@@ -26,43 +25,28 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::peach::instance::DISABLE_SPECIAL_S);
+        fighter.on_flag(*FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_SPECIAL_N_RAISE);
     }
     true.into()
 }
 
-// Holding Item -> Toss
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    //try turnaround but no reverse
-    let turn_stick_x = fighter.get_param_float("common", "turn_stick_x") * fighter.lr();
-    let direc = if fighter.left_stick_x() <= turn_stick_x {-1.0} else {1.0};
-    if !ItemModule::is_have_item(fighter.module_accessor, 0) && !fighter.is_situation(*SITUATION_KIND_GROUND) {
-        return false.into()
-    } else {
-        PostureModule::set_lr(fighter.module_accessor, direc);
-        PostureModule::update_rot_y_lr(fighter.module_accessor);
-        return true.into()
-    }
+    return true.into()
 }
 
-unsafe extern "C" fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_aerial = fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
+extern "Rust" {
+    #[link_name = "float_check_air_jump"]
+    fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    #[link_name = "float_check_air_jump_aerial"]
+    fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+}
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON) {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT) {
-            let mut allow_float = false;
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-                if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
-                    allow_float = !is_aerial;
-                }
-            }
+unsafe extern "C" fn air_jump_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump(fighter, FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into())
+}
 
-            if allow_float {
-                fighter.change_status(FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into(), true.into());
-                return 1.into();
-            }
-        }
-    }
-    0.into()
+unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    float_check_air_jump_aerial(fighter, FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into())
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
@@ -71,14 +55,14 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
     fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     fighter.global_table[0x26].assign(&false.into()); //transition term handler
-    fighter.global_table[0x33].assign(&L2CValue::Ptr(float_check_air_jump_aerial as *const () as _));
+    fighter.global_table[0x32].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
+    fighter.global_table[0x33].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
 }
 
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     
     attack_air::install(agent);
-    item_throw::install(agent);
     jump_aerial::install(agent);
     special_n::install(agent);
     special_hi::install(agent);

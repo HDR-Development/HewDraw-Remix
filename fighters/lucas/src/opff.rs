@@ -3,13 +3,40 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END]) {
-        if boma.status_frame() > 0 {
-            if !AttackModule::is_attack(boma, 0, false) { //jc if hitbox clear
-                boma.check_jump_cancel(false, false);
-            }
+unsafe fn psi_magnet_jc(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    let boma = fighter.boma();
+    // resets the disable jump cancel flag
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+    ])
+    && StatusModule::is_changing(boma) {
+        VarModule::off_flag(boma.object(), vars::lucas::instance::SPECIAL_LW_DISABLE_JC);
+    }
+
+    // disables jump cancels when parried between statuses
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT,
+    ])
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        VarModule::on_flag(boma.object(), vars::lucas::instance::SPECIAL_LW_DISABLE_JC);
+        if !fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END)
+        && !fighter.is_in_hitlag() {
+            fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
         }
+    }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT,
+    ])
+    && boma.status_frame() > 0
+    && !boma.is_in_hitlag()
+    && !AttackModule::is_attack(boma, 0, false) //jc if hitbox clear
+    && !VarModule::is_flag(boma.object(), vars::lucas::instance::SPECIAL_LW_DISABLE_JC){
+        boma.check_jump_cancel(false, false, false);
     }
 }
 
@@ -220,7 +247,7 @@ unsafe fn pkt2_edgeslipoff(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     smash_s_angle_handler(fighter);
     dashgrab_position_fix(fighter);
-    psi_magnet_jc(boma);
+    psi_magnet_jc(fighter);
     offense_charge(fighter);
     offense_effect_handler(fighter);
     reset_flags(fighter);

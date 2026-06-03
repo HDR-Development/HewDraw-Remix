@@ -11,4 +11,87 @@
     <struct hash="param_special_hi">
         <float hash="end_y_mul">0.5</float>
     </struct>
+    <struct hash="param_pikmin_particular">
+        <struct hash="0"> <!-- RED -->
+            <!-- Slightly more damage, knockback, and shield damage -->
+            <!-- Red Pikmin is an all-round powerhouse -->
+            <float hash="damage_mul">1.05</float>
+            <float hash="kbg_mul">1.05</float>
+            <float hash="shield_damage_mul">0.25</float>
+            <int hash="angle_mod">0</int>
+            <float hash="hitlag_mul">1.05</float>
+            <string hash="attr">collision_attr_fire</string>
+            <string hash="attr_special">collision_attr_fire</string>
+            <int hash="sound">8</int> <!-- COLLISION_SOUND_ATTR_FIRE -->
+            <float hash="color_r">1.0</float>
+            <float hash="color_g">0.05</float>
+            <float hash="color_b">0.0</float>
+            <int hash="cling_counter">4</int>
+        </struct>
+        <struct hash="1"> <!-- YELLOW -->
+            <!-- Less damage, knockback, and shield damage, but a unique electric hit type and higher hitlag -->
+            <!-- These properties combine to make Yellow Pikmin strong for combos, but weak for killing -->
+            <!-- The Paralyze special hit type makes cling threatening, but it has a very long counter -->
+            <float hash="damage_mul">0.8</float>
+            <float hash="kbg_mul">0.9</float>
+            <float hash="shield_damage_mul">-0.25</float>
+            <int hash="angle_mod">6</int>
+            <float hash="hitlag_mul">1.25</float>
+            <string hash="attr">collision_attr_elec</string>
+            <string hash="attr_special">collision_attr_paralyze</string>
+            <int hash="sound">7</int> <!-- COLLISION_SOUND_ATTR_ELEC -->
+            <float hash="color_r">1.0</float>
+            <float hash="color_g">1.0</float>
+            <float hash="color_b">0.14</float>
+            <int hash="cling_counter">7</int>
+        </struct>
+        <struct hash="2"> <!-- BLUE -->
+            <!-- Vanilla stats -->
+            <!-- Blue Pikmin's specialty is entirely in its unique throws -->
+            <float hash="damage_mul">1.0</float>
+            <float hash="kbg_mul">1.0</float>
+            <float hash="shield_damage_mul">0.0</float>
+            <int hash="angle_mod">0</int>
+            <float hash="hitlag_mul">1.0</float>
+            <string hash="attr">collision_attr_water</string>
+            <string hash="attr_special">collision_attr_water</string>
+            <int hash="sound">9</int> <!-- COLLISION_SOUND_ATTR_WATER -->
+            <float hash="color_r">0.2</float>
+            <float hash="color_g">0.8</float>
+            <float hash="color_b">2.0</float>
+            <int hash="cling_counter">4</int>
+        </struct>
+        <struct hash="3"> <!-- WHITE -->
+            <!-- Very high damage and shield damage, but no benefit to knockback -->
+            <!-- The Flower special hit type and low counter makes White Pikmin an immediate threat -->
+            <float hash="damage_mul">1.2</float>
+            <float hash="kbg_mul">1.0</float>
+            <float hash="shield_damage_mul">0.5</float>
+            <int hash="angle_mod">0</int>
+            <float hash="hitlag_mul">1.0</float>
+            <string hash="attr">collision_attr_purple</string>
+            <string hash="attr_special">collision_attr_flower</string>
+            <int hash="sound">8</int> <!-- COLLISION_SOUND_ATTR_FIRE -->
+            <float hash="color_r">1.0</float>
+            <float hash="color_g">1.0</float>
+            <float hash="color_b">1.0</float>
+            <int hash="cling_counter">3</int>
+        </struct>
+        <struct hash="4"> <!-- PURPLE -->
+            <!-- The highest knockback growth of them all -->
+            <!-- Purple Pikmin also possesses a hitbox on side special, making it unique in its zoning ability -->
+            <float hash="damage_mul">1.0</float>
+            <float hash="kbg_mul">1.1</float>
+            <float hash="shield_damage_mul">0.0</float>
+            <int hash="angle_mod">0</int>
+            <float hash="hitlag_mul">1.1</float>
+            <string hash="attr">collision_attr_normal</string>
+            <string hash="attr_special">collision_attr_normal</string>
+            <int hash="sound">2</int> <!-- COLLISION_SOUND_ATTR_KICK -->
+            <float hash="color_r">0.36</float>
+            <float hash="color_g">0.0</float>
+            <float hash="color_b">1.0</float>
+            <int hash="cling_counter">999</int>
+        </struct>
+    </struct>
 </struct>

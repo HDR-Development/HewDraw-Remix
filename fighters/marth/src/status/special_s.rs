@@ -84,6 +84,45 @@ pub unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
+pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S)(fighter);
+    special_s_set_hangdata(fighter);
+
+    return ret;
+}
+
+pub unsafe extern "C" fn special_s2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2)(fighter);
+    special_s_set_hangdata(fighter);
+
+    return ret;
+}
+
+pub unsafe extern "C" fn special_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3)(fighter);
+    special_s_set_hangdata(fighter);
+
+    return ret;
+}
+
+pub unsafe extern "C" fn special_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4)(fighter);
+    special_s_set_hangdata(fighter);
+
+    return ret;
+}
+
+unsafe fn special_s_set_hangdata(fighter: &mut L2CFighterCommon) {
+    // prevents marth from grabbing the ledge behind him for the *entire status*
+    let back_cliff_hangdata = fighter.get_back_cliff_hangdata();
+    fighter.set_back_cliff_hangdata(0.0, back_cliff_hangdata.y);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_main);
+
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, special_s2_main);
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, special_s3_main);
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, special_s4_main);
 }

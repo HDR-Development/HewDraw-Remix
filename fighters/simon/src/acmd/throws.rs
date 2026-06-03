@@ -6,16 +6,13 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.7);
     if is_excute(agent) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 6.0);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 6.0);
     }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(8.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 4.0, Some(0.0), Some(6.6), Some(8.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -61,7 +58,7 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, -4.0, Some(0.0), Some(6.6), Some(-13.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, -6.5, Some(0.0), Some(6.6), Some(-13.8), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);

@@ -21,24 +21,15 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
+        MotionModule::set_rate(boma, (28.0-10.0)/14.0);
     }
-    frame(lua_state, 28.0);
+    frame(lua_state, 29.0);
     if is_excute(agent) {
-        MotionModule::set_rate(boma, 1.0);
+        MotionModule::set_rate(boma, 0.25);
     }
-    frame(lua_state, 48.0);
-    if is_excute(agent) {
-        VisibilityModule::set_whole(boma, false);
-    }
-}
-
-unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 30.0);
     if is_excute(agent) {
         MotionModule::set_rate(boma, 1.0);
     }
@@ -51,11 +42,15 @@ unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
+        MotionModule::set_rate(boma, (28.0-10.0)/14.0);
     }
-    frame(lua_state, 28.0);
+    frame(lua_state, 29.0);
+    if is_excute(agent) {
+        MotionModule::set_rate(boma, 0.25);
+    }
+    frame(lua_state, 30.0);
     if is_excute(agent) {
         MotionModule::set_rate(boma, 1.0);
     }
@@ -98,7 +93,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
     agent.acmd("game_specials", game_specials, Priority::Low);
-    agent.acmd("game_specialairs", game_specialairs, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
     agent.acmd("game_specials2", game_specials2, Priority::Low);
     agent.acmd("effect_specials2", effect_specials2, Priority::Low);
 }

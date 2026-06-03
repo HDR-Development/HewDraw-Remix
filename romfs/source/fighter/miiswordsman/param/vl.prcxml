@@ -11,30 +11,50 @@
       <float hash="n1_offset_ground_y">2.0</float>
       <float hash="n1_offset_air_x">9.0</float>
       <float hash="n1_offset_air_y">2.0</float>
+      <float hash="n3_start_spd_x_mul">0.8</float>
+      <float hash="n3_brake_spd_x">0.02</float>
+      <float hash="n3_charge_frame_max">50</float>
+      <float hash="n3_attack_power_mul_max">1.8</float>
+      <float hash="n3_motion_rate">1.0</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="n3_start_spd_x_mul">0.8</float>
+      <float hash="n3_brake_spd_x">0.02</float>
+      <float hash="n3_charge_frame_max">50</float>
+      <float hash="n3_attack_power_mul_max">1.8</float>
+      <float hash="n3_motion_rate">1.0</float>
+    </struct>
     <struct index="2">
-      <float hash="n3_attack_power_mul_max">2.0</float>
+      <float hash="n3_start_spd_x_mul">0.8</float>
+      <float hash="n3_brake_spd_x">0.02</float>
+      <float hash="n3_charge_frame_max">50</float>
+      <float hash="n3_attack_power_mul_max">1.8</float>
+      <float hash="n3_motion_rate">1.0</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="s1_hit_speed_y">1.5</float>
+      <float hash="s3_chakram_stick_y">0.1</float>
+      <float hash="s3_chakram_angle_max">30</float>
     </struct>
     <struct index="1">
-      <int hash="s2_dash_frame">18</int>
-      <float hash="s2_ground_dash_spd_min">3.15</float>
+      <int hash="s2_dash_frame">9</int>
+      <float hash="s2_ground_dash_spd_min">3.5</float>
       <float hash="s2_atk_power_charge_mul">0.083</float>
       <float hash="s2_ground_dash_brake_x">0.125</float>
       <float hash="s2_ground_end_spd_x_mul">0.3</float>
-      <float hash="s2_air_dash_spd_min">2.6</float>
+      <float hash="s2_air_dash_spd_min">3.0</float>
       <float hash="s2_air_dash_spd_mul">0.047</float>
       <float hash="s2_hit_offset_x">100000</float>
       <float hash="s2_hit_offset_y">100000</float>
       <float hash="s2_hit_size">0</float>
+      <float hash="s3_chakram_stick_y">0.1</float>
+      <float hash="s3_chakram_angle_max">30</float>
     </struct>
     <struct index="2">
+      <float hash="s3_chakram_stick_y">0.1</float>
       <float hash="s3_chakram_angle_max">30</float>
     </struct>
     <hash40 index="3">dummy</hash40>
@@ -69,7 +89,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="hi1_air_start_mul_y">0.7</float>
+      <float hash="hi1_air_start_mul_y">1.0</float>
+      <float hash="hi1_jump_speed_mul">0.65</float>
     </struct>
     <struct index="1">
       <float hash="hi2_rush_speed">2.4</float>
@@ -90,10 +111,31 @@
       <int hash="lw1_attack_slow_mul">2</int>
       <float hash="lw1_attack_power_limit">0.1</float>
       <float hash="lw1_attack_mul">1</float>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <struct index="2">
+      <float hash="lw3_hit_reduct_coef">0.66</float>
+      <int hash="lw3_hit_reduct_count">4</int>
+      <float hash="lw3_end_ground_to_ground_rate">1.0</float>
+      <float hash="lw3_end_air_to_ground_rate">1.0</float>
+      <float hash="lw3_end_ground_to_ground_brake">0.1</float>
       <float hash="lw3_end_air_to_ground_brake">0.154</float>
+      <int hash="lw3_landing_frame">30</int>
+    </struct>
+    <struct index="1">
+      <float hash="lw3_hit_reduct_coef">0.66</float>
+      <int hash="lw3_hit_reduct_count">4</int>
+      <float hash="lw3_end_ground_to_ground_rate">1.0</float>
+      <float hash="lw3_end_air_to_ground_rate">1.0</float>
+      <float hash="lw3_end_ground_to_ground_brake">0.1</float>
+      <float hash="lw3_end_air_to_ground_brake">0.154</float>
+      <int hash="lw3_landing_frame">30</int>
+    </struct>
+    <struct index="2">
+      <float hash="lw3_hit_reduct_coef">0.66</float>
+      <int hash="lw3_hit_reduct_count">4</int>
+      <float hash="lw3_end_ground_to_ground_rate">1.0</float>
+      <float hash="lw3_end_air_to_ground_rate">1.0</float>
+      <float hash="lw3_end_ground_to_ground_brake">0.1</float>
+      <float hash="lw3_end_air_to_ground_brake">0.154</float>
+      <int hash="lw3_landing_frame">30</int>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

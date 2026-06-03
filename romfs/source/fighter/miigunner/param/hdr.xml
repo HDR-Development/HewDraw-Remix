@@ -13,7 +13,15 @@
     <float hash="special_hi1_charge_end">8.0</float>
     <float hash="attack_air_f_boost_landing_frame">13.0</float>
     <float hash="attack_air_b_boost_landing_frame">14.0</float>
-    <float hash="attack_air_hi_boost_landing_frame">25.0</float>
+    <float hash="attack_air_hi_boost_landing_frame">20.0</float>
     <float hash="attack_air_lw_boost_landing_frame">18.0</float>
+  </struct>
+  <struct hash="param_special_hi1">
+    <float hash="base_y_speed">3.5</float>
+    <float hash="charge_y_speed_mul">2.7</float>
+    <float hash="charge_y_speed_div">29.0</float>
+  </struct>
+  <struct hash="param_special_hi3">
+    <float hash="hi3_rush_angle_ground">140</float>
   </struct>
 </struct>

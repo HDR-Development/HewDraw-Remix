@@ -3,10 +3,15 @@ use super::*;
 unsafe extern "C" fn game_specialnshoot(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 12.0);
     if WorkModule::get_int(boma, *FIGHTER_PACMAN_INSTANCE_WORK_ID_INT_SPECIAL_N_CHARGE_RANK) < *PACMAN_SPECIAL_N_RANK_MAX {
+        frame(lua_state, 4.0);
+        FT_MOTION_RATE_RANGE(agent, 4.0, 8.0, 2.0);
+        frame(lua_state, 8.0);
+        FT_MOTION_RATE(agent, 1.0);
+        frame(lua_state, 12.0);
         FT_MOTION_RATE_RANGE(agent, 12.0, 42.0, 22.0);
     }
+    frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_FLAG_THROW);
     }

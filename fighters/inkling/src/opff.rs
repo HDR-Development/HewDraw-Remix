@@ -33,8 +33,7 @@ unsafe fn splatter_vfx(boma: &mut BattleObjectModuleAccessor) {
     }
     else if boma.is_motion(Hash40::new("attack_air_lw")) {
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
-        && boma.motion_frame() < 17.0
-        && (2..=5).contains(&VarModule::get_int(boma.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID)) {
+        && (1..=2).contains(&VarModule::get_int(boma.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID)) {
             let pos = Vector3f{ x: 0.0, y: -6.5, z: 0.0 };
             let rot = Vector3f{ x: 0.0, y: 90.0, z: 0.0 };
             let handle = EffectModule::req_on_joint(boma, Hash40::new("inkling_blaster_muzzle"), Hash40::new("top"), &pos, &rot, 1.0, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0) as u32;
@@ -51,7 +50,7 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END)
         && boma.is_situation(*SITUATION_KIND_GROUND)
         && boma.status_frame() > 10 {
-        boma.check_jump_cancel(true, false);
+        boma.check_jump_cancel(true, false, true);
     }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
     && boma.is_situation(*SITUATION_KIND_AIR)

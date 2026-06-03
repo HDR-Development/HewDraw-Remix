@@ -10,6 +10,10 @@
             <float hash="p2_y">9.5</float>
         </struct>
     </struct>
+    <struct hash="param_special_f">
+        <float hash="shield_hit_ground_end_speed_x">1.7</float>
+        <float hash="shield_hit_air_end_speed_x">1.0</float>
+    </struct>
     <struct hash="param_special_b">
         <float hash="start_speed_x_max">0.9</float>
     </struct>

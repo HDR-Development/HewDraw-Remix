@@ -100,7 +100,7 @@ unsafe extern "C" fn game_specialairsspin(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {
-            JostleModule::set_status(boma, true);
+        JostleModule::set_status(boma, true);
     }
 }
 

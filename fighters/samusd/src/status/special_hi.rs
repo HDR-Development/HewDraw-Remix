@@ -121,11 +121,7 @@ unsafe extern "C" fn special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn special_hi_set_direction(fighter: &mut L2CFighterCommon) {
-    let isGrounded = special_hi_ray_check(fighter);
-    let sit = if isGrounded { *SITUATION_KIND_GROUND } else { *SITUATION_KIND_AIR };
-    let kinetic = if isGrounded { *FIGHTER_KINETIC_TYPE_GROUND_STOP } else { *FIGHTER_KINETIC_TYPE_AIR_STOP };
-    StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(sit), false);
-    VarModule::set_flag(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_AIR, !isGrounded);
+    VarModule::set_flag(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_AIR, fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR);
 
     // Get angle
     let mut lr: f32 = PostureModule::lr(fighter.module_accessor);
@@ -141,11 +137,11 @@ unsafe extern "C" fn special_hi_set_direction(fighter: &mut L2CFighterCommon) {
 
     // If in deadzone, go up
     if (stick_x.abs() < 0.1 && stick_y.abs() < 0.1) {
-        stick_x = 0.0; //if isGrounded {lr} else {0.0};
+        stick_x = 0.0;
         stick_y = 1.0;
     }
     // If on ground, and aiming the stick towards the ground, limit y to 0
-    if (isGrounded && stick_y < 0.0) {
+    if (fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && stick_y < 0.0) {
         stick_y = 0.0;
         if (stick_x.abs() < 0.1) { stick_x = lr; }
         stick_x = sv_math::vec2_normalize(stick_x, stick_y).x;
@@ -194,16 +190,13 @@ unsafe extern "C" fn special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CV
 
 unsafe extern "C" fn special_hi_rush_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut angle = VarModule::get_float(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_ANGLE);
-    let isGrounded = fighter.is_situation(*SITUATION_KIND_GROUND) && angle.abs() < 10.0;    //special_hi_ray_check(fighter);
+    let isGrounded = fighter.is_situation(*SITUATION_KIND_GROUND) && angle.abs() < 10.0;
 
     if isGrounded {
         if angle.abs() < 10.0 {
             angle = 0.0;
         }
         VarModule::set_float(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_ANGLE, 0.0);
-    }
-    if special_hi_ray_check(fighter) {
-        special_hi_snap_to_ground(fighter);
     }
 
     // Set speed
@@ -373,7 +366,6 @@ unsafe extern "C" fn special_hi_end_init(fighter: &mut L2CFighterCommon) -> L2CV
             sv_kinetic_energy!(set_brake, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, brake_speed_x, 0.0);
             sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         }
-        special_hi_snap_to_ground(fighter);
         VarModule::set_float(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_ANGLE, 0.0);
         VarModule::off_flag(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_AIR);
     }
@@ -493,12 +485,6 @@ unsafe extern "C" fn special_hi_set_joint_rotation(fighter: &mut L2CFighterCommo
     ModelModule::set_joint_rotate(fighter.module_accessor, Hash40::new("rot"), &Vector3f::new(-angle, 0.0, 0.0), MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
 }
 
-unsafe fn special_hi_ray_check(fighter: &mut L2CFighterCommon) -> bool {
-    return GroundModule::ray_check(fighter.module_accessor,
-        &Vector2f{ x: PostureModule::pos_x(fighter.module_accessor), y: PostureModule::pos_y(fighter.module_accessor) }, 
-        &Vector2f{ x: 0.0, y: -5.5 }, true) == 1;
-}
-
 unsafe extern "C" fn special_hi_rush_handle_bound(fighter: &mut L2CFighterCommon) -> i32 {
     // Check for landing
     let rush_frame = VarModule::get_int(fighter.battle_object, vars::samusd::status::SPECIAL_HI_RUSH_FRAME);
@@ -531,28 +517,9 @@ unsafe extern "C" fn special_hi_rush_handle_bound(fighter: &mut L2CFighterCommon
     return 0.into();
 }
 
-unsafe fn special_hi_snap_to_ground(fighter: &mut L2CFighterCommon) {
-    let pos_x = PostureModule::pos_x(fighter.module_accessor);
-    let pos_y = PostureModule::pos_y(fighter.module_accessor);
-    let pos_z = PostureModule::pos_z(fighter.module_accessor);
-    let hit_pos = &mut Vector2f::zero();
-    let ray_check = GroundModule::ray_check_hit_pos(
-        fighter.module_accessor,
-        &Vector2f{x: pos_x, y: pos_y},
-        &Vector2f{x: 0.0, y: -6.0},
-        hit_pos,
-        true
-    );
-    PostureModule::set_pos(fighter.module_accessor, &Vector3f::new(pos_x, hit_pos.y, pos_z));
-    let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let lr = PostureModule::lr(fighter.module_accessor);
-    SET_SPEED_EX(fighter, speed_x * lr, -0.01, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-}
-
 unsafe fn special_hi_find_end_type(fighter: &mut L2CFighterCommon) {
     let angle = VarModule::get_float(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_RUSH_ANGLE);
-    let ground_correct_force = special_hi_ray_check(fighter);
-    if fighter.is_situation(*SITUATION_KIND_AIR) && !ground_correct_force {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::set_int(fighter.battle_object, vars::samusd::instance::SPECIAL_HI_END_TYPE, END_TYPE_AIR);
     }
     else if angle.abs() < 20.0 {

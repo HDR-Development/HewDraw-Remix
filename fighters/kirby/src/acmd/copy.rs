@@ -1,5 +1,7 @@
 use super::*;
 
+mod brave;
+mod buddy;
 mod chrom;
 mod daisy;
 mod diddy;
@@ -16,6 +18,7 @@ mod luigi;
 mod mario;
 mod mariod;
 mod mewtwo;
+mod miifighter;
 mod miigunner;
 mod palutena;
 mod pfushigisou;
@@ -32,6 +35,8 @@ mod trail;
 mod wolf;
 
 pub fn install(agent: &mut Agent) {
+    brave::install(agent);
+    buddy::install(agent);
     chrom::install(agent);
     daisy::install(agent);
     diddy::install(agent);
@@ -48,6 +53,7 @@ pub fn install(agent: &mut Agent) {
     mario::install(agent);
     mariod::install(agent);
     mewtwo::install(agent);
+    miifighter::install(agent);
     miigunner::install(agent);
     palutena::install(agent);
     pfushigisou::install(agent);

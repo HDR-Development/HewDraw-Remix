@@ -18,22 +18,14 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor) {
 }
 
 // lets sora bounce upwards upon landing down smash
-unsafe fn attack_lw4_rebound(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn attack_lw4_rebound(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW4)
-    && (19.0..20.5).contains(&frame)
-    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    {
+    && (18.0..20.0).contains(&boma.motion_frame())
+    && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         VarModule::on_flag(boma.object(), vars::trail::instance::ATTACK_LW4_REBOUND);
         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::add_speed(boma, &Vector3f::new(0.0, 1.5, 0.0));
         boma.change_status_req(*FIGHTER_STATUS_KIND_CLIFF_JUMP2, true);
-    }
-    // set proper params for the bounce off
-    if boma.is_status(*FIGHTER_STATUS_KIND_CLIFF_JUMP2)
-    && VarModule::is_flag(boma.object(), vars::trail::instance::ATTACK_LW4_REBOUND) {
-        VarModule::off_flag(boma.object(), vars::trail::instance::ATTACK_LW4_REBOUND);
-        MotionModule::set_rate(boma, 1.65);
-        KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.5, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
@@ -87,7 +79,7 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
     }
 }
 
-unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     // firaga airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT)
     && boma.is_motion(Hash40::new("special_air_n1"))
@@ -102,7 +94,7 @@ unsafe fn magic_handling(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     // blizzaga jump cancel
     if (boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2)
     && boma.motion_frame() > 12.0) {
-        boma.check_jump_cancel(false, false);
+        boma.check_jump_cancel(false, false, false);
     }
 
     // handles the cooldown timer between casting spells
@@ -154,110 +146,11 @@ unsafe fn flower_frame(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn side_special_actionability(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END) {
-        if MotionModule::frame(boma) > MotionModule::end_frame(boma) - 1.0 {
-            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        }
-    }
-}
-
-unsafe fn side_special_hit_check(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if !fighter.is_status_one_of(&[
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END]) {
-        return;
-    }
-    if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK) {
-        if !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT) {
-            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-        }
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT);
-            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
-        }
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        && !fighter.is_in_hitlag()
-        && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
-            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT);
-            if fighter.check_jump_cancel(false, false) {
-                let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                VarModule::set_float(boma.object(), vars::trail::instance::SPECIAL_S_JUMP_SPEED_X, x_speed);
-                return;
-            }
-        }
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
-        }
-    }
-    if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH) {
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
-            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_INPUT_CHECK);
-        }
-        if compare_mask(ControlModule::get_command_flag_cat(boma, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY) {
-            VarModule::on_flag(boma.object(), vars::trail::status::SPECIAL_S_INPUT_CHECK);
-        }
-        if VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT)
-        && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
-            if fighter.check_jump_cancel(false, false) {
-                return;
-            }
-        }
-    }
-    if fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END) {
-        // allow jump cancel if sora hit during the attack portion
-        if VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_HIT)
-        && fighter.check_jump_cancel(false, false) {
-            let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            VarModule::set_float(boma.object(), vars::trail::instance::SPECIAL_S_JUMP_SPEED_X, x_speed);
-            return;
-        }
-
-        if !VarModule::is_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP)
-        && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT)
-        && fighter.global_table[CURRENT_FRAME].get_i32() == 15 {
-            VarModule::off_flag(boma.object(), vars::trail::status::SPECIAL_S_STOP);
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
-            }
-            else {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
-            }
-            return;
-        }
-    }
-}
-
-// wall jump out of sonic blade
-unsafe fn side_special_walljump(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[
-        // *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END])
-    && boma.is_situation(*SITUATION_KIND_AIR) {
-        boma.check_wall_jump_cancel();
-    }
-}
-
-// remove arrow effect from sonic blade once sora begins the attack
-unsafe fn side_special_effect_handler(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END]) {
-        let effect = WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE) as u32;
-        if effect != 0 {
-            EffectModule::kill(boma, effect, true, true);
-            WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_SEARCH_GUIDE_EFFECT_HANDLE);
-        }
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
-    && ( fighter.is_status_one_of(&[
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
-        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
-        ])
-        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 10) )
+    && (fighter.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
+        || (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.status_frame() > 10))
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -278,16 +171,12 @@ pub unsafe fn initialize_magic(fighter: &mut L2CFighterCommon) {
     // }
 }
 
-pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     jab_2_ftilt_cancel(boma);
     nair_fair_momentum_handling(fighter, boma);
-    attack_lw4_rebound(boma, frame);
-    magic_handling(fighter, boma, frame);
+    attack_lw4_rebound(boma);
+    magic_handling(fighter, boma);
     flower_frame(boma);
-    side_special_actionability(boma);
-    side_special_hit_check(fighter, boma);
-    side_special_walljump(boma);
-    side_special_effect_handler(boma);
     fastfall_specials(fighter);
     initialize_magic(fighter);
 }
@@ -306,7 +195,7 @@ pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         // } else {
         //     info.status_kind
         // };
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma);
     }
 }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <struct hash="param_special_hi">
+    <float hash="start_air_accel_y">0.3</float>
+  </struct>
+</struct>

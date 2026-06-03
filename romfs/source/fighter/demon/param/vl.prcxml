@@ -8,6 +8,50 @@
   <struct hash="param_private">
     <float hash="reaction_value">0</float>
   </struct>
+  <list hash="rage_system_frame">
+    <struct index="0">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="1">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="2">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="3">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="4">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="5">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+    <struct index="6">
+      <int hash="rage_cancel_frame">50</int>
+      <int hash="0x15dfd4a045">50</int>
+      <int hash="0x166df6c761">50</int>
+      <float hash="rage_frame_damage_rate">1</float>
+    </struct>
+  </list>
   <struct hash="param_attack_step">
     <float hash="move_mul">1.3</float>
   </struct>

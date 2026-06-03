@@ -47,6 +47,5 @@ pub fn install() {
     acmd::install(agent);
     opff::install(agent);
     status::install(agent);
-    vtable_hook::install(agent);
     agent.install();
 }

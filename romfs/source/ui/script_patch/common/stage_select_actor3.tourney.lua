@@ -194,7 +194,8 @@ local StagePanel = { -- R46
             frame_ = 0,
             target_scale_ = 0.0,
             scale_value_ = 0.0,
-            is_striked_ = false
+            is_striked_ = false,
+            is_perma_striked_ = false,
         }
     end
 }
@@ -291,6 +292,9 @@ end
 -- all of the (1 indexed) IDs which are actually Training (for tourney mode, to ignore them)
 -- this is basically a map<id, is_training>
 local training_stages = {}
+
+-- all of the (1 indexed) IDs which are actually Random
+local random_stages = {}
 
 -- Performs interpolation of a value using a sin wave for a more natural curve than just linear
 -- CLOSURE_4, R64
@@ -402,7 +406,6 @@ local set_tab_form_text = function(stage_form)
     }
 
     tab_layout:play_animation(string.format("stage_%s", form_names[stage_form + 1]), 1.0)
-    tab_form_button_pane:set_text_message(string.format("mel_stage_select_%s", form_names[stage_form + 1]))
 end
 
 -- Plays the looping long-cancel sound effect (when you are holding B to exit)
@@ -634,6 +637,7 @@ local set_stage_preview_from_stage_panel = function(preview_index, panel_index)
 
     UiScriptPlayer.invoke("set_stage_preview_from_panel", preview_index, panel_index)
     set_stage_preview_form(preview_index, stage_previews[preview_index + 1].form_type_)
+    Alts.write_alt_field_to_bgm_id(preview_index, stage_previews[preview_index + 1].selected_alt_)
 end
 
 -- Sets the stage preview based on the selected custom stage panel
@@ -1049,6 +1053,45 @@ local change_page = function(should_play_page_change)
 end
 
 local change_sub_page = function(target_page)
+    local back_page = target_page - 1
+    if back_page < 0 then
+        back_page = total_pages - 1
+    end
+
+    local forward_page = target_page + 1
+    if forward_page >= total_pages then
+        forward_page = 0
+    end
+
+    local back_page_name = HDR.get_page_name(back_page)
+    local forward_page_name = HDR.get_page_name(forward_page)
+    local current_page_name = HDR.get_page_name(target_page)
+    root_view:get_pane("txt_page_back"):set_text_string(back_page_name)
+    root_view:get_pane("txt_page_forward"):set_text_string(forward_page_name)
+    tab_form_button_pane:set_text_string(current_page_name)
+    
+    local bans = HDR.get_bans(target_page)
+    local dsr = HDR.get_dsr(target_page)
+
+    local ban_dsr_string = ""
+    if bans > 1 then
+        ban_dsr_string = bans .. " Bans"
+    elseif bans > 0 then
+        ban_dsr_string = bans .. " Ban"
+    else
+        ban_dsr_string = "No Bans"
+    end
+
+    if dsr == "None" or string.len(dsr) == 0 then
+        ban_dsr_string = ban_dsr_string .. " - No DSR"
+    else
+        ban_dsr_string = ban_dsr_string .. " - " .. dsr
+    end
+
+    if string.len(ban_dsr_string) > 0 then
+        root_view:get_parts("set_parts_rule"):get_pane("set_txt_00"):set_text_string(ban_dsr_string)
+    end
+
     -- Page is actually all the parts of the set_parts_n_stage_XXX
     local current_page_ = pages[current_page + 1]
     local target_page_ = pages[target_page + 1]
@@ -1073,22 +1116,25 @@ local change_sub_page = function(target_page)
     -- reposition and show the new page's panels
     for i, panel in ipairs(target_page_) do
         -- dont reposition or show any invalid stages
-        if i > STAGE_PANEL_LIST_NUM then
+        if target_page * PANELS_PER_PAGE + i > STAGE_PANEL_LIST_NUM then
             break
         end
 
         -- set the preview
         UiScriptPlayer.invoke("set_stage_preview_from_panel", 0, target_page * PANELS_PER_PAGE + i - 1)
-        -- use the set preview to check if this preview is the training stage
-        local is_random = UiScriptPlayer.invoke("is_training_stage_preview", 0)
+        -- use the set preview to check if this preview is the training or random stage
+        local is_training = UiScriptPlayer.invoke("is_training_stage_preview", 0)
+        local is_random = UiScriptPlayer.invoke("is_random_stage_preview", 0)
+
+        random_stages[target_page * PANELS_PER_PAGE + i] = is_random
 
         -- if its the training stage (which we are using as a buffer to align the stages),
         -- then hide the stage, and record whether its the training stage or not
-        print("is random: " .. tostring(is_random))
-        if is_random == true then
+        print("is training: " .. tostring(is_training))
+        if is_training == true then
             -- save that this is the training stage
-            training_stages[i] = true
-            print("found the random stage: " .. i)
+            training_stages[target_page * PANELS_PER_PAGE + i] = true
+            print("found the training stage: " .. target_page * PANELS_PER_PAGE + i)
             panel:set_visible(false)
 
             --[[ for getting reflective data about the stages
@@ -1102,7 +1148,7 @@ local change_sub_page = function(target_page)
             ]]
                --
         else
-            training_stages[i] = false
+            training_stages[target_page * PANELS_PER_PAGE + i] = false
 
             -- print("setting root pane parent pane position")
             -- panel:get_root_pane():get_parent_pane():set_position(positions[offset].x, positions[offset].y)
@@ -1131,7 +1177,16 @@ local setup = function()
         stage_panels[i] = StagePanel.new()
 
         local strike_panel = root_view:get_parts(get_stage_panel_name(i - 1)):get_pane("set_rep_strike")
+        local perma_strike_panel = root_view:get_parts(get_stage_panel_name(i - 1)):get_pane("set_rep_perma")
         strike_panel:set_visible(false)
+        perma_strike_panel:set_visible(false)
+
+        local is_perma_strike = HDR.is_perma_strike_stage(i)
+        if is_perma_strike then
+            stage_panels[i].is_striked_ = true
+            stage_panels[i].is_perma_striked_ = true
+            perma_strike_panel:set_visible(true)
+        end
     end
 
     for i = 0, USE_STAGE_NUM - 1, 1 do
@@ -1258,6 +1313,8 @@ local setup_from_environment = function()
         current_id = i - 1
         local preview = stage_previews[i]
         preview.enable_ = UiScriptPlayer.invoke("is_valid_entrance_param", current_id)
+        set_alt_texture(true, nil, current_id)
+        set_alt_texture(false, nil, current_id)
         if preview.enable_ == true then
             last_enabled_preview = i
             preview.form_type_ = UiScriptPlayer.invoke("get_stage_form_type_entrance_param", current_id)
@@ -1386,8 +1443,22 @@ local setup_from_environment = function()
 
     UiScriptPlayer.invoke("setup_bgm")
 
-    change_sub_page(0)
-    set_stage_preview_from_stage_panel(0, 0)
+    local selected_panel_id = HDR.get_selected_panel()
+    local selected_preview_id = HDR.get_selected_preview()
+
+    local page = 0
+    local panel = 0
+    local preview = 0
+
+    if selected_panel_id ~= UI_INVALID_INDEX then
+        page = selected_panel_id // PANELS_PER_PAGE
+        panel = selected_panel_id
+        preview = selected_preview_id
+    end
+
+    change_sub_page(page)
+    set_stage_preview_from_stage_panel(preview, panel)
+    set_alt_panel_textures(nil)
 end
 
 -- Cancels, presumably a part of the exit sequence
@@ -1548,11 +1619,43 @@ local check_for_cancel = function()
 end
 
 local strike_stage = function(panel_id, is_strike)
-    if panel_id ~= UI_INVALID_INDEX and stage_panels[panel_id + 1].is_striked_ ~= is_strike then
-        stage_panels[panel_id + 1].is_striked_ = is_strike
-        local parts = root_view:get_parts(get_stage_panel_name(panel_id))
-        local strike_pane = parts:get_pane("set_rep_strike")
-        strike_pane:set_visible(is_strike)
+    if panel_id ~= UI_INVALID_INDEX then
+        UiSoundManager.play_se_label("se_system_plate_catch")
+        if is_strike then
+            if stage_panels[panel_id + 1].is_perma_striked_ then
+                stage_panels[panel_id + 1].is_striked_ = false
+                stage_panels[panel_id + 1].is_perma_striked_ = false
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                local perma_strike_pane = parts:get_pane("set_rep_perma")
+                strike_pane:set_visible(false)
+                perma_strike_pane:set_visible(false)
+                HDR.set_perma_strike_stage(panel_id + 1, false)
+            elseif stage_panels[panel_id + 1].is_striked_ then
+                stage_panels[panel_id + 1].is_perma_striked_ = true
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                local perma_strike_pane = parts:get_pane("set_rep_perma")
+                strike_pane:set_visible(false)
+                perma_strike_pane:set_visible(true)
+                HDR.set_perma_strike_stage(panel_id + 1, true)
+            else
+                stage_panels[panel_id + 1].is_striked_ = true
+                local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+                local strike_pane = parts:get_pane("set_rep_strike")
+                strike_pane:set_visible(true)
+                HDR.set_perma_strike_stage(panel_id + 1, false)
+            end
+        else
+            stage_panels[panel_id + 1].is_striked_ = false
+            stage_panels[panel_id + 1].is_perma_striked_ = false
+            local parts = root_view:get_parts(get_stage_panel_name(panel_id))
+            local strike_pane = parts:get_pane("set_rep_strike")
+            local perma_strike_pane = parts:get_pane("set_rep_perma")
+            strike_pane:set_visible(false)
+            perma_strike_pane:set_visible(false)
+            HDR.set_perma_strike_stage(panel_id + 1, false)
+        end
     end
 end
 
@@ -1707,6 +1810,8 @@ local decide_normal_stage = function()
         return false
     end
 
+    HDR.set_selected_panel_and_preview(current_selected_panel, current_selected_preview)
+
     UiScriptPlayer.invoke("set_medal_visible", current_selected_preview, true)
     UiScriptPlayer.invoke("set_medal_collect_range_from_panel", current_selected_preview, current_selected_panel)
     if UiScriptPlayer.invoke("is_hand_interpolated_moving") == false then
@@ -1807,9 +1912,16 @@ local handle_panel_decide = function()
         UiScriptPlayer.invoke("play_rumble_input_device")
     end
 
-    UiSoundManager.play_se_label("se_system_plate_off_stageselect")
-    if IS_DECIDE_SE_AUDIENCE == true then
+    if IS_MY_MUSIC == false and HDR.is_css_first() then
+        -- the CSS used to play these when going to a match, so now
+        -- the SSS does
+        UiSoundManager.play_se_label("se_system_r2f_fixed")
         UiSoundManager.play_se_label("se_audience_suddendeath")
+    else
+        UiSoundManager.play_se_label("se_system_plate_off_stageselect")
+        if IS_DECIDE_SE_AUDIENCE then
+            UiSoundManager.play_se_label("se_audience_suddendeath")
+        end
     end
 
     if check_all_previews_enabled() == true then
@@ -2062,6 +2174,7 @@ end
 
 -- CLOSURE_74, R134
 local update_stage_previews = function()
+    ENABLE_STAGE_FORM_TYPE = false
     prev_highlighed_preview = highlighed_preview
 
     highlighed_preview = UiScriptPlayer.invoke("get_hand_on_stage_preview_id")
@@ -2121,7 +2234,7 @@ local update_stage_previews = function()
     end
 
     local is_striked = current_selected_panel ~= UI_INVALID_INDEX and
-    stage_panels[current_selected_panel + 1].is_striked_
+        stage_panels[current_selected_panel + 1].is_striked_
     if is_striked ~= prev_invalid_stage_2 then
         local anim = "on_atteintion"
         if not is_striked then
@@ -2422,6 +2535,44 @@ local update_from_pointer = function()
     end
 end
 
+local is_good_random_stage = function(stage_index)
+    return not training_stages[stage_index] and
+            not random_stages[stage_index] and
+            not stage_panels[stage_index].is_striked_ and
+            not stage_panels[stage_index].is_perma_striked_
+end
+
+-- Ult's lua engine doesn't include a random implementation, so this function
+-- pushes all non-training, non-random, non-struck stage panel indexes to the HDR stage manager,
+-- then pulls a random index from it. 
+local handle_single_page_random = function()
+    local random_stage_select_count = 0
+
+    for i, panel in ipairs(pages[current_page + 1]) do
+        local index = current_page * PANELS_PER_PAGE + i
+
+        if index > STAGE_PANEL_LIST_NUM then
+            break
+        end
+
+        -- skip training, random, and struck stages
+        if is_good_random_stage(index) then
+            HDR.set_random_stage_index(index)
+            random_stage_select_count = random_stage_select_count + 1
+        end
+    end
+
+    if random_stage_select_count > 0 then
+        local random_index = HDR.get_random_stage_index()
+        un_decide_medal()
+        UiScriptPlayer.invoke("set_stage_preview_from_panel", 0, random_index - 1)
+        UiScriptPlayer.invoke("set_hand_position_from_panel", random_index - (current_page * PANELS_PER_PAGE) - 1)
+        UiScriptPlayer.invoke("set_medal_position_from_panel", 0, random_index - (current_page * PANELS_PER_PAGE) - 1)
+        change_panel(random_index - 1)
+        handle_panel_decide()
+    end
+end
+
 -- CLOSURE_79, R138
 local try_handle_exiting_scene = function()
     if scene_state == SCENE_STATE_REGULAR or scene_state == SCENE_STATE_EXITED then
@@ -2431,6 +2582,15 @@ local try_handle_exiting_scene = function()
     update_panel_scalings()
 
     if scene_state == SCENE_STATE_SHOULD_EXIT then
+        -- intercept the random stage and check if we need to handle single page random
+        if UiScriptPlayer.invoke("is_random_stage_preview", current_selected_preview) then
+            if virtual_input:is_pressing(INPUT_ALT_L) then
+                scene_state = SCENE_STATE_REGULAR
+                handle_single_page_random()
+                return false
+            end
+        end
+        HDR.stage_loading();
         next_scene_animation:play(1.0)
         scene_state = SCENE_STATE_EXITING
     elseif scene_state == SCENE_STATE_EXITING then
@@ -2633,7 +2793,14 @@ local regular_main_update = function()
                             end
                         end
                         if is_valid_stage == true and prepare_scene_exit() == true then
-                            UiSoundManager.play_se_label("se_system_fixed_s")
+                            if IS_MY_MUSIC == false and HDR.is_css_first() then
+                                -- the CSS used to play these when going to a match, so now
+                                -- the SSS does
+                                UiSoundManager.play_se_label("se_system_r2f_fixed")
+                                UiSoundManager.play_se_label("se_audience_suddendeath")
+                            else
+                                UiSoundManager.play_se_label("se_system_fixed_s")
+                            end
                             local off_preview_index = -1
                             if check_all_previews_enabled() == false then
                                 play_off_preview_animation(current_selected_preview)
@@ -2647,7 +2814,6 @@ local regular_main_update = function()
                             end
                         end
                     elseif virtual_input:is_decide() == true and get_page_button_dir() == 0 then
-                        -- possible
                         handle_panel_decide()
                     elseif virtual_input:is_pressed(INPUT_BGM_SELECT) == true then
                         local index = current_selected_preview
@@ -2748,7 +2914,9 @@ main = function()
     stage_select_bgm:setup()
     xpcall(setup_from_environment, print_error_handler)
     root_view:play_animation("in", 1.0)
+    IS_SIMPLE_CANCEL = IS_SIMPLE_CANCEL or HDR.is_css_first()
     if IS_SIMPLE_CANCEL == true then
+        BACK_POPUP_ID = nil
         local parts = root_view:get_parts("set_parts_txt_head_00")
         if IS_RETURN_MENU == false then
             parts:play_animation("in", 1.0)
@@ -2788,18 +2956,21 @@ main = function()
         first.alt_ = stage_previews[1].selected_alt_
         first.panel_ = stage_previews[1].panel_id_
         first.form_ = stage_previews[1].form_type_
+        Alts.write_alt_field_to_bgm_id(0, first.alt_)
     end
 
     if USE_STAGE_NUM > 1 then
         second.alt_ = stage_previews[2].selected_alt_
         second.panel_ = stage_previews[2].panel_id_
         second.form_ = stage_previews[2].form_type_
+        Alts.write_alt_field_to_bgm_id(1, second.alt_)
     end
 
     if USE_STAGE_NUM > 2 then
         third.alt_ = stage_previews[3].selected_alt_
         third.panel_ = stage_previews[3].panel_id_
         third.form_ = stage_previews[3].form_type_
+        Alts.write_alt_field_to_bgm_id(2, third.alt_)
     end
 
     Alts.set_alts(

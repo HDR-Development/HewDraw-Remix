@@ -162,6 +162,18 @@ unsafe extern "C" fn effect_landingairn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    MotionModule::set_rate(boma, (15.0 - 1.0)/13.0);
+    if is_excute(agent) {
+        PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
+    }
+    frame(lua_state, 15.0);
+    MotionModule::set_rate(boma, 1.0);
+}
+
 unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -254,11 +266,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_landingairn", disable_physics, Priority::Low);
     agent.acmd("effect_landingairn", effect_landingairn, Priority::Low);
 
-    agent.acmd("game_attackairfhi", disable_physics, Priority::Low);
+    agent.acmd("game_attackairfhi", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairfhi", effect_attackairf, Priority::Low);
-    agent.acmd("game_attackairf", disable_physics, Priority::Low);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
-    agent.acmd("game_attackairflw", disable_physics, Priority::Low);
+    agent.acmd("game_attackairflw", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairflw", effect_attackairf, Priority::Low);
     agent.acmd("game_landingairf", disable_physics, Priority::Low);
 

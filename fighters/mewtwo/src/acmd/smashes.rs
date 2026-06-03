@@ -9,7 +9,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -53,7 +53,7 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -66,12 +66,40 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_attacks4x(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        let mut pos_y = 10.0;
+        let mut rot_x = 0.0;
+        if agent.is_motion(Hash40::new("attack_s4_lw")) {
+            pos_y = 6.5;
+            rot_x = 30.0;
+        } 
+        if agent.is_motion(Hash40::new("attack_s4_hi")) {
+            pos_y = 13.5;
+            rot_x = -30.0;
+        }
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_attack_b"), Hash40::new("mewtwo_pk_attack_b"), Hash40::new("top"), 0, pos_y, 16.5, rot_x, 0, 0, 0.85, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_SCALE_W(agent, 0.9, 0.65, 0.9);
+        LAST_EFFECT_SET_RATE(agent, 19.0/17.0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -122,7 +150,7 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("mewtwo_pk_hand"), false, false);
         EFFECT_FOLLOW_NO_STOP_FLIP(agent, Hash40::new("mewtwo_pk_attack_a"), Hash40::new("mewtwo_pk_attack_a"), Hash40::new("top"), -2.5, 21.5, 0, 0, 0, 0, 0.95, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(agent, 1.2);
+        LAST_EFFECT_SET_RATE(agent, 1.25);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -135,19 +163,53 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        agent.on_flag(*FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 55, 115, 0, 20, 11.0, 0.0, 4.0, 13.7, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 18, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 17.0, 60, 99, 0, 30, 4.5, 0.0, 4.5, 12.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 18, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 15.0, 55, 111, 0, 20, 10.0, 0.0, 4.5, 12.0, None, None, None, 1.15, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 18, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 55, 118, 0, 20, 5.0, 0.0, 4.0, 13.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 13, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 55, 118, 0, 20, 4.5, 0.0, 4.5, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 13, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        AttackModule::clear(boma, 1, false);
     }
     wait(lua_state, 7.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+}
+
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("havel"), -1.5, 0, 2, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("mewtwo_pk_hand"), true, true);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("havel"), 0, 1, 3, 0, 0, 0, 1.3, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("mewtwo_pk_attack_c"), Hash40::new("mewtwo_pk_attack_c"), Hash40::new("top"), 0, 3.5, 11.5, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(agent, 6.0/3.0);
+        let effect = EffectModule::get_last_handle(boma) as u64;
+        VarModule::set_int64(agent.battle_object, vars::mewtwo::status::EFFECT_HANDLER, effect);
+        LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        FOOT_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("mewtwo_pk_hand"), false, false);
+        let effect = VarModule::get_int64(agent.battle_object, vars::mewtwo::status::EFFECT_HANDLER);
+        EffectModule::set_rate(boma, effect as u32, 1.0);
     }
 }
 
@@ -156,8 +218,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4hi", game_attacks4hi, Priority::Low);
     agent.acmd("game_attacks4lw", game_attacks4lw, Priority::Low);
 
+    agent.acmd("effect_attacks4", effect_attacks4x, Priority::Low);
+    agent.acmd("effect_attacks4hi", effect_attacks4x, Priority::Low);
+    agent.acmd("effect_attacks4lw", effect_attacks4x, Priority::Low);
+
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
 	agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
     
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
+    agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);
 }

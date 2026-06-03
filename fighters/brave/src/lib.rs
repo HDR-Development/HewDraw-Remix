@@ -13,6 +13,7 @@ mod crash;
 mod deathball;
 mod explosion;
 mod fireball;
+mod flash;
 mod lightning;
 mod spark;
 mod tornado;
@@ -86,6 +87,7 @@ pub fn install() {
     deathball::install();
     explosion::install();
     fireball::install();
+    flash::install();
     lightning::install();
     spark::install();
     tornado::install();

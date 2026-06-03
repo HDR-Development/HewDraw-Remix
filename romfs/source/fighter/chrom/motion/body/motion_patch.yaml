@@ -3,7 +3,7 @@ attack_11:
     cancel_frame: 25
 attack_air_f:
   extra:
-    cancel_frame: 32
+    cancel_frame: 34
 attack_hi3:
   animations:
     - name: d01specials3hi.nuanmb # Stolen from Dancing Blade 3 High
@@ -41,7 +41,7 @@ attack_hi4:
     no_stop_intp: false
 attack_lw3:
   extra:
-    cancel_frame: 19
+    cancel_frame: 24
 attack_s3_s:
   extra:
     cancel_frame: 44
@@ -77,10 +77,10 @@ cliff_wait:
   blend_frames: 2
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_back_d:
   extra:
     cancel_frame: 36
@@ -212,7 +212,7 @@ special_air_s3_hi: # duplicated special_s4_hi
     - sound_specialairs4hi
     - effect_specialairs4hi
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 special_air_s3_lw:
   animations:
     - name: d01specialairs3lw.nuanmb
@@ -222,14 +222,14 @@ special_air_s3_s:
   animations:
     - name: d01specialairs3s.nuanmb
   extra:
-    cancel_frame: 47
+    cancel_frame: 32
 
 # Dancing Blade 3
 special_air_s4_hi:
   animations:
     - name: d01specialairs4hi.nuanmb
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 special_air_s4_lw:
   animations:
     - name: a02dash.nuanmb # replaced with a dash
@@ -239,7 +239,7 @@ special_air_s4_s:
   animations:
     - name: d01specialairs4s.nuanmb
   extra:
-    cancel_frame: 59
+    cancel_frame: 50
 
 special_hi_1:
   flags:
@@ -325,7 +325,7 @@ special_s3_hi: # duplicated special_s4_hi
     - sound_specials4hi
     - effect_specials4hi
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 special_s3_lw:
   animations:
     - name: d01specials3lw.nuanmb
@@ -335,14 +335,14 @@ special_s3_s:
   animations:
     - name: d01specials3s.nuanmb
   extra:
-    cancel_frame: 44
+    cancel_frame: 32
 
 # Dancing Blade 3
 special_s4_hi:
   animations:
     - name: d01specials4hi.nuanmb
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 special_s4_lw:
   animations:
     - name: a02dash.nuanmb # replaced with a dash
@@ -352,7 +352,7 @@ special_s4_s:
   animations:
     - name: d01specials4s.nuanmb
   extra:
-    cancel_frame: 59
+    cancel_frame: 50
 
 step_pose_back:
   extra:

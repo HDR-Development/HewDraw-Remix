@@ -14,12 +14,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v6.0.2
       with:
         fetch-depth: 2
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6.2.0
       with:
         python-version: '3.x'
 
@@ -59,7 +59,7 @@ jobs:
           "fighters/mewtwo/src/acmd/specials.rs:86-100"
           "fighters/richter/src/acmd/specials.rs:249-257"
           "fighters/simon/src/acmd/specials.rs:80-84"
-          
+
           "fighters/lucas/src/acmd/aerials.rs"
           "fighters/mewtwo/src/acmd/aerials.rs"
           "fighters/ness/src/acmd/aerials.rs"
@@ -125,9 +125,9 @@ jobs:
           "fighters/samusd/src/opff.rs:20-28"
           "fighters/wiifit/src/opff.rs:22-30"
         )
-        
+
         > $GITHUB_WORKSPACE/matched_files.txt
-        
+
         CHANGED_FILES=$(git diff --unified=0 --name-only --diff-filter=ACMDR HEAD^ HEAD)
 
         for file in "${FILES_TO_WATCH[@]}"; do
@@ -250,13 +250,13 @@ jobs:
         python -c "
         import os
         import yagmail
-        
+
         # Set up Gmail SMTP
         yag = yagmail.SMTP(
             user=os.getenv('GMAIL_USER'),
             password=os.getenv('GMAIL_PASSWORD')
         )
-        
+
         # Prepare the email
         subject = os.getenv('EMAIL_SUBJECT')
         body = 'The following files were changed:\\n\\n'
@@ -279,9 +279,9 @@ jobs:
             body += f'\\nLink to Pull Request: {link}\\n'
         else:
             body += f'\\nLink to Commit: {link}\\n'
-        
+
         recipient = 'jamesdobrien97@gmail.com'
-        
+
         # Send the email
         yag.send(to=recipient, subject=subject, contents=body)
         "

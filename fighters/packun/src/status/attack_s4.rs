@@ -4,12 +4,14 @@ use super::*;
 
 unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS4Start();
-    if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_s_2"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    else {
+    //if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 {
+    //    MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_s_2"), 0.0, 1.0, false, 0.0, false, false);
+    //}
+    //else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_s"), 0.0, 1.0, false, 0.0, false, false);
-    }
+        ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), true);
+    //}
+    stance_head(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Start_Main as *const () as _))
 }
 
@@ -17,12 +19,13 @@ unsafe extern "C" fn attack_s4_start_main(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_s4(fighter, true.into());
+    stance_head(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4_Main as *const () as _))
 }
 
 unsafe extern "C" fn sub_attack_s4(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    let hash = if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 { hash40("attack_s4_s_2") } else { hash40("attack_s4_s") };
-    WorkModule::set_int64(fighter.module_accessor, hash as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
+    //let hash = if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 { hash40("attack_s4_s_2") } else { hash40("attack_s4_s") };
+    WorkModule::set_int64(fighter.module_accessor, hash40("attack_s4_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
 }
 
@@ -41,13 +44,34 @@ unsafe extern "C" fn attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CV
     WorkModule::set_int(fighter.module_accessor, ratio as i32, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_LOOP_TOTAL_FRAME);
     let keep_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_s4_hold_keep_frame"), 0);
     WorkModule::set_int(fighter.module_accessor, keep_frame, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_HOLD_KEEP_FRAME);
-    if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_hold_2"), 0.0, s4_hold_frame as f32 / ratio, false, 0.0, false, false);
-    }
-    else {
+    //if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 {
+    //    MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_hold_2"), 0.0, s4_hold_frame as f32 / ratio, false, 0.0, false, false);
+    //}
+    //else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4_hold"), 0.0, s4_hold_frame as f32 / ratio, false, 0.0, false, false);
-    }
+    //}
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Hold_main as *const () as _))
+}
+
+unsafe fn stance_head(fighter: &mut L2CFighterCommon) {
+    match VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) {
+        0 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), false);
+        },
+        1 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), false);
+        },
+        2 => {
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heads"), true);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("headb"), false);
+            ModelModule::set_mesh_visibility(fighter.boma(), Hash40::new("heada"), false);
+        },
+        _ => {}
+    }
 }
 
 pub fn install(agent: &mut Agent) {

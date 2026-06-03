@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -124,6 +124,9 @@ attack_air_lw:
 attack_100_end:
   extra:
     cancel_frame: 42
+special_s_end:
+  extra:
+    cancel_frame: 20
 special_s_jump_end:
   extra:
     cancel_frame: 15
@@ -133,6 +136,9 @@ item_light_throw_f:
 special_ink_charge_end:
   extra:
     cancel_frame: 30
+special_air_s_end:
+  extra:
+    cancel_frame: 20
 special_air_s_jump_end:
   extra:
     cancel_frame: 45

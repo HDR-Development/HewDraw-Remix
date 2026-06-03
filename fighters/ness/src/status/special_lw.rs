@@ -27,6 +27,7 @@ pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CV
             speed_y.min(0.0) * 0.33
         );
     }
+    VarModule::off_flag(fighter.battle_object, vars::ness::instance::SPECIAL_LW_DISABLE_JC);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter)
 }
 

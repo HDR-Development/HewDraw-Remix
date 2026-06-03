@@ -38,6 +38,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
     } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 7.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_LAG);
             ControlModule::reset_trigger(boma);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
     }

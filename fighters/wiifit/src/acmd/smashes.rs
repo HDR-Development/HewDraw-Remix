@@ -37,8 +37,10 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 6, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
-        //EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 10, 2, 0, 0, 0, 1.1, true);
-        //LAST_EFFECT_SET_RATE(agent, 0.8);
+        if VarModule::is_flag(agent.battle_object, vars::wiifit::instance::SPECIAL_LW_EFFECT_ON) {
+            EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 10, 2, 0, 0, 0, 1.1, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
     }
 }
 
@@ -63,7 +65,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 90, 97, 0, 31, 2.8, 0.0, 21.5, -0.3, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 90, 88, 0, 31, 2.8, 0.0, 21.5, -0.3, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
         ATTACK(agent, 1, 0, Hash40::new("top"), 15.0, 90, 102, 0, 31, 4.5, 0.0, 21.5, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(agent, 2, 0, Hash40::new("top"), 15.0, 90, 102, 0, 31, 3.0, 0.0, 16.5, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(agent, 3, 0, Hash40::new("top"), 15.0, 90, 102, 0, 31, 3.5, 0.0, 10.0, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -97,11 +99,13 @@ unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 20, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    // frame(lua_state, 14.0);
-    // if is_excute(agent) {
-    //     EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 22, -0.3, 0, 0, 0, 0.8, true);
-    //     LAST_EFFECT_SET_RATE(agent, 0.8);
-    // }
+    if VarModule::is_flag(agent.battle_object, vars::wiifit::instance::SPECIAL_LW_EFFECT_ON) {
+        frame(lua_state, 14.0);
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 22, -0.3, 0, 0, 0, 0.8, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
+    }
 }
 
 unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
@@ -137,21 +141,29 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 16.0);
-    if is_excute(agent) {
-        FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        // EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 5, -3, 0, 0, 0, 1, true);
-        // LAST_EFFECT_SET_RATE(agent, 0.8);
-        // EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 5, 5, 180, 0, 0, 1, true);
-        // LAST_EFFECT_SET_RATE(agent, 0.8);
+    if VarModule::is_flag(agent.battle_object, vars::wiifit::instance::SPECIAL_LW_EFFECT_ON) {
+        frame(lua_state, 16.0);
+        if is_excute(agent) {
+            FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 5, -3, 0, 0, 0, 1, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+            EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 5, 5, 180, 0, 0, 1, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
+        frame(lua_state, 18.0);
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 5, 11, 0, 0, 0, 0.75, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+            EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 5, -9, 0, 0, 0, 0.75, true);
+            LAST_EFFECT_SET_RATE(agent, 0.8);
+        }
     }
-    // frame(lua_state, 18.0);
-    // if is_excute(agent) {
-    //     EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 5, 11, 0, 0, 0, 0.75, true);
-    //     LAST_EFFECT_SET_RATE(agent, 0.8);
-    //     EFFECT_FOLLOW(agent, Hash40::new("wiifit_heading_shot"), Hash40::new("top"), 2, 5, -9, 0, 0, 0, 0.75, true);
-    //     LAST_EFFECT_SET_RATE(agent, 0.8);
-    // }
+    else {
+        frame(lua_state, 16.0);
+        if is_excute(agent) {
+            FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
 }
 
 pub fn install(agent: &mut Agent) {

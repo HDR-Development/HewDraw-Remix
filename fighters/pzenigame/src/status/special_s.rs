@@ -118,8 +118,8 @@ unsafe extern "C" fn special_s_loop_main_loop(fighter: &mut L2CFighterCommon) ->
     }
     let limit_frame_min = fighter.get_param_int("param_special_s", "limit_frame_min");
     if counter >= limit_frame_min {
-        let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
-        if InputModule::get_trigger_count(fighter.battle_object, Buttons::Guard) < buffer
+        if fighter.is_cat_flag(Cat2::CommonGuard)
+        || fighter.is_cat_flag(Cat1::AttackN)
         || fighter.is_cat_flag(Cat1::SpecialAny) {
             fighter.change_status(FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END.into(), true.into());
             return 0.into();

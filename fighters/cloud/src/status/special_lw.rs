@@ -1,5 +1,7 @@
 use super::*;
 
+// FIGHTER_STATUS_KIND_SPECIAL_LW
+
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_CLOUD_INSTANCE_WORK_ID_FLAG_LIMIT_BREAK) {
         StatusModule::init_settings(
@@ -57,6 +59,17 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     return 0.into();
 }
 
+// FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE
+
+unsafe extern "C" fn special_lw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {    
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        VarModule::on_flag(fighter.battle_object, vars::cloud::instance::DISABLE_SPECIAL_LW);
+    }
+
+    smashline::original_status(Main, fighter, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
+    agent.status(Main, *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE, special_lw_charge_main);
 }

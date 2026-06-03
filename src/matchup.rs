@@ -1,9 +1,10 @@
 mod containers;
 mod types;
 
+use self::types::FilesystemInfo;
 use skyline::hooks::InlineCtx;
 use smash_arc::SearchLookup;
-use self::types::FilesystemInfo;
+use utils::STAGE_MANAGER;
 
 fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     unsafe {
@@ -25,6 +26,8 @@ unsafe fn get_filepath_index_by_hash40(index: &mut u32, hash40: u64);
 #[skyline::hook(offset = 0x1ee9edc, inline)]
 unsafe fn among_us_baby(ctx: &InlineCtx) {
     let layout_view = ctx.registers[0].x();
+    let mut mgr = STAGE_MANAGER.lock().unwrap();
+    let stage_loading = mgr.stage_loading.unwrap_or(false);
 
     let pane = get_pane_from_layout(layout_view, "perry\0").unwrap();
     let mut index = 0u32;
@@ -37,7 +40,11 @@ unsafe fn among_us_baby(ctx: &InlineCtx) {
         hash40::hash40(".bntx")
     };
 
-    let stage_hash = hash40::Hash40(STAGE_HASH).concat(file_suffix);
+    let mut stage_hash = if stage_loading {
+        hash40::hash40("ui/replace_patch/stage/stage_2/stage_2_randomnormal.bntx")
+     } else {
+        hash40::Hash40(STAGE_HASH).concat(file_suffix)
+     };
 
     get_filepath_index_by_hash40(&mut index, stage_hash.0);
     replace_texture(pane, &index);
@@ -88,6 +95,8 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     } else {
         STAGE_HASH = hash40::hash40(root_path).concat(file_name).0;
     }
+    let mut mgr = STAGE_MANAGER.lock().unwrap();
+    mgr.stage_loading = Some(false);
 }
 
 static mut SHOULD_PLAY: bool = false;

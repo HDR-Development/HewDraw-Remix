@@ -2,9 +2,11 @@ use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 use crate::ext::*;
-// use std::arch::asm;
+use std::sync::atomic::AtomicBool;
 use smash::phx::Vector2f;
-// use crate::se;
+
+// Flag for if salty quit was triggered. Reset every scene transition.
+pub static MATCH_EXITING: AtomicBool = AtomicBool::new(false);
 
 #[macro_export]
 macro_rules! dump_trace {
@@ -347,4 +349,33 @@ pub unsafe extern "C" fn nlerp(min: f32, max: f32, power: f32, ratio: f32) -> f3
     if ratio >= 1.0 { return max; }
     let nlerp = (ratio.powf(power) * (max - min) + min).clamp(min, max);
     return nlerp;
+}
+
+pub unsafe extern "C" fn get_time_to_fall_distance(distance: f32, air_accel_y: f32, air_speed_y_stable: f32, start_speed_y: f32) -> f32 {
+    let distance = -distance.abs();
+    let air_accel_y = -air_accel_y.abs();
+    let air_speed_y_stable = -air_speed_y_stable.abs();
+
+    if start_speed_y <= air_speed_y_stable {
+        return distance / air_speed_y_stable;
+    }
+
+    // Calculates the distance required to reach max fall speed from your starting speed
+    // Using the kinematic formula: v_final^2 = v_initial^2 + 2ad
+    // d = (v_f^2 - v_i^2) / 2a
+    let dist_to_stable = (air_speed_y_stable.powi(2) - start_speed_y.powi(2)) / (2.0 * air_accel_y);
+
+    if dist_to_stable < distance {
+        // Case 1: We hit target distance before reaching max fall speed
+        // Using standard kinematics: d = v_i*t + 0.5*a*t^2
+        // Solved for t via Quadratic Formula: t = (-v_i + sqrt(v_i^2 + 2ad)) / a
+        (-start_speed_y - (start_speed_y.powi(2) - 2.0 * air_accel_y * -distance).sqrt()) / air_accel_y
+    } else {
+        // Case 2: We reach max fall speed, then hit target distance
+        let time_to_stable = (air_speed_y_stable - start_speed_y) / air_accel_y;
+        let remaining_dist = distance - dist_to_stable;
+        let remaining_time = remaining_dist / air_speed_y_stable;
+
+        time_to_stable + remaining_time
+    }
 }

@@ -32,6 +32,14 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
+pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter);
+    let precede = ParamModule::get_int(fighter.battle_object, ParamType::Common, "precede") as u32;
+    InputModule::set_command_life_count_max(fighter.battle_object, precede);
+
+    return ret;
+}
+
 pub unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PACMAN_STATUS_SPECIAL_N_WORK_INT_MAX_HOLD_COUNT);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -203,5 +211,6 @@ pub unsafe extern "C" fn special_n_hold_substatus(fighter: &mut L2CFighterCommon
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
     agent.status(Main, *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_HOLD, special_n_hold_main);
 }

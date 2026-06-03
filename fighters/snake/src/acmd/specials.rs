@@ -104,7 +104,7 @@ unsafe extern "C" fn effect_specialsstart(agent : &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 10, 0, 0, 0, 0, 0.4, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {

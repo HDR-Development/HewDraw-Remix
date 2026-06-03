@@ -48,7 +48,23 @@ unsafe extern "C" fn shield_break_fly_main(fighter: &mut L2CFighterCommon) -> L2
     MeterModule::set_meter_cap(fighter.object(), 3);
     MeterModule::set_meter_per_level(fighter.object(), ParamModule::get_float(fighter.battle_object, ParamType::Agent, "meter.damage_per_level"));
     VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
-    PLAY_SE(fighter, Hash40::new("se_common_spirits_critical_l_tail"));
+    EffectModule::req_follow(
+        fighter.module_accessor,
+        Hash40::new("sys_flash"),
+        Hash40::new("bust"),
+        &Vector3f::zero(),
+        &Vector3f::zero(),
+        2.0,
+        true,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false
+    );
+    LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.37, 0.9);
     smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY)(fighter)
 }
 

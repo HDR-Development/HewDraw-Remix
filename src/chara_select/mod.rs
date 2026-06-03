@@ -1,8 +1,9 @@
 use std::{
     collections::HashMap,
+    ffi::c_char,
     fs::*,
     path::{ Path, PathBuf },
-    sync::{ LazyLock, RwLock }
+    sync::{ LazyLock, RwLock, atomic::Ordering }
 };
 use skyline::hooks::InlineCtx;
 use smash2::{
@@ -11,6 +12,8 @@ use smash2::{
 };
 use serde::Deserialize;
 use utils::modules::TourneyConfig;
+use utils::consts::{melee_mode, smash_mode};
+use crate::CSS_FIRST;
 
 mod layout;
 mod random;
@@ -218,12 +221,99 @@ unsafe fn update_player_tag(arg1: u64, tag_index: *const u8) {
     call_original!(arg1, tag_index);
 }
 
+#[skyline::hook(offset = 0x1a2d440, inline)]
+unsafe fn css_advance_sfx_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    // 0x18d72a665a = hash40("se_system_amiibo_write_2") // original sound
+    // 0x13d3b19adc = hash40("se_system_r2f_fixed") // original sound
+    let param_1 = ctx.registers[0].x() as *mut u32;
+    let sfx = if CSS_FIRST { 0x18d72a665a as u64 } else { 0x13d3b19adc as u64 };
+    play_se(param_1, sfx);
+}
+
+#[skyline::hook(offset = 0x1a2d594, inline)]
+unsafe fn css_advance_sfx2_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    if !CSS_FIRST {
+        // 0x17a3061361 = hash40("se_audience_suddendeath")
+        let sfx = 0x17a3061361 as u64;
+        let param_1 = ctx.registers[0].x() as *mut u32;
+        play_se(param_1, sfx);
+    }
+}
+
+#[skyline::from_offset(0x2407280)]
+unsafe fn play_se(
+    param_1: *mut u32,
+    sfx_hash_id: u64);
+
+// Tells any callers to this function that no echos are available
+#[skyline::hook(offset = 0x1a1fa30)]
+unsafe fn echo_swap_hook(
+    _param_1: i32, _param_2: u64, _param_3: u64, _param_4: u64,
+    _param_5: u64, _param_6: u64, _param_7: u64, _param_8: u64
+) -> u64 {
+    1
+}
+
+// Kills the "Rules" button on the CSS when the CSS is first because it
+// actually goes all the way to the main menu
+#[skyline::hook(offset = 0x3771220)]
+unsafe fn register_panel_button(
+    panel: *mut u64,
+    event_code: i32,
+    name: *const c_char,
+    arg4: u64,
+    arg5: u64,
+    arg6: u64,
+    arg7: u64,
+    arg8: u64,
+) {
+    if CSS_FIRST && !name.is_null() && skyline::from_c_str(name as *const u8) == "set_btn_03_rule" {
+        return;
+    }
+    call_original!(panel, event_code, name, arg4, arg5, arg6, arg7, arg8);
+}
+
+#[skyline::hook(offset = 0x1a2fecc, inline)]
+fn override_min_players(ctx: &mut InlineCtx) {
+    let param_1 = ctx.registers[24].x() as *const u8;
+    let game_mode = unsafe { *(param_1.add(0x16c) as *const u32) } as i32;
+    let ruleset = unsafe { *(param_1.add(0x158) as *const u8) } as i32;
+
+    // Set rule type for 1P mode
+    utils::one_player::IS_RULE_TIME.store(ruleset == smash_mode::TIME, Ordering::Relaxed);
+
+    // set minimum required "ready" players to 1
+    if game_mode == melee_mode::SMASH {
+        ctx.registers[11].set_w(1);
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
-        update_player_tag
+        update_player_tag,
+        css_advance_sfx_hook,
+        css_advance_sfx2_hook,
+        echo_swap_hook,
+        register_panel_button,
+        override_min_players,
     );
+
+    // Prevent the game from playing any CSS advance sound effects by default
+    skyline::patching::Patch::in_text(0x1a2d43c).nop();
+    skyline::patching::Patch::in_text(0x1a2d590).nop();
+
 
     layout::install();
     random::install();
     player_port::install();
+
+    // These patches are required to "undo" a stacked CSS
+
+    // 1. Force the CSS to always use the "separate" fighter list instead of "stacked".
+    // This fixes the echo portraits on the character cards.
+    skyline::patching::Patch::in_text(0x1a20260).data(0x52800028u32);
+
+    // 2. Force the singleton character vector builder (0x1a0a3e0) to always store separate=1
+    // into inner_data+0x258. This fixes the miis.
+    skyline::patching::Patch::in_text(0x1a0a410).data(0x52800028u32);
 }

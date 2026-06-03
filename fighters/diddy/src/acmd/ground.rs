@@ -10,6 +10,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("armr"), 3.0, 80, 100, 20, 0, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         // Jab lock hitbox
         ATTACK(agent, 3, 0, Hash40::new("top"), 3.0, 361, 20, 0, 20, 2.5, 0.0, 3.5, 6.5, Some(0.0), Some(3.5), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_down_only(boma, 3, true);
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {
@@ -31,6 +32,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
         ATTACK(agent, 2, 0, Hash40::new("arml"), 3.0, 85, 100, 20, 0, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         // Jab lock hitbox
         ATTACK(agent, 3, 0, Hash40::new("top"), 3.0, 361, 20, 0, 20, 2.5, 0.0, 3.5, 6.5, Some(0.0), Some(3.5), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_down_only(boma, 3, true);
     }
     wait(lua_state, 2.0);
     if is_excute(agent) {

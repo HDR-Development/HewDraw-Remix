@@ -4,35 +4,32 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
     }
     frame(lua_state, 16.0);
+    FT_MOTION_RATE_RANGE(agent, 16.0, 31.0, 13.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 2.0, 0.0, 12.0, 9.0, Some(0.0), Some(4.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_search"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
+        hitbox!(agent, { extends: BASE_SEARCHBOX, id: 0, bone: "top", size: 2.0, x: 0.0, y: 12.0, z: 9.0, x2: 0.0, y2: 4.0, z2: 9.0, facing: LrCheck::F, });
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF);
     }
     frame(lua_state, 31.0);
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_GRAVITY_ONOFF);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_GRAVITY_ONOFF);
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 34.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MTRANS_AIR_UNABLE);
         AttackModule::clear_all(boma);
-        WorkModule::off_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
-        // WorkModule::off_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MTRANS_AIR_UNABLE);
+        agent.off_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
+        // agent.off_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF);
     }
 }
 
@@ -44,36 +41,44 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 40, 80, 0, 57, 6.0, 0.0, 4.0, 9.0, Some(0.0), Some(10.0), Some(9.0), 1.15, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 26, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
+        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "top", dmg: 16.0, angle: 40, kbg: 80, bkb: 57, size: 6.0, x: 0.0, y: 4.0, z: 9.0, x2: 0.0, y2: 10.0, z2: 9.0, hitlag: 1.15, clank:SetOff::Thru, facing: LrCheck::F, shield_dmg: ShieldDamage::Add(16.0), effect: "collision_attr_elec", sound_level: SoundLevel::L, hit_sound: CollisionSound::Elec, region: AttackRegion::Punch, });
     }
     frame(lua_state, 5.0);
+    FT_MOTION_RATE_RANGE(agent, 5.0, 16.0, 5.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
+    frame(lua_state, 16.0);
+    FT_MOTION_RATE_RANGE(agent, 16.0, 52.0, 30.0);
+    frame(lua_state, 52.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 15.0);
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_s");
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_MOVE_FRONT);
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 20.0); // F16
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 2.0, 0.0, 14.0, 9.0, Some(0.0), Some(4.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_search"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
+        hitbox!(agent, { extends: BASE_SEARCHBOX, id: 0, bone: "top", size: 2.0, x: 0.0, y: 14.0, z: 9.0, x2: 0.0, y2: 4.0, z2: 9.0, facing: LrCheck::F, });
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
     }
-    frame(lua_state, 31.0);
+    frame(lua_state, 33.0);
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_GRAVITY_ONOFF);
+        agent.on_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_GRAVITY_ONOFF);
     }
     frame(lua_state, 36.0);
     if is_excute(agent) {
-        WorkModule::off_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
+        agent.off_flag(*FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT_CHECK_ONOFF);
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
         AttackModule::clear_all(boma);
     }
@@ -86,13 +91,17 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 15.0, 23.0);
     if is_excute(agent) {
         boma.select_cliff_hangdata_from_name("special_hi_start");
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 4.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
@@ -100,11 +109,11 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("bust"), 14.0, 75, 83, 0, 43, 5.0, 0.0, -3.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BODY);
+        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "bust", dmg: 14.0, angle: 75, kbg: 73, bkb: 63, size: 4.0, x: 0.0, y: -3.0, z: -1.0, facing: LrCheck::F, effect: "collision_attr_magic", sound_level: SoundLevel::L, hit_sound: CollisionSound::Magic, region: AttackRegion::Body, });
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 22.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("bust"), 8.0, 75, 73, 0, 58, 5.0, 0.0, -3.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BODY);
+        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "bust", dmg: 8.0, angle: 75, kbg: 73, bkb: 73, size: 3.5, x: 0.0, y: -3.0, z: -1.0, facing: LrCheck::F, effect: "collision_attr_magic", sound_level: SoundLevel::M, hit_sound: CollisionSound::Magic, region: AttackRegion::Body, });
     }
     frame(lua_state, 43.0);
     if is_excute(agent) {
@@ -144,7 +153,7 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 6.9);
     FT_MOTION_RATE_RANGE(agent, 6.9, 7.0, 3.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 70, 85, 0, 77, 7.5, 0.0, 7.0, -1.5, Some(0.0), Some(7.0), Some(1.5), 0.72, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "top", dmg: 5.0, angle: 70, kbg: 85, bkb: 77, size: 7.5, x: 0.0, y: 7.0, z: -1.5, x2: 0.0, y2: 7.0, z2: 1.5, hitlag: 0.72, clank: SetOff::Off, effect: "collision_attr_magic", sound_level: SoundLevel::M, hit_sound: CollisionSound::Magic, region: AttackRegion::None, });
     }
     frame(lua_state, 6.933);
     if is_excute(agent) {

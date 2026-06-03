@@ -97,7 +97,7 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
     WEAPON_KIND_SZEROSUIT_WHIP2,
     WEAPON_KIND_SAMUS_GBEAM,
     WEAPON_KIND_SAMUSD_GBEAM,
-    WEAPON_KIND_SHIZUE_FISHINGLINE,
+    WEAPON_KIND_SHIZUE_FISHINGROD,
     WEAPON_KIND_TOONLINK_HOOKSHOT,
     WEAPON_KIND_YOUNGLINK_HOOKSHOT,
     WEAPON_KIND_JACK_DOYLE,
@@ -146,7 +146,9 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
             && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC
-            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind)) )
+            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_SHIZUE
+            && [*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_HIT, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_THROW].contains(&status_kind)) )
     {
         return true;
     }
@@ -719,6 +721,13 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
 
     if (*boma).is_fighter() {
         JostleModule::set_overlap_rate_mul(boma, 1.0);
+
+        let inflict_status = AttackModule::get_inflict_status(boma);
+        VarModule::set_int(
+            (*boma).object(),
+            vars::common::instance::PREV_STATUS_INFLICT_STATUS,
+            inflict_status
+        );
     }
 
     if (*boma).is_fighter()
@@ -800,6 +809,48 @@ unsafe fn phantom_hit_check(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[9].set_s(phantom_threshold)
 }
 
+// Runs within FighterMotionModuleImpl::get_cancel_frame
+// inside the special block for "escape_air" motion kind
+#[skyline::hook(offset = 0x6e1ff8, inline)]
+unsafe fn get_escape_air_cancel_frame(ctx: &mut skyline::hooks::InlineCtx) {
+    let motion_module = ctx.registers[20].x();
+    let boma = *(motion_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let cancel_frame = VarModule::get_int((*boma).object(), vars::common::status::ESCAPE_AIR_CANCEL_FRAME);
+
+    *(ctx.registers[8].x() as *mut f32).add(0x60 / 4) = cancel_frame as f32;
+}
+
+// Runs within FighterMotionModuleImpl::get_cancel_frame
+// inside the special block for "escape_air_slide" motion kind
+#[skyline::hook(offset = 0x6e1fa0, inline)]
+unsafe fn get_escape_air_slide_cancel_frame(ctx: &mut skyline::hooks::InlineCtx) {
+    let motion_module = ctx.registers[20].x();
+    let boma = *(motion_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let cancel_frame = VarModule::get_int((*boma).object(), vars::common::status::ESCAPE_AIR_CANCEL_FRAME);
+
+    *(ctx.registers[8].x() as *mut f32).add(0x94 / 4) = cancel_frame as f32;
+}
+
+// This runs where the out-of-jumps smoke effect is called
+// AKA sys_falling_smoke
+#[skyline::hook(offset = 0x6188ec, inline)]
+unsafe fn req_sys_falling_smoke(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = ctx.registers[19].x() as *mut Fighter;
+    let object = &mut (*fighter).battle_object as *mut BattleObject;
+    let entry_stand_scale = WorkModule::get_param_float((*object).module_accessor, hash40("entry_stand_scale"), 0);
+    let kind = (*object).kind as i32;
+    let smoke_scale: f32 =
+    if kind == *FIGHTER_KIND_POPO
+    || kind == *FIGHTER_KIND_NANA {
+        entry_stand_scale
+    } else {
+        entry_stand_scale * 1.5
+    };
+
+    // Increase the scale of sys_falling_smoke
+    ctx.registers_f[0].set_s(smoke_scale);
+}
+
 pub fn install() {
     energy::install();
     effect::install();
@@ -864,6 +915,9 @@ pub fn install() {
         status_module__change_status,
         change_elec_hitlag_for_attacker,
         set_uniform_buffer,
-        phantom_hit_check
+        phantom_hit_check,
+        get_escape_air_cancel_frame,
+        get_escape_air_slide_cancel_frame,
+        req_sys_falling_smoke
     );
 }

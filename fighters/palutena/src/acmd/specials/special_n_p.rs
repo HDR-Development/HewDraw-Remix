@@ -17,15 +17,15 @@ unsafe extern "C" fn effect_specialnp(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.025, 0.9);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.025, 0.9);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, -1, 0, -90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.75, 0.01, 0.35);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight_grey"), Hash40::new("top"), -1, 21, -1, 0, -90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.25, 0.025, 0.9);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_atk1"), Hash40::new("top"), 0, 40, 6, 0, 0, 0, 1.25, true);
         LAST_EFFECT_SET_COLOR(agent, 1.875, 0.025, 0.875);
         LAST_EFFECT_SET_RATE(agent, 0.8);
@@ -36,8 +36,8 @@ unsafe extern "C" fn effect_specialnp(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace_grey"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2_grey"), false, false);
     }
 }
 

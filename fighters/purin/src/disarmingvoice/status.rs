@@ -135,6 +135,15 @@ unsafe extern "C" fn shoot_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
         weapon.pop_lua_stack(1);
     }
+    // hit vfx workaround
+    if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        EffectModule::req_on_joint(weapon.module_accessor, Hash40::new("sys_hit_magic"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.3, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
+        EffectModule::detach_kind(weapon.module_accessor, Hash40::new("sys_hit_magic"), 0);
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    }
+    if AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    }
     return false.into();
 }
 

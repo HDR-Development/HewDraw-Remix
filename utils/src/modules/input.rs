@@ -417,6 +417,21 @@ impl InputModule {
         return cats[category as usize].lifetimes_mut()[flag.trailing_zeros() as usize];
     }
 
+    #[export_name = "InputModule__set_command_life"]
+    pub fn set_command_life(object: *mut BattleObject, category: i32, flag: i32, life: u8) {
+        if category == 4 {
+            require_input_module!(object).hdr_cat.valid_frames[(flag.trailing_zeros() as usize)] = life;
+            return;
+        }
+
+        let cats = unsafe {
+            let control_module = *((*object).module_accessor as *const u64).add(0x48 / 8);
+            std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
+        };
+        cats[category as usize].lifetimes_mut()[flag.trailing_zeros() as usize] = life;
+        return
+    }
+
     /// Sets the global tap buffer lifetime
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
@@ -647,8 +662,20 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
 
     // Parry cat flag
     let parry_input = unsafe {
-        ControlModule::check_button_on((*input_module.owner).module_accessor, 0x3) // CONTROL_PAD_BUTTON_GUARD
-        && triggered_buttons.intersects(Buttons::Parry)
+        let mut parry_input = ControlModule::check_button_on((*input_module.owner).module_accessor, 0x3) // CONTROL_PAD_BUTTON_GUARD
+        && triggered_buttons.intersects(Buttons::Parry);
+
+        // guard always triggers parry for RoA mode
+        match super::super::game_modes::get_custom_mode() {
+            Some(modes) => {
+                if modes.contains(&utils_dyn::game_modes::CustomMode::RivalsOfAetherMode) {
+                    parry_input = parry_input || triggered_buttons.intersects(Buttons::Guard);
+                }
+            },
+            _ => {}
+        }
+
+        parry_input
     };
 
     let parry_offset = CatHdr::Parry.bits().trailing_zeros() as usize;

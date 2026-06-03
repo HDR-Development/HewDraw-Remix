@@ -5,14 +5,13 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 1.2);
-    frame(lua_state, 5.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 5.0, 0.0, Some(0.0), Some(5.0), Some(9.9), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 5.0, 4.5, Some(0.0), Some(5.0), Some(9.9), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -228,7 +227,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         ModelModule::set_joint_translate(boma, Hash40::new("throw"), &Vector3f{x: 0.0, y: -5.0, z: -9.912}, false, false);
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         let opponent_boma = agent.get_grabbed_opponent_boma();
-        VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
+        VarModule::on_flag(opponent_boma.object(), vars::common::instance::FORCE_TUMBLE_NO_BOUNCE);
     }
     frame(lua_state, 41.0);
     FT_MOTION_RATE(agent, 0.5);

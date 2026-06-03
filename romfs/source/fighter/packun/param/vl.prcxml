@@ -70,4 +70,15 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="tilt_ground_degree_speed">4.0</float>
+      <float hash="stalk_length_min">15.0</float>
+      <float hash="attack_power_min">10.0</float>
+      <float hash="attack_power_max">20.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>

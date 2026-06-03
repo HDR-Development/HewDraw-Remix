@@ -5,14 +5,13 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 0.875);
-    frame(lua_state, 7.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 6.0, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(15.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 6.0, 0.0, 7.0, 6.0, Some(0.0), Some(7.0), Some(15.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 3.0);
@@ -161,7 +160,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 2.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 15.0);
-    FT_MOTION_RATE_RANGE(agent, 15.0, 35.0, 10.0);
+    FT_MOTION_RATE_RANGE(agent, 15.0, 35.0, 12.0);
     frame(lua_state, 35.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 40.0);
@@ -170,7 +169,29 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
         let opponent_boma = agent.get_grabbed_opponent_boma();
-        VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
+        VarModule::on_flag(opponent_boma.object(), vars::common::instance::FORCE_TUMBLE_NO_BOUNCE);
+    }
+}
+
+unsafe extern "C" fn effect_throwlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(agent, 0.8);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 21, 12, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(agent) {
+        LANDING_EFFECT_FLIP(agent, Hash40::new("sys_down_smoke"), Hash40::new("sys_dash_smoke"), Hash40::new("top"), 12, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 12, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -271,6 +292,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
 
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
+    agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
 
     agent.acmd("game_specialnspitf", game_specialnspitf, Priority::Low);
     agent.acmd("game_specialairnspitf", game_specialnspitf, Priority::Low);

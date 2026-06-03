@@ -115,7 +115,7 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_shulk_sword_hdr"), Hash40::new("tex_shulk_sword2"), 10, Hash40::new("haver"), 0.0, 2.0, 1.1, Hash40::new("haver"), 0.0, 27.0, 1.1, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.05);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_shulk_sword_hdr"), Hash40::new("tex_shulk_sword2"), 8, Hash40::new("haver"), 0, 3, 0.9, Hash40::new("haver"), 0, 19, 1.1, true, Hash40::new("null"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {

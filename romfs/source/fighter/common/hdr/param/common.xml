@@ -33,11 +33,10 @@
     <float hash="pass_stick_x">0.3</float>
     <float hash="moonwalk_disable_dashback_stick_y">-0.5</float>
     <float hash="wavedash_speed_mul">0.8945</float>
-    <float hash="dashback_stick_x">-0.5673</float>
+    <float hash="dashback_stick_x">-0.6</float>
     <float hash="dash_end_speed_mul">0.225</float>
     <float hash="escape_air_slide_speed_mul">0.9</float>
     <int hash="escape_air_slide_fall_frame">28</int>
-    <int hash="tether_trump_landing_lag">30</int>
     <float hash="guard_off_motion_start_frame">3</float>
     <float hash="guard_off_parry_faf">37</float>
     <int hash="pummel_max_cancel_frame">8</int>
@@ -60,7 +59,15 @@
         <float hash="min_speed">2.0</float>
         <float hash="max_speed">4.5</float>
     </struct>
-    <float hash="fall_special_cliff_hangdata_p1x_reduction_dist">4.0</float>
-    <int hash="precede">3</int>
+    <int hash="precede">5</int>
     <int hash="guard_off_pass_valid_frame">6</int>
+    <float hash="escape_air_enable_cliff_catch_fall_distance">17.0</float>
+    <float hash="escape_air_enable_cancel_fall_distance">35.0</float>
+    <float hash="bind_end_frame">15.0</float>
+    <float hash="cliff_robbed_speed">2.5</float>
+    <float hash="cliff_robbed_angle">80.0</float>
+    <float hash="cliff_robbed_correction_max">25.0</float>
+    <int hash="cliff_robbed_landing_frame">24</int>
+    <int hash="teleport_jump_aerial_refresh_frame">3</int>
+    <int hash="float_jump_aerial_refresh_frame">3</int>
 </struct>

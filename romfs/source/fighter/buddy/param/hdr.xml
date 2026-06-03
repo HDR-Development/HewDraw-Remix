@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_s">
+      <float hash="shield_hit_end_speed_x">1.7</float>
+    </struct>
+</struct>

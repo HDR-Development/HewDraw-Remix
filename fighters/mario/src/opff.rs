@@ -7,6 +7,21 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
+// enables mario to cancel dash into long jump, similarly to how common dash can be cancelled into side special
+unsafe fn dash_dspecial_cancel(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
+        return;
+    }
+    if StatusModule::is_changing(fighter.module_accessor) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+        return;
+    }
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_RUN_BRAKE 
+    && 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+    }
+}
+
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -21,6 +36,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    dash_dspecial_cancel(fighter);
     fastfall_specials(fighter);
 }
 

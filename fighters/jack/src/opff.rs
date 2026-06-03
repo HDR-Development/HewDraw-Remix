@@ -8,9 +8,8 @@ unsafe fn wings_of_rebellion_cancel(fighter: &mut L2CFighterCommon) {
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END
     ])
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY)
     && !fighter.is_in_hitlag() {
         if fighter.check_aerial_cancel()
         || fighter.check_airdodge_cancel() {
@@ -18,28 +17,6 @@ unsafe fn wings_of_rebellion_cancel(fighter: &mut L2CFighterCommon) {
             KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: 0.7, y: 0.7, z: 0.7}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             return;
         }
-    }
-}
-
-// Joker Aerial Grappling Hook stall
-unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("special_air_hi_throw")) {
-        if boma.motion_frame() < 37.0 {
-            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
-        else {
-            KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
-    }
-}
-
-// Joker Grappling Hook Spike Cancel
-unsafe fn grappling_hook_spike_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) 
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
-    && !boma.is_in_hitlag() {
-        MotionModule::set_rate(boma, 2.0);
     }
 }
 
@@ -72,8 +49,7 @@ unsafe fn arsene_dtilt_motion_change(fighter: &mut L2CFighterCommon) {
 unsafe fn training_mode_full_meter(fighter: &mut L2CFighterCommon) {
     if app::smashball::is_training_mode()
     && fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL)
-    && fighter.is_button_on(Buttons::Guard)
-    {
+    && fighter.is_button_on(Buttons::Guard) {
         app::FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, app::FighterEntryID(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)), 100.0);
     }
 }
@@ -83,16 +59,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI_THROW,
         *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_HOLD,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_END,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ENDURE,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_COUNTER,
-        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_REFLECTOR
         ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
@@ -101,8 +68,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     wings_of_rebellion_cancel(fighter);
-    aerial_grappling_hook_stall(boma);
-    grappling_hook_spike_cancel(fighter, boma);
     fastfall_specials(fighter);
     damage_to_meter(fighter);
     arsene_dtilt_motion_change(fighter);

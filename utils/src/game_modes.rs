@@ -7,15 +7,14 @@ use std::str::FromStr;
 pub mod tag;
 
 lazy_static! {
-    static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
-    static ref GAME_MODE_JS: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.js").unwrap();
-    static ref TAG_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/tag.webp").unwrap();
-    static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
-    static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/hitfall.webp").unwrap();
-    static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/airdash.webp").unwrap();
-    static ref SMASH64_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/smash64.webp").unwrap();
-    static ref MAGICSERIES_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/magicseries.webp").unwrap();
-    static ref ELEMENT_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/element.webp").unwrap();
+    static ref COMMON_CSS: Vec<u8> = std::fs::read("mods:/ui/docs/common.css").unwrap();
+    static ref COMMON_JS: Vec<u8> = std::fs::read("mods:/ui/docs/common.js").unwrap();
+    static ref GAMEMODES_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
+    static ref GRIDMENU_JS: Vec<u8> = std::fs::read("mods:/ui/docs/gridmenu.js").unwrap();
+    static ref MENU_CSS: Vec<u8> = std::fs::read("mods:/ui/docs/menu.css").unwrap();
+    static ref TOGGLES_JS: Vec<u8> = std::fs::read("mods:/ui/docs/toggles.js").unwrap();
+    // Images
+    static ref PLACEHOLDER_PNG: Vec<u8> = std::fs::read("mods:/ui/docs/placeholder.png").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODES: Option<HashSet<CustomMode>> = None;
@@ -32,6 +31,13 @@ pub extern "Rust" fn is_custom_mode() -> bool {
 pub extern "Rust" fn get_custom_mode() -> Option<HashSet<CustomMode>> {
     unsafe {
         CURRENT_CUSTOM_MODES.clone()
+    }
+}
+
+#[export_name = "hdr__game_modes__reset_custom_mode"]
+pub extern "Rust" fn reset_custom_mode() {
+    unsafe {
+        CURRENT_CUSTOM_MODES = None;
     }
 }
 
@@ -82,18 +88,16 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
 }
 
 pub unsafe fn open_modes_session() {
-    let response = Webpage::new()
+    let response = skyline_web::Webpage::new()
         .htdocs_dir("contents")
-        .file("help/html/USen/gamemodes.html", GAME_MODE_HTML.as_slice())
-        .file("hdr/gamemodes.js", GAME_MODE_JS.as_slice())
-        .file("hdr/tag.webp", TAG_WEBP.as_slice())
-        .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
-        .file("hdr/hitfall.webp", HITFALL_WEBP.as_slice())
-        .file("hdr/airdash.webp", AIRDASH_WEBP.as_slice())
-        .file("hdr/smash64.webp", SMASH64_WEBP.as_slice())
-        .file("hdr/magicseries.webp", MAGICSERIES_WEBP.as_slice())
-        .file("hdr/element.webp", ELEMENT_WEBP.as_slice())
-        .start_page("help/html/USen/gamemodes.html")
+        .file("index.html", GAMEMODES_HTML.as_slice())
+        .file("menu.css", MENU_CSS.as_slice())
+        .file("gridmenu.js", GRIDMENU_JS.as_slice())
+        .file("common.js", COMMON_JS.as_slice())
+        .file("toggles.js", TOGGLES_JS.as_slice())
+        .file("placeholder.png", PLACEHOLDER_PNG.as_slice())
+        .background(skyline_web::Background::Default)
+        .boot_display(skyline_web::BootDisplay::Default)
         .open()
         .unwrap();
 
@@ -125,12 +129,13 @@ pub unsafe fn open_modes_session() {
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check the current match mode
-    let match_mode = utils_dyn::util::get_match_mode().0;
-
-    // 1 is regular smash, 45 is online arena match, 58 is local wireless
-    if match_mode != 1 
-    && match_mode != 45
-    && match_mode != 58 {
+    let match_mode: u32 = utils_dyn::util::get_match_mode().0;
+    if ![
+        1,  // regular smash
+        18, // training mode
+        45, // online arena smash
+        58  // local wireless smash
+    ].contains(&match_mode) {
         //println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
@@ -163,15 +168,6 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
                     tag::update();
                 }
             }
-            // if modes.contains(&CustomMode::TurboMode) {
-            //     turbo::update();
-            // }
-            // if modes.contains(&CustomMode::HitfallMode) {
-            //     hitfall::update();
-            // }
-            // if modes.contains(&CustomMode::AirdashMode) {
-            //     airdash::update();
-            // }
         },
         _ => {}
     }

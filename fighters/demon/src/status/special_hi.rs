@@ -97,7 +97,128 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+unsafe extern "C" fn special_hi_rise_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_SPECIAL_HI_FLAG_AIR);
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_SPECIAL_HI_FLAG_AIR);
+    }
+
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_hi"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+
+    GroundModule::set_passable_check(fighter.module_accessor, false);
+
+    fighter.sub_set_ground_correct_by_situation(true.into());
+
+    if let Some(target) = smashline::api::get_target_function("lua2cpp_demon.nrs", 0x24170) {
+        let special_hi_rise_helper: fn(&mut L2CFighterCommon, L2CValue) = std::mem::transmute(target);
+        special_hi_rise_helper(fighter, true.into());
+    }
+
+    fighter.main_shift(special_hi_rise_main_loop)
+}
+
+unsafe extern "C" fn special_hi_rise_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    //     if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+    //     || fighter.sub_air_check_fall_common().get_bool() {
+    //         return 0.into();
+    //     }
+    // }
+
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 0.into();
+    }
+
+    let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame"));
+    if fighter.global_table[CURRENT_FRAME].get_i32() > landing_frame {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            WorkModule::set_float(fighter.module_accessor, 24.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            return 0.into();
+        }
+    }
+    else {
+        StatusModule::set_keep_situation_air(fighter.module_accessor, true);
+    }
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        WorkModule::set_float(fighter.module_accessor, 24.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status(FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL.into(), false.into());
+        return 0.into();
+    }
+
+    fighter.sub_set_ground_correct_by_situation(true.into());
+
+    if let Some(target) = smashline::api::get_target_function("lua2cpp_demon.nrs", 0x24170) {
+        let special_hi_rise_helper: fn(&mut L2CFighterCommon, L2CValue) = std::mem::transmute(target);
+        special_hi_rise_helper(fighter, false.into());
+    }
+
+    0.into()
+}
+
+unsafe extern "C" fn special_hi_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_fall_special()
+}
+
+unsafe extern "C" fn special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    let stable_x = sv_kinetic_energy::get_stable_speed_x(fighter.lua_state_agent);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    let limit_x = sv_kinetic_energy::get_limit_speed_x(fighter.lua_state_agent);
+
+    let fall_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_speed_x_mul"));
+
+    let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+
+    sv_kinetic_energy!(
+        controller_set_accel_x_mul,
+        fighter,
+        air_accel_x_mul * fall_speed_x_mul
+    );
+
+    let fall_max_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_speed_x_mul"));
+
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        stable_x * fall_max_speed_x_mul,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        limit_x * fall_max_speed_x_mul,
+        0.0
+    );
+
+    fighter.status_fall_special()
+}
+
+unsafe extern "C" fn special_hi_fall_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_end_fall_special()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
+
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE, special_hi_rise_main);
+
+    agent.status(Pre, *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_pre);
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_main);
+    agent.status(End, *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL, special_hi_fall_end);
 }

@@ -12,8 +12,8 @@ unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CV
     if hold_frame >= hold_frame_m {
         fighter.on_flag(*FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_START_M);
     }
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
 
     fighter.main_shift(special_n_hold_main_loop)
@@ -41,7 +41,7 @@ unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) ->
             }
             if fighter.sub_check_jump_in_charging().get_bool() {
                 fighter.set_int(*FIGHTER_STATUS_KIND_JUMP_SQUAT, *FIGHTER_BRAVE_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
-                fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_CANCEL.into(), false.into());
+                fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_CANCEL.into(), true.into());
                 return 1.into();
             }
         }

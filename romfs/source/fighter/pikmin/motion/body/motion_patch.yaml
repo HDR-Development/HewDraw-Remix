@@ -25,6 +25,9 @@ attack_lw3:
 attack_s3_s:
   flags:
     move: false
+attack_s4_s:
+  extra:
+    cancel_frame: 50
 catch:
   flags:
     move: false
@@ -66,10 +69,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36

@@ -5,6 +5,7 @@ use globals::*;
 mod special_lw;
 
 unsafe extern "C" fn on_start(weapon: &mut L2CWeaponCommon) {
+    CameraModule::set_enable_camera(weapon.module_accessor, false, 0);
     VarModule::set_int(weapon.battle_object, vars::ptrainer::instance::SPECIAL_LW_SWAP_TIMER, 0);
 }
 

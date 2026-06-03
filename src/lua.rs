@@ -1,3 +1,12 @@
+#![allow(improper_ctypes)]
+
+use rand::{seq::SliceRandom, thread_rng};
+use rlua_lua53_sys as lua;
+use std::ffi::CString;
+use utils::modules::stage_mgr::STAGE_MANAGER;
+
+use crate::CSS_FIRST;
+
 macro_rules! lua_gettop {
     ($state:ident) => {{
         let top = *($state as *const u64).add(2);
@@ -431,6 +440,317 @@ unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
+// Borrowed a ton of this logic from stage-alts-2
+// Thanks Blujay!!
+unsafe fn push_new_singleton(
+    lua_state: *mut lua::lua_State,
+    name: &'static str,
+    registry: &[lua::luaL_Reg],
+) {
+    let real_name = format!("{}\0", name);
+    let meta_name = format!("Metatable{}\0", name);
+    lua::luaL_newmetatable(lua_state, meta_name.as_ptr() as _);
+    lua::lua_pushvalue(lua_state, -1);
+    lua::lua_setfield(lua_state, -2, "__index\0".as_ptr() as _);
+
+    lua::luaL_setfuncs(lua_state, registry.as_ptr(), 0);
+    lua::lua_pop(lua_state, 1);
+
+    lua::lua_newtable(lua_state);
+    lua::lua_getfield(lua_state, lua::LUA_REGISTRYINDEX, meta_name.as_ptr() as _);
+    lua::lua_setmetatable(lua_state, -2);
+
+    let global_table = lua::bindings::index2addr(lua_state, lua::LUA_REGISTRYINDEX);
+    let table = (*global_table).value.ptr;
+    let value = if *(table as *mut u32).add(3) < 2 {
+        todo!()
+    } else {
+        (*(table as *mut *mut lua::bindings::TValue).add(2)).add(1)
+    };
+    lua::bindings::auxsetstr(lua_state, value, real_name.as_ptr() as _);
+}
+
+extern "C" {
+    fn add_to_key_context(ctx: &skyline::hooks::InlineCtx);
+}
+
+#[skyline::hook(replace = add_to_key_context)]
+unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
+    call_original!(ctx);
+
+    let lua_state: *mut lua::lua_State = ctx.registers[19].x() as _;
+
+    let registry = &[
+        lua::luaL_Reg {
+            name: "send_message\0".as_ptr() as _,
+            func: Some(send_message),
+        },
+        lua::luaL_Reg {
+            name: "set_selected_panel_and_preview\0".as_ptr() as _,
+            func: Some(set_selected_panel_and_preview),
+        },
+        lua::luaL_Reg {
+            name: "get_selected_panel\0".as_ptr() as _,
+            func: Some(get_selected_panel),
+        },
+        lua::luaL_Reg {
+            name: "get_selected_preview\0".as_ptr() as _,
+            func: Some(get_selected_preview),
+        },
+        lua::luaL_Reg {
+            name: "set_perma_strike_stage\0".as_ptr() as _,
+            func: Some(set_perma_strike_stage),
+        },
+        lua::luaL_Reg {
+            name: "is_perma_strike_stage\0".as_ptr() as _,
+            func: Some(is_perma_strike_stage),
+        },
+        lua::luaL_Reg {
+            name: "get_page_name\0".as_ptr() as _,
+            func: Some(get_page_name),
+        },
+        lua::luaL_Reg {
+            name: "set_random_stage_index\0".as_ptr() as _,
+            func: Some(set_random_stage_index),
+        },
+        lua::luaL_Reg {
+            name: "get_random_stage_index\0".as_ptr() as _,
+            func: Some(get_random_stage_index),
+        },
+        lua::luaL_Reg {
+            name: "stage_loading\0".as_ptr() as _,
+            func: Some(stage_loading),
+        },
+        lua::luaL_Reg {
+            name: "get_bans\0".as_ptr() as _,
+            func: Some(get_bans),
+        },
+        lua::luaL_Reg {
+            name: "get_dsr\0".as_ptr() as _,
+            func: Some(get_dsr),
+        },
+        lua::luaL_Reg {
+            name: "is_css_first\0".as_ptr() as _,
+            func: Some(is_css_first),
+        },
+        lua::luaL_Reg {
+            name: std::ptr::null(),
+            func: None,
+        },
+    ];
+
+    push_new_singleton(lua_state, "HDR", registry);
+}
+
+extern "C" fn send_message(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let value = skyline::from_c_str(lua::lua_tostring(state, -1) as _);
+        println!("HDR Lua says: {}", value);
+        lua::lua_pop(state, 1);
+        0
+    }
+}
+
+extern "C" fn set_selected_panel_and_preview(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let preview_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let panel_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+
+        mgr.selected_panel = Some(panel_id);
+        mgr.selected_preview = Some(preview_id);
+
+        println!("selected_panel set to: {}", panel_id);
+        println!("selected_preview set to: {}", preview_id);
+
+        0
+    }
+}
+
+extern "C" fn get_selected_panel(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mgr = STAGE_MANAGER.lock().unwrap();
+        if let Some(panel_id) = mgr.selected_panel {
+            lua::lua_pushinteger(state, panel_id as i64);
+            return 1;
+        }
+
+        lua::lua_pushinteger(state, -1);
+        1
+    }
+}
+
+extern "C" fn get_selected_preview(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mgr = STAGE_MANAGER.lock().unwrap();
+        if let Some(preview_id) = mgr.selected_preview {
+            lua::lua_pushinteger(state, preview_id as i64);
+            return 1;
+        }
+
+        lua::lua_pushinteger(state, -1);
+        1
+    }
+}
+
+extern "C" fn set_perma_strike_stage(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let is_strike = lua::lua_toboolean(state, -1) > 0;
+        lua::lua_pop(state, 1);
+
+        let panel_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+
+        if is_strike {
+            mgr.perma_striked_stages.insert(panel_id);
+        } else {
+            mgr.perma_striked_stages.remove(&panel_id);
+        }
+
+        0
+    }
+}
+
+extern "C" fn is_perma_strike_stage(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let panel_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        if mgr.perma_striked_stages.contains(&panel_id) {
+            lua::lua_pushboolean(state, 1);
+        } else {
+            lua::lua_pushboolean(state, 0);
+        }
+
+        1
+    }
+}
+
+extern "C" fn get_page_name(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let page_num = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as usize;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        let stages = mgr.stage_pages.as_ref().unwrap();
+        let mut c_str = CString::new("").expect("");
+        if page_num < stages.len() {
+            c_str = CString::new(stages[page_num].name.clone()).expect("String contained null byte");
+        }
+
+        lua::lua_pushstring(state, c_str.as_ptr());
+
+        1
+    }
+}
+
+extern "C" fn set_random_stage_index(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let index = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+
+        mgr.random_stage_indexes.get_or_insert(Vec::new()).push(index);
+
+        0
+    }
+}
+
+extern "C" fn get_random_stage_index(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mut rng = thread_rng();
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        
+        if let Some(indexes) = &mgr.random_stage_indexes {
+            let index = indexes.choose(&mut rng);
+            match index {
+                Some(value) => lua::lua_pushinteger(state, *value as i64),
+                None => lua::lua_pushinteger(state, -1),
+            }
+        }
+
+        mgr.random_stage_indexes = None;
+
+        1
+    }
+}
+
+extern "C" fn stage_loading(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        mgr.stage_loading = Some(true);
+        0
+    }
+}
+
+extern "C" fn get_bans(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let page_num = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as usize;
+        lua::lua_pop(state, 1);
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+
+        if let Some(pages) = &mgr.stage_pages {
+            if page_num < pages.len() {
+                let page = &pages[page_num];
+                match page.bans {
+                    Some(bans) => lua::lua_pushinteger(state, bans as i64),
+                    None => lua::lua_pushinteger(state, -1),
+                }
+            }
+            else {
+                lua::lua_pushinteger(state, -1);
+            }
+        }
+
+        1
+    }
+}
+
+extern "C" fn get_dsr(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let page_num = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as usize;
+        lua::lua_pop(state, 1);
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+
+        if let Some(pages) = &mgr.stage_pages {
+            if page_num < pages.len() {
+                let page = &pages[page_num];
+                match &page.dsr {
+                    Some(dsr) => {
+                        let c_str = CString::new(dsr.clone()).expect("String contained null byte");
+                        lua::lua_pushstring(state, c_str.as_ptr());
+                    },
+                    None => { 
+                        let c_str = CString::new("").expect("");
+                        lua::lua_pushstring(state, c_str.as_ptr()); 
+                    },
+                }
+            }
+            else {
+                let c_str = CString::new("").expect("");
+                lua::lua_pushstring(state, c_str.as_ptr()); 
+            }
+        }
+
+        1
+    }
+}
+
+extern "C" fn is_css_first(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        lua::lua_pushboolean(state, if CSS_FIRST { 1 } else { 0 });
+        1
+    }
+}
+
 pub fn install() {
     unsafe {
         skyline::patching::Patch::in_text(0x5292c70).data((lua_print_impl as *const ()));
@@ -460,6 +780,7 @@ pub fn install() {
         exit_jc,
         set_pane_text_values,
         set_parry_button_shield_text,
-        set_parry_button_taunt_text
+        set_parry_button_taunt_text,
+        add_to_key_context_hook
     );
 }

@@ -1070,6 +1070,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
@@ -1087,7 +1088,9 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(agent, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+        }
     }
 }
 

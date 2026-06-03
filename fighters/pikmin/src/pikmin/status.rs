@@ -27,8 +27,7 @@ pub unsafe extern "C" fn special_s_cling_main(weapon: &mut L2CFighterCommon) -> 
         AttackModule::set_power_mul_status(weapon.module_accessor, founder_power_mul_status);
     }
 
-    let variation = weapon.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
-    let p = PikminInfo::from(variation);
+    let p = PikminInfo::from(weapon.boma());
     VarModule::set_int(weapon.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_TIMER, 0);
     VarModule::off_flag(weapon.battle_object, vars::pikmin::status::SPECIAL_S_PIKMIN_DETONATE_IS_ATTACK_LAST_FRAME);
     VarModule::off_flag(weapon.battle_object, vars::pikmin::instance::SPECIAL_S_PIKMIN_DETONATE_IS_DETACH_FOR_DETONATE);
@@ -40,8 +39,7 @@ unsafe extern "C" fn special_s_cling_main_loop(weapon: &mut L2CFighterCommon) ->
     let frame = MotionModule::frame(weapon.module_accessor);
     let clatter_time = ControlModule::get_clatter_time(weapon.module_accessor, 0);
     weapon.set_int(clatter_time as i32, *WEAPON_PIKMIN_PIKMIN_STATUS_SPECIAL_S_WORK_INT_CLATTER_TIME);
-    let variation = weapon.get_int(*WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
-    let p = PikminInfo::from(variation);
+    let p = PikminInfo::from(weapon.boma());
 
     if !weapon.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(weapon.module_accessor)

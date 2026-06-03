@@ -35,15 +35,15 @@ unsafe extern "C" fn effect_specialnr(agent: &mut L2CAgentBase) {
     //println!("POWERED (effects): {}", power);
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.0125, 0.025);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.0125, 0.025);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.01);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight_grey"), Hash40::new("top"), 1, 21, 2.5, 0, -50, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.0125, 0.025);
     }
     frame(lua_state, 18.0);
     if power {
@@ -58,8 +58,8 @@ unsafe extern "C" fn effect_specialnr(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace_grey"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2_grey"), false, false);
     }
 }
 

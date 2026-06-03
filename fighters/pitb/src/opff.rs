@@ -12,9 +12,36 @@ unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
 
 // Dark Pit Guardian Orbitar Jump Cancels
 unsafe fn guardian_orbitar_jc(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD, *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END])
-    && !fighter.is_in_hitlag() {
-        fighter.check_jump_cancel(false, false);
+
+    // resets the disable jump cancel flag
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+    ])
+    && StatusModule::is_changing(fighter.module_accessor) {
+        VarModule::off_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC);
+    }
+
+    // disables jump cancels when parried between statuses
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END,
+    ])
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC);
+        if !fighter.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END)
+        && !fighter.is_in_hitlag() {
+            fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
+        }
+    }
+
+    if fighter.is_status_one_of(&[
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END
+    ])
+    && !fighter.is_in_hitlag()
+    && !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC) {
+        fighter.check_jump_cancel(false, false, false);
     }
 }
 

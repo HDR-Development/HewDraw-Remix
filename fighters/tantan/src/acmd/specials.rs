@@ -21,24 +21,27 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("armr5"), *HIT_STATUS_XLU);
         if (armType == 1) {
             // Megawatt
-            ATTACK(agent, 0, 0, Hash40::new("armr5"), 13.0, 60, 95, 0, 50, 2.5, 1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 1, 0, Hash40::new("handr"), 13.0, 60, 95, 0, 50, 5.0, 3.5, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 0, 0, Hash40::new("armr5"), 14.0, 60, 89, 0, 50, 2.5, 1.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 1, 0, Hash40::new("handr"), 14.0, 60, 89, 0, 50, 5.0, 3.5, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         }
         else if (armType == 2) {
-            ATTACK(agent, 0, 0, Hash40::new("armr5"), 8.5, 47, 68, 0, 45, 2.5, 1.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 1, 0, Hash40::new("handr"), 8.5, 47, 68, 0, 45, 3.5, 3.5, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+            // Ramram
+            ATTACK(agent, 0, 0, Hash40::new("armr5"), 8.0, 51, 66, 0, 45, 2.5, 1.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+            ATTACK(agent, 1, 0, Hash40::new("handr"), 8.0, 51, 66, 0, 45, 3.5, 3.5, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         }
         else {
-            let is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
-            let bigScale = WorkModule::get_param_float(boma, hash40("param_private"), hash40("arm_l_big_scale"));
-            let sizeFactor = if is_dragonized { bigScale } else { 1.0 };
-            let powerFactor = if is_dragonized { 1.15 } else { 1.0 };
-            let sfx_level = if is_dragonized { *ATTACK_SOUND_LEVEL_L } else { *ATTACK_SOUND_LEVEL_M };
-            ATTACK(agent, 0, 0, Hash40::new("armr5"), 10.5 * powerFactor, 45, 100, 0, 45, 2.5 * sizeFactor, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(agent, 1, 0, Hash40::new("handr"), 10.5 * powerFactor, 45, 100, 0, 45, 4.5 * sizeFactor, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            if is_dragonized {
+            if WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L) {
+                // Power Dragon
+                let bigScale = WorkModule::get_param_float(boma, hash40("param_private"), hash40("arm_l_big_scale"));
+                ATTACK(agent, 0, 0, Hash40::new("armr5"), 13.5, 49, 91, 0, 45, 2.5 * bigScale, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 1, 0, Hash40::new("handr"), 13.5, 49, 91, 0, 45, 4.5 * bigScale, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
                 AttackModule::set_optional_hit_sound(boma, 0, Hash40::new("se_common_fire_m"));
                 AttackModule::set_optional_hit_sound(boma, 1, Hash40::new("se_common_fire_m"));
+            }
+            else {
+                // Dragon
+                ATTACK(agent, 0, 0, Hash40::new("armr5"), 9.0, 49, 108, 0, 45, 2.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+                ATTACK(agent, 1, 0, Hash40::new("handr"), 9.0, 49, 108, 0, 45, 4.5, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
     }
@@ -206,6 +209,41 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         }
+    }
+}
+
+unsafe extern "C" fn game_specialhilong(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("armr5"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("armr4"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("arml5"), *HIT_STATUS_XLU);
+        HIT_NODE(agent, Hash40::new("arml4"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        HIT_NO(agent, 2, *HIT_STATUS_OFF);
+        HIT_NO(agent, 3, *HIT_STATUS_OFF);
+        HIT_NO(agent, 4, *HIT_STATUS_OFF);
+        HIT_NO(agent, 5, *HIT_STATUS_OFF);
+        HIT_NO(agent, 6, *HIT_STATUS_OFF);
+        HIT_NO(agent, 7, *HIT_STATUS_OFF);
+        HIT_NO(agent, 8, *HIT_STATUS_OFF);
+        HIT_NO(agent, 9, *HIT_STATUS_OFF);
+        HIT_NO(agent, 10, *HIT_STATUS_OFF);
+        HIT_NO(agent, 11, *HIT_STATUS_OFF);
+        HIT_NO(agent, 12, *HIT_STATUS_OFF);
+        HIT_NO(agent, 13, *HIT_STATUS_OFF);
+        HIT_NO(agent, 18, *HIT_STATUS_OFF);
+        HIT_NO(agent, 19, *HIT_STATUS_OFF);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 
@@ -380,19 +418,14 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);
     }
     frame(lua_state, 5.0);
-    FT_MOTION_RATE(agent, 5.0/(8.0-5.0));
-    frame(lua_state, 7.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
-    }
+    FT_MOTION_RATE_RANGE(agent, 5.0, 8.0, 5.0);
     frame(lua_state, 8.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 9.0);
     if is_excute(agent) {
-        GroundModule::select_cliff_hangdata(boma, *FIGHTER_TANTAN_CLIFF_HANG_DATA_AIR_LASSO as u32);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
     }
@@ -456,6 +489,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairnend", expression_specialairnend, Priority::Low);
 
     agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
+
+    agent.acmd("game_specialhishort", game_specialhilong, Priority::Low);
+    agent.acmd("game_specialhilong", game_specialhilong, Priority::Low);
 
     agent.acmd("effect_specialhilong", effect_specialhilong, Priority::Low);
     agent.acmd("sound_specialhilong", sound_specialhilong, Priority::Low);

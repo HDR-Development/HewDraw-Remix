@@ -2,11 +2,11 @@ use super::*;
 use globals::*;
 // status script import
 
+pub mod dispatch;
+pub mod fall;
+pub mod special_hi;
 pub mod special_lw;
 pub mod summon;
-pub mod dispatch;
-pub mod special_hi2;
-pub mod fall;
 
 unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) {
     if fighter.global_table["move_customizer_set"].get_bool() {
@@ -77,7 +77,7 @@ pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     
     dispatch::install(agent);
-    summon::install(agent);
-    special_hi2::install(agent);
     fall::install(agent);
+    special_hi::install(agent);
+    summon::install(agent);
 }

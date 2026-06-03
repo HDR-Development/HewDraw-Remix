@@ -11,7 +11,7 @@ unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)
     || boma.is_motion_one_of(&[Hash40::new("special_lw_start"), Hash40::new("special_air_lw_start")]) {
         if boma.status_frame() > 21 && !boma.is_in_hitlag() {
-            boma.check_jump_cancel(false, false);
+            boma.check_jump_cancel(false, false, false);
         }
         // Turn on the vanilla flip jump footstool-enable flag if you're holding the special button and you're in the window to be able to flipstool manually
         if VarModule::is_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_ENABLE_MANUAL_FOOTSTOOL) {

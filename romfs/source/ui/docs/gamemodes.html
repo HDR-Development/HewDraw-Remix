@@ -1,229 +1,645 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,height=device-height,user-scalable=no"
+    />
+    <meta name="focus-ring-visibility" content="hidden" />
+    <title>Menu</title>
+    <script src="./help/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="./menu.css" />
+    <link rel="stylesheet" href="./help/css/common.css" />
+    <script src="./common/js/wsnd.min.js"></script>
+    <script src="./common/js/keyhelp.js"></script>
+    <script src="./help/js/common.js"></script>
+    <script src="./common.js"></script>
+    <script src="./gridmenu.js"></script>
+    <script src="./toggles.js"></script>
+    <style>
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        line-height: 70px;
+        text-align: center;
+      }
+      #focus-text {
+        line-height: 1.4;
+        white-space: pre-line;
+      }
+      .column {
+        float: left;
+        width: 30%;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+      .column-left {
+        float: left;
+        width: 40%;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+      #gamemode-preview {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+        display: block;
+      }
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no" />
-  <meta name="focus-ring-visibility" content="hidden" />
-  <link rel="stylesheet" href="../../css/common.css" />
-  <link rel="stylesheet" href="../../css/abstract.css" />
-  <link rel="stylesheet" href="../../css/thema/scuffle.css" />
-  <link id="font-stylesheet" rel="stylesheet" href="../../css/font.css" />
-</head>
+  <body>
+    <div id="bg"></div>
 
-<body>
-  <script src="../../js/jquery-3.3.1.min.js"></script>
-  <script src="../../../common/js/wsnd.min.js"></script>
-  <script src="../../../common/js/keyhelp.js"></script>
-  <script src="../../js/common.js"></script>
-  <script src="../../js/two-column-switch.js"></script>
-  <script src="../../../hdr/gamemodes.js"></script>
-  <div id="bg" class="l-bg bg-abstract"></div>
-  <div class="l-header">
-    <div class="header">
-      <a id="ret-button" tabindex="-1" class="header-decoration" href="javascript:goBack()" nx-se-disabled="">
-        <div class="ret-icon-wrapper">
-          <img class="ret-icon-shadow" ref="../../img/icon/m_retnormal.svg" />
-          <img class="ret-icon" ref="../../img/icon/m_retnormal.svg" />
-        </div>
-      </a>
-      <div class="breadcrumb-list f-u-bold">
-        <p><span data-msgcom="true" data-msgid="textbox_id-10002">HewDraw-Remix</span></p>
-        <span data-msgid="textbox_id-2">&#9654;</span>
-        <p><span data-msgcom="true" data-msgid="textbox_id-10001-1">Game Modes</span></p>
-      </div>
-    </div>
-  </div>
-  <div class="l-sidebar">
-    <div class="l-sidebar-content">
-      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Tag', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="tag-text-field" data-msgid="textbox_id-4-1">Tag Mode (OFF)</span></div>
+    <div class="l-header">
+      <span class="background-clip"></span>
+      <div class="header">
+        <a
+          id="ret-button"
+          tabindex="-1"
+          class="header-decoration"
+          href="http://localhost/"
+          nx-se-disabled=""
+        >
+          <div class="ret-icon-wrapper">
+            <img
+              class="ret-icon-shadow"
+              ref="./help/img/icon/m_retnormal.svg"
+            />
+            <img class="ret-icon" ref="./help/img/icon/m_retnormal.svg" />
           </div>
-        </div>
-      </a>
-      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Turbo', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="turbo-text-field" data-msgid="textbox_id-4-1">Turbo Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Hitfall', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="hitfall-text-field" data-msgid="textbox_id-4-1">Hitfall Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-airdash" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Airdash', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="airdash-text-field" data-msgid="textbox_id-4-1">Airdash Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-smash64" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Smash 64', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="smash64-text-field" data-msgid="textbox_id-4-1">Smash 64 Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-magicseries" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Magic Series', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="magicseries-text-field" data-msgid="textbox_id-4-1">Magic Series Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-element" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Element', this)" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span id="element-text-field" data-msgid="textbox_id-4-1">Element Mode (OFF)</span></div>
-          </div>
-        </div>
-      </a>
-      <a id="btn-play" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="exit_with_id()" nx-se-disabled="">
-        <div class="abstract-icon-back-decoration"></div>
-        <div class="abstract-button-border">
-          <div class="abstract-button-inner">
-            <div class="abstract-icon-wrapper">
-              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
-            </div>
-            <div class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Play!</span></div>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-  <div class="l-main">
-    <div id="about-tag" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/tag.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Tag, you're it!<br />In this custom game mode, a random player starts with the final smash aura! Hit other players to pass it on.<br />Once time runs out, you die!<br /><br />Do you have what it takes to outlast your opponents?</span></p>
+        </a>
+        <div class="breadcrumb-list f-u-bold">
+          <p>
+            <span
+              data-msgcom="true"
+              data-msgid="textbox_id-10002"
+              style="
+                color: rgb(255, 255, 255);
+                -webkit-text-stroke-width: 2px;
+                -webkit-text-stroke-color: black;
+                z-index: 1;
+              "
+              id="test"
+              >Custom Game Modes</span
+            >
+          </p>
         </div>
       </div>
     </div>
-    <div id="about-turbo" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/turbo.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Turbo mode!<br />In this custom game mode, players can immediately cancel any attack that hits their opponent. <br />Break your fingers while touch-of-deathing your friends!</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-hitfall" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/hitfall.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Hitfall mode!<br />In this custom game mode, players can immediately fastfall during hitlag, even if you are rising. <br />Make some cool combos using forced fastfalls!</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-airdash" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/airdash.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Airdash mode!<br />In this custom game mode, players can immediately cancel their airdodge, keeping the momentum.<br />This behavior is inspired by certain fighting games, as well as Project NX.</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-smash64" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/smash64.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Clash in classic fashion!<br />Removes DI, airdodges, walltechs, and landing lag. Also raises hitstun and shieldstun and alters character physics.</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-magicseries" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/magicseries.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Magic Series mode! Like turbo mode, without one-button infinites!<br />Jabs/DashAttacks cancel into Tilts/Smashes/Specials.<br />Tilts cancel into Smashes/Specials.<br />Smashes/Aerials cancel into Specials.</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-element" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/element.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Element mode!<br />Every attack has a chance for a random effect!<br />Will it be a simple visual change? Maybe something crazier?<br />Who knows? Embrace pure chaos!</span></p>
-        </div>
-      </div>
-    </div>
-    <div id="about-play" class="l-main-content is-hidden">
-      <div class="l-screen-shot-wrapper">
-        <div class="screen-shot-wrapper">
-          <img class="screen-shot video" ref="../../../hdr/airdash.webp" />
-        </div>
-      </div>
-      <div class="l-description">
-        <div class="f-b-bold">
-          <p class="sentence"><span data-msgid="textbox_id-5">Play the game!<br />WARNING: When playing online, desyncs will occur if these settings are not identical between players!</span></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
 
+    <div class="main" id="list">
+      <div class="flex-container">
+        <div class="row">
+          <div class="column-left" id="column-left">
+            <button
+              onclick="saveAndExit()"
+              onfocus="updatePreview('placeholder.png'); textFocus('')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background"></div>
+              <div class="item-container">
+                <h2>Play!</h2>
+              </div>
+            </button>
+
+            <button
+              id="gamemode-cycle-button"
+              onclick="cycleOverhaul('gamemode-cycle-icon')"
+              onfocus="textFocus('Click to toggle various alternate system mechanics!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="gamemode-cycle-icon"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Select Game Overhaul</h2>
+              </div>
+            </button>
+
+            <img id="gamemode-preview" src="placeholder.png" alt="Game Mode Preview" />
+
+            <!-- <div style="display: flex; margin-top: 10px;">
+              <button
+                id="prev-page"
+                onclick="previousPage()"
+                onfocus="textFocus('Scroll left')"
+                class="flex-item"
+                style="height: 54px; width: 50%; margin-top: 1%; margin-right: 10px; position: relative;"
+              >
+                <span style="font-size: 4em; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">←</span>
+              </button>
+              <button
+                id="next-page"
+                onclick="nextPage()"
+                onfocus="textFocus('Scroll right')"
+                class="flex-item"
+                style="height: 54px; width: 50%; margin-top: 1%; position: relative;"
+              >
+                <span style="font-size: 4em; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">→</span>
+              </button>
+            </div> -->
+
+
+          </div>
+          <div class="column" id="column-1">
+
+            <button
+              onclick="toggle('turbo', this, 'turbo')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Cancel your attacks into each other with no restrictions!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="turbo"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Turbo</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('magicseries', this, 'magicseries')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Cancel your attacks in order of rising strength!\nJabs & Dash Attack --> Tilts --> Smashes & Aerials --> Specials & Airdodge!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="magicseries"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Magic Series</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('hitfall', this, 'hitfall')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Players can immediately fastfall during hitlag, even while rising.\nUse this tech to land quickly and chain aerial attacks!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="hitfall"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Hitfalling</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('airdash', this, 'airdash')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Replaces your airdodge with an omnidirectional airdash!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="airdash"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Airdashes</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('element', this, 'element')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Every attack has a chance for a random effect! Will it be a simple visual change?\nMaybe something crazier? Who knows? Embrace pure chaos!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="element"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Random Element</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('tag', this, 'tag')"
+              onfocus="updatePreview('placeholder.png'); textFocus('A random player starts with the final smash aura! Hit other players to pass it on.\nOnce time runs out, you die!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="tag"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Tag</h2>
+              </div>
+            </button>
+            
+
+          </div>
+          <div class="column" id="column-2">
+
+            <button
+              onclick="toggle('rampage', this, 'rampage')"
+              onfocus="updatePreview('placeholder.png'); textFocus('The more damage you deal, the bigger you get. Be careful not to let your opponent rack up percent!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="rampage"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Rampage</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('war', this, 'war')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Attacker steals defender\'s stocks! Duke it out in this stock tug of war!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="war"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>War</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('vampirism', this, 'vampirism')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Heal 25% of your damage dealt!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="vampirism"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Vampirism</h2>
+              </div>
+            </button>
+
+            <button
+              onclick="toggle('randomangle', this, 'randomangle')"
+              onfocus="updatePreview('placeholder.png'); textFocus('Shuffle launch angles every match! Adapt on the fly to new attacks!')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="randomangle"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>Angle Shuffle</h2>
+              </div>
+            </button>
+
+            <!-- <button
+              onclick="toggle('todo4', this, 'todo4')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo4"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 4</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo5', this, 'todo5')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo5"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 5</h2>
+              </div>
+            </button> -->
+
+          </div>
+          <div class="column" id="column-3">
+
+            <!-- <button
+              onclick="toggle('todo6', this, 'todo6')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo6"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 6</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo7', this, 'todo7')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo7"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 7</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo8', this, 'todo8')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo8"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 8</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo9', this, 'todo9')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo9"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 9</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo10', this, 'todo10')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo10"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 10</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo11', this, 'todo11')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo11"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 11</h2>
+              </div>
+            </button> -->
+
+          </div>
+          <div class="column" id="column-4">
+
+            <!-- <button
+              onclick="toggle('todo12', this, 'todo12')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo12"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 12</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo13', this, 'todo13')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo13"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 13</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo14', this, 'todo14')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo14"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 14</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo15', this, 'todo15')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo15"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 15</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo16', this, 'todo16')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo16"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 16</h2>
+              </div>
+            </button> -->
+
+            <!-- <button
+              onclick="toggle('todo17', this, 'todo17')"
+              onfocus="updatePreview('placeholder.png'); textFocus('TODO')"
+              class="flex-item"
+              style="width: 100%"
+            >
+              <div class="icon-background">
+                <img
+                  id="todo17"
+                  class="abstract-icon is-appear"
+                  style="display: none"
+                  src="check.svg"
+                />
+              </div>
+              <div class="item-container">
+                <h2>TODO 17</h2>
+              </div>
+            </button> -->
+
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <hr />
+        <h2 id="focus-text"></h2>
+      </div>
+    </div>
+    <script>
+      // Initialize column visibility on page load
+      window.addEventListener('DOMContentLoaded', function() {
+        updateColumnVisibility();
+      });
+    </script>
+  </body>
 </html>

@@ -421,7 +421,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ATTACK_HI4, 
     ].contains(&status_kind) 
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && boma.check_jump_cancel(false, true) {
+    && boma.check_jump_cancel(false, true, false) {
         return;
     }
 

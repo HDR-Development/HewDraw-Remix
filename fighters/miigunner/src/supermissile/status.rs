@@ -24,7 +24,9 @@ unsafe extern "C" fn straight_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn straight_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    VarModule::set_int(weapon.battle_object, vars::miigunner_supermissile::status::PULSE_TIMER, PULSE_LIFE);
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("straight"), 0.0, 1.0, false, 0.0, false, false);
+
     weapon.fastshift(L2CValue::Ptr(straight_main_loop as *const () as _))
 }
 

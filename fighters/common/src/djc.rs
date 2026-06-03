@@ -54,7 +54,12 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
         fighter.sub_attack_air_kind();
         if motion_kind == smash::hash40("jump_aerial_f") || motion_kind == smash::hash40("jump_aerial_b") {
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION) {
-                MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, 1.0, false, 1.0);
+                let rate = if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_NESS {
+                    ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_jump_aerial.start_motion_rate")
+                } else {
+                    1.0
+                };
+                MotionModule::add_motion_2nd(fighter.module_accessor, Hash40::new_raw(motion_kind), frame, rate, false, 1.0);
                 MotionModule::set_weight(fighter.module_accessor, 1.0, true);
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) || frame < 2.0 {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
@@ -94,6 +99,20 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
     }
+
+    if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_NESS
+    && KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND {
+        let frame = MotionModule::frame_2nd(fighter.module_accessor);
+
+        if frame >= 15.0 {
+            MotionModule::set_rate_2nd(fighter.module_accessor, 1.0);
+        }
+        if frame >= 29.0 {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+        }
+    }
+
     call_original!(fighter)
 }
 

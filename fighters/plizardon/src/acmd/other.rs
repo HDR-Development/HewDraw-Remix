@@ -87,16 +87,12 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -107,10 +103,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 39.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn expression_landingheavy(agent: &mut L2CAgentBase) {
@@ -119,7 +112,7 @@ unsafe extern "C" fn expression_landingheavy(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_landl"), 0, false, 0x50000000 /* default value */);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        if !agent.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+        if !agent.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_AIR]) {
             QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         }
     }

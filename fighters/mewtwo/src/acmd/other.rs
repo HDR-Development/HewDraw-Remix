@@ -79,7 +79,6 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
     frame(lua_state, 29.0);
     if is_excute(agent) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
@@ -89,10 +88,7 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
         VisibilityModule::set_whole(boma, true);
         ArticleModule::remove(boma, *FIGHTER_MEWTWO_GENERATE_ARTICLE_ESCAPEAIRDUMMY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, escape_air_cancel_frame);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -107,9 +103,24 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
         VisibilityModule::set_whole(boma, true);
         ArticleModule::remove(boma, *FIGHTER_MEWTWO_GENERATE_ARTICLE_ESCAPEAIRDUMMY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, 39.0);
+
+}
+
+unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
     if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        let sfx_handle = SoundModule::play_status_se(boma, Hash40::new("se_common_spirits_pfog_loop"), true, false, false);
+        SoundModule::set_se_vol(boma, sfx_handle as i32, 1.1, 0);
+    }
+}
+
+unsafe extern "C" fn expression_fuwafuwa(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_13_floating"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -131,10 +142,10 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_fuwafuwastart", acmd_stub, Priority::Low);
     agent.acmd("effect_fuwafuwastart", acmd_stub, Priority::Low);
-    agent.acmd("sound_fuwafuwastart", acmd_stub, Priority::Low);
-    agent.acmd("expression_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwastart", sound_fuwafuwa, Priority::Low);
+    agent.acmd("expression_fuwafuwastart", expression_fuwafuwa, Priority::Low);
     agent.acmd("game_fuwafuwa", acmd_stub, Priority::Low);
     agent.acmd("effect_fuwafuwa", acmd_stub, Priority::Low);
-    agent.acmd("sound_fuwafuwa", acmd_stub, Priority::Low);
-    agent.acmd("expression_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwa", sound_fuwafuwa, Priority::Low);
+    agent.acmd("expression_fuwafuwa", expression_fuwafuwa, Priority::Low);
 }

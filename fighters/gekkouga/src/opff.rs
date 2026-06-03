@@ -3,43 +3,10 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_N_MAX_SHOT {
-        if frame > 12.0 {
-            boma.check_dash_cancel();
-        }
-    }
-}
-
-// Greninja Shadow Sneak Smash Attack Cancel
-// unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-//     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
-//         if boma.status_frame() < 6 {
-//             if situation_kind == *SITUATION_KIND_GROUND {
-//                 if boma.is_cat_flag(Cat1::AttackS4) {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
-//                 }
-//                 if boma.is_cat_flag(Cat1::AttackHi4) {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
-//                 }
-//                 if boma.is_cat_flag(Cat1::AttackLw4) {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// Dair Jump Cancel
-unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, cat1: i32, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("attack_air_lw") {
-        if !boma.is_in_hitlag() {
-            if frame > 31.0 {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    boma.check_jump_cancel(false, false);
-                }
-            }
-        }
+unsafe fn max_water_shuriken_dc(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_N_MAX_SHOT)
+    && fighter.status_frame() > 12 {
+        fighter.check_dash_cancel();
     }
 }
 
@@ -91,64 +58,38 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
         let doll_pos = *GroundModule::get_rhombus(doll_module_accessor, true).add(1);
         let doll_pos_x = doll_pos.x;
         let doll_pos_y = doll_pos.y;
-        //println!("Greninja Pos: {}, {}", pos_x, pos_y);
-        //println!("Doll Pos: {}, {}", doll_pos_x, doll_pos_y);
+        let doll_top_pos = *GroundModule::get_rhombus(doll_module_accessor, true);
+        let doll_top_pos_x = doll_top_pos.x;
+        let doll_top_pos_y = doll_top_pos.y;
 
         let mut angle = (doll_pos_y - pos_y).atan2(doll_pos_x - pos_x).to_degrees();
-        // println!("angle: {}", angle);
         let distance = sv_math::vec2_distance(pos_x, pos_y, doll_pos_x, doll_pos_y);
-        // println!("distance: {}", distance);
 
         let can_teleport = distance <= 80.0;
         VarModule::set_flag(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_CAN_TELEPORT, can_teleport);
 
-        if distance >= 20.0 {
-            let mut eff_handle = VarModule::get_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE) as u32;
-            let guide_pos = teleport_guide_pos(fighter, angle.into());
-            if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
-                eff_handle = EffectModule::req(
-                    fighter.module_accessor,
-                    Hash40::new("sys_direction2"),
-                    &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0},
-                    &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-                    1.0,
-                    0,
-                    -1,
-                    false,
-                    0
-                ) as u32;
-                VarModule::set_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE, eff_handle as i32);
-            }
-            else {
-                EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: guide_pos.x, y: guide_pos.y, z: 0.0});
-            }
-            EffectModule::set_rot(fighter.module_accessor, eff_handle, &Vector3f{x: 0.0, y: 0.0, z: angle - 90.0});
-
-            if can_teleport {
-                let team_color = FighterUtil::get_team_color(fighter.module_accessor);
-                let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
-                let mut r = effect_team_color.x();
-                let mut g = effect_team_color.y();
-                let mut b = effect_team_color.z();
-                if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
-                || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_SAVE_SPEED) {
-                    r += 0.22;
-                    g += 0.22;
-                    b += 0.22;
-                }
-                EffectModule::set_rgb(fighter.module_accessor, eff_handle, r, g, b);
-            }
-            else {
-                EffectModule::set_rgb(fighter.module_accessor, eff_handle, 0.7, 0.7, 0.7);
-            }
+        let mut eff_handle = VarModule::get_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+            eff_handle = EffectModule::req(
+                fighter.module_accessor,
+                Hash40::new("sys_direction"),
+                &Vector3f{x: doll_top_pos_x, y: doll_top_pos_y + 5.0, z: 0.0},
+                &Vector3f::new(135.0, 0.0, 0.0),
+                0.7,
+                0,
+                -1,
+                false,
+                0
+            ) as u32;
+            VarModule::set_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE, eff_handle as i32);
         }
         else {
-            let eff_handle = VarModule::get_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE) as u32;
-            if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
-                EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
-                VarModule::set_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE, 0);
-            }
+            EffectModule::set_pos(fighter.module_accessor, eff_handle, &Vector3f{x: doll_top_pos_x, y: doll_top_pos_y + 5.0, z: 0.0});
         }
+        let team_color = FighterUtil::get_team_color(fighter.module_accessor);
+        let mut effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("direction_effect_color"));
+        let color_add = if can_teleport { 0.0 } else { 0.22 };
+        EffectModule::set_rgb(fighter.module_accessor, eff_handle, effect_team_color.x() + color_add, effect_team_color.y() + color_add, effect_team_color.z() + color_add);
     }
     else {
         let eff_handle = VarModule::get_int(fighter.battle_object, vars::gekkouga::instance::SPECIAL_LW_MARKER_EFF_HANDLE) as u32;
@@ -160,10 +101,8 @@ pub unsafe fn substitute_teleport_check(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
-    // shadow_sneak_smash_attack_cancel(boma, status_kind, situation_kind, cat[0], frame);
-    //dair_jc(boma, situation_kind, cat[0], motion_kind, frame);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
+    max_water_shuriken_dc(fighter);
     fastfall_specials(fighter);
     substitute_teleport_check(fighter);
 }
@@ -177,7 +116,7 @@ pub extern "C" fn gekkouga_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighte
 
 pub unsafe fn gekkouga_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter);
     }
 }
 

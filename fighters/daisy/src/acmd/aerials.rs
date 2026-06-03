@@ -69,7 +69,7 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 12, -4, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_RATE(agent, 2.0);
+        LAST_EFFECT_SET_RATE(agent, 1.3);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {

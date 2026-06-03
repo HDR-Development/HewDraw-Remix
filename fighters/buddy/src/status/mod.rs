@@ -3,9 +3,10 @@ use globals::*;
 // status script import
  
 mod run;
+mod special_n;
 mod special_s;
-mod bayonet_end;
 mod special_hi;
+mod landing;
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -21,7 +22,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _)); 
 
     VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_ACTIVE);
-    VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_ACTIVE);
+    VarModule::off_flag(fighter.battle_object, vars::buddy::instance::SPECIAL_N_BAYONET_DISABLE);
     
     VarModule::set_int(fighter.battle_object, vars::buddy::instance::HUD_DISPLAY_TIME, 60);
     VarModule::set_int(fighter.battle_object, vars::buddy::instance::SPECIAL_S_BEAKBOMB_FRAME, 0);
@@ -46,7 +47,8 @@ pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_WIN, win_main);
 
     run::install(agent);
+    special_n::install(agent);
     special_s::install(agent);
-    bayonet_end::install(agent);
     special_hi::install(agent);
+    landing::install(agent);
 }

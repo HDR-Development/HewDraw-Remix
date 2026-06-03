@@ -12,3 +12,5 @@ skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash", fe
 smash_script = { git = "https://github.com/WuBoytH/smash-script", branch = "development" }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
 interpolation = "0.2.0"
+proc-hitbox = { git = "https://github.com/HDR-Development/compile-time-smash-script" }
+proc-hitbox-macro = { git = "https://github.com/HDR-Development/compile-time-smash-script" }

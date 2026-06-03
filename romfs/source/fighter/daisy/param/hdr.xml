@@ -16,15 +16,26 @@
       <float hash="landing_frame">20</float>
     </struct>
     <struct hash="param_special_s">
-      <float hash="end_speed_y_mul">0.8</float>
-      <float hash="end_accel_y_mul">0.25</float>
-      <float hash="end_stable_speed_y_mul">0.75</float>
-      <float hash="end_control_speed_x_mul">0.75</float>
-      <float hash="end_control_accel_x_mul">0.9</float>
+      <float hash="jump_start_x">3.0</float>
+      <float hash="jump_max_y">1.5</float>
+      <float hash="jump_min_x">0.4</float>
+      <float hash="jump_brake_x">0.125</float>
+      <float hash="jump_accel_x">0.015</float>
+      <float hash="end_landing_x_min">0.56</float>
+      <float hash="end_landing_x_max">1.65</float>
+      <float hash="end_x_stable">0.5</float>
+      <float hash="end_y_stable">1.6</float>
+      <int hash="end_wall_frame">4</int>
+      <float hash="end_landing_frame">24.0</float>
+      <float hash="shield_hit_end_speed_x_mul">0.5</float>
+      <float hash="shield_hit_end_accel_x_mul">0.8</float>
     </struct>
     <struct hash="param_special_hi">
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.6</float>
+    </struct>
+    <struct hash="param_special_lw">
+      <float hash="air_start_x_mul">0.5</float>
     </struct>
     <struct hash="param_float">
       <float hash="float_stable">1.2</float>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+    <struct hash="param_special_s">
+        <float hash="throw_angle_stick_y_mul">20.0</float>
+        <float hash="throw_speed_stick_y_mul">0.5</float>
+    </struct>
     <struct hash="param_special_hi">
         <float hash="fall_max_x_mul">0.8</float>
     </struct>

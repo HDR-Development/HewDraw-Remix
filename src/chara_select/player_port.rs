@@ -188,10 +188,21 @@ unsafe fn count_active_players(instance: CharaSelect) -> i32 {
     active_players
 }
 
+static mut IS_UNPRESSED : bool = false;
 // this function loops while the css is active, allowing for runtime operations
 #[skyline::hook(offset = 0x1a2b570)]
 unsafe fn css_main_loop(arg: *const CharaSelect) {
     {
+        if ninput::any::is_down(ninput::Buttons::MINUS) {
+            if !IS_UNPRESSED {
+                println!("Minus Pressed!");
+                utils::open_modes_session();
+            }
+            IS_UNPRESSED = true;
+        } else {
+            IS_UNPRESSED = false;
+        }
+
         let instance = *arg;
         let mut data = PORT_DATA.write();
 

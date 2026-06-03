@@ -55,7 +55,7 @@ unsafe extern "C" fn special_n_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_n_momentum_helper(fighter: &mut L2CFighterCommon, start: L2CValue) {
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if start.get_bool() {
-        let special_n_speed_x_mul = 0.8;//WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_speed_x_mul"));
+        let special_n_speed_x_mul = 0.7;//WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_speed_x_mul"));
         speed_x *= special_n_speed_x_mul;
     }
     let reset_type = if fighter.is_situation(*SITUATION_KIND_GROUND) { ENERGY_STOP_RESET_TYPE_GROUND } else { ENERGY_STOP_RESET_TYPE_AIR };
@@ -81,7 +81,8 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         FighterMotionModuleImpl::change_motion_kirby_copy(fighter.module_accessor, Hash40::new("special_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
-    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x37b6ecdcec));
+    //notify_event_msc_cmd!(fighter, Hash40::new_raw(0x37b6ecdcec));
+    ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME, false, -1);
 
     fighter.main_shift(special_n_main_loop)
 }

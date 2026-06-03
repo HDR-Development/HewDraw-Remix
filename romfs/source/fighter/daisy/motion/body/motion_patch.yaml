@@ -183,10 +183,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -242,7 +242,7 @@ special_air_n:
     xlu_end: 0
 special_air_s_end:
   extra:
-    cancel_frame: 43
+    cancel_frame: 39
 special_n:
   extra:
     xlu_start: 0
@@ -284,6 +284,99 @@ special_s_end:
 special_s_hit_end:
   extra:
     cancel_frame: 23
+special_air_hi_end:
+  flags:
+    move: true
+special_air_lw:
+  game_script: game_specialairlw
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d03specialairlw.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairlw
+    - sound_specialairlw
+    - effect_specialairlw
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 20
+    no_stop_intp: false
+special_lw_throw:
+  game_script: game_speciallwthrow
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: h01lightthrowf.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwthrow
+    - sound_speciallwthrow
+    - effect_speciallwthrow
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false
+special_air_lw_throw:
+  game_script: game_speciallwthrow
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: h02lightthrowairf.nuanmb
+      unk: 0
+  scripts:
+    - expression_speciallwthrow
+    - sound_speciallwthrow
+    - effect_speciallwthrow
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false
 step_pose_back:
   extra:
     cancel_frame: 6

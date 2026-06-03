@@ -13,7 +13,7 @@ struct Rect {
     // right: f32,
     // top: f32,
     // bottom: f32,
-    vec: [f32; 4],
+    vec: [f32; 4]
 }
 
 impl Rect {
@@ -102,18 +102,21 @@ pub unsafe fn rotate_vector2f(
     );
 }
 
-// number of DI angles checked
-const NUM_ANGLES_CHECKED: i32 = 12;
-const NUM_ANGLES_CHECKED_FINAL: i32 = 12;
-// maximum number of survivable DI angles in a finishing hit
-const SURVIVABLE_ANGLES_ALLOWED: i32 = 0;
-const SURVIVABLE_ANGLES_ALLOWED_FINAL: i32 = 1;
 // how many units into the blastzone a fighter will be declared dead
 const DEAD_AREA_LENIENCY: f32 = 7.5;
 const DEAD_AREA_LENIENCY_FINAL: f32 = 2.5;
 
 impl KnockbackCalcContext {
-    pub unsafe fn new(defender_boma: *mut BattleObjectModuleAccessor, knockback: f32, hitstun: f32, damage: f32, sdi_mul: f32, launch_radians: f32, launch_speed: Vector2f, is_tumble: bool) -> Self {
+    pub unsafe fn new(
+        defender_boma: *mut BattleObjectModuleAccessor,
+        knockback: f32,
+        hitstun: f32,
+        damage: f32,
+        sdi_mul: f32,
+        launch_radians: f32,
+        launch_speed: Vector2f,
+        is_tumble: bool,
+    ) -> Self {
         let fly_top_angle_lw = WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_lw"));
         let fly_top_angle_hi = WorkModule::get_param_float(defender_boma, hash40("battle_object"), hash40("fly_top_angle_hi"));
         let ecb_bottom = *GroundModule::get_rhombus(defender_boma, true).add(1);
@@ -185,14 +188,11 @@ impl KnockbackCalcContext {
         let defender_boma = self.defender_boma;
 
         // check left wall tech
-        let ecb_offset = self.ecb_left.x - self.ecb_bottom.x;
-        if GroundModule::ray_check(
+        if -1.0 * self.launch_speed.x <= self.base_asdi * self.sdi_mul
+        && GroundModule::ray_check(
             defender_boma,
-            &self.pos,
-            &Vector2f {
-                x: -1.0 * self.sdi_distance + ecb_offset,
-                y: 0.0,
-            },
+            &Vector2f::new(self.ecb_left.x, self.ecb_left.y),
+            &Vector2f::new(-1.0 * self.sdi_distance, 0.0),
             true,
         ) == 1
         {
@@ -201,14 +201,11 @@ impl KnockbackCalcContext {
         }
 
         // check right wall tech
-        let ecb_offset = self.ecb_right.x - self.ecb_bottom.x;
-        if GroundModule::ray_check(
+        if self.launch_speed.x <= self.base_asdi * self.sdi_mul
+        && GroundModule::ray_check(
             defender_boma,
-            &self.pos,
-            &Vector2f {
-                x: self.sdi_distance + ecb_offset,
-                y: 0.0,
-            },
+            &Vector2f::new(self.ecb_right.x, self.ecb_right.y),
+            &Vector2f::new(self.sdi_distance, 0.0),
             true,
         ) == 1
         {
@@ -217,34 +214,57 @@ impl KnockbackCalcContext {
         }
 
         // check floor tech
-        if self.pos.y - self.pos_prev.y < self.base_asdi * self.sdi_mul
-            && GroundModule::ray_check(
-                defender_boma,
-                &self.pos,
-                &Vector2f {
-                    x: 0.0,
-                    y: self.sdi_distance,
-                },
-                true,
-            ) == 1
-        {
-            self.is_tech_possible = true;
-            return;
-        }
-    }
-
-    pub unsafe fn collision_check(&mut self) {
-        let defender_boma = self.defender_boma;
-        let diff = Vector2f::new(self.pos.x - self.pos_prev.x, self.pos.y - self.pos_prev.y);
-        if GroundModule::ray_check(
+        if self.launch_speed.y <= self.base_asdi * self.sdi_mul
+        && GroundModule::ray_check(
             defender_boma,
-            &self.pos_prev,
-            &diff,
-            diff.y <= 0.0, // only check for platforms if going downwards
+            &Vector2f::new(self.ecb_bottom.x, self.ecb_bottom.y),
+            &Vector2f::new(0.0, -1.0 * self.sdi_distance),
+            true,
         ) == 1
         {
             self.is_tech_possible = true;
             return;
+        }
+
+    }
+
+    pub unsafe fn collision_check(&mut self) {
+        // calculate the offsets including ecb size and possible SDI distance
+        let ecb_width = f32::abs(self.ecb_right.x - self.ecb_left.x);
+        let ecb_height = f32::abs(f32::midpoint(self.ecb_left.y, self.ecb_right.y) - self.ecb_bottom.y);
+        let x_offset = self.sdi_distance + (0.5 * ecb_width);
+        let y_offset = self.sdi_distance;
+
+        // calculate necessary ray checks
+        let max_left_prev = Vector2f::new(self.pos_prev.x - x_offset, self.pos_prev.y + ecb_height);
+        let max_left_curr = Vector2f::new(self.pos.x - x_offset, self.pos.y + ecb_height);
+        let max_right_prev = Vector2f::new(self.pos_prev.x + x_offset, self.pos_prev.y + ecb_height);
+        let max_right_curr = Vector2f::new(self.pos.x + x_offset, self.pos.y + ecb_height);
+        let max_down_prev = Vector2f::new(self.pos_prev.x, self.pos_prev.y - y_offset);
+        let max_down_curr = Vector2f::new(self.pos.x, self.pos.y - y_offset);
+        let ray_checks = [
+            (self.pos_prev, self.pos),
+            (max_left_prev, max_left_curr),
+            (max_right_prev, max_right_curr),
+            (max_down_prev, max_down_curr),
+        ];
+
+        // perform a ray check between each point to draw a clear bounding box
+        let defender_boma = self.defender_boma;
+        for ray_check in ray_checks {
+            let prev = ray_check.0;
+            let curr = ray_check.1;
+            let diff = Vector2f::new(curr.x - prev.x, curr.y - prev.y);
+            if GroundModule::ray_check(
+                defender_boma,
+                &prev,
+                &diff,
+                diff.y <= 0.0, // only check for platforms if going downwards
+            ) == 1
+            {
+                self.is_tech_possible = true;
+                return;
+            }
         }
     }
 
@@ -296,52 +316,57 @@ impl KnockbackCalcContext {
 
     pub unsafe fn is_finishing_hit(&mut self, is_final: bool) -> bool {
         let defender_boma = self.defender_boma;
-        let (num_angles_checked, survivable_angles_allowed, dead_area_leniency_x, dead_area_leniency_y) = if is_final {
-            (NUM_ANGLES_CHECKED_FINAL, SURVIVABLE_ANGLES_ALLOWED_FINAL, DEAD_AREA_LENIENCY_FINAL, DEAD_AREA_LENIENCY_FINAL)
+
+        // get blastzones, and grow them to build in a minumum kill threshold
+        let sdi_distance = self.sdi_distance;
+        let dead_area_leniency = if is_final {
+            DEAD_AREA_LENIENCY_FINAL + self.sdi_distance
         } else {
-            let x = DEAD_AREA_LENIENCY.max(self.sdi_distance);
-            let y = if StatusModule::situation_kind(defender_boma) != *SITUATION_KIND_GROUND {
-                DEAD_AREA_LENIENCY.max(self.sdi_distance)
-            } else {
-                DEAD_AREA_LENIENCY
-            };
-            (NUM_ANGLES_CHECKED, SURVIVABLE_ANGLES_ALLOWED, x, y)
+            DEAD_AREA_LENIENCY + self.sdi_distance
         };
         let mut blastzones = get_dead_area();
-        blastzones.grow(dead_area_leniency_x, dead_area_leniency_y);
-        let kb_angle = self.launch_speed.y.atan2(self.launch_speed.x).to_degrees();
-        let di_angle = WorkModule::get_param_float(defender_boma, hash40("common"), hash40("damage_fly_correction_max"));
-        let min_di = kb_angle - di_angle;
-        let max_di = kb_angle + di_angle;
-        let step = (di_angle * 2.0) / (num_angles_checked as f32);
-        let mut survivable_angles = 0;
+        blastzones.grow(dead_area_leniency, dead_area_leniency);
+
+        // calculate the different angles we will be checking
+        let base_radians = self.launch_speed.y.atan2(self.launch_speed.x);
+        let di_radians = WorkModule::get_param_float(defender_boma, hash40("common"), hash40("damage_fly_correction_max")).to_radians();
+        let angles = [
+            // check max DI angles first, since theyre more likely to be surviveable
+            // and if any angle is surviveable, we skip the others angle checks
+            base_radians + (di_radians * 1.00), // max left
+            base_radians - (di_radians * 1.00), // max right
+            base_radians,
+            // check precise angles later
+            base_radians + (di_radians * 0.66),
+            base_radians + (di_radians * 0.33),
+            base_radians - (di_radians * 0.33),
+            base_radians - (di_radians * 0.66),
+        ];
+
+        // perform the trajectory check over each angle
         let original_context = self.clone();
-        for idx in 0..num_angles_checked + 1 {
-            // calc and update the DI angle
-            let new_radians = (min_di + (idx as f32 * step)).to_radians();
-
-            // reset everything to scratch
+        for angle in angles.iter() {
+            // get the trajectory for this angle
             *self = original_context.clone();
-            self.reset_angle(new_radians);
-
-            // check if it kills at this angle
+            self.reset_angle(*angle);
             let trajectory = self.get_trajectory();
+
+            // check if this trajectory kills
             let mut trajectory_kills = false;
             for (frame, pos) in trajectory.iter().enumerate() {
                 if !blastzones.contains(pos.x, pos.y) {
-                    // break early so we don't waste effort
                     trajectory_kills = true;
                     break;
                 }
             }
+
+            // if any single trajectory is survivable, no kill screen
             if !trajectory_kills {
-                survivable_angles += 1;
-            }
-            if survivable_angles > survivable_angles_allowed {
-                // return early so we don't waste effort
                 return false;
             }
         }
+
+        // on this line, all trajectories killed
         return true;
     }
 }

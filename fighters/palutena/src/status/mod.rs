@@ -2,12 +2,14 @@ use super::*;
 use globals::*;
 // status script import
 
+mod landing;
 mod special_hi;
 mod special_lw;
 mod special_n;
 mod special_s;
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // once per airtime teleport actionability
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::palutena::instance::SPECIAL_HI_ENABLE_FREEFALL);
@@ -23,6 +25,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
 pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 
+    landing::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);
     special_n::install(agent);

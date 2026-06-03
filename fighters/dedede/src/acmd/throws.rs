@@ -5,14 +5,14 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 5.0/(7.0-1.0));
-    frame(lua_state, 7.0);
-    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         GrabModule::set_rebound(boma, true);
     }
+    frame(lua_state, 7.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 5.5, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 5.5, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -52,7 +52,7 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 5.5, 0.0, 6.0, -4.0, Some(0.0), Some(6.0), Some(-18.3), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 5.5, 0.0, 6.0, -5.5, Some(0.0), Some(6.0), Some(-18.3), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 3.0);
@@ -167,8 +167,6 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(agent) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        let opponent_boma = agent.get_grabbed_opponent_boma();
-        VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
         AttackModule::clear_all(boma);
     }
 }

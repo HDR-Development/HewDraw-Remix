@@ -2,55 +2,46 @@ use super::*;
 
 pub unsafe extern "C" fn special_hi_common_init(fighter: &mut L2CFighterCommon, status_kind: i32) {
     GroundModule::select_cliff_hangdata(fighter.module_accessor,*FIGHTER_CLIFF_HANG_DATA_DEFAULT as u32); //hmmm
-    let mut param_accel_x_mul = 0.0;//hash40("air_accel_x_mul")
-    let mut param_speed_x_max_mul = 0.0;//hash40("air_accel_x_add")
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        param_accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_accel_x_mul");
-        param_speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_speed_x_max_mul");
-    }
-    else if fighter.is_status(statuses::chrom::SPECIAL_HI_FLIP) {
-        param_accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_accel_x_mul");
-        param_speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_speed_x_max_mul");
-    }
-    else {
-        param_accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.dive_accel_x_mul");
-        param_speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.dive_speed_x_max_mul");
-    }
-    let accel_x_mul = param_accel_x_mul;
-    let speed_x_max_mul = param_speed_x_max_mul;
-    let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
-    let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
-    let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
 
-    if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-        let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if !fighter.is_status(statuses::chrom::SPECIAL_HI_DIVE) {
+        let mut param_accel_x_mul = 0.0;//hash40("air_accel_x_mul")
+        let mut param_speed_x_max_mul = 0.0;//hash40("air_accel_x_add")
         if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let rise_speed_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_speed_x_mul");
-            speed_x = ControlModule::get_stick_x(fighter.module_accessor) * lr * rise_speed_x_mul;
+            param_accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_accel_x_mul");
+            param_speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_speed_x_max_mul");
         }
-        else if fighter.is_status(statuses::chrom::SPECIAL_HI_DIVE) /*&& USE_MOTION_ANGLE*/ {
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let control_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_WORK_FLOAT_STICK_CONTROL_ANGLE);
-            speed_x = air_speed_x_stable.abs() * control_x * 0.75 * lr;
-            speed_x = if (lr > 0.0) { speed_x.max(0.0) } else { speed_x.min(0.0) };
+        else if fighter.is_status(statuses::chrom::SPECIAL_HI_FLIP) {
+            param_accel_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_accel_x_mul");
+            param_speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.flip_speed_x_max_mul");
         }
+        let accel_x_mul = param_accel_x_mul;
+        let speed_x_max_mul = param_speed_x_max_mul;
+        let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+        let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
+        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
 
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
-            speed_x,
-            0.0, 0.0, 0.0, 0.0
-        );
+        if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+            let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+                let lr = PostureModule::lr(fighter.module_accessor);
+                let rise_speed_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.rise_speed_x_mul");
+                speed_x = ControlModule::get_stick_x(fighter.module_accessor) * lr * rise_speed_x_mul;
+            }
+
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+                speed_x,
+                0.0, 0.0, 0.0, 0.0
+            );
+        }
+        sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul * accel_x_mul);
+        sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add * accel_x_mul);
+        sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * speed_x_max_mul, 0.0);
     }
-    sv_kinetic_energy!(controller_set_accel_x_mul, fighter, air_accel_x_mul * accel_x_mul);
-    sv_kinetic_energy!(controller_set_accel_x_add, fighter, air_accel_x_add * accel_x_mul);
-    sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * speed_x_max_mul, 0.0);
-    WorkModule::set_float(fighter.module_accessor, accel_x_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_MUL_FALL_X_ACCEL);
-    WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
 
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_FALL_SPECIAL]) {
         return;
@@ -267,12 +258,18 @@ pub unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub unsafe extern "C" fn special_hi_2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cliff_check_kind = if fighter.is_status(statuses::chrom::SPECIAL_HI_DIVE) {
+        *GROUND_CLIFF_CHECK_KIND_NONE
+    } else {
+        *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES
+    };
+
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_AIR as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        app::GroundCliffCheckKind(cliff_check_kind),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
@@ -332,7 +329,7 @@ pub unsafe extern "C" fn special_hi_2_main_loop(fighter: &mut L2CFighterCommon) 
         // }
 
         // HI_DIVE check
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_3_start"), 0.0, 1.0, false, 0.0, false, false);
             VarModule::off_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_ENABLE);
             VarModule::on_flag(fighter.battle_object, vars::chrom::status::SPECIAL_HI_DIVE_START);

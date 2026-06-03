@@ -4,7 +4,8 @@ pub mod status;
 
 #[repr(C)]
 pub struct PikminInfo {
-    dmg: f32,
+    dmg: f32, // applied in common staling damage hook - does not affect knockback
+    kbg: f32,
     shield_dmg: f32,
     hitlag: f32,
     attr: Hash40,
@@ -15,64 +16,29 @@ pub struct PikminInfo {
     cling_frame: i32
 }
 
-impl From<i32> for PikminInfo {
-    fn from(other: i32) -> Self {
-        match other {
-            0 => PikminInfo { // Red
-                dmg: 1.05,
-                shield_dmg: 0.45,
-                angle: 0,
-                hitlag: 1.0,
-                attr: Hash40::new("collision_attr_fire"),
-                attr_special: Hash40::new("collision_attr_fire"),
-                sound: *COLLISION_SOUND_ATTR_FIRE,
-                color: Vector3f{x: 1.0, y: 0.05, z: 0.0},
-                cling_frame: 4
-            },
-            1 => PikminInfo { // yellow
-                dmg: 0.94,
-                shield_dmg: 0.0,
-                angle: 8,
-                hitlag: 1.25,
-                attr: Hash40::new("collision_attr_elec"),
-                attr_special: Hash40::new("collision_attr_paralyze"),
-                sound: *COLLISION_SOUND_ATTR_ELEC,
-                color: Vector3f{x: 1.0, y: 1.0, z: 0.14},
-                cling_frame: 7
-            },
-            2 => PikminInfo { // Blue
-                dmg: 1.0,
-                shield_dmg: 0.0,
-                angle: 0,
-                hitlag: 1.0,
-                attr: Hash40::new("collision_attr_water"),
-                attr_special: Hash40::new("collision_attr_water"),
-                sound: *COLLISION_SOUND_ATTR_WATER,
-                color: Vector3f{x: 0.1, y: 0.4, z: 1.0},
-                cling_frame: 4
-            },
-            3 => PikminInfo { // White
-                dmg: 0.75,
-                shield_dmg: 0.55,
-                angle: 0,
-                hitlag: 1.0,
-                attr: Hash40::new("collision_attr_purple"),
-                attr_special: Hash40::new("collision_attr_flower"),
-                sound: *COLLISION_SOUND_ATTR_FIRE,
-                color: Vector3f{x: 1.0, y: 1.0, z: 1.0},
-                cling_frame: 3
-            },
-            _ => PikminInfo { // Violet (Rock), also default
-                dmg: 1.2,
-                shield_dmg: 0.0,
-                angle: 0,
-                hitlag: 1.0,
-                attr: Hash40::new("collision_attr_normal"),
-                attr_special: Hash40::new("collision_attr_normal"),
-                sound: *COLLISION_SOUND_ATTR_KICK,
-                color: Vector3f{x: 0.36, y: 0.0, z: 1.0},
-                cling_frame: 999
-            },
+impl From<&mut BattleObjectModuleAccessor> for PikminInfo {
+    fn from(weapon_boma: &mut BattleObjectModuleAccessor) -> Self {
+        unsafe {
+            let variation = WorkModule::get_int(weapon_boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
+            let prefix = format!("param_pikmin_particular.{}.", variation);
+            let param = |name: &str| -> String { format!("{}{}", prefix, name) };
+            let battle_object = weapon_boma.get_owner_boma().object(); // olimar's battle object
+            return PikminInfo {
+                dmg:        ParamModule::get_float(battle_object, ParamType::Agent, &param("damage_mul")),
+                kbg:        ParamModule::get_float(battle_object, ParamType::Agent, &param("kbg_mul")),
+                shield_dmg: ParamModule::get_float(battle_object, ParamType::Agent, &param("shield_damage_mul")),
+                angle:      ParamModule::get_int(battle_object, ParamType::Agent, &param("angle_mod")) as u64,
+                hitlag:     ParamModule::get_float(battle_object, ParamType::Agent, &param("hitlag_mul")),
+                attr:         Hash40::new(&ParamModule::get_string(battle_object, ParamType::Agent, &param("attr"))),
+                attr_special: Hash40::new(&ParamModule::get_string(battle_object, ParamType::Agent, &param("attr_special"))),
+                sound: ParamModule::get_int(battle_object, ParamType::Agent, &param("sound")),
+                color: Vector3f {
+                    x: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_r")),
+                    y: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_g")),
+                    z: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_b"))
+                },
+                cling_frame: ParamModule::get_int(battle_object, ParamType::Agent, &param("cling_counter"))
+            };
         }
     }
 }

@@ -38,9 +38,11 @@ pub unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CV
         // shot 2
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_2"), 1.0, 1.0, false, 0.0, false, false);
         ControlModule::clear_command_one(fighter.module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_HI);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
     }
     special_hi_set_physics(fighter, false);
     VarModule::on_flag(fighter.object(), vars::duckhunt::instance::SPECIAL_HI2_ENABLE);
+
     fighter.main_shift(special_hi_main_loop)
 }
 
@@ -106,6 +108,9 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 fighter.change_status(FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END.into(), false.into());
                 return 1.into();
             }
+        }
+        if fighter.sub_transition_group_check_air_attack().get_bool() {
+            VarModule::on_flag(fighter.battle_object, vars::duckhunt::instance::SPECIAL_HI_AERIAL_USED);
         }
     }
 
@@ -180,6 +185,11 @@ unsafe extern "C" fn special_hi_exit(fighter: &mut L2CFighterCommon) -> L2CValue
     let effect_handle = VarModule::get_int64(fighter.battle_object, vars::duckhunt::status::SPECIAL_HI_RETICLE_EFFECT_HANDLE);
     EffectModule::set_scale(fighter.module_accessor, effect_handle as u32, &Vector3f::zero());
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("duckhunt_target"), true, true);
+
+    if fighter.is_motion(Hash40::new("special_hi")) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_LAG);
+    }
+    
     return 0.into();
 }
 

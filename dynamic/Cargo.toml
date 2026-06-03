@@ -14,3 +14,5 @@ bitflags = "2"
 modular-bitfield = "0.11.2"
 smash2 = { package = "smash", git = "https://github.com/WuBoytH/smash-rs" }
 once_cell = "1.15.0"
+proc-hitbox = { git = "https://github.com/HDR-Development/compile-time-smash-script" }
+proc-hitbox-macro = { git = "https://github.com/HDR-Development/compile-time-smash-script" }

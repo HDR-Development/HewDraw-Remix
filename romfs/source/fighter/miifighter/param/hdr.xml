@@ -14,14 +14,40 @@
             <float hash="p2_y">8.9</float>
         </struct>
     </struct>
+    <struct hash="special_n1">
+        <float hash="bowl_speed_ground">2.75</float>
+        <float hash="bowl_speed_air">2.25</float>
+        <float hash="bowl_angle">30.0</float>
+    </struct>
+    <struct hash="special_n2">
+        <int hash="charge_frame">140</int>
+        <float hash="min_motion_mul">0.7</float>
+        <float hash="air_motion_mul">0.85</float>
+    </struct>
+    <struct hash="wild_throw">
+        <float hash="start_limit_speed_ground">1.8</float>
+        <float hash="start_brake_x_mul">1.2</float>
+        <float hash="start_air_speed_x_mul">0.4</float>
+        <float hash="start_air_brake_x_mul">1.2</float>
+        <float hash="start_air_speed_y_mul">0.5</float>
+        <float hash="throw_accel_y">0.03</float>
+        <float hash="throw_stable_speed_y">0.4</float>
+    </struct>
     <struct hash="param_flash_kick">
-        <float hash="fall_x_mul">0.7</float>
+        <float hash="fall_x_mul">0.8</float>
         <float hash="fall_acl_y_mul">0.5</float>
     </struct>
     <struct hash="earthquake_fist_ground">
-        <float hash="charge_start_frame">6.0</float>
-        <float hash="charge_end_frame">7.0</float>
-        <float hash="max_charge_frames">25.0</float>
+        <float hash="charge_end_frame">35.0</float>
+        <float hash="charge_distance_mod">25.0</float>
         <float hash="max_charge_distance">80.0</float>
+    </struct>
+    <struct hash="boiling_punt">
+        <float hash="landing_lag">14.0</float>
+        <float hash="speed_x_mul">0.8</float>
+        <float hash="bounce_clamp_y_min">-2.0</float>
+        <float hash="bounce_clamp_y_max">0.0</float>
+        <float hash="bounce_speed_x">-0.3</float>
+        <float hash="bounce_speed_y">1.5</float>
     </struct>
 </struct>

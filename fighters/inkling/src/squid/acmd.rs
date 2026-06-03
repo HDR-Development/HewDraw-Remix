@@ -27,6 +27,17 @@ unsafe extern "C" fn effect_specialhilanding(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    FT_MOTION_RATE(agent, 2.0);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialhilanding", effect_specialhilanding, Priority::Low);
+    
+    agent.acmd("game_throwb", game_throwb, Priority::Low);
 }

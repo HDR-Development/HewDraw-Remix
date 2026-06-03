@@ -119,7 +119,7 @@ unsafe extern "C" fn effect_specialnfire(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FLW_POS(agent, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
         EFFECT_FLW_POS(agent, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.5, true);
-        EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 11, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
     for _ in 1..=5 {
         if is_excute(agent) {
@@ -367,7 +367,8 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(agent) {
+    if is_excute(agent)
+    && !VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_LW_DISABLE_JC) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 127, 80, 0, 77, 4.5, 0.0, 6.3, 3.75, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
         ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 127, 80, 0, 77, 5.0, 0.0, 6.3, 8.25, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
     }
@@ -428,7 +429,9 @@ unsafe extern "C" fn game_fallspecial(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
+    agent.acmd("effect_specialnstart", acmd_stub, Priority::Low);
     agent.acmd("game_specialairnstart", game_specialnstart, Priority::Low);
+    agent.acmd("effect_specialairnstart", acmd_stub, Priority::Low);
     agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);
     agent.acmd("sound_specialairnstart", sound_specialnstart, Priority::Low);
     agent.acmd("game_specialnhold", game_specialnhold, Priority::Low);

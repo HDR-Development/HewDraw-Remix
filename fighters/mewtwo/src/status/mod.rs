@@ -2,13 +2,15 @@ use super::*;
 use globals::*;
 // status script import
 
-mod jump_aerial;
 mod attack_air;
-mod float;
 mod fall;
+mod float;
+mod jump_aerial;
+mod landing;
+mod special_n;
+mod special_s;
 mod special_hi;
 mod special_lw;
-mod special_n;
 
 extern "Rust" {
     #[link_name = "float_check_air_jump"]
@@ -26,6 +28,7 @@ unsafe extern "C" fn air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // once per airtime teleport actionability
     if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_ENABLE_FREEFALL);
@@ -48,12 +51,13 @@ pub fn install(agent: &mut Agent) {
     // comment out to disable float
     agent.on_start(on_start);
 
-    jump_aerial::install(agent);
     attack_air::install(agent);
-    float::install(agent);
     fall::install(agent);
+    float::install(agent);
+    jump_aerial::install(agent);
+    landing::install(agent);
+    special_n::install(agent);
+    special_s::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);
-    special_n::install(agent);
-    special_hi::install(agent);
 }

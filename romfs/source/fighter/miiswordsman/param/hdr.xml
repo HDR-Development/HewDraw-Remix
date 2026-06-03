@@ -8,6 +8,17 @@
             <float hash="p2_y">8.9</float>
         </struct>
     </struct>
+    <struct hash="special_s2">
+        <float hash="max_speed_y_mul">0.35</float>
+        <float hash="min_speed_y_mul">0.25</float>
+        <float hash="accel_y_mul_up">0.85</float>
+        <float hash="accel_y_mul_down">0.75</float>
+        <float hash="shield_hit_end_speed_x">1.0</float>
+        <float hash="landing_lag">12.0</float>
+    </struct>
+    <struct hash="param_special_s3">
+        <float hash="shield_hit_end_speed_x">1.5</float>
+    </struct>
     <struct hash="param_special_hi3">
         <float hash="start_x_mul">0.5</float>
     </struct>

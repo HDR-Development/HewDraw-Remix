@@ -99,11 +99,16 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_sword_hdr"), Hash40::new("tex_ike_sword2"), 6, Hash40::new("sword"), 0, 1, 0, Hash40::new("sword"), 0, 16.2, 0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        EFFECT_FOLLOW(agent, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_ike_sword_hdr"), Hash40::new("tex_ike_sword2"), 6, Hash40::new("sword"), 0, 1, 0, Hash40::new("sword"), 0, 16.2, 0, true, Hash40::new("null"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
         AFTER_IMAGE_OFF(agent, 5);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ike_sword"), true, true);
     }
     frame(lua_state, 29.0);
     if is_excute(agent) {

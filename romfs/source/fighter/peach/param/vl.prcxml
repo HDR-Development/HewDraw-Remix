@@ -36,9 +36,9 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="special_n_hit_stop_frame">8</int>
-      <float hash="special_n_attack_speed_y">0.7</float>
-      <float hash="special_n_attack_accel_y">0.035</float>
-      <float hash="special_n_attack_stable_y">0.7</float>
+      <float hash="special_n_attack_speed_y">0.75</float>
+      <float hash="special_n_attack_accel_y">0.04</float>
+      <float hash="special_n_attack_stable_y">1.0</float>
       <float hash="special_n_spore_offset_x">-6.0</float>
       <float hash="special_n_spore_offset_y">3.2</float>
 	</struct>
@@ -58,8 +58,11 @@
     <struct index="0">
       <float hash="special_s_jump_speed_x">2.4</float>
       <float hash="special_s_jump_speed_flick_x">2.8</float>
+      <float hash="special_s_start_speed_y">0.7</float>
+      <float hash="special_s_jump_speed_y">0.5</float>
+      <float hash="special_s_jump_stable_y">0.7</float>
       <float hash="special_air_s_end_control_accel_x">0.025</float>
-      <float hash="special_s_hit_speed_x">-0.5</float>
+      <float hash="special_s_hit_speed_x">-0.4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

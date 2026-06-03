@@ -11,5 +11,10 @@
     <int hash="triple_jump_lockout_frame">25</int>
     <struct hash="param_special_hi">
         <float hash="start_x_mul">0.5</float>
+        <float hash="start_y_mul">0.75</float>
+        <float hash="end_accel_y_mul">0.667</float>
+    </struct>
+    <struct hash="param_special_lw">
+        <float hash="start_x_mul">0.6</float>
     </struct>
 </struct>

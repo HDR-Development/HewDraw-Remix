@@ -25,7 +25,7 @@
     <struct index="0">
       <float hash="special_s_jump_x_speed_">1.85</float>
       <float hash="special_s_jump_y_speed_">1.5</float>
-      <float hash="special_s_jump_x_speed_air_">1.8</float>
+      <float hash="special_s_jump_x_speed_air_">1.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

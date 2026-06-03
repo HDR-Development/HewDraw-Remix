@@ -19,6 +19,12 @@ unsafe fn change_kinetic_hook(boma: &mut BattleObjectModuleAccessor, kinetic_typ
         {
             kinetic_type_new = *FIGHTER_KINETIC_TYPE_FALL;
         }
+        
+        if boma.kind() == *FIGHTER_KIND_LUCAS {
+            if kinetic_type == *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N {
+                kinetic_type_new = *FIGHTER_KINETIC_TYPE_AIR_STOP;
+            }
+        }
     }
     original!()(boma, kinetic_type_new)
 }

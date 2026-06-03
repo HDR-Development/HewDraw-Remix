@@ -8,6 +8,9 @@
             <float hash="p2_y">8</float>
         </struct>
     </struct>
+    <struct hash="param_jump_aerial">
+        <float hash="start_motion_rate">0.81</float>
+    </struct>
     <struct hash="param_special_hi">
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.8</float>

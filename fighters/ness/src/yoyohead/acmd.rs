@@ -16,7 +16,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
 	frame(lua_state, 11.0);
 	FT_MOTION_RATE(agent, 1);
 	if is_excute(agent) {
-		ATTACK(agent, 0, 0, Hash40::new("attach"), 1.0, 90, 100, 30, 0, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 10, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+		ATTACK(agent, 0, 0, Hash40::new("attach"), 1.0, 90, 100, 30, 0, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
 	}
     frame(lua_state, 16.0);
 	if is_excute(agent) {

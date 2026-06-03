@@ -36,6 +36,7 @@ unsafe extern "C" fn float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    STOP_SE(fighter, Hash40::new("se_common_spirits_floor_fire_loop"));
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("samusd_win3_aura"), false, true);
     float_end_common(fighter)
 }

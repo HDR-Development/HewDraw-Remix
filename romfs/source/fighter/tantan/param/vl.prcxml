@@ -17,7 +17,7 @@
     <struct index="3">
       <float hash="p1_x">31</float>
       <float hash="p1_y">70</float>
-      <float hash="p2_x">-5</float>
+      <float hash="p2_x">-9.6</float>
       <float hash="p2_y">18</float>
     </struct>
   </list>
@@ -178,7 +178,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="rush_angle_max_front_g">5</float>
+      <int hash="0x15c81d2557">13</int>
+      <float hash="rush_angle_max_front_g">10</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

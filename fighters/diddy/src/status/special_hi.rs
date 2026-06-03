@@ -66,7 +66,7 @@ unsafe extern "C" fn special_hi_charge_pre(fighter: &mut L2CFighterCommon) -> L2
 // FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE
 
 pub unsafe extern "C" fn special_hi_charge_damage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = smashline::original_status(Main, fighter, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE)(fighter);
+    let ret = smashline::original_status(Main, fighter, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE)(fighter);
     MotionModule::set_rate(fighter.module_accessor, 1.0);
     ret
 }

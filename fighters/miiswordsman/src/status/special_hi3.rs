@@ -167,6 +167,15 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
     return 0.into()
 }
 
+unsafe extern "C" fn miisword_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::is_changing(fighter.module_accessor)
+    || StatusModule::is_situation_changed(fighter.module_accessor) {
+        return 1.into()
+    }
+    
+    return 0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Exec, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD, special_hi3_hold_exec);
     

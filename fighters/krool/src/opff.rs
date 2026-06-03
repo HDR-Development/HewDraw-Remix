@@ -3,18 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn var_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH]) {
-        VarModule::set_float(fighter.battle_object, vars::krool::instance::SPECIAL_LW_STORED_DAMAGE, 0.0);
-        VarModule::off_flag(fighter.battle_object, vars::krool::instance::SPECIAL_N_GRAB);
-    }
-}
-
 pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     if fighter.is_motion_one_of(&[
         Hash40::new("attack_s3_s"),
@@ -79,7 +67,6 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     armored_charge(fighter, motion_kind);
-    var_reset(fighter);
     fastfall_specials(fighter);
 }
 

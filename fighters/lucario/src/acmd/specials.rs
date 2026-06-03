@@ -61,6 +61,7 @@ unsafe extern "C" fn game_specialnbomb(agent: &mut L2CAgentBase) {
     frame(lua_state, 37.0);
     if is_excute(agent) {
         ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        VarModule::off_flag(agent.battle_object, vars::lucario::instance::IS_POWERED_UP);
     }
 }
 
@@ -361,9 +362,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 8.0);
     FT_MOTION_RATE_RANGE(agent, 8.0, 21.0, 16.0);
-    if is_excute(agent) {
-        boma.on_flag(*FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
-    }
     frame(lua_state, 21.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {

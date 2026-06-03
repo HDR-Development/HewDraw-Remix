@@ -6,6 +6,7 @@
       <float hash="air_jump_start_accel_mul">0.3</float>
       <float hash="fall_special_accel_x_mul">1</float>
       <float hash="fall_special_speed_x_max_mul">0.85</float>
+      <float hash="actionable_landing_frame">14</float>
       <float hash="landing_frame">32</float>
     </struct>
 </struct>

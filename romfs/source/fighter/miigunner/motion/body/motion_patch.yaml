@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -97,7 +97,7 @@ attack_air_n:
     cancel_frame: 39
 attack_air_f:
   extra:
-    cancel_frame: 41
+    cancel_frame: 39
 attack_air_f_boost:
   game_script: game_attackairfboost
   flags:
@@ -313,10 +313,10 @@ special_air_n1_neon:
     no_stop_intp: false
 special_s2_end:
   extra:
-    cancel_frame: 32
+    cancel_frame: 25
 special_air_s2_end:
   extra:
-    cancel_frame: 32
+    cancel_frame: 25
 special_hi2_squat:
   extra:
     xlu_start: 0
@@ -329,10 +329,10 @@ special_air_lw2:
     cancel_frame: 47
 special_lw3_end:
   extra:
-    cancel_frame: 18
+    cancel_frame: 17
 special_air_lw3_end:
   extra:
-    cancel_frame: 18
+    cancel_frame: 17
 catch_dash:
   extra:
     cancel_frame: 41
@@ -342,6 +342,9 @@ catch_attack:
 throw_b:
   extra:
     cancel_frame: 52
+throw_hi:
+  extra:
+    cancel_frame: 53
 furafura_end:
   extra:
     cancel_frame: 34

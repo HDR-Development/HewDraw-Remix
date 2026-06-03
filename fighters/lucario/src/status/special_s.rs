@@ -114,7 +114,8 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
         
         if !StatusModule::is_changing(fighter.module_accessor)
         && ((fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR)
-        || (fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND)) {
+            || (fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND))
+        && fighter.motion_frame() >= 15.0 {
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
             } else {

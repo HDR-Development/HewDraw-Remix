@@ -105,9 +105,9 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         JostleModule::set_status(boma, true);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 26.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -208,9 +208,9 @@ unsafe extern "C" fn game_specialairlwf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         JostleModule::set_status(boma, true);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 26.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -321,9 +321,9 @@ unsafe extern "C" fn game_specialairlwb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         JostleModule::set_status(boma, true);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 26.0);
     if is_excute(agent) {
-        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }

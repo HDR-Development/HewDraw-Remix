@@ -3,21 +3,37 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn laser_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        boma.check_land_cancel(None);
+unsafe fn laser_land_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        fighter.check_land_cancel(None);
     }
 }
 
 // Fox Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
+    // disables jump cancels when parried between statuses
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT
+    ])
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        VarModule::on_flag(fighter.battle_object, vars::fox::instance::SPECIAL_LW_DISABLE_JC);
+        if !fighter.is_status(*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END)
+        && !fighter.is_in_hitlag() {
+            fighter.change_status(FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
+        }
+    }
+
     if fighter.is_status_one_of(&[
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END])
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END
+    ])
     && !fighter.is_in_hitlag()
-        {
-            fighter.check_jump_cancel(false, false);
-        }
+    && !VarModule::is_flag(fighter.battle_object, vars::fox::instance::SPECIAL_LW_DISABLE_JC) {
+        fighter.check_jump_cancel(false, false, false);
+    }
 }   
 
 // Utaunt cancel into Fire Fox
@@ -36,13 +52,6 @@ unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("throw_hi")
-    && frame >= 10.0 {
-        MotionModule::set_rate(boma, 1.8);
-    }
-}
-
 unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     if !fighter.is_in_hitlag()
     && !StatusModule::is_changing(fighter.module_accessor)
@@ -56,12 +65,11 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    laser_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    laser_land_cancel(fighter);
     shine_jump_cancel(fighter);
     utaunt_cancel_fire_fox(boma, frame);
     firefox_startup_ledgegrab(fighter);
-    frame_data(boma, motion_kind, frame);
     fastfall_specials(fighter);
 }
 
@@ -74,7 +82,7 @@ pub extern "C" fn fox_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterComm
 
 pub unsafe fn fox_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.motion_kind.hash, info.frame);
     }
 }
 

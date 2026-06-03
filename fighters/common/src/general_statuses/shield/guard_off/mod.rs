@@ -8,7 +8,7 @@ mod exec;
 mod exit;
 
 pub fn install() {
-    //pre::install();
+    pre::install();
     main::install();
     //end::install();
 

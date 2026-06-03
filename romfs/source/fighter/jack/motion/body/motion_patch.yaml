@@ -30,10 +30,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -92,13 +92,13 @@ throw_f:
     cancel_frame: 26
 throw_b:
   extra:
-    cancel_frame: 33
+    cancel_frame: 40
 throw_lw:
   extra:
     cancel_frame: 44
 throw_hi:
   extra:
-    cancel_frame: 35
+    cancel_frame: 38
 attack_12:
   extra:
     cancel_frame: 18
@@ -183,15 +183,16 @@ attack_dash:
 attack_s4_s:
   extra:
     cancel_frame: 57
-special_hi2:
-  extra:
-    intangible_end_frame: 0
 attack_air_f:
   extra:
     cancel_frame: 41
 attack_air_n:
   extra:
     cancel_frame: 51
+special_n_jump:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
 special_lw:
   extra:
     xlu_start: 0
@@ -206,6 +207,9 @@ special_air_hi:
 special_air_hi_throw:
   extra:
     cancel_frame: 15
+special_hi2:
+  extra:
+    intangible_end_frame: 0
 special_hi2_f:
   extra:
     intangible_start_frame: 0

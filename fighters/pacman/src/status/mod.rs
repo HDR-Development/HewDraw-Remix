@@ -34,6 +34,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::pacman::instance::DISABLE_SPECIAL_HI);
         VarModule::off_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_GROUND_START);
+        VarModule::off_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_HI_DISABLE_AERIAL);
         VarModule::off_flag(fighter.battle_object, vars::pacman::instance::SPECIAL_S_GROUND_START);
     }
 

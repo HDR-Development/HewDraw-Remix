@@ -175,6 +175,9 @@
 		"fighter/robot/cmn": [
 			"fighter/robot/param/hdr.xml"
 		],
+		"fighter/rockman/cmn": [
+			"fighter/rockman/param/hdr.xml"
+		],
 		"fighter/shulk/cmn": [
 			"fighter/shulk/param/hdr.xml"
 		],
@@ -189,6 +192,30 @@
 		],
 		"fighter/metaknight/cmn": [
 			"fighter/metaknight/param/hdr.xml"
+		],
+		"fighter/buddy/cmn": [
+			"fighter/buddy/param/hdr.xml"
+		],
+		"fighter/trail/cmn": [
+			"fighter/trail/param/hdr.xml"
+		],
+		"fighter/palutena/cmn": [
+			"fighter/palutena/param/hdr.xml"
+		],
+		"fighter/brave/cmn": [
+			"fighter/brave/param/hdr.xml"
+		],
+		"fighter/elight/cmn": [
+			"fighter/elight/param/hdr.xml"
+		],
+		"fighter/murabito/cmn": [
+			"fighter/murabito/param/hdr.xml"
+		],
+		"fighter/shizue/cmn": [
+			"fighter/shizue/param/hdr.xml"
+		],
+		"fighter/roy/cmn": [
+			"fighter/roy/param/hdr.xml"
 		]
 	}
 }

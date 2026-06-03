@@ -20,7 +20,8 @@ use globals::*;
 unsafe fn special_hi_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
     && StatusModule::is_situation_changed(fighter.module_accessor)
-    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.motion_frame() >= 14.0 {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     }
 }

@@ -9,8 +9,8 @@
     </struct>
   </struct>
   <struct hash="param_special_s">
-    <float hash="air_speed_x_limit">1.0</float>
-    <float hash="air_speed_x_stable">1.0</float>
+    <float hash="air_speed_x_limit">0.8</float>
+    <float hash="air_speed_x_stable">0.8</float>
     <float hash="air_accel_x_add">0.01</float>
     <float hash="air_accel_x_mul">0.065</float>
     <float hash="ground_speed_x_limit">1.125</float>
@@ -31,9 +31,9 @@
     <float hash="back_speed_x_hitbox_min">-9.0</float>
     <float hash="air_accel_x_mul">0.6</float>
     <float hash="air_accel_y_mul">0.4</float>
-    <int hash="jump_squat_frame">6</int>
-    <int hash="landing_frame">12</int>
-    <int hash="attack_cancel_frame">8</int>
+    <int hash="jump_squat_frame">8</int>
+    <int hash="landing_frame">10</int>
+    <int hash="attack_cancel_frame">6</int>
   </struct>
   <struct hash="ground_pound">
     <float hash="fall_speed">4.0</float>

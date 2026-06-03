@@ -188,11 +188,15 @@ pub unsafe extern "C" fn special_s1_end_main_loop(fighter: &mut L2CFighterCommon
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIIFIGHTER_STATUS_WORK_ID_FLAG_100KICK_ENABLE_LANDING) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
+    }
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
     }
     if fighter.get_int(*FIGHTER_MIIFIGHTER_STATUS_WORK_ID_INT_100KICK_START_SITUATION) == *SITUATION_KIND_GROUND {
         if MotionModule::is_end(fighter.module_accessor) {
@@ -202,11 +206,15 @@ pub unsafe extern "C" fn special_s1_end_main_loop(fighter: &mut L2CFighterCommon
     }
     else {
         if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIIFIGHTER_STATUS_WORK_ID_FLAG_100KICK_ENABLE_LANDING)
+                { FIGHTER_STATUS_KIND_FALL } else { FIGHTER_STATUS_KIND_FALL_SPECIAL };
+            fighter.change_status(status.into(), false.into());
             return 1.into();
         }
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+            let status = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIIFIGHTER_STATUS_WORK_ID_FLAG_100KICK_ENABLE_LANDING)
+                { FIGHTER_STATUS_KIND_LANDING } else { FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL };
+            fighter.change_status(status.into(), false.into());
             return 1.into();
         }
     }

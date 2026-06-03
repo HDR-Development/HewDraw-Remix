@@ -6,17 +6,15 @@ unsafe extern "C" fn game_specialny(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 20.0, 16.0);
     frame(lua_state, 20.0);
+    FT_MOTION_RATE_RANGE(agent, 20.0, 54.0, 24.0); // 37 FAF -> 41
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::palutena::instance::SPECIAL_N_FLUSH_BOARD);
-        if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-            WorkModule::set_float(boma, PostureModule::pos_x(boma) - 100.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
-        }
-        else {
-            WorkModule::set_float(boma, PostureModule::pos_x(boma) + 100.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
-        }
-        WorkModule::set_float(boma, PostureModule::pos_y(boma) + 5.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_Y);
+        agent.set_float(PostureModule::pos_x(boma) + (100.0 * boma.lr()), *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_X);
+        agent.set_float(PostureModule::pos_y(boma) + 5.0, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_WORK_FLOAT_TARGET_POS_Y);
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_AUTOAIMBULLET, false, -1);
     }
+    frame(lua_state, 54.0); // cancel frame
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn effect_specialny(agent: &mut L2CAgentBase) {
@@ -24,17 +22,17 @@ unsafe extern "C" fn effect_specialny(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -0.2, 22, -1, 10, 90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.001);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight_grey"), Hash40::new("top"), -0.2, 22, -1, 10, 90, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.87, 0.0125);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.87, 0.0125);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2_grey"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 1.0, 0.87, 0.0125);
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 41.0);
     if is_excute(agent) {
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
-        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace_grey"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2_grey"), false, false);
     }
 }
 

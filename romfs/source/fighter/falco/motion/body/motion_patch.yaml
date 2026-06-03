@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -119,7 +119,7 @@ attack_lw3:
     cancel_frame: 28
 attack_hi4:
   extra:
-    cancel_frame: 53
+    cancel_frame: 45
 attack_lw4:
   extra:
     cancel_frame: 51
@@ -140,7 +140,7 @@ attack_air_n:
     cancel_frame: 43
 attack_air_f:
   extra:
-    cancel_frame: 43
+    cancel_frame: 36
 attack_air_b:
   extra:
     cancel_frame: 37

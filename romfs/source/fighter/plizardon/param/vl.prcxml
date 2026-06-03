@@ -16,8 +16,15 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="rush_rotate_count_">1</float>
-      <float hash="speed_x_">2.5</float>
+      <float hash="super_armor_damage_">16.0</float>
+      <float hash="rush_damage_">8.0</float>
+      <float hash="explosion_damage_">0.0</float>
+      <float hash="speed_x_">3.0</float>
       <float hash="brake_x_">0.04</float>
+      <float hash="ground_end_brake_">0.085</float>
+      <float hash="air_end_brake_">0.04</float>
+      <float hash="blow_speed_y_">2.0</float>
+      <float hash="blow_speed_acl_y_">0.15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

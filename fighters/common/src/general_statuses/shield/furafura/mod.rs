@@ -40,9 +40,24 @@ unsafe fn status_FuraFura_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return false.into();
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_FuraFuraEnd)]
+unsafe fn status_FuraFuraEnd_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut rate = 1.0;
+    // Separate Disable/Bind Wakeup Framedata
+    if StatusModule::prev_status_kind(fighter.module_accessor, 2) != *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY {
+        let disable_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "bind_end_frame") - 1.0; // FAF not lag
+        let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("furafura_end"), true);
+        let end_frame = MotionModule::end_frame(fighter.module_accessor);
+        rate = if cancel_frame > 0.0 {cancel_frame/disable_frame} else {end_frame/disable_frame};
+    }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("furafura_end"), 0.0, rate, false, 0.0, false, false);
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_FuraFuraEnd_Main as *const () as _))
+}
+
 pub fn install() {
     skyline::install_hooks!(
         status_FuraFura,
-        status_FuraFura_Main
+        status_FuraFura_Main,
+        status_FuraFuraEnd_Main
     );
 }

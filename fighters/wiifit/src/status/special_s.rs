@@ -24,6 +24,7 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
         sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -heading_gravity);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
+    InputModule::set_command_life_count_max(fighter.battle_object, 3);
 
     return 0.into();
 }
@@ -64,19 +65,22 @@ unsafe extern "C" fn special_s_jump_main_loop(fighter: &mut L2CFighterCommon) ->
             return 0.into();
         }
     }
-    if fighter.is_pad_flag(PadFlag::GuardTrigger) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
-            ControlModule::reset_trigger(fighter.module_accessor);
-            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    if fighter.status_frame() > 3 {
+        if fighter.is_pad_flag(PadFlag::GuardTrigger) {
+            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+                ControlModule::reset_trigger(fighter.module_accessor);
+                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                return 0.into();
+            }
+            let heading_cancel_landing_frame = fighter.get_param_int("param_special_s", "heading_cancel_landing_frame");
+            fighter.set_float(heading_cancel_landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
             return 0.into();
         }
-        let heading_cancel_landing_frame = fighter.get_param_int("param_special_s", "heading_cancel_landing_frame");
-        fighter.set_float(heading_cancel_landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-        return 0.into();
     }
+    
     return 0.into();
 }
 

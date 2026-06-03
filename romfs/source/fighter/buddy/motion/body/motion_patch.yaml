@@ -20,10 +20,10 @@ down_stand_d:
     cancel_frame: 31
 down_attack_u:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_attack_d:
   extra:
-    cancel_frame: 50
+    cancel_frame: 54
 down_forward_u:
   extra:
     cancel_frame: 36
@@ -92,6 +92,20 @@ attack_13:
 attack_11:
   extra:
     cancel_frame: 17
+attack_s3_hi:
+  remove: true
+attack_s3_s:
+  game_script: game_attacks3
+  animations:
+    - name: c01attacks3s.nuanmb
+  scripts:
+    - expression_attacks3
+    - sound_attacks3
+    - effect_attacks3
+  extra:
+    cancel_frame: 32
+attack_s3_lw:
+  remove: true
 attack_hi4:
   extra:
     cancel_frame: 46
@@ -137,6 +151,152 @@ special_n_shoot_end:
 special_air_n_shoot_end:
   extra:
     cancel_frame: 8
+special_n_attack_hi:
+  game_script: game_specialnattack
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+      - name: d00specialnattackhi.nuanmb
+  scripts:
+    - expression_specialnattack
+    - sound_specialnattack
+    - effect_specialnattack
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 31
+    no_stop_intp: false
+special_n_attack_s:
+  game_script: game_specialnattack
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+      - name: d00specialnattacks.nuanmb
+  scripts:
+    - expression_specialnattack
+    - sound_specialnattack
+    - effect_specialnattack
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 31
+    no_stop_intp: false
+special_n_attack_lw:
+  game_script: game_specialnattack
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+      - name: d00specialnattacklw.nuanmb
+  scripts:
+    - expression_specialnattack
+    - sound_specialnattack
+    - effect_specialnattack
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 31
+    no_stop_intp: false
+special_n_attack_end:
+  game_script: game_specialnattackend
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 8
+  animations:
+      - name: d00specialnstart.nuanmb
+  scripts:
+    - expression_specialnattackend
+    - sound_specialnattackend
+    - effect_specialnattackend
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 31
+    no_stop_intp: false
+special_s_jump:
+  game_script: game_specialsjump
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d01specialsjump.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialsjump
+    - sound_specialsjump
+    - effect_specialsjump
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 0
+    no_stop_intp: false
 catch_attack:
   extra:
     cancel_frame: 0

@@ -1,11 +1,10 @@
 use super::*;
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW
-
-unsafe extern "C" fn special_lw_main_old(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.change_status(statuses::krool::SPECIAL_LW_GUT.into(), true.into());
+unsafe extern "C" fn special_lw_pre_old(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.change_status(statuses::krool::SPECIAL_LW_GUT.into(), false.into());
    
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -33,35 +32,38 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
         0
     );
 
-    0.into()
+    return 0.into();
 }
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
+    } 
+    else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
     fighter.main_shift(special_lw_main_loop)
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if StatusModule::is_changing(fighter.module_accessor)
-    || StatusModule::is_situation_changed(fighter.module_accessor) {
-        special_lw_change_motion(fighter);
-    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
     }
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        special_lw_change_motion(fighter);
+    }
     if MotionModule::is_end(fighter.module_accessor) {
-        let status = if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            FIGHTER_STATUS_KIND_WAIT
-        }
-        else {
-            FIGHTER_STATUS_KIND_FALL
-        };
-        fighter.change_status(status.into(), false.into());
+        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
         return 0.into();
     }
-
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
@@ -74,7 +76,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if fighter.motion_frame() > 30.0  // Allows for jump cancel on frame 8 (30 in animation) if not charged
     && !VarModule::is_flag(fighter.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED)
     && !fighter.is_in_hitlag() {
-        fighter.check_jump_cancel(false, false);
+        fighter.check_jump_cancel(false, false, false);
     }
     if VarModule::is_flag(fighter.battle_object, vars::krool::status::SPECIAL_LW_GUT_CHARGED)    // restore armor on full charge hit
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -91,29 +93,17 @@ unsafe extern "C" fn special_lw_change_motion(fighter: &mut L2CFighterCommon) {
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_LW_FLAG_FIRST) {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_LW_FLAG_FIRST);
-        }
-        else {
-            MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0);
-        }
+        MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0);
     } 
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_LW_FLAG_FIRST) {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_STATUS_SPECIAL_LW_FLAG_FIRST);
-        }
-        else {
-            MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0);
-        }
+        MotionModule::change_motion_inherit_frame_keep_rate(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0);
     }
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main_old);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre_old);
     agent.status(Pre, statuses::krool::SPECIAL_LW_GUT, special_lw_pre);
     agent.status(Main, statuses::krool::SPECIAL_LW_GUT, special_lw_main);
 }

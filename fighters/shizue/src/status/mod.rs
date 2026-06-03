@@ -6,6 +6,7 @@ mod dead;
 mod special_hi;
 mod special_lw;
 mod special_s;
+mod landing;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.object(), vars::shizue::instance::SPECIAL_LW_LLOID_ASYNC);
@@ -19,4 +20,5 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
     special_lw::install(agent);
     special_s::install(agent);
+    landing::install(agent);
 }

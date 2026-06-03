@@ -1,6 +1,7 @@
 use super::*;
 use super::knockback_util::*;
 use utils::ext::*;
+use utils::game_modes::*;
 
 pub fn install() {
     skyline::install_hooks!(
@@ -40,6 +41,11 @@ unsafe fn calculate_knockback(ctx: &skyline::hooks::InlineCtx) {
         // stores the attacker's team color here, since this runs before the spark effects are called
         // process_knockback occurs after the sparks, so we can't put it there
         set_attacker_team_color(attacker);
+
+        // Track last attacker entry ID on the defender for War Mode stock steal
+        if check_custom_mode(CustomMode::WarMode) {
+            set_last_attacker_entry_id(&mut *our_boma, attacker);
+        }
     }
 }
 
@@ -48,7 +54,7 @@ unsafe fn process_knockback(ctx: &skyline::hooks::InlineCtx) {
     if let Some((defender, attacker)) = IS_CALCULATING {
         let boma = ctx.registers[20].x() as *mut smash::app::BattleObjectModuleAccessor;
         if (*boma).battle_object_id == defender {
-            process_item_on_collision(defender, attacker);
+            process_item_on_collision(defender, attacker, ctx.registers[19].x() as *const f32);
             calculate_finishing_hit(defender, attacker, ctx.registers[19].x() as *const f32);
         }
     }
@@ -81,11 +87,61 @@ pub unsafe extern "C" fn set_attacker_team_color(attacker:u32) {
     // if LAST_ATTACK_TEAM_COLOR == 9 { LAST_ATTACK_TEAM_COLOR = 0 };
 }
 
-pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32) {
+/// When a defending fighter is hit by an attack, get the attacker's entry ID and store it in the defender's var module
+/// This code is currently only used for tracking the kill reward for War Mode
+unsafe fn set_last_attacker_entry_id(defender_boma: &mut BattleObjectModuleAccessor, attacker: u32) {
+    if !defender_boma.is_fighter() || !VarModule::has_var_module(defender_boma.object()) {
+        return;
+    }
+
+    let attacker_obj = util::get_battle_object_from_id(attacker);
+    if attacker_obj.is_null() { return; }
+    let mut attacker_boma = &mut *(*attacker_obj).module_accessor;
+
+    // Check weapons
+    if attacker_boma.is_weapon() {
+        let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let owner = util::get_battle_object_from_id(owner_id);
+        if owner.is_null() { return; }
+        attacker_boma = &mut *(*owner).module_accessor;
+        if attacker_boma.is_weapon() {
+            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let owner = util::get_battle_object_from_id(owner_id);
+            if owner.is_null() { return; }
+            attacker_boma = &mut *(*owner).module_accessor;
+        }
+    }
+
+    // Check items
+    if attacker_boma.is_item() {
+        let owner_id = if LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_HAVE) {
+            LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_HAVE, true) as u32
+        } else if LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_CREATEOWNER) {
+            LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_CREATEOWNER, true) as u32
+        } else if LinkModule::is_link(attacker_boma, *ITEM_LINK_NO_TEAMOWNER) {
+            LinkModule::get_parent_id(attacker_boma, *ITEM_LINK_NO_TEAMOWNER, true) as u32
+        } else {
+            return;
+        };
+        let owner = utils::util::get_battle_object_from_id(owner_id);
+        if owner.is_null() { return; }
+        attacker_boma = &mut *(*owner).module_accessor;
+    }
+
+    if !attacker_boma.is_fighter() { return; }
+
+    let attacker_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    VarModule::set_int(defender_boma.object(), vars::common::instance::LAST_ATTACKER_ENTRY_ID, attacker_entry_id);
+}
+
+pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32, knockback_info: *const f32) {
     let defender_boma = &mut *(*util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
     if defender_boma.is_item() {
         if defender_boma.kind() == *ITEM_KIND_DAISYDAIKON {
+            let damage = *knockback_info.add(22);
+            let carrot_dmg = WorkModule::get_int64(defender_boma, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER) as f32;
+            WorkModule::set_int64(defender_boma, (carrot_dmg + damage) as i64, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER);
             if attacker_boma.is_fighter() {
                 let attacker_team_no = TeamModule::hit_team_no(attacker_boma) as i32;
                 TeamModule::set_team(defender_boma, attacker_team_no, false);
@@ -143,36 +199,25 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     *(knockback_info.add(0x4c / 4) as *mut u32) = 60;
     let defender_boma = &mut *(*util::get_battle_object_from_id(defender)).module_accessor;
     let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
-    // let before = std::time::Instant::now();
-    // println!("");
+
     if VarModule::has_var_module(defender_boma.object()) {VarModule::off_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
-
     if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
-        // let elapsed = std::time::Instant::now().duration_since(before);
-        // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
-
-    // let elapsed = std::time::Instant::now().duration_since(before);
-    // println!("is_potential_finishing_hit calculation time: {:?}", elapsed);
-    // let before = std::time::Instant::now();
     if !is_valid_finishing_hit(knockback_info, defender_boma, attacker_boma) { 
-        // let elapsed = std::time::Instant::now().duration_since(before);
-        // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
         return; 
     }
-    // let elapsed = std::time::Instant::now().duration_since(before);
-    // println!("is_valid_finishing_hit calculation time: {:?}", elapsed);
     if VarModule::has_var_module(defender_boma.object()) {VarModule::on_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
     
     call_finishing_hit_effects(defender_boma, attacker_boma);
 }
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
-    if !defender_boma.is_fighter() { 
+    if !defender_boma.is_fighter() || defender_boma.kind() == *FIGHTER_KIND_NANA {
         // println!("kill screen defender is not fighter"); 
-        return false; 
+        return false;
     }
+
     if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { 
         // println!("kill screen attacker is not fighter or weapon"); 
         return false; 
@@ -219,24 +264,7 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
 }
 
 pub unsafe extern "C" fn is_final_killing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
-    // special case for training mode
     if util::is_training_mode() {
-        if VarModule::is_flag(defender_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
-        }
-
-        let mut is_training_toggle = false;
-        if attacker_boma.is_weapon() {
-            let owner_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let owner = util::get_battle_object_from_id(owner_id);
-            let owner_boma = &mut *(*owner).module_accessor;
-            if VarModule::is_flag(owner_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-                return true;
-            }
-        } else if VarModule::is_flag(attacker_boma.object(), vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
-            return true;
-        }
-        // println!("kill screen training mode is not enabled"); 
         return false;
     }
 

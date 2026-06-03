@@ -211,7 +211,7 @@ unsafe fn check_virtual_inputs(ctx: &mut InlineCtx) {
             if let Some(controls_id) =
                 get_controls_id_from_button_id(root_layout, currently_pressing)
             {
-                if virt.pressed_y {
+                if virt.pressed_y && get_ptr_to_controls(controls_id).tag_len() != 0 {
                     *submenu = Some(Box::new(TopLevel { controls_id }));
                     true
                 // } else if virt.pressed_x {

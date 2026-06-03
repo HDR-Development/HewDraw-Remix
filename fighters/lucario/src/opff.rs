@@ -96,7 +96,21 @@ pub unsafe fn check_burnout(agent: &mut L2CAgentBase) {
     if meter <= 0.0
     && !VarModule::is_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT) {
         VarModule::on_flag(agent.battle_object, vars::lucario::instance::METER_BURNOUT);
-        PLAY_SE(agent, Hash40::new("se_common_spirits_critical_l_tail"));
+        let bust_pos = &mut Vector3f{ x: 0.0, y: 0.0, z: 0.0 };
+        let lr = PostureModule::lr(agent.module_accessor);
+        ModelModule::joint_global_position(agent.module_accessor, Hash40::new("bust"), bust_pos, false);
+        EffectModule::req(
+            agent.module_accessor,
+            Hash40::new("sys_ground_shockwave"),
+            &Vector3f::new(bust_pos.x + (2.0 * lr), bust_pos.y, bust_pos.z),
+            &Vector3f::new(1.57, 0.0, 0.0),
+            0.77,
+            0,
+            -1,
+            false,
+            0
+        );
+        LAST_EFFECT_SET_RATE(agent, 0.65);
         MeterModule::drain_direct(agent.battle_object, meter);
     }
 }
@@ -256,6 +270,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT) {
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_BURNOUT);
         PLAY_SE(fighter, Hash40::new("se_system_favorite_on"));
+        app::FighterUtil::flash_eye_info(fighter.module_accessor);
         MeterModule::drain_direct(fighter.battle_object, meter);
     }
     

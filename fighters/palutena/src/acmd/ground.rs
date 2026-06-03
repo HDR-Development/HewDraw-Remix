@@ -90,20 +90,17 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 6.0);
-    if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_RATE(agent, 0.5);
-        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 16, 0, 0, 0, 1, true);
-    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.3);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
-        EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(agent, 0.5);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("palutena_guard"), Hash40::new("arml"), 2, 0, 0.0, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_RATE(agent, 0.75);
     }
 }
 

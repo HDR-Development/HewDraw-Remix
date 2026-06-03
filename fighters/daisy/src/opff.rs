@@ -4,22 +4,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 
 use vars::daisy::instance::*;
 
-unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP) {
-        let lr = PostureModule::lr(boma);
-        let frame = MotionModule::frame(boma) as i32;
-        let mut touch_wall = false;
-        if lr > 0.0 {
-            touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT as u32);
-        } else {
-            touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
-        };
-        if touch_wall && (1..25).contains(&frame) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
-        }
-    }
-}
-
 // transition daisy into unique animations for her third jump
 unsafe fn triple_jump_motion(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")])
@@ -81,7 +65,6 @@ unsafe fn appeal_special(boma: &mut BattleObjectModuleAccessor) {
 // }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    wall_bounce(boma);
     triple_jump_motion(fighter, boma);
     crystal_handling(boma);
     appeal_special(boma);

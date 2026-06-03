@@ -1,19 +1,5 @@
 use super::*;
 
-pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.object(), vars::pacman::instance::SPECIAL_HI_AERIAL_USED) {
-        if [
-            *FIGHTER_STATUS_KIND_LANDING,
-            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-        }
-        VarModule::off_flag(fighter.object(), vars::pacman::instance::SPECIAL_HI_AERIAL_USED);
-    }
-
-    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
-}
-
 pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     fighter.sub_shift_status_main(L2CValue::Ptr(attack_air_main_loop as *const () as _))
@@ -66,7 +52,21 @@ unsafe extern "C" fn status_AttackAir_Main(fighter: &mut L2CFighterCommon) -> L2
     return 0.into();
 }
 
+pub unsafe extern "C" fn attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.object(), vars::pacman::instance::SPECIAL_HI_AERIAL_USED) {
+        if [
+            *FIGHTER_STATUS_KIND_LANDING,
+            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        }
+        VarModule::off_flag(fighter.object(), vars::pacman::instance::SPECIAL_HI_AERIAL_USED);
+    }
+
+    smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
-    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end);
     agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_end);
 }

@@ -22,7 +22,7 @@ use globals::*;
 pub unsafe extern "Rust" fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, 1.0, false, 0.0, false, false);
     fighter.status_DashCommon();
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
+    // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH);
     GroundModule::set_reverse_direction(fighter.module_accessor, true, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(fgc_dashback_main_loop as *const () as _))
@@ -74,6 +74,20 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             return 1.into();
         }
     }
+
+    // Enable turn grab
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH) && {
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let turn_run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_run_stick_x"));
+        stick_x * lr <= turn_run_stick_x
+    } && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+    && !ItemModule::is_have_item(fighter.module_accessor, 0) {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
+        return 1.into();
+    }
+
     // original
     // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE) {
     //     if WorkMoudle::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
@@ -131,11 +145,19 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             }
         }
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH)
+    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
         return 1.into();
     }
 
