@@ -16,10 +16,12 @@ unsafe extern "C" fn uniq_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn uniq_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EffectModule::req_follow(fighter.module_accessor, Hash40::new("daisy_levitation"), Hash40::new("toer"), &Vector3f{x: 1.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, false, false);
     float_main_common(fighter)
 }
 
 unsafe extern "C" fn uniq_float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("daisy_levitation"), true, true);
     float_end_common(fighter)
 }
 

@@ -10,14 +10,6 @@ unsafe fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -
     || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING) { // flag seems only useful if there was a non-once-per-airtime float?
         return false.into();
     }
-    
-    // remove floating with buffered jump+aerials
-    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    && StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status(*FIGHTER_STATUS_KIND_JUMP) { 
-        return false.into();
-    }
 
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
         return false.into();
@@ -33,6 +25,16 @@ unsafe fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -
         return false.into();
     }
 
+    // remove floating with buffered jump+aerials, instant held float f1 of jump
+    let airtime = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+    if airtime < 1 
+    && (fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    || stick_y > squat_stick_y) {
+        return false.into()
+    }
+
+    // no water floats
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     let prev_sit = fighter.global_table[PREV_SITUATION_KIND].get_i32();
     if sit == *SITUATION_KIND_WATER

@@ -4,6 +4,7 @@ use super::*;
 unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     float_jump_leniency(fighter);
     float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
@@ -17,16 +18,24 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
 
-    if !VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        let start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame");
-        let start_frame_normal = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_normal");
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, start_frame_normal/start_frame, false, 0.0, false, false);
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
+        VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 1);
+        float_inherit_aerial(fighter);
+    } else {
+        VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 2);
+        let start_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_target");
+        let start_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_reset");
+        let mut rate = 1.0;
+        if start_frame_target > 0.0 {
+            rate = start_frame_reset/start_frame_target;
+        }
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, rate, false, 0.0, false, false);
     }
+        
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
     let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
     AttackModule::set_shield_stiff_mul(fighter.module_accessor, shield_stiff_mul_attack_air);
-    float_check_aerial(fighter);
     float_ray_check(fighter);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(float_main_loop_common as *const () as _))
@@ -34,67 +43,65 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[no_mangle]
 unsafe fn float_check_aerial(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
-    || VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) != 1 {
-            float_set_aerial(fighter);
-            return;
-        }
+    if fighter.sub_transition_group_check_air_lasso().get_bool() {
+        return;
     }
+    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+        float_set_aerial(fighter);
+        return;
+    }
+    // act on cancel
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
-    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_NONE, FIGHTER_LOG_ACTION_KIND_NONE);
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
-    VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 2);
+    // transition to float
+    if MotionModule::is_end(fighter.module_accessor) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_NONE, FIGHTER_LOG_ACTION_KIND_NONE);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
+        VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 2);
+    }
 }
 
-#[no_mangle]
+unsafe fn float_inherit_aerial(fighter: &mut L2CFighterCommon) {
+    let motion = MotionModule::motion_kind(fighter.module_accessor);
+    let log = match motion {
+        0xc3a4e2597 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N),
+        0xc3495ada5 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F),
+        0xc33f869bc => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_B),
+        0xdde67d935 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_HI),
+        0xd40042152 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW),
+        _ => None
+    };
+
+    if let Some(log) = log {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, log);
+    }
+    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_fuwafuwa"), -1);
+    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_fuwafuwa"), -1);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
+    VarModule::off_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
+}
+
 unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     let reflet = fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_REFLET;
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
-        let motion = MotionModule::motion_kind(fighter.module_accessor);
-        let log = match motion {
-            0xc3a4e2597 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N),
-            0xc3495ada5 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F),
-            0xc33f869bc => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_B),
-            0xdde67d935 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_HI),
-            0xd40042152 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW),
-            _ => None
-        };
-    
-        if let Some(log) = log {
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, log);
-        }
-
-        VarModule::off_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
-    }
-    else {
-        if reflet {
-            VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-        }
-        let mot = fighter.sub_attack_air_kind_set_log_info();
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new_raw(mot.get_u64()),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
-    }
-
     if reflet {
+        VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
         if let Some(target) = smashline::api::get_target_function("lua2cpp_reflet.nrs", 0x3000) {
             let check_levin: fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(target);
             check_levin(fighter);
         }
-        if let Some(target) = smashline::api::get_target_function("lua2cpp_reflet.nrs", 0x28220) {
-            let set_levin: fn(&mut L2CFighterCommon) = std::mem::transmute(target);
-            set_levin(fighter);
-        }
     }
+
+    let mot = fighter.sub_attack_air_kind_set_log_info();
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new_raw(mot.get_u64()),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
 
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_CMD_CANCEL_UNABLE_CANCEL);
@@ -104,9 +111,6 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 1);
-    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_fuwafuwa"), -1);
-    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_fuwafuwa"), -1);
-    MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_fuwafuwa"), -1);
 }
 
 #[no_mangle]
@@ -210,25 +214,27 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         if !StatusModule::is_changing(fighter.module_accessor) {
             let mtrans = VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS);
 
+            // if in an aerial
             if mtrans == 1 {
                 if MotionModule::is_end(fighter.module_accessor) {
-                    let return_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame");
-                    let start_frame_normal = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_normal");
-                    if return_frame > 0.0 {
-                        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, start_frame_normal/return_frame, false, 0.0, false, false);
+                    let return_frame_start = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame_start");
+                    let return_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame_target");
+                    let start_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_reset");
+                    float_check_aerial(fighter);
+                    let mut rate = 1.0;
+                    if start_frame_reset > return_frame_start
+                    && return_frame_target > 0.0 {
+                        rate = (start_frame_reset-return_frame_start)/return_frame_target;
                     }
-                    check_aerial = true;
+                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_return"), return_frame_start, rate, false, 0.0, false, false);
                 }
                 if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
-                        check_aerial = true;
-                    }
-                }
-            }
-            else if mtrans == 2 {
-                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
                     check_aerial = true;
                 }
+            }
+            // if empty float anim
+            else if mtrans == 2 {
+                check_aerial = true;
                 if MotionModule::is_end(fighter.module_accessor) {
                     MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa"), 1.0, 1.0, false, 0.0, false, false);
                 }
@@ -236,9 +242,6 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
 
         if check_aerial {
-            if fighter.sub_transition_group_check_air_lasso().get_bool() {
-                return 1.into();
-            }
             float_check_aerial(fighter);
         }
     }

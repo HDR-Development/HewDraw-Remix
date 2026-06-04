@@ -88,9 +88,9 @@ pub mod vars {
 
             // pub const IS_TAP_JUMP: i32 = 0x0004;
 
-            pub const OMNI_FLOAT: i32 = 0x0005;
-            pub const AERIAL_NO_FLOAT: i32 = 0x0006;
-            pub const FLOAT_PAUSE_AERIAL: i32 = 0x0007;
+            //pub const OMNI_FLOAT: i32 = 0x0005;
+            //pub const AERIAL_NO_FLOAT: i32 = 0x0006;
+            //pub const FLOAT_PAUSE_AERIAL: i32 = 0x0007;
 
             pub const SIDE_SPECIAL_CANCEL: i32 = 0x0008;
             pub const UP_SPECIAL_CANCEL: i32 = 0x0009;
@@ -182,29 +182,29 @@ pub mod vars {
 
             pub const IS_INIT: i32 = 0x0065;
 
-            pub const IS_FLOATING: i32 = 0x0066;
+            pub const OMNI_FLOAT: i32 = 0x0066;
+            pub const ENABLE_FLOAT: i32 = 0x0067;
+            pub const IS_FLOATING: i32 = 0x0068;
 
-            pub const WEIRD_ASS_TURN_RUN_ANIMATION: i32 = 0x0067;
+            pub const WEIRD_ASS_TURN_RUN_ANIMATION: i32 = 0x0069;
 
-            pub const ACMD_EFFECT: i32 = 0x0068;
+            pub const ACMD_EFFECT: i32 = 0x006A;
 
-            pub const WAS_PREV_STATUS_CANCELABLE: i32 = 0x0069;
+            pub const WAS_PREV_STATUS_CANCELABLE: i32 = 0x006B;
 
-            pub const IS_ENTER_DASH_CANCEL: i32 = 0x006A;
+            pub const IS_ENTER_DASH_CANCEL: i32 = 0x006C;
 
-            pub const DOWN_DISABLE_PASSIVE: i32 = 0x006B;
+            pub const DOWN_DISABLE_PASSIVE: i32 = 0x006D;
 
-            // pub const DOWN_DISABLE_A_LAND: i32 = 0x006C;
+            // pub const DOWN_DISABLE_A_LAND: i32 = 0x006E;
 
-            pub const IS_KILLING_BLOW: i32 = 0x006D;
+            pub const IS_KILLING_BLOW: i32 = 0x006F;
 
-            pub const IS_DITCIT: i32 = 0x006E;
+            pub const IS_DITCIT: i32 = 0x0070;
 
-            pub const IGNORE_REDUCED_SCREENSHAKE: i32 = 0x006F;
+            pub const IGNORE_REDUCED_SCREENSHAKE: i32 = 0x0071;
 
-            pub const DISABLE_AIR_LASSO: i32 = 0x0070;
-            
-            pub const ENABLE_FLOAT: i32 = 0x0071;
+            pub const DISABLE_AIR_LASSO: i32 = 0x0072;
 
             // ints
 

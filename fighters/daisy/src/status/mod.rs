@@ -65,6 +65,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[0x2d].assign(&false.into()); // yet another vanilla hardcoded turnip+down-b=toss input 
     fighter.global_table[globals::CHECK_AIR_JUMP_UNIQ].assign(&L2CValue::Ptr(air_jump_uniq as *const () as _));
     fighter.global_table[globals::CHECK_AIR_JUMP_AERIAL_UNIQ].assign(&L2CValue::Ptr(air_jump_aerial_uniq as *const () as _));
+    VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT);
 }
 
 pub fn install(agent: &mut Agent) {

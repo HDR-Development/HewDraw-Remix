@@ -89,7 +89,6 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
     || CancelModule::is_enable_cancel(fighter.module_accessor)) {
         let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
         if float_checks(fighter, status_kind.into()) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
             return 1.into();
         }
     }

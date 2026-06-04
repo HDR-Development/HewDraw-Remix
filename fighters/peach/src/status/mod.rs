@@ -8,7 +8,7 @@ mod special_n;
 mod special_hi;
 mod special_s;
 mod special_lw;
-mod uniq_float_start;
+//mod uniq_float_start;
 mod uniq_float;
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
@@ -76,6 +76,6 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
     special_s::install(agent);
     special_lw::install(agent);
-    uniq_float_start::install(agent);
+    //uniq_float_start::install(agent);
     uniq_float::install(agent);
 }
