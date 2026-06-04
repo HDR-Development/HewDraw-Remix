@@ -106,58 +106,6 @@ unsafe extern "C" fn game_itemlightthrowdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_squatf(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    loop {
-        frame(lua_state, 2.0);
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("robot_footmark"), Hash40::new("knee"), 1.5, 0, 0, 0, -2, 90, 1, true);
-            FOOT_EFFECT(agent, Hash40::new("robot_run_smoke"), Hash40::new("top"), -3.8, 0, 0, 0, 0, 0, 0.9, 1, 0, 0, 0, 0, 0, false);
-        }
-        wait_loop_clear(agent);
-    }
-}
-
-unsafe extern "C" fn sound_squatf(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    if is_excute(agent) {
-        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
-        PLAY_STATUS(agent, Hash40::new("se_robot_step_s"));
-    }
-}
-
-unsafe extern "C" fn expression_squatf(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    loop {
-        frame(lua_state, 1.0);
-        if is_excute(agent) {
-            slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TPART, 5);
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_walk"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        frame(lua_state, 8.0);
-        if is_excute(agent) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_walk"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        wait_loop_clear(agent);
-    }
-}
-
-unsafe extern "C" fn effect_squatb(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    loop { 
-        frame(lua_state, 2.0);
-        if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("robot_footmark"), Hash40::new("knee"), 1.5, 0, 0, 0, -2, 90, 1, true);
-            FOOT_EFFECT(agent, Hash40::new("robot_run_smoke"), Hash40::new("top"), 3.8, 0, 0, 180, 0, 0, 0.9, 1, 0, 0, 0, 0, 0, false);
-        }
-        wait_loop_clear(agent);
-    }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -175,14 +123,4 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
     agent.acmd("game_itemlightthrowdash", game_itemlightthrowdash, Priority::Low);
-
-    agent.acmd("game_squatf", acmd_stub, Priority::Low);
-    agent.acmd("effect_squatf", effect_squatf, Priority::Low);
-    agent.acmd("sound_squatf", sound_squatf, Priority::Low);
-    agent.acmd("expression_squatf", expression_squatf, Priority::Low);
-
-    agent.acmd("game_squatb", acmd_stub, Priority::Low);
-    agent.acmd("effect_squatb", effect_squatb, Priority::Low);
-    agent.acmd("sound_squatb", sound_squatf, Priority::Low);
-    agent.acmd("expression_squatb", expression_squatf, Priority::Low);
 }
