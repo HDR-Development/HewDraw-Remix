@@ -4,13 +4,15 @@ use super::*;
 unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0, 0.0);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+
     float_jump_leniency(fighter);
     float_drift_common(fighter);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_JUMP);
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_JUMP_BUTTON);
 
     let float_duration = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_float.float_duration");
     VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_FRAME, float_duration);
@@ -74,6 +76,14 @@ unsafe fn float_inherit_aerial(fighter: &mut L2CFighterCommon) {
     if let Some(log) = log {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, log);
     }
+
+    // idk why it unables cancel here
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion), true);
+    if fighter.motion_frame() >= cancel_frame {
+        fighter.clear_lua_stack();
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
+
     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_fuwafuwa"), -1);
     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new("expression_fuwafuwa"), -1);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_ATTACK_AIR);
@@ -167,13 +177,13 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N);
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 1
     && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
         return 0.into();
     }
 
@@ -182,13 +192,13 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N);
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS) == 1
     && VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ) <= 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), false.into());
         return 0.into();
     }
 

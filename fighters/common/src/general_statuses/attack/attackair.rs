@@ -1,9 +1,12 @@
 use super::*;
 
 #[no_mangle]
-unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
+unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    let keep = if prev_status_kind == float_status.get_i32() {
+    let float_status = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
+    let keep = if prev_status_kind == float_status {
         (
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
@@ -17,6 +20,7 @@ unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2C
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_AIR_FLOAT
         )
     };
+
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -45,9 +49,10 @@ unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2C
 }
 
 #[no_mangle]
-unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
+unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    if prev_status_kind != float_status.get_i32() {
+    let float_status = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
+    if prev_status_kind != float_status {
         return smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter);
     }
 
@@ -68,6 +73,13 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2
 
     // fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+
+    // idk where this is usually #handled
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion), true);
+    if fighter.motion_frame() >= cancel_frame {
+        fighter.clear_lua_stack();
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
 
     // allow fast fall during float release aerials
     if !StopModule::is_stop(fighter.module_accessor) {

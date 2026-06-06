@@ -73,12 +73,6 @@ fall_aerial:
   blend_frames: 3
 fall_special:
   blend_frames: 3
-jump_aerial_f:
-  extra:
-    no_stop_intp: true
-jump_aerial_b:
-  extra:
-    no_stop_intp: true
 guard_off:
   blend_frames: 4
   extra:
