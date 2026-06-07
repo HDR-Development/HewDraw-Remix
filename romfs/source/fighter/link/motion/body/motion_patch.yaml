@@ -79,7 +79,7 @@ guard_off:
     cancel_frame: 12
 throw_f:
   extra:
-    cancel_frame: 31
+    cancel_frame: 30
 throw_b:
   extra:
     cancel_frame: 33
@@ -127,7 +127,7 @@ attack_hi4:
     cancel_frame: 72
 attack_lw4:
   extra:
-    cancel_frame: 53
+    cancel_frame: 48
 special_lw:
   extra:
     cancel_frame: 40
