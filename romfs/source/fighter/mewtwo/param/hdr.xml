@@ -10,10 +10,10 @@
       <float hash="empty_landing">14.0</float>
     </struct>
     <struct hash="param_float">
-      <float hash="start_frame_target">14.0</float>
-      <float hash="start_frame_reset">10.0</float>
+      <float hash="start_motion_rate_frame_target">14.0</float>
+      <float hash="start_motion_rate_frame_reset">10.0</float>
       <float hash="return_frame_start">0.0</float>
-      <float hash="return_frame_target">19.0</float>
+      <float hash="return_motion_rate_frame_target">19.0</float>
       <int hash="float_duration">60</int>
       <float hash="float_stable">1.2</float>
       <float hash="float_accel_add">0.02</float>

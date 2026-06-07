@@ -25,11 +25,11 @@ unsafe fn float_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
         float_inherit_aerial(fighter);
     } else {
         VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_MTRANS, 2);
-        let start_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_target");
-        let start_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_reset");
+        let start_motion_rate_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_motion_rate_frame_target");
+        let start_motion_rate_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_motion_rate_frame_reset");
         let mut rate = 1.0;
-        if start_frame_target > 0.0 {
-            rate = start_frame_reset/start_frame_target;
+        if start_motion_rate_frame_target > 0.0 {
+            rate = start_motion_rate_frame_reset/start_motion_rate_frame_target;
         }
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_start"), 0.0, rate, false, 0.0, false, false);
     }
@@ -228,13 +228,13 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
             if mtrans == 1 {
                 if MotionModule::is_end(fighter.module_accessor) {
                     let return_frame_start = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame_start");
-                    let return_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_frame_target");
-                    let start_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_frame_reset");
+                    let return_motion_rate_frame_target = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.return_motion_rate_frame_target");
+                    let start_motion_rate_frame_reset = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_float.start_motion_rate_frame_reset");
                     float_check_aerial(fighter);
                     let mut rate = 1.0;
-                    if start_frame_reset > return_frame_start
-                    && return_frame_target > 0.0 {
-                        rate = (start_frame_reset-return_frame_start)/return_frame_target;
+                    if start_motion_rate_frame_reset > return_frame_start
+                    && return_motion_rate_frame_target > 0.0 {
+                        rate = (start_motion_rate_frame_reset-return_frame_start)/return_motion_rate_frame_target;
                     }
                     MotionModule::change_motion(fighter.module_accessor, Hash40::new("fuwafuwa_return"), return_frame_start, rate, false, 0.0, false, false);
                 }
