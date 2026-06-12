@@ -130,15 +130,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 60, 90, 0, 0, 4.0, 0.0, 3.0, 13.0, Some(0.0), Some(3.0), Some(8.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
         ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 60, 85, 0, 0, 7.0, 0.0, 3.0, 17.0, Some(0.0), Some(3.0), Some(10.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
     }
-    frame(lua_state, 20.0); // Down Smash taunt input
-    if is_excute(agent) {
-        if agent.is_motion(Hash40::new("attack_lw4")) && (20..24).contains(&(agent.motion_frame() as u32)) {
-        if !VarModule::is_flag(agent.object(), vars::szerosuit::status::YOURE_MINE) && agent.is_button_on(Buttons::AppealAll) && AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-            PLAY_SE(agent, Hash40::new("vc_szerosuit_appeal03"));
-            VarModule::on_flag(agent.object(), vars::szerosuit::status::YOURE_MINE);
-            }
-        }
-    }
     wait(lua_state, 5.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
