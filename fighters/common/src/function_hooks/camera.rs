@@ -88,8 +88,8 @@ unsafe fn normal_camera(ptr: u64, float: f32) {
 pub fn parse_stprm_active_camera_params(param_obj: u64, params: &mut NormalCameraParams) {
     call_original!(param_obj, params);
     let fov = params.normal_camera_fov.to_degrees();
-    params.normal_camera_min_distance = (0.2 * fov.powf(2.0)) - (17.0 * fov) + 450.0;
-    params.normal_camera_min_distance_2 = (0.2 * fov.powf(2.0)) - (17.0 * fov) + 450.0;
+    params.normal_camera_min_distance = (0.2 * fov.powf(2.0)) - (17.0 * fov) + 455.0;
+    params.normal_camera_min_distance_2 = (0.2 * fov.powf(2.0)) - (17.0 * fov) + 455.0;
     params.swing_rate_x = 0.0;
     params.swing_rate_y = 0.0;
     params.normal_camera_vertical_angle = params.normal_camera_vertical_angle.max(-5.0_f32.to_radians());

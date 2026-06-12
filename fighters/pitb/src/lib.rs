@@ -59,7 +59,6 @@ hitbox_templates!(
     };
     pub PITB_SWORD_HITBOX_L = {
         extends: PITB_SWORD_HITBOX,
-        effect: "collision_attr_sting",
         sound_level: SoundLevel::L,
     };
     pub PITB_KICK_HITBOX = {

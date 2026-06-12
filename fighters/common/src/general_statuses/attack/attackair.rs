@@ -80,10 +80,6 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN {
-        StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_GROUND), false);
-        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
-    }
     if !CancelModule::is_enable_cancel(fighter.module_accessor)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
     && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING)

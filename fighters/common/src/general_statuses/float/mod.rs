@@ -24,13 +24,15 @@ unsafe fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2C
         return 0.into();
     }
 
-    let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as usize;
+    let jump_frame = InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump);
+    let float_hold_minimum_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "float_hold_minimum_frame") as usize;
     let stick_y = fighter.left_stick_y();
     let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
 
     if stick_y > squat_stick_y
-    && (InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump) <= buffer
-    || KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
+    && (jump_frame < float_hold_minimum_frame
+        || KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0)
+    {
         return 0.into()
     }
 

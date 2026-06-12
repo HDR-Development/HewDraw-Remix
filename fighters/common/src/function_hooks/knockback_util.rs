@@ -102,9 +102,9 @@ pub unsafe fn rotate_vector2f(
     );
 }
 
-// how many units into the blastzone a fighter will be declared dead
+// the blastzones are effectively expanded by this amount when performing kill calculations
 const DEAD_AREA_LENIENCY: f32 = 7.5;
-const DEAD_AREA_LENIENCY_FINAL: f32 = 2.5;
+const DEAD_AREA_LENIENCY_FINAL: f32 = -2.5;
 
 impl KnockbackCalcContext {
     pub unsafe fn new(

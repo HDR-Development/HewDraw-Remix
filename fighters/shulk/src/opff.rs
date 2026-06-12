@@ -27,7 +27,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_SHULK_STATUS_KIND_SPECIAL_HI_ADD,
         *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_N,
         *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_ATTACK
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -44,10 +44,17 @@ unsafe fn arts_cancelling(fighter: &mut L2CFighterCommon, status_kind: i32) {
         Hash40::new("attack_air_b"),
         Hash40::new("attack_air_hi"),
         Hash40::new("attack_air_lw") ]) {
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        // if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        // && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             // println!("beat");
             VarModule::on_flag(fighter.object(), vars::shulk::status::MONADO_BEAT);
+        }
+    }
+
+    if VarModule::is_flag(fighter.object(), vars::shulk::status::MONADO_BEAT) {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            VarModule::on_flag(fighter.object(), vars::shulk::status::MONADO_BEAT_TRIGGER);
         }
     }
 }

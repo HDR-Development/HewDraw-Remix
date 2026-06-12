@@ -33,7 +33,8 @@ macro_rules! decl_hooks_shulk_change_arts {
 unsafe extern "C" fn disable_arts_on_beat(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = ctx.registers[21].x() as *mut Fighter;
     let object = &mut (*fighter).battle_object;
-    if VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT) {
+    if VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT)
+    && WorkModule::is_flag(object.module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE) {
         reset_arts(fighter, 1);
     }
 }

@@ -760,7 +760,7 @@ local find_proper_panel = function(panel_id)
     -- in tourney mode, dont allow selection of training stage.
     -- They are used as a buffer to put the starters/counterpicks
     -- in the right locations.
-    if training_stages[panel_id + 1] == true then
+    if training_stages[current_page * PANELS_PER_PAGE + panel_id + 1] == true then
         return UI_INVALID_INDEX
     end
 
