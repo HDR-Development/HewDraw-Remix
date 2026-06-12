@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 use skyline::hooks::InlineCtx;
 
-unsafe fn splatter_vfx(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn splatter_vfx(boma: &mut BattleObjectModuleAccessor) {//
     if boma.is_motion(Hash40::new("attack_s3_s")) {
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
         && (1..=2).contains(&VarModule::get_int(boma.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID)) {
