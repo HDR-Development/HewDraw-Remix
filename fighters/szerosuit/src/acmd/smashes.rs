@@ -148,6 +148,10 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_szerosuit_attack07"));
+    }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_common_smash_start_03"));
@@ -156,14 +160,11 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_szerosuit_smash_l01"));
     }
-}
-
-unsafe extern "C" fn sound_attacklw4charge(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 20.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_common_smash_start_03"));
+    if agent.is_button_on(Buttons::AppealAll) && AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        PLAY_SE(agent, Hash40::new("vc_szerosuit_appeal03"));
+        }
     }
 }
 
@@ -176,5 +177,4 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
     agent.acmd("sound_attacklw4", sound_attacklw4, Priority::Low);
-    agent.acmd("sound_attacklw4", sound_attacklw4charge, Priority::Low);
 }
