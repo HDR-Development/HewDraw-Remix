@@ -2393,6 +2393,7 @@
       <float hash="run_speed_max">1.87</float>
       <int hash="jump_squat_frame">3</int>
       <float hash="jump_speed_x">1</float>
+      <float hash="jump_speed_x_mul">0.83</float>
       <float hash="jump_speed_x_max">1.6</float>
       <float hash="jump_initial_y">11.7975</float>
       <float hash="mini_jump_y">12.5</float>
