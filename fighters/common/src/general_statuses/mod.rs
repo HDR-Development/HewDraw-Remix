@@ -874,8 +874,8 @@ unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     let speed_start_horizontal = 3.1; // the start of scaling at angles below the angle_threshold
     let gravity_factor = get_gravity_factor(fighter);
     let speed_start_vertical = 5.7 * gravity_factor; // the start of scaling at completely vertical angles
-    let speed_end_horizontal = 6.2; // the end of scaling at angles below the angle_threshold
-    let speed_end_vertical = speed_end_horizontal + (speed_start_vertical - speed_start_horizontal); // the end of scaling at completely vertical angles
+    let speed_end_horizontal = 5.8; // the end of scaling at angles below the angle_threshold
+    let speed_end_vertical = 7.55 + (speed_start_vertical - speed_start_horizontal); // the end of scaling at completely vertical angles
 
     let angle_ratio = get_angle_ratio(angle_threshold, angle);
 

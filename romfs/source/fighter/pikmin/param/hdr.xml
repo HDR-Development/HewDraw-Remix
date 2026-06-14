@@ -17,7 +17,7 @@
             <!-- Red Pikmin is an all-round powerhouse -->
             <float hash="damage_mul">1.05</float>
             <float hash="kbg_mul">1.05</float>
-            <float hash="shield_damage_mul">0.25</float>
+            <float hash="shield_damage_mul">0.2</float>
             <int hash="angle_mod">0</int>
             <float hash="hitlag_mul">1.05</float>
             <string hash="attr">collision_attr_fire</string>
@@ -34,7 +34,7 @@
             <!-- The Paralyze special hit type makes cling threatening, but it has a very long counter -->
             <float hash="damage_mul">0.8</float>
             <float hash="kbg_mul">0.9</float>
-            <float hash="shield_damage_mul">-0.25</float>
+            <float hash="shield_damage_mul">-0.2</float>
             <int hash="angle_mod">6</int>
             <float hash="hitlag_mul">1.25</float>
             <string hash="attr">collision_attr_elec</string>
@@ -66,7 +66,7 @@
             <!-- The Flower special hit type and low counter makes White Pikmin an immediate threat -->
             <float hash="damage_mul">1.2</float>
             <float hash="kbg_mul">1.0</float>
-            <float hash="shield_damage_mul">0.5</float>
+            <float hash="shield_damage_mul">0.33</float>
             <int hash="angle_mod">0</int>
             <float hash="hitlag_mul">1.0</float>
             <string hash="attr">collision_attr_purple</string>

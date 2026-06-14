@@ -192,7 +192,8 @@ unsafe fn float_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Unique Down Special stuff is usually here but we don't want it
 
     if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ) == 1 {
-        if float_frame > 0 {
+        if float_frame > 0
+        && !StopModule::is_stop(fighter.module_accessor) {
             VarModule::dec_int(fighter.battle_object, vars::common::status::FLOAT_FRAME);
             if VarModule::get_int(fighter.battle_object, vars::common::status::FLOAT_FRAME) == 0 {
                 VarModule::set_int(fighter.battle_object, vars::common::status::FLOAT_ENABLE_UNIQ, 0);
@@ -281,7 +282,8 @@ unsafe fn float_ray_check(fighter: &mut L2CFighterCommon) {
     if ray_check {
         let ray_check_y = result.y;
         // let uniq_float_start_y = WorkModule::get_float(fighter.module_accessor, hash40("param_private"), hash40("uniq_float_start_y"));
-        let uniq_float_start_y = 1.5;
+        let mut uniq_float_start_y = 1.5;
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {uniq_float_start_y += 0.5}
         PostureModule::set_pos(fighter.module_accessor, &Vector3f{x: pos_x, y: ray_check_y + uniq_float_start_y, z: pos_z});
     }
 }
