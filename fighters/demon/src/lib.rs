@@ -9,6 +9,8 @@ pub mod status;
 
 pub mod agent_init;
 
+mod vtable;
+
 // articles
 
 mod blaster;

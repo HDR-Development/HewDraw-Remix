@@ -183,7 +183,7 @@ throw_f:
     cancel_frame: 43
 throw_lw:
   extra:
-    cancel_frame: 60
+    cancel_frame: 65
 furafura_end:
   extra:
     cancel_frame: 34

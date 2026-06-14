@@ -11,6 +11,7 @@ extern "Rust" {
 // FIGHTER_STATUS_KIND_ATTACK_AIR
 
 unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     attack_air_float_pre(fighter, statuses::mewtwo::FLOAT.into())
 }
 

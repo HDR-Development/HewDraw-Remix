@@ -399,6 +399,16 @@ unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_kamui_attackair_l01"));
+        PLAY_LANDING_SE(agent, Hash40::new("se_kamui_landing02"));
+    }
+}
+
 unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -429,5 +439,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
     agent.acmd("game_landingairlw", acmd_stub, Priority::Low);
     agent.acmd("effect_landingairlw", effect_landingairlw, Priority::Low);
+    agent.acmd("sound_landingairlw", sound_landingairlw, Priority::Low);
     agent.acmd("expression_landingairlw", expression_landingairlw, Priority::Low);
 }
