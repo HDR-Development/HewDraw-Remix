@@ -32,7 +32,8 @@ pub unsafe fn status_pre_AttackAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_ItemThrow)]
 unsafe fn status_pre_ItemThrow(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_JUMP
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     }
     
