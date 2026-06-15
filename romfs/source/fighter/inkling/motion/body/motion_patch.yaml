@@ -82,7 +82,7 @@ throw_f:
     cancel_frame: 41
 throw_lw:
   extra:
-    cancel_frame: 33
+    cancel_frame: 34
 throw_hi:
   extra:
     cancel_frame: 42
