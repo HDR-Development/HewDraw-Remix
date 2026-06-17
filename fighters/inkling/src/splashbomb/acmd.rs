@@ -33,7 +33,18 @@ unsafe extern "C" fn effect_explode(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_loop(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        SEARCH(agent, 0, 0, Hash40::new("top"), 2.8, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HSR, *HIT_STATUS_MASK_NI, 180, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_ALL, false);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_explode", game_explode, Priority::Low);
     agent.acmd("effect_explode", effect_explode, Priority::Low);
+
+    agent.acmd("game_loop", game_loop, Priority::Low);
 }
