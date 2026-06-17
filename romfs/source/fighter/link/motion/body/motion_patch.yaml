@@ -103,13 +103,13 @@ attack_lw3:
     cancel_frame: 33
 special_s1:
   extra:
-    cancel_frame: 44
+    cancel_frame: 43
 special_s1_blank:
   extra:
-    cancel_frame: 44
+    cancel_frame: 43
 special_air_s1_blank:
   extra:
-    cancel_frame: 44
+    cancel_frame: 43
 special_s2:
   extra:
     cancel_frame: 1
