@@ -367,9 +367,17 @@ unsafe extern "C" fn special_hi_keep_movement_handling(fighter: &mut L2CFighterC
     VarModule::inc_int(fighter.battle_object, SPECIAL_HI_KEEP_FRAME);
     let frame = VarModule::get_int(fighter.battle_object, SPECIAL_HI_KEEP_FRAME);
     let charge_frame = VarModule::get_int(fighter.battle_object, SPECIAL_HI_CHARGE_FRAME) as f32;
+    let launch_rise_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.launch_rise_frame");
+    let launch_brake_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.launch_brake_frame");
+    let launch_brake_end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.launch_brake_end_frame");
+    let launch_fall_frame = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.launch_fall_frame");
     let rot = VarModule::get_float(fighter.battle_object, SPECIAL_HI_ROT_X);
-    // init movement on frame 5
-    if frame == 5 {
+
+    // init movement
+    if frame == launch_rise_frame {
+        // Enable ledgegrab
+        fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES.into());
+
         if charge_frame > 0.0 {
             // launch speed
             let launch_speed = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.launch_speed");
@@ -394,8 +402,8 @@ unsafe extern "C" fn special_hi_keep_movement_handling(fighter: &mut L2CFighterC
         }
         fighter.set_situation_keep(L2CValue::I32(*SITUATION_KIND_AIR), 0.into());
     }
-    // slowly decel before converting to drift/gravity (could try stable speed so it decels by a flat value every frame?)
-    if frame >= 9 && frame <= 14 {
+    // slowly decel before enabling drift/gravity
+    if frame >= launch_brake_frame && frame <= launch_brake_end_frame {
         if charge_frame > 0.0 {
             let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
             let speed = Vector2f {
@@ -405,8 +413,8 @@ unsafe extern "C" fn special_hi_keep_movement_handling(fighter: &mut L2CFighterC
             sv_kinetic_energy!(set_speed, fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, speed.x * 0.95, speed.y * 0.95);
         }
     }
-    // end movement frame 16
-    if frame == 16 {
+    // end movement
+    if frame == launch_fall_frame {
         if charge_frame > 0.0 {
             let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let y_speed = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -427,7 +435,6 @@ unsafe extern "C" fn special_hi_keep_movement_handling(fighter: &mut L2CFighterC
         if (-1.0..1.0).contains(&new_rot) {
             new_rot = 0.0
         }; // snap to 0 when close enough
-           // println!("{new_rot}");
         PostureModule::set_rot(fighter.module_accessor, &Vector3f::new(new_rot, 0.0, 0.0), 0);
     }
 
