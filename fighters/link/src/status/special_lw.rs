@@ -11,8 +11,8 @@ unsafe extern "C" fn item_throw_status_main(agent: &mut L2CFighterCommon) -> L2C
     let special_button = ControlModule::check_button_trigger(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
     let special_s = agent.global_table[CMD_CAT1].get_i32() & (*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0;
     let special_lw = agent.global_table[CMD_CAT1].get_i32() & (*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) != 0;
-    let item_throw = agent.is_status_one_of(&[*FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_ALL, *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_AIR_ALL]);
-    let is_squat = agent.is_status(*FIGHTER_STATUS_KIND_SQUAT_WAIT);
+    let item_throw = agent.global_table[CMD_CAT3].get_i32() & (*FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_ALL|*FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_AIR_ALL) != 0;
+    let is_squat = agent.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_WAIT;
     if (
         !special_s 
         && special_lw
