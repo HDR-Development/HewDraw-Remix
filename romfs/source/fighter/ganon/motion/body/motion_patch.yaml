@@ -331,6 +331,9 @@ float_air_start:
 special_hi_throw:
   extra:
     cancel_frame: 37
+special_air_s:
+  extra:
+    cancel_frame: 32
 catch:
   extra:
     cancel_frame: 38
