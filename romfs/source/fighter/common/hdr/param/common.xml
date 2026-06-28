@@ -61,13 +61,15 @@
     </struct>
     <int hash="precede">5</int>
     <int hash="guard_off_pass_valid_frame">6</int>
-    <float hash="escape_air_enable_cliff_catch_fall_distance">17.0</float>
+    <float hash="escape_air_enable_cliff_catch_fall_distance">20.0</float>
     <float hash="escape_air_enable_cancel_fall_distance">35.0</float>
     <float hash="bind_end_frame">15.0</float>
-    <float hash="cliff_robbed_speed">2.5</float>
+    <float hash="cliff_robbed_speed">2.4</float>
     <float hash="cliff_robbed_angle">80.0</float>
     <float hash="cliff_robbed_correction_max">25.0</float>
     <int hash="cliff_robbed_landing_frame">24</int>
     <int hash="teleport_jump_aerial_refresh_frame">3</int>
     <int hash="float_jump_aerial_refresh_frame">3</int>
+    <int hash="ledge_option_tether_hog_frame">15</int>
+    <int hash="float_hold_minimum_frame">5</int>
 </struct>

@@ -64,10 +64,10 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         return 0.into();
     }
     if fighter.get_int(*FIGHTER_GANON_STATUS_WORK_ID_INT_GANON_KICK_START_SITUATION) == *SITUATION_KIND_GROUND {
-        // Skip to end on shield
+        // Reduce speed on shield
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_PARRY) {
-            fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
-            return 0.into();
+            let shield_hit_speed_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.shield_hit_speed_x_mul");
+            sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, shield_hit_speed_x_mul);
         }
         let touch_flag = if fighter.lr() <= 0.0 { *GROUND_TOUCH_FLAG_LEFT } else { *GROUND_TOUCH_FLAG_RIGHT };
         if GroundModule::is_touch(fighter.module_accessor, touch_flag as u32) {
@@ -119,22 +119,6 @@ unsafe extern "C" fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CV
     && end_situation == *FIGHTER_GANON_KICK_END_SITUATION_AA {
         // Allows you to slide when landing late into Wizard Kick's animation
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_GANON_STATUS_WORK_ID_INT_GANON_KICK_START_SITUATION);
-    }
-
-    // Reduce speed on shield
-    let prev_inflict_status = VarModule::get_int(fighter.battle_object, vars::common::instance::PREV_STATUS_INFLICT_STATUS);
-    if start_situation == *SITUATION_KIND_GROUND
-    && end_situation == *FIGHTER_GANON_KICK_END_SITUATION_GG
-    && prev_inflict_status & *COLLISION_KIND_MASK_SHIELD != 0 || prev_inflict_status & *COLLISION_KIND_MASK_PARRY != 0 {
-        let shield_hit_end_speed_x = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.shield_hit_end_speed_x");
-        let lr = PostureModule::lr(fighter.module_accessor);
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            shield_hit_end_speed_x * lr,
-            0.0
-        );
     }
 
     ret

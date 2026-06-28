@@ -148,15 +148,89 @@ unsafe fn get_damage_frame_mul(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[0].set_s(damage_frame_mul)
 }
 
+unsafe extern "C" fn calc_hitstop_frame_mul(kb: f32) -> f32 {
+    let min = 0.45;
+    let max = 0.65;
+    let power = 1.4;
+    let kb_start = 100.0;
+    let kb_end = 200.0;
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    let hitlag_mul = util::nlerp(min, max, power, ratio);
+    return hitlag_mul;
+}
+
+unsafe extern "C" fn calc_hitstop_frame_add(kb: f32) -> f32 {
+    let min = 4.0;
+    let max = 6.0;
+    let power = 1.4;
+    let kb_start = 100.0;
+    let kb_end = 200.0;
+
+    let ratio = ((kb - kb_start) / (kb_end - kb_start));
+    let hitlag_mul = util::nlerp(min, max, power, ratio);
+    return hitlag_mul;
+}
+
+// This runs within the internal function used to calculate hitlag
+// Used for both attacker hitlag and receiver hitlag (articles/items included)
 #[skyline::hook(offset = 0x406bf4, inline)]
-unsafe fn get_hitstop_frame_add(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe fn get_hitstop_params(ctx: &mut skyline::hooks::InlineCtx) {
+    let attack_data = (ctx.registers[21].x() as *mut smash_rs::app::AttackData);
+    let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+    let hitstop_frame_mul: f32 = if IS_KB_CALC_EARLY
+    && ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+        calc_hitstop_frame_mul(KB)
+    }
+    else {
+        0.45 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+    };
+    // Set hitstop_frame_mul
+    ctx.registers_f[13].set_s(hitstop_frame_mul);
+
     let hitstop_frame_add: f32 = if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
         5.0
     }
     else {
-        4.0 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+        if IS_KB_CALC_EARLY
+        && ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+            calc_hitstop_frame_add(KB)
+        }
+        else {
+            4.0 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+        }
     };
+    // Set hitstop_frame_add
     ctx.registers_f[0].set_s(hitstop_frame_add)
+}
+
+// This runs within the internal function used to calculate hitlag
+// for electric moves
+// Used for both attacker hitlag and receiver hitlag (articles/items included)
+#[skyline::hook(offset = 0x406b6c, inline)]
+unsafe fn get_hitstop_params_elec(ctx: &mut skyline::hooks::InlineCtx) {
+    let hitstop_frame_mul: f32 = if IS_KB_CALC_EARLY {
+        calc_hitstop_frame_mul(KB)
+    }
+    else {
+        0.45 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+    };
+    // Set hitstop_frame_mul
+    ctx.registers_f[13].set_s(hitstop_frame_mul);
+
+    let hitstop_frame_add: f32 = if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+        5.0
+    }
+    else {
+        if IS_KB_CALC_EARLY {
+            calc_hitstop_frame_add(KB)
+        }
+        else {
+            4.0 // TODO: find a way to parameterize this or otherwise notify that it's hardcoded
+        }
+    };
+    // Set hitstop_frame_add
+    ctx.registers_f[14].set_s(hitstop_frame_add)
 }
 
 // Only applies 0.67 crouch cancel hitlag multiplier to receiver
@@ -171,28 +245,15 @@ unsafe fn get_hitstop_mul(ctx: &mut skyline::hooks::InlineCtx) {
 static mut IS_KB_CALC_EARLY: bool = false;
 static mut KB: f32 = 0.0;
 
-unsafe extern "C" fn calc_hitlag_mul(boma: &mut BattleObjectModuleAccessor, kb: f32) -> f32 {
-    let min = 1.0;
-    let max = 2.0;
-    let power = 1.4;
-    let kb_start = 150.0;
-    let kb_end = 250.0;
-
-    let ratio = ((kb - kb_start) / (kb_end - kb_start));
-    let hitlag_mul = util::nlerp(min, max, power, ratio);
-    return hitlag_mul;
-}
-
 // This runs directly after knockback is calculated
 #[skyline::hook(offset = 0x402f04, inline)]
 unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
     let damage_module = ctx.registers[19].x();
     let receiver_boma = &mut **((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
+    let mut kb = ctx.registers_f[0].s();
 
     // Handles application of knockback multiplier on grounded spikes
     if receiver_boma.is_fighter() {
-        let mut kb = ctx.registers_f[0].s();
-
         let attack_data = (ctx.registers[22].x() as *mut smash_rs::app::AttackData);
         let angle = (*attack_data).vector;
         let meteor_vector_min = WorkModule::get_param_int(receiver_boma, hash40("battle_object"), hash40("meteor_vector_min"));
@@ -204,93 +265,73 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
         && angle <= meteor_vector_max {
             kb *= grounded_spike_knockback_mul;
         }
-
-        ctx.registers_f[0].set_s(kb)
     }
 
     let attacker_id = ctx.registers[27].w();
     let attacker_boma = &mut *(sv_battle_object::module_accessor(attacker_id));
 
     // Handles hitlag scaling for attacker
-    if attacker_boma.is_fighter() {
+    if attacker_boma.is_fighter()
+    && receiver_boma.is_fighter()
+    && kb != 0.0 {
         let attacker_fighter = get_fighter_common_from_accessor(attacker_boma);
         let attacker_object = sv_system::battle_object(attacker_fighter.lua_state_agent);
         let attacker_fighta : *mut Fighter = std::mem::transmute(attacker_object);
-    
-        let mut kb = ctx.registers_f[0].s();
+
         IS_KB_CALC_EARLY = true;
         KB = kb;
-        let hitlag = *(((attacker_fighta as u64) + 0xf70c) as *mut i32);
-        let max_hitlag = WorkModule::get_param_float(attacker_boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+        
         let attack_data = (ctx.registers[22].x() as *mut smash_rs::app::AttackData);
-        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+        let power = AttackModule::get_power(attacker_boma, 0, false, 1.0, false);
+        let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x4067a0);
+        let calc_hitlag: extern "C" fn(f32, f32, f32, u8, &mut smash_rs::app::AttackData, u64, u32, u32) -> i32 = std::mem::transmute(func_addr);
+        let hitlag = calc_hitlag(power, 1.0, 1.0, 0, &mut *attack_data, 0, 1, 0);
 
-        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
-            // Set hitlag for attacker
-            *(((attacker_fighta as u64) + 0xf70c) as *mut i32) = (hitlag as f32 * calc_hitlag_mul(attacker_boma, kb)).round().min(max_hitlag) as i32;
-        }
+        // Set hitlag for attacker
+        *(((attacker_fighta as u64) + 0xf70c) as *mut i32) = hitlag;
 
         ctx.registers_f[0].set_s(kb)
     }
+
+    ctx.registers_f[0].set_s(kb)
 }
 
 // This runs immediately after an attacker's hitlag is calculated
-#[skyline::hook(offset = 0x406fdc, inline)]
-unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
-    if IS_KB_CALC_EARLY {
-        let boma = &mut *(ctx.registers[23].x() as *mut BattleObjectModuleAccessor);
-        let hitlag = ctx.registers[0].w();
-        let kb = KB;
-        let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-        let attack_data = (ctx.registers[24].x() as *mut smash_rs::app::AttackData);
-        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
+// #[skyline::hook(offset = 0x406fdc, inline)]
+// unsafe fn handle_on_attack_event(ctx: &mut skyline::hooks::InlineCtx) {
+//     if IS_KB_CALC_EARLY {
+//         let boma = &mut *(ctx.registers[23].x() as *mut BattleObjectModuleAccessor);
+//         let hitlag = ctx.registers[0].w();
+//         let kb = KB;
+//         let max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
+//         let attack_data = (ctx.registers[24].x() as *mut smash_rs::app::AttackData);
+//         let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
 
-        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
-            // Set hitlag for attacker
-            ctx.registers[0].set_w((hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32);
-        }
-    }
-}
+//         if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
+//             // Set hitlag for attacker
+//             ctx.registers[0].set_w((hitlag as f32 * calc_hitstop_frame_mul(boma, kb)).round().min(max_hitlag) as u32);
+//         }
+//     }
+// }
 
 // This runs immediately before hitlag is set for attacking articles
-#[skyline::hook(offset = 0x33a9b40, inline)]
+// Handles hitlag scaling for articles
+#[skyline::hook(offset = 0x33a9924, inline)]
 unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
-    let opponent_boma = &mut *(ctx.registers[24].x() as *mut BattleObjectModuleAccessor);
-    if !opponent_boma.is_item() {
-        let hitlag = ctx.registers[21].w();
-        let kb = DamageModule::reaction(opponent_boma, 0);
+    let receiver_boma = &mut *(ctx.registers[24].x() as *mut BattleObjectModuleAccessor);
+    let kb = DamageModule::reaction(receiver_boma, 0);
+    
+    if receiver_boma.is_fighter()
+    && kb != 0.0 {
+        // These get used by get_hitstop_params
         IS_KB_CALC_EARLY = true;
         KB = kb;
-        let max_hitlag = WorkModule::get_param_float(opponent_boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-        let attack_data = (ctx.registers[20].x() as *mut smash_rs::app::AttackData);
-        let attr: smashline::Hash40 = std::mem::transmute((*attack_data).attr);
-
-        if ![Hash40::new("collision_attr_paralyze"), Hash40::new("collision_attr_saving")].contains(&attr) {
-            // Set hitlag for attacking article
-            ctx.registers[21].set_w((hitlag as f32 * calc_hitlag_mul(opponent_boma, kb)).round().min(max_hitlag) as u32);
-        }
     }
 }
 
-// This runs immediately before hitlag is set for the receiver
+// This runs immediately after hitlag is set for the receiver
 #[skyline::hook(offset = 0x404658, inline)]
 unsafe fn set_receiver_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
-    let boma = &mut *(ctx.registers[19].x() as *mut BattleObjectModuleAccessor);
-    if !boma.is_item() {
-        let hitlag = ctx.registers[0].w();
-        let kb = DamageModule::reaction(boma, 0);
-        let mut max_hitlag = WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_frame_max"));
-        let attr = *((ctx.registers[20].x() + 0xb8) as *mut u64);
-        
-        if [hash40("collision_attr_elec"),].contains(&attr) {
-            max_hitlag *= WorkModule::get_param_float(boma, hash40("battle_object"), hash40("hitstop_elec_mul"));
-        }
-
-        if ![hash40("collision_attr_paralyze"), hash40("collision_attr_saving")].contains(&attr) {
-            // Set hitlag for receiver
-            ctx.registers[0].set_w((hitlag as f32 * calc_hitlag_mul(boma, kb)).round().min(max_hitlag) as u32);
-        }
-    }
     IS_KB_CALC_EARLY = false;
 }
 
@@ -550,17 +591,27 @@ unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAc
     return pattern_mul * aura_mul * pikmin_mul * nana_mul;
 }
 
+#[skyline::hook(offset=0x4067a0)]
+unsafe fn calc_hitlag(damage: f32, hit_stop_mul: f32, some_mul: f32, some_char: u8, attack_data: &mut smash_rs::app::AttackData, param_6: u64, param_7: u32, param_8: u32) -> i32 {
+    let ret = original!()(damage, hit_stop_mul, some_mul, some_char, attack_data, param_6, param_7, param_8);
+
+    println!("calc_hitlag({}, {}, {}, {}, attack_data, {}, {}, {}) = {}", damage, hit_stop_mul, some_mul, some_char, param_6, param_7, param_8, ret);
+
+    ret
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x641d84).nop();
     skyline::install_hooks!(
         attack_module_set_attack,
         get_damage_frame_mul,
-        get_hitstop_frame_add,
+        get_hitstop_params,
+        get_hitstop_params_elec,
         get_hitstop_mul,
         post_calc_reaction,
         set_weapon_hitlag,
         set_receiver_hitlag,
-        handle_on_attack_event,
+        // handle_on_attack_event,
         set_parry_hitlag,
         x03df93c,
         notify_log_event_collision_hit,
@@ -569,7 +620,8 @@ pub fn install() {
         // attack_module_set_power_hook_5th,
         attack_module_set_power_hook_pattern,
         hit_module__on_attack__set_damage,
-        damage_module__unk__set_damage
+        damage_module__unk__set_damage,
+        //calc_hitlag
     );
 }
 

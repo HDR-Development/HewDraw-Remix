@@ -16,12 +16,12 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
     let mut cliff_check_kind = ground_cliff_check_kind;
     let mut kinetic_type = kinetic_type.clone();
     let mut ground_correct_kind = ground_correct_kind.clone();
-                                
+
     // Call edge_slippoffs init_settings
     ground_correct_kind = super::ground::init_settings_edges(boma, situation, kinetic_type, ground_correct_kind, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
-        
+
         if boma.is_prev_situation(*SITUATION_KIND_AIR)
         && ( situation.0 == *SITUATION_KIND_GROUND
             || (boma.is_situation(*SITUATION_KIND_GROUND) && situation.0 == *SITUATION_KIND_NONE) )
@@ -88,7 +88,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
         }
 
 
-        if boma.kind() == *FIGHTER_KIND_DONKEY && boma.is_situation(*SITUATION_KIND_AIR) 
+        if boma.kind() == *FIGHTER_KIND_DONKEY && boma.is_situation(*SITUATION_KIND_AIR)
             && boma.is_status_one_of(&[
             *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_START,
             *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_WAIT,
@@ -117,7 +117,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
         */
 
         //Sword trails
-        if (boma.kind() == *FIGHTER_KIND_ROY || boma.kind() == *FIGHTER_KIND_CHROM) 
+        if (boma.kind() == *FIGHTER_KIND_ROY || boma.kind() == *FIGHTER_KIND_CHROM)
         && VarModule::is_flag(boma.object(), vars::roy::instance::TRAIL_EFFECT) {
             EffectModule::kill_joint_id(boma, Hash40::new("sword1"), false, false);
             if fighter_kind == *FIGHTER_KIND_ROY {
@@ -134,7 +134,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
         }
 
         // Set GroundCliffCheckKind here to pass into init_settings
-        
+
         if ((boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
             && boma.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -194,7 +194,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) {
                         continue;
                     }
-    
+
                     if VarModule::get_int(object, vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS) == cliff_id as i32 {
                         next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                     }
@@ -228,7 +228,8 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
     let mut clear_buffer = arg3;
 
     if boma.is_fighter() {
-        if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode) {
+        if utils::game_modes::check_custom_mode(CustomMode::Smash64Mode)
+        && !utils::game_modes::check_custom_mode(CustomMode::AirdashMode) {
             if [
                 *FIGHTER_STATUS_KIND_ESCAPE_AIR,
                 *FIGHTER_STATUS_KIND_PASSIVE_CEIL,
@@ -279,7 +280,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         if next_status == *FIGHTER_STATUS_KIND_DOWN {
             if !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
             || WorkModule::is_flag(boma, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE)
-            || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON {   
+            || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON {
                 VarModule::on_flag(boma.object(), vars::common::instance::DOWN_DISABLE_PASSIVE);
             }
         }
@@ -319,7 +320,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL {
-            // prevent sora from immediately acting out of the down smash bounce 
+            // prevent sora from immediately acting out of the down smash bounce
             if boma.is_status(*FIGHTER_STATUS_KIND_CLIFF_JUMP2)
             && !boma.is_prev_status(*FIGHTER_STATUS_KIND_CLIFF_JUMP1)
             && boma.status_frame() < 16 {
@@ -392,7 +393,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
             return 0;
         }
-        
+
         if boma.kind() == *FIGHTER_KIND_KIRBY
         && (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DIDDY)
         && boma.is_status_one_of(&[*FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N, *FIGHTER_KIRBY_STATUS_KIND_DIDDY_SPECIAL_N_CHARGE])

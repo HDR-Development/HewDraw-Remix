@@ -14,6 +14,7 @@ mod krool;
 mod littlemac;
 mod lucario;
 mod master;
+mod miifighter;
 mod pickel;
 mod ptrainer;
 mod reflet;
@@ -42,6 +43,7 @@ pub fn install() {
     littlemac::install();
     lucario::install();
     master::install();
+    miifighter::install();
     pickel::install();
     ptrainer::install();
     reflet::install();

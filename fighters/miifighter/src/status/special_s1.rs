@@ -113,7 +113,8 @@ unsafe extern "C" fn special_s1_main_loop(fighter: &mut L2CFighterCommon) -> L2C
             return 1.into();
         }
         else {
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND)
+            && fighter.is_flag(*FIGHTER_MIIFIGHTER_STATUS_WORK_ID_FLAG_100KICK_ENABLE_LANDING) {
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
                 return 1.into();
             }

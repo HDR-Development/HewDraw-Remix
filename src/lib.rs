@@ -313,12 +313,10 @@ unsafe fn css_to_sss(ctx: &InlineCtx) {
 
         let flag = *flag_ptr.add(3);
 
-        // This is something to pay attention to when this goes to prerelease
-        // flag == 0 is the standard mode and flag == 4 is random stage select
-        // Unsure if there are more modes, but I'm checking for standard mode just
-        // to be safe. If there are more modes we need to apply this to, we can
-        // add them as they're found.
-        if flag == 0 {
+        // This byte is which stage select mode (anyone, take turns, etc) the game is in
+        // The SSS is shown for modes 0, 1, and 2 but not for 3 or 4,
+        // therefore, only redirect to SSS if the flag is <= 2
+        if flag <= 2 {
             (*hashed_string).set("StageSelectScene");
             SSS_CANCEL_TO_CSS = IN_LOCAL_WIRELESS;
         }

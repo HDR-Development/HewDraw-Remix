@@ -1068,6 +1068,29 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
 	}
 }
 
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 0.5);
+    if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 2);
+    }
+    frame(lua_state, 8.0); // f5
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        if IS_EXIST_ARTICLE(agent, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
+            ArticleModule::add_motion_partial(boma, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
+        }
+        if MotionModule::is_changing(boma) {
+            WorkModule::on_flag(boma, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
+        }
+        WorkModule::set_int64(boma, hash40("special_air_hi_jump") as i64, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+    }
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
 unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -1099,6 +1122,7 @@ unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
 	let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
+        GroundModule::select_cliff_hangdata(boma, 0);
         notify_event_msc_cmd!(agent, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_NONE);
         let mut angle = app::lua_bind::FighterKineticEnergyMotion::get_angle(KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as _);
         if PostureModule::lr(boma) > 0.0 {
@@ -1185,7 +1209,7 @@ unsafe extern "C" fn effect_specialairhi1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -0.5, 10.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -0.5, 10.5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.2);
     }
     frame(lua_state, 1.0);
@@ -1299,6 +1323,8 @@ pub fn install(agent: &mut Agent) {
 	agent.acmd("game_specialsend", game_specialsend, Priority::Low);
 	agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
 
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+	agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
     agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
 	agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
     agent.acmd("game_specialairhijump", game_specialairhijump, Priority::Low);
