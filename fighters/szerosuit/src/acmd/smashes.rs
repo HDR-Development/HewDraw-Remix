@@ -153,10 +153,11 @@ unsafe extern "C" fn sound_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-    if agent.is_button_on(Buttons::AppealAll) && AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        PLAY_SE(agent, Hash40::new("vc_szerosuit_appeal03"));
+        if agent.is_button_on(Buttons::AppealAll)
+        && AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            PLAY_SE(agent, Hash40::new("vc_szerosuit_appeal03"));
+        }
     }
-}
 }
 
 pub fn install(agent: &mut Agent) {
