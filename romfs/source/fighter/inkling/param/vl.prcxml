@@ -75,9 +75,11 @@
       <float hash="max_motion_speed_mul">1.3</float>
       <float hash="min_attack">10</float>
       <float hash="max_attack">16</float>
-      <int hash="explosion_frame_after_hop">5</int>
       <float hash="explosion_speed">1</float>
       <float hash="explosion_relative_speed">1</float>
+      <int hash="explosion_frame_after_hop">5</int>
+      <float hash="speed_x_mul_after_bound">0.6</float>
+      <float hash="speed_y_mul_after_bound">0.75</float>
       <float hash="hp">12</float>
     </struct>
     <hash40 index="1">dummy</hash40>
