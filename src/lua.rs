@@ -486,8 +486,8 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
             func: Some(send_message),
         },
         lua::luaL_Reg {
-            name: "set_selected_panel_and_preview\0".as_ptr() as _,
-            func: Some(set_selected_panel_and_preview),
+            name: "set_selected_panel_and_preview_and_alt\0".as_ptr() as _,
+            func: Some(set_selected_panel_and_preview_and_alt),
         },
         lua::luaL_Reg {
             name: "get_selected_panel\0".as_ptr() as _,
@@ -496,6 +496,10 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
         lua::luaL_Reg {
             name: "get_selected_preview\0".as_ptr() as _,
             func: Some(get_selected_preview),
+        },
+        lua::luaL_Reg {
+            name: "get_selected_alt\0".as_ptr() as _,
+            func: Some(get_selected_alt),
         },
         lua::luaL_Reg {
             name: "set_perma_strike_stage\0".as_ptr() as _,
@@ -520,6 +524,10 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
         lua::luaL_Reg {
             name: "stage_loading\0".as_ptr() as _,
             func: Some(stage_loading),
+        },
+        lua::luaL_Reg {
+            name: "set_matchup_stage_texture\0".as_ptr() as _,
+            func: Some(set_matchup_stage_texture),
         },
         lua::luaL_Reg {
             name: "get_bans\0".as_ptr() as _,
@@ -551,8 +559,11 @@ extern "C" fn send_message(state: *mut lua::lua_State) -> i32 {
     }
 }
 
-extern "C" fn set_selected_panel_and_preview(state: *mut lua::lua_State) -> i32 {
+extern "C" fn set_selected_panel_and_preview_and_alt(state: *mut lua::lua_State) -> i32 {
     unsafe {
+        let alt_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
         let preview_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
         lua::lua_pop(state, 1);
 
@@ -563,9 +574,11 @@ extern "C" fn set_selected_panel_and_preview(state: *mut lua::lua_State) -> i32 
 
         mgr.selected_panel = Some(panel_id);
         mgr.selected_preview = Some(preview_id);
+        mgr.selected_alt = Some(alt_id);
 
         println!("selected_panel set to: {}", panel_id);
         println!("selected_preview set to: {}", preview_id);
+        println!("selected_alt set to: {}", alt_id);
 
         0
     }
@@ -589,6 +602,19 @@ extern "C" fn get_selected_preview(state: *mut lua::lua_State) -> i32 {
         let mgr = STAGE_MANAGER.lock().unwrap();
         if let Some(preview_id) = mgr.selected_preview {
             lua::lua_pushinteger(state, preview_id as i64);
+            return 1;
+        }
+
+        lua::lua_pushinteger(state, -1);
+        1
+    }
+}
+
+extern "C" fn get_selected_alt(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mgr = STAGE_MANAGER.lock().unwrap();
+        if let Some(alt_id) = mgr.selected_alt {
+            lua::lua_pushinteger(state, alt_id as i64);
             return 1;
         }
 
@@ -687,6 +713,17 @@ extern "C" fn stage_loading(state: *mut lua::lua_State) -> i32 {
     unsafe {
         let mut mgr = STAGE_MANAGER.lock().unwrap();
         mgr.stage_loading = Some(true);
+        0
+    }
+}
+
+extern "C" fn set_matchup_stage_texture(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let index = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        mgr.matchup_texture_index = if index < 0 { None } else { Some(index) };
         0
     }
 }

@@ -116,7 +116,7 @@ attack_13:
     freeze_during_hitstop: true
 attack_lw3:
   extra:
-    cancel_frame: 28
+    cancel_frame: 32
 attack_hi4:
   extra:
     cancel_frame: 45
@@ -125,7 +125,7 @@ attack_lw4:
     cancel_frame: 51
 attack_hi3:
   extra:
-    cancel_frame: 31
+    cancel_frame: 33
 fall_aerial:
   blend_frames: 3
 attack_s4_s:
@@ -143,7 +143,7 @@ attack_air_f:
     cancel_frame: 36
 attack_air_b:
   extra:
-    cancel_frame: 37
+    cancel_frame: 38
 special_n_end:
   extra:
     cancel_frame: 19
@@ -152,7 +152,7 @@ attack_air_lw:
     cancel_frame: 44
 attack_air_hi:
   extra:
-    cancel_frame: 33
+    cancel_frame: 34
 attack_100_end:
   extra:
     cancel_frame: 36
