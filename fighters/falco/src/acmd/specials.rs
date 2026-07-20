@@ -90,6 +90,23 @@ unsafe extern "C" fn game_specialairnloop(agent: &mut L2CAgentBase) {
     }
 }
 
+// unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
+//     let lua_state = agent.lua_state_agent;
+//     let boma = agent.boma();
+//     frame(lua_state, 1.0);
+//     FT_MOTION_RATE(agent, 1.0);
+// }
+
+unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        let sound = SoundModule::play_se(boma, Hash40::new("se_falco_special_s01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 1.5, 0);
+    }
+}
+
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -106,6 +123,31 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_ILLUSION, false, -1);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
+}
+
+unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        let sound = SoundModule::play_se(boma, Hash40::new("se_falco_special_s02"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 1.25, 0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        let sound = SoundModule::play_se(boma, Hash40::new("vc_falco_special_s01"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 1.0, 0);
+    }
+}
+
+unsafe extern "C" fn sound_specialairs(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        let sound = SoundModule::play_se(boma, Hash40::new("se_falco_special_s02"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, sound as i32, 1.25, 0);
     }
 }
 
@@ -354,8 +396,13 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairnstart", game_specialairnstart, Priority::Low);
     agent.acmd("game_specialairnloop", game_specialairnloop, Priority::Low);
 
-    agent.acmd("gamespecials", game_specials, Priority::Low);
-    agent.acmd("gamespecialairs", game_specials, Priority::Low);
+    // agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
+    agent.acmd("sound_specialsstart", sound_specialsstart, Priority::Low);
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("sound_specials", sound_specials, Priority::Low);
+    agent.acmd("sound_specialairsstart", sound_specialsstart, Priority::Low);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specialairs, Priority::Low);
     agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
     agent.acmd("game_specialhihold", game_specialhihold, Priority::Low);

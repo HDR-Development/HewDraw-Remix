@@ -72,23 +72,22 @@ unsafe extern "C" fn special_n2_main(fighter: &mut L2CFighterCommon) -> L2CValue
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
     else {
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            0.0
-        );
+        let mut reset_speed_gravity_2f = Vector2f { x: 0.0, y: 0.0 };
+        let mut reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        let mut gravity_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut app::KineticEnergy;
+        lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
+        lua_bind::KineticEnergy::enable(gravity_energy);
         lua_bind::FighterKineticEnergyGravity::set_accel(fighter.get_gravity_energy(), -0.02);
         lua_bind::FighterKineticEnergyGravity::set_gravity_coefficient(fighter.get_gravity_energy(), 0.7);
         
         let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        let speed_x_mul = 0.001;
+        let speed_x_mul = 0.5;
+        let mut reset_speed_2f = Vector2f { x: speed_x * speed_x_mul, y: 0.0 };
+        let mut reset_speed_3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        let mut stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergy;
+        lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
+        lua_bind::KineticEnergy::enable(stop_energy);
 
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * speed_x_mul, 0.0);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     }

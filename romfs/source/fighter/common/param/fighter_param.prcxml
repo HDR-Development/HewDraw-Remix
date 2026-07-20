@@ -791,7 +791,7 @@
       <float hash="landing_attack_air_frame_n">7</float>
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_b">10</float>
-      <float hash="landing_attack_air_frame_hi">11</float>
+      <float hash="landing_attack_air_frame_hi">10</float>
       <float hash="landing_attack_air_frame_lw">10</float>
       <float hash="landing_frame">4</float>
       <int hash="attack_combo_max">3</int>

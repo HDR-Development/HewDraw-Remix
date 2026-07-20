@@ -270,6 +270,10 @@ unsafe fn req_hook(effect_module: u64, effHash: smash::phx::Hash40, pos: *mut Ve
         }
     }
 
+    if effHash.hash == hash40("sys_hit_sweat") {
+        return 0;
+    }
+
     let handle = call_original!(effect_module, new_eff_hash, pos, rot, eff_size, arg6, arg7, arg8, arg9);
 
     if SMOKE_FX.contains(&effHash.hash) {

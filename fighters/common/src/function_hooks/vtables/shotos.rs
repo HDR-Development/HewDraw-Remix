@@ -9,7 +9,10 @@ unsafe extern "C" fn update_1_on_1_common(module_accessor: *mut BattleObjectModu
     let mut skip_reverse = false;
     if param_3 & 1 == 0 {
         let lr = PostureModule::lr(module_accessor);
-        if param_2 & 0xfffffffe == 0x7e {
+        if param_4 == 0.0 {
+            skip_reverse = true;
+        }
+        else if param_2 & 0xfffffffe == 0x7e {
             if param_4 != 0.0 {
                 if lr != param_4 {
                     final_dir = 0.0;

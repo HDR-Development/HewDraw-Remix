@@ -402,6 +402,10 @@ unsafe fn scene_transition(
 
         let key_str = skyline::from_c_str((key_struct as *const u8).add(8) as *const c_char);
 
+        if key_str == "StageSelectScene" {
+            STAGE_MANAGER.lock().unwrap().matchup_texture_index = None;
+        }
+
         if key_str == "MeleeRuleScene" || key_str == "MainMenuScene" {
             // Clear perma-strikes when going to main menu or the rules screen
             let mut mgr = STAGE_MANAGER.lock().unwrap();
@@ -455,6 +459,7 @@ pub fn main() {
         skyline::patching::Patch::in_text(0x14f99cc).nop().unwrap();
         skyline::patching::Patch::in_text(0x1509fd4).nop().unwrap();
         unlock_menu_music();
+        unlock_characters();
         skyline::install_hooks!(
             training_reset_music1,
             training_reset_music2,
@@ -649,5 +654,22 @@ fn unlock_menu_music() {
         // Patch the BGM playback function to always use the player's My Music selection
         // instead of defaulting to the standard menu theme.
         skyline::patching::Patch::in_text(0x3311f94).data(0x320003e8u32).unwrap();
+    }
+}
+
+#[skyline::hook(offset = 0x1797640)]
+unsafe fn fighter_unlock_query(fighter: u64, query_type: u32, arg3: u64) -> u64 {
+    // query_type is 0 for regular characters, 4 for DLC,
+    // and the logic for DLC characters is always "is purchased? then show it"
+    // which always returns true for base characters and owned DLC,
+    // but false for unowned DLC.
+    let effective_query_type = if query_type == 0 { 4 } else { query_type };
+    call_original!(fighter, effective_query_type, arg3)
+}
+
+fn unlock_characters() {
+    if std::path::Path::new("sd:/ultimate/hdr-config/unlock_characters").exists() {
+        println!("unlock_characters flag found - unlocking all non-DLC characters");
+        skyline::install_hook!(fighter_unlock_query);
     }
 }

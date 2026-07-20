@@ -8,10 +8,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma,*FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 12.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT,*WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -29,7 +25,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(agent) {
         grab!(agent, MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 46.0);
     if is_excute(agent) {
@@ -52,10 +47,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 14.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -73,7 +64,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
@@ -96,10 +86,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -117,7 +103,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 53.0);
     if is_excute(agent) {
