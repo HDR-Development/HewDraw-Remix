@@ -10,38 +10,49 @@ unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Dark Pit Guardian Orbitar Jump Cancels
-unsafe fn guardian_orbitar_jc(fighter: &mut L2CFighterCommon) {
-
-    // resets the disable jump cancel flag
+unsafe fn guardian_orbitar(fighter: &mut L2CFighterCommon) {
+    // happens on init
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
     ])
     && StatusModule::is_changing(fighter.module_accessor) {
-        VarModule::off_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC);
+        if !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_STALL) {
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+        }
+        VarModule::off_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC);
+        VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_STALL);
     }
 
-    // disables jump cancels when parried between statuses
+    // happens on main for all statuses
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END,
-    ])
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
-        VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC);
-        if !fighter.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END)
-        && !fighter.is_in_hitlag() {
-            fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
+    ]) {
+        // disable land cancel on parry
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
+            VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC);
+            if !fighter.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END)
+            && !fighter.is_in_hitlag() {
+                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
+            }
         }
-    }
 
-    if fighter.is_status_one_of(&[
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
-        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END
-    ])
-    && !fighter.is_in_hitlag()
-    && !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_JC) {
-        fighter.check_jump_cancel(false, false, false);
+        // land cancel
+        if !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC) {
+            fighter.check_land_cancel(None);
+        }
     }
 }
 
@@ -64,7 +75,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma);
-    guardian_orbitar_jc(fighter);
+    guardian_orbitar(fighter);
     electroshock_land_cancel_on_hit(fighter);
     pits_common(fighter, boma, status_kind);
 }
