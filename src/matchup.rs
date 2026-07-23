@@ -5,6 +5,7 @@ use self::types::FilesystemInfo;
 use skyline::hooks::InlineCtx;
 use smash_arc::SearchLookup;
 use utils::STAGE_MANAGER;
+use smash2::app::FighterManager;
 
 fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     unsafe {
@@ -129,12 +130,24 @@ extern "C" {
     fn get_current_stage_alt() -> usize;
 }
 
+#[skyline::hook(offset = 0x26104e0)]
+unsafe fn get_can_futtobi_front(param_1: u64) -> bool {
+    let original = call_original!(param_1);
+    if let Some(fighter_manager) = FighterManager::instance() {
+        if fighter_manager.entry_count() > 2 {
+            return false;
+        }
+    }
+    original
+}
+
 pub fn install() {
     skyline::install_hooks!(
         among_us_baby,
         incoming_stage_load,
         should_play_out_anim,
         play_out_anim,
-        stop_play_anim
+        stop_play_anim,
+        get_can_futtobi_front
     );
 }

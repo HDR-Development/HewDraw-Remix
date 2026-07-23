@@ -4,11 +4,12 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.923);
-    frame(lua_state, 13.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 12.0, 10.0);
+    frame(lua_state, 12.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 3.8, 0.0, 5.0, 3.8, Some(0.0), Some(5.0), Some(20.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 3.8, 0.0, 5.0, 3.8, Some(0.0), Some(5.0), Some(19.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);

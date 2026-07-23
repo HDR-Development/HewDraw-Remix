@@ -240,7 +240,7 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("kneer"), 9.0, 70, 120, 0, 30, 4.0, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(agent, 1, 0, Hash40::new("kneer"), 9.0, 70, 120, 0, 30, 4.2, 5.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(agent, 1, 0, Hash40::new("kneer"), 9.0, 70, 120, 0, 30, 3.7, 6.0, 0.0, -0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 15.0);
     if is_excute(agent) {
@@ -295,7 +295,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 44.0); // f52 (cancel frame)
-
 }
 
 pub fn install(agent: &mut Agent) {

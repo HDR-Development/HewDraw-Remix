@@ -68,7 +68,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="frame_min">20</int>
+      <int hash="frame_min">12</int>
       <float hash="end_scale">0.8</float>
       <float hash="end_offset_z">7</float>
       <float hash="shield_max">2</float>

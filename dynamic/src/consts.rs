@@ -1611,7 +1611,8 @@ pub mod vars {
     pub mod pitb {
         pub mod instance {
             // flags
-            pub const SPECIAL_LW_DISABLE_JC: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_LC: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0101;
         }
     }
 

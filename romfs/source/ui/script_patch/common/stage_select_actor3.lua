@@ -1733,7 +1733,14 @@ local decide_normal_stage = function()
     end
 
     HDR.set_selected_panel_and_preview_and_alt(current_selected_panel, current_selected_preview, stage_previews[current_selected_preview + 1].selected_alt_)
-    HDR.set_matchup_stage_texture(Alts.get_alt_texture_index(stage_previews[1].panel_id_, 0, stage_previews[1].selected_alt_))
+    
+    local matchup_panel = stage_previews[1].panel_id_
+    local matchup_alt = stage_previews[1].selected_alt_
+    if matchup_panel == UI_INVALID_INDEX then
+        matchup_panel = current_selected_panel
+        matchup_alt = stage_previews[current_selected_preview + 1].selected_alt_
+    end
+    HDR.set_matchup_stage_texture(Alts.get_alt_texture_index(matchup_panel, 0, matchup_alt))
 
     UiScriptPlayer.invoke("set_medal_visible", current_selected_preview, true)
     UiScriptPlayer.invoke("set_medal_collect_range_from_panel", current_selected_preview, current_selected_panel)
@@ -2785,7 +2792,7 @@ main = function()
     stage_select_bgm:setup()
     setup_from_environment()
     root_view:play_animation("in", 1.0)
-    IS_SIMPLE_CANCEL = IS_SIMPLE_CANCEL or HDR.is_css_first()
+    IS_SIMPLE_CANCEL = IS_SIMPLE_CANCEL or (HDR.is_css_first() and USE_STAGE_NUM < 2)
     if IS_SIMPLE_CANCEL == true then
         BACK_POPUP_ID = nil
         local parts = root_view:get_parts("set_parts_txt_head_00")
