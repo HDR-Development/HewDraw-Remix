@@ -12,8 +12,12 @@ extern "C" {
 }
 
 unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32) {
-    let mana = if !VarModule::is_flag(fighter, vars::brave::instance::SPECIAL_MENU) { get_special_lw_command_sp_cost(fighter.module_accessor, id, false) } else { 0.0 };
-    let mana_req = if !VarModule::is_flag(fighter, vars::brave::instance::SPECIAL_MENU) { fighter.get_float(0x53) >= mana } else { true };
+    let mana = FighterSpecializer_Brave::get_special_lw_command_sp_cost(
+        fighter.module_accessor,
+        FighterBraveSpecialLwCommand{ _address: id as u8 },
+        false
+    );
+    let mana_req = fighter.get_float(0x53) >= mana;
 
     FighterManager::instance().unwrap().send_event(BraveSetMenuCommand::new(
         fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, // ENTRY_ID
@@ -104,7 +108,7 @@ pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
                 continue;
             }
         }
-        
+
         vals.push(val);
         if vals.len() >= 4 {
             break;
@@ -166,7 +170,7 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
                         break;
                     }
                 }
-                
+
                 set_command_for_slot(fighter, 0, rand);/*0x14);*/
                 set_command_for_slot(fighter, 1, rand);/*0xB);*/
                 set_command_for_slot(fighter, 2, rand);/*0xA);*/
@@ -175,7 +179,7 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
             else {
                 let mut vals = vec![];
                 roll_spells(fighter, &mut vals);
-    
+
                 set_command_for_slot(fighter, 0, vals[0]);
                 set_command_for_slot(fighter, 1, vals[1]);
                 set_command_for_slot(fighter, 2, vals[2]);

@@ -10,48 +10,37 @@ unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn guardian_orbitar(fighter: &mut L2CFighterCommon) {
-    // happens on init
-    if fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-    ])
-    && StatusModule::is_changing(fighter.module_accessor) {
-        if !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_STALL) {
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-        }
-        VarModule::off_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC);
-        VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_STALL);
-    }
-
+unsafe fn dspecial_cancel(fighter: &mut L2CFighterCommon) {
     // happens on main for all statuses
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END,
     ]) {
+        let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+    
         // disable land cancel on parry
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY) {
-            VarModule::on_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC);
+            // prevents slideoffs
+            VarModule::off_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_ENABLE_CANCEL);
+            fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK, *GROUND_CORRECT_KIND_AIR);
+
+            // ends the attack early
             if !fighter.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END)
             && !fighter.is_in_hitlag() {
                 fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END.into(), false.into());
             }
         }
 
-        // land cancel
-        if !VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_DISABLE_LC) {
-            fighter.check_land_cancel(None);
+        // cancel the attack when situation changes
+        if situation_kind != VarModule::get_int(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_SITUATION_START)
+        && VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_ENABLE_CANCEL) {
+            if situation_kind == *SITUATION_KIND_GROUND {
+                // we don't use check_land_cancel because the transition is defered until the hitbox comes out
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+            } else {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            }
         }
     }
 }
@@ -75,7 +64,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma);
-    guardian_orbitar(fighter);
+    dspecial_cancel(fighter);
     electroshock_land_cancel_on_hit(fighter);
     pits_common(fighter, boma, status_kind);
 }

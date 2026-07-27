@@ -286,7 +286,7 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
                 fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CANCEL.into(), false.into());
             }
         }
-        
+
         return 1.into();
     }
     if fighter.is_cat_flag(Cat1::JumpButton)
@@ -347,10 +347,10 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
     return 0.into();
 }
 
-unsafe extern "C" fn brave_special_check_sp_set_flag(fighter: &mut L2CFighterCommon, sp_cost: i32, success: i32) -> bool {
+unsafe extern "C" fn brave_special_check_sp_set_flag(fighter: &mut L2CFighterCommon, sp_cost: f32, success: i32) -> bool {
     let sp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP);
     let max_sp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_MAX_SP);
-    if sp_cost as f32 <= sp {
+    if sp_cost <= sp {
         fighter.on_flag(success);
         return true;
     }
@@ -372,7 +372,7 @@ unsafe extern "C" fn special_lw_exit(fighter: &mut L2CFighterCommon) -> L2CValue
     if interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_SELECT {
         return 0.into();
     }
-    
+
     let handle = VarModule::get_int(fighter.battle_object, vars::brave::instance::MENU_ICON_EFFECT_HANDLE);
     if interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START
     || interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START {
@@ -382,7 +382,7 @@ unsafe extern "C" fn special_lw_exit(fighter: &mut L2CFighterCommon) -> L2CValue
         EffectModule::kill(fighter.module_accessor, handle as u32, true, true);
     }
     VarModule::set_int(fighter.battle_object, vars::brave::instance::MENU_ICON_EFFECT_HANDLE, -1);
-    
+
     return 0.into();
 }
 
