@@ -60,15 +60,17 @@ unsafe extern "C" fn c_623_ab_long(
             }
             false
         }
-        3 => {
-            if data.front_down(class.lr as f32) || data.front_up(class.lr as f32) || data.front(class.lr as f32) {
-                class.state = 4;
-                class.command_timer = 0;
+        3 | 4 => {
+            if class.state == 3 {
+                if data.front_down(class.lr as f32) || data.front_up(class.lr as f32) || data.front(class.lr as f32) {
+                    class.state = 4;
+                    class.command_timer = 0;
+                }
+                else {
+                    return false;
+                }
             }
 
-            false
-        }
-        4 => {
             let check_flag = if !class.input_allow.bits() & 3 == 0 {
                 CommandInputFlags::ATTACK_EDGE | CommandInputFlags::SPECIAL_EDGE
             }
@@ -83,14 +85,14 @@ unsafe extern "C" fn c_623_ab_long(
             if data.intersects(check_flag) {
                 class.state = 5;
                 class.command_timer = 0;
-                class.enable_timer = 1;
-                class.lr = (data.bits() >> 10 & 1) as i8; // it just reuses this???
+                *(class as *mut CommandInputState as *mut u16).add(0x12) = 1;
+                *(class as *mut CommandInputState as *mut u8).add(0x14) = (data.bits() >> 10 & 1) as u8;
             }
 
             false
         }
         5 => {
-            let check = if class.lr == 0 {
+            let check = if *(class as *mut CommandInputState as *mut u8).add(0x14) == 0 {
                 0xc
             }
             else {
@@ -102,11 +104,12 @@ unsafe extern "C" fn c_623_ab_long(
                 return false;
             }
 
-            let count = class.enable_timer;
-            class.enable_timer = count + 1;
+            let count = *(class as *mut CommandInputState as *mut u8).add(0x12) + 1;
+            *(class as *mut CommandInputState as *mut u8).add(0x12) = count;
             class.command_timer = 0;
 
-            if class.unk2 <= count {
+            let count_max = *(class as *mut CommandInputState as *mut u8).add(0x10);
+            if count_max <= count {
                 return true;
             }
 

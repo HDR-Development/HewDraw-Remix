@@ -107,8 +107,6 @@ unsafe extern "C" fn c_623_strict(
                     check_flag2 = check_flag;
                 }
                 if !data.intersects(check_flag2) {
-                    class.state = 4;
-                    class.command_timer = 0;
                     return false;
                 }
                 return true;
