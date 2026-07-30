@@ -36,17 +36,18 @@ unsafe extern "C" fn c_323_catch(
             }
             false
         }
-        2 => {
-            if data.front_down(class.lr as f32) {
-                class.state = 3;
-                class.command_timer = 0;
+        2 | 3 => {
+            if class.state == 2 {
+                if data.front_down(class.lr as f32) {
+                    class.state = 3;
+                    class.command_timer = 0;
+                }
+                else {
+                    return false;
+                }
             }
 
-            false
-        }
-        3 => {
             if data.intersects(CommandInputFlags::GRAB_EDGE) {
-                println!("grab");
                 return true;
             }
 
