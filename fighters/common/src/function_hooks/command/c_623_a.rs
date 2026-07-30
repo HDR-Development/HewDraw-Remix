@@ -61,7 +61,7 @@ unsafe extern "C" fn c_623_a(
 
             false
         }
-        3 => {
+        3 | 4 => {
             if class.state == 3 {
                 if data.front(class.lr as f32) || data.front_down(class.lr as f32) || data.front_up(class.lr as f32) {
                     class.command_timer = 0;
