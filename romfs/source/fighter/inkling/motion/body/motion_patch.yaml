@@ -123,13 +123,19 @@ attack_air_f:
     cancel_frame: 41
 attack_air_b:
   extra:
-    cancel_frame: 35
+    cancel_frame: 33
 attack_air_lw:
   extra:
     cancel_frame: 43
 attack_100_end:
   extra:
     cancel_frame: 42
+special_n_end:
+  extra:
+    cancel_frame: 23
+special_air_n_end:
+  extra:
+    cancel_frame: 23
 special_s_end:
   extra:
     cancel_frame: 20
