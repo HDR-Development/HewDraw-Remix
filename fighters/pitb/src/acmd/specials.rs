@@ -144,11 +144,13 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 6.0, 1.0);
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE_RANGE(agent, 6.0, 6.9, 1.0);
     if is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
     }
-    FT_MOTION_RATE_RANGE(agent, 1.0, 6.9, 1.0);
     frame(lua_state, 6.9);
     FT_MOTION_RATE_RANGE(agent, 6.9, 7.0, 3.0);
     if is_excute(agent) {
