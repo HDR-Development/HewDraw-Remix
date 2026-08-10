@@ -236,6 +236,10 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     }
     // if we are doing a buffered aerial we want to disable all of the other transitions
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK) {
+        // short hop aerial macro: buffering an aerial out of jumpsquat always short hops
+        if fighter.is_button_on(Buttons::ShortHopAerialMacro) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+        }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON);
         for x in potential_enables.iter() {
             WorkModule::unable_transition_term(fighter.module_accessor, *x);
@@ -364,8 +368,10 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
             && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            // uncomment for short hop aerial only
-            // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+            // short hop aerial only, when the macro is enabled
+            if fighter.is_button_on(Buttons::ShortHopAerialMacro) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+            }
         }
     }
 }
@@ -404,6 +410,10 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
                 WorkModule::unable_transition_term(fighter.module_accessor, *x);
             }
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
+            // short hop aerial macro: pressing attack during jumpsquat always short hops
+            if fighter.is_button_on(Buttons::ShortHopAerialMacro) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+            }
         }
     }
 }
