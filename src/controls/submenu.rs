@@ -193,7 +193,8 @@ impl GamecubeMenu {
     const STICK_SENS: usize = 14;
     const RUMBLE: usize = 15;
     const AB_SMASH: usize = 16;
-    const COUNT: usize = 17;
+    const SH_AERIAL_MACRO: usize = 17;
+    const COUNT: usize = 18;
 }
 
 impl TagSubMenu for GamecubeMenu {
@@ -351,6 +352,18 @@ impl TagSubMenu for GamecubeMenu {
                     start_button: Some(index),
                 }))
             }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().gc_absmash & 8 != 0 {
+                    controls.controls_mut().gc_absmash &= !8;
+                } else {
+                    controls.controls_mut().gc_absmash |= 8;
+                }
+                Some(Box::new(Self {
+                    controls_id: self.controls_id,
+                    start_button: Some(index),
+                }))
+            }
             _ => Some(Box::new(self.clone())),
         }
     }
@@ -420,6 +433,14 @@ impl TagSubMenu for GamecubeMenu {
                     b"A+B Smash: Off"
                 }
             }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().gc_absmash & 8 != 0 {
+                    b"SH Aerial Macro: On"
+                } else {
+                    b"SH Aerial Macro: Off"
+                }
+            }
             _ => return None,
         };
 
@@ -452,7 +473,8 @@ impl ProControllerMenu {
     const STICK_SENS: usize = 15;
     const RUMBLE: usize = 16;
     const AB_SMASH: usize = 17;
-    const COUNT: usize = 18;
+    const SH_AERIAL_MACRO: usize = 18;
+    const COUNT: usize = 19;
 }
 
 impl TagSubMenu for ProControllerMenu {
@@ -616,6 +638,18 @@ impl TagSubMenu for ProControllerMenu {
                     start_button: Some(index),
                 }))
             }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().pro_absmash & 8 != 0 {
+                    controls.controls_mut().pro_absmash &= !8;
+                } else {
+                    controls.controls_mut().pro_absmash |= 8;
+                }
+                Some(Box::new(Self {
+                    controls_id: self.controls_id,
+                    start_button: Some(index),
+                }))
+            }
             _ => Some(Box::new(self.clone())),
         }
     }
@@ -686,6 +720,14 @@ impl TagSubMenu for ProControllerMenu {
                     b"A+B Smash: Off"
                 }
             }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().pro_absmash & 8 != 0 {
+                    b"SH Aerial Macro: On"
+                } else {
+                    b"SH Aerial Macro: Off"
+                }
+            }
             _ => return None,
         };
 
@@ -714,7 +756,8 @@ impl JoyConMenu {
     const STICK_SENS: usize = 11;
     const RUMBLE: usize = 12;
     const AB_SMASH: usize = 13;
-    const COUNT: usize = 14;
+    const SH_AERIAL_MACRO: usize = 14;
+    const COUNT: usize = 15;
 }
 
 impl TagSubMenu for JoyConMenu {
@@ -849,6 +892,18 @@ impl TagSubMenu for JoyConMenu {
                     start_button: Some(index),
                 }))
             }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().joy_absmash & 8 != 0 {
+                    controls.controls_mut().joy_absmash &= !8;
+                } else {
+                    controls.controls_mut().joy_absmash |= 8;
+                }
+                Some(Box::new(Self {
+                    controls_id: self.controls_id,
+                    start_button: Some(index),
+                }))
+            }
             _ => Some(Box::new(self.clone())),
         }
     }
@@ -913,6 +968,14 @@ impl TagSubMenu for JoyConMenu {
                     b"A+B Smash: On"
                 } else {
                     b"A+B Smash: Off"
+                }
+            }
+            Self::SH_AERIAL_MACRO => {
+                let mut controls = unsafe { get_ptr_to_controls(self.controls_id) };
+                if controls.controls_mut().joy_absmash & 8 != 0 {
+                    b"SH Aerial Macro: On"
+                } else {
+                    b"SH Aerial Macro: Off"
                 }
             }
             _ => return None,
