@@ -1610,8 +1610,12 @@ pub mod vars {
 
     pub mod pitb {
         pub mod instance {
+            // ints
+            pub const SPECIAL_LW_SITUATION_START: i32 = 0x0100;
+
             // flags
-            pub const SPECIAL_LW_DISABLE_JC: i32 = 0x0100;
+            pub const SPECIAL_LW_ENABLE_CANCEL: i32 = 0x0100;
+            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0101;
         }
     }
 

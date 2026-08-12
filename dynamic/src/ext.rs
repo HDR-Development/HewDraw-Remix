@@ -799,12 +799,12 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     /// Checks if a given input is held and turns off the check if released
-    /// 
+    ///
     /// # Arguments
     /// * `start_frame` - the status frame to start checking for the held input
     /// * `end_frame` - the status frame which to stop checking
     /// * `input` - a Button input (ie Buttons::Special)
-    /// 
+    ///
     /// Returns true if the end of the hold check has completed, if the end frame has been specified
     unsafe fn check_hold_input(&mut self, start_frame: i32, end_frame: i32, input: Buttons) -> bool {
         // if out of range, return early
@@ -1175,7 +1175,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
             return false;
         }
-    
+
         // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
         let upper_bound_offset_y = if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
@@ -1197,7 +1197,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ground_pos_stage = &mut Vector2f::zero();
         let is_touch_any = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_any, true);
         let is_touch_stage = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_stage, false);
-        let can_snap = !( 
+        let can_snap = !(
             is_touch_any == 0 as *const *const u64
             || (is_touch_stage != 0 as *const *const u64
                 && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
@@ -1526,7 +1526,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
 
         // if you have an escape_air_dash motion, change into it
-        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash")) 
+        if MotionModule::is_anim_resource(self, Hash40::new("escape_air_dash"))
         && !self.is_motion(Hash40::new("escape_air_dash"))
         && self.motion_frame() >= 1.0 {
             MotionModule::change_motion(
@@ -1554,18 +1554,18 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn check_magicseries(&mut self) {
         // Dont use magic series if we're already in cancel frames, if we're in hitlag, or if we didn't connect
-        if CancelModule::is_enable_cancel(self) 
-        || self.is_in_hitlag() 
+        if CancelModule::is_enable_cancel(self)
+        || self.is_in_hitlag()
         || !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
         || AttackModule::is_infliction_status(self, *crate::consts::COLLISION_KIND_MASK_PARRY) {
             return;
         }
 
         let status_kind = StatusModule::status_kind(self);
-        
+
         // Tilt cancels
         if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
+            *FIGHTER_STATUS_KIND_ATTACK,
             *FIGHTER_STATUS_KIND_ATTACK_DASH,
         ].contains(&status_kind) {
             if self.is_cat_flag(Cat1::AttackS3) {
@@ -1578,11 +1578,11 @@ impl BomaExt for BattleObjectModuleAccessor {
                 StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
             }
         }
-    
+
         // Smash cancels
         if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
@@ -1597,11 +1597,11 @@ impl BomaExt for BattleObjectModuleAccessor {
                 StatusModule::change_status_request_from_script(self, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
         }
-    
+
         // Special cancels
         if [
-            *FIGHTER_STATUS_KIND_ATTACK, 
-            *FIGHTER_STATUS_KIND_ATTACK_DASH, 
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
@@ -1651,7 +1651,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             return Some(item_boma);
         }
-        
+
         // get the global position of the bone, defaulting to "top"
         let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
         let bone_hash = bone.unwrap_or(Hash40::new("top"));
@@ -1665,7 +1665,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             },
             None => {}
         }
-        
+
         let total = item_manager.get_num_of_active_item_all();
         for id in 0..total {
             // pointer to the item
@@ -2043,8 +2043,137 @@ pub struct CommandInputState {
     pub command_timer: u8,
     pub state: u8,
     pub unk2: u8,
-    pub input_allow: u8,
+    pub input_allow: InputAllow,
     pub max_timer: u8,
     pub enable_timer: u8,
     pub lr: i8,
+}
+
+bitflags! {
+    #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+    pub struct CommandInputFlags: u32 {
+        const UP = 0b10;
+        const DOWN = 0b100;
+        const LEFT = 0b1000;
+        const RIGHT = 0b10000;
+
+        const UP_LEFT = 0b100000;
+        const DOWN_LEFT = 0b1000000;
+        const UP_RIGHT = 0b10000000;
+        const DOWN_RIGHT = 0b100000000;
+
+        const ATTACK_EDGE = 0b1000000000;
+        const SPECIAL_EDGE = 0b10000000000;
+        const GRAB_EDGE = 0b100000000000;
+
+        const ATTACK_PRESSING = 0b1000000000000;
+        const SPECIAL_PRESSING = 0b10000000000000;
+        const ATTACK_RAW_PRESSING = 0b100000000000000; // IDK CHIEF
+
+        const ANY_DIRECTION = 0x1FE;
+    }
+
+    #[derive(Debug, Copy, Clone)]
+    pub struct InputAllow: u8 {
+        const ATTACK = 0x1;
+        const SPECIAL = 0x2;
+        const UNK = 0x3;
+    }
+}
+
+impl CommandInputFlags {
+    pub fn back(&self, lr: f32) -> bool {
+        if lr < 0.0 {
+            self.intersects(Self::RIGHT)
+        } else {
+            self.intersects(Self::LEFT)
+        }
+    }
+
+    pub fn back_down(&self, lr: f32) -> bool {
+        if lr < 0.0 {
+            self.intersects(Self::DOWN_RIGHT)
+        } else {
+            self.intersects(Self::DOWN_LEFT)
+        }
+    }
+
+    pub fn back_up(&self, lr: f32) -> bool {
+        if lr < 0.0 {
+            self.intersects(Self::UP_RIGHT)
+        } else {
+            self.intersects(Self::UP_LEFT)
+        }
+    }
+
+    pub fn front(&self, lr: f32) -> bool {
+        if lr > 0.0 {
+            self.intersects(Self::RIGHT)
+        } else {
+            self.intersects(Self::LEFT)
+        }
+    }
+
+    pub fn front_down(&self, lr: f32) -> bool {
+        if lr > 0.0 {
+            self.intersects(Self::DOWN_RIGHT)
+        } else {
+            self.intersects(Self::DOWN_LEFT)
+        }
+    }
+
+    pub fn front_up(&self, lr: f32) -> bool {
+        if lr > 0.0 {
+            self.intersects(Self::UP_RIGHT)
+        } else {
+            self.intersects(Self::UP_LEFT)
+        }
+    }
+
+    pub fn up(&self) -> bool {
+        self.intersects(Self::UP)
+    }
+
+    pub fn down(&self) -> bool {
+        self.intersects(Self::DOWN)
+    }
+
+    pub fn left(&self) -> bool {
+        self.intersects(Self::LEFT)
+    }
+
+    pub fn right(&self) -> bool {
+        self.intersects(Self::RIGHT)
+    }
+
+    pub fn up_right(&self) -> bool {
+        self.intersects(Self::UP_RIGHT)
+    }
+
+    pub fn up_left(&self) -> bool {
+        self.intersects(Self::UP_LEFT)
+    }
+
+    pub fn down_right(&self) -> bool {
+        self.intersects(Self::DOWN_RIGHT)
+    }
+
+    pub fn down_left(&self) -> bool {
+        self.intersects(Self::DOWN_LEFT)
+    }
+}
+
+impl InputAllow {
+    pub fn check(&self, inputs: &CommandInputFlags) -> bool {
+        let mut input = false;
+        if self.intersects(Self::ATTACK) && inputs.intersects(CommandInputFlags::ATTACK_EDGE) {
+            input |= true;
+        }
+
+        if self.intersects(Self::SPECIAL) && inputs.intersects(CommandInputFlags::SPECIAL_EDGE) {
+            input |= true;
+        }
+
+        input
+    }
 }

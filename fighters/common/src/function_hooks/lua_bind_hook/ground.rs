@@ -109,7 +109,9 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
 unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrectKind) -> u64 {
 
     // don't run if boma is not fighter or grounded
-    if !boma.is_fighter() || !boma.is_situation(*SITUATION_KIND_GROUND) {
+    if !boma.is_fighter()
+    || !boma.is_situation(*SITUATION_KIND_GROUND)
+    || VarModule::is_flag(boma.object(), vars::common::instance::TEMPORARY_CLIFF_STOP) {
         return original!()(boma, kind);
     }
 

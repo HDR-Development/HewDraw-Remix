@@ -5,7 +5,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
         ControlModule::clear_command(boma, true);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -28,7 +27,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -50,7 +48,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
         ControlModule::clear_command(boma, true);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -73,7 +70,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -95,7 +91,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 12.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
         ControlModule::clear_command(boma, true);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -118,7 +113,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -356,7 +350,6 @@ unsafe extern "C" fn effect_throwb(agent: &mut L2CAgentBase) {
         LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 1, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 0.7);
     }
-    frame(lua_state, 27.0);
     frame(lua_state, 28.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);

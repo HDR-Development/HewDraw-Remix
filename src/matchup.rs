@@ -5,6 +5,7 @@ use self::types::FilesystemInfo;
 use skyline::hooks::InlineCtx;
 use smash_arc::SearchLookup;
 use utils::STAGE_MANAGER;
+use smash2::app::FighterManager;
 
 fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     unsafe {
@@ -32,19 +33,17 @@ unsafe fn among_us_baby(ctx: &InlineCtx) {
     let pane = get_pane_from_layout(layout_view, "perry\0").unwrap();
     let mut index = 0u32;
 
-    let hash = STAGE_HASH;
-    let alt = get_current_stage_alt();
-    let file_suffix = if alt != 0 {
-        hash40::hash40(&format!("_s{alt:02}.bntx"))
-    } else {
-        hash40::hash40(".bntx")
-    };
+    // if a stage panel was selected
+    if let Some(cached) = mgr.matchup_texture_index {
+        if cached > -1 {
+            index = cached as u32;
+            replace_texture(pane, &index);
+            return;
+        }
+    }
 
-    let mut stage_hash = if stage_loading {
-        hash40::hash40("ui/replace_patch/stage/stage_2/stage_2_randomnormal.bntx")
-     } else {
-        hash40::Hash40(STAGE_HASH).concat(file_suffix)
-     };
+    // otherwise, it was random, so use the logo
+    let stage_hash = hash40::hash40("ui/replace_patch/stage/stage_2/stage_2_randomnormal.bntx");
 
     get_filepath_index_by_hash40(&mut index, stage_hash.0);
     replace_texture(pane, &index);
@@ -131,12 +130,24 @@ extern "C" {
     fn get_current_stage_alt() -> usize;
 }
 
+#[skyline::hook(offset = 0x26104e0)]
+unsafe fn get_can_futtobi_front(param_1: u64) -> bool {
+    let original = call_original!(param_1);
+    if let Some(fighter_manager) = FighterManager::instance() {
+        if fighter_manager.entry_count() > 2 {
+            return false;
+        }
+    }
+    original
+}
+
 pub fn install() {
     skyline::install_hooks!(
         among_us_baby,
         incoming_stage_load,
         should_play_out_anim,
         play_out_anim,
-        stop_play_anim
+        stop_play_anim,
+        get_can_futtobi_front
     );
 }

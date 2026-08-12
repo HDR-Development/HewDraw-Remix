@@ -27,6 +27,7 @@ mod fighterspecializer;
 mod fighter_util;
 mod vtables;
 mod item;
+mod command;
 
 #[repr(C)]
 pub struct TempModule {
@@ -392,8 +393,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
                         // This check passes if the speed at which your character is moving due to general movement
                         // (dashing, running, walking, grounded knockback, shield pushback, etc.)
                         // is LESS than the speed at which jostle is pushing your character
-                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                         VarModule::on_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                     }
                 }
 
@@ -878,6 +879,7 @@ pub fn install() {
     fighter_util::install();
     vtables::install();
     item::install();
+    command::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

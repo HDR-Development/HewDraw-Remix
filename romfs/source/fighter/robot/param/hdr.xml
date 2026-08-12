@@ -2,9 +2,9 @@
 <struct>
     <struct hash="param_special_hi">
         <int hash="start_stop_y_frame">12</int>
-        <float hash="start_accel_y">0.0225</float>
+        <float hash="start_accel_y">0.01</float>
         <float hash="start_mul_y">0.25</float>
-        <float hash="start_stable_y">0.5</float>
+        <float hash="start_stable_y">0.3</float>
         <float hash="start_mul_x">0.25</float>
         <float hash="start_fly_stable_x">0.125</float>
         <float hash="charge_frame_max">60.0</float>
@@ -13,10 +13,14 @@
         <float hash="charge_frame_stage_1">8.0</float>
         <float hash="charge_frame_stage_2">25.0</float>
         <float hash="charge_frame_stage_3">42.0</float>
+        <int hash="launch_rise_frame">5</int>
         <float hash="max_launch_angle">60.0</float>
         <float hash="launch_speed">1.25</float>
         <float hash="launch_speed_mul">0.065</float>
         <float hash="launch_fuel_mul">2.0</float>
         <float hash="launch_fuel_min">20.0</float>
+        <int hash="launch_brake_frame">9</int>
+        <int hash="launch_brake_end_frame">14</int>
+        <int hash="launch_fall_frame">16</int>
     </struct>
 </struct>

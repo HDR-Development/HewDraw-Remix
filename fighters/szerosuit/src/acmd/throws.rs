@@ -5,9 +5,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 1.0/(3.0-1.0));
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 3.0);
     FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 8.0);
@@ -20,7 +17,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 11.0);
     FT_MOTION_RATE(agent, 1.25);
@@ -58,10 +54,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_dash"), false, 0.0);
     }
-    frame(lua_state, 16.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 17.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
@@ -79,7 +71,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 76.0);
     if is_excute(agent) {
@@ -93,10 +84,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_turn"), false, 0.0);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -115,7 +102,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 57.0);
     if is_excute(agent) {

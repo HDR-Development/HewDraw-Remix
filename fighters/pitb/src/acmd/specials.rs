@@ -144,21 +144,22 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(agent, 1.0, 6.0, 3.0);
-    frame(lua_state, 6.0);
-    FT_MOTION_RATE_RANGE(agent, 6.0, 6.9, 1.0);
     if is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
     }
+    FT_MOTION_RATE_RANGE(agent, 1.0, 6.9, 1.0);
     frame(lua_state, 6.9);
     FT_MOTION_RATE_RANGE(agent, 6.9, 7.0, 3.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "top", dmg: 5.0, angle: 70, kbg: 85, bkb: 77, size: 7.5, x: 0.0, y: 7.0, z: -1.5, x2: 0.0, y2: 7.0, z2: 1.5, hitlag: 0.72, clank: SetOff::Off, effect: "collision_attr_magic", sound_level: SoundLevel::M, hit_sound: CollisionSound::Magic, region: AttackRegion::None, });
+        hitbox!(agent, { extends: BASE_HITBOX, id: 0, bone: "top", dmg: 5.0, angle: 361, kbg: 100, fkb: 80, bkb: 0, set_weight: true, size: 7.5, x: 0.0, y: 7.0, z: -1.5, x2: 0.0, y2: 7.0, z2: 1.5, hitlag: 1.0, sdi: 1.15, clank: SetOff::Off, effect: "collision_attr_magic", sound_level: SoundLevel::M, hit_sound: CollisionSound::Magic, region: AttackRegion::None, });
     }
     frame(lua_state, 6.933);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        // enables slideoff
+        VarModule::on_flag(agent.battle_object, vars::pitb::instance::SPECIAL_LW_ENABLE_CANCEL);
+        agent.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
     }
     frame(lua_state, 7.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -197,6 +198,9 @@ unsafe extern "C" fn game_speciallwhold(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
+        VarModule::on_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+        // enables slideoff
+        agent.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
     }
 }
 
@@ -209,6 +213,7 @@ unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
         let rot2 = if facing > 0.0 { 120 } else { 60 };
         EFFECT(agent, Hash40::new("pitb_guardian_shield_end"), Hash40::new("virtualguardianf"), 2.0 * facing, 3, -2, 0, rot1, 0, 1, 0, 0, 0, 0, 0, 0, true);
         EFFECT(agent, Hash40::new("pitb_guardian_shield_end"), Hash40::new("virtualguardianb"), 2.0 * facing, 3, 2, 0, rot2, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        VarModule::off_flag(agent.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {

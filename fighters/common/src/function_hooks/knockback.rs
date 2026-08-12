@@ -141,7 +141,7 @@ pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32,
         if defender_boma.kind() == *ITEM_KIND_DAISYDAIKON {
             let damage = *knockback_info.add(22);
             let carrot_dmg = WorkModule::get_int64(defender_boma, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER) as f32;
-            let new_damage = (carrot_dmg + damage * 0.5).max(14.0);
+            let new_damage = (carrot_dmg + damage * 0.5).min(14.0);
             WorkModule::set_int64(defender_boma, new_damage as i64, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER);
             if attacker_boma.is_fighter() {
                 let attacker_team_no = TeamModule::hit_team_no(attacker_boma) as i32;
