@@ -5,6 +5,32 @@ mod special_s2;
 mod special_s3;
 mod special_s4;
 
+unsafe extern "C" fn sound_specialnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_roy_appeal_s02"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_roy_special_n06"));
+    }
+}
+
+unsafe extern "C" fn sound_specialairnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_roy_appeal_h01"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_roy_special_n06"));
+    }
+}
+
 unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -537,6 +563,9 @@ unsafe extern "C" fn effect_specialairlwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);
+    agent.acmd("sound_specialairnstart", sound_specialairnstart, Priority::Low);
+
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("effect_specialnend", effect_specialnend, Priority::Low);
     agent.acmd("sound_specialnend", sound_specialnend, Priority::Low);
