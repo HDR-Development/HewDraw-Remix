@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 
 unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
-    if boma.get_aerial() == Some(AerialKind::Bair) 
+    if boma.get_aerial() == Some(AerialKind::Bair)
     && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) {
         if boma.is_cat_flag(Cat1::AttackS4){
             VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
@@ -16,19 +16,16 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
 
 // resets the once-per-airtime bounce for sideb/bair when landing/respawning
 unsafe fn boost_reset(boma: &mut BattleObjectModuleAccessor) {
-    if !VarModule::is_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED)
-    || !VarModule::is_flag(boma.object(), vars::robot::instance::SPECIAL_S_AIR_USED) {
-        if boma.is_situation(*SITUATION_KIND_GROUND)
-        || boma.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_DEAD,
-            *FIGHTER_STATUS_KIND_REBIRTH,
-            *FIGHTER_STATUS_KIND_WIN,
-            *FIGHTER_STATUS_KIND_LOSE,
-            *FIGHTER_STATUS_KIND_ENTRY
-        ]) {
-            VarModule::on_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED);
-            VarModule::on_flag(boma.object(), vars::robot::instance::SPECIAL_S_AIR_USED);
-        }
+    if boma.is_situation(*SITUATION_KIND_GROUND)
+    || boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY
+    ]) {
+        VarModule::off_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED);
+        VarModule::off_flag(boma.object(), vars::robot::instance::SPECIAL_S_AIR_USED);
     }
 }
 
@@ -71,7 +68,7 @@ unsafe fn meter_control(boma: &mut BattleObjectModuleAccessor) {
         if charge_frame == 1 {
             MeterModule::drain_direct(boma.object(), 20.0);
         } else if charge_frame > 10 {
-            if boma.is_situation(*SITUATION_KIND_GROUND) { 
+            if boma.is_situation(*SITUATION_KIND_GROUND) {
                 MeterModule::drain_direct(boma.object(), 4.0);
             } else {
                 MeterModule::drain_direct(boma.object(), 2.0);
@@ -101,7 +98,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
