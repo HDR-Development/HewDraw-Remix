@@ -1763,9 +1763,9 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const ATTACK_AIR_B_MAX_CHARGE: i32 = 0x1102;
             pub const ATTACK_AIR_B_CHARGE_LEVEL: i32 = 0x1103;
-
-            pub const SPECIAL_S_HOP : i32 = 0x1100; // unused
-            pub const SPECIAL_S_BRANCH_DECIDE : i32 = 0x1101;
+            pub const SPECIAL_S_HOP : i32 = 0x1104;
+            pub const SPECIAL_S_FALL : i32 = 0x1105;
+            pub const SPECIAL_S_BRANCH_DECIDE : i32 = 0x1106;
 
             // ints
             pub const SPECIAL_HI_KEEP_FRAME: i32 = 0x1100;

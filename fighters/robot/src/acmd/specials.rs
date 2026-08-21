@@ -5,9 +5,8 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        // VarModule::on_flag(agent.battle_object, vars::robot::status::SPECIAL_S_HOP);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 100, 40, 0, 2.5, 0.0, 10.5, -3.0, Some(0.0), Some(10.5), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 60, 100, 40, 0, 2.5, 0.0, 10.5, -13.0, Some(0.0), Some(10.5), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 60, 100, 40, 0, 2.5, 0.0, 10.5, -3.0, Some(0.0), Some(10.5), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 2.0, 60, 100, 40, 0, 2.5, 0.0, 10.5, -13.0, Some(0.0), Some(10.5), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -25,6 +24,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(agent.battle_object, vars::robot::status::SPECIAL_S_FALL);
     }
 }
 
@@ -40,6 +40,9 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
         if agent.is_situation(*SITUATION_KIND_GROUND) {
             LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
             LAST_EFFECT_SET_RATE(agent, 2.0);
+        } else if VarModule::is_flag(agent.battle_object, vars::robot::status::SPECIAL_S_HOP) {
+            EFFECT_FOLLOW(agent, Hash40::new("robot_jump_jet"), Hash40::new("knee1"), 1, 0, 0, 90, -90, 0, 1, true);
+            LAST_EFFECT_SET_RATE(agent, 0.5);
         }
     }
     frame(lua_state, 12.0);
@@ -109,6 +112,7 @@ unsafe extern "C" fn game_specialshi(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(agent.battle_object, vars::robot::status::SPECIAL_S_FALL);
     }
 }
 
@@ -153,6 +157,7 @@ unsafe extern "C" fn game_specialslw(agent: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(agent.battle_object, vars::robot::status::SPECIAL_S_FALL);
     }
 }
 
