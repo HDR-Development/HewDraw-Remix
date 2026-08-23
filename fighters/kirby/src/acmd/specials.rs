@@ -607,6 +607,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
+// This doesn't appear to do anything, so it's not installed ->
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -777,7 +778,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairhih", expression_specialairhih, Priority::Low);
 
     agent.acmd("game_speciallw", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+    //agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
     agent.acmd("game_speciallwtoground", game_speciallwtoground, Priority::Low);
     agent.acmd("game_speciallwtoair", game_speciallwtoair, Priority::Low);
