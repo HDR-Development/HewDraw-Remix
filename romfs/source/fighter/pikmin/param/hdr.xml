@@ -12,6 +12,7 @@
         <float hash="end_y_mul">0.5</float>
     </struct>
     <struct hash="param_pikmin_particular">
+        <!-- ATTENTION: Also need to adjust in Kirby, Murabito, and Shizue's param files for consistency. -->
         <struct hash="0"> <!-- RED -->
             <!-- Slightly more damage, knockback, and shield damage -->
             <!-- Red Pikmin is an all-round powerhouse -->
