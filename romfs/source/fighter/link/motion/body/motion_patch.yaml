@@ -124,10 +124,10 @@ attack_s4_s2:
     cancel_frame: 49
 attack_hi4:
   extra:
-    cancel_frame: 72
+    cancel_frame: 79
 attack_lw4:
   extra:
-    cancel_frame: 48
+    cancel_frame: 53
 special_lw:
   extra:
     cancel_frame: 40

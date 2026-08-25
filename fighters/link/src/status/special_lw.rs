@@ -1,5 +1,52 @@
 use super::*;
 
+unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter);
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+
+    ret
+}
+
+unsafe extern "C" fn special_lw_blast_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        0,
+        0,
+        0,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+
+    return 0.into();
+}
+
 unsafe extern "C" fn item_throw_status_main(agent: &mut L2CFighterCommon) -> L2CValue {
     //is down-special input
     let is_special_lw_input;
@@ -73,7 +120,7 @@ unsafe extern "C" fn special_lw_throw_game(agent: &mut L2CAgentBase) {
         agent.clear_lua_stack();
         lua_args!(agent, 12, 2, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_ANGLE, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_SPEED, *ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER);
         smash::app::sv_animcmd::THROW_ITEM_OFFSET(agent.lua_state_agent);
-        KineticModule::add_speed(item_boma, &Vector3f{x:1.85*lr, y:0.1, z:0.0});
+        KineticModule::add_speed(item_boma, &Vector3f{x:2.05*lr, y:-0.54, z:0.0});
     }
     frame(agent.lua_state_agent, 32.0);
     if is_excute(agent) {
@@ -116,53 +163,6 @@ unsafe extern "C" fn special_lw_blast_exp(agent: &mut L2CAgentBase) {
             VisibilityModule::set_int64(agent.module_accessor, hash40("shield") as i64, hash40("shield_normal") as i64);
         }
     }
-}
-
-unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW)(fighter);
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
-        0
-    );
-
-    ret
-}
-
-unsafe extern "C" fn special_lw_blast_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        app::SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        0,
-        0,
-        0,
-        0
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
-        0
-    );
-
-    return 0.into();
 }
 
 pub fn install(agent: &mut Agent) {
