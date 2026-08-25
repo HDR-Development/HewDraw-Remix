@@ -267,7 +267,6 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -296,7 +295,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 44.0); // f52 (cancel frame)
-
 }
 
 pub fn install(agent: &mut Agent) {
