@@ -3255,6 +3255,7 @@
       <float hash="landing_attack_air_frame_lw">11</float>
       <float hash="landing_frame">4</float>
       <int hash="landing_heavy_frame">6</int>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="scale">0.96</float>
       <float hash="shield_radius">12.7</float>
       <float hash="tread_jump_speed_y_mul">0.7</float>
