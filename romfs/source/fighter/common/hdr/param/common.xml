@@ -74,7 +74,7 @@
     <int hash="float_hold_minimum_frame">5</int>
     <struct hash="grab_rebound">
         <!-- zero indexed -->
-        <int hash="catch_start_frame">3</int>
+        <int hash="catch_start_frame">4</int>
         <int hash="catchdash_start_frame">7</int>
         <int hash="catchturn_start_frame">8</int>
     </struct>
