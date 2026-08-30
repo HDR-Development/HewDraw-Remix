@@ -1,7 +1,7 @@
 use super::*;
 
-#[skyline::hook(offset = 0x6c0df0)]
-unsafe extern "C" fn c_323_catch(
+#[skyline::hook(offset = 0x6bf3b0)]
+unsafe extern "C" fn c_214(
     class: &mut CommandInputState,
     args: *const CommandInputFlags,
     lr: f32
@@ -15,7 +15,8 @@ unsafe extern "C" fn c_323_catch(
                 return false;
             }
         }
-        else if check_backwards_dp_input(data, class) {
+        else if !data.down() && !data.back_down(class.lr as f32)
+        && !data.back(class.lr as f32) && !data.back_up(class.lr as f32) {
             class.command_timer = 0;
             class.state = 0;
         }
@@ -23,18 +24,14 @@ unsafe extern "C" fn c_323_catch(
 
     match class.state {
         0 => {
-            if data.front_down(lr) {
+            if data.down() {
                 class.state = 1;
                 class.lr = lr as i8;
-            }
-            else if data.back_down(lr) {
-                class.state = 1;
-                class.lr = -lr as i8;
             }
             false
         }
         1 => {
-            if data.down() {
+            if data.back_down(class.lr as f32) {
                 class.state = 2;
                 class.command_timer = 0;
             }
@@ -42,17 +39,25 @@ unsafe extern "C" fn c_323_catch(
         }
         2 | 3 => {
             if class.state == 2 {
-                if data.front_down(class.lr as f32) {
-                    class.state = 3;
-                    class.command_timer = 0;
-                }
-                else {
+                if !data.back(class.lr as f32) {
                     return false;
                 }
+                class.command_timer = 0;
+                class.state = 3;
             }
 
-            if data.intersects(CommandInputFlags::GRAB_EDGE) {
-                // println!("grab");
+            let check_flag = if !class.input_allow.bits() & 3 == 0 {
+                CommandInputFlags::ATTACK_EDGE | CommandInputFlags::SPECIAL_EDGE
+            }
+            else {
+                if class.input_allow.intersects(InputAllow::ATTACK) {
+                    CommandInputFlags::ATTACK_EDGE
+                }
+                else {
+                    CommandInputFlags::SPECIAL_EDGE
+                }
+            };
+            if data.intersects(check_flag) {
                 return true;
             }
 
@@ -66,6 +71,6 @@ unsafe extern "C" fn c_323_catch(
 
 pub fn install() {
     skyline::install_hooks!(
-        c_323_catch
+        c_214
     );
 }
