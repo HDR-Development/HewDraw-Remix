@@ -15,13 +15,13 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_N_FOOT);
         fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT);
-        fighter.set_int64(hash40("special_n_start_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_start_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_start_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_start_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     } else {
         fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_N_FOOT);
         fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT);
-        fighter.set_int64(hash40("special_n_start_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_start_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_start_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_start_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
     motion_handling(fighter, true);
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
@@ -44,11 +44,11 @@ unsafe extern "C" fn special_n_charge_init(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.set_int64(hash40("special_n_charge_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_charge_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_charge_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_charge_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     } else {
-        fighter.set_int64(hash40("special_n_charge_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_charge_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_charge_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_charge_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter, true);
@@ -66,12 +66,12 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
     if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_STEP) == 0 {
         if MotionModule::is_end(fighter.module_accessor) {
             if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-                fighter.set_int64(hash40("special_n_loop_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-                fighter.set_int64(hash40("special_air_n_loop_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+                fighter.set_int64(hash40("special_n_loop_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+                fighter.set_int64(hash40("special_air_n_loop_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
                 fighter.sub_change_motion_by_situation(Hash40::new("special_n_loop_f").into(), Hash40::new("special_air_n_loop_f").into(), true.into());
             } else {
-                fighter.set_int64(hash40("special_n_loop_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-                fighter.set_int64(hash40("special_air_n_loop_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+                fighter.set_int64(hash40("special_n_loop_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+                fighter.set_int64(hash40("special_air_n_loop_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
                 fighter.sub_change_motion_by_situation(Hash40::new("special_n_loop_h").into(), Hash40::new("special_air_n_loop_h").into(), true.into());
             }
             app::FighterUtil::flash_eye_info(fighter.module_accessor);
@@ -119,13 +119,13 @@ unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2
     //cancel frame = iasa
     fighter.set_int(cancel_frame_param, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME);
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.set_int64(hash40("special_n_end_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_end_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
-    } else {//cancel lag is the greatest of the param or special lag total 
-        fighter.set_int64(hash40("special_n_end_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_end_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_end_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_end_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+    } else {//cancel lag is the greatest of the param or special lag total
+        fighter.set_int64(hash40("special_n_end_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_end_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
-    if fighter.is_situation(*SITUATION_KIND_GROUND) { //if grounded with stored special lag convert to cancel lag 
+    if fighter.is_situation(*SITUATION_KIND_GROUND) { //if grounded with stored special lag convert to cancel lag
         if special_lag > cancel_frame_param {
             fighter.set_int(special_lag, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME);
         }
@@ -155,11 +155,11 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
     motion_handling(fighter, drift);
     //pause if special lag
     if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME) > cancel_frame_param && MotionModule::rate(fighter.module_accessor) >= 0.0 {
-        let motion_frame = MotionModule::frame(fighter.module_accessor); 
+        let motion_frame = MotionModule::frame(fighter.module_accessor);
         let cancel_frame_param_min = cancel_frame_param as f32;
         MotionModule::set_rate(fighter.module_accessor, (14.0 - motion_frame)/cancel_frame_param_min.max(special_lag - cancel_frame_param as f32));
     } //slow down
-    //unpause motion if lag frame is over    
+    //unpause motion if lag frame is over
     if cancel_frame == cancel_frame_param && !StatusModule::is_changing(fighter.module_accessor) {
         MotionModule::set_rate(fighter.module_accessor, (58.0 - 14.0)/(18.0 + special_lag * 0.2));
         var_reset(fighter);//clears lag and resources after lag has been experienced
@@ -168,10 +168,10 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
     if cancel_frame == 0 {
         let status = VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::SPECIAL_N_CANCEL_TYPE);
         if status != 0 {
-            StatusModule::change_status_force(fighter.module_accessor, status, false); 
+            StatusModule::change_status_force(fighter.module_accessor, status, false);
             return 1.into();
         } else {
-            CancelModule::enable_cancel(fighter.module_accessor); 
+            CancelModule::enable_cancel(fighter.module_accessor);
             fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             if !fighter.is_situation(*SITUATION_KIND_GROUND) {
                 drift_limits(fighter);
@@ -287,7 +287,7 @@ unsafe extern "C" fn special_n_fire_end(fighter: &mut L2CFighterCommon) -> L2CVa
 pub fn install(agent: &mut Agent) {
         agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_init);
         agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
-        
+
         agent.status(Init, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_init);
         agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE, special_n_charge_main);
 

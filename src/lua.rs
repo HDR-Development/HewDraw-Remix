@@ -694,7 +694,7 @@ extern "C" fn get_random_stage_index(state: *mut lua::lua_State) -> i32 {
     unsafe {
         let mut rng = thread_rng();
         let mut mgr = STAGE_MANAGER.lock().unwrap();
-        
+
         if let Some(indexes) = &mgr.random_stage_indexes {
             let index = indexes.choose(&mut rng);
             match index {
@@ -765,15 +765,15 @@ extern "C" fn get_dsr(state: *mut lua::lua_State) -> i32 {
                         let c_str = CString::new(dsr.clone()).expect("String contained null byte");
                         lua::lua_pushstring(state, c_str.as_ptr());
                     },
-                    None => { 
+                    None => {
                         let c_str = CString::new("").expect("");
-                        lua::lua_pushstring(state, c_str.as_ptr()); 
+                        lua::lua_pushstring(state, c_str.as_ptr());
                     },
                 }
             }
             else {
                 let c_str = CString::new("").expect("");
-                lua::lua_pushstring(state, c_str.as_ptr()); 
+                lua::lua_pushstring(state, c_str.as_ptr());
             }
         }
 

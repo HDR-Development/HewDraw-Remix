@@ -49,7 +49,7 @@ pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CV
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_fall_common_uniq as *const () as _));
     // fighter.status_AttackAir_Main_common();
-    WorkModule::set_int64(fighter.module_accessor, motion as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, motion, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }
 

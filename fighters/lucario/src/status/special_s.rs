@@ -109,17 +109,17 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
             WorkModule::set_int(fighter.module_accessor, event["hit_group_"].get_i32(), *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
             WorkModule::set_int(fighter.module_accessor, event["hit_no_"].get_i32(), *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
             WorkModule::set_float(fighter.module_accessor, event["motion_rate_"].get_f32(), *FIGHTER_STATUS_THROW_WORK_FLOAT_MOTION_RATE);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_THROW_DONE); 
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_THROW_DONE);
         }
-        
+
         if !StatusModule::is_changing(fighter.module_accessor)
         && ((fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR)
             || (fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND))
         && fighter.motion_frame() >= 15.0 {
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+                WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
             } else {
-                WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+                WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s_throw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
             }
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
@@ -157,9 +157,9 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
 unsafe extern "C" fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     } else {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s_throw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     }
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {

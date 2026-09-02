@@ -20,17 +20,17 @@ pub unsafe extern "C" fn appeal_exec(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub unsafe fn LEVIN_OFF(boma: &mut BattleObjectModuleAccessor) {
-    if boma.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT) <= 0 
+    if boma.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT) <= 0
     && boma.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
         VarModule::off_flag(utils::util::get_battle_object_from_accessor(boma), vars::reflet::instance::DISCARD_SKIP_STATUS);
-        VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("sword").hash, Hash40::new("sword_normal").hash);
         boma.off_flag( *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
     }
 }
 
 pub unsafe fn LEVIN_ON_TAUNT(boma: &mut BattleObjectModuleAccessor) {
     if boma.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT) > 0 {
-        VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("sword").hash, Hash40::new("sword_thunder").hash);
         boma.on_flag( *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
     }
 }

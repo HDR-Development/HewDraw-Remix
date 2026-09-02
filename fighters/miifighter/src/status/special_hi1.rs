@@ -4,8 +4,8 @@ unsafe extern "C" fn special_hi1_3_main(fighter: &mut L2CFighterCommon) -> L2CVa
     fighter.set_int(0x50000000, *FIGHTER_MIIFIGHTER_STATUS_WORK_ID_INT_TENCHI_KICK_FALL_HIT_OBJECT_ID);
     sub_special_hi1_3(fighter);
     fighter.off_flag(*FIGHTER_MIIFIGHTER_INSTANCE_WORK_ID_FLAG_MOT_FRAME_INHERIT);
-    fighter.set_int64(hash40("special_air_hi1_3") as i64, *FIGHTER_MIIFIGHTER_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    fighter.set_int64(hash40("special_air_hi1_3") as i64, *FIGHTER_MIIFIGHTER_INSTANCE_WORK_ID_INT_AIR_MOT);
+    fighter.set_int64(hash40("special_air_hi1_3"), *FIGHTER_MIIFIGHTER_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    fighter.set_int64(hash40("special_air_hi1_3"), *FIGHTER_MIIFIGHTER_INSTANCE_WORK_ID_INT_AIR_MOT);
     special_hi_change_motion(fighter);
     special_hi_set_control(fighter);
     app::KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);

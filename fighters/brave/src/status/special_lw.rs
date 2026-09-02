@@ -232,8 +232,8 @@ unsafe extern "C" fn special_lw_select_main(fighter: &mut L2CFighterCommon) -> L
     fighter.set_int(0, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_INPUT_COUNT);
     fighter.set_int(-1, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_NEXT_STATUS);
     fighter.change_motion_by_situation("special_lw_select", "special_air_lw_select", 0.0, 1.0, false, 0.0, false, false);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
@@ -311,7 +311,7 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_landing"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
@@ -325,8 +325,8 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
             if fighter.get_int(*FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_INPUT_COUNT) <= 0 {
                 if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION) == hash40("special_lw_select") {
                     fighter.change_motion_by_situation("special_lw_select2", "special_air_lw_select2", 0.0, 1.0, false, 0.0, false, false);
-                    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select2") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
-                    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select2") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+                    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select2"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+                    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select2"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
                 }
             }
         }
@@ -336,11 +336,11 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_select"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
         }
         else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_select"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
         }
     }
 

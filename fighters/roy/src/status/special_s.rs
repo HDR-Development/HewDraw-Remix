@@ -89,7 +89,7 @@ unsafe extern "C" fn special_s3_check_attack(fighter: &mut L2CFighterCommon, par
             }
         }
     }
-    
+
     return 0.into();
 }
 
@@ -98,16 +98,16 @@ unsafe extern "C" fn special_s3_check_attack(fighter: &mut L2CFighterCommon, par
 pub unsafe extern "C" fn special_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     let mot = if VarModule::is_flag(fighter.battle_object, vars::roy::status::SPECIAL_S4_REVERSE) {
-        (hash40("special_s4_back") as i64, hash40("special_air_s4_back") as i64)
+        (hash40("special_s4_back"), hash40("special_air_s4_back"))
     }
     else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
-        (hash40("special_s4_lw") as i64, hash40("special_air_s4_lw") as i64)
+        (hash40("special_s4_lw"), hash40("special_air_s4_lw"))
     }
     else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI) {
-        (hash40("special_s4_hi") as i64, hash40("special_air_s4_hi") as i64)
+        (hash40("special_s4_hi"), hash40("special_air_s4_hi"))
     }
     else {
-        (hash40("special_s4_s") as i64, hash40("special_air_s4_s") as i64)
+        (hash40("special_s4_s"), hash40("special_air_s4_s"))
     };
     WorkModule::set_int64(fighter.module_accessor, mot.0, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, mot.1, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
@@ -194,6 +194,6 @@ pub fn install(agent: &mut Agent) {
     agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_init);
 
     agent.status(CheckAttack, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S3, special_s3_check_attack);
-    
+
     agent.status(Main, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4, special_s4_main);
 }

@@ -68,7 +68,7 @@ unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::set_int(fighter.module_accessor, sha_enable + 1, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
     }
-    let log_attack_kind = fighter.status_attack()["log_infos"]["attack_dash"].get_i64();
+    let log_attack_kind = fighter.status_attack()["log_infos"]["attack_dash"].get_u64();
     WorkModule::set_int64(fighter.module_accessor, log_attack_kind, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     let sha_enable = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
     if sha_enable == 0
@@ -104,7 +104,7 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME);
-        
+
         // We check the current frame of the dash attack (and add one because it our range is [min, max))
         // and if it is in the range we turn off the disable flag (enabling DACUS)
         // and also enable the transition terms in order to dacus
@@ -118,7 +118,7 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
             VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
-        } 
+        }
         // Re-enable transition flags during cancellable recovery frames
         else if CancelModule::is_enable_cancel(fighter.module_accessor) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
@@ -294,7 +294,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
             L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_LW4_START),
             L2CValue::Bool(true)
         );
-        
+
         return L2CValue::I32(1);
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN) {
@@ -358,7 +358,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         let is_attacklw4 = stick_y <= -0.7 && is_catch || is_tilt_input || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 != 0;
         !VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_CANCEL_DISABLE) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) && is_attacklw4 && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     }
-    
+
     unsafe fn sub_attack_dash_is_cancel_catch(fighter: &mut L2CFighterCommon) -> bool {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)

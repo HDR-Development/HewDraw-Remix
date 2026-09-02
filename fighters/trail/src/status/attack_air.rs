@@ -86,19 +86,19 @@ pub unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CV
 // FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N //
 
 unsafe extern "C" fn attack_air_n_change_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut const_arg: LuaConst;
-    let mut int_arg: i64;
+    let mut const_arg;
+    let mut int_arg;
     let combo_count = ComboModule::count(fighter.module_accessor);
     if combo_count != 1 {
         if combo_count != 2 {
-            int_arg = hash40("attack_air_n3") as i64;
+            int_arg = hash40("attack_air_n3");
             const_arg = FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n3"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
         else {
-            int_arg = hash40("attack_air_n2") as i64;
+            int_arg = hash40("attack_air_n2");
             const_arg = FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_01;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n2"), 0.0, 1.0, false, 0.0, false, false);
@@ -106,7 +106,7 @@ unsafe extern "C" fn attack_air_n_change_motion(fighter: &mut L2CFighterCommon) 
         }
     }
     else {
-        int_arg = hash40("attack_air_n") as i64;
+        int_arg = hash40("attack_air_n");
         const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N;
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }
@@ -173,19 +173,19 @@ pub unsafe extern "C" fn attack_air_n_init(fighter: &mut L2CFighterCommon) -> L2
 // FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F //
 
 unsafe extern "C" fn attack_air_f_change_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut const_arg: LuaConst;
-    let mut int_arg: i64;
+    let mut const_arg;
+    let mut int_arg;
     let combo_count = ComboModule::count(fighter.module_accessor);
     if combo_count != 1 {
         if combo_count != 2 {
-            int_arg = hash40("attack_air_f3") as i64;
+            int_arg = hash40("attack_air_f3");
             const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F3;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n3"), 0.0, 1.0, false, 0.0, false, false);
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
         }
         else {
-            int_arg = hash40("attack_air_f2") as i64;
+            int_arg = hash40("attack_air_f2");
             const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F2;
             MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, false);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n2"), 0.0, 1.0, false, 0.0, false, false);
@@ -193,7 +193,7 @@ unsafe extern "C" fn attack_air_f_change_motion(fighter: &mut L2CFighterCommon) 
         }
     }
     else {
-        int_arg = hash40("attack_air_f") as i64;
+        int_arg = hash40("attack_air_f");
         const_arg = FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F;
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_n"), 0.0, 1.0, false, 0.0, false, false);
     }

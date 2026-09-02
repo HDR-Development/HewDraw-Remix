@@ -232,7 +232,7 @@ unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("swordr"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_hand") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_monad_hand"));
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 18.0);
@@ -245,7 +245,7 @@ unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_behind") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_monad_behind"));
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
@@ -508,7 +508,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairhi", effect_specialairhi, Priority::Low);
     agent.acmd("game_specialhiadd", game_specialhiadd, Priority::Low);
     agent.acmd("effect_specialhiadd", effect_specialhiadd, Priority::Low);
-    
+
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
     agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
     agent.acmd("game_speciallwf", game_speciallwf, Priority::Low);

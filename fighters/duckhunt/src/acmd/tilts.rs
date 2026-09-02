@@ -75,7 +75,7 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_openwing") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_openwing"));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
     frame(lua_state, 5.0);
@@ -96,7 +96,7 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 23.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
     }
 }
 
@@ -182,11 +182,11 @@ unsafe extern "C" fn expression_attacksquats3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_openwing") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_openwing"));
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
@@ -202,7 +202,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
     agent.acmd("game_attacks3hi", game_attacks3hi, Priority::Low);
     agent.acmd("game_attacks3lw", game_attacks3lw, Priority::Low);
-    
+
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
     agent.acmd("expression_attackhi3", expression_attackhi3, Priority::Low);
 

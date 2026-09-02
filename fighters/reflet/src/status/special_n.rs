@@ -5,8 +5,8 @@ use super::*;
 pub unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     fighter.set_int(*FIGHTER_REFLET_MAGIC_KIND_THUNDER, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
-    fighter.set_int64(hash40("special_n_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
-    fighter.set_int64(hash40("special_air_n_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
+    fighter.set_int64(hash40("special_n_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
+    fighter.set_int64(hash40("special_air_n_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_AIR_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_AIR);
     fighter.set_int(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_CORRECT_GROUND);
@@ -31,8 +31,8 @@ pub unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> 
 
 pub unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // set vars
-    fighter.set_int64(hash40("special_n_hold") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
-    fighter.set_int64(hash40("special_air_n_hold") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
+    fighter.set_int64(hash40("special_n_hold"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
+    fighter.set_int64(hash40("special_air_n_hold"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_AIR_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_AIR);
     fighter.set_int(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_CORRECT_GROUND);
@@ -71,7 +71,7 @@ pub unsafe extern "C" fn special_n_hold_main(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub unsafe extern "C" fn special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_button_trigger(Buttons::Special | Buttons::Attack) 
+    if fighter.is_button_trigger(Buttons::Special | Buttons::Attack)
     || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) { // buffered fire
         VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         fighter.change_status(FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into())
