@@ -113,7 +113,7 @@ unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_c"), Hash40::new("sys_attack_arc_c"), Hash40::new("top"), 6.4, 9.8, 3.4, -12, 16, 95, 0.9, true, *EF_FLIP_YZ);
     }
-    frame(lua_state, 26.0);
+    frame(lua_state, 24.0);
     if is_excute(agent) {
         LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
