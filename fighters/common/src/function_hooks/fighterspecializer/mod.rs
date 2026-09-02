@@ -2,6 +2,7 @@ use super::*;
 
 mod brave;
 mod jack;
+mod link;
 mod pickel;
 mod ptrainer;
 

@@ -79,7 +79,7 @@ guard_off:
     cancel_frame: 12
 throw_f:
   extra:
-    cancel_frame: 35
+    cancel_frame: 30
 throw_b:
   extra:
     cancel_frame: 33
@@ -101,6 +101,21 @@ attack_13:
 attack_lw3:
   extra:
     cancel_frame: 33
+special_s1:
+  extra:
+    cancel_frame: 44
+special_s1_blank:
+  extra:
+    cancel_frame: 44
+special_air_s1_blank:
+  extra:
+    cancel_frame: 44
+special_s2:
+  extra:
+    cancel_frame: 1
+special_airs2:
+  extra:
+    cancel_frame: 1
 special_hi:
   extra:
     cancel_frame: 80
@@ -109,13 +124,71 @@ attack_s4_s2:
     cancel_frame: 49
 attack_hi4:
   extra:
-    cancel_frame: 72
+    cancel_frame: 79
 attack_lw4:
   extra:
     cancel_frame: 53
 special_lw:
   extra:
     cancel_frame: 40
+special_lw_throw:
+  game_script: game_speciallwthrow
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d03speciallwthrow.nuanmb
+  scripts:
+    - expression_speciallwthrow
+    - sound_speciallwthrow
+    - effect_speciallwthrow
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 41
+    freeze_during_hitstop: false
+special_air_lw_throw:
+  game_script: game_specialairlwthrow
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: d03specialairlwthrow.nuanmb
+  scripts:
+    - expression_specialairlwthrow
+    - sound_specialairlwthrow
+    - effect_specialairlwthrow
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 41
+    freeze_during_hitstop: false
 attack_hi3:
   extra:
     cancel_frame: 33
@@ -124,7 +197,7 @@ appeal_hi_l:
     cancel_frame: 90
 attack_dash:
   extra:
-    cancel_frame: 42
+    cancel_frame: 40
 attack_s3_s:
   extra:
     cancel_frame: 39
