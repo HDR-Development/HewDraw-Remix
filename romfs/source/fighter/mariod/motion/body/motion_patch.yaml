@@ -214,7 +214,7 @@ throw_lw:
     cancel_frame: 40
 throw_hi:
   extra:
-    cancel_frame: 40
+    cancel_frame: 38
 catch:
   extra:
     cancel_frame: 34
