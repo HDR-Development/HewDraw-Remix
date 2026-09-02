@@ -3,12 +3,12 @@ use rand::prelude::SliceRandom;
 use rand::Rng;
 use utils::ext::*;
 
-#[skyline::hook(offset = 0x16d85dc, inline)]
+#[skyline::hook(offset = 0x16d843c, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[22].set_x(0x2);
 }
 
-#[skyline::hook(offset = 0x16d8610, inline)]
+#[skyline::hook(offset = 0x16d8470, inline)]
 unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let raw = ctx.registers[19].x();
 
@@ -1011,7 +1011,7 @@ unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     *(internal_class as *mut f32).add(0x48 / 0x4) = LAST_ANALOG;
 }
 
-#[skyline::hook(offset = 0x16d7034, inline)]
+#[skyline::hook(offset = 0x16d6e94, inline)]
 unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let packet = ctx.registers[15].x();
 
@@ -1060,7 +1060,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 static mut SHOULD_END_RESULT_SCREEN: bool = false;
 
 // Skip results screen with start button
-#[skyline::hook(offset = 0x36650c0)]
+#[skyline::hook(offset = 0x3665670)]
 unsafe fn process_inputs_handheld(controller: &mut Controller) {
     let entry_count = lua_bind::FighterManager::entry_count(utils::singletons::FighterManager());
     if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager())
@@ -1090,7 +1090,7 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3666eac, inline)]
+#[skyline::hook(offset = 0x366745c, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x300) as *mut _;
@@ -1100,7 +1100,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x3666d0c, inline)]
+#[skyline::hook(offset = 0x36672bc, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = ctx.registers[19].x() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -1205,14 +1205,14 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x6bd4a4).nop();
 
     // Stuff for parry input
-    skyline::patching::Patch::in_text(0x3666edc).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3666ef0).data(0xAA0803EAu32);
+    skyline::patching::Patch::in_text(0x366748c).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x36674a0).data(0xAA0803EAu32);
 
     // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17532ac).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x17532b0).nop();
-    skyline::patching::Patch::in_text(0x17532b4).nop();
-    skyline::patching::Patch::in_text(0x17532b8).nop();
+    skyline::patching::Patch::in_text(0x175310c).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x1753110).nop();
+    skyline::patching::Patch::in_text(0x1753114).nop();
+    skyline::patching::Patch::in_text(0x1753118).nop();
 
     // Prevents buffered C-stick aerials from triggering nair
     skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
