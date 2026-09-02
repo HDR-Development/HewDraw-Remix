@@ -127,9 +127,9 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 0.0);
     FT_MOTION_RATE_RANGE(agent, 0.0, 18.0, 15.0);
     frame(lua_state, 18.0);
-    FT_MOTION_RATE_RANGE(agent, 18.0, 19.0, 3.0);
+    FT_MOTION_RATE_RANGE(agent, 18.0, 19.0, 2.0);
     if is_excute(agent) {
-        CHECK_FINISH_CAMERA(agent, 4.0, 0.0);
+        CHECK_FINISH_CAMERA(agent, 2.0, 0.0);
     }
     frame(lua_state, 19.0);
     FT_MOTION_RATE(agent, 1.0);
