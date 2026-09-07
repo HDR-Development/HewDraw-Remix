@@ -435,3 +435,9 @@ step_pose_back:
     cancel_frame: 6
 cliff_wait:
   blend_frames: 2
+special_air_s1_end:
+  extra:
+    cancel_frame: 40
+special_s1_end:
+  extra:
+    cancel_frame: 40
