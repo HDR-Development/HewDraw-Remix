@@ -285,12 +285,12 @@ unsafe extern "C" fn special_s2_attack_mot_change(fighter: &mut L2CFighterCommon
 
 unsafe extern "C" fn special_s2_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 0.into();
+        return 1.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && (fighter.sub_wait_ground_check_common(false.into()).get_bool()
     || fighter.sub_air_check_fall_common().get_bool()) {
-        return 0.into();
+        return 1.into();
     }
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -301,12 +301,20 @@ unsafe extern "C" fn special_s2_attack_main_loop(fighter: &mut L2CFighterCommon)
             }
             else {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-                return 0.into();
+                return 1.into();
             }
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+        else {
+            let landing_lag = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "special_s2.landing_lag");
+            WorkModule::set_float(fighter.module_accessor,landing_lag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+        }
+        return 1.into();
     }
     
     return 0.into();

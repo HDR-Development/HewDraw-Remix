@@ -125,7 +125,7 @@ special_s2_attack:
     cancel_frame: 30
 special_air_s2_attack:
   extra:
-    cancel_frame: 40
+    cancel_frame: 0
 # Now maps to special_lw3
 special_n3_end:
   extra:
