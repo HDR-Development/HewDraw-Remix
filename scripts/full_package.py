@@ -65,7 +65,7 @@ else:
     download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
-download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
+download_and_extract("WuBoytH", "ozone", "latest", "ozone.zip", "/atmosphere/contents/01006A800016E000/")
 # download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
 download_and_extract("ThatNintendoNerd", "stage_config", "latest", "release.zip")
 
