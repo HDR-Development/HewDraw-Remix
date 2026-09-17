@@ -444,7 +444,7 @@ extern "C" {
 #[skyline::hook(replace = save_report)]
 fn save_report_stub(uid: *mut u8) { }
 
-#[skyline::hook(offset = 0x25f7830)]
+#[skyline::hook(offset = 0x25f7c80)]
 unsafe fn stage_preload(_mgr: u64, _info: *const u8) { }
 
 #[skyline::main(name = "hdr")]
@@ -658,7 +658,7 @@ fn unlock_menu_music() {
         // Patch the BGM playback function to always use the player's My Music selection
         // instead of defaulting to the standard menu theme.
         skyline::patching::Patch::in_text(0x3312544).data(0x320003e8u32).unwrap();
-        skyline::patching::Patch::in_text(0x325e000).data(0x92800008u32).unwrap();
+        skyline::patching::Patch::in_text(0x325e5b0).data(0x92800008u32).unwrap();
     }
 }
 
