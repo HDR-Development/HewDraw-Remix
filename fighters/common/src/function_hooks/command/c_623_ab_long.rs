@@ -7,13 +7,17 @@ unsafe extern "C" fn c_623_ab_long(
     lr: f32
 ) -> bool {
     let data = *args.add(2);
-    if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-        if class.state != 0 {
+    if class.state != 0 {
+        if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
             if class.unk2 != 0 {
                 class.command_timer = 0;
                 class.state = 0;
                 return false;
             }
+        }
+        else if check_backwards_dp_input(data, class) {
+            class.command_timer = 0;
+            class.state = 0;
         }
     }
 
@@ -85,7 +89,7 @@ unsafe extern "C" fn c_623_ab_long(
             if data.intersects(check_flag) {
                 class.state = 5;
                 class.command_timer = 0;
-                *(class as *mut CommandInputState as *mut u16).add(0x12) = 1;
+                *(class as *mut CommandInputState as *mut u16).add(0x12 / 0x2) = 1;
                 *(class as *mut CommandInputState as *mut u8).add(0x14) = (data.bits() >> 10 & 1) as u8;
             }
 
@@ -104,8 +108,8 @@ unsafe extern "C" fn c_623_ab_long(
                 return false;
             }
 
-            let count = *(class as *mut CommandInputState as *mut u8).add(0x12) + 1;
-            *(class as *mut CommandInputState as *mut u8).add(0x12) = count;
+            let count = *(class as *mut CommandInputState as *mut u8).add(0x12 / 0x2) + 1;
+            *(class as *mut CommandInputState as *mut u8).add(0x12 / 0x2) = count;
             class.command_timer = 0;
 
             let count_max = *(class as *mut CommandInputState as *mut u8).add(0x10);

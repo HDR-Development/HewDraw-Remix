@@ -23,4 +23,21 @@
         <int hash="launch_brake_end_frame">14</int>
         <int hash="launch_fall_frame">16</int>
     </struct>
+    <struct hash="param_special_s">
+        <float hash="start_mul_spd_x">1.0</float>
+        <float hash="start_mul_spd_y">0.4</float>
+        <float hash="start_air_acl_x">0.01</float>
+        <float hash="attack_spd_y">0.0</float>
+        <float hash="attack_acl_y">0.045</float>
+        <float hash="attack_max_y">1.0</float>
+
+        <float hash="air_speed_x_limit">0.8</float>
+        <float hash="air_speed_x_stable">0.8</float>
+        <float hash="air_accel_x_add">0.01</float>
+        <float hash="air_accel_x_mul">0.065</float>
+
+        <float hash="ground_speed_x_limit">1.125</float>
+        <float hash="ground_accel_x_add">0.105</float>
+        <float hash="ground_accel_x_mul">0.055</float>
+    </struct>
 </struct>

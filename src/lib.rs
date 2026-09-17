@@ -444,6 +444,9 @@ extern "C" {
 #[skyline::hook(replace = save_report)]
 fn save_report_stub(uid: *mut u8) { }
 
+#[skyline::hook(offset = 0x25f7830)]
+unsafe fn stage_preload(_mgr: u64, _info: *const u8) { }
+
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
@@ -467,6 +470,7 @@ pub fn main() {
             title_screen_play,
             sss_to_css,
             css_to_sss,
+            stage_preload,
             scene_transition,
             save_report_stub,
             //copy_fighter_info,
@@ -647,29 +651,20 @@ pub fn quick_validate_install() {
 
 fn unlock_menu_music() {
     if std::path::Path::new("sd:/ultimate/hdr-config/unlock_menu_music").exists() {
-        println!("WARNING: potentially bannable operation in effect!");
+        println!("WARNING: potentially bannable operation in effect! Unlocking music.");
         // Patch the My Music UI to always show menu music as selectable
         skyline::patching::Patch::in_text(0x184de0c).nop().unwrap();
         skyline::patching::Patch::in_text(0x184de10).data(0x390bbb9fu32).unwrap();
         // Patch the BGM playback function to always use the player's My Music selection
         // instead of defaulting to the standard menu theme.
         skyline::patching::Patch::in_text(0x3312544).data(0x320003e8u32).unwrap();
+        skyline::patching::Patch::in_text(0x325e000).data(0x92800008u32).unwrap();
     }
-}
-
-#[skyline::hook(offset = 0x1797560)]
-unsafe fn fighter_unlock_query(fighter: u64, query_type: u32, arg3: u64) -> u64 {
-    // query_type is 0 for regular characters, 4 for DLC,
-    // and the logic for DLC characters is always "is purchased? then show it"
-    // which always returns true for base characters and owned DLC,
-    // but false for unowned DLC.
-    let effective_query_type = if query_type == 0 { 4 } else { query_type };
-    call_original!(fighter, effective_query_type, arg3)
 }
 
 fn unlock_characters() {
     if std::path::Path::new("sd:/ultimate/hdr-config/unlock_characters").exists() {
-        println!("unlock_characters flag found - unlocking all non-DLC characters");
-        skyline::install_hook!(fighter_unlock_query);
+        println!("WARNING: potentially bannable operation in effect! Unlocking characters.");
+        skyline::patching::Patch::in_text(0x3263f58).data(0x92800008u32).unwrap();
     }
 }

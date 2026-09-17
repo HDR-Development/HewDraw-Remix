@@ -37,6 +37,7 @@ unsafe fn dspecial_cancel(fighter: &mut L2CFighterCommon) {
         && VarModule::is_flag(fighter.battle_object, vars::pitb::instance::SPECIAL_LW_ENABLE_CANCEL) {
             if situation_kind == *SITUATION_KIND_GROUND {
                 // we don't use check_land_cancel because the transition is defered until the hitbox comes out
+                VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, 5.0);
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
             } else {
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

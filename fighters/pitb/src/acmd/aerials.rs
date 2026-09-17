@@ -10,7 +10,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 24.0, 11.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 366, kbg: 100, fkb: 40, bkb: 0, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 78, kbg: 30, bkb: 50, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::Pos, });
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -19,7 +19,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 0, bone: "top", dmg: 7.0, angle: 361, kbg: 85, bkb: 50, size: 9.0, x: 1.0, y: 10.0, z: 3.0, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 0, bone: "top", dmg: 7.0, angle: 361, kbg: 85, bkb: 50, size: 9.0, x: 1.0, y: 10.0, z: 3.0, facing: LrCheck::Pos, });
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
