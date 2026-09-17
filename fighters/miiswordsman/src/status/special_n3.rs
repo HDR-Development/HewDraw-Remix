@@ -33,8 +33,8 @@ pub unsafe extern "C" fn special_n3_pre(fighter: &mut L2CFighterCommon) -> L2CVa
 pub unsafe extern "C" fn special_n3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
-    fighter.set_int64(hash40("special_s3_1") as i64, *FIGHTER_MIISWORDSMAN_STATUS_CHAKRAM_WORK_INT_MOTION);
-    fighter.set_int64(hash40("special_air_s3_1") as i64, *FIGHTER_MIISWORDSMAN_STATUS_CHAKRAM_WORK_INT_MOTION_AIR);
+    fighter.set_int64(hash40("special_s3_1"), *FIGHTER_MIISWORDSMAN_STATUS_CHAKRAM_WORK_INT_MOTION);
+    fighter.set_int64(hash40("special_air_s3_1"), *FIGHTER_MIISWORDSMAN_STATUS_CHAKRAM_WORK_INT_MOTION_AIR);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_06) - 1);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, (*FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_06) - 1);
 

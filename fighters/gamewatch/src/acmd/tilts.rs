@@ -68,7 +68,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        VisibilityModule::set_default_int64(boma, Hash40::new("lhand").hash as i64);
+        VisibilityModule::set_default_int64(boma, Hash40::new("lhand").hash);
     }
 }
 
@@ -110,6 +110,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
-    
+
     agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
 }

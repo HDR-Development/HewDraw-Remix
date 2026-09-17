@@ -103,7 +103,7 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("smash_item") as i64, hash40("smash_item_pan") as i64);
+        VisibilityModule::set_int64(boma, hash40("smash_item"), hash40("smash_item_pan"));
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -119,7 +119,7 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("smash_item") as i64, hash40("smash_item_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("smash_item"), hash40("smash_item_none"));
     }
 }
 

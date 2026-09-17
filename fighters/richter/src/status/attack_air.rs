@@ -8,7 +8,7 @@ pub unsafe extern "C" fn attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CV
                 VarModule::on_flag(fighter.battle_object, vars::richter::instance::ATTACK_AIR_LW_REBOUND);
             }
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_leaning_c"), 0.0, 1.0, false, 0.0, false, false);
-            fighter.set_int64(hash40("fall_leaning_c") as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+            fighter.set_int64(hash40("fall_leaning_c"), *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
             fighter.on_flag(*FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
         }

@@ -18,10 +18,10 @@ fn get_pane_from_layout(layout_data: u64, name: &str) -> Option<u64> {
     }
 }
 
-#[skyline::from_offset(0x37786c0)]
+#[skyline::from_offset(0x3778c70)]
 unsafe fn replace_texture(pane: u64, index: &u32);
 
-#[skyline::from_offset(0x353d480)]
+#[skyline::from_offset(0x353da30)]
 unsafe fn get_filepath_index_by_hash40(index: &mut u32, hash40: u64);
 
 #[skyline::hook(offset = 0x1ee9edc, inline)]
@@ -66,7 +66,7 @@ const DLC: &[&'static str] = &[
     "xeno_alst",
 ];
 
-#[skyline::hook(offset = 0x25fdf58, inline)]
+#[skyline::hook(offset = 0x25fe3a8, inline)]
 unsafe fn incoming_stage_load(ctx: &InlineCtx) {
     let search = FilesystemInfo::instance().unwrap().search();
     let Ok(path) = search.get_path_list_entry_from_hash(ctx.registers[8].x()) else {
@@ -100,10 +100,10 @@ unsafe fn incoming_stage_load(ctx: &InlineCtx) {
 
 static mut SHOULD_PLAY: bool = false;
 
-#[skyline::from_offset(0x3777b30)]
+#[skyline::from_offset(0x37780e0)]
 unsafe fn play_animation(layout: u64, anim: *const u8);
 
-#[skyline::hook(offset = 0x2310b68, inline)]
+#[skyline::hook(offset = 0x2310d24, inline)]
 unsafe fn play_out_anim(_: &InlineCtx) {
     SHOULD_PLAY = true;
 }
@@ -130,7 +130,7 @@ extern "C" {
     fn get_current_stage_alt() -> usize;
 }
 
-#[skyline::hook(offset = 0x26104e0)]
+#[skyline::hook(offset = 0x2610930)]
 unsafe fn get_can_futtobi_front(param_1: u64) -> bool {
     let original = call_original!(param_1);
     if let Some(fighter_manager) = FighterManager::instance() {

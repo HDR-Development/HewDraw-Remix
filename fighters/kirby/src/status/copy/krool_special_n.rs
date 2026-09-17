@@ -130,7 +130,7 @@ pub unsafe extern "C" fn krool_special_n_main_loop(fighter: &mut L2CFighterCommo
         fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
     }
     if fighter.is_flag(*FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN) {
-        VisibilityModule::set_int64(fighter.module_accessor, hash40("crown") as i64, hash40("crown_hide") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("crown"), hash40("crown_hide"));
     }
 
     return 0.into();

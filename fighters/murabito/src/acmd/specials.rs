@@ -85,7 +85,7 @@ unsafe extern "C" fn expression_specialairlw1failure(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("item") as i64, hash40("item_shovel") as i64);
+        VisibilityModule::set_int64(boma, hash40("item"), hash40("item_shovel"));
     }
     frame(lua_state, 12.0);
     if is_excute(agent) {
@@ -97,7 +97,7 @@ unsafe extern "C" fn expression_specialairlw1failure(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 69.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("item") as i64, hash40("item_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("item"), hash40("item_none"));
     }
 }
 
@@ -148,7 +148,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairlw1failure", effect_specialairlw1failure, Priority::Low);
     agent.acmd("sound_specialairlw1failure", sound_specialairlw1failure, Priority::Low);
     agent.acmd("expression_specialairlw1failure", expression_specialairlw1failure, Priority::Low);
-    
+
     agent.acmd("game_speciallw3", game_speciallw3, Priority::Low);
     agent.acmd("game_specialairlw3", game_speciallw3, Priority::Low);
     agent.acmd("game_speciallw3hit", game_speciallw3hit, Priority::Low);

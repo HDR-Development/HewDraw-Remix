@@ -16,7 +16,7 @@ unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 pub unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != statuses::reflet::FLOAT {
-        VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash, Hash40::new("sword_normal").hash);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
     }
     fighter.sub_attack_air_uniq_process_init();

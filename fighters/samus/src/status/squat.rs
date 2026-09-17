@@ -12,11 +12,11 @@ unsafe extern "C" fn squat_disable_terms(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
-    
+
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
-    
+
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
 
@@ -32,7 +32,7 @@ pub unsafe extern "C" fn squat_check_bomb_input(fighter: &mut L2CFighterCommon) 
     if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
         ControlModule::clear_command(fighter.module_accessor, false);
         let bomb_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"),hash40("bomb_max_req"));
-        if (ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB) as i32) < bomb_max 
+        if (ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB) as i32) < bomb_max
         && VarModule::get_int(fighter.battle_object, vars::samus::instance::SPECIAL_LW_BOMB_LOCKOUT) <= 0 {
             VarModule::on_flag(fighter.battle_object, vars::samus::instance::SPECIAL_LW_INPUT_FROM_CRAWL);
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
@@ -168,7 +168,7 @@ unsafe extern "C" fn squat_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.status_SquatWait_common(0xc0.into());
 
     MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("squat_n"), 6.0,0.0, 0.0);
-    VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+    VisibilityModule::set_int64(fighter.module_accessor, hash40("body"), hash40("body_sphere"));
 
     fighter.main_shift(squat_wait_main_loop)
 }

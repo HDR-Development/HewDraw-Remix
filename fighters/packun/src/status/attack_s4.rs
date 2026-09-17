@@ -25,7 +25,7 @@ unsafe extern "C" fn attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn sub_attack_s4(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     //let hash = if VarModule::get_int(fighter.battle_object, vars::packun::instance::CURRENT_STANCE) == 2 { hash40("attack_s4_s_2") } else { hash40("attack_s4_s") };
-    WorkModule::set_int64(fighter.module_accessor, hash40("attack_s4_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("attack_s4_s"), *FIGHTER_STATUS_ATTACK_WORK_INT_MOTION_KIND);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
 }
 

@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if VarModule::is_flag(agent.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         if is_excute(agent) {
-            VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
+            VisibilityModule::set_int64(boma, Hash40::new("bat").hash, Hash40::new("bat_visible").hash);
         }
         frame(lua_state, 8.0);
         if is_excute(agent) {
@@ -68,10 +68,10 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
             VarModule::off_flag(agent.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
             VarModule::off_flag(agent.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
         }
-    } 
+    }
     else {
         if is_excute(agent) {
-            VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
+            VisibilityModule::set_int64(boma, Hash40::new("bat").hash, Hash40::new("bat_visible").hash);
         }
         frame(lua_state, 8.0);
         if is_excute(agent) {
@@ -394,7 +394,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
             AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        } 
+        }
         wait(lua_state, 10.0);
         if is_excute(agent) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -496,7 +496,7 @@ unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
-    frame(lua_state, 6.0); 
+    frame(lua_state, 6.0);
     if is_excute(agent) {
         WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK);
     }
@@ -621,7 +621,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
     agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
     agent.acmd("sound_attackhi4", sound_attackhi4, Priority::Low);
-    
+
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
     agent.acmd("sound_attacklw4", sound_attacklw4, Priority::Low);
     agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);

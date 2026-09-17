@@ -48,7 +48,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_sphere"));
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(lua_state, 44.0);
@@ -57,7 +57,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
@@ -72,7 +72,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_sphere"));
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(lua_state, 44.0);
@@ -81,7 +81,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
     }
 }
 

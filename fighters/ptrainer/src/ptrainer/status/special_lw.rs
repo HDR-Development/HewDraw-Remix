@@ -137,7 +137,7 @@ unsafe extern "C" fn play_voice(weapon: &mut L2CWeaponCommon) {
             },
         };
         PLAY_SE(weapon, voice_hash);
-        weapon.set_int64(voice_hash.hash as i64, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_VOICE_ID);
+        weapon.set_int64(voice_hash.hash, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_VOICE_ID);
     }
     weapon.off_flag(*WEAPON_PTRAINER_PTRAINER_STATUS_WORK_FLAG_VOICE);
 }

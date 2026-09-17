@@ -15,7 +15,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         }
     }
     if is_excute(agent) {
-        WorkModule::set_int64(boma, hash40("special_s") as i64, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(boma, hash40("special_s"), *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
@@ -88,7 +88,7 @@ unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
         }
     }
     if is_excute(agent) {
-        WorkModule::set_int64(boma, hash40("special_air_hi_jump") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(boma, hash40("special_air_hi_jump"), *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     frame(lua_state, 32.0);
     FT_MOTION_RATE(agent, 1.0);
@@ -107,7 +107,7 @@ unsafe extern "C" fn game_specialairhifall(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        WorkModule::set_int64(boma, hash40("special_air_hi_fall") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(boma, hash40("special_air_hi_fall"), *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
 }

@@ -9,10 +9,10 @@ unsafe extern "C" fn special_lw_attack_main(fighter: &mut L2CFighterCommon) -> L
     fighter.set_float(0.0, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_FLOAT_RIGHT_EDGE_DISTANCE_X);
     fighter.set_float(0.0, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_FLOAT_LEFT_EDGE_DISTANCE_X);
     // set default mot
-    fighter.set_int64(hash40("special_lw_f") as i64, *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_KIND);
-    fighter.set_int64(hash40("special_air_lw_f") as i64, *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_AIR_KIND);
-    fighter.set_int64(hash40("special_lw_f") as i64, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_KIND);
-    fighter.set_int64(hash40("special_air_lw_f") as i64, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_AIR_KIND);
+    fighter.set_int64(hash40("special_lw_f"), *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_KIND);
+    fighter.set_int64(hash40("special_air_lw_f"), *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_AIR_KIND);
+    fighter.set_int64(hash40("special_lw_f"), *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_KIND);
+    fighter.set_int64(hash40("special_air_lw_f"), *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_AIR_KIND);
     FighterSpecializer_Metaknight::check_edge_special_lw(fighter.module_accessor);
     let attack_air_neutral_x = fighter.get_param_float("common", "attack_air_neutral_x");
     let left_stick = fighter.left_stick_x();
@@ -20,7 +20,7 @@ unsafe extern "C" fn special_lw_attack_main(fighter: &mut L2CFighterCommon) -> L
     // calc move dir
     let mut move_stick = if right_stick.abs() > attack_air_neutral_x {right_stick} else {0.0};
     if move_stick.abs() < 1.0 && left_stick.abs() > attack_air_neutral_x {move_stick = left_stick};
-    move_stick = (move_stick*100.0).clamp(-1.0, 1.0); // round 
+    move_stick = (move_stick*100.0).clamp(-1.0, 1.0); // round
     // calc facing dir (prio left stick then move dir)
     let lr = fighter.lr();
     let mut new_lr = if move_stick.abs() > 0.0 {move_stick} else {-lr};
@@ -29,21 +29,21 @@ unsafe extern "C" fn special_lw_attack_main(fighter: &mut L2CFighterCommon) -> L
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     // use turnaround anims if input opposite direction of moving direction
     if move_stick*new_lr < 0.0 {
-        fighter.set_int64(hash40("special_lw_b") as i64, *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_KIND);
-        fighter.set_int64(hash40("special_air_lw_b") as i64, *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_AIR_KIND);
-        fighter.set_int64(hash40("special_lw_b") as i64, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_KIND);
-        fighter.set_int64(hash40("special_air_lw_b") as i64, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_AIR_KIND);
+        fighter.set_int64(hash40("special_lw_b"), *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_KIND);
+        fighter.set_int64(hash40("special_air_lw_b"), *FIGHTER_METAKNIGHT_STATUS_WORK_INT_MOT_AIR_KIND);
+        fighter.set_int64(hash40("special_lw_b"), *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_KIND);
+        fighter.set_int64(hash40("special_air_lw_b"), *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_WORK_INT_ARTICLE_MOT_AIR_KIND);
     }
     // don't slash past ledge if starting grounded
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
-    if situation == *SITUATION_KIND_GROUND 
+    if situation == *SITUATION_KIND_GROUND
     && GroundModule::is_ottotto_lr(fighter.module_accessor, move_stick, 1.5) {
         fighter.on_flag(*FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_STOP_X);
     }
     // add speed on slash, bonus if pivoted
     let mut x_add = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.attack_base_x");
     let mut start_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    if new_lr * start_speed < 0.0 
+    if new_lr * start_speed < 0.0
     && move_stick * new_lr < 0.0 {
         x_add += ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_lw.attack_add_x_turn");
     }

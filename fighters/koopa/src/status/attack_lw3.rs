@@ -5,7 +5,7 @@ unsafe extern "C" fn attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.main_shift(attack_lw3_main_loop)
 }
 
-unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {    
+unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
         && fighter.global_table[globals::CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
@@ -31,7 +31,7 @@ unsafe extern "C" fn attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         if !StopModule::is_stop(fighter.module_accessor)
         && fighter.sub_check_button_jump().get_bool() {
             let log = fighter.status_attack();
-            let info = log[0x10f40d7b92u64].get_i64();
+            let info = log[0x10f40d7b92u64].get_u64();
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             MotionAnimcmdModule::call_script_single(
                 fighter.module_accessor,

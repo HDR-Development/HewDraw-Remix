@@ -316,7 +316,7 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
 
 // This runs immediately before hitlag is set for attacking articles
 // Handles hitlag scaling for articles
-#[skyline::hook(offset = 0x33a9924, inline)]
+#[skyline::hook(offset = 0x33a9ed4, inline)]
 unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let receiver_boma = &mut *(ctx.registers[24].x() as *mut BattleObjectModuleAccessor);
     let kb = DamageModule::reaction(receiver_boma, 0);

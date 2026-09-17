@@ -196,14 +196,14 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+        VisibilityModule::set_int64(boma, hash40("dragon"), hash40("dragon_horn"));
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
-        VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("front_hair"), hash40("front_hair_hide"));
+        VisibilityModule::set_int64(boma, hash40("hair"), hash40("hair_hide"));
     }
     frame(lua_state, 9.0);
     app::sv_animcmd::execute(lua_state, 9.0);
@@ -231,15 +231,15 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("hair") as i64, hash40("hair_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("hair"), hash40("hair_normal"));
     }
     frame(lua_state, 52.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("front_hair"), hash40("front_hair_normal"));
     }
     frame(lua_state, 55.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("dragon"), hash40("dragon_none"));
     }
 }
 

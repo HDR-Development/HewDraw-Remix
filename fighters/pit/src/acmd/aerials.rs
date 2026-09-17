@@ -282,7 +282,7 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon"), hash40("weapon_normal"));
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 8.0);
@@ -307,7 +307,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
     agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
-    
+
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
     agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
     agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);

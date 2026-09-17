@@ -32,13 +32,13 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let log_mask_flags = (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON);
     if ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE) {
-        fighter.set_int64(hash40("special_n") as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
-        fighter.set_int64(hash40("special_air_n") as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
+        fighter.set_int64(hash40("special_n"), *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
+        fighter.set_int64(hash40("special_air_n"), *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
         FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, (log_mask_flags | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64);
     }
     else {
-        fighter.set_int64(hash40("special_n_blank") as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
-        fighter.set_int64(hash40("special_air_n_blank") as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
+        fighter.set_int64(hash40("special_n_blank"), *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
+        fighter.set_int64(hash40("special_air_n_blank"), *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
         FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log_mask_flags as u64);
     }
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -75,10 +75,10 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             }
             EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_sp_flash"), true, true);
-            
+
             let landing_lag = 10.0;
             VarModule::set_float(fighter.battle_object, vars::common::instance::LAND_CANCEL_LAG, landing_lag);
-            
+
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
             return 1.into();
         }

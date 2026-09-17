@@ -22,7 +22,7 @@ unsafe extern "C" fn attack100_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         if !StopModule::is_stop(fighter.module_accessor)
         && fighter.sub_check_button_jump().get_bool() {
             let log = fighter.status_attack();
-            let info = log[0x10f40d7b92u64].get_i64();
+            let info = log[0x10f40d7b92u64].get_u64();
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             MotionAnimcmdModule::call_script_single(
                 fighter.module_accessor,
@@ -81,7 +81,7 @@ unsafe extern "C" fn attack100_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
         //if MotionModule::is_end(fighter.module_accessor) {
-        
+
         //}
     }
     0.into()
