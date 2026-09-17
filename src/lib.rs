@@ -444,6 +444,9 @@ extern "C" {
 #[skyline::hook(replace = save_report)]
 fn save_report_stub(uid: *mut u8) { }
 
+#[skyline::hook(offset = 0x25f7830)]
+unsafe fn stage_preload(_mgr: u64, _info: *const u8) { }
+
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
@@ -467,6 +470,7 @@ pub fn main() {
             title_screen_play,
             sss_to_css,
             css_to_sss,
+            stage_preload,
             scene_transition,
             save_report_stub,
             //copy_fighter_info,
