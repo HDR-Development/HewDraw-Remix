@@ -1,7 +1,7 @@
 use super::*;
 
-#[skyline::hook(offset = 0x6c0270)]
-unsafe extern "C" fn c_623_strict(
+#[skyline::hook(offset = 0x6bf210)]
+unsafe extern "C" fn c_623_a(
     class: &mut CommandInputState,
     args: *const CommandInputFlags,
     lr: f32
@@ -59,65 +59,38 @@ unsafe extern "C" fn c_623_strict(
                 return false;
             }
 
-            if data.bits() & 1 == 0 {
-                if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-                    class.state = 1;
-                }
-            }
-            false
-        }
-        3 => {
-            if data.front_down(class.lr as f32) {
-                let mut check_flag = CommandInputFlags::SPECIAL_EDGE;
-                if class.input_allow.intersects(InputAllow::ATTACK) {
-                    check_flag = CommandInputFlags::ATTACK_EDGE;
-                }
-                let mut check_flag2 = CommandInputFlags::ATTACK_EDGE | CommandInputFlags::SPECIAL_EDGE;
-                if !class.input_allow.bits() & 3 != 0 {
-                    check_flag2 = check_flag;
-                }
-                if !data.intersects(check_flag2) {
-                    class.state = 4;
-                    class.command_timer = 0;
-                    return false;
-                }
-                return true;
-            }
-
             if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-                return false;
+                class.state = 1;
             }
 
-            if data.bits() >> 2 & 1 != 0 {
-                return false;
-            }
-
-            if data.back_down(class.lr as f32) {
-                return false;
-            }
-
-            class.command_timer = 0;
-            class.state = 0;
             false
         }
-        4 => {
-            if data.front_down(class.lr as f32) {
-                let mut check_flag = CommandInputFlags::SPECIAL_EDGE;
-                if class.input_allow.intersects(InputAllow::ATTACK) {
-                    check_flag = CommandInputFlags::ATTACK_EDGE;
+        3 | 4 => {
+            if class.state == 3 {
+                if data.front(class.lr as f32) || data.front_down(class.lr as f32) || data.front_up(class.lr as f32) {
+                    class.command_timer = 0;
+                    class.state = 4;
                 }
-                let mut check_flag2 = CommandInputFlags::ATTACK_EDGE | CommandInputFlags::SPECIAL_EDGE;
-                if !class.input_allow.bits() & 3 != 0 {
-                    check_flag2 = check_flag;
-                }
-                if !data.intersects(check_flag2) {
+                else {
                     return false;
                 }
+            }
+
+            let check_flag = if !class.input_allow.bits() & 3 == 0 {
+                CommandInputFlags::ATTACK_EDGE | CommandInputFlags::SPECIAL_EDGE
+            }
+            else {
+                if class.input_allow.intersects(InputAllow::ATTACK) {
+                    CommandInputFlags::ATTACK_EDGE
+                }
+                else {
+                    CommandInputFlags::SPECIAL_EDGE
+                }
+            };
+            if data.intersects(check_flag) {
                 return true;
             }
 
-            class.command_timer = 0;
-            class.state = 0;
             false
         }
         _ => {
@@ -128,6 +101,6 @@ unsafe extern "C" fn c_623_strict(
 
 pub fn install() {
     skyline::install_hooks!(
-        c_623_strict
+        c_623_a
     );
 }

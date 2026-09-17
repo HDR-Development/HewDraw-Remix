@@ -9,13 +9,16 @@
     <struct index="0">
       <float hash="speed_y">2</float>
       <int hash="disable_landing_frame">10</int>
-      <float hash="0x13337cb1ff">0</float>
-      <float hash="0x170ed70199">0</float>
       <float hash="fly_accel_x_stick">0.05</float>
-      <float hash="fly_speed_x_max">1.2</float>
       <float hash="fly_accel_y_stick">0.12</float>
-      <float hash="0x132407a5bc">0</float>
-      <float hash="0x1c53b2d25b">0</float>
+      <float hash="fly_speed_x_max">1.2</float>
+      <float hash="fly_speed_y_max">1.2</float>
+      <float hash="0x13337cb1ff">0</float> <!-- Reduction of x acceleration per pikmin -->
+      <float hash="0x132407a5bc">0</float> <!-- Reduction of y acceleration per pikmin -->
+      <float hash="0x170ed70199">0.2</float> <!-- Reduction of x max speed per pikmin -->
+      <float hash="0x1c53b2d25b">0.2</float> <!-- Reduction of y max speed per pikmin -->
+      <float hash="white_pikmin_weight_mul">1.0</float>
+      <float hash="violet_pikmin_weight_mul">1.0</float>
       <float hash="landing_frame">14</float>
     </struct>
     <hash40 index="1">dummy</hash40>

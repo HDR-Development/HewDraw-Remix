@@ -4,9 +4,11 @@ unsafe extern "C" fn game_speciallw1(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 0.661);
     if is_excute(agent) {
+        FT_LEAVE_NEAR_OTTOTTO(agent, 4.0, 1.0);
+        sv_kinetic_energy!(set_speed, agent, *FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_LW_PLANT_FLAG_CHECK_PLANT);
-        FT_MOTION_RATE(agent, 0.661);
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {

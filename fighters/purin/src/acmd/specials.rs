@@ -112,18 +112,44 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("bust"), 25.0, 361, 66, 0, 106, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_BODY);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 25.0, 361, 66, 0, 128, 2.0, -2.0, 5.5, 0.5, Some(1.0), Some(5.5), Some(0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_BODY);
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
-        if(AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)){
-            if (DamageModule::damage(boma, 0) > 5.0) {
-                DamageModule::add_damage(boma, -5.0, 0);
-            }
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            DamageModule::heal(boma, -5.0, 0);
         }
     }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE_RANGE(agent, 40.0, 170.0, 160.0); // +30 FAF
+    frame(lua_state, 170.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        JostleModule::set_status(boma, false);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 25.0, 361, 66, 0, 128, 2.0, -2.0, 5.5, 1.0, Some(1.0), Some(5.5), Some(1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            DamageModule::heal(boma, -5.0, 0);
+        }
+    }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE_RANGE(agent, 40.0, 170.0, 160.0); // +30 FAF
+    frame(lua_state, 170.0);
+    FT_MOTION_RATE(agent, 1.0);
 }
 
 pub fn install(agent: &mut Agent) {
@@ -141,6 +167,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallwl", game_speciallw, Priority::Low);
     agent.acmd("game_speciallwr", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlwl", game_speciallw, Priority::Low);
-    agent.acmd("game_specialairlwr", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlwl", game_specialairlw, Priority::Low);
+    agent.acmd("game_specialairlwr", game_specialairlw, Priority::Low);
 }
