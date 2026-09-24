@@ -82,10 +82,10 @@ pub fn install() {
 
     unsafe {
         let rock = smashline::clone_weapon("plizardon", "rock", *WEAPON_KIND_LINK_BOOMERANG, false);
-        articles::generate::plizardon::ROCK += rock.generate_id_add;
+        articles::generate::plizardon::ROCK = rock.generate_id;
         articles::kind::plizardon::ROCK = rock.weapon_id;
         let rockstone = smashline::clone_weapon("plizardon", "rockstone", *WEAPON_KIND_SHEIK_NEEDLE, false);
-        articles::generate::plizardon::ROCKSTONE += rockstone.generate_id_add;
+        articles::generate::plizardon::ROCKSTONE = rockstone.generate_id;
         articles::kind::plizardon::ROCKSTONE = rockstone.weapon_id;
     }
 }

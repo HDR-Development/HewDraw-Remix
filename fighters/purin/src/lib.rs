@@ -55,7 +55,7 @@ pub fn install() {
 
     unsafe {
         let disarmingvoice = smashline::clone_weapon("purin", "disarmingvoice", *WEAPON_KIND_KOOPAJR_CANNONBALL, false);
-        articles::generate::purin::DISARMING_VOICE += disarmingvoice.generate_id_add;
+        articles::generate::purin::DISARMING_VOICE = disarmingvoice.generate_id;
         articles::kind::purin::DISARMING_VOICE = disarmingvoice.weapon_id;
     }
 }

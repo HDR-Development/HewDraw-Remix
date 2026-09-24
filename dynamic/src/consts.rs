@@ -2326,20 +2326,20 @@ pub mod statuses {
 pub mod articles {
     pub mod generate {
         pub mod packun {
-            pub static mut FIREBREATH: i32 = 0x4;
+            pub static mut FIREBREATH: i32 = 0;
         }
 
         pub mod plizardon {
-            pub static mut ROCK: i32 = 0x3;
-            pub static mut ROCKSTONE: i32 = 0x3;
+            pub static mut ROCK: i32 = 0;
+            pub static mut ROCKSTONE: i32 = 0;
         }
 
         pub mod purin {
-            pub static mut DISARMING_VOICE: i32 = 0x2;
+            pub static mut DISARMING_VOICE: i32 = 0;
         }
 
         pub mod palutena {
-            pub static mut METEOR: i32 = 0x9;
+            pub static mut METEOR: i32 = 0;
         }
     }
     pub mod kind {
