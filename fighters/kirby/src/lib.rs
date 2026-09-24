@@ -57,11 +57,11 @@ pub fn install() {
     finalcuttershot::install();
 
     let whitelist_articles = [
-        (*FIGHTER_KIND_PALUTENA, *WEAPON_KIND_PALUTENA_EXPLOSIVEFLAME),
-        (*FIGHTER_KIND_PALUTENA, *WEAPON_KIND_PALUTENA_EXPLOSIVEFLAME_RESERVE),
-        (*FIGHTER_KIND_TRAIL, 0x266)
+        (*FIGHTER_KIND_PALUTENA, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME),
+        (*FIGHTER_KIND_PALUTENA, *FIGHTER_PALUTENA_GENERATE_ARTICLE_EXPLOSIVEFLAME_RESERVE),
+        (*FIGHTER_KIND_TRAIL, *FIGHTER_TRAIL_GENERATE_ARTICLE_FLOWER)
     ];
-    for (fighter_id, article_id) in whitelist_articles.iter() {
-        smashline::whitelist_kirby_copy_article(*fighter_id, *article_id);
+    for (fighter_id, generate_article_id) in whitelist_articles.iter() {
+        smashline::whitelist_kirby_copy_article(*fighter_id, *generate_article_id);
     }
 }
