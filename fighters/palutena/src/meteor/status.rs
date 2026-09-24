@@ -18,18 +18,22 @@ unsafe extern "C" fn move_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn move_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let palutena = utils::util::get_battle_object_from_id(owner_id);
-    let palutena_boma = &mut *(*palutena).module_accessor;
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_meteor"), hash40("life_s"));
-    let lr = PostureModule::lr(weapon.module_accessor);
-    let owner_pos_x = PostureModule::pos_x(palutena_boma);
-    let owner_pos_y = PostureModule::pos_y(palutena_boma);
-    let owner_pos_z = PostureModule::pos_z(palutena_boma);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     ModelModule::set_scale(weapon.module_accessor, 2.65);
-    PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(owner_pos_x + 5.0 * lr, owner_pos_y + 40.0, owner_pos_z));
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let owner = utils::util::get_battle_object_from_id(owner_id);
+    let object_id = (*owner).battle_object_id;
+    if sv_battle_object::category(object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    && sv_battle_object::kind(object_id) == *FIGHTER_KIND_PALUTENA {
+        let owner_module_accessor = &mut *(*owner).module_accessor;
+        let lr = PostureModule::lr(weapon.module_accessor);
+        let owner_pos_x = PostureModule::pos_x(owner_module_accessor);
+        let owner_pos_y = PostureModule::pos_y(owner_module_accessor);
+        let owner_pos_z = PostureModule::pos_z(owner_module_accessor);
+        PostureModule::set_pos(weapon.module_accessor, &Vector3f::new(owner_pos_x + 5.0 * lr, owner_pos_y + 40.0, owner_pos_z));
+    }
     speed_reset(weapon);
 
     return 0.into();
