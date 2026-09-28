@@ -30,20 +30,7 @@ trait UiObject {
     fn is_enabled(&self) -> bool;
 }
 
-static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| {
-    RwLock::new(UiManager {
-        vtrigger_meter: [VTriggerMeter::default(); 8],
-        ff_meter: [FfMeter::default(); 8],
-        power_board: [PowerBoard::default(); 8],
-        cyan_meter: [CyanMeter::default(); 8],
-        pichu_meter: [PichuMeter::default(); 8],
-        aura_meter: [AuraMeter::default(); 8],
-        robot_meter: [RobotMeter::default(); 8],
-        garlic_meter: [GarlicMeter::default(); 8],
-        plant_meter: [PlantMeter::default(); 8],
-        ptrainer_meter: [PledgeMeter::default(); 8],
-    })
-});
+static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager::default()));
 
 /// Address (relative to the text region) of the game's global pointer to the
 /// melee UI info object. Its second field points at the HUD info data block that
@@ -102,7 +89,20 @@ macro_rules! ui_index {
     };
 }
 
+/// Resolves the meter in this fighter's HUD slot.
+/// Early return fixes crash in local wireless.
+macro_rules! ui_meter {
+    ($meters:expr, $entry_id:expr) => {{
+        let meter = &mut $meters[ui_index!($entry_id)];
+        if !meter.is_valid() {
+            return;
+        }
+        meter
+    }};
+}
+
 #[repr(C)]
+#[derive(Default)]
 pub struct UiManager {
     vtrigger_meter: [VTriggerMeter; 8],
     ff_meter: [FfMeter; 8],
@@ -219,39 +219,39 @@ impl UiManager {
     #[export_name = "UiManager__set_vtrigger_meter_enable"]
     pub extern "C" fn set_vtrigger_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.vtrigger_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.vtrigger_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_vtrigger_meter_info"]
     pub extern "C" fn set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.vtrigger_meter[ui_index!(entry_id)]
+        ui_meter!(manager.vtrigger_meter, entry_id)
             .set_meter_info(current, level_max, per_level, is_vtrigger);
     }
 
     #[export_name = "UiManager__set_ff_meter_enable"]
     pub extern "C" fn set_ff_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.ff_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ff_meter_info"]
     pub extern "C" fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[ui_index!(entry_id)]
+        ui_meter!(manager.ff_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__change_ff_meter_cap"]
     pub extern "C" fn change_ff_meter_cap(entry_id: u32, cap: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[ui_index!(entry_id)].change_cap(cap);
+        ui_meter!(manager.ff_meter, entry_id).change_cap(cap);
     }
 
     #[export_name = "UiManager__set_power_board_enable"]
     pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.power_board, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_power_board_info"]
@@ -261,34 +261,34 @@ impl UiManager {
         color_2: i32,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[ui_index!(entry_id)]
+        ui_meter!(manager.power_board, entry_id)
             .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__change_power_board_color"]
     pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[ui_index!(entry_id)]
+        ui_meter!(manager.power_board, entry_id)
             .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__set_cyan_meter_enable"]
     pub extern "C" fn set_cyan_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.cyan_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.cyan_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_cyan_meter_info"]
     pub extern "C" fn set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.cyan_meter[ui_index!(entry_id)]
+        ui_meter!(manager.cyan_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_pichu_meter_enable"]
     pub extern "C" fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.pichu_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.pichu_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_pichu_meter_info"]
@@ -300,14 +300,14 @@ impl UiManager {
         charged: bool,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.pichu_meter[ui_index!(entry_id)]
+        ui_meter!(manager.pichu_meter, entry_id)
             .set_meter_info(current, max, per_level, charged);
     }
 
     #[export_name = "UiManager__set_aura_meter_enable"]
     pub extern "C" fn set_aura_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.aura_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.aura_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_aura_meter_info"]
@@ -319,53 +319,53 @@ impl UiManager {
         burnout: bool,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.aura_meter[ui_index!(entry_id)]
+        ui_meter!(manager.aura_meter, entry_id)
             .set_meter_info(current, max, per_level, burnout);
     }
 
     #[export_name = "UiManager__set_robot_meter_enable"]
     pub extern "C" fn set_robot_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.robot_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.robot_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_robot_meter_info"]
     pub extern "C" fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.robot_meter[ui_index!(entry_id)]
+        ui_meter!(manager.robot_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_garlic_meter_enable"]
     pub extern "C" fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.garlic_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.garlic_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_garlic_meter_info"]
     pub extern "C" fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.garlic_meter[ui_index!(entry_id)]
+        ui_meter!(manager.garlic_meter, entry_id)
             .set_meter_info(current, level1, level2, level3);
     }
 
     #[export_name = "UiManager__set_plant_meter_enable"]
     pub extern "C" fn set_plant_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.plant_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.plant_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_plant_meter_info"]
     pub extern "C" fn set_plant_meter_info(entry_id: u32, element: i32) {
         let mut manager = UI_MANAGER.write();
-        manager.plant_meter[ui_index!(entry_id)]
+        ui_meter!(manager.plant_meter, entry_id)
             .set_meter_info(element);
     }
 
     #[export_name = "UiManager__set_ptrainer_meter_enable"]
     pub extern "C" fn set_ptrainer_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ptrainer_meter[ui_index!(entry_id)].set_enable(enable);
+        ui_meter!(manager.ptrainer_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ptrainer_meter_info"]
@@ -379,7 +379,7 @@ impl UiManager {
         disabled: bool
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.ptrainer_meter[ui_index!(entry_id)]
+        ui_meter!(manager.ptrainer_meter, entry_id)
             .set_meter_info(current_pledge, max_pledge, current_swap, max_swap, pledge_state, disabled);
     }
 }
@@ -501,6 +501,12 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.ptrainer_meter[index] = PledgeMeter::new(layout_udata);
 }
 
+/// Reset at match teardown
+#[skyline::hook(offset = 0x134cb38, inline)]
+fn melee_ui_teardown(_: &skyline::hooks::InlineCtx) {
+    *UI_MANAGER.write() = UiManager::default();
+}
+
 #[skyline::hook(offset = 0x138a710, inline)]
 fn hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
@@ -571,5 +577,5 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(get_set_info_alpha, hud_update,);
+    skyline::install_hooks!(get_set_info_alpha, melee_ui_teardown, hud_update,);
 }
