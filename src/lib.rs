@@ -665,6 +665,6 @@ fn unlock_menu_music() {
 fn unlock_characters() {
     if std::path::Path::new("sd:/ultimate/hdr-config/unlock_characters").exists() {
         println!("WARNING: potentially bannable operation in effect! Unlocking characters.");
-        skyline::patching::Patch::in_text(0x3263f58).data(0x92800008u32).unwrap();
+        skyline::patching::Patch::in_text(0x3264508).data(0x92800008u32).unwrap();
     }
 }
