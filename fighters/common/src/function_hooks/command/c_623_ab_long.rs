@@ -108,11 +108,11 @@ unsafe extern "C" fn c_623_ab_long(
                 return false;
             }
 
-            let count = *(class as *mut CommandInputState as *mut u8).add(0x12 / 0x2) + 1;
-            *(class as *mut CommandInputState as *mut u8).add(0x12 / 0x2) = count;
+            let count = *(class as *mut CommandInputState as *mut u16).add(0x12 / 0x2) + 1;
+            *(class as *mut CommandInputState as *mut u16).add(0x12 / 0x2) = count;
             class.command_timer = 0;
 
-            let count_max = *(class as *mut CommandInputState as *mut u8).add(0x10);
+            let count_max = *(class as *mut CommandInputState as *mut u16).add(0x10 / 0x2);
             if count_max <= count {
                 return true;
             }
