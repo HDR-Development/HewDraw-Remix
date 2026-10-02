@@ -99,15 +99,7 @@ unsafe extern "C" fn game_specialhitop(agent: &mut L2CAgentBase) {
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
-
-unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
-    let boma = agent.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(agent, 0.5);
-    frame(lua_state, 10.0);
-    if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_LW_FLAG_TO_THROW_OK);
+    
 unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -142,6 +134,17 @@ unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(agent, 0.5);
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_LW_FLAG_TO_THROW_OK);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("game_specialairnend", game_specialairnend, Priority::Low);
@@ -153,7 +156,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
     agent.acmd("game_specialhitop", game_specialhitop, Priority::Low);
 
+    agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
+
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
-    agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
 }
