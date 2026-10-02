@@ -65,20 +65,20 @@ unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue 
     WorkModule::set_int(fighter.module_accessor, rng, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_SPECIAL_S_KIND);
     WorkModule::set_int(fighter.module_accessor, rng, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
 
-    VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("panel") as i64, hash40(&format!("no_{}", rng + 1)) as i64);
+    VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("panel"), hash40(&format!("no_{}", rng + 1)));
 
     // Makes sure we aren't showing the actual number on the first frame.
     let mut rng_dummy = sv_math::rand(hash40("fighter"), 9);
-    VisibilityModule::set_int64(fighter.module_accessor, hash40("panel") as i64, hash40(&format!("no_{}", rng_dummy + 1)) as i64);
+    VisibilityModule::set_int64(fighter.module_accessor, hash40("panel"), hash40(&format!("no_{}", rng_dummy + 1)));
 
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40(&format!("special_s_{}", rng + 1)) as i64,
+        hash40(&format!("special_s_{}", rng + 1)),
         *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40(&format!("special_air_s_{}", rng + 1)) as i64,
+        hash40(&format!("special_air_s_{}", rng + 1)),
         *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
     );
 

@@ -65,7 +65,7 @@ else:
     download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
-download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
+download_and_extract("WuBoytH", "ozone", "latest", "ozone.zip", "/atmosphere/contents/01006A800016E000/")
 # download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
 download_and_extract("ThatNintendoNerd", "stage_config", "latest", "release.zip")
 
@@ -82,7 +82,7 @@ urllib.request.urlretrieve("https://github.com/techyCoder81/hdr-launcher-react/r
 shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting libstage_alts.nro")
-urllib.request.urlretrieve("https://github.com/HDR-Development/stage-alts-2/releases/latest/download/libstage_alts.nro", "libstage_alts.nro")
+urllib.request.urlretrieve("https://github.com/WuBoytH/stage-alts-2/releases/latest/download/libstage_alts.nro", "libstage_alts.nro")
 shutil.move("libstage_alts.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 os.makedirs("switch-package/ultimate/stage-alts")
 

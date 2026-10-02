@@ -4,8 +4,8 @@ use super::*;
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RIDLEY_STATUS_SPECIAL_N_WORK_INT_FIRE_NUM);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold"), *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold"), *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
@@ -90,8 +90,8 @@ unsafe extern "C" fn special_n_charge_substatus(fighter: &mut L2CFighterCommon, 
 unsafe extern "C" fn special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE) {
         VarModule::off_flag(fighter.object(), vars::ridley::instance::SPECIAL_N_EXPLODE);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_explode") as i64, *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_explode"), *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_explode"), *FIGHTER_STATUS_WORK_ID_UTILITY_WORK_INT_MOT_AIR_KIND);
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_explode"), 0.0, 1.0, false, 0.0, false, false);
         }

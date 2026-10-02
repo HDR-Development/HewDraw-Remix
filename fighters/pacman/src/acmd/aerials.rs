@@ -67,8 +67,8 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
         ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_none") as i64);
-        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_none"));
+        VisibilityModule::set_int64(boma, hash40("pizza"), hash40("pizza_normal"));
         HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
@@ -91,8 +91,8 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, true, 0);
         ItemModule::set_attach_item_visibility(boma, true, *ATTACH_ITEM_GROUP_ALL as u8);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
-        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
+        VisibilityModule::set_int64(boma, hash40("pizza"), hash40("pizza_none"));
         HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
@@ -338,7 +338,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
     agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
-    
+
     agent.acmd("sound_attackairlw", sound_attackairlw, Priority::Low);
     agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);
 

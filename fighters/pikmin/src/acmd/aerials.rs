@@ -9,7 +9,6 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
-    FT_MOTION_RATE_RANGE(agent, 2.0, 7.0, 3.0);
     frame(lua_state, 7.0);
     FT_MOTION_RATE_RANGE(agent, 7.0, 23.0, 20.0);
     if is_excute(agent) {

@@ -260,7 +260,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
-    
+
     if fighter.sub_transition_group_check_ground_jump().get_bool() {
         return 1.into();
     }
@@ -382,11 +382,11 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     if !StatusModule::is_changing(fighter.module_accessor) {
         if ComboModule::count(fighter.module_accessor) == 1 {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
-                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_near_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_near_s"), *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK_NEAR, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
             else {
-                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_s") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+                WorkModule::set_int64(fighter.module_accessor, hash40("attack_11_s"), *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
                 WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_KIND_ATTACK11, *FIGHTER_RYU_STATUS_ATTACK_INT_LOG_KIND);
             }
         }

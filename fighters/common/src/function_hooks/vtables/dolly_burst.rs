@@ -36,13 +36,13 @@ unsafe extern "C" fn burst_set_motion(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[8].set_x(motion);
 }
 
-#[skyline::hook(offset = 0x33df440)]
+#[skyline::hook(offset = 0x33df9f0)]
 unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, something: u64) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
     let motion = *(something as *const u64).add(0x88 / 0x8);
     // println!("motion: {:#x}", motion);
-    WorkModule::set_int64(module_accessor, motion as i64, *WEAPON_DOLLY_BURST_INSTANCE_WORK_ID_INT_MOTION_KIND);
+    WorkModule::set_int64(module_accessor, motion, *WEAPON_DOLLY_BURST_INSTANCE_WORK_ID_INT_MOTION_KIND);
 
     let is_air = *(something as *const bool).add(0xb0);
     // println!("is_air: {}", is_air);
@@ -70,7 +70,7 @@ unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, somethin
     }
 }
 
-#[skyline::hook(offset = 0x33df620)]
+#[skyline::hook(offset = 0x33dfbd0)]
 unsafe extern "C" fn burst_on_hit(_vtable: u64, weapon: *mut app::Weapon) -> u64 {
     let module_accessor = (*weapon).battle_object.module_accessor;
 

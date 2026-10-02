@@ -316,7 +316,7 @@ unsafe fn post_calc_reaction(ctx: &mut skyline::hooks::InlineCtx) {
 
 // This runs immediately before hitlag is set for attacking articles
 // Handles hitlag scaling for articles
-#[skyline::hook(offset = 0x33a9924, inline)]
+#[skyline::hook(offset = 0x33a9ed4, inline)]
 unsafe fn set_weapon_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     let receiver_boma = &mut *(ctx.registers[24].x() as *mut BattleObjectModuleAccessor);
     let kb = DamageModule::reaction(receiver_boma, 0);
@@ -574,7 +574,7 @@ unsafe fn calc_non_knockback_damage_mul(attacker_boma: &mut BattleObjectModuleAc
         let variation = WorkModule::get_int(attacker_boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
         let param = format!("param_pikmin_particular.{}.damage_mul", variation);
         let battle_object = attacker_boma.get_owner_boma().object(); // olimar's battle object
-        ParamModule::get_float(battle_object, ParamType::Agent, &param)
+        ParamModule::get_float(battle_object, ParamType::Common, &param)
     } else {
         1.0
     };

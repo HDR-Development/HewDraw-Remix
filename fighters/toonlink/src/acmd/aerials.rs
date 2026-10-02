@@ -255,7 +255,7 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_back"));
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -275,7 +275,7 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 55.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
     }
 }
 
@@ -423,7 +423,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_landingairhi", effect_landingairhi, Priority::Low);
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
-    
+
     agent.acmd("game_aircatch", game_aircatch, Priority::Low);
     agent.acmd("effect_aircatch", effect_aircatch, Priority::Low);
     agent.acmd("game_aircatchlanding", game_aircatchlanding, Priority::Low);

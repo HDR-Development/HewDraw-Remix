@@ -34,7 +34,7 @@ macro_rules! lua_settop {
     }};
 }
 
-#[skyline::from_offset(0x38f86a0)]
+#[skyline::from_offset(0x38f8c50)]
 unsafe extern "C" fn luaL_tolstring(lua_state: u64, index: i32, size: *mut usize) -> *const u8;
 
 unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
@@ -53,7 +53,7 @@ unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
     return 0;
 }
 
-#[skyline::hook(offset = 0x38f5a30)]
+#[skyline::hook(offset = 0x38f5fe0)]
 unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -> u32 {
     let result = call_original!(arg, arg2, arg3, arg4, "bt\0".as_ptr());
     if result == 3 {
@@ -68,7 +68,7 @@ unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -
     result
 }
 
-#[skyline::from_offset(0x3771220)]
+#[skyline::from_offset(0x37717d0)]
 unsafe fn register_button(arg: u64, id: i32, string: *const u8);
 
 #[skyline::hook(offset = 0x1d33460, inline)]
@@ -83,10 +83,10 @@ unsafe fn add_buttons_to_subwindow(ctx: &mut skyline::hooks::InlineCtx) {
     IS_IN_UI = true;
 }
 
-#[skyline::from_offset(0x37717b0)]
+#[skyline::from_offset(0x3771d60)]
 unsafe fn layout_get(arg: u64, arg2: u64, id: u64);
 
-#[skyline::from_offset(0x37714d0)]
+#[skyline::from_offset(0x3771a80)]
 unsafe fn set_something(arg: u64, val: u64, val2: u64);
 
 #[skyline::hook(offset = 0x1d33684, inline)]
@@ -324,7 +324,7 @@ unsafe fn update_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
 
 static mut IS_IN_UI: bool = false;
 
-#[skyline::hook(offset = 0x376d000)]
+#[skyline::hook(offset = 0x376d5b0)]
 unsafe fn set_next_button(arg: u64, button: i32, other: u64) {
     if !IS_IN_UI {
         call_original!(arg, button, other);
@@ -383,7 +383,7 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
 
 unsafe fn get_parts(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776090);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776640);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
@@ -694,7 +694,7 @@ extern "C" fn get_random_stage_index(state: *mut lua::lua_State) -> i32 {
     unsafe {
         let mut rng = thread_rng();
         let mut mgr = STAGE_MANAGER.lock().unwrap();
-        
+
         if let Some(indexes) = &mgr.random_stage_indexes {
             let index = indexes.choose(&mut rng);
             match index {
@@ -765,15 +765,15 @@ extern "C" fn get_dsr(state: *mut lua::lua_State) -> i32 {
                         let c_str = CString::new(dsr.clone()).expect("String contained null byte");
                         lua::lua_pushstring(state, c_str.as_ptr());
                     },
-                    None => { 
+                    None => {
                         let c_str = CString::new("").expect("");
-                        lua::lua_pushstring(state, c_str.as_ptr()); 
+                        lua::lua_pushstring(state, c_str.as_ptr());
                     },
                 }
             }
             else {
                 let c_str = CString::new("").expect("");
-                lua::lua_pushstring(state, c_str.as_ptr()); 
+                lua::lua_pushstring(state, c_str.as_ptr());
             }
         }
 
@@ -790,8 +790,8 @@ extern "C" fn is_css_first(state: *mut lua::lua_State) -> i32 {
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x5292c70).data((lua_print_impl as *const ()));
-        skyline::patching::Patch::in_text(0x372c530).data(0xD503201Fu32);
+        skyline::patching::Patch::in_text(0x5293c70).data((lua_print_impl as *const ()));
+        skyline::patching::Patch::in_text(0x372cae0).data(0xD503201Fu32);
         skyline::patching::Patch::in_text(0x1d33d1c).data(0xF1001ADFu32);
         skyline::patching::Patch::in_text(0x1d309c4).data(0x7100183Fu32);
         // skyline::patching::Patch::in_text(0x1d2fec8).nop();

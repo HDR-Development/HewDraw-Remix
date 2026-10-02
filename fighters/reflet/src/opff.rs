@@ -14,7 +14,7 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     ]) {
         if VarModule::get_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY) > 0 {
             VarModule::dec_int(fighter.battle_object, vars::reflet::instance::ATTACK_AIR_LEVIN_LENIENCY);
-            if !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
+            if !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON)
             && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw | Buttons::Catch) {
                 let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
                 if WorkModule::get_int(boma, levin) > 0 {
@@ -22,7 +22,7 @@ unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
                     }
                     fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-                    VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
+                    VisibilityModule::set_int64(boma, Hash40::new("sword").hash, Hash40::new("sword_thunder").hash);
                     WorkModule::dec_int(boma, levin);
                 }
             }
@@ -48,7 +48,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn resource_depleted(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    //enables discard 
+    //enables discard
     if StatusModule::is_changing(fighter.module_accessor)
     && !(prev_status == statuses::reflet::FLOAT && status == *FIGHTER_STATUS_KIND_ATTACK_AIR)
     && ![*FIGHTER_STATUS_KIND_ATTACK_100,
@@ -123,7 +123,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_SHOOT,
         *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL,
         *FIGHTER_REFLET_STATUS_KIND_SPECIAL_LW_END
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }

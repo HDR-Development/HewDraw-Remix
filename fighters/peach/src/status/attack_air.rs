@@ -67,7 +67,7 @@ unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_fall_common_uniq as *const () as _));
 
     let _ = fighter.status_AttackAir_Main_common();
-    WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, motion_kind, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.main_shift(attack_air_main_loop)
 }
 
@@ -105,7 +105,7 @@ unsafe extern "C" fn attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
 
     let _ = fighter.status_AttackAir_Main_common();
-    WorkModule::set_int64(fighter.module_accessor, motion_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, motion_kind, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     0.into()
 }
 

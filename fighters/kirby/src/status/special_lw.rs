@@ -6,8 +6,8 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
     special_lw_off_mtrans(fighter);
     fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
     fighter.off_flag(*FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_MOT_FRAME_INHERIT);
-    fighter.set_int64(hash40("special_lw") as i64, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    fighter.set_int64(hash40("special_air_lw") as i64, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_AIR_MOT);
+    fighter.set_int64(hash40("special_lw"), *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    fighter.set_int64(hash40("special_air_lw"), *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_AIR_MOT);
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_STONE, false, -1);
     ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_STONE, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
@@ -51,7 +51,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     let effect_onoff = fighter.is_flag(*FIGHTER_KIRBY_STATUS_WORK_ID_FLAG_STONE_EFFECT_ONOFF);
     let prev_effect_onoff = fighter.is_flag(*FIGHTER_KIRBY_STATUS_WORK_ID_FLAG_STONE_PREV_EFFECT_ONOFF);
-    if effect_onoff {         
+    if effect_onoff {
         fighter.on_flag(*FIGHTER_KIRBY_STATUS_WORK_ID_FLAG_STONE_PREV_EFFECT_ONOFF);
     }
     else {

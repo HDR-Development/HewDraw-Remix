@@ -243,7 +243,7 @@ unsafe fn set_random_fighter_data(base_ptr: *mut u64, arg2: u64, arg3: u64, arg4
     ret
 }
 
-#[skyline::hook(offset = 0x1798ac8, inline)]
+#[skyline::hook(offset = 0x17989e8, inline)]
 unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
     let ptr1 = ctx.registers[0].x() as *mut u64;
     let ptr2 = ctx.registers[1].x() as *mut u64;

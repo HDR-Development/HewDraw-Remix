@@ -9,7 +9,7 @@ extern "C" {
     fn get_current_stage_alt() -> usize;
 }
 
-#[skyline::hook(offset = 0x30F6E00)]
+#[skyline::hook(offset = 0x30f73b0)]
 unsafe fn stub(arg: u64) {
     if get_stage_id() == 0x8f && get_current_stage_alt() == 0 {
         return;
@@ -43,7 +43,7 @@ unsafe fn area_manager_process(manager: *const u64) {
 }
 
 
-#[skyline::hook(offset = 0x178ab60, inline)]
+#[skyline::hook(offset = 0x178a9c0, inline)]
 unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
     let stage_id = ctx.registers[1].w();
     let is_alt_haz_off = ([0x59].contains(&stage_id) && get_current_stage_alt() == 0)
@@ -57,11 +57,11 @@ unsafe fn init_stage(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
     let battle_object_world = *(((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text)
         as u64)
-        + 0x52b7558) as *const u64);
+        + 0x52b8558) as *const u64);
     *(battle_object_world as *mut u8).add(0x59) = 0x1;
 }
 
-#[skyline::hook(offset = 0x25fc644, inline)]
+#[skyline::hook(offset = 0x25fca94, inline)]
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     let ptr = ctx.registers[1].x();
     let stage_id = *(ptr as *const u16) as u32;
@@ -72,7 +72,7 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x2981EDC, inline)]
+#[skyline::hook(offset = 0x298236c, inline)]
 unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
     if ctx.registers[8].x() == 3 {
         ctx.registers[8].set_x(5);
@@ -84,7 +84,7 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 // 0x2 - corneria
 // 0x3 - space battle (small ships)
 // 0x4 - default haz off space
-#[skyline::hook(offset = 0x297D6AC, inline)]
+#[skyline::hook(offset = 0x297db3c, inline)]
 unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
     if get_current_stage_alt() == 0 {
         ctx.registers[8].set_x(0x2);
@@ -93,7 +93,7 @@ unsafe fn lylat_set_form_hazards_off(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x3098AFC, inline)]
+#[skyline::hook(offset = 0x30990ac, inline)]
 unsafe fn yoshis_island_seasonal(ctx: &mut skyline::hooks::InlineCtx) {
     let now = chrono::Utc::now();
     let month = now.month();
@@ -111,7 +111,7 @@ unsafe fn yoshis_island_seasonal(ctx: &mut skyline::hooks::InlineCtx) {
 // 0x2 - summer
 // 0x3 - autumn
 // 0x4 - winter
-#[skyline::hook(offset = 0x3097AE8, inline)]
+#[skyline::hook(offset = 0x3098098, inline)]
 unsafe fn yoshis_island_seasonal_omega(ctx: &mut skyline::hooks::InlineCtx) {
     let now = chrono::Utc::now();
     let month = now.month();
@@ -128,18 +128,19 @@ unsafe fn yoshis_island_seasonal_omega(ctx: &mut skyline::hooks::InlineCtx) {
 pub fn install() {
     // NOTE: The 0xc80 is from the 13.0.1 -> 13.0.2 port
     // NOTE: The 0x20  is from the 13.0.2 -> 13.0.3 port
-    skyline::patching::Patch::in_text(0x298236c + 0xc80 + 0x20).data(0x52800008u32);
-    skyline::patching::Patch::in_text(0x28444cc + 0xc80 + 0x20).data(0x52800009u32);
-    skyline::patching::Patch::in_text(0x28440f4 + 0xc80 + 0x20).data(0x52800009u32);
-    skyline::patching::Patch::in_text(0x2844500 + 0xc80 + 0x20).nop();
-    skyline::patching::Patch::in_text(0x2844128 + 0xc80 + 0x20).nop();
-    skyline::patching::Patch::in_text(0x4471134)
+    // NOTE: The 0x490 is from the 13.0.4 -> 13.0.5 port
+    skyline::patching::Patch::in_text(0x298236c + 0xc80 + 0x20 + 0x490).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x28444cc + 0xc80 + 0x20 + 0x490).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x28440f4 + 0xc80 + 0x20 + 0x490).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x2844500 + 0xc80 + 0x20 + 0x490).nop();
+    skyline::patching::Patch::in_text(0x2844128 + 0xc80 + 0x20 + 0x490).nop();
+    skyline::patching::Patch::in_text(0x4472134)
         .data(std::f32::INFINITY)
         .unwrap(); // palu temple
-    skyline::patching::Patch::in_text(0x44723dc)
+    skyline::patching::Patch::in_text(0x44733dc)
         .data(2880.0f32)
         .unwrap(); // palu temple
-    skyline::patching::Patch::in_text(0x447142c)
+    skyline::patching::Patch::in_text(0x447242c)
         .data(-2880.0f32)
         .unwrap(); // palu temple
 

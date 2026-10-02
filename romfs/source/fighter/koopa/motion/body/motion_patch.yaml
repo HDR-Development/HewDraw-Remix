@@ -125,7 +125,7 @@ attack_lw3_2:
     freeze_during_hitstop: false
 attack_dash:
   extra:
-    cancel_frame: 56
+    cancel_frame: 52
 attack_s3_hi:
   extra:
     cancel_frame: 35
