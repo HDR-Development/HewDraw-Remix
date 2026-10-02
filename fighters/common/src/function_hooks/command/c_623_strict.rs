@@ -7,13 +7,17 @@ unsafe extern "C" fn c_623_strict(
     lr: f32
 ) -> bool {
     let data = *args.add(2);
-    if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-        if class.state != 0 {
+    if class.state != 0 {
+        if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
             if class.unk2 != 0 {
                 class.command_timer = 0;
                 class.state = 0;
                 return false;
             }
+        }
+        else if check_backwards_dp_input(data, class) {
+            class.command_timer = 0;
+            class.state = 0;
         }
     }
 
@@ -107,8 +111,6 @@ unsafe extern "C" fn c_623_strict(
                     check_flag2 = check_flag;
                 }
                 if !data.intersects(check_flag2) {
-                    class.state = 4;
-                    class.command_timer = 0;
                     return false;
                 }
                 return true;

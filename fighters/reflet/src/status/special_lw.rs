@@ -2,8 +2,8 @@ use super::*;
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     //set vars/flags/momentum
-    fighter.set_int64(hash40("special_lw_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
-    fighter.set_int64(hash40("special_air_lw_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
+    fighter.set_int64(hash40("special_lw_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
+    fighter.set_int64(hash40("special_air_lw_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_AIR_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_AIR);
     fighter.set_int(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_CORRECT_GROUND);
@@ -24,7 +24,7 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
         fighter.off_flag(*FIGHTER_REFLET_STATUS_SPECIAL_LW_CAPTURE_FLAG_MISS);
         //resource
         fighter.dec_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_LW_CURRENT_POINT);
-        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_LW_CURRENT_POINT) <= 0 {//if using final bar 
+        if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_LW_CURRENT_POINT) <= 0 {//if using final bar
             FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_RIZAIA, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
         }
     }

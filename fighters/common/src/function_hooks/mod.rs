@@ -400,7 +400,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -440,7 +440,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -483,7 +483,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
         }
         else if (*boma).is_weapon() {
-            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
             let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object as *mut app::Weapon, false);
         }
@@ -754,7 +754,7 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
 static mut DATA_ACCESS_LOCK: [u8; 0x20] = [0; 0x20];
 
 // Reduces rim lighting on fighters to 0.5 strength
-#[skyline::hook(offset = 0x3802ad0)]
+#[skyline::hook(offset = 0x3803080)]
 unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     let cbuf = *((buffer + 8) as *const u64);
     let buffer_ptr = *((cbuf + 0x98) as *const u64);
@@ -767,7 +767,7 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     let addr = *((cbuf + 0xb0) as *const u64);
 
     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
-    let func = *(text.add(0x593fd28) as *const u64);
+    let func = *(text.add(0x5940d28) as *const u64);
     let func: extern "C" fn(*mut u8) -> *mut u8 = std::mem::transmute(func);
     let map = func(buffer_ptr as _);
 
@@ -781,7 +781,7 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     }
 
     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
-    let func = *(text.add(0x593fd38) as *const u64);
+    let func = *(text.add(0x5940d38) as *const u64);
     let func: extern "C" fn(*mut u8, isize, usize) = std::mem::transmute(func);
     func(buffer_ptr as _, 0, size);
 

@@ -86,6 +86,15 @@ unsafe extern "C" fn effect_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_SHEIK_STATUS_SPECIAL_LW_FLAG_ACCEL);
+    }
+}
+
 unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -136,6 +145,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("effect_specialhistart", effect_specialhistart, Priority::Low);
     agent.acmd("effect_specialairhistart", effect_specialhistart, Priority::Low);
+
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
+    agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
 
     agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
     agent.acmd("effect_speciallwattack", effect_speciallwattack, Priority::Low);

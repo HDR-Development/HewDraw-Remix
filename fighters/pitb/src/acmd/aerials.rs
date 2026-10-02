@@ -10,7 +10,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 24.0, 11.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 366, kbg: 100, fkb: 40, bkb: 0, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 78, kbg: 30, bkb: 50, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::Pos, });
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -19,7 +19,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 0, bone: "top", dmg: 7.0, angle: 361, kbg: 85, bkb: 50, size: 9.0, x: 1.0, y: 10.0, z: 3.0, facing: LrCheck::F, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_L, id: 0, bone: "top", dmg: 7.0, angle: 361, kbg: 85, bkb: 50, size: 9.0, x: 1.0, y: 10.0, z: 3.0, facing: LrCheck::Pos, });
     }
     frame(lua_state, 26.0);
     if is_excute(agent) {
@@ -87,7 +87,7 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_status_default_int64(boma, Hash40::new("weapon").hash as i64, 0x11242751f5 as i64);
+        VisibilityModule::set_status_default_int64(boma, Hash40::new("weapon").hash, 0x11242751f5);
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("swordr1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
@@ -323,7 +323,7 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon"), hash40("weapon_normal"));
         ItemModule::set_have_item_visibility(boma, false, 0);
     }
     frame(lua_state, 8.0);
@@ -350,7 +350,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
     agent.acmd("effect_attackairhi", effect_attackairhi, Priority::Low);
-    
+
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
     agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
     agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);

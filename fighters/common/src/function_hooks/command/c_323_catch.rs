@@ -7,13 +7,17 @@ unsafe extern "C" fn c_323_catch(
     lr: f32
 ) -> bool {
     let data = *args.add(2);
-    if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-        if class.state != 0 {
+    if class.state != 0 {
+        if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
             if class.unk2 != 0 {
                 class.command_timer = 0;
                 class.state = 0;
                 return false;
             }
+        }
+        else if check_backwards_dp_input(data, class) {
+            class.command_timer = 0;
+            class.state = 0;
         }
     }
 
@@ -36,17 +40,19 @@ unsafe extern "C" fn c_323_catch(
             }
             false
         }
-        2 => {
-            if data.front_down(class.lr as f32) {
-                class.state = 3;
-                class.command_timer = 0;
+        2 | 3 => {
+            if class.state == 2 {
+                if data.front_down(class.lr as f32) {
+                    class.state = 3;
+                    class.command_timer = 0;
+                }
+                else {
+                    return false;
+                }
             }
 
-            false
-        }
-        3 => {
             if data.intersects(CommandInputFlags::GRAB_EDGE) {
-                println!("grab");
+                // println!("grab");
                 return true;
             }
 

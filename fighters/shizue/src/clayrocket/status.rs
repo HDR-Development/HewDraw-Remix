@@ -5,7 +5,7 @@ use crate::globals::*;
 
 unsafe extern "C" fn ready_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("ready"), 0.0, 1.0, false, 0.0, false, false);
-    VisibilityModule::set_int64(weapon.module_accessor, hash40("body") as i64, hash40("body_off") as i64);
+    VisibilityModule::set_int64(weapon.module_accessor, hash40("body"), hash40("body_off"));
     HitModule::set_status(weapon.module_accessor, 0, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     HitModule::set_status(weapon.module_accessor, 1, app::HitStatus(*HIT_STATUS_OFF), 0);
     weapon.fastshift(L2CValue::Ptr(ready_main_loop as *const () as _))

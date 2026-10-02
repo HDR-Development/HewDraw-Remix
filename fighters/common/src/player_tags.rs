@@ -1,6 +1,6 @@
 use super::*;
 
-const PLAYER_TAG_OFFSET: usize = 0x5313510;
+const PLAYER_TAG_OFFSET: usize = 0x5314510;
 unsafe fn get_tag_from_save(tag_index: u8) -> String {
     let tag_address =
         (***(((*((*((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)

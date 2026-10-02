@@ -1,6 +1,6 @@
 use super::*;
 
-#[skyline::hook(offset = 0x342ab20)]
+#[skyline::hook(offset = 0x342b0d0)]
 unsafe extern "C" fn ironball_init(_vtable: u64, weapon: *mut app::Weapon, something: u64) {
     println!("h");
     println!();

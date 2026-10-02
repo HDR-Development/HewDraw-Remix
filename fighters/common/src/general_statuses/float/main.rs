@@ -57,7 +57,7 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
             0xd40042152 => Some(FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW),
             _ => None
         };
-    
+
         if let Some(log) = log {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, log);
         }
@@ -66,7 +66,7 @@ unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     }
     else {
         if reflet {
-            VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+            VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash, Hash40::new("sword_normal").hash);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
         }
         let mot = fighter.sub_attack_air_kind_set_log_info();

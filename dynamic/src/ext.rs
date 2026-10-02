@@ -502,7 +502,7 @@ pub trait BomaExt {
     unsafe fn is_flag(&mut self, what: i32) -> bool;
     unsafe fn set_int(&mut self, value: i32, what: i32);
     unsafe fn set_float(&mut self, value: f32, what: i32);
-    unsafe fn set_int64(&mut self, value: i64, what: i32);
+    unsafe fn set_int64(&mut self, value: u64, what: i32);
     unsafe fn set_flag(&mut self, value: bool, what: i32);
     unsafe fn on_flag(&mut self, what: i32);
     unsafe fn off_flag(&mut self, what: i32);
@@ -1062,7 +1062,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_float(self, float, what);
     }
 
-    unsafe fn set_int64(&mut self, value: i64, what: i32) {
+    unsafe fn set_int64(&mut self, value: u64, what: i32) {
         WorkModule::set_int64(self, value, what)
     }
 
@@ -1073,7 +1073,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         param: impl Hash40Ext,
     ) {
         let int = WorkModule::get_param_int64(self, object.to_hash().hash, param.to_hash().hash);
-        WorkModule::set_int64(self, int as i64, what);
+        WorkModule::set_int64(self, int, what);
     }
 
     unsafe fn set_flag(&mut self, value: bool, what: i32) {

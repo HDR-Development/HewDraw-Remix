@@ -21,7 +21,7 @@ extern "C" {
 /// Knockback log
 /// 0x8a -> the opponent was grounded (bool)
 /// 0x90 -> backslash (bool)
-/// 0x60 -> stop delay (f32) 
+/// 0x60 -> stop delay (f32)
 /// 0x50 -> collision attr (Hash40)
 /// 0x40 -> launch angle in rad (f32)
 /// 0x4 -> level (?)
@@ -142,7 +142,7 @@ pub unsafe extern "C" fn process_item_on_collision(defender: u32, attacker: u32,
             let damage = *knockback_info.add(22);
             let carrot_dmg = WorkModule::get_int64(defender_boma, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER) as f32;
             let new_damage = (carrot_dmg + damage * 0.5).min(14.0);
-            WorkModule::set_int64(defender_boma, new_damage as i64, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER);
+            WorkModule::set_int64(defender_boma, new_damage as u64, *ITEM_DAISYDAIKON_INSTANCE_WORK_INT_ATTACK_POWER);
             if attacker_boma.is_fighter() {
                 let attacker_team_no = TeamModule::hit_team_no(attacker_boma) as i32;
                 TeamModule::set_team(defender_boma, attacker_team_no, false);
@@ -202,36 +202,36 @@ pub unsafe extern "C" fn calculate_finishing_hit(defender: u32, attacker: u32, k
     let attacker_boma = &mut *(*util::get_battle_object_from_id(attacker)).module_accessor;
 
     if VarModule::has_var_module(defender_boma.object()) {VarModule::off_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
-    if !is_potential_finishing_hit(defender_boma, attacker_boma) { 
-        return; 
+    if !is_potential_finishing_hit(defender_boma, attacker_boma) {
+        return;
     }
-    if !is_valid_finishing_hit(knockback_info, defender_boma, attacker_boma) { 
-        return; 
+    if !is_valid_finishing_hit(knockback_info, defender_boma, attacker_boma) {
+        return;
     }
     if VarModule::has_var_module(defender_boma.object()) {VarModule::on_flag(defender_boma.object(), vars::common::instance::IS_KILLING_BLOW);}
-    
+
     call_finishing_hit_effects(defender_boma, attacker_boma);
 }
 
 unsafe extern "C" fn is_potential_finishing_hit(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) -> bool {
     if !defender_boma.is_fighter() || defender_boma.kind() == *FIGHTER_KIND_NANA {
-        // println!("kill screen defender is not fighter"); 
+        // println!("kill screen defender is not fighter");
         return false;
     }
 
-    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() { 
-        // println!("kill screen attacker is not fighter or weapon"); 
-        return false; 
+    if !attacker_boma.is_fighter() && !attacker_boma.is_weapon() {
+        // println!("kill screen attacker is not fighter or weapon");
+        return false;
     }
 
     if VarModule::get_int(defender_boma.object(), COUNTER) > 0 {
-        // println!("kill screen is on cooldown"); 
-        return false; 
+        // println!("kill screen is on cooldown");
+        return false;
     }
 
-    if attacker_boma.is_fighter() && util::is_no_finishing_hit(attacker_boma) { 
-        // println!("kill screen incoming attack is_no_finishing_hit"); 
-        return false; 
+    if attacker_boma.is_fighter() && util::is_no_finishing_hit(attacker_boma) {
+        // println!("kill screen incoming attack is_no_finishing_hit");
+        return false;
     }
 
     return true;
@@ -252,11 +252,11 @@ pub unsafe extern "C" fn is_teammate_alive(defender_boma: &mut BattleObjectModul
 
         // check if another player on the same team has at least one stock
         let fighter_info = app::lua_bind::FighterManager::get_fighter_information(
-            crate::singletons::FighterManager(), 
+            crate::singletons::FighterManager(),
             app::FighterEntryID(other_entry_id)
         );
         if FighterUtil::get_team_color(defender_boma) == FighterUtil::get_team_color(other_boma)
-        && app::lua_bind::FighterInformation::stock_count(fighter_info) > 0 { 
+        && app::lua_bind::FighterInformation::stock_count(fighter_info) > 0 {
             return true;
         }
     }
@@ -269,15 +269,15 @@ pub unsafe extern "C" fn is_final_killing_hit(defender_boma: &mut BattleObjectMo
         return false;
     }
 
-    if is_teammate_alive(defender_boma) { 
-        // println!("kill screen teammate stock exists"); 
-        return false; 
+    if is_teammate_alive(defender_boma) {
+        // println!("kill screen teammate stock exists");
+        return false;
     }
 
     // check if the defender is on their last stock
     let defender_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     let fighter_info = app::lua_bind::FighterManager::get_fighter_information(
-        crate::singletons::FighterManager(), 
+        crate::singletons::FighterManager(),
         app::FighterEntryID(defender_entry_id)
     );
     if app::lua_bind::FighterInformation::stock_count(fighter_info) != 1 {
@@ -313,7 +313,7 @@ unsafe extern "C" fn is_valid_finishing_hit(knockback_info: *const f32, defender
 const HANDLE: i32 = 0x01FF;
 const COUNTER: i32 = 0x01FE;
 
-pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) {    
+pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleObjectModuleAccessor, attacker_boma: &mut BattleObjectModuleAccessor) {
     if is_final_killing_hit(defender_boma, attacker_boma) {
         let handle = EffectModule::req_screen(defender_boma, Hash40::new("bg_finishhit"), false, true, true);
         EffectModule::set_billboard(defender_boma, handle as u32, true);
@@ -327,7 +327,7 @@ pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleOb
     } else {
         let mut pos = Vector3f::new(
             PostureModule::pos_x(defender_boma),
-            PostureModule::pos_y(defender_boma) + 10.0,     
+            PostureModule::pos_y(defender_boma) + 10.0,
             PostureModule::pos_z(defender_boma) + 10.0
         );
         let handle = EffectModule::req(defender_boma, Hash40::new("sys_dead_ripple"), &pos, &Vector3f::new(0.0, 0.0, 0.0), 0.5625, 0, 0, false, 0);
@@ -340,7 +340,7 @@ pub unsafe extern "C" fn call_finishing_hit_effects(defender_boma: &mut BattleOb
 
 // This runs immediately before PostureModule::set_lr is called on throw release
 // which determines the facing direction of the receiver when thrown
-// 
+//
 // We override this to allow throw receiver direction to always be determined by
 // which side the attacker was on
 #[skyline::hook(offset = 0x6c59cc, inline)]
@@ -374,7 +374,7 @@ unsafe fn set_thrown_lr(ctx: &mut skyline::hooks::InlineCtx) {
 
 // This runs immediately before FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR is set
 // which determines whether or not to turn the receiver around on hit
-// 
+//
 // We override this to allow receiver turnaround to always be determined by
 // which side the attacker was on
 #[skyline::hook(offset = 0x6c5980, inline)]
@@ -386,7 +386,7 @@ unsafe fn set_damage_lr(ctx: &mut skyline::hooks::InlineCtx) {
     if !opponent_boma.is_fighter() {
         return;
     }
-    
+
     let opponent_pos_x = PostureModule::pos_x(opponent_boma);
 
     let boma = ctx.registers[19].x() as *mut smash::app::BattleObjectModuleAccessor;

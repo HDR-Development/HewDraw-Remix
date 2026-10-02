@@ -108,6 +108,37 @@ unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_LW_FLAG_TO_THROW_OK);
+unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
+        }
+    }
+    let motion = MotionModule::motion_kind(boma);
+    let _frame = MotionModule::frame(boma);
+    let rate = MotionModule::rate(boma);
+    ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new_raw(motion), false, -1.0);
+    if is_excute(agent) {
+        ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, _frame);
+        ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+        let status = StatusModule::status_kind(boma);
+        if status != *FIGHTER_STATUS_KIND_REBIRTH {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+        }
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_NORMAL); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        VisibilityModule::set_whole(boma, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_OFF); // hitbox enabled exclusively to nerf squid hurtbox shifting
     }
 }
 
@@ -124,4 +155,5 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
 }

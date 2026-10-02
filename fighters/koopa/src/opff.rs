@@ -35,12 +35,17 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor) {
     if StatusModule::is_changing(boma) {
         return;
     }
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        if boma.motion_frame() < 22.0 && !boma.is_motion_one_of(&[Hash40::new("special_n_max"), Hash40::new("special_air_n_max")]) {
-            if boma.is_situation(*SITUATION_KIND_GROUND) && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-                MotionModule::set_frame(boma, 22.0, true);
-            }
-        }
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) 
+    && boma.is_situation(*SITUATION_KIND_GROUND) 
+    && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
+    && boma.motion_frame() < 22.0 
+    && !boma.is_motion_one_of(&[
+        Hash40::new("special_n_max"), 
+        Hash40::new("special_air_n_max"),
+        Hash40::new("special_n_end"), 
+        Hash40::new("special_air_n_end")
+    ])  {
+        MotionModule::set_frame(boma, 22.0, true);
     }
 }
 

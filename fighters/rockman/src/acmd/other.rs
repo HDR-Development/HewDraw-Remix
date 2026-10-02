@@ -47,7 +47,7 @@ unsafe fn game_regular(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
 	let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, Hash40::new("body").hash as i64, Hash40::new("body_open").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("body").hash, Hash40::new("body_open").hash);
         SEARCH(agent, 0, 0, Hash40::new("top"), 4.0, 0.0, 0.0, 0.0, *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, true);
     }
     frame(lua_state, 2.0);
@@ -73,7 +73,7 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    
+
     frame(lua_state, 29.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);

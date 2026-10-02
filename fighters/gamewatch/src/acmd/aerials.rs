@@ -235,8 +235,8 @@ unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        VisibilityModule::set_int64(boma, hash40("head") as i64, hash40("head_sparky") as i64);
-        VisibilityModule::set_int64(boma, hash40("hand") as i64, hash40("hand_hold_lr") as i64);
+        VisibilityModule::set_int64(boma, hash40("head"), hash40("head_sparky"));
+        VisibilityModule::set_int64(boma, hash40("hand"), hash40("hand_hold_lr"));
     }
     frame(lua_state, 7.0);
     if is_excute(agent) {
@@ -284,9 +284,9 @@ unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, Hash40::new("head").hash as i64, Hash40::new("head_close").hash as i64);
-        VisibilityModule::set_int64(boma, Hash40::new("hand").hash as i64, Hash40::new("hand_hold_lr").hash as i64);
-        VisibilityModule::set_int64(boma, Hash40::new("lhand").hash as i64, Hash40::new("lhand_key").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("head").hash, Hash40::new("head_close").hash);
+        VisibilityModule::set_int64(boma, Hash40::new("hand").hash, Hash40::new("hand_hold_lr").hash);
+        VisibilityModule::set_int64(boma, Hash40::new("lhand").hash, Hash40::new("lhand_key").hash);
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(agent, *DAMAGE_NO_REACTION_MODE_NORMAL, *WEAPON_INKLING_ROLLER_INSTANCE_WORK_ID_FLOAT_B);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_lands"), 0, false, 0 as u32);
@@ -306,7 +306,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
     agent.acmd("sound_attackairhi", sound_attackairhi, Priority::Low);
     agent.acmd("expression_attackairhi", expression_attackairhi, Priority::Low);
-    
+
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
     agent.acmd("game_landingairlw", acmd_stub, Priority::Low);
     agent.acmd("expression_landingairlw", expression_landingairlw, Priority::Low);

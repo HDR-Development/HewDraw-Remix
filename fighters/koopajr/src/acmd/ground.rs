@@ -121,9 +121,9 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("sholder_l") as i64, hash40("sholder_l_on") as i64);
-        VisibilityModule::set_int64(boma, hash40("sholder_r") as i64, hash40("sholder_r_on") as i64);
-        VisibilityModule::set_int64(boma, hash40("item") as i64, hash40("item_glove") as i64);
+        VisibilityModule::set_int64(boma, hash40("sholder_l"), hash40("sholder_l_on"));
+        VisibilityModule::set_int64(boma, hash40("sholder_r"), hash40("sholder_r_on"));
+        VisibilityModule::set_int64(boma, hash40("item"), hash40("item_glove"));
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -195,6 +195,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attack13", expression_attack13, Priority::Low);
 
     agent.acmd("game_attack100end", game_attack100end, Priority::Low);
-    
+
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

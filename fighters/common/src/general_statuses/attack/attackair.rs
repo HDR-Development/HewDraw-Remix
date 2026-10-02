@@ -67,7 +67,7 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2
     }
 
     // fighter.status_AttackAir_Main_common();
-    WorkModule::set_int64(fighter.module_accessor, motion as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, motion, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
 
     // allow fast fall during float release aerials
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -87,7 +87,7 @@ unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon
         let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
         let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
         if fighter.left_stick_y() <= dive_cont_value
-        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value 
+        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
         {
             let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
             if status_kind != 0 {

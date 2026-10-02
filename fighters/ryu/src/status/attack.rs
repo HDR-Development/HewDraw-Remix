@@ -10,7 +10,7 @@ unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     ) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("attack_11_near_s") as i64,
+            hash40("attack_11_near_s"),
             *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION,
         );
         WorkModule::set_int(
@@ -21,7 +21,7 @@ unsafe extern "C" fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     } else {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("attack_11_s") as i64,
+            hash40("attack_11_s"),
             *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION,
         );
         WorkModule::set_int(

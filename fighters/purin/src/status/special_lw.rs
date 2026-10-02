@@ -4,12 +4,12 @@ use super::*;
 
 pub unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if PostureModule::lr(fighter.module_accessor) != 1.0 {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_l") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_l"), *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_l"), *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
     }
     else {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_r") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_r") as i64, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_r"), *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_GROUND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_r"), *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_MOTION_KIND_AIR);
     }
     special_lw_situation_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_main_loop as *const () as _))

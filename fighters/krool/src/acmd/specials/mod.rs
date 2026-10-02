@@ -25,12 +25,12 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(agent) {
     ArticleModule::generate_article(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_CROWN, false, 0);
-    VisibilityModule::set_int64(boma, Hash40::new("crown").hash as i64, Hash40::new("crown_hide").hash as i64);
+    VisibilityModule::set_int64(boma, Hash40::new("crown").hash, Hash40::new("crown_hide").hash);
     }
     frame(lua_state, 35.0);
     if is_excute(agent) {
     AttackModule::clear_all(boma);
-    }   
+    }
     frame(lua_state, 64.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);

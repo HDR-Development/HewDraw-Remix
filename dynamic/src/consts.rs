@@ -1610,12 +1610,8 @@ pub mod vars {
 
     pub mod pitb {
         pub mod instance {
-            // ints
-            pub const SPECIAL_LW_SITUATION_START: i32 = 0x0100;
-
             // flags
-            pub const SPECIAL_LW_ENABLE_CANCEL: i32 = 0x0100;
-            pub const SPECIAL_LW_DISABLE_STALL: i32 = 0x0101;
+            pub const SPECIAL_LW_DISABLE_JC: i32 = 0x0100;
         }
     }
 
@@ -1763,9 +1759,16 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const ATTACK_AIR_B_MAX_CHARGE: i32 = 0x1102;
             pub const ATTACK_AIR_B_CHARGE_LEVEL: i32 = 0x1103;
+            pub const SPECIAL_S_HOP : i32 = 0x1104;
+            pub const SPECIAL_S_FALL : i32 = 0x1105;
+            pub const SPECIAL_S_BRANCH_DECIDE : i32 = 0x1106;
 
             // ints
             pub const SPECIAL_HI_KEEP_FRAME: i32 = 0x1100;
+
+            // int64
+            pub const SPECIAL_S_MOTION_KIND : i32 = 0x1100;
+            pub const SPECIAL_S_MOTION_KIND_AIR : i32 = 0x1101;
         }
     }
 
