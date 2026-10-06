@@ -10,7 +10,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 24.0, 11.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 78, kbg: 30, bkb: 50, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::Pos, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_M, id: 0, bone: "top", dmg: 4.0, angle: 366, kbg: 100, fkb: 40, bkb: 0, size: 8.0, x: 1.0, y: 9.0, z: 5.5, facing: LrCheck::F, });
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
