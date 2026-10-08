@@ -891,8 +891,20 @@ unsafe fn map_controls_hook(
         _ => (*mappings).pro_absmash & 4 != 0,
     };
 
+    let is_short_hop_aerial_macro = match controller.style {
+        ControllerStyle::GCController => (*mappings).gc_absmash & 8 != 0,
+        ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
+            (*mappings).joy_absmash & 8 != 0
+        }
+        _ => (*mappings).pro_absmash & 8 != 0,
+    };
+
     if is_rivals_walljump {
         (*out).buttons |= Buttons::RivalsWallJump;
+    }
+
+    if is_short_hop_aerial_macro {
+        (*out).buttons |= Buttons::ShortHopAerialMacro;
     }
 
     let (parry_manual, hold) = if is_parry_taunt {
