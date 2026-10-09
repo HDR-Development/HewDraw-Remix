@@ -24,7 +24,31 @@ pub unsafe extern "C" fn hook_on_damage(vtable: u64, battle_object: *mut Fighter
 
     let ret = call_original!(vtable, battle_object, log);
 
-    if opponent_boma.is_item() && opponent_boma.kind() == *ITEM_KIND_KROOLCROWN
+    // a crown fused to one of link's arrows, whether the crown or the arrow made contact
+    let fuse_arrow_id = if opponent_boma.is_item() && LinkModule::is_link(opponent_boma, *ITEM_LINK_NO_HAVE) {
+        LinkModule::get_parent_id(opponent_boma, *ITEM_LINK_NO_HAVE, true) as u32
+    }
+    else {
+        opponent_id
+    };
+    let mut fuse_arrow = std::ptr::null_mut();
+    if sv_battle_object::is_active(fuse_arrow_id) {
+        let arrow_boma = &mut *sv_battle_object::module_accessor(fuse_arrow_id);
+        if arrow_boma.is_weapon() && arrow_boma.kind() == *WEAPON_KIND_LINK_BOWARROW {
+            fuse_arrow = get_battle_object_from_id(fuse_arrow_id);
+        }
+    }
+    let is_crown_fuse_arrow = !fuse_arrow.is_null()
+        && VarModule::is_flag(fuse_arrow, vars::link_bowarrow::instance::IS_ARROW_FUSE)
+        && VarModule::get_int(fuse_arrow, vars::link_bowarrow::instance::FUSED_ITEM_KIND) == *ITEM_KIND_KROOLCROWN;
+
+    if is_crown_fuse_arrow
+    && boma.is_flag(*FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN) {
+        crate::opff::fuse::fuse_remove_item(fuse_arrow);
+        EffectModule::req_follow(boma, Hash40::new("sys_item_get"), Hash40::new("crown1"), &Vector3f::zero(), &Vector3f::zero(), 1.0, false, 0, 0, 0, 0, 0, false, false);
+        boma.off_flag(*FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
+    }
+    else if opponent_boma.is_item() && opponent_boma.kind() == *ITEM_KIND_KROOLCROWN
     && boma.is_flag(*FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN) {
         StatusModule::change_status_request(opponent_boma, *ITEM_STATUS_KIND_DEAD, false);
         EffectModule::req_follow(boma, Hash40::new("sys_item_get"), Hash40::new("crown1"), &Vector3f::zero(), &Vector3f::zero(), 1.0, false, 0, 0, 0, 0, 0, false, false);
