@@ -76,6 +76,13 @@ unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
     }
+    frame(lua_state, 61.0);
+    if is_excute(agent) {
+        if agent.is_button_on(Buttons::Special) {
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
+        }
+    }
     frame(lua_state, 65.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
@@ -89,9 +96,76 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
     }
+    frame(lua_state, 61.0);
+    if is_excute(agent) {
+        if agent.is_button_on(Buttons::Special) {
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
+        }
+    }
     frame(lua_state, 65.0);
     if is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    }
+}
+
+unsafe extern "C" fn effect_appealhil(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.4);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.8);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 42.0);
+    for _ in 0..5 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    frame(lua_state, 66.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ganon_entry_aura"), false, false);
+    }
+}
+
+unsafe extern "C" fn effect_appealhir(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.4);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(agent, 0.8);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 42.0);
+    for _ in 0..5 {
+        if is_excute(agent) {
+            EFFECT_FOLLOW(agent, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+    frame(lua_state, 66.0);
+    if is_excute(agent) {
+        EFFECT_OFF_KIND(agent, Hash40::new("ganon_entry_aura"), false, false);
     }
 }
 
@@ -158,6 +232,9 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_appealhir", game_appealhir, Priority::Low);
     agent.acmd("game_appealhil", game_appealhil, Priority::Low);
+    agent.acmd("effect_appealhir", effect_appealhir, Priority::Low);
+    agent.acmd("effect_appealhil", effect_appealhil, Priority::Low);
+
     agent.acmd("game_appeallwr", game_appeallwr, Priority::Low);
     agent.acmd("game_appeallwl", game_appeallwl, Priority::Low);
 
