@@ -22,12 +22,9 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
 		ATTACK(agent, 1, 0, Hash40::new("kneer"), 8.0, 361, 100, 0, 10, 4.0, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(agent, 2, 0, Hash40::new("kneel"), 8.0, 361, 100, 0, 10, 3.5, 1.75, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    frame(lua_state, 28.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
-    }
     frame(lua_state, 34.0);
     if is_excute(agent) {
+        AttackModule::clear_all(boma);
         VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
     frame(lua_state, 36.0);
