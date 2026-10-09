@@ -13,6 +13,8 @@ extern "Rust" {
 // symbol-based call for link's arrow fuse
 extern "Rust" {
     fn fuse_kirby_common(fighter: &mut L2CFighterCommon);
+    fn fuse_pocket_common(fighter: &mut L2CFighterCommon);
+    fn fuse_dedede_common(fighter: &mut L2CFighterCommon);
 }
 
 unsafe fn final_cutter_landing_bugfix(fighter: &mut L2CFighterCommon) {
@@ -115,6 +117,8 @@ pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCo
         common::opff::fighter_common_opff(fighter);
         kirby_frame(fighter);
         fuse_kirby_common(fighter);
+        fuse_pocket_common(fighter);
+        fuse_dedede_common(fighter);
     }
 }
 

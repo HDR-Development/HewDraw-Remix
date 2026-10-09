@@ -929,8 +929,13 @@ pub mod vars {
 
             // link arrow fuse
             pub const IS_ARROW_FUSE: i32 = 0x01F9; // flag
+            pub const FUSE_DEDEDE_ITEM: i32 = 0x01FA; // flag
+            pub const FUSE_DEDEDE_ITEM_CHECKED: i32 = 0x01FB; // flag
             pub const FUSED_ITEM_ID: i32 = 0x01F8;
             pub const TEAM_NO: i32 = 0x01F9;
+            pub const FUSED_ITEM_KIND: i32 = 0x01FA; // pocketed fused item
+            pub const FUSE_POCKET_TARGET_ID: i32 = 0x01FB;
+            pub const FUSE_DEDEDE_ITEM_KIND: i32 = 0x01FC;
 
             pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
             pub use super::super::ptrainer::instance::SPECIAL_N_PLEDGE_TIMER;

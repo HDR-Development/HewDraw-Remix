@@ -23,7 +23,31 @@ pub struct CreateItemParam {
 #[skyline::from_offset(0x15db0b0)]
 unsafe fn create_item(item_manager: *const smash_rs::app::ItemManager, create_item_param: *mut CreateItemParam, unk: bool, unk2: bool, unk3: bool) -> *mut BattleObject;
 
-unsafe fn get_owner(weapon_boma: *mut BattleObjectModuleAccessor) -> (*mut BattleObjectModuleAccessor, *mut BattleObject, i32) {
+extern "C" {
+    #[link_name = "_ZN3app10pacmanboss11PACMAN_LIFEEv"]
+    fn pacmanboss_life() -> i32;
+}
+
+// restores item state that is normally set up when a fighter throws the item
+#[no_mangle]
+pub unsafe extern "Rust" fn fuse_on_item_released(item_boma: *mut BattleObjectModuleAccessor) {
+    if utility::get_kind(&mut *item_boma) == *ITEM_KIND_PACMANBOSS {
+        WorkModule::on_flag(item_boma, *ITEM_PACMAN_INSTANCE_WORK_FLAG_THROW);
+        WorkModule::off_flag(item_boma, *ITEM_PACMAN_INSTANCE_WORK_FLAG_DROP);
+        WorkModule::off_flag(item_boma, *ITEM_PACMAN_INSTANCE_WORK_FLAG_HIT);
+        WorkModule::off_flag(item_boma, *ITEM_PACMAN_INSTANCE_WORK_FLAG_HOP);
+        WorkModule::set_int(item_boma, 0, *ITEM_PACMAN_INSTANCE_WORK_INT_BOUND_COUNT);
+        WorkModule::set_int(item_boma, pacmanboss_life(), *ITEM_PACMAN_INSTANCE_WORK_INT_LIFE);
+        WorkModule::set_int(item_boma, *PACMANBOSS_STATE_FIRST, *ITEM_PACMANBOSS_INSTANCE_WORK_INT_STATE);
+        WorkModule::set_int(item_boma, 0, *ITEM_PACMANBOSS_INSTANCE_WORK_INT_THROW_FRAME);
+        WorkModule::set_int(item_boma, 0, *ITEM_PACMANBOSS_INSTANCE_WORK_INT_ROT_FRAME);
+        WorkModule::set_float(item_boma, 0.0, *ITEM_PACMANBOSS_INSTANCE_WORK_FLOAT_ROT_ANGLE);
+    }
+}
+
+// returns the boma, object and fighter kind of the arrow's owner
+#[no_mangle]
+pub unsafe extern "Rust" fn fuse_get_owner(weapon_boma: *mut BattleObjectModuleAccessor) -> (*mut BattleObjectModuleAccessor, *mut BattleObject, i32) {
     let owner_id = WorkModule::get_int(weapon_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let owner_boma = sv_battle_object::module_accessor(owner_id);
     let owner_object = get_battle_object_from_id(owner_id);
@@ -46,6 +70,22 @@ unsafe fn owner_team_no_var(owner_kind: i32) -> i32 {
     }
 }
 
+// returns the (stored item kind, pocket target id, team no) vars a fighter uses to pocket a fused arrow
+unsafe fn pocket_vars(fighter_kind: i32) -> Option<(i32, i32, i32)> {
+    if fighter_kind == *FIGHTER_KIND_MURABITO {
+        Some((vars::murabito::instance::FUSED_ITEM_KIND, vars::murabito::instance::FUSE_POCKET_TARGET_ID, vars::murabito::instance::TEAM_NO))
+    }
+    else if fighter_kind == *FIGHTER_KIND_SHIZUE {
+        Some((vars::shizue::instance::FUSED_ITEM_KIND, vars::shizue::instance::FUSE_POCKET_TARGET_ID, vars::shizue::instance::TEAM_NO))
+    }
+    else if fighter_kind == *FIGHTER_KIND_KIRBY {
+        Some((vars::kirby::instance::FUSED_ITEM_KIND, vars::kirby::instance::FUSE_POCKET_TARGET_ID, vars::kirby::instance::TEAM_NO))
+    }
+    else {
+        None
+    }
+}
+
 // returns the boma and object of the given id if it is an active Link arrow
 unsafe fn get_arrow(object_id: u32) -> Option<(*mut BattleObjectModuleAccessor, *mut BattleObject)> {
     if object_id == *BATTLE_OBJECT_ID_INVALID as u32 || !sv_battle_object::is_active(object_id) {
@@ -62,7 +102,7 @@ unsafe fn get_arrow(object_id: u32) -> Option<(*mut BattleObjectModuleAccessor, 
 // returns the team the arrow's owner had when the arrow was fused
 #[no_mangle]
 pub unsafe extern "Rust" fn fuse_get_owner_team_no(weapon_boma: *mut BattleObjectModuleAccessor) -> i32 {
-    let (_, owner_object, owner_kind) = get_owner(weapon_boma);
+    let (_, owner_object, owner_kind) = fuse_get_owner(weapon_boma);
     VarModule::get_int(owner_object, owner_team_no_var(owner_kind))
 }
 
@@ -106,7 +146,7 @@ pub unsafe extern "Rust" fn fuse_remove_item(arrow_object: *mut BattleObject) {
 // pass ITEM_KIND_NONE / BATTLE_OBJECT_ID_INVALID to use the item the owner is currently holding.
 #[no_mangle]
 pub unsafe extern "Rust" fn fuse_set_arrow_params(arrow_boma: *mut BattleObjectModuleAccessor, item: i32, id: u32) {
-    let (owner_boma, owner_object, owner_kind) = get_owner(arrow_boma);
+    let (owner_boma, owner_object, owner_kind) = fuse_get_owner(arrow_boma);
     let arrow_object = get_battle_object_from_id((*arrow_boma).battle_object_id);
 
     let kind = if item == *ITEM_KIND_NONE {
@@ -189,12 +229,18 @@ pub unsafe extern "Rust" fn fuse_create_item(arrow_boma: *mut BattleObjectModule
     fuse_set_arrow_params(arrow_boma, item, (*item_boma).battle_object_id);
 }
 
-// ddd re-creates the fused item when spitting the arrow back out
+// ddd (and kirby with ddd's hat) re-creates the fused item when spitting the arrow back out
 #[no_mangle]
 pub unsafe extern "Rust" fn fuse_dedede_common(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT) {
-        VarModule::off_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM);
-        VarModule::off_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM_CHECKED);
+    let (status, fuse_item_flag, checked_flag, fused_item_kind_var) = if fighter.kind() == *FIGHTER_KIND_KIRBY {
+        (*FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_SHOT_OBJECT_HIT, vars::kirby::instance::FUSE_DEDEDE_ITEM, vars::kirby::instance::FUSE_DEDEDE_ITEM_CHECKED, vars::kirby::instance::FUSE_DEDEDE_ITEM_KIND)
+    }
+    else {
+        (*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT, vars::dedede::instance::FUSE_ITEM, vars::dedede::instance::FUSE_ITEM_CHECKED, vars::dedede::instance::FUSED_ITEM_KIND)
+    };
+    if !fighter.is_status(status) {
+        VarModule::off_flag(fighter.battle_object, fuse_item_flag);
+        VarModule::off_flag(fighter.battle_object, checked_flag);
         return;
     }
     let obj_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_WORK_INT_SHOT_OBJECT_ID) as u32;
@@ -204,8 +250,8 @@ pub unsafe extern "Rust" fn fuse_dedede_common(fighter: &mut L2CFighterCommon) {
     };
 
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_FLAG_SHOT_OBJECT_SHOOT)
-    && !VarModule::is_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM_CHECKED) {
-        VarModule::on_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM_CHECKED);
+    && !VarModule::is_flag(fighter.battle_object, checked_flag) {
+        VarModule::on_flag(fighter.battle_object, checked_flag);
         if VarModule::is_flag(obj_object, vars::link_bowarrow::instance::IS_ARROW_FUSE) {
             // skip if the arrow still carries its item
             let fused_item_id = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_ID) as u32;
@@ -213,41 +259,50 @@ pub unsafe extern "Rust" fn fuse_dedede_common(fighter: &mut L2CFighterCommon) {
                 && LinkModule::is_link(sv_battle_object::module_accessor(fused_item_id), *ITEM_LINK_NO_HAVE);
             if !is_fused_item_attached {
                 let fused_item = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_KIND);
-                VarModule::set_int(fighter.battle_object, vars::dedede::instance::FUSED_ITEM_KIND, fused_item);
-                VarModule::on_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM);
+                VarModule::set_int(fighter.battle_object, fused_item_kind_var, fused_item);
+                VarModule::on_flag(fighter.battle_object, fuse_item_flag);
             }
         }
     }
 
-    if VarModule::is_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM)
+    if VarModule::is_flag(fighter.battle_object, fuse_item_flag)
     && MotionModule::frame(fighter.module_accessor) >= 7.0 {
-        let item = VarModule::get_int(fighter.battle_object, vars::dedede::instance::FUSED_ITEM_KIND);
+        let item = VarModule::get_int(fighter.battle_object, fused_item_kind_var);
         fuse_create_item(obj_boma, item, fighter.module_accessor, (*fighter.module_accessor).battle_object_id);
-        VarModule::set_int(fighter.battle_object, vars::dedede::instance::FUSED_ITEM_KIND, *ITEM_KIND_NONE);
-        VarModule::off_flag(fighter.battle_object, vars::dedede::instance::FUSE_ITEM);
+        VarModule::set_int(fighter.battle_object, fused_item_kind_var, *ITEM_KIND_NONE);
+        VarModule::off_flag(fighter.battle_object, fuse_item_flag);
     }
 }
 
-// villager/isabelle store the fused item when pocketing the arrow, and delete the original
+// villager/isabelle (and kirby with their hat) store the fused item when pocketing the arrow, and delete the original
 // the item is re-created when the arrow is pulled back out
 #[no_mangle]
 pub unsafe extern "Rust" fn fuse_pocket_common(fighter: &mut L2CFighterCommon) {
-    let (fused_item_kind_var, team_no_var, target_id_var) = if fighter.kind() == *FIGHTER_KIND_SHIZUE {
-        (vars::shizue::instance::FUSED_ITEM_KIND, vars::shizue::instance::TEAM_NO, vars::shizue::instance::FUSE_POCKET_TARGET_ID)
+    let (fused_item_kind_var, target_id_var, team_no_var) = match pocket_vars(fighter.kind()) {
+        Some(pocket_vars) => pocket_vars,
+        None => return
+    };
+    let search_statuses = if fighter.kind() == *FIGHTER_KIND_KIRBY {
+        let copy_chara = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);
+        if ![*FIGHTER_KIND_MURABITO, *FIGHTER_KIND_SHIZUE].contains(&copy_chara) {
+            VarModule::set_int(fighter.battle_object, fused_item_kind_var, *ITEM_KIND_NONE);
+        }
+        [*FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_SEARCH, *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_SEARCH]
     }
     else {
-        (vars::murabito::instance::FUSED_ITEM_KIND, vars::murabito::instance::TEAM_NO, vars::murabito::instance::FUSE_POCKET_TARGET_ID)
+        [*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_SEARCH, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_SEARCH]
     };
 
     // the pocket is lost on death
     if fighter.is_status(*FIGHTER_STATUS_KIND_DEAD) {
         VarModule::set_int(fighter.battle_object, fused_item_kind_var, *ITEM_KIND_NONE);
     }
-    if !fighter.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_SEARCH) {
+    if !fighter.is_status_one_of(&search_statuses) {
         VarModule::set_int(fighter.battle_object, target_id_var, *BATTLE_OBJECT_ID_INVALID);
         return;
     }
 
+    // kirby's copy abilities use the copied fighter's instance work ids
     let obj_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TARGET_OBJECT_ID) as u32;
     if obj_id == *BATTLE_OBJECT_ID_INVALID as u32
     || obj_id == VarModule::get_int(fighter.battle_object, target_id_var) as u32 {
@@ -267,6 +322,32 @@ pub unsafe extern "Rust" fn fuse_pocket_common(fighter: &mut L2CFighterCommon) {
         let fused_item = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_KIND);
         VarModule::set_int(fighter.battle_object, fused_item_kind_var, fused_item);
         fuse_remove_item(obj_object);
+    }
+}
+
+// returns the fused item the arrow's owner has pocketed, if any
+#[no_mangle]
+pub unsafe extern "Rust" fn fuse_get_pocket_item(weapon_boma: *mut BattleObjectModuleAccessor) -> i32 {
+    let (_, owner_object, owner_kind) = fuse_get_owner(weapon_boma);
+    let item = match pocket_vars(owner_kind) {
+        Some((fused_item_kind_var, _, _)) => VarModule::get_int(owner_object, fused_item_kind_var),
+        None => *ITEM_KIND_NONE
+    };
+    // the var starts at 0 (ITEM_KIND_ASSIST), which can't be fused
+    if item > *ITEM_KIND_ASSIST { item } else { *ITEM_KIND_NONE }
+}
+
+// re-creates the owner's pocketed fused item on the arrow being pulled back out
+#[no_mangle]
+pub unsafe extern "Rust" fn fuse_take_out_pocket_item(weapon_boma: *mut BattleObjectModuleAccessor) {
+    let item = fuse_get_pocket_item(weapon_boma);
+    if item == *ITEM_KIND_NONE {
+        return;
+    }
+    let (owner_boma, owner_object, owner_kind) = fuse_get_owner(weapon_boma);
+    fuse_create_item(weapon_boma, item, weapon_boma, (*owner_boma).battle_object_id);
+    if let Some((fused_item_kind_var, _, _)) = pocket_vars(owner_kind) {
+        VarModule::set_int(owner_object, fused_item_kind_var, *ITEM_KIND_NONE);
     }
 }
 

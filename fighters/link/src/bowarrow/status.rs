@@ -2,28 +2,24 @@ use super::*;
 
 // symbol-based calls for link's arrow fuse
 extern "Rust" {
+    fn fuse_get_owner(weapon_boma: *mut BattleObjectModuleAccessor) -> (*mut BattleObjectModuleAccessor, *mut BattleObject, i32);
     fn fuse_set_arrow_params(arrow_boma: *mut BattleObjectModuleAccessor, item: i32, id: u32);
-    fn fuse_create_item(arrow_boma: *mut BattleObjectModuleAccessor, item: i32, founder_boma: *mut BattleObjectModuleAccessor, owner_id: u32);
     fn fuse_detach_item(item_boma: *mut BattleObjectModuleAccessor) -> bool;
     fn fuse_attach_item(item_boma: *mut BattleObjectModuleAccessor, arrow_id: u32) -> bool;
     fn fuse_remove_item(arrow_object: *mut BattleObject);
     fn fuse_get_owner_team_no(weapon_boma: *mut BattleObjectModuleAccessor) -> i32;
-}
-
-unsafe fn get_owner(weapon_boma: *mut BattleObjectModuleAccessor) -> (*mut BattleObjectModuleAccessor, *mut BattleObject, i32) {
-    let owner_id = WorkModule::get_int(weapon_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let owner_boma = sv_battle_object::module_accessor(owner_id);
-    let owner_object = get_battle_object_from_id(owner_id);
-    let owner_kind = utility::get_kind(&mut *owner_boma);
-    (owner_boma, owner_object, owner_kind)
+    fn fuse_get_pocket_item(weapon_boma: *mut BattleObjectModuleAccessor) -> i32;
+    fn fuse_take_out_pocket_item(weapon_boma: *mut BattleObjectModuleAccessor);
+    fn fuse_on_item_released(item_boma: *mut BattleObjectModuleAccessor);
 }
 
 // WN_LINK_BOWARROW_STATUS_KIND_HAVED //
 
 unsafe extern "C" fn haved_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let (owner_boma, owner_object, owner_kind) = get_owner(weapon.module_accessor);
+    let (owner_boma, owner_object, owner_kind) = fuse_get_owner(weapon.module_accessor);
     let mut is_fused = false;
-    if ItemModule::is_have_item(owner_boma, 0) {
+    if ItemModule::is_have_item(owner_boma, 0)
+    && fuse_get_pocket_item(weapon.module_accessor) == *ITEM_KIND_NONE {
         let kind = ItemModule::get_have_item_kind(owner_boma, 0);
         let trait_flag = ItemModule::get_have_item_trait(owner_boma, 0);
         // trait flags are bitmasks, so swing/shoot items can carry other bits as well
@@ -45,43 +41,25 @@ unsafe extern "C" fn haved_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
         VarModule::set_flag(owner_object, vars::kirby::instance::IS_ARROW_FUSE, is_fused);
     }
 
+    let ret = smashline::original_status(Main, weapon, *WN_LINK_BOWARROW_STATUS_KIND_HAVED)(weapon);
     if is_fused {
         // move the held item from the owner's hand onto the arrow
         let item_id = VarModule::get_int(weapon.battle_object, vars::link_bowarrow::instance::FUSED_ITEM_ID) as u32;
         let item_boma = sv_battle_object::module_accessor(item_id);
+        ItemModule::drop_item(owner_boma, 90.0, 0.0, 0);
+        StatusModule::change_status_request(item_boma, *ITEM_STATUS_KIND_HAVE, false);
         fuse_detach_item(item_boma);
         if fuse_attach_item(item_boma, (*weapon.module_accessor).battle_object_id) {
             // TODO: PLAY_SE(weapon, Hash40::new("se_link_fuse"));
         }
         MotionModule::change_motion(weapon.module_accessor, Hash40::new("haved"), 0.0, 1.0, false, 0.0, false, false);
     }
-    else {
-        MotionModule::change_motion(weapon.module_accessor, Hash40::new("haved_hide"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    weapon.fastshift(L2CValue::Ptr(haved_main_loop as *const () as _))
+    ret
 }
 
-unsafe extern "C" fn haved_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    0.into()
-}
-
-// re-creates the item stored by Villager/Isabelle when a pocketed fused arrow is pulled back out
+// re-creates the item stored by Villager/Isabelle/Kirby when a pocketed fused arrow is pulled back out
 unsafe extern "C" fn haved_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let (owner_boma, owner_object, owner_kind) = get_owner(weapon.module_accessor);
-    let fused_item_kind_var = if owner_kind == *FIGHTER_KIND_MURABITO {
-        vars::murabito::instance::FUSED_ITEM_KIND
-    }
-    else if owner_kind == *FIGHTER_KIND_SHIZUE {
-        vars::shizue::instance::FUSED_ITEM_KIND
-    }
-    else {
-        return 0.into();
-    };
-    let item = VarModule::get_int(owner_object, fused_item_kind_var);
-    if item != *ITEM_KIND_NONE && item > *ITEM_KIND_ASSIST {
-        fuse_create_item(weapon.module_accessor, item, weapon.module_accessor, (*owner_boma).battle_object_id);
-        VarModule::set_int(owner_object, fused_item_kind_var, *ITEM_KIND_NONE);
-    }
+    fuse_take_out_pocket_item(weapon.module_accessor);
     0.into()
 }
 
@@ -118,6 +96,7 @@ unsafe extern "C" fn fly_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
                 if fuse_detach_item(item_boma) {
                     let status = VarModule::get_int(weapon.battle_object, vars::link_bowarrow::instance::FUSED_ITEM_POST_STATUS);
                     StatusModule::change_status_request(item_boma, status, false);
+                    fuse_on_item_released(item_boma);
                 }
             }
         }
@@ -135,7 +114,7 @@ unsafe extern "C" fn fly_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 // restores the arrow's team after a reflected fused arrow sticks
 unsafe extern "C" fn stick_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if VarModule::is_flag(weapon.battle_object, vars::link_bowarrow::instance::IS_REFLECT_FIX) {
-        let (owner_boma, _, _) = get_owner(weapon.module_accessor);
+        let (owner_boma, _, _) = fuse_get_owner(weapon.module_accessor);
         TeamModule::set_team(weapon.module_accessor, fuse_get_owner_team_no(weapon.module_accessor), true);
         TeamModule::set_team_owner_id(weapon.module_accessor, (*owner_boma).battle_object_id);
         VarModule::off_flag(weapon.battle_object, vars::link_bowarrow::instance::IS_REFLECT_FIX);
