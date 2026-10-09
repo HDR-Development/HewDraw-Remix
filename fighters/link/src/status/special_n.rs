@@ -619,7 +619,19 @@ unsafe extern "C" fn special_n_helper(fighter: &mut L2CFighterCommon) {
     ArticleModule::shoot(fighter.module_accessor, *FIGHTER_LINK_GENERATE_ARTICLE_BOWARROW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_FIRST), true);
 }
 
+// symbol-based call for link's arrow fuse
+extern "Rust" {
+    fn fuse_special_n_exit(fighter: &mut L2CFighterCommon);
+}
+
+// drops the fused item if the arrow was never fired
+pub unsafe extern "C" fn special_n_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fuse_special_n_exit(fighter);
+    smashline::original_status(Exit, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_exit);
 }

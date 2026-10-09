@@ -10,6 +10,11 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
+// symbol-based call for link's arrow fuse
+extern "Rust" {
+    fn fuse_kirby_common(fighter: &mut L2CFighterCommon);
+}
+
 unsafe fn final_cutter_landing_bugfix(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2)
     && MotionModule::frame(fighter.module_accessor) <= 2.0 {
@@ -108,7 +113,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
 pub extern "C" fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        kirby_frame(fighter)
+        kirby_frame(fighter);
+        fuse_kirby_common(fighter);
     }
 }
 
