@@ -205,6 +205,10 @@ pub mod vars {
 
             pub const DISABLE_FLOAT: i32 = 0x0071;
 
+            // link arrow fuse
+            pub const FUSE_IS_STORED_ITEM: i32 = 0x0072;
+            pub const FUSE_IS_STORED_ITEM_CHECKED: i32 = 0x0073;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -251,6 +255,11 @@ pub mod vars {
             pub const OCCUPIED_LEDGE_ID_FOR_TETHERS: i32 = 0x0016;
 
             pub const DISABLE_ESCAPE_AIR_EFFECT_HANDLE: i32 = 0x0017;
+
+            // link arrow fuse
+            pub const FUSE_TEAM_NO: i32 = 0x0018;
+            pub const FUSE_STORED_ITEM_KIND: i32 = 0x0019;
+            pub const FUSE_STORED_TARGET_ID: i32 = 0x001A;
 
 
             // floats
@@ -563,14 +572,6 @@ pub mod vars {
             //floats
             pub const SPECIAL_N_STICK_Y: i32 = 0x0105;
             pub const SPECIAL_S_TOSS_LR: i32 = 0x0106;
-
-            // link arrow fuse
-            // flags
-            pub const FUSE_ITEM: i32 = 0x0107;
-            pub const FUSE_ITEM_CHECKED: i32 = 0x0109;
-
-            // ints
-            pub const FUSED_ITEM_KIND: i32 = 0x0108;
         }
         pub mod status{
             //flags
@@ -927,16 +928,6 @@ pub mod vars {
             pub const SPECIAL_N_PTRAINER_PLEDGE_STATE: i32 = 0x01F6;    // Unique var as it doesn't like borrowing from ptrainer
             pub const SPECIAL_N_PTRAINER_PLEDGE_EFFECT_HANDLE: i32 = 0x01F7;
 
-            // link arrow fuse
-            pub const IS_ARROW_FUSE: i32 = 0x01F9; // flag
-            pub const FUSE_DEDEDE_ITEM: i32 = 0x01FA; // flag
-            pub const FUSE_DEDEDE_ITEM_CHECKED: i32 = 0x01FB; // flag
-            pub const FUSED_ITEM_ID: i32 = 0x01F8;
-            pub const TEAM_NO: i32 = 0x01F9;
-            pub const FUSED_ITEM_KIND: i32 = 0x01FA; // pocketed fused item
-            pub const FUSE_POCKET_TARGET_ID: i32 = 0x01FB;
-            pub const FUSE_DEDEDE_ITEM_KIND: i32 = 0x01FC;
-
             pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
             pub use super::super::ptrainer::instance::SPECIAL_N_PLEDGE_TIMER;
 
@@ -1026,14 +1017,6 @@ pub mod vars {
     }
 
     pub mod link {
-        pub mod instance {
-            // flags
-            pub const IS_ARROW_FUSE: i32 = 0x0100;
-
-            // ints
-            pub const FUSED_ITEM_ID: i32 = 0x0100;
-            pub const TEAM_NO: i32 = 0x0101;
-        }
         pub mod status {
             // flags
             pub const ENABLE_SPECIAL_LW_CANCEL: i32 = 0x1000;
@@ -1051,6 +1034,7 @@ pub mod vars {
             pub const FUSED_ITEM_TYPE: i32 = 0x0101;
             pub const FUSED_ITEM_POST_STATUS: i32 = 0x0102;
             pub const FUSED_ITEM_ID: i32 = 0x0103;
+            pub const FUSED_ITEM_OWNER_ID: i32 = 0x0104;
         }
     }
 
@@ -1412,11 +1396,6 @@ pub mod vars {
             // ints
             pub const ATTACK_AIR_HI_TURNIP_COUNT: i32 = 0x0104;
             pub const ATTACK_AIR_LW_TURNIP_COUNT: i32 = 0x0105;
-
-            // link arrow fuse
-            pub const FUSED_ITEM_KIND: i32 = 0x0106;
-            pub const TEAM_NO: i32 = 0x0107;
-            pub const FUSE_POCKET_TARGET_ID: i32 = 0x0108;
         }
     }
 
@@ -1926,11 +1905,6 @@ pub mod vars {
 
             // ints
             pub const SPECIAL_LW_LLOID_TIMER: i32 = 0x0100;
-
-            // link arrow fuse
-            pub const FUSED_ITEM_KIND: i32 = 0x0101;
-            pub const TEAM_NO: i32 = 0x0102;
-            pub const FUSE_POCKET_TARGET_ID: i32 = 0x0103;
         }
         pub mod status {
             // flags

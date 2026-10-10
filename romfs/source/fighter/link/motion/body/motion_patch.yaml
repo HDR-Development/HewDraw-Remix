@@ -143,6 +143,12 @@ attack_air_f:
 special_n_start:
   flags:
     move: false
+special_n_end:
+  extra:
+    cancel_frame: 25
+special_air_n_end:
+  extra:
+    cancel_frame: 25
 special_lw_blast:
   extra:
     cancel_frame: 40
