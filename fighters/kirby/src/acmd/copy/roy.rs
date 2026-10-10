@@ -1,5 +1,31 @@
 use super::*;
 
+unsafe extern "C" fn sound_specialnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_roy_appeal_s02"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_roy_special_n06"));
+    }
+}
+
+unsafe extern "C" fn sound_specialairnstart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_roy_appeal_h01"));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_STATUS(agent, Hash40::new("se_roy_special_n06"));
+    }
+}
+
 unsafe extern "C" fn effect_royspecialnend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -172,7 +198,9 @@ unsafe extern "C" fn effect_royspecialnendmax(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("effect_royspecialnend", effect_royspecialnend, Priority::Low);
     agent.acmd("effect_royspecialairnend", effect_royspecialnend, Priority::Low);
+    agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);
     agent.acmd("sound_royspecialnend", sound_royspecialnend, Priority::Low);
+    agent.acmd("sound_specialairnstart", sound_specialairnstart, Priority::Low);
     agent.acmd("sound_royspecialairnend", sound_royspecialnend, Priority::Low);
     agent.acmd("expression_royspecialnend", expression_royspecialnend, Priority::Low);
     agent.acmd("expression_royspecialairnend", expression_royspecialnend, Priority::Low);
