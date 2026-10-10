@@ -38,12 +38,8 @@ unsafe fn shield_scale_fix(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         return;
     }
 
-    static mut FUNC_SHIELD_SET_SCALE: usize = 0;
-    if FUNC_SHIELD_SET_SCALE == 0 {
-        FUNC_SHIELD_SET_SCALE = smashline::api::get_target_function("lua2cpp_link.nrs", 0x6e40).unwrap_or(0);
-    }
-    if FUNC_SHIELD_SET_SCALE != 0 {
-        let shield_set_scale: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(FUNC_SHIELD_SET_SCALE);
+    if let Some(target) = smashline::api::get_target_function("lua2cpp_link.nrs", 0x6e40) {
+        let shield_set_scale: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(target);
         shield_set_scale(fighter);
     }
 }
