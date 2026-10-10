@@ -187,50 +187,51 @@ pub unsafe extern "Rust" fn fuse_create_item(arrow_boma: *mut BattleObjectModule
     fuse_set_arrow_params(arrow_boma, item, (*item_boma).battle_object_id);
 }
 
-// ddd (and kirby with ddd's hat) re-creates the fused item when spitting the arrow back out
+// ddd (and kirby with ddd's hat) store and re-create the fused item
 #[no_mangle]
 pub unsafe extern "Rust" fn fuse_dedede_common(fighter: &mut L2CFighterCommon) {
-    let status = if fighter.kind() == *FIGHTER_KIND_KIRBY {
-        *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_SHOT_OBJECT_HIT
-    }
-    else {
-        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT
-    };
+    // TODO: the code below doesn't work. DDD strips the arrow of its fused item during NSpecial
+    // the old solution was to store the item on Link and copy it to DDD when he spits the arrow
+    // but that is unstable for obvious reasons. for now DDD simply spits back a normal arrow
 
-    if !fighter.is_status(status) {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM);
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM_CHECKED);
-        return;
-    }
-    let obj_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_WORK_INT_SHOT_OBJECT_ID) as u32;
-    let (obj_boma, obj_object) = match get_arrow(obj_id) {
-        Some(arrow) => arrow,
-        None => return
-    };
+    // let nspecial_status = if fighter.kind() == *FIGHTER_KIND_KIRBY {
+    //     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != *FIGHTER_KIND_DEDEDE {
+    //         return;
+    //     }
+    //     *FIGHTER_KIRBY_STATUS_KIND_DEDEDE_SPECIAL_N_SHOT_OBJECT_HIT
+    // }
+    // else {
+    //     *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SHOT_OBJECT_HIT
+    // };
 
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_FLAG_SHOT_OBJECT_SHOOT)
-    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM_CHECKED) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM_CHECKED);
-        if VarModule::is_flag(obj_object, vars::link_bowarrow::instance::IS_ARROW_FUSE) {
-            // skip if the arrow still carries its item
-            let fused_item_id = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_ID) as u32;
-            let is_fused_item_attached = sv_battle_object::is_active(fused_item_id)
-                && LinkModule::is_link(sv_battle_object::module_accessor(fused_item_id), *ITEM_LINK_NO_HAVE);
-            if !is_fused_item_attached {
-                let fused_item = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_KIND);
-                VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, fused_item);
-                VarModule::on_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM);
-            }
-        }
-    }
+    // if !fighter.is_status(nspecial_status) {
+    //     VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, *ITEM_KIND_NONE);
+    //     VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_TARGET_ID, *BATTLE_OBJECT_ID_INVALID);
+    //     return;
+    // }
+    // let obj_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_WORK_INT_SHOT_OBJECT_ID) as u32;
+    // let (obj_boma, obj_object) = match get_arrow(obj_id) {
+    //     Some(arrow) => arrow,
+    //     None => return
+    // };
 
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM)
-    && MotionModule::frame(fighter.module_accessor) >= 7.0 {
-        let item = VarModule::get_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND);
-        fuse_create_item(obj_boma, item, fighter.module_accessor, (*fighter.module_accessor).battle_object_id);
-        VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, *ITEM_KIND_NONE);
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::FUSE_IS_STORED_ITEM);
-    }
+    // // store the arrow's item once, as it comes in
+    // if obj_id != VarModule::get_int(fighter.battle_object, vars::common::instance::FUSE_STORED_TARGET_ID) as u32 {
+    //     VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_TARGET_ID, obj_id as i32);
+    //     let fused_item = VarModule::get_int(obj_object, vars::link_bowarrow::instance::FUSED_ITEM_KIND);
+    //     let stored_item = if fused_item > *ITEM_KIND_ASSIST { fused_item } else { *ITEM_KIND_NONE };
+    //     VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, stored_item);
+    //     fuse_remove_item(obj_object);
+    // }
+
+    // // re-create it once the arrow is spit
+    // let stored_item = VarModule::get_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND);
+    // if MotionModule::frame(fighter.module_accessor) >= 7.0
+    // && stored_item > *ITEM_KIND_ASSIST
+    // && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEDEDE_STATUS_SPECIAL_N_FLAG_SHOT_OBJECT_SHOOT) {
+    //     fuse_create_item(obj_boma, stored_item, fighter.module_accessor, (*fighter.module_accessor).battle_object_id);
+    //     VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, *ITEM_KIND_NONE);
+    // }
 }
 
 // villager/isabelle (and kirby with their hat) store the fused item when pocketing the arrow, and delete the original
@@ -241,11 +242,18 @@ pub unsafe extern "Rust" fn fuse_pocket_common(fighter: &mut L2CFighterCommon) {
         return;
     }
 
-    let search_statuses = if fighter.kind() == *FIGHTER_KIND_KIRBY {
+    if fighter.kind() == *FIGHTER_KIND_KIRBY {
         let copy_chara = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);
         if ![*FIGHTER_KIND_MURABITO, *FIGHTER_KIND_SHIZUE].contains(&copy_chara) {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, *ITEM_KIND_NONE);
+            // if kirby is not storing a fused arrow, clear the stored item
+            if copy_chara != *FIGHTER_KIND_DEDEDE {
+                VarModule::set_int(fighter.battle_object, vars::common::instance::FUSE_STORED_ITEM_KIND, *ITEM_KIND_NONE);
+            }
+            return;
         }
+    }
+
+    let search_statuses = if fighter.kind() == *FIGHTER_KIND_KIRBY {
         [*FIGHTER_KIRBY_STATUS_KIND_MURABITO_SPECIAL_N_SEARCH, *FIGHTER_KIRBY_STATUS_KIND_SHIZUE_SPECIAL_N_SEARCH]
     }
     else {

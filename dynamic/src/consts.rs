@@ -205,10 +205,6 @@ pub mod vars {
 
             pub const DISABLE_FLOAT: i32 = 0x0071;
 
-            // link arrow fuse
-            pub const FUSE_IS_STORED_ITEM: i32 = 0x0072;
-            pub const FUSE_IS_STORED_ITEM_CHECKED: i32 = 0x0073;
-
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
