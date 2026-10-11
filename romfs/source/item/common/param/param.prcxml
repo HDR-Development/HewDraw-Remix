@@ -147,7 +147,6 @@
     <hash40 index="119">dummy</hash40>
     <struct index="120">
       <float hash="hitsize">4.2</float>
-      <float hash="hp">25</float>
       <float hash="gravity_accel_max">2.5</float>
       <float hash="bound_refspeed_throw_mul">0.1</float>
       <float hash="bound_refspeed_throw_add_x">0.0</float>
