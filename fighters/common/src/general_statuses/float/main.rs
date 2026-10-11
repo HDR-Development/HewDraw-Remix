@@ -93,7 +93,7 @@ unsafe fn float_inherit_aerial(fighter: &mut L2CFighterCommon) {
 unsafe fn float_set_aerial(fighter: &mut L2CFighterCommon) {
     let reflet = fighter.global_table[0x2].get_i32() == *FIGHTER_KIND_REFLET;
     if reflet {
-        VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash as i64, Hash40::new("sword_normal").hash as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash, Hash40::new("sword_normal").hash);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
         if let Some(target) = smashline::api::get_target_function("lua2cpp_reflet.nrs", 0x3000) {
             let check_levin: fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(target);
