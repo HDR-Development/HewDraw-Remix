@@ -21,7 +21,19 @@ pub unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
+// unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     return true.into()
+// }
+
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    // fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[0x27].assign(&false.into()); // ground special transition handler
+    fighter.global_table[0x26].assign(&false.into()); // air special transition handler
+}
+
 pub fn install(agent: &mut Agent) {
+    agent.on_start(on_start);
+
     special_n::install(agent);
     special_hi::install(agent);
     special_lw::install(agent);

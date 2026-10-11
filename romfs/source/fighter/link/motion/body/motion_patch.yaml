@@ -169,3 +169,63 @@ step_pose_back:
     cancel_frame: 6
 cliff_wait:
   blend_frames: 2
+special_lw_throw:
+  game_script: game_speciallwthrow
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: h01lightthrowf.nuanmb
+      unk: 0
+  scripts:
+    - effect_speciallwthrow
+    - sound_speciallwthrow
+    - expression_speciallwthrow
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false
+special_air_lw_throw:
+  game_script: game_specialairlwthrow
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+    - name: h02lightthrowairf.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairlwthrow
+    - sound_specialairlwthrow
+    - effect_specialairlwthrow
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 25
+    no_stop_intp: false

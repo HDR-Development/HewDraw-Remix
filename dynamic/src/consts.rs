@@ -2231,6 +2231,10 @@ pub mod statuses {
         pub const SPECIAL_N_FIRE_HI: i32 = 0x1FA;
     }
 
+    pub mod link {
+        pub const SPECIAL_LW_THROW: i32 = 0x1E8;
+    }
+
     pub mod littlemac {
         pub const SPECIAL_LW_CANCEL: i32 = 0x1F4;
         pub const SPECIAL_LW_CANCEL_JUMP: i32 = 0x1F5;
