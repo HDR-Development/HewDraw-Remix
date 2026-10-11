@@ -5,12 +5,12 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ModelModule::set_scale(boma, 0.95);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_hide"));
     }
     frame(lua_state, 8.0);
     MotionModule::set_rate(boma, (22.0-8.0)/11.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_show") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_show"));
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -48,12 +48,12 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ModelModule::set_scale(boma, 0.95);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_hide"));
     }
     frame(lua_state, 8.0);
     MotionModule::set_rate(boma, (22.0-8.0)/11.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_show") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_show"));
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -91,12 +91,12 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ModelModule::set_scale(boma, 0.95);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_hide"));
     }
     frame(lua_state, 8.0);
     MotionModule::set_rate(boma, (22.0-8.0)/11.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_show") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_show"));
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
@@ -133,12 +133,12 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_hide"));
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
         ModelModule::set_scale(boma, 0.9);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_show") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_show"));
         agent.on_flag(*WEAPON_BAYONETTA_WICKEDWEAVEARM_INSTANCE_WORK_ID_FLAG_DISABLE_LINK_STOP);
         LinkModule::unlink_all(boma);
     }
@@ -187,7 +187,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(lua_state, 51.0);
     if is_excute(agent) {
         WorkModule::off_flag(boma, *WEAPON_BAYONETTA_WICKEDWEAVEARM_INSTANCE_WORK_ID_FLAG_CANCEL_EFFECT);
-    } 
+    }
 }
 
 pub fn install(agent: &mut Agent) {

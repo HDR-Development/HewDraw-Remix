@@ -1,7 +1,7 @@
 use super::*;
 use utils::ext::*;
 
-// #[skyline::hook(offset = 0x33e29c0)]
+// #[skyline::hook(offset = 0x33e2f70)]
 // pub unsafe extern "C" fn can_on_damage(vtable: u64, weapon: &mut app::Weapon, param_3: *const u64) -> u64 {
 //     let collisionLog = *(param_3.add(0x28 / 0x8)) as *const CollisionLog;
 //     let opponent_boma = &mut *(sv_battle_object::module_accessor((*collisionLog).opponent_battle_object_id));

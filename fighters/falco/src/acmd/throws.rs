@@ -5,9 +5,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(agent, 1.2);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 6.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
@@ -18,17 +15,12 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
 unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 8.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 9.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("trans"), 4.1, 0.0, 6.0, 4.1, Some(0.0), Some(6.0), Some(9.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
@@ -38,17 +30,12 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
 unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 9.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 10.0);
     if is_excute(agent) {
         CATCH(agent, 0, Hash40::new("trans"), 4.1, 0.0, 7.2, -4.1, Some(0.0), Some(7.2), Some(-14.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
@@ -58,7 +45,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -217,7 +203,7 @@ unsafe extern "C" fn expression_throwb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -225,7 +211,7 @@ unsafe extern "C" fn expression_throwb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_normal"));
     }
 }
 
@@ -305,7 +291,7 @@ unsafe extern "C" fn expression_throwhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(lua_state, 21.0);
     if is_excute(agent) {
@@ -313,7 +299,7 @@ unsafe extern "C" fn expression_throwhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 37.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_normal"));
     }
 }
 
@@ -397,7 +383,7 @@ unsafe extern "C" fn expression_throwlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -409,7 +395,7 @@ unsafe extern "C" fn expression_throwlw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("blaster"), hash40("blaster_normal"));
     }
 }
 
@@ -417,22 +403,22 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
-    
+
     agent.acmd("game_throwf", game_throwf, Priority::Low);
     agent.acmd("effect_throwf", effect_throwf, Priority::Low);
     agent.acmd("sound_throwf", sound_throwf, Priority::Low);
     agent.acmd("expression_throwf", expression_throwf, Priority::Low);
-    
+
     agent.acmd("game_throwb", game_throwb, Priority::Low);
     agent.acmd("effect_throwb", effect_throwb, Priority::Low);
     agent.acmd("sound_throwb", sound_throwb, Priority::Low);
     agent.acmd("expression_throwb", expression_throwb, Priority::Low);
-    
+
     agent.acmd("game_throwhi", game_throwhi, Priority::Low);
     agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);
     agent.acmd("sound_throwhi", sound_throwhi, Priority::Low);
     agent.acmd("expression_throwhi", expression_throwhi, Priority::Low);
-    
+
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
     agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
     agent.acmd("sound_throwlw", sound_throwlw, Priority::Low);

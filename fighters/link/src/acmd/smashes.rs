@@ -89,7 +89,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_back"));
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -101,7 +101,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_back"));
     }
     frame(lua_state, 12.5);
     if is_excute(agent) {
@@ -116,7 +116,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
     }
 }
 
@@ -229,7 +229,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.battle_object, vars::link::status::ENABLE_SPECIAL_LW_CANCEL);
     }
     frame(lua_state, 56.0);
-    FT_MOTION_RATE_RANGE(agent, 56.0, 70.0, 10.0);  
+    FT_MOTION_RATE_RANGE(agent, 56.0, 70.0, 10.0);
     frame(lua_state, 70.0);
     FT_MOTION_RATE(agent, 1.0);
 }

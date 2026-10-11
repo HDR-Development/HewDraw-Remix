@@ -12,7 +12,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
-        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {        
@@ -43,7 +42,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 38.0);
     if is_excute(agent) {
@@ -64,7 +62,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
-        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 16.0);
     if is_excute(agent) {
@@ -95,7 +92,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 42.0);
     if is_excute(agent) {
@@ -116,7 +112,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_STATUS_CATCH_FLAG_SHOOT);
-        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 17.0);
     if is_excute(agent) {
@@ -147,7 +142,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 42.0);
     if is_excute(agent) {

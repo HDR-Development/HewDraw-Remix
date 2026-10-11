@@ -4,11 +4,11 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_hide"));
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_show") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_show"));
         agent.on_flag(*WEAPON_BAYONETTA_WICKEDWEAVELEG_INSTANCE_WORK_ID_FLAG_DISABLE_LINK_STOP);
         LinkModule::unlink_all(boma);
     }
@@ -16,7 +16,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         // Ground-only
         ATTACK(agent, 0, 0, Hash40::new("top"), 16.0, 268, 100, 115, 0, 9.5, 0.0, 27.5, 13.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        // Air-only 
+        // Air-only
         ATTACK(agent, 1, 0, Hash40::new("top"), 16.0, 268, 55, 0, 15, 9.5, 0.0, 27.5, 13.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 10, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     } // weaker @35
     wait(lua_state, 1.0);

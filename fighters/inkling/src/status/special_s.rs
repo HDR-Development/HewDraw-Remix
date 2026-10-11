@@ -9,6 +9,9 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
         return ret;
     }
+
+    // Once per airtime
+    VarModule::on_flag(fighter.battle_object, vars::inkling::instance::DISABLE_SPECIAL_S);
     
     // Gives Inkling a slight hop on sideB start
     let speed_y = 0.75;
@@ -20,11 +23,6 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 // FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK
 
 pub unsafe extern "C" fn special_s_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Once per airtime
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::inkling::instance::DISABLE_SPECIAL_S);
-    }
-
     smashline::original_status(Main, fighter, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK)(fighter);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_walk_main_loop as *const () as _))    
@@ -53,11 +51,6 @@ unsafe extern "C" fn special_s_walk_main_loop(fighter: &mut L2CFighterCommon) ->
 // FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN
 
 pub unsafe extern "C" fn special_s_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Once per airtime
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::inkling::instance::DISABLE_SPECIAL_S);
-    }
-
     smashline::original_status(Main, fighter, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN)(fighter);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_run_main_loop as *const () as _))  

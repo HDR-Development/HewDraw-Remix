@@ -56,7 +56,7 @@ pub unsafe extern "C" fn summon_main(fighter: &mut L2CFighterCommon) -> L2CValue
     //     MotionAnimcmdModule::flush(fighter.module_accessor, false);
     //     FighterSpecializer_Jack::set_cut_in_effect(fighter.module_accessor);
     // }
-    VisibilityModule::set_int64(fighter.module_accessor, hash40("mask") as i64, hash40("on") as i64);
+    VisibilityModule::set_int64(fighter.module_accessor, hash40("mask"), hash40("on"));
     VisibilityModule::set_material_anim_priority(fighter.module_accessor, Hash40::new("mask"), true);
     fighter.sub_shift_status_main(L2CValue::Ptr(summon_main_loop as *const () as _))
 }

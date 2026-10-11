@@ -1450,12 +1450,12 @@ shield_break_fly:
   - name: f03downspotu.nuanmb
 shizue_special_air_n:
   extra:
-    xlu_start: 5
-    xlu_end: 8
+    xlu_start: 0
+    xlu_end: 0
 shizue_special_n:
   extra:
-    xlu_start: 5
-    xlu_end: 8
+    xlu_start: 0
+    xlu_end: 0
 shulk_special_air_n_buster:
   extra:
     cancel_frame: 10

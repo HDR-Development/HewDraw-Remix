@@ -30,22 +30,79 @@ trait UiObject {
     fn is_enabled(&self) -> bool;
 }
 
-static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| {
-    RwLock::new(UiManager {
-        vtrigger_meter: [VTriggerMeter::default(); 8],
-        ff_meter: [FfMeter::default(); 8],
-        power_board: [PowerBoard::default(); 8],
-        cyan_meter: [CyanMeter::default(); 8],
-        pichu_meter: [PichuMeter::default(); 8],
-        aura_meter: [AuraMeter::default(); 8],
-        robot_meter: [RobotMeter::default(); 8],
-        garlic_meter: [GarlicMeter::default(); 8],
-        plant_meter: [PlantMeter::default(); 8],
-        ptrainer_meter: [PledgeMeter::default(); 8],
-    })
-});
+static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager::default()));
+
+/// Address (relative to the text region) of the game's global pointer to the
+/// melee UI info object. Its second field points at the HUD info data block that
+/// the game fills in at match start and reads every frame to draw the HUD.
+const MELEE_UI_INFO_OBJECT: usize = 0x52c3420;
+/// Offset of the first HUD slot record inside the HUD info data block.
+const HUD_SLOT_TABLE: usize = 0xd60;
+/// Size of one HUD slot record.
+const HUD_SLOT_STRIDE: usize = 0x1d8;
+/// Offset of the fighter entry id inside a HUD slot record. The slot's own index
+/// is stored at offset 0 and is -1 while the slot is unused.
+const HUD_SLOT_ENTRY_ID: usize = 0x8;
+
+/// Reads the game's HUD slot -> fighter entry id table.
+///
+/// Returns `None` when the HUD info data is not available (for example outside
+/// of a match). Otherwise each element is the entry id shown in that HUD slot,
+/// or -1 for an unused slot.
+fn hud_slot_entry_ids() -> Option<[i32; 8]> {
+    unsafe {
+        let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
+        let object = *(text.add(MELEE_UI_INFO_OBJECT) as *const *const u64);
+        if object.is_null() {
+            return None;
+        }
+        let data_ptr = *object.add(1) as *const *const u8;
+        if data_ptr.is_null() {
+            return None;
+        }
+        let data = *data_ptr;
+        if data.is_null() {
+            return None;
+        }
+
+        let mut slots = [-1i32; 8];
+        for (index, slot) in slots.iter_mut().enumerate() {
+            let record = data.add(HUD_SLOT_TABLE + index * HUD_SLOT_STRIDE);
+            let slot_index = *(record as *const i32);
+            let entry_id = *(record.add(HUD_SLOT_ENTRY_ID) as *const i32);
+            if slot_index != -1 && (0..8).contains(&entry_id) {
+                *slot = entry_id;
+            }
+        }
+        Some(slots)
+    }
+}
+
+/// Resolves the UI index for an entry id, returning early from the enclosing
+/// function when this fighter has no HUD slot.
+macro_rules! ui_index {
+    ($entry_id:expr) => {
+        match UiManager::get_ui_index_from_entry_id($entry_id) {
+            Some(index) => index,
+            None => return,
+        }
+    };
+}
+
+/// Resolves the meter in this fighter's HUD slot.
+/// Early return fixes crash in local wireless.
+macro_rules! ui_meter {
+    ($meters:expr, $entry_id:expr) => {{
+        let meter = &mut $meters[ui_index!($entry_id)];
+        if !meter.is_valid() {
+            return;
+        }
+        meter
+    }};
+}
 
 #[repr(C)]
+#[derive(Default)]
 pub struct UiManager {
     vtrigger_meter: [VTriggerMeter; 8],
     ff_meter: [FfMeter; 8],
@@ -60,31 +117,40 @@ pub struct UiManager {
 }
 
 impl UiManager {
-    /// Gets the relevant UI entry based on the entry_id of the fighter.
-    /// This is nececessary because the UI is indexed from zero every match,
-    /// but the entry_id is based on player entries, I.E. the portraits in
-    /// the character select screen. So if player 2 and player 4 are playing
-    /// a 1v1 match, player 2 will have the first UI slot, and player 4 will
-    /// have the second UI slot.
+    /// Gets the HUD slot (0-7, matching the `p1`..`p8` layouts) that the game
+    /// is using to display the fighter with this entry id.
+    ///
+    /// The game keeps its own table of which fighter entry each HUD slot shows
+    /// (see [`hud_slot_entry_ids`]). Slots are assigned per player at match start
+    /// and, in online modes, the slot order does not follow entry id order, so
+    /// counting occupied entries below this one (what `FighterManager::get_entry_no`
+    /// does) picks the wrong slot there. Reading the game's table gives the true
+    /// slot in every mode.
+    ///
     /// # Arguments
     /// - entry_id: the entry id of this fighter
     /// # Returns:
-    /// - the ui index
-    fn get_ui_index_from_entry_id(entry_id: u32) -> u32 {
-        // start at index 0
-        let mut index = 0;
+    /// - `Some(index)` with the UI index to use
+    /// - `None` if the game's table is populated but does not list this entry id,
+    ///   in which case no UI element should be touched for this fighter
+    fn get_ui_index_from_entry_id(entry_id: u32) -> Option<usize> {
+        if let Some(slots) = hud_slot_entry_ids() {
+            if slots.iter().any(|id| *id != -1) {
+                return slots.iter().position(|id| *id == entry_id as i32);
+            }
+        }
 
-        // check all of the possible entry IDs less than or equal to this one,
-        // and see how many "slots" should be filled, counting up from 0.
+        // The game's table is not available (no HUD info data yet), so fall back
+        // to the old behaviour: count how many entries below this one are occupied.
+        // This matches FighterManager::get_entry_no and is correct for local play.
+        let mut index = 0;
         for n in 0..entry_id {
             if crate::util::get_battle_object_from_entry_id(n).is_some() {
-                // this is a valid fighter in this match, which means they will
-                // be occupying a UI slot. Thus, we cannot take that slot.
                 index += 1;
             }
         }
 
-        return index;
+        Some(index)
     }
 
     #[export_name = "UiManager__set_dk_barrel_enable"]
@@ -153,39 +219,39 @@ impl UiManager {
     #[export_name = "UiManager__set_vtrigger_meter_enable"]
     pub extern "C" fn set_vtrigger_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.vtrigger_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.vtrigger_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_vtrigger_meter_info"]
     pub extern "C" fn set_vtrigger_meter_info(entry_id: u32, current: f32, level_max: i32, per_level: f32, is_vtrigger: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.vtrigger_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.vtrigger_meter, entry_id)
             .set_meter_info(current, level_max, per_level, is_vtrigger);
     }
 
     #[export_name = "UiManager__set_ff_meter_enable"]
     pub extern "C" fn set_ff_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.ff_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ff_meter_info"]
     pub extern "C" fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.ff_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__change_ff_meter_cap"]
     pub extern "C" fn change_ff_meter_cap(entry_id: u32, cap: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].change_cap(cap);
+        ui_meter!(manager.ff_meter, entry_id).change_cap(cap);
     }
 
     #[export_name = "UiManager__set_power_board_enable"]
     pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.power_board, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_power_board_info"]
@@ -195,34 +261,34 @@ impl UiManager {
         color_2: i32,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.power_board, entry_id)
             .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__change_power_board_color"]
     pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
         let mut manager = UI_MANAGER.write();
-        manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.power_board, entry_id)
             .set_meter_info(color_1, color_2);
     }
 
     #[export_name = "UiManager__set_cyan_meter_enable"]
     pub extern "C" fn set_cyan_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.cyan_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.cyan_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_cyan_meter_info"]
     pub extern "C" fn set_cyan_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.cyan_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.cyan_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_pichu_meter_enable"]
     pub extern "C" fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.pichu_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_pichu_meter_info"]
@@ -234,14 +300,14 @@ impl UiManager {
         charged: bool,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.pichu_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.pichu_meter, entry_id)
             .set_meter_info(current, max, per_level, charged);
     }
 
     #[export_name = "UiManager__set_aura_meter_enable"]
     pub extern "C" fn set_aura_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.aura_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_aura_meter_info"]
@@ -253,53 +319,53 @@ impl UiManager {
         burnout: bool,
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.aura_meter, entry_id)
             .set_meter_info(current, max, per_level, burnout);
     }
 
     #[export_name = "UiManager__set_robot_meter_enable"]
     pub extern "C" fn set_robot_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.robot_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_robot_meter_info"]
     pub extern "C" fn set_robot_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.robot_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.robot_meter, entry_id)
             .set_meter_info(current, max, per_level);
     }
 
     #[export_name = "UiManager__set_garlic_meter_enable"]
     pub extern "C" fn set_garlic_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.garlic_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_garlic_meter_info"]
     pub extern "C" fn set_garlic_meter_info(entry_id: u32, current: f32, level1: f32, level2: f32, level3: f32) {
         let mut manager = UI_MANAGER.write();
-        manager.garlic_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.garlic_meter, entry_id)
             .set_meter_info(current, level1, level2, level3);
     }
 
     #[export_name = "UiManager__set_plant_meter_enable"]
     pub extern "C" fn set_plant_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.plant_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.plant_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_plant_meter_info"]
     pub extern "C" fn set_plant_meter_info(entry_id: u32, element: i32) {
         let mut manager = UI_MANAGER.write();
-        manager.plant_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.plant_meter, entry_id)
             .set_meter_info(element);
     }
 
     #[export_name = "UiManager__set_ptrainer_meter_enable"]
     pub extern "C" fn set_ptrainer_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
-        manager.ptrainer_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        ui_meter!(manager.ptrainer_meter, entry_id).set_enable(enable);
     }
 
     #[export_name = "UiManager__set_ptrainer_meter_info"]
@@ -313,7 +379,7 @@ impl UiManager {
         disabled: bool
     ) {
         let mut manager = UI_MANAGER.write();
-        manager.ptrainer_meter[Self::get_ui_index_from_entry_id(entry_id) as usize]
+        ui_meter!(manager.ptrainer_meter, entry_id)
             .set_meter_info(current_pledge, max_pledge, current_swap, max_swap, pledge_state, disabled);
     }
 }
@@ -345,7 +411,7 @@ fn set_vertex_colors(pane: u64, tl: [f32; 4], tr: [f32; 4], bl: [f32; 4], br: [f
 
 unsafe fn get_pane_by_name(layout_view: u64, name: &str) -> [u64; 4] {
     let func: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360),
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776910),
     );
     func(layout_view, name.as_ptr())
 }
@@ -435,12 +501,18 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
     manager.ptrainer_meter[index] = PledgeMeter::new(layout_udata);
 }
 
+/// Reset at match teardown
+#[skyline::hook(offset = 0x134cb38, inline)]
+fn melee_ui_teardown(_: &skyline::hooks::InlineCtx) {
+    *UI_MANAGER.write() = UiManager::default();
+}
+
 #[skyline::hook(offset = 0x138a710, inline)]
 fn hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
         // check the global static menu-based mode field
         let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64
-            + 0x53040f0) as *const u64;
+            + 0x53050f0) as *const u64;
         // if we are in the following modes, there is no ui overlay, so dont update the hud
         if [
             0x6020000, // Controls Menu
@@ -505,5 +577,5 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(get_set_info_alpha, hud_update,);
+    skyline::install_hooks!(get_set_info_alpha, melee_ui_teardown, hud_update,);
 }

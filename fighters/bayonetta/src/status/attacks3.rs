@@ -27,7 +27,7 @@ unsafe extern "C" fn attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         if !StopModule::is_stop(fighter.module_accessor)
         && fighter.sub_check_button_jump().get_bool() {
             let log = fighter.status_attack();
-            let info = log[0x10f40d7b92u64].get_i64();
+            let info = log[0x10f40d7b92u64].get_u64();
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             MotionAnimcmdModule::call_script_single(
                 fighter.module_accessor,
@@ -53,7 +53,7 @@ unsafe extern "C" fn attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         if fighter.is_flag(*FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
         && (fighter.is_cat_flag(Cat1::AttackS3 | Cat1::AttackN)
         || (!fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
         && fighter.is_button_on(Buttons::Attack)
         && !fighter.is_button_trigger(Buttons::Attack)
         && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::ATTACK_INVALID_COMBO_INPUT)))
@@ -74,7 +74,7 @@ unsafe extern "C" fn check_input(fighter: &mut L2CFighterCommon) -> bool {
     if fighter.is_button_trigger(Buttons::Attack) {
         if fighter.is_stick_backward()
         || fighter.stick_y().abs() > special_stick_y {
-            fighter.clear_commands(Cat1::AttackN); 
+            fighter.clear_commands(Cat1::AttackN);
             fighter.clear_commands(Cat1::AttackS3);
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::ATTACK_INVALID_COMBO_INPUT);
             return false.into();

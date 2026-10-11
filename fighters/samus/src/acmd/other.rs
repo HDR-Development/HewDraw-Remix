@@ -53,7 +53,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_squat(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_sphere"));
     }
 }
 
@@ -104,7 +104,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("sound_dash", sound_dash, Priority::Low);
     agent.acmd("game_turndash", game_turndash, Priority::Low);
-    
+
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 

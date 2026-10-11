@@ -8,10 +8,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma,*FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 11.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 12.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT,*WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -29,7 +25,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(agent) {
         grab!(agent, MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 46.0);
     if is_excute(agent) {
@@ -52,10 +47,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 13.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 14.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -73,7 +64,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 45.0);
     if is_excute(agent) {
@@ -96,10 +86,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT_HAND, false, -1);
     }
-    frame(lua_state, 14.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 15.0);
     if is_excute(agent) {
         ArticleModule::change_status(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_HOOKSHOT, *WEAPON_TOONLINK_HOOKSHOT_STATUS_KIND_SHOOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -117,7 +103,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
     frame(lua_state, 53.0);
     if is_excute(agent) {
@@ -153,7 +138,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 12.0);
 	if is_excute(agent) {
-        ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));	
+        ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
@@ -180,7 +165,7 @@ unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         FT_ATTACK_ABS_CAMERA_QUAKE(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_back") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_back"));
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -200,7 +185,7 @@ unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 44.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
     }
 }
 

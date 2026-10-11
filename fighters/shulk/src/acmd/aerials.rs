@@ -161,7 +161,7 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_hand") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_monad_hand"));
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -282,6 +282,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
-    
+
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 }

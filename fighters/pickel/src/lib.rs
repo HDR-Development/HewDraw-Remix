@@ -64,5 +64,5 @@ pub fn install() {
     trolley::install();
 
     // increases the amount of trolley articles that can be spawned at once
-    skyline::patching::Patch::in_text(0x50108a4).data(0x2u8);
+    skyline::patching::Patch::in_text(0x50118a4).data(0x2u8);
 }

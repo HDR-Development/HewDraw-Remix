@@ -38,8 +38,7 @@ unsafe extern "C" fn game_specials3s(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             agent.on_flag(*FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
         }
     }
@@ -106,8 +105,7 @@ unsafe extern "C" fn game_specials3lw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_PARRY) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             agent.on_flag(*FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
         }
     }

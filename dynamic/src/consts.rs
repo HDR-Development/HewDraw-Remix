@@ -372,7 +372,7 @@ pub mod vars {
             pub const ESCAPE_AIR_CLIFF_CATCH_FRAME: i32 = 0x1000;
             pub const ESCAPE_AIR_CANCEL_FRAME: i32 = 0x1001;
 
-            
+
             // floats
 
             /// damage statuses
@@ -446,7 +446,7 @@ pub mod vars {
             pub const CURSOR_SLOT: i32 = 0x010C;
             pub const MENU_TRAINING_MODE_INDEX: i32 = 0x010D;
             pub const MENU_ICON_EFFECT_HANDLE: i32 = 0x010E;
-            
+
             // floats
             pub const SPECIAL_LW_CSTICK_BUFFER_DIR: i32 = 0x0100;
         }
@@ -505,7 +505,7 @@ pub mod vars {
     }
 
     pub mod cloud {
-        pub mod instance {   
+        pub mod instance {
             // flag
             pub const SPECIAL_S_DISABLE_STALL: i32 = 0x0100;
             pub const DISABLE_SPECIAL_LW: i32 = 0x0101;
@@ -518,7 +518,7 @@ pub mod vars {
     }
 
     pub mod daisy {
-        pub mod instance {   
+        pub mod instance {
             // flag
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
 
@@ -919,7 +919,7 @@ pub mod vars {
             pub const SPECIAL_N_PICKEL_MATERIAL_INDEX: i32 = 0x01F5;
             pub const SPECIAL_N_PTRAINER_PLEDGE_STATE: i32 = 0x01F6;    // Unique var as it doesn't like borrowing from ptrainer
             pub const SPECIAL_N_PTRAINER_PLEDGE_EFFECT_HANDLE: i32 = 0x01F7;
-            
+
             pub use super::super::bayonetta::instance::SPECIAL_N_CANCEL_TYPE;
             pub use super::super::ptrainer::instance::SPECIAL_N_PLEDGE_TIMER;
 
@@ -1120,7 +1120,7 @@ pub mod vars {
         pub mod instance {
             // flag
             pub const APPEAL_EQUIP_MASK: i32 = 0x0100;
-            
+
             // int
             /// This int stores damage received from an attack during quick riposte
             pub const CURRENT_DAMAGE: i32 = 0x0100;
@@ -1163,7 +1163,7 @@ pub mod vars {
             // ints
             pub const SPECIAL_LW_LONG_JUMP_KIND : i32 = 0x1103;
         }
-    
+
         pub const LONG_JUMP_W : i32 = 0;
         pub const LONG_JUMP_M : i32 = 1;
         pub const LONG_JUMP_S : i32 = 2;
@@ -1290,12 +1290,12 @@ pub mod vars {
             pub const BOOSTED_ATTACK_AIR_LW_AIRTIME: i32 = 0x0101;
             pub const SPECIAL_HI1_AIR_USED: i32 = 0x0102;
             pub const SPECIAL_LW_DISABLE_JC: i32 = 0x0103;
-            
+
             // ints
             pub const SPECIAL_S2_STEALTHBOMB_EFFECT_HANDLE: i32 = 0x0100;
             pub const SPECIAL_S3_MISSILE_OBJECT_ID: i32 = 0x0101;
             pub const SPECIAL_HI1_LAUNCH_EFFECT_HANDLE: i32 = 0x0102;
-            
+
             // floats
             pub const SPECIAL_N3_CHARGE: i32 = 0x0102;
             pub const SPECIAL_HI3_ROT: i32 = 0x0103;
@@ -1474,6 +1474,9 @@ pub mod vars {
             // flag
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
             pub const SPECIAL_N_AUTOFIRE: i32 = 0x0101;
+
+            //floats
+            pub const SPECIAL_HI_ANGLE: i32 = 0x0100;
         }
     }
 
@@ -1523,7 +1526,7 @@ pub mod vars {
             pub const CYCLE_MATERIAL: i32 = 0x0101;
             pub const DAMAGE_FLY_RESET_ROT: i32 = 0x0102;
 
-            // ints 
+            // ints
             pub const MATERIAL_INDEX: i32 = 0x0100;
             pub const MATERIAL_EFFECT_HANDLE: i32 = 0x0101;
             pub const DAMAGE_RED_EFFECT_TIMER: i32 = 0x0102;
@@ -1536,7 +1539,7 @@ pub mod vars {
         pub mod status {
             // ints
             pub const MINING_TIMER: i32 = 0x1100;
-            
+
             // floats
             pub const SPECIAL_HI_GLIDE_TIMER: i32 = 0x1100;
 
@@ -1548,21 +1551,21 @@ pub mod vars {
 
     pub mod pickel_forge {
         pub mod instance {
-            // floats 
+            // floats
             pub const START_Y_POS: i32 = 0x0100;
         }
     }
 
     pub mod pickel_trolley {
         pub mod instance {
-            // ints 
+            // ints
             pub const PEARL_OWNER_ID: i32 = 0x0100;
         }
         pub mod status {
             // ints
             pub const REFLECT_COUNT: i32 = 0x1100;
             pub const TRAVEL_FRAMES: i32 = 0x1101;
-            
+
             // floats
             pub const PREV_LR: i32 = 0x1100;
         }
@@ -1571,7 +1574,7 @@ pub mod vars {
     pub mod pikachu {
         pub mod instance {
             // ints
-            
+
             // floats
 
             // flags
@@ -1580,7 +1583,7 @@ pub mod vars {
         }
         pub mod status {
             // ints
-            
+
             // floats
 
             // flags
@@ -1757,9 +1760,16 @@ pub mod vars {
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const ATTACK_AIR_B_MAX_CHARGE: i32 = 0x1102;
             pub const ATTACK_AIR_B_CHARGE_LEVEL: i32 = 0x1103;
+            pub const SPECIAL_S_HOP : i32 = 0x1104;
+            pub const SPECIAL_S_FALL : i32 = 0x1105;
+            pub const SPECIAL_S_BRANCH_DECIDE : i32 = 0x1106;
 
             // ints
             pub const SPECIAL_HI_KEEP_FRAME: i32 = 0x1100;
+
+            // int64
+            pub const SPECIAL_S_MOTION_KIND : i32 = 0x1100;
+            pub const SPECIAL_S_MOTION_KIND_AIR : i32 = 0x1101;
         }
     }
 
@@ -1770,7 +1780,7 @@ pub mod vars {
             pub const SPECIAL_N_CHARGE_SHOT_PLAYED_SFX: i32 = 0x0101;
             pub const SPECIAL_N_CHARGE_SHOT_RELEASE: i32 = 0x0102;
             pub const SPECIAL_HI_ENABLE_FREEFALL: i32 = 0x0103;
-            
+
             // ints
             pub const SPECIAL_N_CHARGE_SHOT_FRAME: i32 = 0x0100;
             pub const SPECIAL_N_CHARGE_SHOT_EFFECT_HANDLE: i32 = 0x0101;
@@ -1920,6 +1930,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const MONADO_BEAT: i32 = 0x1100;
+            pub const MONADO_BEAT_TRIGGER: i32 = 0x1101;
         }
     }
 
@@ -2070,7 +2081,7 @@ pub mod vars {
 
     pub mod yoshi {
         pub mod status {
-            
+
         }
     }
 
@@ -2186,10 +2197,10 @@ pub mod statuses {
 
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0x3E6; //Weird value to avoid conflicts with copy ability values
-        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7; 
-        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8; 
-        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9; 
-        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA; 
+        pub const GANON_SPECIAL_N_FLOAT: i32 = 0x3E7;
+        pub const LITTLEMAC_SPECIAL_N_CANCEL: i32 = 0x3E8;
+        pub const LITTLEMAC_SPECIAL_N_CANCEL_JUMP: i32 = 0x3E9;
+        pub const DIDDY_SPECIAL_N_CANCEL: i32 = 0x3EA;
         pub const DIDDY_SPECIAL_N_CANCEL_JUMP: i32 = 0x3EB;
         pub const BAYONETTA_SPECIAL_N_CANCEL: i32 = 0x3EC;
         pub const BUDDY_SPECIAL_N_BAYONET: i32 = 0x3ED;
@@ -2215,7 +2226,7 @@ pub mod statuses {
     pub mod mewtwo {
         pub const FLOAT: i32 = 0x1E9;
     }
-    
+
     pub mod miifighter {
         pub const SPECIAL_N2_HOLD: i32 = 0x208;
         pub const SPECIAL_N2_CANCEL: i32 = 0x209;
@@ -2318,7 +2329,7 @@ pub mod articles {
         pub const ROCK: i32 = 0x3;
         pub const ROCKSTONE: i32 = 0x4;
     }
-    
+
     pub mod purin {
         pub const DISARMING_VOICE: i32 = 0x2;
     }

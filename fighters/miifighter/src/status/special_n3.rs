@@ -13,9 +13,9 @@ unsafe extern "C" fn special_n3_catch_pre(fighter: &mut L2CFighterCommon) -> L2C
         *GROUND_CORRECT_KIND_KEEP as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
         0
     );
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -163,7 +163,7 @@ unsafe extern "C" fn special_n3_throw_init(fighter: &mut L2CFighterCommon) -> L2
         sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, throw_stable_speed_y);
         sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, throw_stable_speed_y);
     }
-    
+
     return 0.into();
 }
 
@@ -228,7 +228,7 @@ unsafe extern "C" fn special_n3_throw_main_loop(fighter: &mut L2CFighterCommon) 
         fighter.change_status_by_situation(*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, false);
         return 0.into();
     }
-    
+
     return 0.into();
 }
 

@@ -7,7 +7,7 @@ pub unsafe extern "C" fn bomb_jump_g_main(fighter: &mut L2CFighterCommon) -> L2C
 
 pub unsafe extern "C" fn special_ground_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    
+
     smashline::original_status(Main, fighter, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW)(fighter);
 
     if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SPECIAL_LW_INPUT_FROM_CRAWL) {
@@ -80,7 +80,7 @@ pub unsafe extern "C" fn special_lw_common_main_loop(fighter: &mut L2CFighterCom
         if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_SAMUS_STATUS_KIND_BOMB_JUMP_G {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON) {
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON);
-                let max_bomb = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), hash40("bomb_max_req")) as u64;
+                let max_bomb = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), hash40("bomb_max_req"));
                 if ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB) < max_bomb {
                     ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB, false, -1);
                     ArticleModule::shoot_exist(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);

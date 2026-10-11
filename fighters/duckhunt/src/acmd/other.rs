@@ -137,7 +137,7 @@ unsafe extern "C" fn expression_appeals(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, false, 0);
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_normal"));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 10);
     }
     frame(lua_state, 10.0);
@@ -170,7 +170,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_jumpaerialfront", game_jumpaerialfront, Priority::Low);
     agent.acmd("game_jumpaerialback", game_jumpaerialback, Priority::Low);
-    
+
     agent.acmd("effect_appealsl", acmd_stub, Priority::Low);
     agent.acmd("effect_appealsr", acmd_stub, Priority::Low);
     agent.acmd("sound_appealsl", sound_appeals, Priority::Low);

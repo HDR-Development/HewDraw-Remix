@@ -14,6 +14,7 @@ mod krool;
 mod littlemac;
 mod lucario;
 mod master;
+mod miifighter;
 mod pickel;
 mod ptrainer;
 mod reflet;
@@ -24,6 +25,7 @@ mod shulk;
 mod miigunner_grenadelauncher;
 mod ryu_shinkuhadoken;
 mod dolly_burst;
+// mod elight_bunshin;
 
 mod weapon;
 
@@ -42,6 +44,7 @@ pub fn install() {
     littlemac::install();
     lucario::install();
     master::install();
+    miifighter::install();
     pickel::install();
     ptrainer::install();
     reflet::install();
@@ -52,6 +55,7 @@ pub fn install() {
     miigunner_grenadelauncher::install();
     ryu_shinkuhadoken::install();
     dolly_burst::install();
+    // elight_bunshin::install();
 
     weapon::install();
 }

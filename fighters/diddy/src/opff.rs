@@ -2,7 +2,7 @@
 utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
- 
+
 unsafe fn peanut_popgun_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT && frame > 5.0 {
         boma.check_airdodge_cancel();
@@ -59,7 +59,7 @@ unsafe fn up_special_knockback_canceling(fighter: &mut smash::lua2cpp::L2CFighte
         if MotionModule::frame(fighter.module_accessor) >= (MotionModule::end_frame(fighter.module_accessor) - 1.0) && MotionModule::rate(fighter.module_accessor) != 0.0 {
             MotionModule::set_rate(fighter.module_accessor, 0.0);
         }
-        
+
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         if hitstun <= 0.0 {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_DAMAGE_FALL, false);
@@ -86,7 +86,7 @@ unsafe fn fastfall_dashattack(fighter: &mut L2CFighterCommon) {
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
                 app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
 
-                
+
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 app::sv_kinetic_energy::enable(fighter.lua_state_agent);
@@ -107,7 +107,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_S_STICK_JUMP2,
         *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_FALL_ROLL,
         *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_HIT_CEIL,
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -132,11 +132,11 @@ unsafe fn dashattack_land_cancel(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn no_cap(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::diddy::instance::NO_CAP)
     && !boma.is_motion_one_of(&[Hash40::new("appeal_hi_l"), Hash40::new("appeal_hi_r")]) {
-        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_invisible") as i64);
+        VisibilityModule::set_int64(boma, hash40("head_shadow"), hash40("head_shadow_invisible"));
         ModelModule::set_mesh_visibility(boma, Hash40::new("cap"), false);
     }
     else {
-        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("head_shadow"), hash40("head_shadow_normal"));
         ModelModule::set_mesh_visibility(boma, Hash40::new("cap"), true);
     }
 }
@@ -166,5 +166,5 @@ pub unsafe fn diddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_line(Main, diddy_frame_wrapper); 
+    agent.on_line(Main, diddy_frame_wrapper);
 }

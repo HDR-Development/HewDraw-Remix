@@ -74,7 +74,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -94,7 +94,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
     }
 }
 

@@ -110,10 +110,10 @@ unsafe extern "C" fn effect_specialsstart(agent: &mut L2CAgentBase) {
         else {
             EFFECT_FOLLOW(agent, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), -2.0, -2.0, -2.0, 90.0, 180.0, 0.0 , 0.6, true);
         }
-        LAST_EFFECT_SET_COLOR(agent, 0.96, 0.6, 0.26); 
+        LAST_EFFECT_SET_COLOR(agent, 0.96, 0.6, 0.26);
     }
     frame(lua_state, 18.0);
-    if is_excute(agent){     
+    if is_excute(agent){
         FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 21.0);
@@ -255,7 +255,7 @@ unsafe extern "C" fn game_specialhilanding(agent: &mut L2CAgentBase) {
         HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_NORMAL);
         HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
-        HIT_NODE(agent, Hash40::new("virtualwaist"), *HIT_STATUS_OFF); 
+        HIT_NODE(agent, Hash40::new("virtualwaist"), *HIT_STATUS_OFF);
     }
     frame(lua_state, 3.0);
     if is_excute(agent){
@@ -368,7 +368,7 @@ unsafe extern "C" fn expression_speciallwstart(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 2.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("hammer") as i64, hash40("hammer_disp_off") as i64);
+        VisibilityModule::set_int64(boma, hash40("hammer"), hash40("hammer_disp_off"));
     }
 }
 
@@ -533,7 +533,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
                 else {
                     PLAY_SE(agent, Hash40::new("vc_dedede_final03"));
                 }
-            } 
+            }
         }
         PLAY_STATUS(agent, Hash40::new("se_dedede_special_l05"));
     }
@@ -543,7 +543,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("hammer") as i64, hash40("hammer_disp_off") as i64);
+        VisibilityModule::set_int64(boma, hash40("hammer"), hash40("hammer_disp_off"));
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -554,7 +554,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("hammer") as i64, hash40("hammer_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("hammer"), hash40("hammer_normal"));
         ArticleModule::remove_exist(agent.boma(), *FIGHTER_DEDEDE_GENERATE_ARTICLE_JETHAMMER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }

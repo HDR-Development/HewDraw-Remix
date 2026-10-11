@@ -77,6 +77,28 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specials1end(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 0.75);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+unsafe extern "C" fn game_specialairs1end(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    FT_MOTION_RATE(agent, 1.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_END_LANDING);
+    }
+}
+
 // =============================================================================================
 // ===================================== KINETIC SLASH =========================================
 // =============================================================================================
@@ -298,6 +320,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairs1", game_specials1, Priority::Low);
     agent.acmd("effect_specials1", effect_specials1, Priority::Low);
     agent.acmd("effect_specialairs1", effect_specials1, Priority::Low);
+
+    agent.acmd("game_specials1end", game_specials1end, Priority::Low);
+    agent.acmd("game_specialairs1end", game_specialairs1end, Priority::Low);
 
     agent.acmd("game_specials2start", game_specials2start, Priority::Low);
     agent.acmd("effect_specials2start", effect_specials2start, Priority::Low);

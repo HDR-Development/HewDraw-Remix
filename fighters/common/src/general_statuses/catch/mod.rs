@@ -1,6 +1,8 @@
 use super::*;
+mod catch;
 mod catchcut;
 mod catchdash;
+mod catchturn;
 mod catchattack;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_catch)]
@@ -20,7 +22,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+    catch::install();
     catchcut::install();
     catchdash::install();
+    catchturn::install();
     catchattack::install();
 }

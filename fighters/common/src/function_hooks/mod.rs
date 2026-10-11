@@ -26,6 +26,7 @@ mod fighterspecializer;
 mod fighter_util;
 mod vtables;
 mod item;
+mod command;
 
 #[repr(C)]
 pub struct TempModule {
@@ -88,7 +89,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 16] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -97,6 +98,7 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
     WEAPON_KIND_SAMUS_GBEAM,
     WEAPON_KIND_SAMUSD_GBEAM,
     WEAPON_KIND_SHIZUE_FISHINGROD,
+    WEAPON_KIND_SHIZUE_FISHINGLINE,
     WEAPON_KIND_TOONLINK_HOOKSHOT,
     WEAPON_KIND_YOUNGLINK_HOOKSHOT,
     WEAPON_KIND_JACK_DOYLE,
@@ -390,14 +392,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
                         // This check passes if the speed at which your character is moving due to general movement
                         // (dashing, running, walking, grounded knockback, shield pushback, etc.)
                         // is LESS than the speed at which jostle is pushing your character
-                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                         VarModule::on_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                     }
                 }
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -437,7 +439,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             }
             else if (*boma).is_weapon() {
-                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+                let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Weapon, !is_receiver_in_hitlag);
             }
@@ -480,7 +482,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
         }
         else if (*boma).is_weapon() {
-            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a5ef0);
+            let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a64a0);
             let battle_object__update_movement: extern "C" fn(*mut app::Weapon, bool) = std::mem::transmute(func_addr);
             battle_object__update_movement(object as *mut app::Weapon, false);
         }
@@ -751,7 +753,7 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
 static mut DATA_ACCESS_LOCK: [u8; 0x20] = [0; 0x20];
 
 // Reduces rim lighting on fighters to 0.5 strength
-#[skyline::hook(offset = 0x3802ad0)]
+#[skyline::hook(offset = 0x3803080)]
 unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     let cbuf = *((buffer + 8) as *const u64);
     let buffer_ptr = *((cbuf + 0x98) as *const u64);
@@ -764,7 +766,7 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     let addr = *((cbuf + 0xb0) as *const u64);
 
     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
-    let func = *(text.add(0x593fd28) as *const u64);
+    let func = *(text.add(0x5940d28) as *const u64);
     let func: extern "C" fn(*mut u8) -> *mut u8 = std::mem::transmute(func);
     let map = func(buffer_ptr as _);
 
@@ -778,7 +780,7 @@ unsafe fn set_uniform_buffer(stage: u64, index: u64, buffer: u64) {
     }
 
     let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8;
-    let func = *(text.add(0x593fd38) as *const u64);
+    let func = *(text.add(0x5940d38) as *const u64);
     let func: extern "C" fn(*mut u8, isize, usize) = std::mem::transmute(func);
     func(buffer_ptr as _, 0, size);
 
@@ -875,6 +877,7 @@ pub fn install() {
     fighter_util::install();
     vtables::install();
     item::install();
+    command::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -887,7 +890,7 @@ pub fn install() {
         // Disables spark gfx/sfx on phantom hits
         skyline::patching::Patch::in_text(0x4ceae8).data(0x140000D1u32);
         skyline::patching::Patch::in_text(0x3fd360).nop();
-        
+
 
         // The following handles disabling the "Weapon Catch" animation for those who have it.
         // You will only enter the weapon catch animation if you are completely idle.

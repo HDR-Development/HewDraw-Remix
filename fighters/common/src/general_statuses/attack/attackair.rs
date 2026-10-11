@@ -72,7 +72,7 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // fighter.status_AttackAir_Main_common();
-    WorkModule::set_int64(fighter.module_accessor, motion as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, motion, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
 
     // idk where this is usually #handled
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion), true);

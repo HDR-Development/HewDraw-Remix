@@ -8,12 +8,11 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0); // f5
+    FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 5.0);
     if is_excute(agent) {
         boma.on_flag(*FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -101,13 +100,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
             WHOLE_HIT(agent, *HIT_STATUS_XLU);
         }
     }
-    frame(lua_state, 3.0);
-    if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
-    }
-    frame(lua_state, 4.0);
+    frame(lua_state, 4.0); // f5
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         WHOLE_HIT(agent, *HIT_STATUS_XLU);
     }
     frame(lua_state, 5.0);

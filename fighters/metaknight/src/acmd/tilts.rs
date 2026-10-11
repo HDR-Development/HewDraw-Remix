@@ -153,7 +153,7 @@ unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_status_default_int64(boma, Hash40::new("mantle").hash as i64, Hash40::new("mantle_normal").hash as i64);
+        VisibilityModule::set_status_default_int64(boma, Hash40::new("mantle").hash, Hash40::new("mantle_normal").hash);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 6.0);
@@ -226,7 +226,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
     agent.acmd("expression_attackhi3", expression_attackhi3, Priority::Low);
-    
+
     agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
     agent.acmd("effect_attacklw3", effect_attacklw3, Priority::Low);
 }

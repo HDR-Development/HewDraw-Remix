@@ -11,6 +11,10 @@ unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 9.0 / 2.0);
     frame(lua_state, 2.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, 0x21000000);
+    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 361, 100, 0, 80, 7.5, 0.0, 12.0, 40.0, None, None, None, 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -49,6 +53,10 @@ unsafe extern "C" fn game_specials3(agent: &mut L2CAgentBase) {
             1.4
         );
     }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, 0x21000000);
+    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 361, 100, 0, 80, 7.0, 0.0, 10.0, 18.0, None, None, None, 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -78,6 +86,10 @@ unsafe extern "C" fn game_specials4(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 9.0 / 2.0);
     frame(lua_state, 2.0);
     FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, 0x21000000);
+    }
     frame(lua_state, 4.0);
     if is_excute(agent) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 361, 100, 0, 80, 7.5, 0.0, 15.0, 18.0, None, None, None, 0.6, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

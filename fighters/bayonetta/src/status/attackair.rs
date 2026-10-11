@@ -47,12 +47,12 @@ unsafe extern "C" fn attack_air_f_main(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 unsafe extern "C" fn bayonetta_attack_air_f_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO) 
+    if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO)
     && (ControlModule::get_attack_air_kind(fighter.module_accessor) == *FIGHTER_COMMAND_ATTACK_AIR_KIND_F || fighter.is_cat_flag(Cat1::Catch))
     && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F.into(), false.into());
     }
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) 
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {
         cut_speed(fighter);
     }
@@ -83,7 +83,7 @@ unsafe extern "C" fn fair_motion(fighter: &mut L2CFighterCommon) -> L2CValue {
         //notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F);
     }
     if ItemModule::is_have_item(fighter.module_accessor, 0) {
-        VisibilityModule::set_int64(fighter.module_accessor, hash40("gun_hand") as i64, hash40("gun_hand_show_all") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("gun_hand"), hash40("gun_hand_show_all"));
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
     false.into()
@@ -120,7 +120,7 @@ unsafe extern "C" fn cut_speed(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_AIR, attack_air_pre);
-    
+
     agent.status(Pre, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, attack_air_f_pre);
     agent.status(Main,*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,attack_air_f_main);
 }

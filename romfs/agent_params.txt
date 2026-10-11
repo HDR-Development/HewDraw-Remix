@@ -69,3 +69,4 @@ shizue: fighter/shizue/param/hdr.xml
 buddy: fighter/buddy/param/hdr.xml
 trail: fighter/trail/param/hdr.xml
 roy: fighter/roy/param/hdr.xml
+wario: fighter/wario/param/hdr.xml

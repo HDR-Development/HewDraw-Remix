@@ -303,13 +303,16 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 	frame(lua_state, 3.0);
 	if is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
 		SA_SET(agent, *SITUATION_KIND_AIR);
 	}
 	frame(lua_state, 4.0);
     FT_MOTION_RATE_RANGE(agent, 4.0, 18.0, 9.0);
 	if is_excute(agent) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+	}
+    frame(lua_state, 5.55); // f5
+	if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
 	}
 	frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);

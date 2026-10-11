@@ -63,6 +63,8 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
 
 pub unsafe extern "C" fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP {
+        let speed_x_max_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");
+        WorkModule::set_float(fighter.module_accessor, speed_x_max_mul, *FIGHTER_INSTANCE_WORK_ID_FLOAT_FALL_X_MAX_MUL);
         fighter.set_status_kind_interrupt(*FIGHTER_STATUS_KIND_FALL_SPECIAL);
         return 1.into();
     }

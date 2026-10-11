@@ -242,7 +242,7 @@ unsafe extern "C" fn game_specialairsthrowhi(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     FT_MOTION_RATE(agent, 0.8);
     if is_excute(agent) {
-        KineticModule::add_speed(boma, &Vector3f::new(0.0, 0.5, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(0.0, 0.5, 0.0));
         ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 90, 45, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 22.0);

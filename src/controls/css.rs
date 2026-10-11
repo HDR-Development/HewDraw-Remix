@@ -43,7 +43,7 @@ impl ControllerInfo {
 
 pub unsafe fn get_ptr_to_controls(entry: usize) -> ControllerInfo {
     let one = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x5313510) as *const u64);
+        .add(0x5314510) as *const u64);
     let two = *(one as *const u64);
     let three = ***((two + 0x58) as *const *const *const u64);
 
@@ -75,15 +75,15 @@ static SUBMENU_STATES: Lazy<Mutex<HashMap<u64, WithCancel>>> =
 #[skyline::from_offset(0x19fa730)]
 fn init_layout(ptr: u64);
 
-#[skyline::from_offset(0x3777d50)]
+#[skyline::from_offset(0x3778300)]
 fn play_animation(layout_ptr: u64, name: *const u8, speed: f32);
 
-#[skyline::from_offset(0x37a1cc0)]
+#[skyline::from_offset(0x37a2270)]
 fn create_text_pane(out_pane: u64, text: *const u16, color: u32, value: i32);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776910);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
@@ -120,7 +120,7 @@ unsafe fn create_layout(ctx: &mut InlineCtx) {
     ctx.registers[1].set_x(state.get_button_count() as u64 + 1);
 }
 
-#[skyline::from_offset(0x37a22f0)]
+#[skyline::from_offset(0x37a28a0)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 #[skyline::hook(offset = 0x19f67b0)]
@@ -269,7 +269,7 @@ unsafe fn check_for_input(mask: u32, ptr: u64) -> bool {
     false
 }
 
-#[skyline::hook(offset = 0x377d290, inline)]
+#[skyline::hook(offset = 0x377d840, inline)]
 unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
     let ptr = ctx.registers[0].x();
     let virtual_input = *(ctx.registers[1].x() as *const u64).add(1);
@@ -294,8 +294,8 @@ unsafe fn handle_virtual_inputs(ctx: &InlineCtx) {
  * 0x19f5cb0 -> Sets up the UI colors
  * 0x19faf40 -> required to control the UI
  * 0x19f94b4 -> sets the index to the newly selected one
- * 0x377d204 -> proc'd when pressing A
- * 0x3762eac -> proc'd when activating virtual input
+ * 0x377d7b4 -> proc'd when pressing A
+ * 0x376345c -> proc'd when activating virtual input
  */
 
 /*

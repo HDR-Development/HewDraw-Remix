@@ -81,12 +81,12 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         VarModule::on_flag(boma.object(), vars::gaogaen::status::SPECIAL_HI_RISE_END);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE_RANGE(agent, 4.0, 6.0, 4.0);
+    frame(lua_state, 4.5); // f5
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE_RANGE(agent, 4.0, 6.0, 4.0);
     frame(lua_state, 6.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {

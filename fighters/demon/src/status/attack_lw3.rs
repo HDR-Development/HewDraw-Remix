@@ -59,6 +59,10 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon
 
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
 
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_GUARD_ON {
+        WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
+    }
+
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_lw3_cancel_main_loop as *const () as _))
 }
 

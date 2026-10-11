@@ -99,7 +99,7 @@ unsafe extern "C" fn expression_specialnfire(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(boma, false, 0);
-        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("crown"), hash40("crown_hide"));
     }
     if IS_EXIST_ARTICLE(agent, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
         if is_excute(agent) {
@@ -119,7 +119,7 @@ unsafe extern "C" fn expression_specialnfire(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 76.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("crown"), hash40("crown_normal"));
     }
     if is_excute(agent) {
         if IS_EXIST_ARTICLE(agent, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
@@ -202,7 +202,7 @@ unsafe extern "C" fn expression_specialnfirehi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 56.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("crown"), hash40("crown_normal"));
         if ArticleModule::is_exist(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
             ArticleModule::set_visibility_whole(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
@@ -285,7 +285,7 @@ unsafe extern "C" fn expression_specialnfireb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(boma, false, 0);
-        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_hide") as i64);
+        VisibilityModule::set_int64(boma, hash40("crown"), hash40("crown_hide"));
         if IS_EXIST_ARTICLE(agent, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
             ArticleModule::set_visibility_whole(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
@@ -302,7 +302,7 @@ unsafe extern "C" fn expression_specialnfireb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 60.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("crown"), hash40("crown_normal"));
         if IS_EXIST_ARTICLE(agent, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT) {
             if is_excute(agent) {
                 ArticleModule::set_visibility_whole(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_PIRATEHAT, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

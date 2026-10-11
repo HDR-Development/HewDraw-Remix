@@ -60,6 +60,17 @@ unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        VisibilityModule::set_whole(boma, false);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -89,12 +100,50 @@ unsafe extern "C" fn game_specialhitop(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_landingfallspecial(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
+        }
+    }
+    let motion = MotionModule::motion_kind(boma);
+    let _frame = MotionModule::frame(boma);
+    let rate = MotionModule::rate(boma);
+    ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new_raw(motion), false, -1.0);
+    if is_excute(agent) {
+        ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, _frame);
+        ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+        let status = StatusModule::status_kind(boma);
+        if status != *FIGHTER_STATUS_KIND_REBIRTH {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+        }
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_NORMAL); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        VisibilityModule::set_whole(boma, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_OFF); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("game_specialairnend", game_specialairnend, Priority::Low);
 
     agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
 
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
+    agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
     agent.acmd("game_specialhitop", game_specialhitop, Priority::Low);
+
+    agent.acmd("game_landingfallspecial", game_landingfallspecial, Priority::Low);
 }

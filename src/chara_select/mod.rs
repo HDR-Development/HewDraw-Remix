@@ -199,7 +199,7 @@ pub static mut PLAYER_TAG_INDEX: &'static mut [u8] = &mut [0; 8];
 pub unsafe fn get_tag_from_save(idx: u8) -> String {
     let tag_address =
         (***(((*((*((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-            .add(0x5313510) as *const u64)) as *const u64))
+            .add(0x5314510) as *const u64)) as *const u64))
             + 0x58) as *const *const *const u64)
             + ((idx as u64) * 0xF7D8)
             + 0xC) as *const u16;
@@ -240,7 +240,7 @@ unsafe fn css_advance_sfx2_hook(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::from_offset(0x2407280)]
+#[skyline::from_offset(0x24076d0)]
 unsafe fn play_se(
     param_1: *mut u32,
     sfx_hash_id: u64);
@@ -256,7 +256,7 @@ unsafe fn echo_swap_hook(
 
 // Kills the "Rules" button on the CSS when the CSS is first because it
 // actually goes all the way to the main menu
-#[skyline::hook(offset = 0x3771220)]
+#[skyline::hook(offset = 0x37717d0)]
 unsafe fn register_panel_button(
     panel: *mut u64,
     event_code: i32,

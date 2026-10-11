@@ -267,27 +267,16 @@ unsafe extern "C" fn special_s1_end_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe fn special_s1_end_change_motion(fighter: &mut L2CFighterCommon, inherit: bool) {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_GROUND), false);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        if inherit {
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s1_end"), -1.0, 1.0, 0.0, false, false);
-        }
-        else {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s1_end"), 0.0, 1.0, false, 0.0, false, false);
-        }
+    fighter.ground_correct_by_situation(*GROUND_CORRECT_KIND_GROUND, *GROUND_CORRECT_KIND_AIR);
+    fighter.change_kinetic_by_situation(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+
+    if inherit {
+        fighter.change_motion_inherit_frame_by_situation("special_s1_end", "special_air_s1_end", -1.0, 1.0, 0.0, false, false);
+    } else {
+        fighter.change_motion_by_situation("special_s1_end", "special_air_s1_end", 0.0, 1.0, false, 0.0, false, false);
     }
-    else {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        if inherit {
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s1_end"), -1.0, 1.0, 0.0, false, false);
-        }
-        else {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s1_end"), 0.0, 1.0, false, 0.0, false, false);
-        }
+
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         let s1_control_limit_mul_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("s1_control_limit_mul_x"));
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -295,7 +284,6 @@ unsafe fn special_s1_end_change_motion(fighter: &mut L2CFighterCommon, inherit: 
         // lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, 0.0, 0.0, 0.0, 0.0);
         // smash::app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
         sv_kinetic_energy!(mul_x_speed_max, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, s1_control_limit_mul_x * 0.2);
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s1_end"), 0.0, 1.0, false, 0.0, false, false);
     }
 }
 

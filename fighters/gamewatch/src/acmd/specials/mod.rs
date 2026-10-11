@@ -109,7 +109,7 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("head") as i64, hash40("head_close") as i64);
+        VisibilityModule::set_int64(boma, hash40("head"), hash40("head_close"));
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {

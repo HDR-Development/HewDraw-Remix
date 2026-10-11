@@ -178,7 +178,7 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
         0.into()
     } else {
         fighter.set_int64(
-            hash40("special_air_hi_attack_end") as i64,
+            hash40("special_air_hi_attack_end"),
             *FIGHTER_LUCAS_INSTANCE_WORK_ID_INT_SPECIAL_AIR_END_MOTION,
         );
         fighter.change_status(

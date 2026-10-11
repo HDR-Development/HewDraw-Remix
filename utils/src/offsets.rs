@@ -1,6 +1,6 @@
 #[cfg(feature = "no-offset-search")]
 mod offsets_impl {
-    // These offsets are hardcoded to increase runtime speed but are only viable for smash version 13.0.1
+    // These offsets are hardcoded to increase runtime speed but are only viable for smash version 13.0.5
     #[export_name = "offsets_exec_command"]
     pub const fn exec_command() -> usize {
         0x6bac10
@@ -68,12 +68,12 @@ mod offsets_impl {
 
     #[export_name = "offsets_p_p_game_state"]
     pub const fn p_p_game_state() -> usize {
-        0x52c2760
+        0x52c3760
     }
 
     #[export_name = "offsets_map_controls"]
     pub const fn map_controls() -> usize {
-        0x1750f70
+        0x1750dd0
     }
 
     #[export_name = "offsets_once_per_game_frame"]
@@ -83,17 +83,17 @@ mod offsets_impl {
 
     #[export_name = "offsets_on_rule_select"]
     pub const fn on_rule_select() -> usize {
-        0x1792c60
+        0x1792b80
     }
 
     #[export_name = "offsets_global_frame_counter"]
     pub const fn global_frame_counter() -> usize {
-        0x52e7b44
+        0x52e8b44
     }
 
     #[export_name = "offsets_get_match_mode"]
     pub const fn get_match_mode() -> usize {
-        0x1743870
+        0x17436d0
     }
   
     #[export_name = "offsets_kill_zoom_regular"]
@@ -108,12 +108,12 @@ mod offsets_impl {
 
     #[export_name = "offsets_analog_trigger_l"]
     pub const fn analog_trigger_l() -> usize {
-        0x3666ee0
+        0x3667490
     }
 
     #[export_name = "offsets_analog_trigger_r"]
     pub const fn analog_trigger_r() -> usize {
-        0x3666ef4
+        0x36674a4
     }
 }
 
@@ -419,7 +419,7 @@ mod offsets_impl {
             offsets.map_controls = byte_search(MAP_CONTROLS_SEARCH_CODE).expect("Unable to find control mapping function!");
             offsets.once_per_game_frame = byte_search(ONCE_PER_GAME_FRAME_SEARCH_CODE).expect("Unable to find once-per-game-frame function!");
             offsets.on_rule_select = byte_search(ON_RULE_SELECT_SEARCH_CODE).expect("Unable to find on-rule-select instructions!");
-            offsets.global_frame_counter = 0x52e7b44;
+            offsets.global_frame_counter = 0x52e8b44;
             offsets.get_match_mode = {
                 let offset = byte_search(GET_MATCH_MODE_SEARCH_CODE).expect("Unable to find get_match_mode!") - GET_MATCH_MODE_OFFSET_TO_START;
                 let bl_offset = offset_from_bl(offset);

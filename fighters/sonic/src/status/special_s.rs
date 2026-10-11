@@ -57,7 +57,7 @@ pub unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
     }
     fighter.main_shift(special_s_main_loop)
 }
@@ -80,7 +80,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     if situation == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_PARRY)
     && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
@@ -203,6 +203,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                     ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_s.dash_hop_speed_y")
                 }
                 else {
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     0.0
                 }
             };

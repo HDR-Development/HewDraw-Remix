@@ -34,7 +34,7 @@ macro_rules! lua_settop {
     }};
 }
 
-#[skyline::from_offset(0x38f86a0)]
+#[skyline::from_offset(0x38f8c50)]
 unsafe extern "C" fn luaL_tolstring(lua_state: u64, index: i32, size: *mut usize) -> *const u8;
 
 unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
@@ -53,7 +53,7 @@ unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
     return 0;
 }
 
-#[skyline::hook(offset = 0x38f5a30)]
+#[skyline::hook(offset = 0x38f5fe0)]
 unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -> u32 {
     let result = call_original!(arg, arg2, arg3, arg4, "bt\0".as_ptr());
     if result == 3 {
@@ -68,7 +68,7 @@ unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -
     result
 }
 
-#[skyline::from_offset(0x3771220)]
+#[skyline::from_offset(0x37717d0)]
 unsafe fn register_button(arg: u64, id: i32, string: *const u8);
 
 #[skyline::hook(offset = 0x1d33460, inline)]
@@ -83,10 +83,10 @@ unsafe fn add_buttons_to_subwindow(ctx: &mut skyline::hooks::InlineCtx) {
     IS_IN_UI = true;
 }
 
-#[skyline::from_offset(0x37717b0)]
+#[skyline::from_offset(0x3771d60)]
 unsafe fn layout_get(arg: u64, arg2: u64, id: u64);
 
-#[skyline::from_offset(0x37714d0)]
+#[skyline::from_offset(0x3771a80)]
 unsafe fn set_something(arg: u64, val: u64, val2: u64);
 
 #[skyline::hook(offset = 0x1d33684, inline)]
@@ -324,7 +324,7 @@ unsafe fn update_index_for_a_press(ctx: &mut skyline::hooks::InlineCtx) {
 
 static mut IS_IN_UI: bool = false;
 
-#[skyline::hook(offset = 0x376d000)]
+#[skyline::hook(offset = 0x376d5b0)]
 unsafe fn set_next_button(arg: u64, button: i32, other: u64) {
     if !IS_IN_UI {
         call_original!(arg, button, other);
@@ -383,7 +383,7 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
 
 unsafe fn get_parts(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776090);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776640);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
@@ -416,7 +416,7 @@ unsafe fn set_pane_text_values(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d33b60, inline)]
 unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const _ as *const u8).add(0x300);
+    let sp = ctx.sp.x() as *const u8;
     let ptr = *(sp.add(0xa8) as *const u64);
 
     if ctx.registers[22].x() == 4 {
@@ -429,7 +429,7 @@ unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d33ca0, inline)]
 unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const _ as *const u8).add(0x300);
+    let sp = ctx.sp.x() as *const u8;
     let ptr = *(sp.add(0xa8) as *const u64);
 
     if ctx.registers[22].x() == 4 {
@@ -486,8 +486,8 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
             func: Some(send_message),
         },
         lua::luaL_Reg {
-            name: "set_selected_panel_and_preview\0".as_ptr() as _,
-            func: Some(set_selected_panel_and_preview),
+            name: "set_selected_panel_and_preview_and_alt\0".as_ptr() as _,
+            func: Some(set_selected_panel_and_preview_and_alt),
         },
         lua::luaL_Reg {
             name: "get_selected_panel\0".as_ptr() as _,
@@ -496,6 +496,10 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
         lua::luaL_Reg {
             name: "get_selected_preview\0".as_ptr() as _,
             func: Some(get_selected_preview),
+        },
+        lua::luaL_Reg {
+            name: "get_selected_alt\0".as_ptr() as _,
+            func: Some(get_selected_alt),
         },
         lua::luaL_Reg {
             name: "set_perma_strike_stage\0".as_ptr() as _,
@@ -520,6 +524,10 @@ unsafe fn add_to_key_context_hook(ctx: &skyline::hooks::InlineCtx) {
         lua::luaL_Reg {
             name: "stage_loading\0".as_ptr() as _,
             func: Some(stage_loading),
+        },
+        lua::luaL_Reg {
+            name: "set_matchup_stage_texture\0".as_ptr() as _,
+            func: Some(set_matchup_stage_texture),
         },
         lua::luaL_Reg {
             name: "get_bans\0".as_ptr() as _,
@@ -551,8 +559,11 @@ extern "C" fn send_message(state: *mut lua::lua_State) -> i32 {
     }
 }
 
-extern "C" fn set_selected_panel_and_preview(state: *mut lua::lua_State) -> i32 {
+extern "C" fn set_selected_panel_and_preview_and_alt(state: *mut lua::lua_State) -> i32 {
     unsafe {
+        let alt_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
         let preview_id = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
         lua::lua_pop(state, 1);
 
@@ -563,9 +574,11 @@ extern "C" fn set_selected_panel_and_preview(state: *mut lua::lua_State) -> i32 
 
         mgr.selected_panel = Some(panel_id);
         mgr.selected_preview = Some(preview_id);
+        mgr.selected_alt = Some(alt_id);
 
         println!("selected_panel set to: {}", panel_id);
         println!("selected_preview set to: {}", preview_id);
+        println!("selected_alt set to: {}", alt_id);
 
         0
     }
@@ -589,6 +602,19 @@ extern "C" fn get_selected_preview(state: *mut lua::lua_State) -> i32 {
         let mgr = STAGE_MANAGER.lock().unwrap();
         if let Some(preview_id) = mgr.selected_preview {
             lua::lua_pushinteger(state, preview_id as i64);
+            return 1;
+        }
+
+        lua::lua_pushinteger(state, -1);
+        1
+    }
+}
+
+extern "C" fn get_selected_alt(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let mgr = STAGE_MANAGER.lock().unwrap();
+        if let Some(alt_id) = mgr.selected_alt {
+            lua::lua_pushinteger(state, alt_id as i64);
             return 1;
         }
 
@@ -668,7 +694,7 @@ extern "C" fn get_random_stage_index(state: *mut lua::lua_State) -> i32 {
     unsafe {
         let mut rng = thread_rng();
         let mut mgr = STAGE_MANAGER.lock().unwrap();
-        
+
         if let Some(indexes) = &mgr.random_stage_indexes {
             let index = indexes.choose(&mut rng);
             match index {
@@ -687,6 +713,17 @@ extern "C" fn stage_loading(state: *mut lua::lua_State) -> i32 {
     unsafe {
         let mut mgr = STAGE_MANAGER.lock().unwrap();
         mgr.stage_loading = Some(true);
+        0
+    }
+}
+
+extern "C" fn set_matchup_stage_texture(state: *mut lua::lua_State) -> i32 {
+    unsafe {
+        let index = lua::lua_tointegerx(state, -1, std::ptr::null_mut()) as i32;
+        lua::lua_pop(state, 1);
+
+        let mut mgr = STAGE_MANAGER.lock().unwrap();
+        mgr.matchup_texture_index = if index < 0 { None } else { Some(index) };
         0
     }
 }
@@ -728,15 +765,15 @@ extern "C" fn get_dsr(state: *mut lua::lua_State) -> i32 {
                         let c_str = CString::new(dsr.clone()).expect("String contained null byte");
                         lua::lua_pushstring(state, c_str.as_ptr());
                     },
-                    None => { 
+                    None => {
                         let c_str = CString::new("").expect("");
-                        lua::lua_pushstring(state, c_str.as_ptr()); 
+                        lua::lua_pushstring(state, c_str.as_ptr());
                     },
                 }
             }
             else {
                 let c_str = CString::new("").expect("");
-                lua::lua_pushstring(state, c_str.as_ptr()); 
+                lua::lua_pushstring(state, c_str.as_ptr());
             }
         }
 
@@ -753,8 +790,8 @@ extern "C" fn is_css_first(state: *mut lua::lua_State) -> i32 {
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x5292c70).data((lua_print_impl as *const ()));
-        skyline::patching::Patch::in_text(0x372c530).data(0xD503201Fu32);
+        skyline::patching::Patch::in_text(0x5293c70).data((lua_print_impl as *const ()));
+        skyline::patching::Patch::in_text(0x372cae0).data(0xD503201Fu32);
         skyline::patching::Patch::in_text(0x1d33d1c).data(0xF1001ADFu32);
         skyline::patching::Patch::in_text(0x1d309c4).data(0x7100183Fu32);
         // skyline::patching::Patch::in_text(0x1d2fec8).nop();

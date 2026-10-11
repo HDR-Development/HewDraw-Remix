@@ -4,6 +4,20 @@
     <struct index="0">
       <float hash="p1_y">24</float>
     </struct>
+    <!-- DOUBLE JUMP -->
+    <struct index="1">
+      <float hash="p1_x">16</float>
+      <float hash="p1_y">20</float>
+      <float hash="p2_x">-9.6</float>
+      <float hash="p2_y">7.5</float>
+    </struct>
+    <!-- UP SPECIAL STARTUP -->
+    <struct index="2">
+      <float hash="p1_x">16</float>
+      <float hash="p1_y">19</float>
+      <float hash="p2_x">-9.6</float>
+      <float hash="p2_y">7.5</float>
+    </struct>
   </list>
   <struct hash="param_private">
     <int hash="foresight_escape_pre_frame">4</int>

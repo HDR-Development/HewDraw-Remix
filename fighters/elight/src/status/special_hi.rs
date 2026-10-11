@@ -53,6 +53,10 @@ unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_exec_special_start_common_kinetic_setting(L2CValue::Hash40s("param_special_hi"));
     fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_hi_start"), L2CValue::Hash40s("special_air_hi_start"), true.into());
 
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+
     // [v] check if you are doing the input for spreadbullet, and if the animation is over (this is the initial swipe)
     //      transition into the jump
     special_hi_common_check_spreadbullet(fighter);

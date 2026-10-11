@@ -10,10 +10,8 @@ pub unsafe extern "C" fn special_s_drive_main(fighter: &mut L2CFighterCommon) ->
 
 unsafe extern "C" fn special_s_drive_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Jump cancel
-    if fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-    && (ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-        || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_S_FLAG_RESERVE_JUMP))
-    {
+    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
+    || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_S_FLAG_RESERVE_JUMP) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_S_FLAG_RESERVE_JUMP);
 
         fighter.change_status(FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE_START.into(), false.into());
@@ -78,13 +76,6 @@ pub unsafe extern "C" fn special_s_escape_start_end(fighter: &mut L2CFighterComm
     let bike = ArticleModule::get_article(fighter.module_accessor, *FIGHTER_WARIO_GENERATE_ARTICLE_WARIOBIKE);
     let bike_id = smash::app::lua_bind::Article::get_battle_object_id(bike) as u32;
     let bike_boma = sv_battle_object::module_accessor(bike_id);
-
-    // Jump cancel consumes double jump
-    if StatusModule::situation_kind(bike_boma) == *SITUATION_KIND_AIR
-    && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-    && !VarModule::is_flag(fighter.battle_object, wario::instance::SPECIAL_S_CANCEL) {
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-    }
 
     VarModule::off_flag(fighter.battle_object, wario::instance::SPECIAL_S_CANCEL);
 

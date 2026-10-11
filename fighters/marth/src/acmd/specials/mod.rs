@@ -23,6 +23,9 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
     frame(lua_state, 25.0);
@@ -47,6 +50,9 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
     }
     frame(lua_state, 31.0);

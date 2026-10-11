@@ -34,8 +34,8 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.off_flag(*FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     special_lw_set_kinetic(fighter);
     if !fighter.is_situation(*SITUATION_KIND_GROUND) {
         VarModule::on_flag(fighter.object(), vars::lucario::instance::DISABLE_SPECIAL_LW);
@@ -63,11 +63,11 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     // check for cancels
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) 
+        if fighter.is_situation(*SITUATION_KIND_GROUND)
         && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 0.into();
         }
-        if fighter.is_situation(*SITUATION_KIND_AIR) 
+        if fighter.is_situation(*SITUATION_KIND_AIR)
         && fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
         }
@@ -80,7 +80,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into())
-        } 
+        }
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into())
         }
@@ -118,8 +118,8 @@ unsafe extern "C" fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn special_lw_check_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) 
-    || fighter.is_in_hitlag() 
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    || fighter.is_in_hitlag()
     || VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_BURNOUT)
     || !VarModule::is_flag(fighter.battle_object, vars::lucario::status::HIT_CANCEL) {
         return false.into();

@@ -67,7 +67,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     }
     wait(lua_state, 6.0);
     if is_excute(agent) {
-        AttackModule::clear_all(boma); 
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -93,7 +93,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-    } 
+    }
 }
 
 unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
@@ -159,7 +159,7 @@ unsafe extern "C" fn expression_attacklw4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_monad_hand") as i64);
+        VisibilityModule::set_int64(boma, hash40("body"), hash40("body_monad_hand"));
     }
     frame(lua_state, 9.0);
     if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
@@ -191,7 +191,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacks4lw", game_attacks4, Priority::Low);
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
-    
+
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
     agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);
     agent.acmd("sound_attacklw4", sound_attacklw4, Priority::Low);

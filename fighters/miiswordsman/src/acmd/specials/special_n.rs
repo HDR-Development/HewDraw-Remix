@@ -91,7 +91,7 @@ unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
     frame(lua_state, 14.2);
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 16.5);

@@ -5,7 +5,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     FT_MOTION_RATE_RANGE(agent, 1.0, 13.0, 5.0);
     if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
         if ArticleModule::is_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU) {
             ArticleModule::remove_exist(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_OBAKYUMU, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
@@ -36,7 +35,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
     }
     wait(lua_state, 20.0);
     if is_excute(agent) {

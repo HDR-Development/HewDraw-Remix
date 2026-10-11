@@ -43,7 +43,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_S_AIR_END,
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_RISE,
         *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL,
-        ]) 
+        ])
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -57,7 +57,8 @@ unsafe fn camera_lockout(fighter: &mut L2CFighterCommon) {
 unsafe fn check_step_cancel(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.battle_object, vars::demon::status::ENABLE_STEP_CANCEL)
     && !fighter.global_table[IS_STOPPING].get_bool() {
-        if fighter.is_cat_flag(Cat4::Command623NB) {
+        if fighter.is_cat_flag(Cat4::Command623NB)
+        && ControlModule::get_special_command_lr(fighter.module_accessor, *FIGHTER_PAD_CMD_CAT4_COMMAND_623NB) == PostureModule::lr(fighter.module_accessor) {
             fighter.change_status(statuses::demon::CANCEL_STEP.into(), false.into());
         }
     }

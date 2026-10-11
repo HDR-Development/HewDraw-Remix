@@ -75,7 +75,11 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 13.0);
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 3.0, 1.0);
+    frame(lua_state, 3.0);
+    FT_MOTION_RATE(agent, 1.0);
+    frame(lua_state, 12.0);
     sv_kinetic_energy!(set_speed_mul, agent, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.7);
     if is_excute(agent) {
         JostleModule::set_status(boma, false);

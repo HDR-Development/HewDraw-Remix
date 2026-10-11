@@ -93,7 +93,7 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_invisible") as i64);
+        VisibilityModule::set_int64(boma, hash40("head_shadow"), hash40("head_shadow_invisible"));
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
@@ -102,7 +102,7 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     frame(lua_state, 49.0);
     if is_excute(agent) {
         VarModule::off_flag(boma.object(), vars::diddy::instance::NO_CAP);
-        VisibilityModule::set_int64(boma, hash40("head_shadow") as i64, hash40("head_shadow_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("head_shadow"), hash40("head_shadow_normal"));
     }
 }
 

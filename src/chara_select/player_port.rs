@@ -5,7 +5,7 @@ use parking_lot::RwLock;
 
 static ID_LIST: &[u32] = &[0, 1, 2, 3, 4, 5, 6, 7, 0x20];
 
-static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(|| 
+static mut PORT_DATA: LazyLock<RwLock<PortData>> = LazyLock::new(||
     RwLock::new(PortData::default())
 );
 
@@ -42,7 +42,7 @@ impl PortExt for PortData {
             ports.push(controller.port.unwrap_or(0));
         }
         ports.sort();
-        
+
         ports
     }
     fn is_active_id(&self, id: &u32) -> bool {
@@ -165,7 +165,7 @@ impl ControllerExt for PortController {
 unsafe fn count_active_players(instance: CharaSelect) -> i32 {
     let mut active_players = 0;
 
-    // Walk the known player-info array; 
+    // Walk the known player-info array;
     let mut addr = instance.player_base;
     for i in 0..8 {
         if addr as u64 == instance.player_max as u64 {
@@ -213,21 +213,21 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
             if instance.max_players_allowed != 8 || instance.local_wireless != 0 {
                 data.enable_swap = false;
                 println!("Port swapping is disabled.");
-                
+
                 return original!()(arg);
             }
             println!("Port swapping is enabled!");
             data.enable_swap = true;
             data.root_card = instance.first_player as u64;
         }
-        
+
         // TODO: implement buffer swap for >2 players
         // if SsbuSync::ALLOW_BUFFER_SWAP() {
         //     let player_count = count_active_players(instance);
         //     crate::set_doubles_delay(player_count);
         //     ssbusync::Check_Buffer_Swap();
         // }
-        
+
         // TODO: is this really the best way to check for online gamemodes?
         // let is_online = (instance.max_players_allowed != 8 || instance.local_wireless != 0);
         // if  SsbuSync::SyncEnv::online_only() {
@@ -268,7 +268,7 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
 
                             break;
                         }
-                        
+
                         addr = (addr as u64 + 0x10) as *const PlayerInfo;
                     }
                 }
@@ -319,7 +319,7 @@ unsafe fn css_main_loop(arg: *const CharaSelect) {
                 Some(action) => {
                     // println!("Controller ID {:#x} triggered SwapAction: {:?}", controller.id, action);
                     controller.operation = Some(action);
-                    
+
                     // disconnect controller from current port
                     // this hook runs BEFORE controller initialization, which allows for the controller to instantly reconnect if allowed
                     if let Some(player) = controller.player_info {
@@ -357,7 +357,7 @@ unsafe fn init_css_player(
             if controller.operation.is_none() {
                 return original!()(arg1, port, arg3, arg4);
             }
-            
+
             let mut direction = 1;
             match controller.operation.unwrap_or(SwapAction::Out) {
                 SwapAction::Right => {
@@ -386,7 +386,7 @@ unsafe fn init_css_player(
                         Some(controller) => controller,
                         None => return
                     };
-                    
+
                     // offset player data
                     if let Some(player) = controller.player_info {
                         let player = player as i64;
@@ -399,8 +399,8 @@ unsafe fn init_css_player(
                     // alter which port is assigned
                     let offset = card as i64 - arg3 as i64;
                     return original!()(
-                        arg1, 
-                        port_num as i32, 
+                        arg1,
+                        port_num as i32,
                         (arg3 as i64 + offset) as u64,
                         (arg4 as i64 + offset) as u64
                     );

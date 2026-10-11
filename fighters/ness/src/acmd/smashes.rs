@@ -4,7 +4,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("bat").hash, Hash40::new("bat_visible").hash);
         FT_MOTION_RATE(agent, 11.0/(14.0-1.0));
     }
     frame(lua_state, 14.0);
@@ -33,7 +33,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 50.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_invisible").hash as i64);
+        VisibilityModule::set_int64(boma, Hash40::new("bat").hash, Hash40::new("bat_invisible").hash);
     }
 }
 
@@ -162,7 +162,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
     agent.acmd("expression_attackhi4", expression_attackhi4, Priority::Low);
-    
+
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
     agent.acmd("expression_attacklw4", expression_attacklw4, Priority::Low);
 }

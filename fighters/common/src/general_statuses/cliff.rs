@@ -186,8 +186,9 @@ unsafe fn status_end_CliffWait(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
             VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+            VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     }
-    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
+
     call_original!(fighter)
 }
 
@@ -218,6 +219,7 @@ unsafe fn status_CliffAttack_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffAttack)]
 unsafe fn status_end_CliffAttack(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     call_original!(fighter)
 }
 
@@ -248,6 +250,7 @@ unsafe fn status_CliffClimb_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffClimb)]
 unsafe fn status_end_CliffClimb(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     call_original!(fighter)
 }
 
@@ -278,6 +281,7 @@ unsafe fn status_CliffEscape_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffEscape)]
 unsafe fn status_end_CliffEscape(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     call_original!(fighter)
 }
 
@@ -306,6 +310,7 @@ unsafe fn status_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_end_CliffJump1(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP2 {
         VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     }
     InputModule::disable_persist(fighter.battle_object);
     call_original!(fighter)
@@ -332,6 +337,7 @@ unsafe fn status_CliffJump2_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_end_CliffJump2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CLIFF_JUMP3 {
         VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+        VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     }
     call_original!(fighter)
 }
@@ -339,6 +345,7 @@ unsafe fn status_end_CliffJump2(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CliffJump3)]
 unsafe fn status_end_CliffJump3(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID, -1);
+    VarModule::set_int(fighter.object(), vars::common::instance::OCCUPIED_LEDGE_ID_FOR_TETHERS, -1);
     call_original!(fighter)
 }
 

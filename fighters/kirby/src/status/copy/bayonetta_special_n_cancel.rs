@@ -15,13 +15,13 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.on_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_N_FOOT);
         fighter.on_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT);
-        fighter.set_int64(hash40("special_n_start_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_start_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_start_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_start_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     } else {
         fighter.off_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_N_FOOT);
         fighter.off_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT);
-        fighter.set_int64(hash40("special_n_start_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_start_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_start_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_start_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
     motion_handling(fighter, true);
     fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
@@ -41,11 +41,11 @@ unsafe extern "C" fn special_n_charge_init(fighter: &mut L2CFighterCommon) -> L2
 
 unsafe extern "C" fn special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.set_int64(hash40("special_n_charge_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_charge_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_charge_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_charge_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     } else {
-        fighter.set_int64(hash40("special_n_charge_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_charge_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_charge_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_charge_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
     fighter.set_float(1.0, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLOAT_MOTION_RATE);
     motion_handling(fighter, true);
@@ -62,12 +62,12 @@ unsafe extern "C" fn special_n_charge_main_loop(fighter: &mut L2CFighterCommon) 
     if fighter.get_int(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_STEP) == 0 {
         if MotionModule::is_end(fighter.module_accessor) {
             if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-                fighter.set_int64(hash40("special_n_loop_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-                fighter.set_int64(hash40("special_air_n_loop_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+                fighter.set_int64(hash40("special_n_loop_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+                fighter.set_int64(hash40("special_air_n_loop_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
                 fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_loop_f").into(), Hash40::new("special_air_n_loop_f").into(), false.into());
             } else {
-                fighter.set_int64(hash40("special_n_loop_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-                fighter.set_int64(hash40("special_air_n_loop_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+                fighter.set_int64(hash40("special_n_loop_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+                fighter.set_int64(hash40("special_air_n_loop_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
                 fighter.sub_change_motion_by_situation_kirby_copy(Hash40::new("special_n_loop_h").into(), Hash40::new("special_air_n_loop_h").into(), false.into());
             }
             app::FighterUtil::flash_eye_info(fighter.module_accessor);
@@ -109,11 +109,11 @@ unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_flag(*FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_N_FOOT) {
-        fighter.set_int64(hash40("special_n_end_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_end_f") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_end_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_end_f"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     } else {
-        fighter.set_int64(hash40("special_n_end_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
-        fighter.set_int64(hash40("special_air_n_end_h") as i64, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
+        fighter.set_int64(hash40("special_n_end_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_G);
+        fighter.set_int64(hash40("special_air_n_end_h"), *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_A);
     }
     let cancel_frame = fighter.get_param_int("param_special_n", "cancel_frame");
     fighter.set_int(cancel_frame, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_N_INT_CANCEL_FRAME);

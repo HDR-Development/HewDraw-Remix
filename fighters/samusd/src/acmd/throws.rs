@@ -7,10 +7,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 2.0);
     frame(lua_state, 2.0);
     FT_MOTION_RATE(agent, 1.0);
-    frame(lua_state, 12.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 13.0);
     game_CaptureCutCommon(agent);
     if is_excute(agent) {
@@ -26,7 +22,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -37,9 +32,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(agent, 1.0, 14.0, 13.0);
     frame(lua_state, 14.0);
     FT_MOTION_RATE(agent, 1.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 17.0);
     game_CaptureCutCommon(agent);
     if is_excute(agent) {
@@ -59,7 +51,6 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
 }
 
@@ -70,10 +61,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 2.0);
     frame(lua_state, 2.0);
     FT_MOTION_RATE(agent, 1.0);
-    frame(lua_state, 15.0);
-    if is_excute(agent) {
-        GrabModule::set_rebound(boma, true);
-    }
     frame(lua_state, 16.0);
     game_CaptureCutCommon(agent);
     if is_excute(agent) {
@@ -89,7 +76,6 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(boma, false);
     }
 }
 

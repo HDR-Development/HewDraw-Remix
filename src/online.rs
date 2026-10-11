@@ -1,19 +1,19 @@
 use skyline::hooks::InlineCtx;
 use std::fmt::Display;
 
-#[skyline::from_offset(0x37a22f0)]
+#[skyline::from_offset(0x37a28a0)]
 pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
 pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776360);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776910);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
 unsafe fn set_room_text(arg: u64, string: String) {
     let func_addr =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3776d10);
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37772c0);
     let callable: extern "C" fn(u64, *const u8, usize, *const u16, ...) =
         std::mem::transmute(func_addr);
     callable(
@@ -155,7 +155,7 @@ unsafe fn update_css2(arg: u64) {
     call_original!(arg)
 }
 
-#[skyline::hook(offset = 0x16ccc58, inline)]
+#[skyline::hook(offset = 0x16ccab8, inline)]
 unsafe fn set_online_latency(ctx: &InlineCtx) {
     let auto = *(ctx.registers[19].x() as *mut u8);
     MOST_RECENT_AUTO = auto as isize;

@@ -144,10 +144,10 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::from_offset(0x23ed810)]
+#[skyline::from_offset(0x23edc60)]
 unsafe fn music_function1(arg: u64);
 
-#[skyline::from_offset(0x23ee0c0)]
+#[skyline::from_offset(0x23ee510)]
 unsafe fn music_function2(arg: u64, arg2: u64);
 
 #[skyline::hook(offset = 0x14f99cc, inline)]
@@ -164,25 +164,25 @@ unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x235cad0, inline)]
+#[skyline::hook(offset = 0x235cf20, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
     let sp = ctx.sp.x() as *mut u8;
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
     let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
     slice.copy_from_slice(b"MenuSequenceScene\0");
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53040f0)
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53050f0)
         as *const u64;
     // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
     println!("{:#x}", *mode);
 }
 
-#[skyline::from_offset(0x353ff00)]
+#[skyline::from_offset(0x35404b0)]
 fn load_file_by_hash40(tables: u64, hash: u64);
 
 #[skyline::hook(offset = 0x1864e00, inline)]
 unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
     let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8)
-        .add(0x5331f20) as *const u64);
+        .add(0x5332f20) as *const u64);
     load_file_by_hash40(
         tables,
         smash::hash40("ui/layout/menu/main_menu/main_menu/layout.arc"),
@@ -290,7 +290,7 @@ pub static mut SSS_CANCEL_TO_CSS: bool = false;
 pub static mut CSS_CANCEL_TO_LOCAL: bool = false;
 pub static mut IN_LOCAL_WIRELESS: bool = false;
 
-#[skyline::hook(offset = 0x23357f8, inline)]
+#[skyline::hook(offset = 0x2335c48, inline)]
 unsafe fn sss_to_css(ctx: &InlineCtx) {
     let hashed_string = ctx.registers[1].x() as *mut HashedString;
     let current_scene = (*hashed_string).as_str();
@@ -302,23 +302,21 @@ unsafe fn sss_to_css(ctx: &InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x2335184, inline)]
+#[skyline::hook(offset = 0x23355d4, inline)]
 unsafe fn css_to_sss(ctx: &InlineCtx) {
     let hashed_string = ctx.registers[1].x() as *mut HashedString;
     let current_scene = (*hashed_string).as_str();
 
     if current_scene == "CharaSelectScene" {
         let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        let flag_ptr = (text + 0x530996c) as *const u8;
+        let flag_ptr = (text + 0x530a96c) as *const u8;
 
         let flag = *flag_ptr.add(3);
 
-        // This is something to pay attention to when this goes to prerelease
-        // flag == 0 is the standard mode and flag == 4 is random stage select
-        // Unsure if there are more modes, but I'm checking for standard mode just
-        // to be safe. If there are more modes we need to apply this to, we can
-        // add them as they're found.
-        if flag == 0 {
+        // This byte is which stage select mode (anyone, take turns, etc) the game is in
+        // The SSS is shown for modes 0, 1, and 2 but not for 3 or 4,
+        // therefore, only redirect to SSS if the flag is <= 2
+        if flag <= 2 {
             (*hashed_string).set("StageSelectScene");
             SSS_CANCEL_TO_CSS = IN_LOCAL_WIRELESS;
         }
@@ -359,16 +357,16 @@ unsafe fn load_melee_scene(arg: u64) {
     call_original!(arg);
 }
 
-#[skyline::from_offset(0x1743870)]
+#[skyline::from_offset(0x17436d0)]
 unsafe fn check_mode(mode: &mut u32, submode: &mut u32);
 
-#[skyline::hook(offset = 0x16b6bb0)]
+#[skyline::hook(offset = 0x16b6a10)]
 unsafe fn copy_fighter_info(
     dst: &mut UnknownFighterInfoStruct,
     src: &mut UnknownFighterInfoStruct,
 ) {
     let one =
-        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c41b2);
+        *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c51b2);
     if src.hash1 & 0xFF_FFFFFFFF == smash::hash40("ui_chara_random") && one == 0 && IS_LOADING {
         dst.hash1 = 0xC1FFFF00_00000000;
         dst.hash2 = 0xC1FFFF00_00000000;
@@ -381,7 +379,7 @@ unsafe fn copy_fighter_info(
 // This is a hook on the main scene transition function
 // key_str is the scene name
 // Add anything requiring a scene transition check here
-#[skyline::hook(offset = 0x3726120)]
+#[skyline::hook(offset = 0x37266d0)]
 unsafe fn scene_transition(
     list_ptr: *mut c_void,
     key_struct: *const HashedString,
@@ -403,6 +401,10 @@ unsafe fn scene_transition(
         }
 
         let key_str = skyline::from_c_str((key_struct as *const u8).add(8) as *const c_char);
+
+        if key_str == "StageSelectScene" {
+            STAGE_MANAGER.lock().unwrap().matchup_texture_index = None;
+        }
 
         if key_str == "MeleeRuleScene" || key_str == "MainMenuScene" {
             // Clear perma-strikes when going to main menu or the rules screen
@@ -442,6 +444,9 @@ extern "C" {
 #[skyline::hook(replace = save_report)]
 fn save_report_stub(uid: *mut u8) { }
 
+#[skyline::hook(offset = 0x25f7c80)]
+unsafe fn stage_preload(_mgr: u64, _info: *const u8) { }
+
 #[skyline::main(name = "hdr")]
 pub fn main() {
     #[cfg(feature = "main_nro")]
@@ -457,6 +462,7 @@ pub fn main() {
         skyline::patching::Patch::in_text(0x14f99cc).nop().unwrap();
         skyline::patching::Patch::in_text(0x1509fd4).nop().unwrap();
         unlock_menu_music();
+        unlock_characters();
         skyline::install_hooks!(
             training_reset_music1,
             training_reset_music2,
@@ -464,6 +470,7 @@ pub fn main() {
             title_screen_play,
             sss_to_css,
             css_to_sss,
+            stage_preload,
             scene_transition,
             save_report_stub,
             //copy_fighter_info,
@@ -644,12 +651,20 @@ pub fn quick_validate_install() {
 
 fn unlock_menu_music() {
     if std::path::Path::new("sd:/ultimate/hdr-config/unlock_menu_music").exists() {
-        println!("WARNING: potentially bannable operation in effect!");
+        println!("WARNING: potentially bannable operation in effect! Unlocking music.");
         // Patch the My Music UI to always show menu music as selectable
         skyline::patching::Patch::in_text(0x184de0c).nop().unwrap();
         skyline::patching::Patch::in_text(0x184de10).data(0x390bbb9fu32).unwrap();
         // Patch the BGM playback function to always use the player's My Music selection
         // instead of defaulting to the standard menu theme.
-        skyline::patching::Patch::in_text(0x3311f94).data(0x320003e8u32).unwrap();
+        skyline::patching::Patch::in_text(0x3312544).data(0x320003e8u32).unwrap();
+        skyline::patching::Patch::in_text(0x325e5b0).data(0x92800008u32).unwrap();
+    }
+}
+
+fn unlock_characters() {
+    if std::path::Path::new("sd:/ultimate/hdr-config/unlock_characters").exists() {
+        println!("WARNING: potentially bannable operation in effect! Unlocking characters.");
+        skyline::patching::Patch::in_text(0x3264508).data(0x92800008u32).unwrap();
     }
 }

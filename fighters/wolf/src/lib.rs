@@ -1,4 +1,4 @@
-#![feature(repr_simd)]
+// #![feature(repr_simd)]
 #![feature(simd_ffi)]
 #![deny(deprecated)]
 #![allow(unused)]

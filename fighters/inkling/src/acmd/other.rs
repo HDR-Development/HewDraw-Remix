@@ -38,6 +38,63 @@ unsafe extern "C" fn sound_damageflyroll(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VisibilityModule::set_whole(boma, false);
+    }
+    if sv_animcmd::get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(agent) {
+            WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_NO_FLIP_SQUID);
+        }
+    }
+    if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
+        }
+    }
+    let motion = MotionModule::motion_kind(boma);
+    let _frame = MotionModule::frame(boma);
+    let rate = MotionModule::rate(boma);
+    ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new_raw(motion), false, -1.0);
+    if is_excute(agent) {
+        ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, _frame);
+        ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+        let status = StatusModule::status_kind(boma);
+        if status != *FIGHTER_STATUS_KIND_REBIRTH {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+        }
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_NORMAL); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+    if (agent.lr() < 0.0) {
+        if is_excute(agent) {
+            ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new("dash_l"), false, -1.0);
+        }
+    } else {
+        if is_excute(agent) {
+            ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new("dash_r"), false, -1.0);
+        }
+    }
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        VisibilityModule::set_whole(boma, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -45,6 +102,73 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         let dash_sfx_handle = SoundModule::play_se(boma, Hash40::new("se_inkling_dash_start"), true, false, false, false, app::enSEType(0));
         SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
+    }
+}
+
+unsafe extern "C" fn game_run(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
+        }
+    }
+    let motion = MotionModule::motion_kind(boma);
+    let _frame = MotionModule::frame(boma);
+    let rate = MotionModule::rate(boma);
+    ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new_raw(motion), false, -1.0);
+    if is_excute(agent) {
+        ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, _frame);
+        ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+        let status = StatusModule::status_kind(boma);
+        if status != *FIGHTER_STATUS_KIND_REBIRTH {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+        }
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_NORMAL); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+    if is_excute(agent) {
+        VisibilityModule::set_whole(boma, false);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+unsafe extern "C" fn game_turnrun(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        if is_excute(agent) {
+            ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
+        }
+    }
+    let motion = MotionModule::motion_kind(boma);
+    let _frame = MotionModule::frame(boma);
+    let rate = MotionModule::rate(boma);
+    ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new_raw(motion), false, -1.0);
+    if is_excute(agent) {
+        ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, _frame);
+        ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+        let status = StatusModule::status_kind(boma);
+        if status != *FIGHTER_STATUS_KIND_REBIRTH {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+        }
+        HIT_NODE(agent, Hash40::new("trans"), *HIT_STATUS_NORMAL); // hitbox enabled exclusively to nerf squid hurtbox shifting
+    }
+    if is_excute(agent) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        VisibilityModule::set_whole(boma, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(agent) {
+        VisibilityModule::set_whole(boma, false);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -153,7 +277,12 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_damageflytop", sound_damagefly, Priority::Low);
     agent.acmd("sound_damageflyroll", sound_damageflyroll, Priority::Low);
 
+    agent.acmd("game_dash", game_dash, Priority::Low);
     agent.acmd("sound_dash", sound_dash, Priority::Low);
+
+    agent.acmd("game_run", game_run, Priority::Low);
+
+    agent.acmd("game_turnrun", game_turnrun, Priority::Low);
 
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);

@@ -118,7 +118,7 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_int64(boma, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_int64(boma, hash40("weapon"), hash40("weapon_normal"));
     }
     frame(lua_state, 1.0);
     if is_excute(agent) {
@@ -230,7 +230,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_attack13", effect_attack13, Priority::Low);
     agent.acmd("sound_attack13", sound_attack13, Priority::Low);
     agent.acmd("expression_attack13", expression_attack13, Priority::Low);
-    
+
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
     agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
 }

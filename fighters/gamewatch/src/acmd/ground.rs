@@ -75,7 +75,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ItemModule::set_attach_item_visibility(boma, false, 0);
-        VisibilityModule::set_int64(boma, hash40("head") as i64, hash40("head_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("head"), hash40("head_none"));
         ItemModule::set_have_item_visibility(boma, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }
@@ -144,6 +144,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_attack12", expression_attack12, Priority::Low);
 
     agent.acmd("game_attack100end", game_attack100end, Priority::Low);
-    
+
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

@@ -3,6 +3,7 @@
   <list hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_y">21.8</float>
+      <float hash="p2_y">7.5</float>
     </struct>
     <!-- SIDE SPECIAL -->
     <hash40 index="1">dummy</hash40>

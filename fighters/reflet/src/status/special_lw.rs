@@ -1,9 +1,9 @@
 use super::*;
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // set vars/flags/momentum
-    fighter.set_int64(hash40("special_lw_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
-    fighter.set_int64(hash40("special_air_lw_start") as i64, *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
+    //set vars/flags/momentum
+    fighter.set_int64(hash40("special_lw_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
+    fighter.set_int64(hash40("special_air_lw_start"), *FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);
     fighter.set_int(*FIGHTER_KINETIC_TYPE_AIR_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_AIR);
     fighter.set_int(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP, *FIGHTER_REFLET_STATUS_COMMON_INT_CORRECT_GROUND);

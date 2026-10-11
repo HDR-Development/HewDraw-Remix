@@ -11,8 +11,8 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
     // Disallow SpecialAirS4Lw because we dont have an animation for it lol
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_S4)
     && fighter.is_motion(Hash40::new("special_air_s4_lw")) {
-        fighter.set_int64(hash40("special_s4_s") as i64, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
-        fighter.set_int64(hash40("special_air_s4_s") as i64, *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
+        fighter.set_int64(hash40("special_s4_s"), *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
+        fighter.set_int64(hash40("special_air_s4_s"), *FIGHTER_ROY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
         fighter.off_flag(*FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_HI);
         fighter.off_flag(*FIGHTER_ROY_STATUS_SPECIAL_S_FLAG_INPUT_LW);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s4_s"), 0.0, 1.0, false, 0.0, false, false);
@@ -89,5 +89,5 @@ pub unsafe extern "C" fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFi
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.on_line(Main, chrom_frame_wrapper); 
+    agent.on_line(Main, chrom_frame_wrapper);
 }

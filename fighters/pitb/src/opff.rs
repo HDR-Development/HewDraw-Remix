@@ -10,9 +10,7 @@ unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// Dark Pit Guardian Orbitar Jump Cancels
-unsafe fn guardian_orbitar_jc(fighter: &mut L2CFighterCommon) {
-
+unsafe fn dspecial_cancel(fighter: &mut L2CFighterCommon) {
     // resets the disable jump cancel flag
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
@@ -64,7 +62,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma);
-    guardian_orbitar_jc(fighter);
+    dspecial_cancel(fighter);
     electroshock_land_cancel_on_hit(fighter);
     pits_common(fighter, boma, status_kind);
 }

@@ -8,9 +8,9 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 5.5, 1.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "armr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowr", dmg: 3.0, angle: 80, kbg: 40, bkb: 10, size: 3.0, x: 0.0, y: 7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "armr", dmg: 3.0, angle: 74, kbg: 60, bkb: 20, size: 3.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowr", dmg: 3.0, angle: 74, kbg: 60, bkb: 20, size: 3.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowr", dmg: 3.0, angle: 74, kbg: 60, bkb: 20, size: 3.0, x: 0.0, y: 7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
         // Jab lock hitboxes
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 3, bone: "armr", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 2.0, y: 0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 4, bone: "bowr", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 0.0, y: 2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
@@ -49,12 +49,16 @@ unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(agent, 1.0, 4.0, 1.0);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(agent, 1.0);
     frame(lua_state, 5.0);
     FT_MOTION_RATE_RANGE(agent, 5.0, 5.5, 1.0);
     if is_excute(agent) {
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "arml", dmg: 3.0, angle:  60, kbg: 40, fkb: 70, bkb: 0, size: 3.0, x: 2.0, y:  0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowl", dmg: 3.0, angle:  90, kbg: 40, fkb: 70, bkb: 0, size: 3.2, x: 0.0, y: -2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
-        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowl", dmg: 3.0, angle: 145, kbg: 40, fkb: 85, bkb: 0, size: 3.2, x: 0.0, y: -7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 0, bone: "arml", dmg: 3.0, angle: 80, kbg: 60, bkb: 20, size: 3.0, x: 2.0, y:  0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 1, bone: "bowl", dmg: 3.0, angle: 80, kbg: 60, bkb: 20, size: 3.2, x: 0.0, y: -2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
+        hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 2, bone: "bowl", dmg: 3.0, angle: 80, kbg: 60, bkb: 20, size: 3.2, x: 0.0, y: -7.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::GA_d, });
         // Jab lock hitboxes
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 3, bone: "arml", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.0, x: 2.0, y:  0.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });
         hitbox!(agent, { extends: PITB_SWORD_HITBOX_S, id: 4, bone: "bowl", dmg: 3.0, angle: 361, kbg: 15, bkb: 30, size: 3.2, x: 0.0, y: -2.0, z: 0.0, facing: LrCheck::F, situation: CollisionSituation::G, });

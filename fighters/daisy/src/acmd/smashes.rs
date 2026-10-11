@@ -90,7 +90,7 @@ unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(agent) {
-        VisibilityModule::set_int64(boma, hash40("smash_item") as i64, hash40("smash_item_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("smash_item"), hash40("smash_item_none"));
     }
     frame(lua_state, 42.0);
     if is_excute(agent) {

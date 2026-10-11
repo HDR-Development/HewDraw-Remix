@@ -51,13 +51,22 @@ unsafe extern "C" fn game_specialnbite(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialsescape(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 11.0);
+    if is_excute(agent) {
+        EFFECT(agent, Hash40::new("sys_jump_smoke"), Hash40::new("top"), 0, 4, 6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
         GroundModule::select_cliff_hangdata(boma, 1);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 5.0);
     if is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
@@ -104,6 +113,15 @@ unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     frame(lua_state, 47.0);
     if is_excute(agent) {
         sv_kinetic_energy!(reset_energy, agent, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, 0.0, 0.0, 0.0, 0.0);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+        let fall_x_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "param_special_hi.fall_special_speed_x_max_mul");;
+        sv_kinetic_energy!(
+            set_stable_speed,
+            agent,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * fall_x_mul,
+            0.0
+        );
         KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
@@ -201,6 +219,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialnbite", game_specialnbite, Priority::Low);
     agent.acmd("game_specialairnbite", game_specialnbite, Priority::Low);
+
+    agent.acmd("effect_specialsescape", effect_specialsescape, Priority::Low);
 
     agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
     agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);

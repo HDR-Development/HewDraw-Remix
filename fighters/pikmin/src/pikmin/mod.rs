@@ -24,20 +24,20 @@ impl From<&mut BattleObjectModuleAccessor> for PikminInfo {
             let param = |name: &str| -> String { format!("{}{}", prefix, name) };
             let battle_object = weapon_boma.get_owner_boma().object(); // olimar's battle object
             return PikminInfo {
-                dmg:        ParamModule::get_float(battle_object, ParamType::Agent, &param("damage_mul")),
-                kbg:        ParamModule::get_float(battle_object, ParamType::Agent, &param("kbg_mul")),
-                shield_dmg: ParamModule::get_float(battle_object, ParamType::Agent, &param("shield_damage_mul")),
-                angle:      ParamModule::get_int(battle_object, ParamType::Agent, &param("angle_mod")) as u64,
-                hitlag:     ParamModule::get_float(battle_object, ParamType::Agent, &param("hitlag_mul")),
-                attr:         Hash40::new(&ParamModule::get_string(battle_object, ParamType::Agent, &param("attr"))),
-                attr_special: Hash40::new(&ParamModule::get_string(battle_object, ParamType::Agent, &param("attr_special"))),
-                sound: ParamModule::get_int(battle_object, ParamType::Agent, &param("sound")),
+                dmg:        ParamModule::get_float(battle_object, ParamType::Common, &param("damage_mul")),
+                kbg:        ParamModule::get_float(battle_object, ParamType::Common, &param("kbg_mul")),
+                shield_dmg: ParamModule::get_float(battle_object, ParamType::Common, &param("shield_damage_mul")),
+                angle:      ParamModule::get_int(battle_object, ParamType::Common, &param("angle_mod")) as u64,
+                hitlag:     ParamModule::get_float(battle_object, ParamType::Common, &param("hitlag_mul")),
+                attr:         Hash40::new(&ParamModule::get_string(battle_object, ParamType::Common, &param("attr"))),
+                attr_special: Hash40::new(&ParamModule::get_string(battle_object, ParamType::Common, &param("attr_special"))),
+                sound: ParamModule::get_int(battle_object, ParamType::Common, &param("sound")),
                 color: Vector3f {
-                    x: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_r")),
-                    y: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_g")),
-                    z: ParamModule::get_float(battle_object, ParamType::Agent, &param("color_b"))
+                    x: ParamModule::get_float(battle_object, ParamType::Common, &param("color_r")),
+                    y: ParamModule::get_float(battle_object, ParamType::Common, &param("color_g")),
+                    z: ParamModule::get_float(battle_object, ParamType::Common, &param("color_b"))
                 },
-                cling_frame: ParamModule::get_int(battle_object, ParamType::Agent, &param("cling_counter"))
+                cling_frame: ParamModule::get_int(battle_object, ParamType::Common, &param("cling_counter"))
             };
         }
     }

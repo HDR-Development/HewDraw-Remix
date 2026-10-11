@@ -232,8 +232,8 @@ unsafe extern "C" fn special_lw_select_main(fighter: &mut L2CFighterCommon) -> L
     fighter.set_int(0, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_INPUT_COUNT);
     fighter.set_int(-1, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_NEXT_STATUS);
     fighter.change_motion_by_situation("special_lw_select", "special_air_lw_select", 0.0, 1.0, false, 0.0, false, false);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
@@ -286,7 +286,7 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
                 fighter.change_status(FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CANCEL.into(), false.into());
             }
         }
-        
+
         return 1.into();
     }
     if fighter.is_cat_flag(Cat1::JumpButton)
@@ -311,7 +311,7 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_landing"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
@@ -325,8 +325,8 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
             if fighter.get_int(*FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_INPUT_COUNT) <= 0 {
                 if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION) == hash40("special_lw_select") {
                     fighter.change_motion_by_situation("special_lw_select2", "special_air_lw_select2", 0.0, 1.0, false, 0.0, false, false);
-                    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select2") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
-                    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select2") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+                    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select2"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+                    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select2"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
                 }
             }
         }
@@ -336,21 +336,21 @@ unsafe extern "C" fn special_lw_select_main_loop(fighter: &mut L2CFighterCommon)
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_select"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION);
         }
         else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_select"), 0.0, 1.0, false, 0.0, false, false);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select") as i64, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_select"), *FIGHTER_BRAVE_STATUS_SPECIAL_LW_HOLD_INT_SELECT_MOTION_AIR);
         }
     }
 
     return 0.into();
 }
 
-unsafe extern "C" fn brave_special_check_sp_set_flag(fighter: &mut L2CFighterCommon, sp_cost: i32, success: i32) -> bool {
+unsafe extern "C" fn brave_special_check_sp_set_flag(fighter: &mut L2CFighterCommon, sp_cost: f32, success: i32) -> bool {
     let sp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP);
     let max_sp = fighter.get_float(*FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_MAX_SP);
-    if sp_cost as f32 <= sp {
+    if sp_cost <= sp {
         fighter.on_flag(success);
         return true;
     }
@@ -372,7 +372,7 @@ unsafe extern "C" fn special_lw_exit(fighter: &mut L2CFighterCommon) -> L2CValue
     if interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_SELECT {
         return 0.into();
     }
-    
+
     let handle = VarModule::get_int(fighter.battle_object, vars::brave::instance::MENU_ICON_EFFECT_HANDLE);
     if interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START
     || interrupt == *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_STEEL_START {
@@ -382,7 +382,7 @@ unsafe extern "C" fn special_lw_exit(fighter: &mut L2CFighterCommon) -> L2CValue
         EffectModule::kill(fighter.module_accessor, handle as u32, true, true);
     }
     VarModule::set_int(fighter.battle_object, vars::brave::instance::MENU_ICON_EFFECT_HANDLE, -1);
-    
+
     return 0.into();
 }
 

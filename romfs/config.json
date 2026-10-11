@@ -216,6 +216,9 @@
 		],
 		"fighter/roy/cmn": [
 			"fighter/roy/param/hdr.xml"
+		],
+		"fighter/wario/cmn": [
+			"fighter/wario/param/hdr.xml"
 		]
 	}
 }

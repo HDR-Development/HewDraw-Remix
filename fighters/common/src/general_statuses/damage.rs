@@ -85,7 +85,7 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
         }
         else if [*FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
             PostureModule::set_lr(fighter.module_accessor, damage_lr);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);   
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
         else {
             // If hit from behind, turns you around to face attacker
@@ -122,7 +122,7 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
                 let damage_fly_angle = FighterUtil::set_damage_fly_angle(fighter.module_accessor, 0.0, 1.0, 360.0, MotionNodeRotateCompose{_address: damage_fly_angle_compose as u8});
                 WorkModule::set_float(fighter.module_accessor, damage_fly_angle, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_ROT_ANGLE);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_ROLL_SET_ANGLE);
-                WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
+                WorkModule::set_int64(fighter.module_accessor, hash40("invalid"), *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
                 // <HDR>
                 check_asdi(fighter);
 
@@ -160,7 +160,7 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
                 }
             }
         }
-        WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("invalid"), *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     }
 
     // <HDR>
@@ -175,7 +175,7 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
         WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
     }
     // </HDR>
-    
+
     0.into()
 }
 
@@ -297,7 +297,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     // println!("damage log value angle: {}", angle);
 
     let degrees = angle.to_degrees();
-    
+
     let meteor_vector_min = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_min"));
     let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max"));
 
@@ -307,7 +307,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     }
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
-    
+
     let cursor_fly_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cursor_fly_speed"));
     // println!("cursor_fly_speed: {}", cursor_fly_speed);
     let pop1squared = damage_speed_x * damage_speed_x;
@@ -365,7 +365,7 @@ unsafe fn sub_ftStatusUniqProcessDamageFly_getMotionKind_hook(fighter: &mut L2CF
         return L2CValue::U64(hash40("wall_damage"));
     }
     ***/
-    
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("height"));
     sv_information::damage_log_value(fighter.lua_state_agent);
@@ -402,7 +402,7 @@ unsafe fn status_DamageFly_Main_hook(fighter: &mut L2CFighterCommon) -> L2CValue
             MotionModule::set_rate(fighter.module_accessor, 0.0);
         }
         // </HDR>
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FALL) 
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FALL)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION)
         {
             fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
@@ -572,7 +572,7 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
             }
             else if [*FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
                 PostureModule::set_lr(fighter.module_accessor, damage_lr);
-                PostureModule::update_rot_y_lr(fighter.module_accessor);   
+                PostureModule::update_rot_y_lr(fighter.module_accessor);
             }
             else {
                 // If hit from behind, turns you around to face attacker
@@ -729,7 +729,7 @@ unsafe fn ftStatusUniqProcessDamageAir_init(fighter: &mut L2CFighterCommon, arg2
 unsafe fn status_DamageAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion_kind), true);
-    
+
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("level"));
     sv_information::damage_log_value(fighter.lua_state_agent);

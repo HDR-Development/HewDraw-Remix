@@ -2,7 +2,7 @@ use super::*;
 use globals::*;
 
 const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), hash40("sys_nopassive")];
-const SMOKE_FX: [u64 ; 19] = [hash40("sys_atk_smoke"),
+const SMOKE_FX: [u64 ; 23] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
                             hash40("sys_dash_smoke"),
@@ -20,7 +20,12 @@ const SMOKE_FX: [u64 ; 19] = [hash40("sys_atk_smoke"),
                             hash40("sys_v_smoke_b"),
                             hash40("sys_action_smoke_h"),
                             hash40("sys_action_smoke_v"),
+                            hash40("sys_whirlwind_l"),
+                            hash40("sys_whirlwind_r"),
+                            hash40("luigi_rocket_jet"),
+                            hash40("diddy_popgun"),
                             hash40("null")];
+const FLASH_FX: [u64 ; 2] = [hash40("sys_flash"), hash40("sys_smash_flash")];
 
 unsafe extern "C" fn was_passive_disabled(boma: &mut BattleObjectModuleAccessor) -> bool {
     if !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U, *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR]) {
@@ -259,6 +264,16 @@ unsafe fn req_hook(effect_module: u64, effHash: smash::phx::Hash40, pos: *mut Ve
         eff_size = size * effect_size_mul;
     }
 
+    if FLASH_FX.contains(&effHash.hash) {
+        if size > 0.8 {
+            eff_size = (size * 0.8).max(0.8);
+        }
+    }
+
+    if effHash.hash == hash40("sys_hit_sweat") {
+        return 0;
+    }
+
     let handle = call_original!(effect_module, new_eff_hash, pos, rot, eff_size, arg6, arg7, arg8, arg9);
 
     if SMOKE_FX.contains(&effHash.hash) {
@@ -298,6 +313,12 @@ unsafe fn req_on_joint_hook(effect_module: u64, effHash: smash::phx::Hash40, bon
         eff_size = size * 0.7;
     }
 
+    if FLASH_FX.contains(&effHash.hash) {
+        if size > 0.8 {
+            eff_size = (size * 0.8).max(0.8);
+        }
+    }
+
     let handle = call_original!(effect_module, new_eff_hash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12);
 
     if SMOKE_FX.contains(&effHash.hash) {
@@ -334,6 +355,12 @@ unsafe fn req_follow(effect_module: u64, effHash: smash::phx::Hash40, boneHash: 
         }
 
         eff_size = size * effect_size_mul;
+    }
+
+    if FLASH_FX.contains(&effHash.hash) {
+        if size > 0.8 {
+            eff_size = (size * 0.8).max(0.8);
+        }
     }
 
     let handle = original!()(effect_module, new_eff_hash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);

@@ -153,8 +153,8 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
         for _ in 0..5 {
             wait(lua_state, 1.0);
             if is_excute(agent) {
-                if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) 
-                && !VarModule::is_flag(agent.battle_object, vars::robot::status::IS_CHARGE_FINISHED) 
+                if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK)
+                && !VarModule::is_flag(agent.battle_object, vars::robot::status::IS_CHARGE_FINISHED)
                 && WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE) > 10.0 {
                     // If holding down the button, increment the charge and continue the slowed animation
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
@@ -176,8 +176,8 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
                         VarModule::on_flag(agent.battle_object, vars::robot::status::IS_CHARGE_FINISHED);
                         FT_MOTION_RATE(agent, 1.0);
                     }
-                } 
-            } 
+                }
+            }
         }
     }
 
@@ -194,7 +194,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(agent) {
         FT_MOTION_RATE(agent, 1.0);
-        if VarModule::is_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED) {
+        if !VarModule::is_flag(boma.object(), vars::robot::instance::ATTACK_AIR_B_USED) {
             if VarModule::get_float(agent.battle_object, vars::robot::status::ATTACK_AIR_B_CHARGE_LEVEL) >= 5.0 {
                 SET_SPEED_EX(agent, 1.75, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             } else {
@@ -219,7 +219,7 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
             ATTACK(agent, 2, 0, Hash40::new("knee"), 12.0, 35, 70, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(12.0), Some(0.0), Some(0.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(attr), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
         FT_MOTION_RATE(agent, 0.7);
-        WorkModule::off_flag(boma, vars::robot::instance::ATTACK_AIR_B_USED);
+        WorkModule::on_flag(boma, vars::robot::instance::ATTACK_AIR_B_USED);
     }
 
     frame(lua_state, 24.0);
@@ -302,8 +302,8 @@ unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(agent) {
         EFFECT_OFF_KIND(agent, Hash40::new("robot_nozzle_flare"), false, false);
-    
-        if VarModule::is_flag(agent.battle_object, vars::robot::status::ATTACK_AIR_B_MAX_CHARGE) {   
+
+        if VarModule::is_flag(agent.battle_object, vars::robot::status::ATTACK_AIR_B_MAX_CHARGE) {
             EFFECT_FOLLOW(agent, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
             LAST_EFFECT_SET_RATE(agent, 0.5);
             LAST_EFFECT_SET_COLOR(agent, 0.15, 0.55, 10.0);
@@ -330,7 +330,7 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::robot::status::ATTACK_AIR_B_CHARGE) {
             PLAY_SE(agent, Hash40::new("vc_robot_attack05"));
-		} 
+		}
 	}
 
     frame(lua_state, 15.0);
@@ -362,7 +362,7 @@ unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
         let landing_frame_boost = landing_frame_normal + 3.0;
         if VarModule::is_flag(agent.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(agent, landing_frame_boost/landing_frame_normal);
-        } 
+        }
     }
 }
 
