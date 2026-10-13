@@ -37,17 +37,6 @@ unsafe extern "C" fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_stick_x = fighter.get_param_float("common", "dash_stick_x");
-    let flick_frame = FighterControlModuleImpl::get_param_dash_s4_frame(fighter.module_accessor) + fighter.get_param_int("common", "dash_flick_x") as f32;
-    let stick_x = fighter.global_table[STICK_X].get_f32().abs();
-    let flick_x = (ControlModule::get_flick_no_reset_x(fighter.module_accessor) & 0xff) as f32;
-    if dash_stick_x <= stick_x && flick_x < flick_frame {
-        fighter.on_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_HAJIKI_NUM);
-        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1);
-    }
     return false.into();
 }
 
@@ -88,6 +77,13 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if link_situation_helper(fighter).get_bool() {
         special_s_set_kinetics(fighter);
     }
+
+    // tap/hold input for boomerang distance
+    if fighter.check_hold_input(0, 8, Buttons::SpecialAll) {
+        fighter.on_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_HAJIKI_NUM);
+    }
+
     return false.into();
 }
 
@@ -162,10 +158,11 @@ unsafe extern "C" fn special_s2_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return true.into();
     }
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    && (fighter.sub_wait_ground_check_common(false.into()).get_bool()
-    || fighter.sub_air_check_fall_common().get_bool()) {
-        return false.into();
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return true.into();
+        }
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {

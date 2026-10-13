@@ -229,3 +229,9 @@ special_air_lw_throw:
     xlu_end: 0
     cancel_frame: 25
     no_stop_intp: false
+special_s2:
+  extra:
+    cancel_frame: 1
+special_airs2:
+  extra:
+    cancel_frame: 1

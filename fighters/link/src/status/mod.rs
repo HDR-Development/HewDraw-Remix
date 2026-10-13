@@ -22,12 +22,23 @@ pub unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -
     return 0.into()
 }
 
-// unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     return true.into()
-// }
+// attempting to boomerang when one was already out would use a fail motion anyways
+// so lets just prevent using boomerang in that instance, removing the annoying fail motion
+unsafe extern  "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_flag(*FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_BOOMERANG) {
+        return false.into()
+    }
+    return true.into()
+}
+
+// fixes some issues where DSpecial wouldn't work unexpectedly
+unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return true.into()
+}
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    // fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+    fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
     fighter.global_table[0x27].assign(&false.into()); // ground special transition handler
     fighter.global_table[0x26].assign(&false.into()); // air special transition handler
 }

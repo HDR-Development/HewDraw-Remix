@@ -1,5 +1,52 @@
 use super::*;
 
+unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_LINK_GENERATE_ARTICLE_BOOMERANG, false, -1);
+    }
+
+    frame(lua_state, 10.0);
+    let startup = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
+        28.0
+    } else {
+        24.0
+    };
+    FT_MOTION_RATE_RANGE(agent, 10.0, 25.0, startup - 12.0);
+
+    frame(lua_state, 25.0);
+    FT_MOTION_RATE(agent, 1.0);
+
+    frame(lua_state, 27.0);
+    let endlag = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
+        16.0
+    } else {
+        20.0
+    };
+    FT_MOTION_RATE_RANGE(agent, 27.0, 46.0, endlag);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_LINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    }
+
+    frame(lua_state, 46.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn sound_specials1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_link_attack03"));
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_link_special_s01"));
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -373,6 +420,11 @@ unsafe extern "C" fn expression_speciallwthrow(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials1", game_specials1, Priority::Low);
+    agent.acmd("game_specialairs1", game_specials1, Priority::Low);
+    agent.acmd("sound_specials1", sound_specials1, Priority::Low);  
+    agent.acmd("sound_specialsair1", sound_specials1, Priority::Low);  
+
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
