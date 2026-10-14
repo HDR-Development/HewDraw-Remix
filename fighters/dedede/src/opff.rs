@@ -313,10 +313,16 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     jet_hammer_charge(fighter, motion_kind);
 }
 
+// symbol-based call for link's arrow fuse
+extern "Rust" {
+    fn fuse_dedede_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub extern "C" fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		dedede_frame(fighter)
+		dedede_frame(fighter);
+        fuse_dedede_common(fighter);
     }
 }
 

@@ -17,6 +17,11 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
+// symbol-based call for link's arrow fuse
+extern "Rust" {
+    fn fuse_rosetta_common(fighter: &mut L2CFighterCommon);
+}
+
 use vars::common::instance::GIMMICK_TIMER;
 use vars::rosetta::instance::*;
 use vars::rosetta::status::*;
@@ -97,7 +102,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 pub extern "C" fn rosetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		rosetta_frame(fighter)
+		rosetta_frame(fighter);
+        fuse_rosetta_common(fighter);
     }
 }
 

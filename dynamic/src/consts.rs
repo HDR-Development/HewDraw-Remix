@@ -252,6 +252,11 @@ pub mod vars {
 
             pub const DISABLE_ESCAPE_AIR_EFFECT_HANDLE: i32 = 0x0017;
 
+            // link arrow fuse
+            pub const FUSE_TEAM_NO: i32 = 0x0018;
+            pub const FUSE_STORED_ITEM_KIND: i32 = 0x0019;
+            pub const FUSE_STORED_TARGET_ID: i32 = 0x001A;
+
 
             // floats
 
@@ -1011,6 +1016,21 @@ pub mod vars {
         pub mod status {
             // flags
             pub const ENABLE_SPECIAL_LW_CANCEL: i32 = 0x1000;
+        }
+    }
+
+    pub mod link_bowarrow {
+        pub mod instance {
+            // flags
+            pub const IS_ARROW_FUSE: i32 = 0x0100;
+            pub const IS_REFLECT_FIX: i32 = 0x0101;
+
+            // ints
+            pub const FUSED_ITEM_KIND: i32 = 0x0100;
+            pub const FUSED_ITEM_TYPE: i32 = 0x0101;
+            pub const FUSED_ITEM_POST_STATUS: i32 = 0x0102;
+            pub const FUSED_ITEM_ID: i32 = 0x0103;
+            pub const FUSED_ITEM_OWNER_ID: i32 = 0x0104;
         }
     }
 
@@ -2209,6 +2229,10 @@ pub mod statuses {
     pub mod krool {
         pub const SPECIAL_LW_GUT: i32 = 0x1F9;
         pub const SPECIAL_N_FIRE_HI: i32 = 0x1FA;
+    }
+
+    pub mod link {
+        pub const SPECIAL_LW_THROW: i32 = 0x1E8;
     }
 
     pub mod littlemac {
