@@ -12,7 +12,7 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     let startup = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
         28.0
     } else {
-        24.0
+        23.0
     };
     FT_MOTION_RATE_RANGE(agent, 10.0, 25.0, startup - 12.0);
 
@@ -21,7 +21,7 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
 
     frame(lua_state, 27.0);
     let endlag = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
-        16.0
+        15.0
     } else {
         20.0
     };
