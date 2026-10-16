@@ -416,7 +416,7 @@ unsafe fn set_pane_text_values(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d33b60, inline)]
 unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const _ as *const u8).add(0x300);
+    let sp = ctx.sp.x() as *const u8;
     let ptr = *(sp.add(0xa8) as *const u64);
 
     if ctx.registers[22].x() == 4 {
@@ -429,7 +429,7 @@ unsafe fn set_parry_button_shield_text(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d33ca0, inline)]
 unsafe fn set_parry_button_taunt_text(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const _ as *const u8).add(0x300);
+    let sp = ctx.sp.x() as *const u8;
     let ptr = *(sp.add(0xa8) as *const u64);
 
     if ctx.registers[22].x() == 4 {

@@ -16,7 +16,7 @@ use globals::*;
 #[skyline::hook(offset = 0xf13ddc, inline)]
 unsafe fn steve_parry_stuff_fix(ctx: &mut skyline::hooks::InlineCtx) {
     if ctx.registers[0].x() == 0x1D {
-        *((ctx as *mut _ as *mut u8).add(0x300).add(0x98) as *mut u32) = 0x1;
+        *((ctx.sp.x() as *const u8).add(0x98) as *mut u32) = 0x1;
     }
 }
 
