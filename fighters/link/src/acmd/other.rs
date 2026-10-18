@@ -226,6 +226,26 @@ unsafe extern "C" fn effect_win3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_squat(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_WAIT_SHIELD);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHANGE_STATUS_DLAY_MOTION);
+    }
+}
+
+unsafe extern "C" fn game_squatrv(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        WorkModule::on_flag(boma, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_WAIT_SHIELD);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -252,4 +272,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("effect_win1", effect_win1, Priority::Low);
     agent.acmd("effect_win3", effect_win3, Priority::Low);
+
+    agent.acmd("game_squat", game_squat, Priority::Low);
+    agent.acmd("game_squatrv", game_squatrv, Priority::Low);
 }

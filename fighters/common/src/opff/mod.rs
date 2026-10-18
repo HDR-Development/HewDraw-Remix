@@ -18,6 +18,7 @@ pub mod floats;
 pub mod other;
 pub mod fe;
 pub mod pocket;
+pub mod fuse;
 
 use other::*;
 

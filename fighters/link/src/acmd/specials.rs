@@ -1,5 +1,52 @@
 use super::*;
 
+unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        ArticleModule::generate_article(boma, *FIGHTER_LINK_GENERATE_ARTICLE_BOOMERANG, false, -1);
+    }
+
+    frame(lua_state, 10.0);
+    let startup = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
+        28.0
+    } else {
+        23.0
+    };
+    FT_MOTION_RATE_RANGE(agent, 10.0, 25.0, startup - 12.0);
+
+    frame(lua_state, 25.0);
+    FT_MOTION_RATE(agent, 1.0);
+
+    frame(lua_state, 27.0);
+    let endlag = if agent.is_flag(*FIGHTER_LINK_STATUS_BOOMERANG_FLAG_FLICK) {
+        15.0
+    } else {
+        20.0
+    };
+    FT_MOTION_RATE_RANGE(agent, 27.0, 46.0, endlag);
+    if is_excute(agent) {
+        ArticleModule::shoot(boma, *FIGHTER_LINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    }
+
+    frame(lua_state, 46.0);
+    FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn sound_specials1(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("vc_link_attack03"));
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_link_special_s01"));
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
@@ -325,9 +372,70 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallwthrow(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        let have_item = ItemModule::get_have_item_id(boma, 0) as u32;
+        let have_item_boma = sv_battle_object::module_accessor(have_item);
+        ItemModule::throw_item(boma, 48.0, 2.5, 1.0, 0, true, agent.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));
+        PostureModule::add_pos_2d(have_item_boma, &Vector2f {x: (8.0 * agent.lr()), y: 0.0});
+    }
+}
+
+unsafe extern "C" fn effect_speciallwthrow(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn sound_speciallwthrow(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_item_item_throw"));
+    }
+}
+
+unsafe extern "C" fn expression_speciallwthrow(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_back"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        VisibilityModule::set_int64(boma, hash40("shield"), hash40("shield_normal"));
+    }
+}
+
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials1", game_specials1, Priority::Low);
+    agent.acmd("game_specialairs1", game_specials1, Priority::Low);
+    agent.acmd("sound_specials1", sound_specials1, Priority::Low);  
+    agent.acmd("sound_specialsair1", sound_specials1, Priority::Low);  
+
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
     agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
     agent.acmd("effect_specialairhi", effect_specialairhi, Priority::Low);
+
+    agent.acmd("game_speciallwthrow", game_speciallwthrow, Priority::Low);
+    agent.acmd("game_specialairlwthrow", game_speciallwthrow, Priority::Low);
+    agent.acmd("effect_speciallwthrow", effect_speciallwthrow, Priority::Low);
+    agent.acmd("effect_specialairlwthrow", effect_speciallwthrow, Priority::Low);
+    agent.acmd("sound_speciallwthrow", sound_speciallwthrow, Priority::Low);
+    agent.acmd("sound_specialairlwthrow", sound_speciallwthrow, Priority::Low);
+    agent.acmd("expression_speciallwthrow", expression_speciallwthrow, Priority::Low);
+    agent.acmd("expression_specialairlwthrow", expression_speciallwthrow, Priority::Low);
 }

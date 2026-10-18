@@ -135,11 +135,17 @@ extern "Rust" {
     fn ac_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
+// symbol-based call for link's arrow fuse
+extern "Rust" {
+    fn fuse_pocket_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
         ac_common(fighter);
+        fuse_pocket_common(fighter);
     }
 }
 
