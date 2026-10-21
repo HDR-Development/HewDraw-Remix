@@ -48,10 +48,7 @@ unsafe extern "C" fn edge_flash_on_search(_vtable: u64, weapon: &mut app::Weapon
 
 pub fn install() {
     // Gives Flash a SearchModule so its search callback runs.
-    unsafe {
-        let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u64;
-        let _ = skyline::patching::Patch::in_text(0x518a860 + (*WEAPON_KIND_EDGE_FLASH as usize * 0x1d * 0x8)).data(text.add(0x33b9030 / 0x8));
-    }
+    enable_weapon_module(*WEAPON_KIND_EDGE_FLASH, WeaponModule::Search);
 
     replace_weapon_vtable(
         *WEAPON_KIND_EDGE_FLASH,

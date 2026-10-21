@@ -28,10 +28,7 @@ unsafe extern "C" fn pfushigisou_seed_on_hit(vtable: u64, weapon: *mut app::Weap
 
 pub fn install() {
     // enables Bullet Seed to be reflected
-    unsafe {
-        let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u64;
-        let _ = skyline::patching::Patch::in_text(0x51a0628).data(text.add(0x33b8f80 / 0x8));
-    }
+    enable_weapon_module(*WEAPON_KIND_PFUSHIGISOU_SEED, WeaponModule::Reflect);
 
     replace_weapon_vtable(
         *WEAPON_KIND_PFUSHIGISOU_SEED,
