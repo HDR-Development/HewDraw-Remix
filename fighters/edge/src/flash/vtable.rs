@@ -52,7 +52,7 @@ pub fn install() {
 
     replace_weapon_vtable(
         *WEAPON_KIND_EDGE_FLASH,
-        WeaponVtableSlot::OnWeaponReflection,
+        WeaponVtableSlot::OnSearch,
         edge_flash_on_search as *const () as _
     );
 }
