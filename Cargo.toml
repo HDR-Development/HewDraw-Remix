@@ -15,7 +15,7 @@ prefix = "hdr"
 skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git =  "https://github.com/ultimate-research/skyline-smash", features = ["weak_l2cvalue"] }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
-smashline = { git = "https://github.com/HDR-Development/smashline", branch = "cloning-experiments" }
+smashline = { git = "https://github.com/HDR-Development/smashline" }
 # ssbusync = { git = "https://github.com/BlankMauser/ssbu-sync.git", tag = "1.0.3", default-features = false }
 proc-hitbox = { git = "https://github.com/HDR-Development/compile-time-smash-script" }
 proc-hitbox-macro = { git = "https://github.com/HDR-Development/compile-time-smash-script" }
