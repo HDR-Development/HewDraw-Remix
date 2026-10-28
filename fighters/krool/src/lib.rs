@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+mod vtable;
+
 // articles
 
 mod backpack;
@@ -54,6 +56,8 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    vtable::install();
 
     backpack::install();
     crown::install();
