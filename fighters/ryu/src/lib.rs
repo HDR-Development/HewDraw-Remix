@@ -46,7 +46,7 @@ use smashline::*;
 #[macro_use] extern crate smash_script;
 
 pub fn install() {
-    smashline::update_weapon_count(*WEAPON_KIND_RYU_HADOKEN, 2);
+    smashline::update_weapon_count(*FIGHTER_KIND_RYU, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN, 2);
     let agent = &mut Agent::new("ryu");
     acmd::install(agent);
     opff::install(agent);

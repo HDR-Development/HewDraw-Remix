@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+mod vtable;
+
 // articles
 
 mod rockbuster;
@@ -55,6 +57,8 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    vtable::install();
 
     rockbuster::install();
     chargeshot::install();
