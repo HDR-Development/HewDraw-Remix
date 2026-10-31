@@ -98,5 +98,9 @@ pub fn install() {
     poisonbreath::install();
     firebreath::install();
 
-    smashline::clone_weapon("mario", *WEAPON_KIND_MARIO_FIREBALL, "packun", "firebreath", false);
+    unsafe {
+        let firebreath = smashline::clone_weapon("packun", "firebreath", *WEAPON_KIND_MARIO_FIREBALL, false);
+        articles::generate::packun::FIREBREATH = firebreath.generate_id;
+        articles::kind::packun::FIREBREATH = firebreath.weapon_id;
+    }
 }

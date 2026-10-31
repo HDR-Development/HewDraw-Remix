@@ -8,7 +8,7 @@ unsafe extern "C" fn game_specialnp(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     FT_MOTION_RATE(agent, 1.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, articles::palutena::METEOR, false, -1);
+        ArticleModule::generate_article(boma, articles::generate::palutena::METEOR, false, -1);
     }
 }
 

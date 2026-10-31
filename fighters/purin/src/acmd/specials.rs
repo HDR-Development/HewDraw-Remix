@@ -5,8 +5,8 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        if !ArticleModule::is_exist(boma, articles::purin::DISARMING_VOICE) {
-            ArticleModule::generate_article(boma, articles::purin::DISARMING_VOICE, false, -1);
+        if !ArticleModule::is_exist(boma, articles::generate::purin::DISARMING_VOICE) {
+            ArticleModule::generate_article(boma, articles::generate::purin::DISARMING_VOICE, false, -1);
         }
         ATTACK(agent, 0, 1, Hash40::new("top"), 5.0, 361, 100, 50, 0, 4.5, 0.0, 7.0, 1.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_slip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_HEAD);
     }
@@ -21,8 +21,8 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 14.0);
     if is_excute(agent) {
-        if !ArticleModule::is_exist(boma, articles::purin::DISARMING_VOICE) {
-            ArticleModule::generate_article(boma, articles::purin::DISARMING_VOICE, false, -1);
+        if !ArticleModule::is_exist(boma, articles::generate::purin::DISARMING_VOICE) {
+            ArticleModule::generate_article(boma, articles::generate::purin::DISARMING_VOICE, false, -1);
         }
         ATTACK(agent, 0, 1, Hash40::new("top"), 5.0, 361, 100, 50, 0, 4.5, 0.0, 7.0, 3.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_slip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_HEAD);
     }
@@ -49,13 +49,13 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        if !ArticleModule::is_exist(boma, articles::purin::DISARMING_VOICE) {
+        if !ArticleModule::is_exist(boma, articles::generate::purin::DISARMING_VOICE) {
             PLAY_STATUS(agent, Hash40::new("se_purin_special_n03"));
         }
     }
     frame(lua_state, 13.0);
     if is_excute(agent) {
-        if !ArticleModule::is_exist(boma, articles::purin::DISARMING_VOICE) {
+        if !ArticleModule::is_exist(boma, articles::generate::purin::DISARMING_VOICE) {
             let echo_handle = SoundModule::play_se(boma, Hash40::new("se_purin_disarmingvoice_echo"), true, false, false, false, app::enSEType(0));
             SoundModule::set_se_vol(boma, echo_handle as i32, 1.5, 0);
         }

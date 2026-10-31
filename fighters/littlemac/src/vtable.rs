@@ -1,11 +1,23 @@
 use super::*;
-use utils::ext::*;
 
-#[skyline::hook(offset = 0xc456a0)]
-pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut BattleObject, collisionLog: CollisionLog, damage: f32) -> u64 {
-    let boma = (&mut *(battle_object)).boma();
-    let opponent_boma = &mut *(sv_battle_object::module_accessor(collisionLog.opponent_battle_object_id));
-    //if HitModule::get_status(opponent_boma, collisionLog.receiver_part_id as i32, 0) != 0 { return call_original!(vtable, battle_object, collisionLog, 0.0); }
+pub unsafe extern "C" fn update_littlemac_ui(entry_id: i32, total_gauge: f32) {
+    let manager = singletons::FighterManager() as *mut u64;
+    let offset = (*manager + (entry_id as u64 * 8) + 0x20) as *mut u64;
+    update_littlemac_ui_internal((*offset + 0x41e4) as *mut u32, total_gauge as i32);
+}
+
+#[skyline::from_offset(0x68cda0)]
+fn update_littlemac_ui_internal(manager_offset: *mut u32, total_gauge: i32);
+
+#[skyline::from_offset(0xc456a0)]
+unsafe extern "C" fn littlemac_on_attack_original(vtable: u64, fighter: *mut BattleObject, log: &mut CollisionLog, meter_gain: f32) -> u64;
+
+// FighterVtableSlot::OnAttack
+// Handles KO meter gain.
+unsafe extern "C" fn littlemac_on_attack(vtable: u64, fighter: *mut BattleObject, log: &mut CollisionLog, _meter_gain: f32) -> u64 {
+    let boma = (*fighter).boma();
+    let opponent_boma = &mut *sv_battle_object::module_accessor(log.opponent_battle_object_id);
+    //if HitModule::get_status(opponent_boma, log.receiver_part_id as i32, 0) != 0 { return littlemac_on_attack_original(vtable, fighter, log, 0.0); }
     let mut meter_gain = 5.0;
 
     // this effectively stubs the logic handling critical zoom unless at full meter
@@ -111,11 +123,15 @@ pub unsafe extern "C" fn hook_ko_meter_gain(vtable: u64, battle_object: *mut Bat
     // let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     // update_littlemac_ui(entry_id, meter + meter_gain);
 
-    call_original!(vtable, battle_object, collisionLog, meter_gain)
+    littlemac_on_attack_original(vtable, fighter, log, meter_gain)
 }
 
-#[skyline::hook(offset = 0xc463d0)]
-pub unsafe extern "C" fn littlemac_on_search(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) -> u64 {
+#[skyline::from_offset(0xc463d0)]
+unsafe extern "C" fn littlemac_on_shield_collision_original(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) -> u64;
+
+// FighterVtableSlot::OnShieldCollision
+// Grants meter when Slip Counter triggers.
+unsafe extern "C" fn littlemac_on_shield_collision(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) -> u64 {
     // some_float seems to always be 1
     let object = &mut fighter.battle_object;
     let boma = &mut *(*object).module_accessor;
@@ -136,27 +152,24 @@ pub unsafe extern "C" fn littlemac_on_search(vtable: u64, fighter: &mut Fighter,
         WorkModule::set_float(boma, meter_inc, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
     }
 
-    return original!()(vtable, fighter, log, some_float);
+    littlemac_on_shield_collision_original(vtable, fighter, log, some_float)
 }
-
-pub unsafe extern "C" fn update_littlemac_ui(entry_id: i32, total_gauge: f32) {
-    let manager = singletons::FighterManager() as *mut u64;
-    let offset = (*manager + (entry_id as u64 * 8) + 0x20) as *mut u64;
-    update_littlemac_ui_internal((*offset + 0x41e4) as *mut u32, total_gauge as i32);
-}
-
-#[skyline::from_offset(0x68cda0)]
-fn update_littlemac_ui_internal(manager_offset: *mut u32, total_gauge: i32);
 
 pub fn install() {
-    skyline::install_hooks!(
-        hook_ko_meter_gain,
-        littlemac_on_search
-    );
-
     // modifies the amount of slowdown applied during Slip Counter
     // cmp w0, #0x35
     let _ = skyline::patching::Patch::in_text(0xc46674).data(0x7100D41Fu32);
     // mov w3, #0x36
     let _ = skyline::patching::Patch::in_text(0xc4668c).data(0x528006C3u32);
+
+    replace_fighter_vtable(
+        *FIGHTER_KIND_LITTLEMAC,
+        FighterVtableSlot::OnAttack,
+        littlemac_on_attack as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_LITTLEMAC,
+        FighterVtableSlot::OnShieldCollision,
+        littlemac_on_shield_collision as *const () as _
+    );
 }

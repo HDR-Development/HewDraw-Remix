@@ -58,6 +58,10 @@ pub fn install() {
     explosiveflame::install();
     reflectionboard::install();
     meteor::install();
-    
-    smashline::clone_weapon("ryu", *WEAPON_KIND_RYU_HADOKEN, "palutena", "meteor", false);
+
+    unsafe {
+        let meteor = smashline::clone_weapon("palutena", "meteor", *WEAPON_KIND_RYU_HADOKEN, false);
+        articles::generate::palutena::METEOR = meteor.generate_id;
+        articles::kind::palutena::METEOR = meteor.weapon_id;
+    }
 }

@@ -17,7 +17,6 @@ pub mod gimmick;
 pub mod floats;
 pub mod other;
 pub mod fe;
-pub mod pocket;
 
 use other::*;
 
@@ -26,7 +25,7 @@ pub fn install() {
     // acmd::add_custom_hooks!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_hook);
-    
+
 }
 */
 

@@ -3,6 +3,7 @@ use super::*;
 mod acmd;
 mod opff;
 mod status;
+mod vtable;
 
 pub fn install() {
     let agent = &mut Agent::new("miiswordsman_tornadoshot");
@@ -10,4 +11,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    vtable::install();
 }

@@ -305,7 +305,7 @@ pub mod vars {
             /// global
             /// can be used in any status
             pub const CHECK_HOLD_INPUT: i32 = 0x10F9;
-            pub const NO_POCKET: i32 = 0x10FA;
+            // pub const NO_POCKET: i32 = 0x10FA;
             pub const HIT_EFFECT_DROP_ITEM: i32 = 0x10FB;
             pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x10FC;
             pub const FAF_REACHED: i32 = 0x10FD;
@@ -2320,21 +2320,41 @@ pub mod statuses {
 }
 
 pub mod articles {
-    pub mod packun {
-        pub const FIREBREATH: i32 = 0x4;
-    }
+    pub mod generate {
+        pub mod packun {
+            pub static mut FIREBREATH: i32 = 0;
+        }
 
-    pub mod plizardon {
-        pub const ROCK: i32 = 0x3;
-        pub const ROCKSTONE: i32 = 0x4;
-    }
+        pub mod plizardon {
+            pub static mut ROCK: i32 = 0;
+            pub static mut ROCKSTONE: i32 = 0;
+        }
 
-    pub mod purin {
-        pub const DISARMING_VOICE: i32 = 0x2;
-    }
+        pub mod purin {
+            pub static mut DISARMING_VOICE: i32 = 0;
+        }
 
-    pub mod palutena {
-        pub const METEOR: i32 = 0x9;
+        pub mod palutena {
+            pub static mut METEOR: i32 = 0;
+        }
+    }
+    pub mod kind {
+        pub mod packun {
+            pub static mut FIREBREATH: i32 = 0;
+        }
+
+        pub mod plizardon {
+            pub static mut ROCK: i32 = 0;
+            pub static mut ROCKSTONE: i32 = 0;
+        }
+
+        pub mod purin {
+            pub static mut DISARMING_VOICE: i32 = 0;
+        }
+
+        pub mod palutena {
+            pub static mut METEOR: i32 = 0;
+        }
     }
 }
 
