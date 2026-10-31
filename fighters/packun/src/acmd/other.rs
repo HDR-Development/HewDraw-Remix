@@ -63,6 +63,11 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    frame(lua_state, 10.0);
+    if is_excute(agent) {
+        // changes stance in all modes on F10
+        SET_STANCE(agent, 0, false);
+    }
 }
 
 unsafe extern "C" fn sound_appealhi(agent: &mut L2CAgentBase) {
@@ -81,6 +86,10 @@ unsafe extern "C" fn game_appeals2(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     if is_excute(agent) {
         ModelModule::set_mesh_visibility(agent.boma(), Hash40::new("foot"), true);
+        // only changes stance in training mode
+        if app::smashball::is_training_mode() {
+            SET_STANCE(agent, 0, false);
+        }
     }
     frame(lua_state, 2.0);
     if is_excute(agent) {
@@ -145,9 +154,13 @@ unsafe extern "C" fn expression_appeals2(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    if boma.is_button_on(Buttons::AppealSL) {
-        if is_excute(agent) {
+    if is_excute(agent) {
+        if boma.is_button_on(Buttons::AppealSL) {
             MotionModule::change_motion(boma, Hash40::new("appeal_s_2"), 0.0, 1.0, false, 0.0, false, false);
+        }
+        // only changes stance in training mode
+        if app::smashball::is_training_mode() {
+            SET_STANCE(agent, 2, false);
         }
     }
     frame(lua_state, 2.0);
@@ -182,6 +195,12 @@ unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    if is_excute(agent) {
+        // only changes stance in training mode
+        if app::smashball::is_training_mode() {
+            SET_STANCE(agent, 1, false);
+        }
+    }
     frame(lua_state, 2.0);
     if is_excute(agent) {
         VarModule::off_flag(agent.object(), vars::packun::status::STANCE_INIT);
