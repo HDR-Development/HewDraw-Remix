@@ -508,7 +508,7 @@ fn melee_ui_teardown(_: &skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x138a710, inline)]
-fn hud_update(_: &skyline::hooks::InlineCtx) {
+fn meter_hud_update(_: &skyline::hooks::InlineCtx) {
     unsafe {
         // check the global static menu-based mode field
         let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64
@@ -577,5 +577,5 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(get_set_info_alpha, melee_ui_teardown, hud_update,);
+    skyline::install_hooks!(get_set_info_alpha, melee_ui_teardown, meter_hud_update,);
 }
