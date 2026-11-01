@@ -64,15 +64,14 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) || frame < 2.0 {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
                 } else {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+                    dj_cancel(fighter);
                 }
             } else {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+                fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             }
         } else {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+            fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         }
         let _ = fighter.sub_attack_air_uniq_process_init();
@@ -96,8 +95,7 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
     && MotionModule::frame_2nd(fighter.module_accessor) >= 2.0
     && fighter.global_table[CURRENT_FRAME].get_i32() <= ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame")
     && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+        dj_cancel(fighter);
     }
 
     if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_NESS
@@ -108,12 +106,23 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
             MotionModule::set_rate_2nd(fighter.module_accessor, 1.0);
         }
         if frame >= 29.0 {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            dj_cancel(fighter);
         }
     }
 
     call_original!(fighter)
+}
+
+unsafe fn dj_cancel(fighter: &mut L2CFighterCommon) {
+    fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    let lr = fighter.lr();
+    let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+    let djc_limit_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "djc_limit_speed");
+    sv_kinetic_energy!(reset_energy, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS_2ND, 0.0, 0.0, 0.0, 0.0, 0.0);
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+    sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, speed_x, 0.0);
+    sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y.clamp(-djc_limit_speed, djc_limit_speed));
 }
 
 #[utils::export(common::djc)]

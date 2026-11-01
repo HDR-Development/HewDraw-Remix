@@ -6,7 +6,6 @@ pub mod effect;
 pub mod finals;
 pub mod get_param;
 pub mod transition;
-pub mod djcancel;
 pub mod momentum_transfer;
 pub mod hitstun;
 pub mod iceclimber;
@@ -859,7 +858,6 @@ pub fn install() {
     finals::install();
     get_param::install();
     transition::install();
-    djcancel::install();
     hitstun::install();
     iceclimber::install();
     controls::install();
