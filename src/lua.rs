@@ -264,6 +264,7 @@ unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
 
 static mut CURRENT_UI_PARRY_TOGGLE: bool = false;
 static mut CURRENT_UI_RIVALS_JUMP: bool = false;
+static mut CURRENT_UI_SH_AERIAL_MACRO: bool = false;
 
 #[skyline::hook(offset = 0x1d30a18, inline)]
 unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
@@ -271,6 +272,8 @@ unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
         ctx.registers[19].set_x(CURRENT_UI_PARRY_TOGGLE as u64);
     } else if ctx.registers[1].x() == 6 {
         ctx.registers[19].set_x(CURRENT_UI_RIVALS_JUMP as u64);
+    } else if ctx.registers[1].x() == 7 {
+        ctx.registers[19].set_x(CURRENT_UI_SH_AERIAL_MACRO as u64);
     }
 }
 
@@ -354,6 +357,7 @@ unsafe fn init_ui_state(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (ctx.registers[8].x() as *mut u8).add(1);
     CURRENT_UI_PARRY_TOGGLE = (*ptr >> 1) & 1 != 0;
     CURRENT_UI_RIVALS_JUMP = (*ptr >> 2) & 1 != 0;
+    CURRENT_UI_SH_AERIAL_MACRO = (*ptr >> 3) & 1 != 0;
     *ptr &= 1;
 }
 
@@ -362,6 +366,7 @@ unsafe fn exit_gc(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (ctx.registers[20].x() as *mut u8).add(0xC4);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
+    *ptr |= (CURRENT_UI_SH_AERIAL_MACRO as u8) << 3;
     IS_IN_UI = false;
 }
 
@@ -370,6 +375,7 @@ unsafe fn exit_fk(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (ctx.registers[20].x() as *mut u8).add(0xE0);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
+    *ptr |= (CURRENT_UI_SH_AERIAL_MACRO as u8) << 3;
     IS_IN_UI = false;
 }
 
@@ -378,6 +384,7 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
     let ptr = (ctx.registers[20].x() as *mut u8).add(0xD4);
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
+    *ptr |= (CURRENT_UI_SH_AERIAL_MACRO as u8) << 3;
     IS_IN_UI = false;
 }
 
