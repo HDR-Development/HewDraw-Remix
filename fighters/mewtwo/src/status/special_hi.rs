@@ -229,7 +229,7 @@ unsafe extern "C" fn special_hi2_end(fighter: &mut L2CFighterCommon) -> L2CValue
         if !VarModule::is_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_GROUNDED_TELEPORT) {
             let jump_max = fighter.get_jump_count_max();
             fighter.set_int(jump_max, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::DISABLE_FLOAT);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
         }
         VarModule::off_flag(fighter.battle_object, vars::mewtwo::instance::SPECIAL_HI_GROUNDED_TELEPORT);
     }

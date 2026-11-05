@@ -9,12 +9,6 @@ unsafe extern "C" fn appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_s_2"), 0.0, 1.0, false, 0.0, false, false);
     }
 
-    if app::smashball::is_training_mode() {
-        if fighter.is_motion(Hash40::new("appeal_s_2")) { SET_STANCE(fighter, 0, false); }
-        if fighter.is_motion_one_of(&[Hash40::new("appeal_lw_l"), Hash40::new("appeal_lw_r")]) { SET_STANCE(fighter, 1, false); }
-        else if fighter.is_motion_one_of(&[Hash40::new("appeal_s_l"), Hash40::new("appeal_s_r")]) { SET_STANCE(fighter, 2, false); }
-    }
-
     return ret;
 }
 

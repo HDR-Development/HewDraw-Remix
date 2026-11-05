@@ -9,7 +9,8 @@ use super::*;
 //     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 // }
 
-unsafe extern "C" fn gekkouga_on_init(vtable: u64, fighter: &mut Fighter) {
+// FighterVtableSlot::Reset1
+unsafe extern "C" fn gekkouga_on_init(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     WorkModule::set_int(module_accessor, *BATTLE_OBJECT_ID_INVALID, 0x100000C1);
@@ -17,7 +18,7 @@ unsafe extern "C" fn gekkouga_on_init(vtable: u64, fighter: &mut Fighter) {
     VarModule::set_int(object, vars::gekkouga::instance::SPECIAL_LW_SUMMON_SUB_COOLDOWN, 0);
 }
 
-// #[skyline::hook(offset = 0xadca30)]
+// Was hooked at 0xadca30; slot not yet identified.
 // unsafe extern "C" fn gekkouga_frame(vtable: u64, fighter: &mut Fighter) {
 //     let object = &mut fighter.battle_object;
 //     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
@@ -26,10 +27,11 @@ unsafe extern "C" fn gekkouga_on_init(vtable: u64, fighter: &mut Fighter) {
 //             gimmick_flash(object.boma());
 //         }
 //     }
-
-//     original!()(vtable, fighter)
+//
+//     gekkouga_frame_original(vtable, fighter)
 // }
 
+// FighterVtableSlot::OnSearch
 // unsafe extern "C" fn gekkouga_on_search(vtable: u64, fighter: &mut Fighter, log: u64) {
 //     let object = &mut fighter.battle_object;
 //     let module_accessor = (*object).module_accessor;
@@ -46,11 +48,15 @@ unsafe extern "C" fn gekkouga_on_init(vtable: u64, fighter: &mut Fighter) {
 // }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x4fc02d8).data(gekkouga_on_init as *const () as u64);
+    replace_fighter_vtable(
+        *FIGHTER_KIND_GEKKOUGA,
+        FighterVtableSlot::Reset1,
+        gekkouga_on_init as *const () as _
+    );
 
-    // let _ = skyline::patching::Patch::in_text(0x4fc0438).data(gekkouga_on_search as u64);
-
-    // skyline::install_hooks!(
-    //     gekkouga_frame
+    // replace_fighter_vtable(
+    //     *FIGHTER_KIND_GEKKOUGA,
+    //     FighterVtableSlot::OnSearch,
+    //     gekkouga_on_search as *const () as _
     // );
 }

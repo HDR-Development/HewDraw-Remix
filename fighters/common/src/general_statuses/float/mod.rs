@@ -5,78 +5,65 @@ mod main;
 mod end;
 
 #[no_mangle]
-unsafe fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::DISABLE_FLOAT)
-    || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING) {
-        return 0.into();
-    }
-
-    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON) 
-    && !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
-        return 0.into();
-    }
-
-    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 { 
-        return 0.into();
+unsafe fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> bool {
+    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT)
+    || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING) { // flag seems only useful if there was a non-once-per-airtime float?
+        return false.into();
     }
 
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-        return 0.into();
+        return false.into();
     }
 
     let jump_frame = InputModule::get_trigger_count(fighter.battle_object, Buttons::Jump);
     let float_hold_minimum_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "float_hold_minimum_frame") as usize;
     let stick_y = fighter.left_stick_y();
-    let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+    let squat_stick_y = fighter.get_param_float("common", "squat_stick_y");
 
     if stick_y > squat_stick_y
     && (jump_frame < float_hold_minimum_frame
-        || KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0)
-    {
-        return 0.into()
+    || KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
+        return false.into();
     }
 
-    fighter.change_status(float_status, true.into());
-    1.into()
+    // remove floating with buffered jump+aerials, instant held float f1 of jump
+    let airtime = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+    if airtime < 1 
+    && (fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    || stick_y > squat_stick_y) {
+        return false.into()
+    }
+
+    // no water floats
+    let sit = fighter.global_table[SITUATION_KIND].get_i32();
+    let prev_sit = fighter.global_table[PREV_SITUATION_KIND].get_i32();
+    if sit == *SITUATION_KIND_WATER
+    || prev_sit == *SITUATION_KIND_WATER {
+        return false.into()
+    }
+
+    fighter.change_status(float_status, false.into());
+    true.into()
+}
+
+#[no_mangle]
+unsafe fn float_check_air_jump(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON) {
+        if float_checks(fighter, float_status) {
+            return 1.into()
+        }
+    }
+    0.into()
 }
 
 #[no_mangle]
 unsafe fn float_check_air_jump_aerial(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
-    float_check_air_jump(fighter, float_status);
-    //let is_aerial = fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0;
-//
-    //if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON) {
-    //    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING) {
-    //        let mut allow_float = false;
-    //        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-    //            if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
-    //                allow_float = !is_aerial;
-    //            }
-    //        }
-//
-    //        if allow_float {
-    //            fighter.change_status(float_status, true.into());
-    //            return 1.into();
-    //        }
-    //    }
-    //}
-
-    // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
-    //     if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING) {
-    //         let mut allow_float = false;
-    //         let stick_y = fighter.left_stick_y();
-    //         let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-    //         if jump_stick_y <= stick_y {
-    //             if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
-    //                 allow_float = !is_aerial;
-    //             }
-    //         }
-
-    //         if allow_float {
-    //             fighter.change_status(float_status, true.into());
-    //             return 1.into();
-    //         }
-    //     }
-    // }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON)
+    || WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
+        if float_checks(fighter, float_status) {
+            return 1.into()
+        }
+    }
     0.into()
 }

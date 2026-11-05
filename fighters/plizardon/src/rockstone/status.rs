@@ -18,7 +18,6 @@ pub unsafe extern "C" fn start_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub unsafe extern "C" fn start_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    VarModule::on_flag(weapon.battle_object, vars::common::status::NO_POCKET);
     let owner = &mut *sv_battle_object::module_accessor((WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
     // Random angle between 300 and 100
@@ -84,7 +83,7 @@ pub unsafe extern "C" fn move_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
         *WEAPON_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
         *FS_SUCCEEDS_KEEP_ATTACK as i32,
     );
-    
+
     return 0.into();
 }
 
@@ -102,12 +101,11 @@ pub unsafe extern "C" fn move_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub unsafe extern "C" fn move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    VarModule::on_flag(weapon.battle_object, vars::common::status::NO_POCKET);
     let life = 16; //WorkModule::get_param_int(weapon.module_accessor, hash40("param_rockstone"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     WorkModule::off_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_SWALLOWED);
-    
+
     if StopModule::is_stop(weapon.module_accessor) {
         WorkModule::dec_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     }
@@ -142,7 +140,7 @@ unsafe extern "C" fn move_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
         KineticModule::mul_accel(weapon.module_accessor, &Vector3f::new(0.0, 0.0, 0.0), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         VarModule::on_flag(weapon.battle_object, vars::plizardon_rockstone::status::INFLICTED);
         return 0.into();
-    } 
+    }
     if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
         rockstone_remove(weapon);
     }

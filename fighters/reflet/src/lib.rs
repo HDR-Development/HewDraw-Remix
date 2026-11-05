@@ -7,6 +7,8 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
+mod vtable;
+
 // articles
 
 mod gigafire;
@@ -52,6 +54,8 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
+
+    vtable::install();
 
     gigafire::install();
     thunder::install();

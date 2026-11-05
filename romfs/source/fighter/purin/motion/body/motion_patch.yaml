@@ -101,10 +101,10 @@ catch_attack:
     cancel_frame: 0
 special_n_start_r:
   extra:
-    cancel_frame: 55
+    cancel_frame: 48
 special_air_n_start_r:
   extra:
-    cancel_frame: 55
+    cancel_frame: 48
 special_lw:
   extra:
     xlu_start: 1

@@ -19,14 +19,14 @@ extern "Rust" {
 }
 
 unsafe extern "C" fn reflet_air_jump_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+    if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
         return false.into();
     }
     float_check_air_jump(fighter, statuses::reflet::FLOAT.into())
 }
 
 unsafe extern "C" fn reflet_air_jump_aerial_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+    if fighter.get_int(*FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
         return false.into();
     }
     float_check_air_jump_aerial(fighter, statuses::reflet::FLOAT.into())
@@ -37,6 +37,10 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP]) {
         VarModule::off_flag(fighter.battle_object, vars::reflet::instance::SPECIAL_HI_ENABLE_FREEFALL);
         VarModule::off_flag(fighter.battle_object, vars::common::instance::STALL_PREVENTION);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
+        if !fighter.is_situation(*SITUATION_KIND_CLIFF) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
+        }
     }
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL, statuses::reflet::FLOAT]) {
         spawn_items(fighter);
@@ -45,11 +49,11 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn reflet_on_start(fighter: &mut L2CFighterCommon) {
-    fighter.global_table[0x32].assign(&L2CValue::Ptr(reflet_air_jump_uniq as *const () as _));
-    fighter.global_table[0x33].assign(&L2CValue::Ptr(reflet_air_jump_aerial_uniq as *const () as _));
+    fighter.global_table[globals::CHECK_AIR_JUMP_UNIQ].assign(&L2CValue::Ptr(reflet_air_jump_uniq as *const () as _));
+    fighter.global_table[globals::CHECK_AIR_JUMP_AERIAL_UNIQ].assign(&L2CValue::Ptr(reflet_air_jump_aerial_uniq as *const () as _));
     fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
     VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND, statuses::reflet::FLOAT);
-    VarModule::set_int(fighter.battle_object, vars::reflet::instance::DISCARD_TYPE, -1);//0 is thunder
+    VarModule::set_int(fighter.battle_object, vars::reflet::instance::DISCARD_TYPE, -1); // 0 is thunder
 }
 
 unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
@@ -57,9 +61,9 @@ unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
     if discard_type > -1 
     && !VarModule::is_flag(fighter.battle_object, vars::reflet::instance::DISCARD_SKIP_STATUS) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            ItemModule::throw_item(fighter.module_accessor, 110.0, 1.6, 1.0, 0, true, fighter.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));//should have no hitbox maybe?
-            //ItemModule::drop_item(fighter.module_accessor, 90.0, 0.0, 0);
-            //could copy vanilla and just make new item be the one to toss/drop
+            ItemModule::throw_item(fighter.module_accessor, 110.0, 1.6, 1.0, 0, true, fighter.get_float(*ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER));// should have no hitbox maybe?
+            // ItemModule::drop_item(fighter.module_accessor, 90.0, 0.0, 0);
+            // could copy vanilla and just make new item be the one to toss/drop
         }
         if discard_type != *FIGHTER_REFLET_MAGIC_KIND_SWORD {
             ItemModule::have_item(fighter.module_accessor, app::ItemKind(*ITEM_KIND_BOOK), 0, 0, false, false);
@@ -74,7 +78,7 @@ unsafe fn spawn_items(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe extern "C" fn mot_handler(fighter: &mut L2CFighterCommon) -> L2CValue {//van handling
+pub unsafe extern "C" fn mot_handler(fighter: &mut L2CFighterCommon) -> L2CValue { // van handling
     let mot_gr = fighter.get_int64(*FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_GROUND);
     let mot_air = fighter.get_int64(*FIGHTER_REFLET_STATUS_COMMON_INT_MOTION_KIND_AIR);
     let kin_gr = fighter.get_int(*FIGHTER_REFLET_STATUS_COMMON_INT_KINETIC_GROUND);

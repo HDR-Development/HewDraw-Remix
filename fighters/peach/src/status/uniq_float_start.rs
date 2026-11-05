@@ -17,6 +17,7 @@ unsafe fn peach_float_start_main_common(fighter: &mut L2CFighterCommon) -> L2CVa
     WorkModule::set_int(fighter.module_accessor, uniq_float_float_frame, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_FLOAT_FRAME);
     WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_PEACH_STATUS_UNIQ_FLOAT_WORK_INT_ENABLE_UNIQ);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_FLOATING);
 
     MotionModule::change_motion(

@@ -231,6 +231,21 @@ unsafe extern "C" fn expression_appealspecial(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_fuwafuwastart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let start_motion_rate_frame_reset = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_float.start_motion_rate_frame_reset");
+    frame(lua_state, start_motion_rate_frame_reset);
+    MotionModule::set_rate(boma, 1.0);
+}
+
+unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
+    if is_excute(agent) {
+        sound!(agent, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
+        PLAY_STATUS(agent, Hash40::new("se_daisy_jump04"));
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffescape", acmd_stub, Priority::Low);
 
@@ -264,4 +279,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_appealspecial", effect_appealspecial, Priority::Low);
     agent.acmd("sound_appealspecial", sound_appealspecial, Priority::Low);
     agent.acmd("expression_appealspecial", expression_appealspecial, Priority::Low);
+
+    agent.acmd("game_fuwafuwastart", game_fuwafuwastart, Priority::Low);
+    agent.acmd("sound_fuwafuwastart", sound_fuwafuwa, Priority::Low);
+
+    agent.acmd("effect_fuwafuwa", acmd_stub, Priority::Low);
+    agent.acmd("sound_fuwafuwa", sound_fuwafuwa, Priority::Low);
 }

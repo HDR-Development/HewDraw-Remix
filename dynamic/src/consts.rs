@@ -48,7 +48,8 @@ pub mod globals {
     // 0x2F
     // 0x30
     // 0x31
-    // 0x32 some substatus
+    pub const CHECK_AIR_JUMP_UNIQ: i32 = 0x32;
+    pub const CHECK_AIR_JUMP_AERIAL_UNIQ: i32 = 0x33;
     pub const USE_SPECIAL_N_CALLBACK: i32 = 0x38;
     pub const USE_SPECIAL_S_CALLBACK: i32 = 0x39;
     pub const USE_SPECIAL_HI_CALLBACK: i32 = 0x3A;
@@ -87,9 +88,9 @@ pub mod vars {
 
             // pub const IS_TAP_JUMP: i32 = 0x0004;
 
-            pub const OMNI_FLOAT: i32 = 0x0005;
-            pub const AERIAL_NO_FLOAT: i32 = 0x0006;
-            pub const FLOAT_PAUSE_AERIAL: i32 = 0x0007;
+            //pub const OMNI_FLOAT: i32 = 0x0005;
+            //pub const AERIAL_NO_FLOAT: i32 = 0x0006;
+            //pub const FLOAT_PAUSE_AERIAL: i32 = 0x0007;
 
             pub const SIDE_SPECIAL_CANCEL: i32 = 0x0008;
             pub const UP_SPECIAL_CANCEL: i32 = 0x0009;
@@ -181,29 +182,29 @@ pub mod vars {
 
             pub const IS_INIT: i32 = 0x0065;
 
-            pub const IS_FLOATING: i32 = 0x0066;
+            pub const OMNI_FLOAT: i32 = 0x0066;
+            pub const ENABLE_FLOAT: i32 = 0x0067;
+            pub const IS_FLOATING: i32 = 0x0068;
 
-            pub const WEIRD_ASS_TURN_RUN_ANIMATION: i32 = 0x0067;
+            pub const WEIRD_ASS_TURN_RUN_ANIMATION: i32 = 0x0069;
 
-            pub const ACMD_EFFECT: i32 = 0x0068;
+            pub const ACMD_EFFECT: i32 = 0x006A;
 
-            pub const WAS_PREV_STATUS_CANCELABLE: i32 = 0x0069;
+            pub const WAS_PREV_STATUS_CANCELABLE: i32 = 0x006B;
 
-            pub const IS_ENTER_DASH_CANCEL: i32 = 0x006A;
+            pub const IS_ENTER_DASH_CANCEL: i32 = 0x006C;
 
-            pub const DOWN_DISABLE_PASSIVE: i32 = 0x006B;
+            pub const DOWN_DISABLE_PASSIVE: i32 = 0x006D;
 
-            // pub const DOWN_DISABLE_A_LAND: i32 = 0x006C;
+            // pub const DOWN_DISABLE_A_LAND: i32 = 0x006E;
 
-            pub const IS_KILLING_BLOW: i32 = 0x006D;
+            pub const IS_KILLING_BLOW: i32 = 0x006F;
 
-            pub const IS_DITCIT: i32 = 0x006E;
+            pub const IS_DITCIT: i32 = 0x0070;
 
-            pub const IGNORE_REDUCED_SCREENSHAKE: i32 = 0x006F;
+            pub const IGNORE_REDUCED_SCREENSHAKE: i32 = 0x0071;
 
-            pub const DISABLE_AIR_LASSO: i32 = 0x0070;
-
-            pub const DISABLE_FLOAT: i32 = 0x0071;
+            pub const DISABLE_AIR_LASSO: i32 = 0x0072;
 
             // ints
 
@@ -211,7 +212,7 @@ pub mod vars {
 
             pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
 
-            pub const FLOAT_DURATION: i32 = 0x0002;
+            //pub const FLOAT_DURATION: i32 = 0x0002;
             pub const FLOAT_STATUS_KIND: i32 = 0x0003;
 
             pub const HITFALL_BUFFER: i32 = 0x0004;
@@ -305,7 +306,7 @@ pub mod vars {
             /// global
             /// can be used in any status
             pub const CHECK_HOLD_INPUT: i32 = 0x10F9;
-            pub const NO_POCKET: i32 = 0x10FA;
+            // pub const NO_POCKET: i32 = 0x10FA;
             pub const HIT_EFFECT_DROP_ITEM: i32 = 0x10FB;
             pub const ENABLE_SPECIAL_WALLJUMP: i32 = 0x10FC;
             pub const FAF_REACHED: i32 = 0x10FD;
@@ -2320,21 +2321,41 @@ pub mod statuses {
 }
 
 pub mod articles {
-    pub mod packun {
-        pub const FIREBREATH: i32 = 0x4;
-    }
+    pub mod generate {
+        pub mod packun {
+            pub static mut FIREBREATH: i32 = 0;
+        }
 
-    pub mod plizardon {
-        pub const ROCK: i32 = 0x3;
-        pub const ROCKSTONE: i32 = 0x4;
-    }
+        pub mod plizardon {
+            pub static mut ROCK: i32 = 0;
+            pub static mut ROCKSTONE: i32 = 0;
+        }
 
-    pub mod purin {
-        pub const DISARMING_VOICE: i32 = 0x2;
-    }
+        pub mod purin {
+            pub static mut DISARMING_VOICE: i32 = 0;
+        }
 
-    pub mod palutena {
-        pub const METEOR: i32 = 0x9;
+        pub mod palutena {
+            pub static mut METEOR: i32 = 0;
+        }
+    }
+    pub mod kind {
+        pub mod packun {
+            pub static mut FIREBREATH: i32 = 0;
+        }
+
+        pub mod plizardon {
+            pub static mut ROCK: i32 = 0;
+            pub static mut ROCKSTONE: i32 = 0;
+        }
+
+        pub mod purin {
+            pub static mut DISARMING_VOICE: i32 = 0;
+        }
+
+        pub mod palutena {
+            pub static mut METEOR: i32 = 0;
+        }
     }
 }
 

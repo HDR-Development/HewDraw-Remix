@@ -521,7 +521,7 @@ local set_alt_texture = function(left, texture_index, preview_idx)
     local base_pane = parts:get_pane(base_alt_name)
     local texture_pane = parts:get_pane(texture_name)
 
-    if texture_index == nil then
+    if texture_index == nil or texture_index < 0 then
         base_pane:set_visible(false)
     else
         base_pane:set_visible(true)
