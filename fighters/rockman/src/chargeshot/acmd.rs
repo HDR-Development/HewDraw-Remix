@@ -7,7 +7,7 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     let (dmg, kbg, bkb, shield_dmg) = if is_charge_max {
         (20.0, 69, 41, 7)
     } else {
-        (9.0, 78, 50, 6)
+        (10.0, 78, 50, 6)
     };
     let early_power_mul = 0.8;
     let mid_power_mul = 0.9;
