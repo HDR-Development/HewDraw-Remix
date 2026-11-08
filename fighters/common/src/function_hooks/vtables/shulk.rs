@@ -3,6 +3,9 @@ use super::*;
 extern "C" {
     #[link_name = "shulk_check_valid_arts_statuses_inner"]
     fn shulk_check_valid_arts_statuses_inner(fighter: &mut Fighter) -> bool;
+
+    #[link_name = "shulk_arts_change_status_inner"]
+    fn shulk_arts_change_status_inner(ctx: &mut skyline::hooks::InlineCtx);
 }
 
 // disables art wheel during hitstun, and enables it during jab, tilts and aerials
@@ -30,20 +33,8 @@ macro_rules! decl_hooks_shulk_change_arts {
     }
 }
 
-unsafe extern "C" fn disable_arts_on_beat(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = ctx.registers[21].x() as *mut Fighter;
-    let object = &mut (*fighter).battle_object;
-    if VarModule::is_flag(object, vars::shulk::status::MONADO_BEAT)
-    && WorkModule::is_flag(object.module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE) {
-        reset_arts(fighter, 1);
-    }
-}
-
-#[skyline::from_offset(0x116a420)]
-unsafe extern "C" fn reset_arts(fighter: *mut Fighter, param_2: u64);
-
 decl_hooks_shulk_change_arts! {
-    install_disable_arts_on_beat_hooks => disable_arts_on_beat;
+    install_disable_arts_on_beat_hooks => shulk_arts_change_status_inner;
     shulk_arts_change_status_1(0x1167bbc);
     shulk_arts_change_status_2(0x1168d94)
 }

@@ -177,13 +177,21 @@ unsafe extern "C" fn effect_slipattack(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_fuwafuwastart(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let start_motion_rate_frame_reset = ParamModule::get_float(agent.battle_object, ParamType::Agent, "param_float.start_motion_rate_frame_reset");
+    frame(lua_state, start_motion_rate_frame_reset);
+    MotionModule::set_rate(boma, 1.0);
+}
+
 unsafe extern "C" fn sound_fuwafuwa(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    frame(lua_state, 1.0);
     if is_excute(agent) {
         let sfx_handle = SoundModule::play_status_se(boma, Hash40::new("se_common_spirits_wind_loop"), true, false, false);
-        SoundModule::set_se_vol(boma, sfx_handle as i32, 0.1325, 0);
+        SoundModule::set_se_vol(boma, sfx_handle as i32, 0.25, 0);
+        SoundModule::set_se_speed(boma, sfx_handle as i32, 5.0);
     }
 }
 
@@ -216,7 +224,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_downattacku", effect_downattacku, Priority::Low);
     agent.acmd("effect_slipattack", effect_slipattack, Priority::Low);
 
-    agent.acmd("game_fuwafuwastart", acmd_stub, Priority::Low);
+    agent.acmd("game_fuwafuwastart", game_fuwafuwastart, Priority::Low);
     agent.acmd("effect_fuwafuwastart", acmd_stub, Priority::Low);
     agent.acmd("sound_fuwafuwastart", sound_fuwafuwa, Priority::Low);
     agent.acmd("expression_fuwafuwastart", expression_fuwafuwa, Priority::Low);

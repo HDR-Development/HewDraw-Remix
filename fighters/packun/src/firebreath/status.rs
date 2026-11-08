@@ -14,7 +14,7 @@ pub unsafe extern "C" fn regular_pre(weapon: &mut L2CFighterCommon) -> L2CValue 
         0,
         0,
     );
-    
+
     return 0.into();
 }
 
@@ -25,7 +25,6 @@ pub unsafe extern "C" fn regular_main(weapon: &mut L2CFighterCommon) -> L2CValue
     let facing = PostureModule::lr(weapon.module_accessor);
     PostureModule::add_pos(weapon.module_accessor, &Vector3f::new(10.0 * facing, 0.0, 0.0));
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("regular"), 0.0, 1.0, false, 0.0, false, false);
-    VarModule::on_flag(weapon.object(), vars::common::status::NO_POCKET);
     weapon.fastshift(L2CValue::Ptr(regular_main_loop as *const () as _))
 }
 
