@@ -5,7 +5,7 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 7.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 5.0, Some(0.0), Some(6.6), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(8.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -53,7 +53,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 4.0, Some(0.0), Some(6.6), Some(9.9), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.5, 4.0, Some(0.0), Some(6.5), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -101,7 +101,7 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, -5.5, Some(0.0), Some(6.6), Some(-14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.5, -5.5, Some(0.0), Some(6.5), Some(-12.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(agent);
     wait(lua_state, 2.0);
@@ -206,8 +206,11 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_NO_FLIP_SQUID);
-        if !WorkModule::is_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 90, 72, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        // squid stuff
+        agent.on_flag(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_NO_FLIP_SQUID);
+        if !agent.is_flag(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
             ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, -1);
             let motion = MotionModule::motion_kind(boma);
             let frame = MotionModule::frame(boma);
@@ -216,10 +219,10 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
             ArticleModule::set_frame(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, frame);
             ArticleModule::set_rate(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, rate);
             ArticleModule::set_visibility_whole(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            WorkModule::on_flag(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
+            agent.on_flag(*FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID);
             let status = StatusModule::status_kind(boma);
             if status != *FIGHTER_STATUS_KIND_REBIRTH {
-                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
+                agent.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_LOUPE);
             }
         }
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -228,8 +231,6 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         else {
             ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_SQUID, Hash40::new("throw_hi_r"), false, -1.0);
         }
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 90, 72, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 1.0);
     FT_MOTION_RATE_RANGE(agent, 1.0, 8.0, 4.0);
@@ -248,11 +249,12 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 90, 30, 0, 80, 5.5, 0.0, 18.0, 0.0, None, None, None, 0.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
         AttackModule::set_catch_only_all(boma, true, false);
         CHECK_FINISH_CAMERA(agent, 1, 25);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.7);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: 10.0, z: 0.0});
+        // lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.7);
+        // lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: 10.0, z: 0.0});
     }
     frame(lua_state, 22.0);
     if is_excute(agent) {
+        AttackModule::clear_all(boma);
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
@@ -293,6 +295,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("game_catchdash", game_catchdash, Priority::Low);
     agent.acmd("game_catchturn", game_catchturn, Priority::Low);
+
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
 
     agent.acmd("game_throwf", game_throwf, Priority::Low);
 
