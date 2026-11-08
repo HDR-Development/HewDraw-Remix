@@ -70,8 +70,6 @@
     <int hash="cliff_robbed_landing_frame">24</int>
     <int hash="teleport_jump_aerial_refresh_frame">3</int>
     <int hash="float_jump_aerial_refresh_frame">3</int>
-    <int hash="float_hold_minimum_frame">5</int>
-    <float hash="djc_limit_speed">2.5</float>
     <int hash="ledge_option_tether_hog_frame">15</int>
     <int hash="float_hold_minimum_frame">5</int>
     <struct hash="grab_rebound">

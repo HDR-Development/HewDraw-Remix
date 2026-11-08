@@ -56,7 +56,5 @@ pub fn install() {
     agent_init::install(agent);
     agent.install();
 
-    vtable::install();
-
     blaster::install();
 }

@@ -105,7 +105,7 @@ unsafe fn training_mode_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         let meter = WorkModule::get_float(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         let meter_inc = (meter + 40.0).clamp(0.0, 100.0);
         let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-        crate::vtable::update_littlemac_ui(entry_id, meter_inc);
+        crate::vtable_hook::update_littlemac_ui(entry_id, meter_inc);
         WorkModule::set_float(boma, meter_inc, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLOAT_KO_GAGE);
         EffectModule::req_on_joint(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::new(6.0, 15.0, 0.0), &Vector3f::zero(), 0.4, &Vector3f::zero(), &Vector3f::zero(), false, 0, 0, 0);
         //println!("meter_inc: {}", meter_inc);

@@ -7,8 +7,6 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
-mod vtable;
-
 // articles
 
 mod fire;

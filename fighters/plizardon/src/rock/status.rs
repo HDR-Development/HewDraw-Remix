@@ -23,7 +23,7 @@ pub unsafe extern "C" fn start_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     VarModule::set_int(weapon.battle_object, vars::plizardon_rock::status::REMAINING_STONES, stone_count);
     VarModule::set_int(weapon.battle_object, vars::plizardon_rock::status::SPAWN_COOLDOWN, 0);
     MotionModule::change_motion(weapon.module_accessor, Hash40::new("haved"), 0.0, 1.0, false, 0.0, false, false);
-
+    
     //HAVE constraint. Tie the Rock's "have" bone to Zard's "throw" bone
     //Pretty sure most things until set model constraint arent necessary...
     let owner = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -50,7 +50,7 @@ unsafe extern "C" fn start_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
             let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let owner = util::get_battle_object_from_id(owner_id);
             let mut owner_boma = &mut *(*owner).module_accessor;
-            ArticleModule::generate_article(owner_boma, articles::generate::plizardon::ROCKSTONE, false, -1) as u32;
+            ArticleModule::generate_article(owner_boma, articles::plizardon::ROCKSTONE, false, -1) as u32;
             WorkModule::inc_int(owner_boma, *FIGHTER_PLIZARDON_STATUS_BREATH_WORK_INT_GENERATE_COUNT);
             if VarModule::countdown_int(weapon.battle_object, vars::plizardon_rock::status::REMAINING_STONES, 0) {
                 notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));

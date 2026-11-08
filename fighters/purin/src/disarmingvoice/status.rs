@@ -59,6 +59,7 @@ unsafe extern "C" fn shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     );
 
     VarModule::on_flag(weapon.battle_object, vars::common::status::HIT_EFFECT_DROP_ITEM);
+    VarModule::on_flag(weapon.battle_object, vars::common::status::NO_POCKET);
     return false.into();
 }
 

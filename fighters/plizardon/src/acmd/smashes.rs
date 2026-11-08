@@ -5,7 +5,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 4.0);
     if is_excute(agent) {
-        ArticleModule::generate_article(boma, articles::generate::plizardon::ROCK, false, -1);
+        ArticleModule::generate_article(boma, articles::plizardon::ROCK, false, -1);
     }
     frame(lua_state, 18.0);
     if is_excute(agent) {
@@ -22,7 +22,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(agent) {
-        let article = ArticleModule::get_article(boma, articles::generate::plizardon::ROCK);
+        let article = ArticleModule::get_article(boma, articles::plizardon::ROCK);
         let article_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
         let article_battle_object = util::get_battle_object_from_id(article_id);
         VarModule::on_flag(article_battle_object, vars::plizardon_rock::status::ENABLE_BREAK);
@@ -245,6 +245,6 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
     agent.acmd("effect_attackhi4", effect_attackhi4, Priority::Low);
-
+    
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
 }

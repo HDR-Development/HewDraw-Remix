@@ -4,9 +4,9 @@ use super::*;
 use globals::*;
 
 unsafe fn can_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR,
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B,
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F,
+    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP_SQUAT,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_LANDING,
@@ -28,14 +28,14 @@ unsafe fn can_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP,
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN,
+    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT]) {
             if boma.is_button_on(Buttons::Guard) || boma.is_button_on(Buttons::Attack) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
             }
-    } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH,
+    } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 7.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_LAG);
@@ -60,7 +60,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_PLANT_FAIL,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP
-        ])
+        ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -72,10 +72,16 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fastfall_specials(fighter);
 }
 
+// symbol-based call for villager/isabelle's common pocket opff
+extern "Rust" {
+    fn ac_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub extern "C" fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		murabito_frame(fighter);
+        ac_common(fighter);
     }
 }
 

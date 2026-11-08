@@ -1,15 +1,13 @@
 use super::*;
 
-mod ground;
-mod kinetic;
 mod motion;
 mod status;
+mod ground;
 mod work;
 
 pub fn install() {
-    ground::install();
-    kinetic::install();
     motion::install();
     status::install();
+    ground::install();
     work::install();
 }

@@ -2,12 +2,15 @@ use super::*;
 
 #[no_mangle]
 unsafe fn float_pre_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut fs_succeeds = 0;
-    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
-        fs_succeeds = *FS_SUCCEEDS_KEEP_VISIBILITY | *FS_SUCCEEDS_KEEP_ATTACK | *FS_SUCCEEDS_KEEP_EFFECT;
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
     }
-
+    let fs_succeeds = if VarModule::is_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL) {
+        *FS_SUCCEEDS_KEEP_VISIBILITY | *FS_SUCCEEDS_KEEP_ATTACK | *FS_SUCCEEDS_KEEP_EFFECT
+    }
+    else {
+        0
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),

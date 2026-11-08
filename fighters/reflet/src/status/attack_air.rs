@@ -1,30 +1,30 @@
 use super::*;
 
-extern "Rust" {
-    #[link_name = "attack_air_float_pre"]
-    fn attack_air_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue;
-    #[link_name = "attack_air_float_main"]
-    fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue;
-}
-
 // FIGHTER_STATUS_KIND_ATTACK_AIR
 
-unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    attack_air_float_pre(fighter)
+extern "Rust" {
+    #[link_name = "attack_air_float_pre"]
+    fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
+    #[link_name = "attack_air_float_main"]
+    fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue;
 }
 
-unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    if prev_status_kind != VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND) {
+unsafe extern "C" fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    attack_air_float_pre(fighter, statuses::reflet::FLOAT.into())
+}
+
+pub unsafe extern "C" fn attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() != statuses::reflet::FLOAT {
         VisibilityModule::set_int64(fighter.module_accessor, Hash40::new("sword").hash, Hash40::new("sword_normal").hash);
-        fighter.off_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-        return smashline::original_status(Init, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
     }
-    fighter.sub_attack_air_uniq_process_init()
+    fighter.sub_attack_air_uniq_process_init();
+    0.into()
 }
 
 unsafe extern "C" fn attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    attack_air_float_main(fighter)
+    attack_air_float_main(fighter, statuses::reflet::FLOAT.into())
 }
 
 pub fn install(agent: &mut Agent) {

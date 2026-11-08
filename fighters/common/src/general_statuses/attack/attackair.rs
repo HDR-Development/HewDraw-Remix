@@ -1,12 +1,9 @@
 use super::*;
 
 #[no_mangle]
-unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
-
+unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    let float_status = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
-    let keep = if prev_status_kind == float_status {
+    let keep = if prev_status_kind == float_status.get_i32() {
         (
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
@@ -20,7 +17,6 @@ unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_AIR_FLOAT
         )
     };
-
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -49,10 +45,9 @@ unsafe fn attack_air_float_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[no_mangle]
-unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> L2CValue {
     let prev_status_kind = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    let float_status = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
-    if prev_status_kind != float_status {
+    if prev_status_kind != float_status.get_i32() {
         return smashline::original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR)(fighter);
     }
 
@@ -74,13 +69,6 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.status_AttackAir_Main_common();
     WorkModule::set_int64(fighter.module_accessor, motion, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
 
-    // idk where this is usually #handled
-    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(motion), true);
-    if fighter.motion_frame() >= cancel_frame {
-        fighter.clear_lua_stack();
-        CancelModule::enable_cancel(fighter.module_accessor);
-    }
-
     // allow fast fall during float release aerials
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_fall_common_uniq(false.into());
@@ -92,16 +80,21 @@ unsafe fn attack_air_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DOWN {
-        StatusModule::set_situation_kind(fighter.module_accessor, smash::app::SituationKind(*SITUATION_KIND_GROUND), false);
-        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
-    }
-    if !StatusModule::is_changing(fighter.module_accessor)
-    && (VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
-    || CancelModule::is_enable_cancel(fighter.module_accessor)) {
-        let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
-        if float_checks(fighter, status_kind.into()) {
-            return 1.into();
+    if !CancelModule::is_enable_cancel(fighter.module_accessor)
+    && VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT)
+    && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_FLOATING)
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
+        let mut dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
+        let mut dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dive_flick_frame_value"));
+        if fighter.left_stick_y() <= dive_cont_value
+        //&& VarModule::get_int(fighter.battle_object, vars::common::instance::LEFT_STICK_FLICK_Y) < dive_flick_frame_value
+        {
+            let status_kind = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_STATUS_KIND);
+            if status_kind != 0 {
+                VarModule::on_flag(fighter.battle_object, vars::common::status::FLOAT_INHERIT_AERIAL);
+                fighter.change_status(status_kind.into(), true.into());
+                return 0.into();
+            }
         }
     }
     original!()(fighter)
@@ -113,11 +106,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_attackair_main_common
         );
     }
-}
-
-extern "Rust" {
-    #[link_name = "float_checks"]
-    fn float_checks(fighter: &mut L2CFighterCommon, float_status: L2CValue) -> bool;
 }
 
 pub fn install() {

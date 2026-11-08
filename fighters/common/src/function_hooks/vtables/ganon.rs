@@ -1,7 +1,7 @@
 use super::*;
 
-// FighterVtableSlot::OnStatusChange2
-unsafe extern "C" fn ganon_on_status_change2(_vtable: u64, fighter: &mut Fighter) {
+#[skyline::hook(offset = 0xaa6800)]
+pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0) as u64;
     let status = StatusModule::status_kind(module_accessor) as u64;
@@ -38,9 +38,5 @@ unsafe extern "C" fn ganon_on_status_change2(_vtable: u64, fighter: &mut Fighter
 }
 
 pub fn install() {
-    replace_fighter_vtable(
-        *FIGHTER_KIND_GANON,
-        FighterVtableSlot::OnStatusChange2,
-        ganon_on_status_change2 as *const () as _
-    );
+    skyline::install_hook!(ganon_status_transition);
 }

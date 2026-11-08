@@ -1,14 +1,16 @@
 use super::*;
 
-extern "C" {
-    #[link_name = "pickel_stuff_hook_inner"]
-    fn pickel_stuff_hook_inner(ctx: &mut skyline::hooks::InlineCtx);
-}
-
 // lets the "stuff" article generate in new statuses
 #[skyline::hook(offset = 0xf13d5c, inline)]
 unsafe fn pickel_stuff_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    pickel_stuff_hook_inner(ctx);
+    let new_shield_statuses = &[
+        0x1B, // GUARD_ON
+        0x1C // GUARD
+    ];
+    let status = ctx.registers[0].x();
+    if new_shield_statuses.contains(&status) {
+        ctx.registers[0].set_x(0x1E);
+    } 
 }
 
 pub fn install() {

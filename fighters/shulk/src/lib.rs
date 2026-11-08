@@ -9,8 +9,6 @@ pub mod status;
 
 pub mod vtable_hook;
 
-mod vtable;
-
 use smash::{
     lib::{
         L2CValue,

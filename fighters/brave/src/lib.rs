@@ -7,8 +7,6 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
-mod vtable;
-
 // articles
 
 mod crash;
@@ -84,8 +82,6 @@ pub fn install() {
     status::install(agent);
     agent.on_start(on_start);
     agent.install();
-
-    vtable::install();
 
     crash::install();
     deathball::install();

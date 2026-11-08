@@ -57,6 +57,16 @@ unsafe extern "C" fn update_1_on_1_common(module_accessor: *mut BattleObjectModu
 }
 
 pub fn install() {
+    // The following disables the reversed stick values when autoturn runs
+    // Kazuya
+    let _ = skyline::patching::Patch::in_text(0x934a6c).nop();
+    let _ = skyline::patching::Patch::in_text(0x21d7d1c).nop();
+
+    // Disables Reverse Special Command calls
+    // Kazuya
+    let _ = skyline::patching::Patch::in_text(0x934a4c).nop();
+    let _ = skyline::patching::Patch::in_text(0x21d7cfc).nop();
+
     skyline::install_hooks!(
         update_1_on_1_common
     );

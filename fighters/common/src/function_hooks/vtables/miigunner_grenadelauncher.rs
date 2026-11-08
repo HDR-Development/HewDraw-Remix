@@ -1,42 +1,16 @@
 use super::*;
+use utils::ext::*;
+use super::super::energy::PaddedVec2;
 
-// Mirrors the layout in common's function_hooks/energy module.
-#[repr(C)]
-struct PaddedVec2 {
-    x: f32,
-    y: f32,
-    padding: u64
-}
-
-impl PaddedVec2 {
-    fn new(x: f32, y: f32) -> Self {
-        Self { x, y, padding: 0 }
-    }
-}
-
-#[repr(C)]
-struct KineticEnergy {
-    vtable: u64,
-    _x8: u64,
-    speed: PaddedVec2,
-    rot_speed: PaddedVec2,
-    enable: bool,
-    unk2: [u8; 0xF],
-    accel: PaddedVec2,
-    speed_max: PaddedVec2,
-    speed_brake: PaddedVec2,
-    speed_limit: PaddedVec2,
-}
-
-// WeaponVtableSlot::WeaponGenerate3
-unsafe extern "C" fn miigunner_grenadelauncher_init(_vtable: u64, weapon: &mut app::Weapon, init_struct: u64) {
+#[skyline::hook(offset = 0x3453e50)]
+unsafe extern "C" fn miigunner_grenadelauncher_init(vtable: u64, weapon: &mut smash::app::Weapon, init_struct: u64) {
     let boma = weapon.battle_object.module_accessor;
     let speed = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("speed"));
     let mul = *(init_struct as *const f32).add(0x88 / 0x4);
     let speed = speed * mul;
     let angle = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("angle"));
     let lr = PostureModule::lr(boma);
-    let energy = KineticModule::get_energy(boma, 0) as *mut KineticEnergy;
+    let energy = KineticModule::get_energy(boma, 0) as *mut super::super::energy::KineticEnergy;
     let brake_x = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("brake_x"));
     let gravity_acl_max = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("gravity_acl_max"));
     let gravity_accel = WorkModule::get_param_float(boma, hash40("param_grenadelauncher"), hash40("gravity_accel"));
@@ -68,10 +42,42 @@ unsafe extern "C" fn miigunner_grenadelauncher_init(_vtable: u64, weapon: &mut a
     (*energy).accel = PaddedVec2::new(0.0, -gravity_accel);
 }
 
+//d748d0 - on reflect (lw1)
+//d74bc0 - on absorb (lw3)
+//d74a20 - on reflect (lw1)
+//d74fd0 - on absorb (lw3)
+// #[skyline::hook(offset = 0x)]
+// unsafe extern "C" fn miigunner_on_search(vtable: u64, fighter: &mut Fighter, param_3: u64) {
+//     println!("h?");
+//     return call_original!(vtable, fighter, param_3);
+// }
+
+// #[skyline::hook(offset = 0x33bdeb0)]
+// unsafe extern "C" fn miigunner_groundbomb_set_team_flags(vtable: u64, weapon: &mut smash::app::Weapon) {
+//     println!("set team flags?");
+
+//     return call_original!(vtable, weapon);
+// }
+
+// #[skyline::hook(offset = 0x33be490)]
+// unsafe extern "C" fn miigunner_groundbomb_on_damage2(vtable: u64, weapon: &mut smash::app::Weapon) {
+//     println!("on damage2?");
+
+//     return call_original!(vtable, weapon);
+// }
+
+// #[skyline::hook(offset = 0x33be3f0)]
+// unsafe extern "C" fn miigunner_groundbomb_on_reflect(vtable: u64, weapon: &mut smash::app::Weapon) {
+//     println!("on reflect?");
+
+//     return call_original!(vtable, weapon);
+// }
+
 pub fn install() {
-    replace_weapon_vtable(
-        *WEAPON_KIND_MIIGUNNER_GRENADELAUNCHER,
-        WeaponVtableSlot::WeaponGenerate3,
-        miigunner_grenadelauncher_init as *const () as _
+    skyline::install_hooks!(
+        miigunner_grenadelauncher_init,
+        // miigunner_groundbomb_set_team_flags,
+        // miigunner_groundbomb_on_damage2,
+        // miigunner_groundbomb_on_reflect,
     );
 }

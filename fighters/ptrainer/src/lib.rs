@@ -9,8 +9,6 @@
 
 pub mod ptrainer;
 
-mod vtable;
-
 use smash::{
     lib::{
         L2CValue,

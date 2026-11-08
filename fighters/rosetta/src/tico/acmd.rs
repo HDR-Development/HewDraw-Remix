@@ -166,14 +166,14 @@ unsafe extern "C" fn effect_specialncharge(agent: &mut L2CAgentBase) {
     for _ in 0..3 {
         if is_excute(agent) {
             VarModule::inc_int(agent.battle_object, vars::rosetta::instance::TICO_CHARGE_LEVEL);
-            EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash1"), Hash40::new("top"), 0.0, 3.5, 0, 0, 0, 0, 0.45, true);
+            EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash1"), Hash40::new("top"), 15.0 * boma.lr(), 3.5, 0, 0, 0, 0, 0.45, true);
             LAST_EFFECT_SET_RATE(agent, 0.75);
         }
         wait(lua_state, 20.0);
     }
     if is_excute(agent) {
         VarModule::inc_int(agent.battle_object, vars::rosetta::instance::TICO_CHARGE_LEVEL);
-        EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash3"), Hash40::new("top"), 0.0, 3.5, 0, 0, 0, 0, 0.48, true);
+        EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash3"), Hash40::new("top"), 15.0 * boma.lr(), 3.5, 0, 0, 0, 0, 0.48, true);
         LAST_EFFECT_SET_RATE(agent, 0.5);
     }
 }
@@ -241,7 +241,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash1"), Hash40::new("top"), 0.0, 3.5, 0, 0, 0, 0, 0.5, false);
+        EFFECT_FOLLOW(agent, Hash40::new("rosetta_attack_flash1"), Hash40::new("top"), 15.0 * boma.lr(), 3.5, 0, 0, 0, 0, 0.5, false);
     }
 }
 
@@ -293,7 +293,7 @@ unsafe extern "C" fn effect_freerecall(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.1);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("rosetta_attack_flash3"), Hash40::new("top"), 0.2, 6.0, 0.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("rosetta_attack_flash3"), Hash40::new("top"), 0.2, 6.0, -15.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_COLOR(agent, 0.7, 0.02, 0.005);
         LAST_EFFECT_SET_RATE(agent, 0.65);
     }

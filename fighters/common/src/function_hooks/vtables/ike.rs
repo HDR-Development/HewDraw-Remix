@@ -1,7 +1,8 @@
 use super::*;
+use utils::ext::*;
 
-// FighterVtableSlot::OnAttack
-unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {
+#[skyline::hook(offset = 0xaf9350)]
+pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {
     let battle_object = &mut fighter.battle_object;
     let module_accessor = battle_object.module_accessor;
     let kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
@@ -47,9 +48,7 @@ pub fn call_critical(
 ) -> u64;
 
 pub fn install() {
-    replace_fighter_vtable(
-        *FIGHTER_KIND_IKE,
-        FighterVtableSlot::OnAttack,
-        ike_on_attack as *const () as _
+    skyline::install_hooks!(
+        ike_on_attack,
     );
 }

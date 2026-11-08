@@ -23,7 +23,7 @@ unsafe extern "C" fn game_explode(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, vars::duckhunt_can::instance::KILLSHOT_EXPLODE) {
             VarModule::off_flag(agent.battle_object, vars::duckhunt_can::instance::KILLSHOT_EXPLODE);
-            ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 80, 95, 0, 57, 13.0, 0.0, 0.0, 0.0, None, None, None, 0.4, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 80, 69, 0, 60, 13.0, 0.0, 0.0, 0.0, None, None, None, 0.4, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
         else {
             ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 60, 100, 0, 40, 13.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);

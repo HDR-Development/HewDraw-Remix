@@ -7,8 +7,6 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
-mod vtable;
-
 // articles
 
 mod shuriken;
@@ -52,8 +50,6 @@ pub fn install() {
     status::install(agent);
     opff::install(agent);
     agent.install();
-
-    vtable::install();
 
     shuriken::install();
 }

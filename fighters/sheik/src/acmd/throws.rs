@@ -113,7 +113,6 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(agent, 4, 19);
     }
     frame(lua_state, 19.0);
-    FT_MOTION_RATE_RANGE(agent, 19.0, 51.0, 38.0);
     if is_excute(agent) {
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
@@ -121,8 +120,6 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 51.0);
-    FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {

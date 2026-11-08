@@ -316,11 +316,4 @@ pub fn install() {
     // 2. Force the singleton character vector builder (0x1a0a3e0) to always store separate=1
     // into inner_data+0x258. This fixes the miis.
     skyline::patching::Patch::in_text(0x1a0a410).data(0x52800028u32);
-
-    // Add '$' to the tag keyboard's "!?&#-" key.
-    // Label is mel_chara_select_key_alphabet_09 entry in hdr-assets' msg_melee xmsbt.
-    skyline::patching::Patch::in_text(0x50a84f0).data(TAG_KEYBOARD_ALPHABET_09.as_ptr() as u64);
-    skyline::patching::Patch::in_text(0x50a84f8).data(TAG_KEYBOARD_ALPHABET_09.len() as u64);
 }
-
-static TAG_KEYBOARD_ALPHABET_09: [u16; 6] = ['!' as u16, '?' as u16, '&' as u16, '#' as u16, '-' as u16, '$' as u16];

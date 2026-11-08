@@ -18,7 +18,7 @@ extern "Rust" {
 unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     let fuel = WorkModule::get_float(fighter.boma(), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
     if fuel >= 99.4 && fuel <= 100.0 && !fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP,
@@ -32,9 +32,9 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END)
-    && boma.motion_frame() < 4.0
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
+    if boma.is_status(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END) 
+    && boma.motion_frame() < 4.0 
+    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) 
     && boma.is_situation(*SITUATION_KIND_GROUND) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
     }
@@ -68,7 +68,7 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
                 VarModule::on_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_putaway_catch"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
                 VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
-            }
+            } 
             else {
                 VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_LATE_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_erase_smoke"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
@@ -96,7 +96,7 @@ unsafe fn balloon_dash(fighter: &mut L2CFighterBase) {
         PLAY_STATUS(fighter, Hash40::new("se_shizue_special_l02"));
         if lr == 1.0 {
             flip = *EFFECT_AXIS_Y;
-        }
+        } 
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("shizue_clayrocket_jet"), Hash40::new("shizue_clayrocket_jet"), Hash40::new("top"), 0, 6.0, 0, rot + 90.0, 0, 180, 1.5, true, flip);
         VarModule::off_flag(fighter.object(), vars::shizue::status::SPECIAL_HI_EARLY_RELEASE);
     }
@@ -115,7 +115,7 @@ unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH,
         *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FAILURE,
         *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE
-        ])
+        ]) 
     && fighter.is_situation(*SITUATION_KIND_AIR) {
         fighter.sub_air_check_dive();
     }
@@ -130,10 +130,16 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     fuel_indicators(fighter);
 }
 
+// symbol-based call for villager/isabelle's common pocket opff
+extern "Rust" {
+    fn ac_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub extern "C" fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
+        ac_common(fighter);
     }
 }
 

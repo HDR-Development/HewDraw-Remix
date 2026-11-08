@@ -9,8 +9,6 @@ pub mod acmd;
 pub mod opff;
 pub mod status;
 
-mod vtable;
-
 pub mod ironball;
 
 use smash::{
@@ -52,8 +50,6 @@ pub fn install() {
     opff::install(agent);
     status::install(agent);
     agent.install();
-
-    vtable::install();
 
     ironball::install();
 }

@@ -12,14 +12,14 @@ unsafe extern "C" fn jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe extern "C" fn consume_resource(fighter: &mut L2CFighterCommon) -> L2CValue {
     let buffer = ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;
     if fighter.global_table[CURRENT_FRAME].get_i32() == buffer {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::DISABLE_FLOAT);
     }
     0.into()
 }
 
 unsafe extern "C" fn jump_aerial_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != statuses::mewtwo::FLOAT {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_FLOAT);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::DISABLE_FLOAT);
     }
     return smashline::original_status(End, fighter, *FIGHTER_STATUS_KIND_JUMP_AERIAL)(fighter);
 }
